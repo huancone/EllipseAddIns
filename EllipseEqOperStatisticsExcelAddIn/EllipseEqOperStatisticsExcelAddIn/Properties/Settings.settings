@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EllipseEqOperStatisticsExcelAddIn.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="EllipseEqOperStatisticsExcelAddIn_EquipmentOperatingStatisticsService_EquipmentOperatingStatisticsService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-el8test.lmnerp03.cerrejon.com/ews/services/EquipmentOperatingStatisticsService</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

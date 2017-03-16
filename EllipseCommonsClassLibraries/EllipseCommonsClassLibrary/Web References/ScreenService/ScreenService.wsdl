@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns2="http://exception.enterpriseservice.mincom.com" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:tns="http://screen.enterpriseservice.mincom.com" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://connectivity.service.ews.mincom.com" targetNamespace="http://screen.enterpriseservice.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://screen.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://exception.enterpriseservice.mincom.com" />
+      <xsd:element name="executeScreen">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="msoName" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ScreenDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="currentCursorFieldName" type="xsd:string" />
+          <xsd:element minOccurs="0" name="functionKeys" type="xsd:string" />
+          <xsd:element minOccurs="0" name="idle" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="mapFormUpdateDate" type="xsd:string" />
+          <xsd:element minOccurs="0" name="mapFormVersion" type="xsd:string" />
+          <xsd:element minOccurs="0" name="mapName" type="xsd:string" />
+          <xsd:element minOccurs="0" name="menu" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="message" type="xsd:string" />
+          <xsd:element minOccurs="0" name="nextAction" type="xsd:string" />
+          <xsd:element minOccurs="0" name="programName" type="xsd:string" />
+          <xsd:element minOccurs="0" name="screenFields" type="tns:ArrayOfScreenFieldDTO" />
+          <xsd:element minOccurs="0" name="screenTitle" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfScreenFieldDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ScreenFieldDTO" nillable="true" type="tns:ScreenFieldDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ScreenFieldDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fieldName" type="xsd:string" />
+          <xsd:element minOccurs="0" name="fieldProtected" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="maximumLength" type="xsd:int" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="executeScreenResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:ScreenDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EnterpriseServiceException" type="ns2:EnterpriseServiceException" />
+      <xsd:element name="InvalidConnectionIdException" type="ns2:InvalidConnectionIdException" />
+      <xsd:complexType name="ScreenSubmitRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="screenFields" type="tns:ArrayOfScreenNameValueDTO" />
+          <xsd:element minOccurs="0" name="screenKey" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfScreenNameValueDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ScreenNameValueDTO" nillable="true" type="tns:ScreenNameValueDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ScreenNameValueDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fieldName" type="xsd:string" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="submit">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="screenSendRequestDTO" nillable="true" type="tns:ScreenSubmitRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="submitResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:ScreenDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="positionToMenu">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="positionToMenuResponse">
+        <xsd:complexType />
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://exception.enterpriseservice.mincom.com">
+      <xsd:complexType name="EnterpriseServiceException" />
+      <xsd:complexType name="InvalidConnectionIdException" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="positionToMenuResponse">
+    <wsdl:part name="parameters" element="tns:positionToMenuResponse" />
+  </wsdl:message>
+  <wsdl:message name="submitResponse">
+    <wsdl:part name="parameters" element="tns:submitResponse" />
+  </wsdl:message>
+  <wsdl:message name="executeScreenRequest">
+    <wsdl:part name="parameters" element="tns:executeScreen" />
+  </wsdl:message>
+  <wsdl:message name="submitRequest">
+    <wsdl:part name="parameters" element="tns:submit" />
+  </wsdl:message>
+  <wsdl:message name="positionToMenuRequest">
+    <wsdl:part name="parameters" element="tns:positionToMenu" />
+  </wsdl:message>
+  <wsdl:message name="executeScreenResponse">
+    <wsdl:part name="parameters" element="tns:executeScreenResponse" />
+  </wsdl:message>
+  <wsdl:message name="EnterpriseServiceException">
+    <wsdl:part name="EnterpriseServiceException" element="tns:EnterpriseServiceException" />
+  </wsdl:message>
+  <wsdl:message name="InvalidConnectionIdException">
+    <wsdl:part name="InvalidConnectionIdException" element="tns:InvalidConnectionIdException" />
+  </wsdl:message>
+  <wsdl:portType name="Screen">
+    <wsdl:operation name="executeScreen">
+      <wsdl:input name="executeScreenRequest" message="tns:executeScreenRequest" />
+      <wsdl:output name="executeScreenResponse" message="tns:executeScreenResponse" />
+      <wsdl:fault name="EnterpriseServiceException" message="tns:EnterpriseServiceException" />
+      <wsdl:fault name="InvalidConnectionIdException" message="tns:InvalidConnectionIdException" />
+    </wsdl:operation>
+    <wsdl:operation name="submit">
+      <wsdl:input name="submitRequest" message="tns:submitRequest" />
+      <wsdl:output name="submitResponse" message="tns:submitResponse" />
+      <wsdl:fault name="EnterpriseServiceException" message="tns:EnterpriseServiceException" />
+      <wsdl:fault name="InvalidConnectionIdException" message="tns:InvalidConnectionIdException" />
+    </wsdl:operation>
+    <wsdl:operation name="positionToMenu">
+      <wsdl:input name="positionToMenuRequest" message="tns:positionToMenuRequest" />
+      <wsdl:output name="positionToMenuResponse" message="tns:positionToMenuResponse" />
+      <wsdl:fault name="EnterpriseServiceException" message="tns:EnterpriseServiceException" />
+      <wsdl:fault name="InvalidConnectionIdException" message="tns:InvalidConnectionIdException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ScreenServiceHttpBinding" type="tns:Screen">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="executeScreen">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="executeScreenRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="executeScreenResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceException" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidConnectionIdException">
+        <wsdlsoap:fault use="literal" name="InvalidConnectionIdException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="submit">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="submitRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="submitResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceException" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidConnectionIdException">
+        <wsdlsoap:fault use="literal" name="InvalidConnectionIdException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="positionToMenu">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="positionToMenuRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="positionToMenuResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceException" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidConnectionIdException">
+        <wsdlsoap:fault use="literal" name="InvalidConnectionIdException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ScreenService">
+    <wsdl:port name="ScreenServiceHttpPort" binding="tns:ScreenServiceHttpBinding">
+      <wsdlsoap:address location="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/ScreenService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

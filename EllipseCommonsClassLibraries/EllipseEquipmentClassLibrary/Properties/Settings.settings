@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EllipseEquipmentClassLibrary.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="EllipseEquipmentClassLibrary_EquipmentService_EquipmentService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipmentService</Value>
+    </Setting>
+    <Setting Name="EllipseEquipmentClassLibrary_EquipTraceService_EquipTraceService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipTraceService</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

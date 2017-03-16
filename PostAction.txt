@@ -1,0 +1,97 @@
+﻿private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                
+                var urlEnviroment = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
+                var responseDto = EFunctions.InitiatePostConnection();
+                
+                if (responseDto.GotErrorMessages()) return;
+                var requestXml = "";
+                requestXml = requestXml + "<interaction>";
+                requestXml = requestXml + "<actions>";
+                requestXml = requestXml + "<action>";
+                requestXml = requestXml + "<name>service</name>";
+                requestXml = requestXml + "<data>";
+                requestXml = requestXml + "<name>com.mincom.enterpriseservice.ellipse.requisition.RequisitionService</name>";
+                requestXml = requestXml + "<operation>multipleDeleteItem</operation>";
+                requestXml = requestXml + "<returnWarnings>false</returnWarnings>";
+                requestXml = requestXml + "<dto>";
+                requestXml = requestXml + "<dto uuid=\"";
+                requestXml = requestXml + System.Web.Services.Ellipse.Post.Util.GetNewOperationId();
+                requestXml = requestXml + "\" deleted=\"true\" modified=\"false\">";
+                requestXml = requestXml + "<gPASelected>false</gPASelected>";
+                requestXml = requestXml + "<iRequisitionItemType>C</iRequisitionItemType>";
+                requestXml = requestXml + "<activityCounter>000</activityCounter>";
+                requestXml = requestXml + "<alterStockCodeFlg>false</alterStockCodeFlg>";
+                requestXml = requestXml + "<directOrderQuantity>0</directOrderQuantity>";
+                requestXml = requestXml + "<directOrderReceived>0</directOrderReceived>";
+                requestXml = requestXml + "<directPurchOrdItem>0</directPurchOrdItem>";
+                requestXml = requestXml + "<estimatedPrice editable=\"false\" />";
+                requestXml = requestXml + "<issChangeReason>DES1</issChangeReason>";
+                requestXml = requestXml + "<issueDistrictCode>";
+                requestXml = requestXml + "ICOR";//
+                requestXml = requestXml + "</issueDistrictCode>";
+                requestXml = requestXml + "<issueDocoFlg>false</issueDocoFlg>";
+                requestXml = requestXml + "<issueRequisitionItem>";
+                requestXml = requestXml + 1;//
+                requestXml = requestXml + "</issueRequisitionItem>";
+                requestXml = requestXml + "<issueWarehouseId>";
+                requestXml = requestXml + "C";//
+                requestXml = requestXml + "</issueWarehouseId>";
+                requestXml = requestXml + "<itemType>";
+                requestXml = requestXml + "S";//
+                requestXml = requestXml + "</itemType>";
+                requestXml = requestXml + "<leadTimeComp>true</leadTimeComp>";
+                requestXml = requestXml + "<moreDescExists>false</moreDescExists>";
+                requestXml = requestXml + "<narrativeExists>N</narrativeExists>";
+                requestXml = requestXml + "<partIssue>N</partIssue>";
+                requestXml = requestXml + "<stockCode>";
+                requestXml = requestXml + "000000026";//
+                requestXml = requestXml + "</stockCode>";
+                requestXml = requestXml + "<quantityRequired>";
+                requestXml = requestXml + "5";//
+                requestXml = requestXml + "</quantityRequired>";
+                requestXml = requestXml + "<unitOfMeasure>";
+                requestXml = requestXml + "EA";//
+                requestXml = requestXml + "</unitOfMeasure>";
+                requestXml = requestXml + "<districtCode>";
+                requestXml = requestXml + "ICOR";//
+                requestXml = requestXml + "</districtCode>";
+                requestXml = requestXml + "<ireqNo>";
+                requestXml = requestXml + "F04244"; //
+                requestXml = requestXml + "</ireqNo>";
+                requestXml = requestXml + "<ireqType>";
+                requestXml = requestXml + "NI";//
+                requestXml = requestXml + "</ireqType>";
+                requestXml = requestXml + "</dto>";
+                requestXml = requestXml + "</dto>";
+                requestXml = requestXml + "</data>";
+                requestXml = requestXml + "<id>";
+                requestXml = requestXml + System.Web.Services.Ellipse.Post.Util.GetNewOperationId();
+                requestXml = requestXml + "</id>";
+                requestXml = requestXml + "</action>";
+                requestXml = requestXml + "</actions>";
+                requestXml = requestXml + "<chains />";
+                requestXml = requestXml + "<connectionId>";
+                requestXml = requestXml + EFunctions.PostServiceProxy.ConnectionId; //
+                requestXml = requestXml + "</connectionId>";
+                requestXml = requestXml + "<application>mse140</application>";
+                requestXml = requestXml + "<applicationPage>read</applicationPage>";
+                requestXml = requestXml + "<transaction>true</transaction>";
+                requestXml = requestXml + "</interaction>";
+                responseDto = EFunctions.ExecutePostRequest(requestXml);
+
+                if (!responseDto.GotErrorMessages()) return;
+                var errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
+                if (!errorMessage.Equals(""))
+                    throw new Exception(errorMessage);
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }

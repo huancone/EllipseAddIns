@@ -1,0 +1,1195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding"
+                  xmlns:ns2="http://ellipse.enterpriseservice.mincom.com"
+                  xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"
+                  xmlns:tns="http://stdtext.ellipse.enterpriseservice.mincom.com"
+                  xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:ns4="http://exception.enterpriseservice.mincom.com"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns3="http://attribute.ellipse.mincom.com"
+                  xmlns:ns1="http://connectivity.service.ews.mincom.com"
+                  targetNamespace="http://stdtext.ellipse.enterpriseservice.mincom.com"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://stdtext.ellipse.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://exception.enterpriseservice.mincom.com" />
+      <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
+      <xsd:simpleType name="stdTextId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="26" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lineCount">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="textLine">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="160" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="StdTextServiceAppendRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="lineCount" type="tns:lineCount" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:StdTextServiceAppendRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="stdTextId" type="tns:stdTextId" />
+              <xsd:element minOccurs="0" name="textLine" type="tns:ArrayOfString" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceAppendRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="append">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:StdTextServiceAppendRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceAppendReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="appendResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:StdTextServiceAppendReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EnterpriseServiceOperationException" type="ns4:EnterpriseServiceOperationException" />
+      <xsd:complexType name="ArrayOfStdTextServiceDeleteRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceDeleteRequestDTO" nillable="true"
+                       type="tns:StdTextServiceDeleteRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceDeleteRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:StdTextServiceDeleteRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="stdTextId" type="tns:stdTextId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceDeleteRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleDelete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:ArrayOfStdTextServiceDeleteRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceDeleteReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfStdTextServiceDeleteReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStdTextServiceDeleteReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceDeleteReplyDTO" nillable="true"
+                       type="tns:StdTextServiceDeleteReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceDeleteReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleDeleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceDeleteReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfStdTextServiceCreateRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceCreateRequestDTO" nillable="true"
+                       type="tns:StdTextServiceCreateRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="totalCurrentLines">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="startLineNo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="headingLine">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="160" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="StdTextServiceCreateRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="headingLine" type="tns:headingLine" />
+              <xsd:element minOccurs="0" name="lineCount" type="tns:lineCount" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:StdTextServiceCreateRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="startLineNo" type="tns:startLineNo" />
+              <xsd:element minOccurs="0" name="stdTextId" type="tns:stdTextId" />
+              <xsd:element minOccurs="0" name="textLine" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="totalCurrentLines" type="tns:totalCurrentLines" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceCreateRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnStdTextId" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleCreate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:ArrayOfStdTextServiceCreateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceCreateReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfStdTextServiceCreateReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStdTextServiceCreateReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceCreateReplyDTO" nillable="true"
+                       type="tns:StdTextServiceCreateReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceCreateReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="stdTextId" type="tns:stdTextId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleCreateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceCreateReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfStdTextServiceGetHeadingRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceGetHeadingRequestDTO" nillable="true"
+                       type="tns:StdTextServiceGetHeadingRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="duplicateStdTextId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="StdTextServiceGetHeadingRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="duplicateStdTextId" type="tns:duplicateStdTextId" />
+              <xsd:element minOccurs="0" name="requiredAttributes"
+                           type="tns:StdTextServiceGetHeadingRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="stdTextId" type="tns:stdTextId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceGetHeadingRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnHeadingLine" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnHeadingMandatory" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLineLength" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaxLineLength" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdTextExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTextTypeHasHeading" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleGetHeading">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:ArrayOfStdTextServiceGetHeadingRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceGetHeadingReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfStdTextServiceGetHeadingReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStdTextServiceGetHeadingReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceGetHeadingReplyDTO" nillable="true"
+                       type="tns:StdTextServiceGetHeadingReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="stdTextExists">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="textTypeHasHeading">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="maxLineLength">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="headingMandatory">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="lineLength">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="StdTextServiceGetHeadingReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="headingLine" type="tns:headingLine" />
+              <xsd:element minOccurs="0" name="headingMandatory" type="tns:headingMandatory" />
+              <xsd:element minOccurs="0" name="lineLength" type="tns:lineLength" />
+              <xsd:element minOccurs="0" name="maxLineLength" type="tns:maxLineLength" />
+              <xsd:element minOccurs="0" name="stdTextExists" type="tns:stdTextExists" />
+              <xsd:element minOccurs="0" name="textTypeHasHeading" type="tns:textTypeHasHeading" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleGetHeadingResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceGetHeadingReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfStdTextServiceSetTextRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceSetTextRequestDTO" nillable="true"
+                       type="tns:StdTextServiceSetTextRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="totalRetrievedLines">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="StdTextServiceSetTextRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="lineCount" type="tns:lineCount" />
+              <xsd:element minOccurs="0" name="requiredAttributes"
+                           type="tns:StdTextServiceSetTextRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="startLineNo" type="tns:startLineNo" />
+              <xsd:element minOccurs="0" name="stdTextId" type="tns:stdTextId" />
+              <xsd:element minOccurs="0" name="textLine" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="totalCurrentLines" type="tns:totalCurrentLines" />
+              <xsd:element minOccurs="0" name="totalRetrievedLines" type="tns:totalRetrievedLines" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceSetTextRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnStdTextExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdTextId" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleSetText">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:ArrayOfStdTextServiceSetTextRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceSetTextReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfStdTextServiceSetTextReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStdTextServiceSetTextReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceSetTextReplyDTO" nillable="true"
+                       type="tns:StdTextServiceSetTextReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceSetTextReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="stdTextExists" type="tns:stdTextExists" />
+              <xsd:element minOccurs="0" name="stdTextId" type="tns:stdTextId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleSetTextResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceSetTextReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getHeading">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:StdTextServiceGetHeadingRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getHeadingResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceGetHeadingReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="setText">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:StdTextServiceSetTextRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="setTextResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceSetTextReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="create">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:StdTextServiceCreateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:StdTextServiceCreateReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfStdTextServiceSetHeadingRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceSetHeadingRequestDTO" nillable="true"
+                       type="tns:StdTextServiceSetHeadingRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceSetHeadingRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="headingLine" type="tns:headingLine" />
+              <xsd:element minOccurs="0" name="requiredAttributes"
+                           type="tns:StdTextServiceSetHeadingRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="stdTextId" type="tns:stdTextId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceSetHeadingRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleSetHeading">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:ArrayOfStdTextServiceSetHeadingRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceSetHeadingReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfStdTextServiceSetHeadingReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStdTextServiceSetHeadingReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceSetHeadingReplyDTO" nillable="true"
+                       type="tns:StdTextServiceSetHeadingReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceSetHeadingReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleSetHeadingResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceSetHeadingReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceGetTextRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="duplicateStdTextId" type="tns:duplicateStdTextId" />
+              <xsd:element minOccurs="0" name="stdTextId" type="tns:stdTextId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceGetTextRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnLineCount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStartLineNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTextLine" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="getText">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:StdTextServiceGetTextRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true"
+                         type="tns:StdTextServiceGetTextRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceGetTextReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfStdTextServiceGetTextReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStdTextServiceGetTextReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceGetTextReplyDTO" nillable="true"
+                       type="tns:StdTextServiceGetTextReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceGetTextReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="lineCount" type="tns:lineCount" />
+              <xsd:element minOccurs="0" name="startLineNo" type="tns:startLineNo" />
+              <xsd:element minOccurs="0" name="textLine" type="tns:ArrayOfString" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="getTextResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceGetTextReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleGetHeadingWithPartialResults">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:ArrayOfStdTextServiceGetHeadingRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleGetHeadingWithPartialResultsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceGetHeadingReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceRetrieveTextNamesRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceRetrieveTextNamesRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnHeadingLine" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdTextId" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveTextNames">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:StdTextServiceRetrieveTextNamesRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true"
+                         type="tns:StdTextServiceRetrieveTextNamesRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceRetrieveTextNamesReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfStdTextServiceRetrieveTextNamesReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStdTextServiceRetrieveTextNamesReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceRetrieveTextNamesReplyDTO"
+                       nillable="true" type="tns:StdTextServiceRetrieveTextNamesReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceRetrieveTextNamesReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="headingLine" type="tns:headingLine" />
+              <xsd:element minOccurs="0" name="stdTextId" type="tns:stdTextId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveTextNamesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceRetrieveTextNamesReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfStdTextServiceAppendRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceAppendRequestDTO" nillable="true"
+                       type="tns:StdTextServiceAppendRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleAppend">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:ArrayOfStdTextServiceAppendRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="StdTextServiceAppendReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfStdTextServiceAppendReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStdTextServiceAppendReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StdTextServiceAppendReplyDTO" nillable="true"
+                       type="tns:StdTextServiceAppendReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleAppendResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceAppendReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:StdTextServiceDeleteRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:StdTextServiceDeleteReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="setHeading">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true"
+                         type="tns:StdTextServiceSetHeadingRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="setHeadingResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="tns:StdTextServiceSetHeadingReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://ellipse.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="AbstractDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="customAttributes" type="ns3:ArrayOfAttribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractRequiredAttributesDTO" />
+      <xsd:complexType name="AbstractReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="warningsAndInformation" type="ns2:ArrayOfWarningMessageDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarningMessageDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WarningMessageDTO" nillable="true"
+                       type="ns2:WarningMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="WarningMessageDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ApplicationMessageImpl" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ApplicationMessageImpl">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="code" type="xsd:string" />
+          <xsd:element minOccurs="0" name="dtoIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="fieldName" type="xsd:string" />
+          <xsd:element minOccurs="0" name="message" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfErrorMessageDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ErrorMessageDTO" nillable="true"
+                       type="ns2:ErrorMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ErrorMessageDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ApplicationMessageImpl" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractReplyCollectionDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns3:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://exception.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="EnterpriseServiceOperationException">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errorMessages" type="ns2:ArrayOfErrorMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="multipleSetTextRequest">
+    <wsdl:part name="parameters" element="tns:multipleSetText" />
+  </wsdl:message>
+  <wsdl:message name="multipleGetHeadingWithPartialResultsResponse">
+    <wsdl:part name="parameters" element="tns:multipleGetHeadingWithPartialResultsResponse" />
+  </wsdl:message>
+  <wsdl:message name="setHeadingRequest">
+    <wsdl:part name="parameters" element="tns:setHeading" />
+  </wsdl:message>
+  <wsdl:message name="setTextRequest">
+    <wsdl:part name="parameters" element="tns:setText" />
+  </wsdl:message>
+  <wsdl:message name="setHeadingResponse">
+    <wsdl:part name="parameters" element="tns:setHeadingResponse" />
+  </wsdl:message>
+  <wsdl:message name="appendRequest">
+    <wsdl:part name="parameters" element="tns:append" />
+  </wsdl:message>
+  <wsdl:message name="retrieveTextNamesResponse">
+    <wsdl:part name="parameters" element="tns:retrieveTextNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="appendResponse">
+    <wsdl:part name="parameters" element="tns:appendResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="parameters" element="tns:deleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveTextNamesRequest">
+    <wsdl:part name="parameters" element="tns:retrieveTextNames" />
+  </wsdl:message>
+  <wsdl:message name="multipleSetTextResponse">
+    <wsdl:part name="parameters" element="tns:multipleSetTextResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleGetHeadingRequest">
+    <wsdl:part name="parameters" element="tns:multipleGetHeading" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleAppendResponse">
+    <wsdl:part name="parameters" element="tns:multipleAppendResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleGetHeadingResponse">
+    <wsdl:part name="parameters" element="tns:multipleGetHeadingResponse" />
+  </wsdl:message>
+  <wsdl:message name="EnterpriseServiceOperationException">
+    <wsdl:part name="EnterpriseServiceOperationException" element="tns:EnterpriseServiceOperationException" />
+  </wsdl:message>
+  <wsdl:message name="setTextResponse">
+    <wsdl:part name="parameters" element="tns:setTextResponse" />
+  </wsdl:message>
+  <wsdl:message name="getHeadingResponse">
+    <wsdl:part name="parameters" element="tns:getHeadingResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreate" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="parameters" element="tns:delete" />
+  </wsdl:message>
+  <wsdl:message name="multipleSetHeadingRequest">
+    <wsdl:part name="parameters" element="tns:multipleSetHeading" />
+  </wsdl:message>
+  <wsdl:message name="getHeadingRequest">
+    <wsdl:part name="parameters" element="tns:getHeading" />
+  </wsdl:message>
+  <wsdl:message name="multipleSetHeadingResponse">
+    <wsdl:part name="parameters" element="tns:multipleSetHeadingResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteRequest">
+    <wsdl:part name="parameters" element="tns:multipleDelete" />
+  </wsdl:message>
+  <wsdl:message name="createRequest">
+    <wsdl:part name="parameters" element="tns:create" />
+  </wsdl:message>
+  <wsdl:message name="multipleAppendRequest">
+    <wsdl:part name="parameters" element="tns:multipleAppend" />
+  </wsdl:message>
+  <wsdl:message name="getTextRequest">
+    <wsdl:part name="parameters" element="tns:getText" />
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="getTextResponse">
+    <wsdl:part name="parameters" element="tns:getTextResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleGetHeadingWithPartialResultsRequest">
+    <wsdl:part name="parameters" element="tns:multipleGetHeadingWithPartialResults" />
+  </wsdl:message>
+  <wsdl:portType name="StdText">
+    <wsdl:operation name="append">
+      <wsdl:input name="appendRequest" message="tns:appendRequest" />
+      <wsdl:output name="appendResponse" message="tns:appendResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdl:input name="multipleDeleteRequest" message="tns:multipleDeleteRequest" />
+      <wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
+      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleGetHeading">
+      <wsdl:input name="multipleGetHeadingRequest" message="tns:multipleGetHeadingRequest" />
+      <wsdl:output name="multipleGetHeadingResponse" message="tns:multipleGetHeadingResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleSetText">
+      <wsdl:input name="multipleSetTextRequest" message="tns:multipleSetTextRequest" />
+      <wsdl:output name="multipleSetTextResponse" message="tns:multipleSetTextResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="getHeading">
+      <wsdl:input name="getHeadingRequest" message="tns:getHeadingRequest" />
+      <wsdl:output name="getHeadingResponse" message="tns:getHeadingResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="setText">
+      <wsdl:input name="setTextRequest" message="tns:setTextRequest" />
+      <wsdl:output name="setTextResponse" message="tns:setTextResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input name="createRequest" message="tns:createRequest" />
+      <wsdl:output name="createResponse" message="tns:createResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleSetHeading">
+      <wsdl:input name="multipleSetHeadingRequest" message="tns:multipleSetHeadingRequest" />
+      <wsdl:output name="multipleSetHeadingResponse" message="tns:multipleSetHeadingResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="getText">
+      <wsdl:input name="getTextRequest" message="tns:getTextRequest" />
+      <wsdl:output name="getTextResponse" message="tns:getTextResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleGetHeadingWithPartialResults">
+      <wsdl:input name="multipleGetHeadingWithPartialResultsRequest"
+                  message="tns:multipleGetHeadingWithPartialResultsRequest" />
+      <wsdl:output name="multipleGetHeadingWithPartialResultsResponse"
+                   message="tns:multipleGetHeadingWithPartialResultsResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveTextNames">
+      <wsdl:input name="retrieveTextNamesRequest" message="tns:retrieveTextNamesRequest" />
+      <wsdl:output name="retrieveTextNamesResponse" message="tns:retrieveTextNamesResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleAppend">
+      <wsdl:input name="multipleAppendRequest" message="tns:multipleAppendRequest" />
+      <wsdl:output name="multipleAppendResponse" message="tns:multipleAppendResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input name="deleteRequest" message="tns:deleteRequest" />
+      <wsdl:output name="deleteResponse" message="tns:deleteResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="setHeading">
+      <wsdl:input name="setHeadingRequest" message="tns:setHeadingRequest" />
+      <wsdl:output name="setHeadingResponse" message="tns:setHeadingResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="StdTextServiceHttpBinding" type="tns:StdText">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="append">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="appendRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="appendResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleGetHeading">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleGetHeadingRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleGetHeadingResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleSetText">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleSetTextRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleSetTextResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getHeading">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getHeadingRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getHeadingResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setText">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="setTextRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setTextResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleSetHeading">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleSetHeadingRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleSetHeadingResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getText">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getTextRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getTextResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleGetHeadingWithPartialResults">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleGetHeadingWithPartialResultsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleGetHeadingWithPartialResultsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveTextNames">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveTextNamesRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveTextNamesResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleAppend">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleAppendRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleAppendResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="setHeading">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="setHeadingRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setHeadingResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StdTextService">
+    <wsdl:port name="StdTextServiceHttpPort" binding="tns:StdTextServiceHttpBinding">
+      <wsdlsoap:address location="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/StdTextService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

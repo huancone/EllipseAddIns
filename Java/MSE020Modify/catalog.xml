@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://ews-el8desa.lmnerp03.cerrejon.com/ews/services/SecurityClassService?WSDL" uri="../MSE020Modify/xml-resources/web-service-references/SecurityClassService/wsdl/ews-el8desa.lmnerp03.cerrejon.com/ews/services/SecurityClassService.wsdl"/>
+</catalog>

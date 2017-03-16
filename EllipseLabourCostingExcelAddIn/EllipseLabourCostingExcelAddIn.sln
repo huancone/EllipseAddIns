@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseLabourCostingExcelAddIn", "EllipseLabourCostingExcelAddIn\EllipseLabourCostingExcelAddIn.csproj", "{33C9D8CA-9FC4-4640-8A9D-344C98C6FC70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseCommonsClassLibrary", "..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj", "{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseWorkOrdersClassLibrary", "..\EllipseCommonsClassLibraries\EllipseWorkOrdersClassLibrary\EllipseWorkOrdersClassLibrary.csproj", "{B08F098E-E4DE-4431-8CF1-0E3156B96A00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseStdTextClassLibrary", "..\EllipseCommonsClassLibraries\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj", "{55F2204E-933A-4B98-87A4-5BA928275192}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33C9D8CA-9FC4-4640-8A9D-344C98C6FC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C9D8CA-9FC4-4640-8A9D-344C98C6FC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C9D8CA-9FC4-4640-8A9D-344C98C6FC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C9D8CA-9FC4-4640-8A9D-344C98C6FC70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F2204E-933A-4B98-87A4-5BA928275192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F2204E-933A-4B98-87A4-5BA928275192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F2204E-933A-4B98-87A4-5BA928275192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F2204E-933A-4B98-87A4-5BA928275192}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

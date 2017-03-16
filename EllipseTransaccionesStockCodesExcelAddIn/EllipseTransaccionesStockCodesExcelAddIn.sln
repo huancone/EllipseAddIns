@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseTransaccionesStockCodesExcelAddIn", "EllipseTransaccionesStockCodesExcelAddIn.csproj", "{9714FF8E-DA93-4403-B511-4539DAA271E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseCommonsClassLibrary", "..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj", "{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseRequisitionClassLibrary", "..\EllipseCommonsClassLibraries\EllipseRequisitionClassLibrary\EllipseRequisitionClassLibrary.csproj", "{8CFFF4E0-96C9-4AEF-A5DC-8C27057810E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9714FF8E-DA93-4403-B511-4539DAA271E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9714FF8E-DA93-4403-B511-4539DAA271E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9714FF8E-DA93-4403-B511-4539DAA271E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9714FF8E-DA93-4403-B511-4539DAA271E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CFFF4E0-96C9-4AEF-A5DC-8C27057810E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CFFF4E0-96C9-4AEF-A5DC-8C27057810E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CFFF4E0-96C9-4AEF-A5DC-8C27057810E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CFFF4E0-96C9-4AEF-A5DC-8C27057810E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

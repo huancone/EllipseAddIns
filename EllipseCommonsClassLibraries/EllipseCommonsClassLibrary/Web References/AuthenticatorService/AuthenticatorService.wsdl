@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:tns="http://connectivity.service.ews.mincom.com" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" targetNamespace="http://connectivity.service.ews.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="tns:RunAs" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="authenticate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="tns:OperationContext" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="authenticateResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="flush">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="tns:OperationContext" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="flushResponse">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="getDistricts">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="tns:OperationContext" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfNameValuePair">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="NameValuePair" nillable="true" type="tns:NameValuePair" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="NameValuePair">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="getDistrictsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="districts" nillable="true" type="tns:ArrayOfNameValuePair" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPositions">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="tns:OperationContext" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPositionsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="positions" nillable="true" type="tns:ArrayOfNameValuePair" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getPositionsResponse">
+    <wsdl:part name="parameters" element="tns:getPositionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="authenticateResponse">
+    <wsdl:part name="parameters" element="tns:authenticateResponse" />
+  </wsdl:message>
+  <wsdl:message name="getDistrictsResponse">
+    <wsdl:part name="parameters" element="tns:getDistrictsResponse" />
+  </wsdl:message>
+  <wsdl:message name="authenticateRequest">
+    <wsdl:part name="parameters" element="tns:authenticate" />
+  </wsdl:message>
+  <wsdl:message name="flushResponse">
+    <wsdl:part name="parameters" element="tns:flushResponse" />
+  </wsdl:message>
+  <wsdl:message name="flushRequest">
+    <wsdl:part name="parameters" element="tns:flush" />
+  </wsdl:message>
+  <wsdl:message name="getDistrictsRequest">
+    <wsdl:part name="parameters" element="tns:getDistricts" />
+  </wsdl:message>
+  <wsdl:message name="getPositionsRequest">
+    <wsdl:part name="parameters" element="tns:getPositions" />
+  </wsdl:message>
+  <wsdl:portType name="Authenticator">
+    <wsdl:operation name="authenticate">
+      <wsdl:input name="authenticateRequest" message="tns:authenticateRequest" />
+      <wsdl:output name="authenticateResponse" message="tns:authenticateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="flush">
+      <wsdl:input name="flushRequest" message="tns:flushRequest" />
+      <wsdl:output name="flushResponse" message="tns:flushResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getDistricts">
+      <wsdl:input name="getDistrictsRequest" message="tns:getDistrictsRequest" />
+      <wsdl:output name="getDistrictsResponse" message="tns:getDistrictsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getPositions">
+      <wsdl:input name="getPositionsRequest" message="tns:getPositionsRequest" />
+      <wsdl:output name="getPositionsResponse" message="tns:getPositionsResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AuthenticatorServiceHttpBinding" type="tns:Authenticator">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="authenticate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="authenticateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="authenticateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="flush">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="flushRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="flushResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDistricts">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getDistrictsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getDistrictsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPositions">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getPositionsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getPositionsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AuthenticatorService">
+    <wsdl:port name="AuthenticatorServiceHttpPort" binding="tns:AuthenticatorServiceHttpBinding">
+      <wsdlsoap:address location="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/AuthenticatorService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

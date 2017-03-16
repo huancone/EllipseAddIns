@@ -1,0 +1,2667 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://ellipse.enterpriseservice.mincom.com" xmlns:tns="http://maintschedtsk.ellipse.enterpriseservice.mincom.com" xmlns:ns5="http://dto.dependant.ellipse.enterpriseservice.mincom.com" xmlns:ns3="http://attribute.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:ns4="http://exception.enterpriseservice.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://maintschedtsk.ellipse.enterpriseservice.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://maintschedtsk.ellipse.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com" />
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://exception.enterpriseservice.mincom.com" />
+      <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceDeleteRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceDeleteRequestDTO" nillable="true" type="tns:MaintSchedTskServiceDeleteRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="equipmentRef">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentGrpId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="compModCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="maintenanceSchTask">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="compCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaintSchedTskServiceDeleteRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaintSchedTskServiceDeleteRequiredAttributesDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceDeleteRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleDelete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaintSchedTskServiceDeleteRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceDeleteReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaintSchedTskServiceDeleteReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceDeleteReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceDeleteReplyDTO" nillable="true" type="tns:MaintSchedTskServiceDeleteReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceDeleteReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleDeleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceDeleteReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EnterpriseServiceOperationException" type="ns4:EnterpriseServiceOperationException" />
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceCreateRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceCreateRequestDTO" nillable="true" type="tns:MaintSchedTskServiceCreateRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="lastSchedStat1">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLSeqNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastSchedStat2">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="occurenceType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stdJobNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="maintenanceType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assignPerson">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLCompCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SDType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="schedDescription2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="45" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="schedDescription1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="45" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SDEquipmentNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="statType1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="schedFreq1">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="condMonPos">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="7" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="schedFreq2">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="statType2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="dayOfMonth">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLEquipmentGrpId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="recallTime">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workGroup">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="7" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="jobPriority">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="startMonth">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SDNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="forecastFlg">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastPerfStat1">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastPerfStat2">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WPUpdateInd">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="stdJobMST">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="condMonPosType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="conAstSegFr">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLCompModCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="completeInstr">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="dayOfWeek">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="autoRequisitionInd">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="safetyInstr">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkedInd">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="MSHistFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="districtCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="schedInd">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="startYear">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="jobDescCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="statutoryFlg">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="complTextCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="conAstSegTo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaintSchedTskServiceCreateRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="MSHistFlag" type="tns:MSHistFlag" />
+              <xsd:element minOccurs="0" name="SDEquipmentNo" type="tns:SDEquipmentNo" />
+              <xsd:element minOccurs="0" name="SDNumber" type="tns:SDNumber" />
+              <xsd:element minOccurs="0" name="SDType" type="tns:SDType" />
+              <xsd:element minOccurs="0" name="WPUpdateInd" type="tns:WPUpdateInd" />
+              <xsd:element minOccurs="0" name="assignPerson" type="tns:assignPerson" />
+              <xsd:element minOccurs="0" name="autoRequisitionInd" type="tns:autoRequisitionInd" />
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="complTextCode" type="tns:complTextCode" />
+              <xsd:element minOccurs="0" name="completeInstr" type="tns:completeInstr" />
+              <xsd:element minOccurs="0" name="conAstSegFr" type="tns:conAstSegFr" />
+              <xsd:element minOccurs="0" name="conAstSegTo" type="tns:conAstSegTo" />
+              <xsd:element minOccurs="0" name="condMonPos" type="tns:condMonPos" />
+              <xsd:element minOccurs="0" name="condMonPosType" type="tns:condMonPosType" />
+              <xsd:element minOccurs="0" name="dayOfMonth" type="tns:dayOfMonth" />
+              <xsd:element minOccurs="0" name="dayOfWeek" type="tns:dayOfWeek" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="forecastFlg" type="tns:forecastFlg" />
+              <xsd:element minOccurs="0" name="jobDescCode" type="tns:jobDescCode" />
+              <xsd:element minOccurs="0" name="jobPriority" type="tns:jobPriority" />
+              <xsd:element minOccurs="0" name="lastPerfDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastPerfStat1" type="tns:lastPerfStat1" />
+              <xsd:element minOccurs="0" name="lastPerfStat2" type="tns:lastPerfStat2" />
+              <xsd:element minOccurs="0" name="lastSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastSchedStat1" type="tns:lastSchedStat1" />
+              <xsd:element minOccurs="0" name="lastSchedStat2" type="tns:lastSchedStat2" />
+              <xsd:element minOccurs="0" name="linkedInd" type="tns:linkedInd" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="maintenanceType" type="tns:maintenanceType" />
+              <xsd:element minOccurs="0" name="occurenceType" type="tns:occurenceType" />
+              <xsd:element minOccurs="0" name="recallTime" type="tns:recallTime" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaintSchedTskServiceCreateRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="safetyInstr" type="tns:safetyInstr" />
+              <xsd:element minOccurs="0" name="schedDescription1" type="tns:schedDescription1" />
+              <xsd:element minOccurs="0" name="schedDescription2" type="tns:schedDescription2" />
+              <xsd:element minOccurs="0" name="schedFreq1" type="tns:schedFreq1" />
+              <xsd:element minOccurs="0" name="schedFreq2" type="tns:schedFreq2" />
+              <xsd:element minOccurs="0" name="schedInd" type="tns:schedInd" />
+              <xsd:element minOccurs="0" name="startMonth" type="tns:startMonth" />
+              <xsd:element minOccurs="0" name="startYear" type="tns:startYear" />
+              <xsd:element minOccurs="0" name="statType1" type="tns:statType1" />
+              <xsd:element minOccurs="0" name="statType2" type="tns:statType2" />
+              <xsd:element minOccurs="0" name="statutoryFlg" type="tns:statutoryFlg" />
+              <xsd:element minOccurs="0" name="stdJobMST" type="tns:stdJobMST" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="taskResources" type="ns5:ArrayOfTaskResourcesDTO" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceCreateRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAssignPerson" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAssignPersonDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAutoRequisitionInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComplTextCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComplTextCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompleteInstr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompleteInstrDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnConAstSegFr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnConAstSegTo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonPos" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonPosType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDayOfMonth" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDayOfWeek" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictSw" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNoDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRefDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnExcludeInactiveTasks" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnForecastFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnInstruct" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnInstructExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobDescCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobDescCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobPriority" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobPriorityDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfStat1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfStat2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedStat1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedStat2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLinkedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMSHistFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceSchTask" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedMeterVal" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedVal" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStat" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStatDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOccurenceType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRecallTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnResourceClasses" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnResourceEstimatedHrs" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnResourceTypes" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDEquipmentNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSafetyInstr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSafetyInstrDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedFreq1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedFreq2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedIndDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecSchedFreq" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecStatType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecStatTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType1Description" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType2Description" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatutoryFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobMST" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTaskResActualCount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTaskResRestart" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTaskResources" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTasksActualCount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkGroup" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkGroupDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderDescription" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleCreate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaintSchedTskServiceCreateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceCreateReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaintSchedTskServiceCreateReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceCreateReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceCreateReplyDTO" nillable="true" type="tns:MaintSchedTskServiceCreateReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="districtCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="statType2Description">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="nextStatDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="nextSchedInd">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="completeInstrDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="instruct">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="26" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceEstimatedHrs">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="11" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="taskResRestart">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="29" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="jobDescCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workGroupDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SDEquipmentNoDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="jobPriorityDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="condMonTypeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="districtSw">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="secStatType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="nextSchedMeterVal">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="schedIndDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="secStatTypeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLCompCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentRefDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="excludeInactiveTasks">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentNoDescription2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="secSchedFreq">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentGrpIdDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLEquipmentGrpIdDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="instructExists">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="stdJobNoDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="complTextCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="statType1Description">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="maintenanceTypeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="compModCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SDTypeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceTypes">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="tasksActualCount">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="nextSchedVal">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="compCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceClasses">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentNoDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="nextStat">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLCompModCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="taskResActualCount">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="safetyInstrDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assignPersonDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaintSchedTskServiceCreateReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompCodeDescription" type="tns:APLCompCodeDescription" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLCompModCodeDescription" type="tns:APLCompModCodeDescription" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpIdDescription" type="tns:APLEquipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="MSHistFlag" type="tns:MSHistFlag" />
+              <xsd:element minOccurs="0" name="SDEquipmentNo" type="tns:SDEquipmentNo" />
+              <xsd:element minOccurs="0" name="SDEquipmentNoDescription" type="tns:SDEquipmentNoDescription" />
+              <xsd:element minOccurs="0" name="SDNumber" type="tns:SDNumber" />
+              <xsd:element minOccurs="0" name="SDType" type="tns:SDType" />
+              <xsd:element minOccurs="0" name="SDTypeDescription" type="tns:SDTypeDescription" />
+              <xsd:element minOccurs="0" name="assignPerson" type="tns:assignPerson" />
+              <xsd:element minOccurs="0" name="assignPersonDescription" type="tns:assignPersonDescription" />
+              <xsd:element minOccurs="0" name="autoRequisitionInd" type="tns:autoRequisitionInd" />
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compCodeDescription" type="tns:compCodeDescription" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="compModCodeDescription" type="tns:compModCodeDescription" />
+              <xsd:element minOccurs="0" name="complTextCode" type="tns:complTextCode" />
+              <xsd:element minOccurs="0" name="complTextCodeDescription" type="tns:complTextCodeDescription" />
+              <xsd:element minOccurs="0" name="completeInstr" type="tns:completeInstr" />
+              <xsd:element minOccurs="0" name="completeInstrDescription" type="tns:completeInstrDescription" />
+              <xsd:element minOccurs="0" name="conAstSegFr" type="tns:conAstSegFr" />
+              <xsd:element minOccurs="0" name="conAstSegTo" type="tns:conAstSegTo" />
+              <xsd:element minOccurs="0" name="condMonPos" type="tns:condMonPos" />
+              <xsd:element minOccurs="0" name="condMonPosType" type="tns:condMonPosType" />
+              <xsd:element minOccurs="0" name="condMonTypeDescription" type="tns:condMonTypeDescription" />
+              <xsd:element minOccurs="0" name="dayOfMonth" type="tns:dayOfMonth" />
+              <xsd:element minOccurs="0" name="dayOfWeek" type="tns:dayOfWeek" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="districtCodeDescription" type="tns:districtCodeDescription" />
+              <xsd:element minOccurs="0" name="districtSw" type="tns:districtSw" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentGrpIdDescription" type="tns:equipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentNoDescription" type="tns:equipmentNoDescription" />
+              <xsd:element minOccurs="0" name="equipmentNoDescription2" type="tns:equipmentNoDescription2" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="equipmentRefDescription" type="tns:equipmentRefDescription" />
+              <xsd:element minOccurs="0" name="excludeInactiveTasks" type="tns:excludeInactiveTasks" />
+              <xsd:element minOccurs="0" name="forecastFlg" type="tns:forecastFlg" />
+              <xsd:element minOccurs="0" name="instruct" type="tns:instruct" />
+              <xsd:element minOccurs="0" name="instructExists" type="tns:instructExists" />
+              <xsd:element minOccurs="0" name="jobDescCode" type="tns:jobDescCode" />
+              <xsd:element minOccurs="0" name="jobDescCodeDescription" type="tns:jobDescCodeDescription" />
+              <xsd:element minOccurs="0" name="jobPriority" type="tns:jobPriority" />
+              <xsd:element minOccurs="0" name="jobPriorityDescription" type="tns:jobPriorityDescription" />
+              <xsd:element minOccurs="0" name="lastPerfDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastPerfStat1" type="tns:lastPerfStat1" />
+              <xsd:element minOccurs="0" name="lastPerfStat2" type="tns:lastPerfStat2" />
+              <xsd:element minOccurs="0" name="lastSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastSchedStat1" type="tns:lastSchedStat1" />
+              <xsd:element minOccurs="0" name="lastSchedStat2" type="tns:lastSchedStat2" />
+              <xsd:element minOccurs="0" name="linkedInd" type="tns:linkedInd" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="maintenanceType" type="tns:maintenanceType" />
+              <xsd:element minOccurs="0" name="maintenanceTypeDescription" type="tns:maintenanceTypeDescription" />
+              <xsd:element minOccurs="0" name="nextSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="nextSchedInd" type="tns:nextSchedInd" />
+              <xsd:element minOccurs="0" name="nextSchedMeterVal" type="tns:nextSchedMeterVal" />
+              <xsd:element minOccurs="0" name="nextSchedVal" type="tns:nextSchedVal" />
+              <xsd:element minOccurs="0" name="nextStat" type="tns:nextStat" />
+              <xsd:element minOccurs="0" name="nextStatDescription" type="tns:nextStatDescription" />
+              <xsd:element minOccurs="0" name="occurenceType" type="tns:occurenceType" />
+              <xsd:element minOccurs="0" name="recallTime" type="tns:recallTime" />
+              <xsd:element minOccurs="0" name="resourceClasses" type="tns:resourceClasses" />
+              <xsd:element minOccurs="0" name="resourceEstimatedHrs" type="tns:resourceEstimatedHrs" />
+              <xsd:element minOccurs="0" name="resourceTypes" type="tns:resourceTypes" />
+              <xsd:element minOccurs="0" name="safetyInstr" type="tns:safetyInstr" />
+              <xsd:element minOccurs="0" name="safetyInstrDescription" type="tns:safetyInstrDescription" />
+              <xsd:element minOccurs="0" name="schedDescription1" type="tns:schedDescription1" />
+              <xsd:element minOccurs="0" name="schedDescription2" type="tns:schedDescription2" />
+              <xsd:element minOccurs="0" name="schedFreq1" type="tns:schedFreq1" />
+              <xsd:element minOccurs="0" name="schedFreq2" type="tns:schedFreq2" />
+              <xsd:element minOccurs="0" name="schedInd" type="tns:schedInd" />
+              <xsd:element minOccurs="0" name="schedIndDescription" type="tns:schedIndDescription" />
+              <xsd:element minOccurs="0" name="secSchedFreq" type="tns:secSchedFreq" />
+              <xsd:element minOccurs="0" name="secStatType" type="tns:secStatType" />
+              <xsd:element minOccurs="0" name="secStatTypeDescription" type="tns:secStatTypeDescription" />
+              <xsd:element minOccurs="0" name="statType1" type="tns:statType1" />
+              <xsd:element minOccurs="0" name="statType1Description" type="tns:statType1Description" />
+              <xsd:element minOccurs="0" name="statType2" type="tns:statType2" />
+              <xsd:element minOccurs="0" name="statType2Description" type="tns:statType2Description" />
+              <xsd:element minOccurs="0" name="statutoryFlg" type="tns:statutoryFlg" />
+              <xsd:element minOccurs="0" name="stdJobMST" type="tns:stdJobMST" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stdJobNoDescription" type="tns:stdJobNoDescription" />
+              <xsd:element minOccurs="0" name="taskResActualCount" type="tns:taskResActualCount" />
+              <xsd:element minOccurs="0" name="taskResRestart" type="tns:taskResRestart" />
+              <xsd:element minOccurs="0" name="taskResources" type="ns5:ArrayOfTaskResourcesDTO" />
+              <xsd:element minOccurs="0" name="tasksActualCount" type="tns:tasksActualCount" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
+              <xsd:element minOccurs="0" name="workGroupDescription" type="tns:workGroupDescription" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderDescription" type="tns:workOrderDescription" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleCreateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceCreateReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceRetrieveTaskResourcesRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaintSchedTskServiceRetrieveTaskResourcesRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="taskResRestart" type="tns:taskResRestart" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceRetrieveTaskResourcesRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnTaskResActualCount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTaskResRestart" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTaskResources" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveTaskResources">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaintSchedTskServiceRetrieveTaskResourcesRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceRetrieveTaskResourcesReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="taskResActualCount" type="tns:taskResActualCount" />
+              <xsd:element minOccurs="0" name="taskResRestart" type="tns:taskResRestart" />
+              <xsd:element minOccurs="0" name="taskResources" type="ns5:ArrayOfTaskResourcesDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveTaskResourcesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceRetrieveTaskResourcesReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceReadRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceReadRequestDTO" nillable="true" type="tns:MaintSchedTskServiceReadRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="saveAsInd">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:complexType name="MaintSchedTskServiceReadRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaintSchedTskServiceReadRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="saveAsInd" type="tns:saveAsInd" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceReadRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAssignPerson" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAssignPersonDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAutoRequisitionInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComplTextCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComplTextCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompleteInstr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompleteInstrDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnConAstSegFr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnConAstSegTo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonPos" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonPosType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDayOfMonth" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDayOfWeek" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNoDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRefDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnForecastFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnInstruct" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnInstructExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobDescCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobDescCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobPriority" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobPriorityDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfStat1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfStat2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedStat1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedStat2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLinkedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMSHistFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceSchTask" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedMeterVal" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedVal" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStat" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStatDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOccurenceType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRecallTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRequirementsExist" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnResourceClasses" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnResourceEstimatedHrs" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnResourceTypes" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDEquipmentNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSafetyInstr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSafetyInstrDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedFreq1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedFreq2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedIndDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecSchedFreq" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecStatType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecStatTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType1Description" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType2Description" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatutoryFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobMST" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTasksActualCount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkGroup" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkGroupDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderDescription" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleReadWithPartialResults">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaintSchedTskServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceReadReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaintSchedTskServiceReadReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceReadReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceReadReplyDTO" nillable="true" type="tns:MaintSchedTskServiceReadReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="requirementsExist">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:complexType name="MaintSchedTskServiceReadReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompCodeDescription" type="tns:APLCompCodeDescription" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLCompModCodeDescription" type="tns:APLCompModCodeDescription" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpIdDescription" type="tns:APLEquipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="MSHistFlag" type="tns:MSHistFlag" />
+              <xsd:element minOccurs="0" name="SDEquipmentNo" type="tns:SDEquipmentNo" />
+              <xsd:element minOccurs="0" name="SDEquipmentNoDescription" type="tns:SDEquipmentNoDescription" />
+              <xsd:element minOccurs="0" name="SDNumber" type="tns:SDNumber" />
+              <xsd:element minOccurs="0" name="SDType" type="tns:SDType" />
+              <xsd:element minOccurs="0" name="SDTypeDescription" type="tns:SDTypeDescription" />
+              <xsd:element minOccurs="0" name="assignPerson" type="tns:assignPerson" />
+              <xsd:element minOccurs="0" name="assignPersonDescription" type="tns:assignPersonDescription" />
+              <xsd:element minOccurs="0" name="autoRequisitionInd" type="tns:autoRequisitionInd" />
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compCodeDescription" type="tns:compCodeDescription" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="compModCodeDescription" type="tns:compModCodeDescription" />
+              <xsd:element minOccurs="0" name="complTextCode" type="tns:complTextCode" />
+              <xsd:element minOccurs="0" name="complTextCodeDescription" type="tns:complTextCodeDescription" />
+              <xsd:element minOccurs="0" name="completeInstr" type="tns:completeInstr" />
+              <xsd:element minOccurs="0" name="completeInstrDescription" type="tns:completeInstrDescription" />
+              <xsd:element minOccurs="0" name="conAstSegFr" type="tns:conAstSegFr" />
+              <xsd:element minOccurs="0" name="conAstSegTo" type="tns:conAstSegTo" />
+              <xsd:element minOccurs="0" name="condMonPos" type="tns:condMonPos" />
+              <xsd:element minOccurs="0" name="condMonPosType" type="tns:condMonPosType" />
+              <xsd:element minOccurs="0" name="condMonTypeDescription" type="tns:condMonTypeDescription" />
+              <xsd:element minOccurs="0" name="dayOfMonth" type="tns:dayOfMonth" />
+              <xsd:element minOccurs="0" name="dayOfWeek" type="tns:dayOfWeek" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="districtCodeDescription" type="tns:districtCodeDescription" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentGrpIdDescription" type="tns:equipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentNoDescription" type="tns:equipmentNoDescription" />
+              <xsd:element minOccurs="0" name="equipmentNoDescription2" type="tns:equipmentNoDescription2" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="equipmentRefDescription" type="tns:equipmentRefDescription" />
+              <xsd:element minOccurs="0" name="forecastFlg" type="tns:forecastFlg" />
+              <xsd:element minOccurs="0" name="instruct" type="tns:instruct" />
+              <xsd:element minOccurs="0" name="instructExists" type="tns:instructExists" />
+              <xsd:element minOccurs="0" name="jobDescCode" type="tns:jobDescCode" />
+              <xsd:element minOccurs="0" name="jobDescCodeDescription" type="tns:jobDescCodeDescription" />
+              <xsd:element minOccurs="0" name="jobPriority" type="tns:jobPriority" />
+              <xsd:element minOccurs="0" name="jobPriorityDescription" type="tns:jobPriorityDescription" />
+              <xsd:element minOccurs="0" name="lastPerfDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastPerfStat1" type="tns:lastPerfStat1" />
+              <xsd:element minOccurs="0" name="lastPerfStat2" type="tns:lastPerfStat2" />
+              <xsd:element minOccurs="0" name="lastSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastSchedStat1" type="tns:lastSchedStat1" />
+              <xsd:element minOccurs="0" name="lastSchedStat2" type="tns:lastSchedStat2" />
+              <xsd:element minOccurs="0" name="linkedInd" type="tns:linkedInd" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="maintenanceType" type="tns:maintenanceType" />
+              <xsd:element minOccurs="0" name="maintenanceTypeDescription" type="tns:maintenanceTypeDescription" />
+              <xsd:element minOccurs="0" name="nextSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="nextSchedInd" type="tns:nextSchedInd" />
+              <xsd:element minOccurs="0" name="nextSchedMeterVal" type="tns:nextSchedMeterVal" />
+              <xsd:element minOccurs="0" name="nextSchedVal" type="tns:nextSchedVal" />
+              <xsd:element minOccurs="0" name="nextStat" type="tns:nextStat" />
+              <xsd:element minOccurs="0" name="nextStatDescription" type="tns:nextStatDescription" />
+              <xsd:element minOccurs="0" name="occurenceType" type="tns:occurenceType" />
+              <xsd:element minOccurs="0" name="recallTime" type="tns:recallTime" />
+              <xsd:element minOccurs="0" name="requirementsExist" type="tns:requirementsExist" />
+              <xsd:element minOccurs="0" name="resourceClasses" type="tns:resourceClasses" />
+              <xsd:element minOccurs="0" name="resourceEstimatedHrs" type="tns:resourceEstimatedHrs" />
+              <xsd:element minOccurs="0" name="resourceTypes" type="tns:resourceTypes" />
+              <xsd:element minOccurs="0" name="safetyInstr" type="tns:safetyInstr" />
+              <xsd:element minOccurs="0" name="safetyInstrDescription" type="tns:safetyInstrDescription" />
+              <xsd:element minOccurs="0" name="schedDescription1" type="tns:schedDescription1" />
+              <xsd:element minOccurs="0" name="schedDescription2" type="tns:schedDescription2" />
+              <xsd:element minOccurs="0" name="schedFreq1" type="tns:schedFreq1" />
+              <xsd:element minOccurs="0" name="schedFreq2" type="tns:schedFreq2" />
+              <xsd:element minOccurs="0" name="schedInd" type="tns:schedInd" />
+              <xsd:element minOccurs="0" name="schedIndDescription" type="tns:schedIndDescription" />
+              <xsd:element minOccurs="0" name="secSchedFreq" type="tns:secSchedFreq" />
+              <xsd:element minOccurs="0" name="secStatType" type="tns:secStatType" />
+              <xsd:element minOccurs="0" name="secStatTypeDescription" type="tns:secStatTypeDescription" />
+              <xsd:element minOccurs="0" name="statType1" type="tns:statType1" />
+              <xsd:element minOccurs="0" name="statType1Description" type="tns:statType1Description" />
+              <xsd:element minOccurs="0" name="statType2" type="tns:statType2" />
+              <xsd:element minOccurs="0" name="statType2Description" type="tns:statType2Description" />
+              <xsd:element minOccurs="0" name="statutoryFlg" type="tns:statutoryFlg" />
+              <xsd:element minOccurs="0" name="stdJobMST" type="tns:stdJobMST" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stdJobNoDescription" type="tns:stdJobNoDescription" />
+              <xsd:element minOccurs="0" name="tasksActualCount" type="tns:tasksActualCount" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
+              <xsd:element minOccurs="0" name="workGroupDescription" type="tns:workGroupDescription" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderDescription" type="tns:workOrderDescription" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleReadWithPartialResultsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceReadReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceShowRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceShowRequestDTO" nillable="true" type="tns:MaintSchedTskServiceShowRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceShowRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="SDEquipmentNo" type="tns:SDEquipmentNo" />
+              <xsd:element minOccurs="0" name="SDType" type="tns:SDType" />
+              <xsd:element minOccurs="0" name="assignPerson" type="tns:assignPerson" />
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="complTextCode" type="tns:complTextCode" />
+              <xsd:element minOccurs="0" name="completeInstr" type="tns:completeInstr" />
+              <xsd:element minOccurs="0" name="condMonPosType" type="tns:condMonPosType" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="jobDescCode" type="tns:jobDescCode" />
+              <xsd:element minOccurs="0" name="jobPriority" type="tns:jobPriority" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="maintenanceType" type="tns:maintenanceType" />
+              <xsd:element minOccurs="0" name="nextStat" type="tns:nextStat" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaintSchedTskServiceShowRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="safetyInstr" type="tns:safetyInstr" />
+              <xsd:element minOccurs="0" name="schedInd" type="tns:schedInd" />
+              <xsd:element minOccurs="0" name="statType1" type="tns:statType1" />
+              <xsd:element minOccurs="0" name="statType2" type="tns:statType2" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceShowRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAssignPerson" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAssignPersonDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComplTextCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComplTextCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompleteInstr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompleteInstrDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonPosType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNoDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRefDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobDescCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobDescCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobPriority" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobPriorityDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceSchTask" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStat" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStatDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDEquipmentNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSafetyInstr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSafetyInstrDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedIndDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType1Description" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType2Description" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkGroup" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkGroupDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderDescription" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleShow">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaintSchedTskServiceShowRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceShowReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaintSchedTskServiceShowReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceShowReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceShowReplyDTO" nillable="true" type="tns:MaintSchedTskServiceShowReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceShowReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompCodeDescription" type="tns:APLCompCodeDescription" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLCompModCodeDescription" type="tns:APLCompModCodeDescription" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpIdDescription" type="tns:APLEquipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="SDEquipmentNo" type="tns:SDEquipmentNo" />
+              <xsd:element minOccurs="0" name="SDEquipmentNoDescription" type="tns:SDEquipmentNoDescription" />
+              <xsd:element minOccurs="0" name="SDType" type="tns:SDType" />
+              <xsd:element minOccurs="0" name="SDTypeDescription" type="tns:SDTypeDescription" />
+              <xsd:element minOccurs="0" name="assignPerson" type="tns:assignPerson" />
+              <xsd:element minOccurs="0" name="assignPersonDescription" type="tns:assignPersonDescription" />
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compCodeDescription" type="tns:compCodeDescription" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="compModCodeDescription" type="tns:compModCodeDescription" />
+              <xsd:element minOccurs="0" name="complTextCode" type="tns:complTextCode" />
+              <xsd:element minOccurs="0" name="complTextCodeDescription" type="tns:complTextCodeDescription" />
+              <xsd:element minOccurs="0" name="completeInstr" type="tns:completeInstr" />
+              <xsd:element minOccurs="0" name="completeInstrDescription" type="tns:completeInstrDescription" />
+              <xsd:element minOccurs="0" name="condMonPosType" type="tns:condMonPosType" />
+              <xsd:element minOccurs="0" name="condMonTypeDescription" type="tns:condMonTypeDescription" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="districtCodeDescription" type="tns:districtCodeDescription" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentGrpIdDescription" type="tns:equipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentNoDescription" type="tns:equipmentNoDescription" />
+              <xsd:element minOccurs="0" name="equipmentNoDescription2" type="tns:equipmentNoDescription2" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="equipmentRefDescription" type="tns:equipmentRefDescription" />
+              <xsd:element minOccurs="0" name="jobDescCode" type="tns:jobDescCode" />
+              <xsd:element minOccurs="0" name="jobDescCodeDescription" type="tns:jobDescCodeDescription" />
+              <xsd:element minOccurs="0" name="jobPriority" type="tns:jobPriority" />
+              <xsd:element minOccurs="0" name="jobPriorityDescription" type="tns:jobPriorityDescription" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="maintenanceType" type="tns:maintenanceType" />
+              <xsd:element minOccurs="0" name="maintenanceTypeDescription" type="tns:maintenanceTypeDescription" />
+              <xsd:element minOccurs="0" name="nextStat" type="tns:nextStat" />
+              <xsd:element minOccurs="0" name="nextStatDescription" type="tns:nextStatDescription" />
+              <xsd:element minOccurs="0" name="safetyInstr" type="tns:safetyInstr" />
+              <xsd:element minOccurs="0" name="safetyInstrDescription" type="tns:safetyInstrDescription" />
+              <xsd:element minOccurs="0" name="schedInd" type="tns:schedInd" />
+              <xsd:element minOccurs="0" name="schedIndDescription" type="tns:schedIndDescription" />
+              <xsd:element minOccurs="0" name="statType1" type="tns:statType1" />
+              <xsd:element minOccurs="0" name="statType1Description" type="tns:statType1Description" />
+              <xsd:element minOccurs="0" name="statType2" type="tns:statType2" />
+              <xsd:element minOccurs="0" name="statType2Description" type="tns:statType2Description" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stdJobNoDescription" type="tns:stdJobNoDescription" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
+              <xsd:element minOccurs="0" name="workGroupDescription" type="tns:workGroupDescription" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderDescription" type="tns:workOrderDescription" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleShowResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceShowReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceModifyRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="MSHistFlag" type="tns:MSHistFlag" />
+              <xsd:element minOccurs="0" name="SDEquipmentNo" type="tns:SDEquipmentNo" />
+              <xsd:element minOccurs="0" name="SDNumber" type="tns:SDNumber" />
+              <xsd:element minOccurs="0" name="SDType" type="tns:SDType" />
+              <xsd:element minOccurs="0" name="WPUpdateInd" type="tns:WPUpdateInd" />
+              <xsd:element minOccurs="0" name="assignPerson" type="tns:assignPerson" />
+              <xsd:element minOccurs="0" name="autoRequisitionInd" type="tns:autoRequisitionInd" />
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="complTextCode" type="tns:complTextCode" />
+              <xsd:element minOccurs="0" name="completeInstr" type="tns:completeInstr" />
+              <xsd:element minOccurs="0" name="conAstSegFr" type="tns:conAstSegFr" />
+              <xsd:element minOccurs="0" name="conAstSegTo" type="tns:conAstSegTo" />
+              <xsd:element minOccurs="0" name="condMonPos" type="tns:condMonPos" />
+              <xsd:element minOccurs="0" name="condMonPosType" type="tns:condMonPosType" />
+              <xsd:element minOccurs="0" name="dayOfMonth" type="tns:dayOfMonth" />
+              <xsd:element minOccurs="0" name="dayOfWeek" type="tns:dayOfWeek" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="forecastFlg" type="tns:forecastFlg" />
+              <xsd:element minOccurs="0" name="jobDescCode" type="tns:jobDescCode" />
+              <xsd:element minOccurs="0" name="jobPriority" type="tns:jobPriority" />
+              <xsd:element minOccurs="0" name="lastPerfDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastPerfStat1" type="tns:lastPerfStat1" />
+              <xsd:element minOccurs="0" name="lastPerfStat2" type="tns:lastPerfStat2" />
+              <xsd:element minOccurs="0" name="lastSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastSchedStat1" type="tns:lastSchedStat1" />
+              <xsd:element minOccurs="0" name="lastSchedStat2" type="tns:lastSchedStat2" />
+              <xsd:element minOccurs="0" name="linkedInd" type="tns:linkedInd" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="maintenanceType" type="tns:maintenanceType" />
+              <xsd:element minOccurs="0" name="occurenceType" type="tns:occurenceType" />
+              <xsd:element minOccurs="0" name="recallTime" type="tns:recallTime" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaintSchedTskServiceModifyRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="safetyInstr" type="tns:safetyInstr" />
+              <xsd:element minOccurs="0" name="schedDescription1" type="tns:schedDescription1" />
+              <xsd:element minOccurs="0" name="schedDescription2" type="tns:schedDescription2" />
+              <xsd:element minOccurs="0" name="schedFreq1" type="tns:schedFreq1" />
+              <xsd:element minOccurs="0" name="schedFreq2" type="tns:schedFreq2" />
+              <xsd:element minOccurs="0" name="schedInd" type="tns:schedInd" />
+              <xsd:element minOccurs="0" name="startMonth" type="tns:startMonth" />
+              <xsd:element minOccurs="0" name="startYear" type="tns:startYear" />
+              <xsd:element minOccurs="0" name="statType1" type="tns:statType1" />
+              <xsd:element minOccurs="0" name="statType2" type="tns:statType2" />
+              <xsd:element minOccurs="0" name="statutoryFlg" type="tns:statutoryFlg" />
+              <xsd:element minOccurs="0" name="stdJobMST" type="tns:stdJobMST" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="taskResources" type="ns5:ArrayOfTaskResourcesDTO" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceModifyRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAssignPerson" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAssignPersonDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAutoRequisitionInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComplTextCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComplTextCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompleteInstr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompleteInstrDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnConAstSegFr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnConAstSegTo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonPos" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonPosType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDayOfMonth" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDayOfWeek" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictSw" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNoDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRefDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnExcludeInactiveTasks" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnForecastFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnInstruct" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnInstructExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobDescCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobDescCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobPriority" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobPriorityDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfStat1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfStat2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedStat1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedStat2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLinkedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMSHistFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceSchTask" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedMeterVal" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedVal" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStat" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStatDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOccurenceType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRecallTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRequirementsExist" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnResourceClasses" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnResourceEstimatedHrs" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnResourceTypes" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDEquipmentNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSafetyInstr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSafetyInstrDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedFreq1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedFreq2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedIndDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecSchedFreq" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecStatType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecStatTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType1Description" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType2Description" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatutoryFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobMST" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTaskResActualCount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTaskResRestart" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTaskResources" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTasksActualCount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkGroup" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkGroupDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderDescription" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="modify">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaintSchedTskServiceModifyRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceModifyReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompCodeDescription" type="tns:APLCompCodeDescription" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLCompModCodeDescription" type="tns:APLCompModCodeDescription" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpIdDescription" type="tns:APLEquipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="MSHistFlag" type="tns:MSHistFlag" />
+              <xsd:element minOccurs="0" name="SDEquipmentNo" type="tns:SDEquipmentNo" />
+              <xsd:element minOccurs="0" name="SDEquipmentNoDescription" type="tns:SDEquipmentNoDescription" />
+              <xsd:element minOccurs="0" name="SDNumber" type="tns:SDNumber" />
+              <xsd:element minOccurs="0" name="SDType" type="tns:SDType" />
+              <xsd:element minOccurs="0" name="SDTypeDescription" type="tns:SDTypeDescription" />
+              <xsd:element minOccurs="0" name="assignPerson" type="tns:assignPerson" />
+              <xsd:element minOccurs="0" name="assignPersonDescription" type="tns:assignPersonDescription" />
+              <xsd:element minOccurs="0" name="autoRequisitionInd" type="tns:autoRequisitionInd" />
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compCodeDescription" type="tns:compCodeDescription" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="compModCodeDescription" type="tns:compModCodeDescription" />
+              <xsd:element minOccurs="0" name="complTextCode" type="tns:complTextCode" />
+              <xsd:element minOccurs="0" name="complTextCodeDescription" type="tns:complTextCodeDescription" />
+              <xsd:element minOccurs="0" name="completeInstr" type="tns:completeInstr" />
+              <xsd:element minOccurs="0" name="completeInstrDescription" type="tns:completeInstrDescription" />
+              <xsd:element minOccurs="0" name="conAstSegFr" type="tns:conAstSegFr" />
+              <xsd:element minOccurs="0" name="conAstSegTo" type="tns:conAstSegTo" />
+              <xsd:element minOccurs="0" name="condMonPos" type="tns:condMonPos" />
+              <xsd:element minOccurs="0" name="condMonPosType" type="tns:condMonPosType" />
+              <xsd:element minOccurs="0" name="condMonTypeDescription" type="tns:condMonTypeDescription" />
+              <xsd:element minOccurs="0" name="dayOfMonth" type="tns:dayOfMonth" />
+              <xsd:element minOccurs="0" name="dayOfWeek" type="tns:dayOfWeek" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="districtCodeDescription" type="tns:districtCodeDescription" />
+              <xsd:element minOccurs="0" name="districtSw" type="tns:districtSw" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentGrpIdDescription" type="tns:equipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentNoDescription" type="tns:equipmentNoDescription" />
+              <xsd:element minOccurs="0" name="equipmentNoDescription2" type="tns:equipmentNoDescription2" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="equipmentRefDescription" type="tns:equipmentRefDescription" />
+              <xsd:element minOccurs="0" name="excludeInactiveTasks" type="tns:excludeInactiveTasks" />
+              <xsd:element minOccurs="0" name="forecastFlg" type="tns:forecastFlg" />
+              <xsd:element minOccurs="0" name="instruct" type="tns:instruct" />
+              <xsd:element minOccurs="0" name="instructExists" type="tns:instructExists" />
+              <xsd:element minOccurs="0" name="jobDescCode" type="tns:jobDescCode" />
+              <xsd:element minOccurs="0" name="jobDescCodeDescription" type="tns:jobDescCodeDescription" />
+              <xsd:element minOccurs="0" name="jobPriority" type="tns:jobPriority" />
+              <xsd:element minOccurs="0" name="jobPriorityDescription" type="tns:jobPriorityDescription" />
+              <xsd:element minOccurs="0" name="lastPerfDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastPerfStat1" type="tns:lastPerfStat1" />
+              <xsd:element minOccurs="0" name="lastPerfStat2" type="tns:lastPerfStat2" />
+              <xsd:element minOccurs="0" name="lastSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastSchedStat1" type="tns:lastSchedStat1" />
+              <xsd:element minOccurs="0" name="lastSchedStat2" type="tns:lastSchedStat2" />
+              <xsd:element minOccurs="0" name="linkedInd" type="tns:linkedInd" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="maintenanceType" type="tns:maintenanceType" />
+              <xsd:element minOccurs="0" name="maintenanceTypeDescription" type="tns:maintenanceTypeDescription" />
+              <xsd:element minOccurs="0" name="nextSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="nextSchedInd" type="tns:nextSchedInd" />
+              <xsd:element minOccurs="0" name="nextSchedMeterVal" type="tns:nextSchedMeterVal" />
+              <xsd:element minOccurs="0" name="nextSchedVal" type="tns:nextSchedVal" />
+              <xsd:element minOccurs="0" name="nextStat" type="tns:nextStat" />
+              <xsd:element minOccurs="0" name="nextStatDescription" type="tns:nextStatDescription" />
+              <xsd:element minOccurs="0" name="occurenceType" type="tns:occurenceType" />
+              <xsd:element minOccurs="0" name="recallTime" type="tns:recallTime" />
+              <xsd:element minOccurs="0" name="requirementsExist" type="tns:requirementsExist" />
+              <xsd:element minOccurs="0" name="resourceClasses" type="tns:resourceClasses" />
+              <xsd:element minOccurs="0" name="resourceEstimatedHrs" type="tns:resourceEstimatedHrs" />
+              <xsd:element minOccurs="0" name="resourceTypes" type="tns:resourceTypes" />
+              <xsd:element minOccurs="0" name="safetyInstr" type="tns:safetyInstr" />
+              <xsd:element minOccurs="0" name="safetyInstrDescription" type="tns:safetyInstrDescription" />
+              <xsd:element minOccurs="0" name="schedDescription1" type="tns:schedDescription1" />
+              <xsd:element minOccurs="0" name="schedDescription2" type="tns:schedDescription2" />
+              <xsd:element minOccurs="0" name="schedFreq1" type="tns:schedFreq1" />
+              <xsd:element minOccurs="0" name="schedFreq2" type="tns:schedFreq2" />
+              <xsd:element minOccurs="0" name="schedInd" type="tns:schedInd" />
+              <xsd:element minOccurs="0" name="schedIndDescription" type="tns:schedIndDescription" />
+              <xsd:element minOccurs="0" name="secSchedFreq" type="tns:secSchedFreq" />
+              <xsd:element minOccurs="0" name="secStatType" type="tns:secStatType" />
+              <xsd:element minOccurs="0" name="secStatTypeDescription" type="tns:secStatTypeDescription" />
+              <xsd:element minOccurs="0" name="statType1" type="tns:statType1" />
+              <xsd:element minOccurs="0" name="statType1Description" type="tns:statType1Description" />
+              <xsd:element minOccurs="0" name="statType2" type="tns:statType2" />
+              <xsd:element minOccurs="0" name="statType2Description" type="tns:statType2Description" />
+              <xsd:element minOccurs="0" name="statutoryFlg" type="tns:statutoryFlg" />
+              <xsd:element minOccurs="0" name="stdJobMST" type="tns:stdJobMST" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stdJobNoDescription" type="tns:stdJobNoDescription" />
+              <xsd:element minOccurs="0" name="taskResActualCount" type="tns:taskResActualCount" />
+              <xsd:element minOccurs="0" name="taskResRestart" type="tns:taskResRestart" />
+              <xsd:element minOccurs="0" name="taskResources" type="ns5:ArrayOfTaskResourcesDTO" />
+              <xsd:element minOccurs="0" name="tasksActualCount" type="tns:tasksActualCount" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
+              <xsd:element minOccurs="0" name="workGroupDescription" type="tns:workGroupDescription" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderDescription" type="tns:workOrderDescription" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="modifyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceModifyReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="show">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaintSchedTskServiceShowRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="showResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceShowReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="create">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaintSchedTskServiceCreateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceCreateReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceModifyRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceModifyRequestDTO" nillable="true" type="tns:MaintSchedTskServiceModifyRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleModify">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaintSchedTskServiceModifyRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceModifyReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaintSchedTskServiceModifyReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceModifyReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceModifyReplyDTO" nillable="true" type="tns:MaintSchedTskServiceModifyReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleModifyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceModifyReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaintSchedTskServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceReadReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceModNextSchedRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceModNextSchedRequestDTO" nillable="true" type="tns:MaintSchedTskServiceModNextSchedRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceModNextSchedRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="nextSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="nextSchedVal" type="tns:nextSchedVal" />
+              <xsd:element minOccurs="0" name="nextStat" type="tns:nextStat" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaintSchedTskServiceModNextSchedRequiredAttributesDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceModNextSchedRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceSchTask" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedMeterVal" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedVal" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStat" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleModNextSched">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaintSchedTskServiceModNextSchedRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceModNextSchedReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaintSchedTskServiceModNextSchedReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceModNextSchedReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceModNextSchedReplyDTO" nillable="true" type="tns:MaintSchedTskServiceModNextSchedReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceModNextSchedReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="nextSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="nextSchedInd" type="tns:nextSchedInd" />
+              <xsd:element minOccurs="0" name="nextSchedMeterVal" type="tns:nextSchedMeterVal" />
+              <xsd:element minOccurs="0" name="nextSchedVal" type="tns:nextSchedVal" />
+              <xsd:element minOccurs="0" name="nextStat" type="tns:nextStat" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleModNextSchedResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceModNextSchedReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="parentEquipmentRef">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="parentEquipment">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaintSchedTskServiceRetrieveRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="SDNumber" type="tns:SDNumber" />
+              <xsd:element minOccurs="0" name="SDType" type="tns:SDType" />
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="districtSw" type="tns:districtSw" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="excludeInactiveTasks" type="tns:excludeInactiveTasks" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="maintenanceType" type="tns:maintenanceType" />
+              <xsd:element minOccurs="0" name="parentEquipment" type="tns:parentEquipment" />
+              <xsd:element minOccurs="0" name="parentEquipmentRef" type="tns:parentEquipmentRef" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceRetrieveRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAssignPerson" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAssignPersonDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAutoRequisitionInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComplTextCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComplTextCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompleteInstr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompleteInstrDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnConAstSegFr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnConAstSegTo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonPos" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonPosType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondMonTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDayOfMonth" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDayOfWeek" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictSw" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNoDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRefDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnForecastFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnInstruct" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnInstructExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobDescCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobDescCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobPriority" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJobPriorityDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfStat1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastPerfStat2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedStat1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastSchedStat2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLinkedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMSHistFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceSchTask" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaintenanceTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedMeterVal" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextSchedVal" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStat" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextStatDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOccurenceType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRecallTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDEquipmentNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSDTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSafetyInstr" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSafetyInstrDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedFreq1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedFreq2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSchedIndDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecSchedFreq" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecStatType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSecStatTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType1Description" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatType2Description" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatutoryFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkGroup" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkGroupDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderDescription" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieve">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaintSchedTskServiceRetrieveRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:MaintSchedTskServiceRetrieveRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaintSchedTskServiceRetrieveReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaintSchedTskServiceRetrieveReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaintSchedTskServiceRetrieveReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaintSchedTskServiceRetrieveReplyDTO" nillable="true" type="tns:MaintSchedTskServiceRetrieveReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MaintSchedTskServiceRetrieveReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompCodeDescription" type="tns:APLCompCodeDescription" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLCompModCodeDescription" type="tns:APLCompModCodeDescription" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpIdDescription" type="tns:APLEquipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="MSHistFlag" type="tns:MSHistFlag" />
+              <xsd:element minOccurs="0" name="SDEquipmentNo" type="tns:SDEquipmentNo" />
+              <xsd:element minOccurs="0" name="SDEquipmentNoDescription" type="tns:SDEquipmentNoDescription" />
+              <xsd:element minOccurs="0" name="SDNumber" type="tns:SDNumber" />
+              <xsd:element minOccurs="0" name="SDType" type="tns:SDType" />
+              <xsd:element minOccurs="0" name="SDTypeDescription" type="tns:SDTypeDescription" />
+              <xsd:element minOccurs="0" name="assignPerson" type="tns:assignPerson" />
+              <xsd:element minOccurs="0" name="assignPersonDescription" type="tns:assignPersonDescription" />
+              <xsd:element minOccurs="0" name="autoRequisitionInd" type="tns:autoRequisitionInd" />
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compCodeDescription" type="tns:compCodeDescription" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="compModCodeDescription" type="tns:compModCodeDescription" />
+              <xsd:element minOccurs="0" name="complTextCode" type="tns:complTextCode" />
+              <xsd:element minOccurs="0" name="complTextCodeDescription" type="tns:complTextCodeDescription" />
+              <xsd:element minOccurs="0" name="completeInstr" type="tns:completeInstr" />
+              <xsd:element minOccurs="0" name="completeInstrDescription" type="tns:completeInstrDescription" />
+              <xsd:element minOccurs="0" name="conAstSegFr" type="tns:conAstSegFr" />
+              <xsd:element minOccurs="0" name="conAstSegTo" type="tns:conAstSegTo" />
+              <xsd:element minOccurs="0" name="condMonPos" type="tns:condMonPos" />
+              <xsd:element minOccurs="0" name="condMonPosType" type="tns:condMonPosType" />
+              <xsd:element minOccurs="0" name="condMonTypeDescription" type="tns:condMonTypeDescription" />
+              <xsd:element minOccurs="0" name="dayOfMonth" type="tns:dayOfMonth" />
+              <xsd:element minOccurs="0" name="dayOfWeek" type="tns:dayOfWeek" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="districtCodeDescription" type="tns:districtCodeDescription" />
+              <xsd:element minOccurs="0" name="districtSw" type="tns:districtSw" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentGrpIdDescription" type="tns:equipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentNoDescription" type="tns:equipmentNoDescription" />
+              <xsd:element minOccurs="0" name="equipmentNoDescription2" type="tns:equipmentNoDescription2" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="equipmentRefDescription" type="tns:equipmentRefDescription" />
+              <xsd:element minOccurs="0" name="forecastFlg" type="tns:forecastFlg" />
+              <xsd:element minOccurs="0" name="instruct" type="tns:instruct" />
+              <xsd:element minOccurs="0" name="instructExists" type="tns:instructExists" />
+              <xsd:element minOccurs="0" name="jobDescCode" type="tns:jobDescCode" />
+              <xsd:element minOccurs="0" name="jobDescCodeDescription" type="tns:jobDescCodeDescription" />
+              <xsd:element minOccurs="0" name="jobPriority" type="tns:jobPriority" />
+              <xsd:element minOccurs="0" name="jobPriorityDescription" type="tns:jobPriorityDescription" />
+              <xsd:element minOccurs="0" name="lastPerfDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastPerfStat1" type="tns:lastPerfStat1" />
+              <xsd:element minOccurs="0" name="lastPerfStat2" type="tns:lastPerfStat2" />
+              <xsd:element minOccurs="0" name="lastSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastSchedStat1" type="tns:lastSchedStat1" />
+              <xsd:element minOccurs="0" name="lastSchedStat2" type="tns:lastSchedStat2" />
+              <xsd:element minOccurs="0" name="linkedInd" type="tns:linkedInd" />
+              <xsd:element minOccurs="0" name="maintenanceSchTask" type="tns:maintenanceSchTask" />
+              <xsd:element minOccurs="0" name="maintenanceType" type="tns:maintenanceType" />
+              <xsd:element minOccurs="0" name="maintenanceTypeDescription" type="tns:maintenanceTypeDescription" />
+              <xsd:element minOccurs="0" name="nextSchedDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="nextSchedInd" type="tns:nextSchedInd" />
+              <xsd:element minOccurs="0" name="nextSchedMeterVal" type="tns:nextSchedMeterVal" />
+              <xsd:element minOccurs="0" name="nextSchedVal" type="tns:nextSchedVal" />
+              <xsd:element minOccurs="0" name="nextStat" type="tns:nextStat" />
+              <xsd:element minOccurs="0" name="nextStatDescription" type="tns:nextStatDescription" />
+              <xsd:element minOccurs="0" name="occurenceType" type="tns:occurenceType" />
+              <xsd:element minOccurs="0" name="recallTime" type="tns:recallTime" />
+              <xsd:element minOccurs="0" name="safetyInstr" type="tns:safetyInstr" />
+              <xsd:element minOccurs="0" name="safetyInstrDescription" type="tns:safetyInstrDescription" />
+              <xsd:element minOccurs="0" name="schedDescription1" type="tns:schedDescription1" />
+              <xsd:element minOccurs="0" name="schedDescription2" type="tns:schedDescription2" />
+              <xsd:element minOccurs="0" name="schedFreq1" type="tns:schedFreq1" />
+              <xsd:element minOccurs="0" name="schedFreq2" type="tns:schedFreq2" />
+              <xsd:element minOccurs="0" name="schedInd" type="tns:schedInd" />
+              <xsd:element minOccurs="0" name="schedIndDescription" type="tns:schedIndDescription" />
+              <xsd:element minOccurs="0" name="secSchedFreq" type="tns:secSchedFreq" />
+              <xsd:element minOccurs="0" name="secStatType" type="tns:secStatType" />
+              <xsd:element minOccurs="0" name="secStatTypeDescription" type="tns:secStatTypeDescription" />
+              <xsd:element minOccurs="0" name="statType1" type="tns:statType1" />
+              <xsd:element minOccurs="0" name="statType1Description" type="tns:statType1Description" />
+              <xsd:element minOccurs="0" name="statType2" type="tns:statType2" />
+              <xsd:element minOccurs="0" name="statType2Description" type="tns:statType2Description" />
+              <xsd:element minOccurs="0" name="statutoryFlg" type="tns:statutoryFlg" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stdJobNoDescription" type="tns:stdJobNoDescription" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
+              <xsd:element minOccurs="0" name="workGroupDescription" type="tns:workGroupDescription" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderDescription" type="tns:workOrderDescription" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceRetrieveReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaintSchedTskServiceDeleteRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceDeleteReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaintSchedTskServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceReadReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="modNextSched">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaintSchedTskServiceModNextSchedRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="modNextSchedResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaintSchedTskServiceModNextSchedReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ellipse.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="AbstractDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="customAttributes" type="ns3:ArrayOfAttribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractRequiredAttributesDTO" />
+      <xsd:complexType name="AbstractReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="warningsAndInformation" type="ns2:ArrayOfWarningMessageDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarningMessageDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WarningMessageDTO" nillable="true" type="ns2:WarningMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="WarningMessageDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ApplicationMessageImpl" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ApplicationMessageImpl">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="code" type="xsd:string" />
+          <xsd:element minOccurs="0" name="dtoIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="fieldName" type="xsd:string" />
+          <xsd:element minOccurs="0" name="message" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractReplyCollectionDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfErrorMessageDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ErrorMessageDTO" nillable="true" type="ns2:ErrorMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ErrorMessageDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ApplicationMessageImpl" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns3:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://exception.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="EnterpriseServiceOperationException">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errorMessages" type="ns2:ArrayOfErrorMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
+      <xsd:complexType name="WorkOrderDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="prefix" type="xsd:string" />
+          <xsd:element minOccurs="0" name="no" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfTaskResourcesDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TaskResourcesDTO" nillable="true" type="ns5:TaskResourcesDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TaskResourcesDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="resourceClass" type="xsd:string" />
+          <xsd:element minOccurs="0" name="resourceClassDescription" type="xsd:string" />
+          <xsd:element minOccurs="0" name="resourceType" type="xsd:string" />
+          <xsd:element minOccurs="0" name="resourceTypeDescription" type="xsd:string" />
+          <xsd:element minOccurs="0" name="crewSize" type="xsd:decimal" />
+          <xsd:element minOccurs="0" name="resourceSpread" type="xsd:string" />
+          <xsd:element minOccurs="0" name="actualResourceHrs" type="xsd:decimal" />
+          <xsd:element minOccurs="0" name="estimatedResourceHrs" type="xsd:decimal" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteRequest">
+    <wsdl:part name="parameters" element="tns:multipleDelete" />
+  </wsdl:message>
+  <wsdl:message name="createRequest">
+    <wsdl:part name="parameters" element="tns:create" />
+  </wsdl:message>
+  <wsdl:message name="showResponse">
+    <wsdl:part name="parameters" element="tns:showResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPartialResultsRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResults" />
+  </wsdl:message>
+  <wsdl:message name="EnterpriseServiceOperationException">
+    <wsdl:part name="EnterpriseServiceOperationException" element="tns:EnterpriseServiceOperationException" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleModNextSchedRequest">
+    <wsdl:part name="parameters" element="tns:multipleModNextSched" />
+  </wsdl:message>
+  <wsdl:message name="modNextSchedRequest">
+    <wsdl:part name="parameters" element="tns:modNextSched" />
+  </wsdl:message>
+  <wsdl:message name="multipleModifyRequest">
+    <wsdl:part name="parameters" element="tns:multipleModify" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreate" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="parameters" element="tns:delete" />
+  </wsdl:message>
+  <wsdl:message name="multipleShowRequest">
+    <wsdl:part name="parameters" element="tns:multipleShow" />
+  </wsdl:message>
+  <wsdl:message name="multipleShowResponse">
+    <wsdl:part name="parameters" element="tns:multipleShowResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveTaskResourcesRequest">
+    <wsdl:part name="parameters" element="tns:retrieveTaskResources" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPartialResultsResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResultsResponse" />
+  </wsdl:message>
+  <wsdl:message name="showRequest">
+    <wsdl:part name="parameters" element="tns:show" />
+  </wsdl:message>
+  <wsdl:message name="retrieveRequest">
+    <wsdl:part name="parameters" element="tns:retrieve" />
+  </wsdl:message>
+  <wsdl:message name="modifyResponse">
+    <wsdl:part name="parameters" element="tns:modifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="modifyRequest">
+    <wsdl:part name="parameters" element="tns:modify" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="parameters" element="tns:deleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleModifyResponse">
+    <wsdl:part name="parameters" element="tns:multipleModifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="modNextSchedResponse">
+    <wsdl:part name="parameters" element="tns:modNextSchedResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveResponse">
+    <wsdl:part name="parameters" element="tns:retrieveResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveTaskResourcesResponse">
+    <wsdl:part name="parameters" element="tns:retrieveTaskResourcesResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleModNextSchedResponse">
+    <wsdl:part name="parameters" element="tns:multipleModNextSchedResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:portType name="MaintSchedTsk">
+    <wsdl:operation name="multipleDelete">
+      <wsdl:input name="multipleDeleteRequest" message="tns:multipleDeleteRequest" />
+      <wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
+      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveTaskResources">
+      <wsdl:input name="retrieveTaskResourcesRequest" message="tns:retrieveTaskResourcesRequest" />
+      <wsdl:output name="retrieveTaskResourcesResponse" message="tns:retrieveTaskResourcesResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadWithPartialResults">
+      <wsdl:input name="multipleReadWithPartialResultsRequest" message="tns:multipleReadWithPartialResultsRequest" />
+      <wsdl:output name="multipleReadWithPartialResultsResponse" message="tns:multipleReadWithPartialResultsResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleShow">
+      <wsdl:input name="multipleShowRequest" message="tns:multipleShowRequest" />
+      <wsdl:output name="multipleShowResponse" message="tns:multipleShowResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="modify">
+      <wsdl:input name="modifyRequest" message="tns:modifyRequest" />
+      <wsdl:output name="modifyResponse" message="tns:modifyResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="show">
+      <wsdl:input name="showRequest" message="tns:showRequest" />
+      <wsdl:output name="showResponse" message="tns:showResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input name="createRequest" message="tns:createRequest" />
+      <wsdl:output name="createResponse" message="tns:createResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleModify">
+      <wsdl:input name="multipleModifyRequest" message="tns:multipleModifyRequest" />
+      <wsdl:output name="multipleModifyResponse" message="tns:multipleModifyResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleModNextSched">
+      <wsdl:input name="multipleModNextSchedRequest" message="tns:multipleModNextSchedRequest" />
+      <wsdl:output name="multipleModNextSchedResponse" message="tns:multipleModNextSchedResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieve">
+      <wsdl:input name="retrieveRequest" message="tns:retrieveRequest" />
+      <wsdl:output name="retrieveResponse" message="tns:retrieveResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input name="deleteRequest" message="tns:deleteRequest" />
+      <wsdl:output name="deleteResponse" message="tns:deleteResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="modNextSched">
+      <wsdl:input name="modNextSchedRequest" message="tns:modNextSchedRequest" />
+      <wsdl:output name="modNextSchedResponse" message="tns:modNextSchedResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MaintSchedTskServiceHttpBinding" type="tns:MaintSchedTsk">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="multipleDelete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveTaskResources">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveTaskResourcesRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveTaskResourcesResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadWithPartialResults">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadWithPartialResultsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadWithPartialResultsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleShow">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleShowRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleShowResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="modify">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="modifyRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="modifyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="show">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="showRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="showResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleModify">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleModifyRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleModifyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleModNextSched">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleModNextSchedRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleModNextSchedResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieve">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="modNextSched">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="modNextSchedRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="modNextSchedResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MaintSchedTskService">
+    <wsdl:port name="MaintSchedTskServiceHttpPort" binding="tns:MaintSchedTskServiceHttpBinding">
+      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/MaintSchedTskService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
