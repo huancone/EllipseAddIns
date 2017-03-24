@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseLabourCostingExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.7.8</ApplicationVersion>
+    <ApplicationVersion>1.0.7.9</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -283,7 +283,7 @@
     <ManifestKeyFile>EllipseLabourCostingExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D05E996B97874FE507DABCB6526C1E64F3FFF665</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>8497F691D6A7DC0A53DB0FE98FBB18C333593C81</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

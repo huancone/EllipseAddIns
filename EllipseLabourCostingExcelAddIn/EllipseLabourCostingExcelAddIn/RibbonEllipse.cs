@@ -44,7 +44,7 @@ namespace EllipseLabourCostingExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            
+
             _eFunctions.DebugQueries = false;
             _eFunctions.DebugErrors = false;
             _eFunctions.DebugWarnings = false;
@@ -89,13 +89,13 @@ namespace EllipseLabourCostingExcelAddIn
 
         private void btnLoadLaborSheet_Click(object sender, RibbonControlEventArgs e)
         {
-			//si ya hay un thread corriendo que no se ha detenido
-			if (_thread != null && _thread.IsAlive) return;
+            //si ya hay un thread corriendo que no se ha detenido
+            if (_thread != null && _thread.IsAlive) return;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
             if (!_cells.IsDecimalDotSeparator())
-                if (MessageBox.Show(@"El separador de decimales configurado actualmente no es el punto. Usar un separador de decimales diferente puede generar errores al momento de cargar valores numéricos. ¿Está seguro que desea continuar?",  @"ALERTA DE SEPARADOR DE DECIMALES", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
+                if (MessageBox.Show(@"El separador de decimales configurado actualmente no es el punto. Usar un separador de decimales diferente puede generar errores al momento de cargar valores numéricos. ¿Está seguro que desea continuar?", @"ALERTA DE SEPARADOR DE DECIMALES", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
 
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Default))
                 _thread = new Thread(LoadDefaultLabourCost);
@@ -209,44 +209,44 @@ namespace EllipseLabourCostingExcelAddIn
                 for (var i = 0; i < OtFields; i++)
                 {
                     //Título Nro OT
-                    _cells.GetCell(DefaultStartCol + i*NroEle, DefaultTitleRow - 3).Value = "OT " + (i + 1);
-                    _cells.GetCell(DefaultStartCol + i*NroEle, DefaultTitleRow - 3).Style =
+                    _cells.GetCell(DefaultStartCol + i * NroEle, DefaultTitleRow - 3).Value = "OT " + (i + 1);
+                    _cells.GetCell(DefaultStartCol + i * NroEle, DefaultTitleRow - 3).Style =
                         _cells.GetStyle(StyleConstants.TitleOptional);
-                    _cells.MergeCells(DefaultStartCol + i*NroEle, DefaultTitleRow - 3,
-                        DefaultStartCol + i*NroEle + (NroEle - 1), DefaultTitleRow - 3);
+                    _cells.MergeCells(DefaultStartCol + i * NroEle, DefaultTitleRow - 3,
+                        DefaultStartCol + i * NroEle + (NroEle - 1), DefaultTitleRow - 3);
                     //Número OT
-                    _cells.GetCell(DefaultStartCol + i*NroEle, DefaultTitleRow - 2).Style =
+                    _cells.GetCell(DefaultStartCol + i * NroEle, DefaultTitleRow - 2).Style =
                         _cells.GetStyle(StyleConstants.Select);
                     vstoSheet.Controls.Remove("SeekOrder" + i);
                     var orderNameRange =
                         vstoSheet.Controls.AddNamedRange(
-                            _cells.GetCell(DefaultStartCol + i*NroEle, DefaultTitleRow - 2),
+                            _cells.GetCell(DefaultStartCol + i * NroEle, DefaultTitleRow - 2),
                             "SeekOrder" + i);
                     orderNameRange.Change += GetDefaultWorkOrderDescriptionChangedValue;
-                    _cells.GetRange(DefaultStartCol + i*NroEle, DefaultTitleRow - 2,
-                        DefaultStartCol + i*NroEle + (NroEle - 1), DefaultTitleRow - 2)
+                    _cells.GetRange(DefaultStartCol + i * NroEle, DefaultTitleRow - 2,
+                        DefaultStartCol + i * NroEle + (NroEle - 1), DefaultTitleRow - 2)
                         .NumberFormat = NumberFormatConstants.Text;
-                    _cells.MergeCells(DefaultStartCol + i*NroEle, DefaultTitleRow - 2,
-                        DefaultStartCol + i*NroEle + (NroEle - 1), DefaultTitleRow - 2);
+                    _cells.MergeCells(DefaultStartCol + i * NroEle, DefaultTitleRow - 2,
+                        DefaultStartCol + i * NroEle + (NroEle - 1), DefaultTitleRow - 2);
                     //Descripción OT
-                    _cells.GetCell(DefaultStartCol + i*NroEle, DefaultTitleRow - 1).Style =
+                    _cells.GetCell(DefaultStartCol + i * NroEle, DefaultTitleRow - 1).Style =
                         _cells.GetStyle(StyleConstants.Option);
-                    _cells.MergeCells(DefaultStartCol + i*NroEle, DefaultTitleRow - 1,
-                        DefaultStartCol + i*NroEle + (NroEle - 1), DefaultTitleRow - 1);
+                    _cells.MergeCells(DefaultStartCol + i * NroEle, DefaultTitleRow - 1,
+                        DefaultStartCol + i * NroEle + (NroEle - 1), DefaultTitleRow - 1);
                     //Cada componente
-                    _cells.GetCell(DefaultStartCol + i*NroEle + 0, DefaultTitleRow).Value = "HRS_" + (i + 1);
-                    _cells.GetCell(DefaultStartCol + i*NroEle + 0, DefaultTitleRow).AddComment("hh.mm");
-                    _cells.GetCell(DefaultStartCol + i*NroEle + 0, DefaultTitleRow).Style =
+                    _cells.GetCell(DefaultStartCol + i * NroEle + 0, DefaultTitleRow).Value = "HRS_" + (i + 1);
+                    _cells.GetCell(DefaultStartCol + i * NroEle + 0, DefaultTitleRow).AddComment("hh.mm");
+                    _cells.GetCell(DefaultStartCol + i * NroEle + 0, DefaultTitleRow).Style =
                         _cells.GetStyle(StyleConstants.TitleRequired);
-                    _cells.GetCell(DefaultStartCol + i*NroEle + 1, DefaultTitleRow).Value = "TASK_" + (i + 1);
-                    _cells.GetCell(DefaultStartCol + i*NroEle + 1, DefaultTitleRow).Style =
+                    _cells.GetCell(DefaultStartCol + i * NroEle + 1, DefaultTitleRow).Value = "TASK_" + (i + 1);
+                    _cells.GetCell(DefaultStartCol + i * NroEle + 1, DefaultTitleRow).Style =
                         _cells.GetStyle(StyleConstants.TitleRequired);
-                    _cells.GetCell(DefaultStartCol + i*NroEle + 2, DefaultTitleRow).Value = "ECODE_" + (i + 1);
-                    _cells.GetCell(DefaultStartCol + i*NroEle + 2, DefaultTitleRow).Style =
+                    _cells.GetCell(DefaultStartCol + i * NroEle + 2, DefaultTitleRow).Value = "ECODE_" + (i + 1);
+                    _cells.GetCell(DefaultStartCol + i * NroEle + 2, DefaultTitleRow).Style =
                         _cells.GetStyle(StyleConstants.TitleOptional);
 
                 }
-                _cells.GetRange(DefaultStartCol, DefaultTitleRow + 1, DefaultStartCol + OtFields*NroEle,
+                _cells.GetRange(DefaultStartCol, DefaultTitleRow + 1, DefaultStartCol + OtFields * NroEle,
                     DefaultTitleRow + 1)
                     .NumberFormat = NumberFormatConstants.Text;
                 //Validación para los Earning Codes
@@ -260,13 +260,13 @@ namespace EllipseLabourCostingExcelAddIn
                 //asigno la validación al resto de los elementos
                 for (var j = 1; j < OtFields; j++)
                 {
-                    _cells.GetCell(DefaultStartCol + j*NroEle + 2, DefaultTitleRow + 1).Validation.Delete();
-                    _cells.GetCell(DefaultStartCol + j*NroEle + 2, DefaultTitleRow + 1)
-                        .Validation.Add((Excel.XlDVType) validation.Type, validation.AlertStyle, validation.Operator,
+                    _cells.GetCell(DefaultStartCol + j * NroEle + 2, DefaultTitleRow + 1).Validation.Delete();
+                    _cells.GetCell(DefaultStartCol + j * NroEle + 2, DefaultTitleRow + 1)
+                        .Validation.Add((Excel.XlDVType)validation.Type, validation.AlertStyle, validation.Operator,
                             validation.Formula1, validation.Formula2);
                 }
                 _cells.FormatAsTable(
-                    _cells.GetRange(1, DefaultTitleRow, DefaultStartCol + OtFields*NroEle - 1, DefaultTitleRow + 1),
+                    _cells.GetRange(1, DefaultTitleRow, DefaultStartCol + OtFields * NroEle - 1, DefaultTitleRow + 1),
                     TableNameDefault);
                 var lengthEmployees = 0;
                 if (drEmployees != null && !drEmployees.IsClosed && drEmployees.HasRows)
@@ -477,7 +477,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //validaciones de campo
                 _cells.SetValidationList(_cells.GetCell(2, ElecsaTitleRow - 3), DistrictConstants.GetDistrictList(), ValidationSheetName, 1);
                 _cells.SetValidationList(_cells.GetCell(4, ElecsaTitleRow - 3), loadTypeList, ValidationSheetName, 2);
-                
+
                 _cells.SetValidationList(_cells.GetRange(ElecsaTitleColumn, ElecsaTitleRow - 1, ElecsaResultColumn - 1, ElecsaTitleRow - 1), laborClassList, ValidationSheetName, 3);
                 _cells.GetRange(ElecsaTitleColumn - 1, ElecsaTitleRow - 2, ElecsaResultColumn - 1, ElecsaTitleRow - 1).ColumnWidth = 3.57;
                 _cells.GetRange(ElecsaTitleColumn - 1, ElecsaTitleRow - 2, ElecsaResultColumn - 1, ElecsaTitleRow - 1).Orientation = 90;
@@ -485,7 +485,7 @@ namespace EllipseLabourCostingExcelAddIn
 
                 _cells.GetCell(ElecsaResultColumn, ElecsaTitleRow).Value = "RESULTADO";
                 _cells.GetCell(ElecsaResultColumn, ElecsaTitleRow).Style = StyleConstants.TitleResult;
-                
+
                 _cells.GetCell(ElecsaResultColumn + 1, ElecsaTitleRow).Value = "DURATION CODE";
                 _cells.GetCell(ElecsaResultColumn + 2, ElecsaTitleRow).Value = "HR INICIAL";
                 _cells.GetCell(ElecsaResultColumn + 2, ElecsaTitleRow).AddComment("hhmmss");
@@ -501,7 +501,7 @@ namespace EllipseLabourCostingExcelAddIn
 
                 _cells.GetRange(ElecsaResultColumn + 1, ElecsaTitleRow, ElecsaResultColumn + 4, ElecsaTitleRow).Style = StyleConstants.TitleRequired;
 
-                
+
                 _cells.GetCell(ElecsaResultColumn + 5, ElecsaTitleRow).Value = "RESULTADO DUR.";
                 _cells.GetCell(ElecsaResultColumn + 5, ElecsaTitleRow).Style = StyleConstants.TitleResult;
 
@@ -704,10 +704,14 @@ namespace EllipseLabourCostingExcelAddIn
                             LABOUR_CLASS = laborClass
                         };
 
-                        if (string.IsNullOrWhiteSpace(employee.TASK))
-                            employee.TASK = "001";
-                        if (employee.TASK.Length > 1 && employee.TASK.Length < 3)
-                            employee.TASK = employee.TASK.PadLeft(3, '0');
+                        if (employee.WOP_IND == "W")
+                        {
+                            if (string.IsNullOrWhiteSpace(employee.TASK))
+                                employee.TASK = "001";
+                            if (employee.TASK.Length > 1 && employee.TASK.Length < 3)
+                                employee.TASK = employee.TASK.PadLeft(3, '0');
+                        }
+
 
                         LoadEmployee(opSheet, employee);
                         _cells.GetCell(Mso850ResultColumn, i).Value = "SUCCESS";
@@ -911,9 +915,9 @@ namespace EllipseLabourCostingExcelAddIn
 
                         var stdTextCopc = StdText.GetCustomOpContext(opWo.district, opWo.position, opWo.maxInstances,
                             opWo.returnWarnings);
-                        var woCompleteComment = StdText.GetCustomText(urlService, stdTextCopc, stdTextId);
+                        var woCompleteComment = StdText.GetText(urlService, stdTextCopc, stdTextId);
 
-                        StdText.SetCustomText(urlService, stdTextCopc, stdTextId,
+                        StdText.SetText(urlService, stdTextCopc, stdTextId,
                             woCompleteComment + "\n" + completeCommentToAppend);
 
                         _cells.GetCell(ElecsaResultColumn + 5, i).Value = "OK";
@@ -1036,7 +1040,7 @@ namespace EllipseLabourCostingExcelAddIn
 
                         //para asegurar que hubo un cambio real de pantalla. De lo contrario pasará hasta el final de los envíos
                         var currentReply = replyFields;
-                        if(previousReply == currentReply)
+                        if (previousReply == currentReply)
                         {
                             errorLoopPos++;
                             if (errorLoopPos > 50)
@@ -1077,7 +1081,7 @@ namespace EllipseLabourCostingExcelAddIn
                        (_eFunctions.CheckReplyWarning(replySheet) || replySheet.functionKeys == "XMIT-Confirm" || replySheet.functionKeys == "XMIT-Validate"))//requiere confirmación
                 {
                     errorLoopVal++;
-                    if(errorLoopVal>50)
+                    if (errorLoopVal > 50)
                         throw new Exception("Error de ejecución. El proceso ha alcanzo el límite de intentos en confirmación");
                     requestSheet = new Screen.ScreenSubmitRequestDTO { screenKey = "1" };
                     replySheet = proxySheet.submit(opSheet, requestSheet);
@@ -1191,7 +1195,7 @@ namespace EllipseLabourCostingExcelAddIn
 
                         _cells.GetCell(target.Column + 2, target.Row).Value = "Buscando Orden...";
                         var district = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, ElecsaTitleRow - 3).Value2);
-                        
+
                         string woNo = _cells.GetEmptyIfNull(target.Value2);
                         if (woNo.All(char.IsDigit) && woNo.Length < 8)
                             woNo = woNo.PadLeft(8, '0');
@@ -1227,7 +1231,7 @@ namespace EllipseLabourCostingExcelAddIn
         {
             try
             {
-                if (_thread != null &&_thread.IsAlive)
+                if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
                 if (_cells != null) _cells.SetCursorDefault();
             }
@@ -1250,7 +1254,7 @@ namespace EllipseLabourCostingExcelAddIn
                     var district = "" + _cells.GetCell("B3").Value;
                     for (var i = 0; i < OtFields; i++)
                     {
-                        var target = _cells.GetCell(DefaultStartCol + i*NroEle, DefaultTitleRow - 2);
+                        var target = _cells.GetCell(DefaultStartCol + i * NroEle, DefaultTitleRow - 2);
                         var woNo = _cells.GetNullIfTrimmedEmpty(target.Value2);
                         _cells.GetCell(target.Column, target.Row + 1).Value = "";
 
@@ -1285,7 +1289,7 @@ namespace EllipseLabourCostingExcelAddIn
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
