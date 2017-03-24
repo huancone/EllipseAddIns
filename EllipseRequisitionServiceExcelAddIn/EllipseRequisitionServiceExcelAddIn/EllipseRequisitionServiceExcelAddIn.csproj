@@ -164,6 +164,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.Services.Ellipse">
       <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.dll</HintPath>
@@ -205,6 +207,11 @@
     </Compile>
     <Compile Include="RibbonEllipse.Designer.cs">
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\IssueRequisitionItemStocklessService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Compile Include="Web References\RequisitionService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -248,6 +255,11 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <None Include="Web References\IssueRequisitionItemStocklessService\IssueRequisitionItemStocklessService.wsdl" />
+    <None Include="Web References\IssueRequisitionItemStocklessService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <None Include="Web References\RequisitionService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -372,6 +384,17 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/IssueRequisitionItemStocklessService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\IssueRequisitionItemStocklessService\</RelPath>
+      <UpdateFromURL>http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/IssueRequisitionItemStocklessService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseRequisitionServiceExcelAddIn_IssueRequisitionItemStocklessService_IssueRequisitionItemStocklessService</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/RequisitionService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\RequisitionService\</RelPath>

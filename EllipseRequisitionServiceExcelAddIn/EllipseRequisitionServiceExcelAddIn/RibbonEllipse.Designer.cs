@@ -45,6 +45,7 @@
             this.cbMaxItems = this.Factory.CreateRibbonCheckBox();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.btnManualCreditRequisitionMSE1VR = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpRequisitionService.SuspendLayout();
             this.SuspendLayout();
@@ -80,6 +81,7 @@
             this.menuAction.Items.Add(this.btnExcecuteRequisitionService);
             this.menuAction.Items.Add(this.btnCreateReqIgError);
             this.menuAction.Items.Add(this.btnCreateReqDirectOrderItems);
+            this.menuAction.Items.Add(this.btnManualCreditRequisitionMSE1VR);
             this.menuAction.Items.Add(this.cbMaxItems);
             this.menuAction.Items.Add(this.btnCleanSheet);
             this.menuAction.Items.Add(this.btnStopThread);
@@ -107,13 +109,6 @@
             this.btnCreateReqDirectOrderItems.ShowImage = true;
             this.btnCreateReqDirectOrderItems.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreateReqDirectOrderItems_Click);
             // 
-            // cbMaxItems
-            // 
-            this.cbMaxItems.Checked = true;
-            this.cbMaxItems.Label = "Máximo 100 items por vale";
-            this.cbMaxItems.Name = "cbMaxItems";
-            this.cbMaxItems.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbMaxItems_Click);
-            // 
             // btnCleanSheet
             // 
             this.btnCleanSheet.Label = "&Limpiar Tabla";
@@ -127,6 +122,13 @@
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
+            // 
+            // btnManualCreditRequisitionMSE1VR
+            // 
+            this.btnManualCreditRequisitionMSE1VR.Label = "Devolucion Manual MSE1VR";
+            this.btnManualCreditRequisitionMSE1VR.Name = "btnManualCreditRequisitionMSE1VR";
+            this.btnManualCreditRequisitionMSE1VR.ShowImage = true;
+            this.btnManualCreditRequisitionMSE1VR.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnManualCreditRequisitionMSE1VR_Click);
             // 
             // RibbonEllipse
             // 
@@ -155,6 +157,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreateReqDirectOrderItems;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbMaxItems;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnManualCreditRequisitionMSE1VR;
     }
 
     partial class ThisRibbonCollection

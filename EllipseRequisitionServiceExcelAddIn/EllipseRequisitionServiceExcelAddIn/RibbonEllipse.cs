@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using Microsoft.Office.Tools.Ribbon;
 using EllipseCommonsClassLibrary;
 using System.Web.Services.Ellipse;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
+using EllipseRequisitionServiceExcelAddIn.IssueRequisitionItemStocklessService;
 using EllipseRequisitionServiceExcelAddIn.Properties;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 
@@ -1696,9 +1698,154 @@ namespace EllipseRequisitionServiceExcelAddIn
             _thread.Start();
         }
 
-        private void cbMaxItems_Click(object sender, RibbonControlEventArgs e)
+        private void btnManualCreditRequisitionMSE1VR_Click(object sender, RibbonControlEventArgs e)
         {
+            _ignoreItemError = false;
+            if (_thread != null && _thread.IsAlive) return;
+            _thread = new Thread(ManualCreditRequisition);
 
+            _thread.SetApartmentState(ApartmentState.STA);
+            _thread.Start();
+        }
+
+        private void ManualCreditRequisition()
+        {
+            var currentRow = TitleRow + 1;
+            try
+            {
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                _cells.SetCursorWait();
+                _cells.ClearTableRangeColumn(TableName01, ResultColumn);
+
+                //instancia del Servicio
+                var proxyRequisition = new IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessService();
+
+                //Header
+                var opRequisition = new IssueRequisitionItemStocklessService.OperationContext();
+
+                //Objeto para crear la coleccion de Items
+                //new RequisitionService.RequisitionServiceCreateItemReplyCollectionDTO();
+
+                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
+                proxyRequisition.Url = urlService + "/IssueRequisitionItemStocklessService";
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                opRequisition.district = _frmAuth.EllipseDsct;
+                opRequisition.maxInstances = 100;
+                opRequisition.position = _frmAuth.EllipsePost;
+                opRequisition.returnWarnings = false;
+
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                var headerCreateReturnReply = new IssueRequisitionItemStocklessService.ImmediateReturnStocklessDTO();
+
+
+                while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value) != null ||
+                       _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value) != null)
+                {
+
+                    try
+                    {
+                        string switchCase = _cells.GetNullOrTrimmedValue(_cells.GetCell(10, currentRow).Value);
+                        var reference = _cells.GetNullOrTrimmedValue(_cells.GetCell(11, currentRow).Value);
+                        switch (switchCase)
+                        {
+                            case "Work Order":
+                                headerCreateReturnReply.workOrderx1 = reference;
+                                break;
+                            case "Equipment No.":
+                                headerCreateReturnReply.equipmentReferencex1 = reference;
+                                break;
+                            case "Project No.":
+                                headerCreateReturnReply.projectNumberx1 = reference;
+                                break;
+                            case "Account Code":
+                                headerCreateReturnReply.costCodex1 = reference;
+                                break;
+                        }
+
+                        headerCreateReturnReply.districtCode = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct)
+                            ? "ICOR"
+                            : _frmAuth.EllipseDsct;
+                        headerCreateReturnReply.processedBy =
+                            _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) == null
+                                ? _frmAuth.EllipseUser
+                                : _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
+                        headerCreateReturnReply.percentageAllocatedx1 = 100;
+                        headerCreateReturnReply.requestedByEmployee =
+                            _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) == null
+                                ? _frmAuth.EllipseUser
+                                : _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
+                        headerCreateReturnReply.requestedByPositionId = _frmAuth.EllipsePost;
+                        headerCreateReturnReply.warehouseId =
+                            _cells.GetNullOrTrimmedValue(_cells.GetCell(8, currentRow).Value);
+                        headerCreateReturnReply.authorisedBy =
+                            _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) == null
+                                ? _frmAuth.EllipseUser
+                                : _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
+                        headerCreateReturnReply.transactionType =
+                            Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value));
+                        headerCreateReturnReply.requisitionNumber =
+                            _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value);
+                        headerCreateReturnReply.processedDate =
+                            DateTime.ParseExact(_cells.GetNullOrTrimmedValue(_cells.GetCell(7, currentRow).Value), "yyyyMMdd", CultureInfo.InvariantCulture);
+                        headerCreateReturnReply.processedDateSpecified = true;
+
+
+                        var holding = new HoldingDetailsDTO();
+                        var listHolding = new List<HoldingDetailsDTO>();
+
+                        holding.quantitySpecified = true;
+                        holding.quantity = Convert.ToDecimal(_cells.GetCell(18, currentRow).Value);
+                        holding.stockCode = _cells.GetNullOrTrimmedValue(_cells.GetCell(16, currentRow).Value);
+
+                        listHolding.Add(holding);
+                        headerCreateReturnReply.holdingDetailsDTO = listHolding.ToArray();
+                        
+                        var result = proxyRequisition.immediateReturn(opRequisition, headerCreateReturnReply);
+
+                        if (result.errors.Length == 0)
+                        {
+                            _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Success;
+                            _cells.GetCell(ResultColumn, currentRow).Value2 = "OK";
+                        }
+                        else
+                        {
+                            _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
+                            foreach (var e in result.errors)
+                            {
+                                _cells.GetCell(ResultColumn, currentRow).Value2 += " " + e.messageText ;
+                            }
+                        }
+
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(ResultColumn, currentRow).Value2 += "ERROR: " + ex.Message;
+                        _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(4, currentRow).Style = StyleConstants.Error;
+                    }
+                    finally
+                    {
+                        currentRow++;
+                    }
+
+                }
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message);
+            }
+            finally
+            {
+                _cells?.SetCursorDefault();
+                _eFunctions.SetConnectionPoolingType(true);//Se restaura por 'Pooled Connection Request Timed Out'
+            }
         }
     }
 
