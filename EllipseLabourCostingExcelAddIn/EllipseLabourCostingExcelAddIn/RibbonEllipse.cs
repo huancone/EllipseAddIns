@@ -704,10 +704,10 @@ namespace EllipseLabourCostingExcelAddIn
                             LABOUR_CLASS = laborClass
                         };
 
-                        //if (string.IsNullOrWhiteSpace(employee.TASK))
-                        //    employee.TASK = "001";
-                        //if (employee.TASK.Length > 1 && employee.TASK.Length < 3)
-                        //    employee.TASK = employee.TASK.PadLeft(3, '0');
+                        if (string.IsNullOrWhiteSpace(employee.TASK))
+                            employee.TASK = "001";
+                        if (employee.TASK.Length > 1 && employee.TASK.Length < 3)
+                            employee.TASK = employee.TASK.PadLeft(3, '0');
 
                         LoadEmployee(opSheet, employee);
                         _cells.GetCell(Mso850ResultColumn, i).Value = "SUCCESS";
@@ -911,9 +911,9 @@ namespace EllipseLabourCostingExcelAddIn
 
                         var stdTextCopc = StdText.GetCustomOpContext(opWo.district, opWo.position, opWo.maxInstances,
                             opWo.returnWarnings);
-                        var woCompleteComment = StdText.GetText(urlService, stdTextCopc, stdTextId);
+                        var woCompleteComment = StdText.GetCustomText(urlService, stdTextCopc, stdTextId);
 
-                        StdText.SetText(urlService, stdTextCopc, stdTextId,
+                        StdText.SetCustomText(urlService, stdTextCopc, stdTextId,
                             woCompleteComment + "\n" + completeCommentToAppend);
 
                         _cells.GetCell(ElecsaResultColumn + 5, i).Value = "OK";
