@@ -48,6 +48,7 @@
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMaintenanceScheduleTask.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -146,6 +147,7 @@
             this.tabEllipse.PerformLayout();
             this.grpMaintenanceScheduleTask.ResumeLayout(false);
             this.grpMaintenanceScheduleTask.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

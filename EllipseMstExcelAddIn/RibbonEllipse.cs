@@ -179,7 +179,7 @@ namespace EllipseMstExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
 
-                _cells.GetCell("B1").Value = "EQUIPMENT - ELLIPSE 8";
+                _cells.GetCell("B1").Value = "MAINTENANCE SCHEDULE TASK - ELLIPSE 8";
                 _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("B1", "J2");
 
