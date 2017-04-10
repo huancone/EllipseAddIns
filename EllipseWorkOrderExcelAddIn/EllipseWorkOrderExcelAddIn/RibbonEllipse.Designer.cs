@@ -39,11 +39,16 @@ namespace EllipseWorkOrderExcelAddIn
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpWorkOrder = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.box2 = this.Factory.CreateRibbonBox();
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnFormatDetail = this.Factory.CreateRibbonButton();
             this.btnFormatQuality = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
+            this.box3 = this.Factory.CreateRibbonBox();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.box4 = this.Factory.CreateRibbonBox();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuGeneral = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
@@ -70,11 +75,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReviewQuality = this.Factory.CreateRibbonButton();
             this.btnCleanQualitySheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.box2 = this.Factory.CreateRibbonBox();
-            this.box3 = this.Factory.CreateRibbonBox();
-            this.box4 = this.Factory.CreateRibbonBox();
-            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box1.SuspendLayout();
@@ -92,8 +92,22 @@ namespace EllipseWorkOrderExcelAddIn
             // grpWorkOrder
             // 
             this.grpWorkOrder.Items.Add(this.box1);
-            this.grpWorkOrder.Label = "WorkOrders v1.3.0";
+            this.grpWorkOrder.Label = "WorkOrders";
             this.grpWorkOrder.Name = "grpWorkOrder";
+            // 
+            // box1
+            // 
+            this.box1.BoxStyle = Microsoft.Office.Tools.Ribbon.RibbonBoxStyle.Vertical;
+            this.box1.Items.Add(this.box2);
+            this.box1.Items.Add(this.box3);
+            this.box1.Items.Add(this.box4);
+            this.box1.Name = "box1";
+            // 
+            // box2
+            // 
+            this.box2.Items.Add(this.menuFormat);
+            this.box2.Items.Add(this.btnAbout);
+            this.box2.Name = "box2";
             // 
             // menuFormat
             // 
@@ -124,10 +138,26 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnFormatQuality.ShowImage = true;
             this.btnFormatQuality.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatQuality_Click);
             // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
+            // box3
+            // 
+            this.box3.Items.Add(this.drpEnviroment);
+            this.box3.Name = "box3";
+            // 
             // drpEnviroment
             // 
             this.drpEnviroment.Label = "Env.";
             this.drpEnviroment.Name = "drpEnviroment";
+            // 
+            // box4
+            // 
+            this.box4.Items.Add(this.menuActions);
+            this.box4.Name = "box4";
             // 
             // menuActions
             // 
@@ -326,36 +356,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
-            // box1
-            // 
-            this.box1.BoxStyle = Microsoft.Office.Tools.Ribbon.RibbonBoxStyle.Vertical;
-            this.box1.Items.Add(this.box2);
-            this.box1.Items.Add(this.box3);
-            this.box1.Items.Add(this.box4);
-            this.box1.Name = "box1";
-            // 
-            // box2
-            // 
-            this.box2.Items.Add(this.menuFormat);
-            this.box2.Items.Add(this.btnAbout);
-            this.box2.Name = "box2";
-            // 
-            // box3
-            // 
-            this.box3.Items.Add(this.drpEnviroment);
-            this.box3.Name = "box3";
-            // 
-            // box4
-            // 
-            this.box4.Items.Add(this.menuActions);
-            this.box4.Name = "box4";
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // RibbonEllipse
             // 

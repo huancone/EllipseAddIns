@@ -186,8 +186,8 @@ namespace EllipseStandardJobsClassLibrary
         //public string WorkRequestText;//001_9001
         public string ComentariosDuraciones;//002_9001
         public string ComentariosDuracionesText;//002_9001
-        //public string Comentarios;//003_9001
-        //public string ComentariosText;//003_9001
+        public string EmpleadoId;//003_9001 //Antiguamente Comentario
+        //public string ComentariosText;//003_9001 //Deshabilitado
         //public string ComentarioApertura;//004_9001
         //public string ComentarioAperturaText;//004_9001
         public string NroComponente;//005_9001
@@ -231,6 +231,7 @@ namespace EllipseStandardJobsClassLibrary
         public string RelacionarEv;//029_001
         public string Departamento;//030_9001
         //public string DepartamentoText;//030_9001
+        public string Localizacion;//031_001
     }
     public static class StandardJobActions
     {
@@ -639,7 +640,7 @@ namespace EllipseStandardJobsClassLibrary
 
         public static List<TaskRequirement> FetchTaskRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string taskNo)
         {
-            var sqlQuery = Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob, taskNo);
+            var sqlQuery = Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob, taskNo.PadLeft(3, '0'));
             var stdDataReader =
                 ef.GetQueryResult(sqlQuery);
 
@@ -696,7 +697,7 @@ namespace EllipseStandardJobsClassLibrary
             requestStdTask.workGroup = stdTask.WorkGroup ?? requestStdTask.workGroup;
             requestStdTask.standardJob = stdTask.StandardJob ?? requestStdTask.standardJob;
 
-            requestStdTask.SJTaskNo = stdTask.SjTaskNo ?? requestStdTask.SJTaskNo;
+            requestStdTask.SJTaskNo = stdTask.SjTaskNo ?? requestStdTask.SJTaskNo.PadLeft(3, '0');
             requestStdTask.SJTaskDesc = stdTask.SjTaskDesc ?? requestStdTask.SJTaskDesc;
             requestStdTask.jobDescCode = stdTask.JobDescCode ?? requestStdTask.jobDescCode;
             requestStdTask.safetyInstr = stdTask.SafetyInstr ?? requestStdTask.safetyInstr;
@@ -741,7 +742,7 @@ namespace EllipseStandardJobsClassLibrary
             requestStdTask.workGroup = stdTask.WorkGroup ?? requestStdTask.workGroup;
             requestStdTask.standardJob = stdTask.StandardJob ?? requestStdTask.standardJob;
 
-            requestStdTask.SJTaskNo = stdTask.SjTaskNo ?? requestStdTask.SJTaskNo;
+            requestStdTask.SJTaskNo = stdTask.SjTaskNo ?? requestStdTask.SJTaskNo.PadLeft(3, '0');
             requestStdTask.SJTaskDesc = stdTask.SjTaskDesc ?? requestStdTask.SJTaskDesc;
             requestStdTask.jobDescCode = stdTask.JobDescCode ?? requestStdTask.jobDescCode;
             requestStdTask.safetyInstr = stdTask.SafetyInstr ?? requestStdTask.safetyInstr;
@@ -771,7 +772,8 @@ namespace EllipseStandardJobsClassLibrary
 
 
             ef.InitiatePostConnection();
-
+            if(!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
+                stdTask.SjTaskNo = stdTask.SjTaskNo.PadLeft(3, '0');
             var requestXml = "";
             requestXml = requestXml + "<interaction>";
             requestXml = requestXml + "	<actions>";
@@ -782,16 +784,25 @@ namespace EllipseStandardJobsClassLibrary
             requestXml = requestXml + "				<operation>modify</operation>";
             requestXml = requestXml + "				<returnWarnings>true</returnWarnings>";
             requestXml = requestXml + "				<dto   uuid=\"" + Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
-            requestXml = requestXml + "                 <complTextCode>" + stdTask.ComplTextCode + "</complTextCode>";
-            requestXml = requestXml + "                 <sJTaskNo>" + stdTask.SjTaskNo + "</sJTaskNo>";
-            requestXml = requestXml + "                 <jobDescCode>" + stdTask.JobDescCode + "</jobDescCode>";
-            requestXml = requestXml + "                 <assignPerson>" + stdTask.AssignPerson + "</assignPerson>";
-            requestXml = requestXml + "                 <workGroup>" + stdTask.WorkGroup + "</workGroup>";
-            requestXml = requestXml + "                 <sJTaskDesc>" + stdTask.SjTaskDesc + "</sJTaskDesc>";
             requestXml = requestXml + "                 <standardJob>" + stdTask.StandardJob + "</standardJob>";
-            requestXml = requestXml + "                 <completeInstr>" + stdTask.CompleteInstr + "</completeInstr>";
             requestXml = requestXml + "                 <districtCode>" + stdTask.DistrictCode + "</districtCode>";
             requestXml = requestXml + "                 <safetyInstr>" + stdTask.SafetyInstr + "</safetyInstr>";
+            requestXml = requestXml + "                 <unitOfWork>" + stdTask.UnitOfWork + "</unitOfWork>";
+            if (Utils.IsTrue(stdTask.EstimatedMachHrsSpecified))
+                requestXml = requestXml + "                 <estimatedMachHrs>" + stdTask.EstimatedMachHrs + "</estimatedMachHrs>";
+            requestXml = requestXml + "                 <sJTaskNo>" + stdTask.SjTaskNo + "</sJTaskNo>";
+            requestXml = requestXml + "                 <sJTaskDesc>" + stdTask.SjTaskDesc + "</sJTaskDesc>";
+            requestXml = requestXml + "                 <complTextCode>" + stdTask.ComplTextCode + "</complTextCode>";
+            requestXml = requestXml + "                 <jobDescCode>" + stdTask.JobDescCode + "</jobDescCode>";
+            requestXml = requestXml + "                 <workGroup>" + stdTask.WorkGroup + "</workGroup>";
+            requestXml = requestXml + "                 <assignPerson>" + stdTask.AssignPerson + "</assignPerson>";
+            requestXml = requestXml + "                 <completeInstr>" + stdTask.CompleteInstr + "</completeInstr>";
+            if (Utils.IsTrue(stdTask.EstimatedDurationsHrsSpecified))
+                requestXml = requestXml + "                 <estimatedDurationsHrs>" + stdTask.EstimatedDurationsHrs + "</estimatedDurationsHrs>";   
+            if(Utils.IsTrue(stdTask.UnitsRequiredSpecified))
+                requestXml = requestXml + "                 <unitsRequired>" + stdTask.UnitsRequired + "</unitsRequired>";
+            if(Utils.IsTrue(stdTask.UnitsPerDaySpecified))
+                requestXml = requestXml + "                 <unitsPerDay>" + stdTask.UnitsPerDay + "</unitsPerDay>";
             requestXml = requestXml + "				</dto>";
             requestXml = requestXml + "			</data>";
             requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
@@ -816,6 +827,8 @@ namespace EllipseStandardJobsClassLibrary
         {
 
             ef.InitiatePostConnection();
+            if (!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
+                stdTask.SjTaskNo = stdTask.SjTaskNo.PadLeft(3, '0');
 
             var requestXml = "";
             requestXml = requestXml + "<interaction>";
@@ -827,16 +840,25 @@ namespace EllipseStandardJobsClassLibrary
             requestXml = requestXml + "				<operation>create</operation>";
             requestXml = requestXml + "				<returnWarnings>true</returnWarnings>";
             requestXml = requestXml + "				<dto  uuid=\"" + Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
-            requestXml = requestXml + "                 <complTextCode>" + stdTask.ComplTextCode + "</complTextCode>";
-            requestXml = requestXml + "                 <sJTaskNo>" + stdTask.SjTaskNo + "</sJTaskNo>";
-            requestXml = requestXml + "                 <jobDescCode>" + stdTask.JobDescCode + "</jobDescCode>";
-            requestXml = requestXml + "                 <assignPerson>" + stdTask.AssignPerson + "</assignPerson>";
-            requestXml = requestXml + "                 <workGroup>" + stdTask.WorkGroup + "</workGroup>";
-            requestXml = requestXml + "                 <sJTaskDesc>" + stdTask.SjTaskDesc + "</sJTaskDesc>";
             requestXml = requestXml + "                 <standardJob>" + stdTask.StandardJob + "</standardJob>";
-            requestXml = requestXml + "                 <completeInstr>" + stdTask.CompleteInstr + "</completeInstr>";
             requestXml = requestXml + "                 <districtCode>" + stdTask.DistrictCode + "</districtCode>";
             requestXml = requestXml + "                 <safetyInstr>" + stdTask.SafetyInstr + "</safetyInstr>";
+            requestXml = requestXml + "                 <unitOfWork>" + stdTask.UnitOfWork + "</unitOfWork>";
+            if (Utils.IsTrue(stdTask.EstimatedMachHrsSpecified))
+                requestXml = requestXml + "                 <estimatedMachHrs>" + stdTask.EstimatedMachHrs + "</estimatedMachHrs>";
+            requestXml = requestXml + "                 <sJTaskNo>" + stdTask.SjTaskNo + "</sJTaskNo>";
+            requestXml = requestXml + "                 <sJTaskDesc>" + stdTask.SjTaskDesc + "</sJTaskDesc>";
+            requestXml = requestXml + "                 <complTextCode>" + stdTask.ComplTextCode + "</complTextCode>";
+            requestXml = requestXml + "                 <jobDescCode>" + stdTask.JobDescCode + "</jobDescCode>";
+            requestXml = requestXml + "                 <workGroup>" + stdTask.WorkGroup + "</workGroup>";
+            requestXml = requestXml + "                 <assignPerson>" + stdTask.AssignPerson + "</assignPerson>";
+            requestXml = requestXml + "                 <completeInstr>" + stdTask.CompleteInstr + "</completeInstr>";
+            if (Utils.IsTrue(stdTask.EstimatedDurationsHrsSpecified))
+                requestXml = requestXml + "                 <estimatedDurationsHrs>" + stdTask.EstimatedDurationsHrs + "</estimatedDurationsHrs>";
+            if (Utils.IsTrue(stdTask.UnitsRequiredSpecified))
+                requestXml = requestXml + "                 <unitsRequired>" + stdTask.UnitsRequired + "</unitsRequired>";
+            if (Utils.IsTrue(stdTask.UnitsPerDaySpecified))
+                requestXml = requestXml + "                 <unitsPerDay>" + stdTask.UnitsPerDay + "</unitsPerDay>";
             requestXml = requestXml + "				</dto>";
             requestXml = requestXml + "			</data>";
             requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
@@ -862,7 +884,8 @@ namespace EllipseStandardJobsClassLibrary
 
         public static void SetStandardJobTaskText(string urlService, string districtCode, string position, bool returnWarnings, StandardJobTask stdTask)
         {
-            //comentario
+            if (!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
+                stdTask.SjTaskNo = stdTask.SjTaskNo.PadLeft(3, '0');//comentario
             var stdTextId = "JI" + districtCode + stdTask.StandardJob + stdTask.SjTaskNo;
 
             var stdTextCopc = StdText.GetCustomOpContext(districtCode, position, 100, returnWarnings);
@@ -893,6 +916,8 @@ namespace EllipseStandardJobsClassLibrary
 
             requestTaskReq.districtCode = taskReq.districtCode ?? requestTaskReq.districtCode;
             requestTaskReq.stdJobNo = taskReq.standardJob ?? requestTaskReq.stdJobNo;
+            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
+                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
             requestTaskReq.SJTaskNo = taskReq.sJTaskNo ?? requestTaskReq.SJTaskNo;
 
             requestTaskReq.resourceClass = taskReq.reqCode.Substring(0, 1);
@@ -918,7 +943,9 @@ namespace EllipseStandardJobsClassLibrary
 
             requestTaskReq.districtCode = taskReq.districtCode ?? requestTaskReq.districtCode;
             requestTaskReq.stdJobNo = taskReq.standardJob ?? requestTaskReq.stdJobNo;
-            requestTaskReq.SJTaskNo = taskReq.standardJob ?? requestTaskReq.stdJobNo;
+            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
+                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
+            requestTaskReq.SJTaskNo = taskReq.sJTaskNo ?? requestTaskReq.SJTaskNo;
 
             requestTaskReq.seqNo = taskReq.seqNo ?? requestTaskReq.seqNo;
             requestTaskReq.stockCode = taskReq.reqCode.Substring(1);
@@ -949,11 +976,14 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<ResourceReqmntsServiceModifyRequestDTO>();
+
+            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
+                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new ResourceReqmntsServiceModifyRequestDTO
             {
                 districtCode = taskReq.districtCode,
                 stdJobNo = taskReq.standardJob,
-                SJTaskNo = Convert.ToString(Convert.ToDecimal(taskReq.sJTaskNo), CultureInfo.InvariantCulture),
+                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? taskReq.sJTaskNo : null ,
                 resourceClass = taskReq.reqCode.Substring(0, 1),
                 resourceCode = taskReq.reqCode.Substring(1),
                 quantityRequired = taskReq.qtyReq != null ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal),
@@ -976,14 +1006,16 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<MaterialReqmntsService.MaterialReqmntsServiceModifyRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
+                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new MaterialReqmntsService.MaterialReqmntsServiceModifyRequestDTO
             {
                 districtCode = taskReq.districtCode,
                 stdJobNo = taskReq.standardJob,
-                SJTaskNo = Convert.ToString(Convert.ToDecimal(taskReq.sJTaskNo), CultureInfo.InvariantCulture),
+                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? taskReq.sJTaskNo : null,
                 seqNo = taskReq.seqNo,
                 stockCode = taskReq.reqCode.Substring(1),
-                unitQuantityReqd = taskReq.qtyReq != null ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal),
+                unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.qtyReq) ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal),
                 unitQuantityReqdSpecified = true,
                 catalogueFlag = true,
                 catalogueFlagSpecified = true,
@@ -1011,6 +1043,8 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<ResourceReqmntsServiceDeleteRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
+                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new ResourceReqmntsServiceDeleteRequestDTO()
             {
                 districtCode = taskReq.districtCode,
@@ -1034,6 +1068,8 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<MaterialReqmntsService.MaterialReqmntsServiceDeleteRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
+                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new MaterialReqmntsService.MaterialReqmntsServiceDeleteRequestDTO
             {
                 districtCode = taskReq.districtCode,
@@ -1059,11 +1095,13 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<EquipmentReqmntsServiceCreateRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
+                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new EquipmentReqmntsServiceCreateRequestDTO
             {
                 districtCode = taskReq.districtCode,
                 stdJobNo = taskReq.standardJob,
-                SJTaskNo = Convert.ToString(Convert.ToDecimal(taskReq.sJTaskNo), CultureInfo.InvariantCulture),
+                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? taskReq.sJTaskNo : null,
                 seqNo = taskReq.seqNo,
                 eqptType = taskReq.reqCode.Substring(1),
                 unitQuantityReqd = taskReq.qtyReq != null ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal),
@@ -1092,11 +1130,13 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<EquipmentReqmntsServiceModifyRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
+                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new EquipmentReqmntsServiceModifyRequestDTO
             {
                 districtCode = taskReq.districtCode,
                 stdJobNo = taskReq.standardJob,
-                SJTaskNo = Convert.ToString(Convert.ToDecimal(taskReq.sJTaskNo), CultureInfo.InvariantCulture),
+                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? taskReq.sJTaskNo : null,
                 seqNo = taskReq.seqNo,
                 eqptType = taskReq.reqCode.Substring(1),
                 unitQuantityReqd = taskReq.qtyReq != null ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal),
@@ -1125,6 +1165,8 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<EquipmentReqmntsServiceDeleteRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
+                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new EquipmentReqmntsServiceDeleteRequestDTO
             {
                 districtCode = taskReq.districtCode,
@@ -1345,6 +1387,7 @@ namespace EllipseStandardJobsClassLibrary
             //
             var item001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "001");
             var item002 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "002", "001");
+            var item003 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "003", "001");
             var item005 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "005", "001");
             var item006 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "006", "001");
             var item007 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "007", "001");
@@ -1368,12 +1411,14 @@ namespace EllipseStandardJobsClassLibrary
             var item026 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "026", "001");
             var item029 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "029", "001");
             var item030 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "030", "001");
+            var item031 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "031", "001");
 
 
 
             stdRefCodes.WorkRequest = item001.RefCode; //001_9001
             stdRefCodes.ComentariosDuraciones = item002.RefCode; //002_9001
             stdRefCodes.ComentariosDuracionesText = item002.StdText; //002_9001
+            stdRefCodes.EmpleadoId = item003.RefCode; //003_001
             stdRefCodes.NroComponente = item005.RefCode; //005_9001
             stdRefCodes.P1EqLivMed = item006.RefCode; //006_001
             stdRefCodes.P2EqMovilMinero = item007.RefCode; //007_9001
@@ -1399,6 +1444,7 @@ namespace EllipseStandardJobsClassLibrary
             stdRefCodes.FechaEntrega = item026.RefCode; //026_001
             stdRefCodes.RelacionarEv = item029.RefCode; //029_001
             stdRefCodes.Departamento = item030.RefCode; //030_9001
+            stdRefCodes.Localizacion = item031.RefCode; //031_9001
 
             newef.CloseConnection();
             return stdRefCodes;
@@ -1412,6 +1458,7 @@ namespace EllipseStandardJobsClassLibrary
 
             var item001 = new ReferenceCodeItem(entityType, entityValue, "001", "001", stdJobReferenceCodes.WorkRequest);
             var item002 = new ReferenceCodeItem(entityType, entityValue, "002", "001", stdJobReferenceCodes.ComentariosDuraciones, null, stdJobReferenceCodes.ComentariosDuracionesText);
+            var item003 = new ReferenceCodeItem(entityType, entityValue, "003", "001", stdJobReferenceCodes.EmpleadoId);
             var item005 = new ReferenceCodeItem(entityType, entityValue, "005", "001", stdJobReferenceCodes.NroComponente);
             var item006 = new ReferenceCodeItem(entityType, entityValue, "006", "001", stdJobReferenceCodes.P1EqLivMed);
             var item007 = new ReferenceCodeItem(entityType, entityValue, "007", "001", stdJobReferenceCodes.P2EqMovilMinero);
@@ -1435,9 +1482,11 @@ namespace EllipseStandardJobsClassLibrary
             var item026 = new ReferenceCodeItem(entityType, entityValue, "026", "001", stdJobReferenceCodes.FechaEntrega);
             var item029 = new ReferenceCodeItem(entityType, entityValue, "029", "001", stdJobReferenceCodes.RelacionarEv);
             var item030 = new ReferenceCodeItem(entityType, entityValue, "030", "001", stdJobReferenceCodes.Departamento);
+            var item031 = new ReferenceCodeItem(entityType, entityValue, "031", "001", stdJobReferenceCodes.Localizacion);
 
             itemList.Add(item001);
             itemList.Add(item002);
+            itemList.Add(item003);
             itemList.Add(item005);
             itemList.Add(item006);
             itemList.Add(item007);
@@ -1461,6 +1510,7 @@ namespace EllipseStandardJobsClassLibrary
             itemList.Add(item026);
             itemList.Add(item029);
             itemList.Add(item030);
+            itemList.Add(item031);
 
             var refOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
 

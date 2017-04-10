@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseStockCodesExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>0.0.0.6</ApplicationVersion>
+    <ApplicationVersion>0.0.0.11</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -164,8 +164,8 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -256,10 +256,6 @@
       <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
       <Name>EllipseCommonsClassLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseRequisitionClassLibrary\EllipseRequisitionClassLibrary.csproj">
-      <Project>{8cfff4e0-96c9-4aef-a5dc-8c27057810e4}</Project>
-      <Name>EllipseRequisitionClassLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -269,10 +265,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>EllipseStockCodesExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>A9CB6E593FBDAA28ADD991D7D400B7AEFCC13BFD</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>71D178952DC9DEDC686A690839477D40D372A71D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

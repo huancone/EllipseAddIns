@@ -60,9 +60,11 @@
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.menu1 = this.Factory.CreateRibbonMenu();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkRequest.SuspendLayout();
-            this.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -73,10 +75,10 @@
             // 
             // grpWorkRequest
             // 
+            this.grpWorkRequest.Items.Add(this.box1);
             this.grpWorkRequest.Items.Add(this.menuFormat);
             this.grpWorkRequest.Items.Add(this.drpEnviroment);
-            this.grpWorkRequest.Items.Add(this.menuActions);
-            this.grpWorkRequest.Label = "WorkRequest v1.0.1";
+            this.grpWorkRequest.Label = "WorkRequest";
             this.grpWorkRequest.Name = "grpWorkRequest";
             // 
             // menuFormat
@@ -255,6 +257,18 @@
             this.menu1.Label = "menu1";
             this.menu1.Name = "menu1";
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuActions);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -265,7 +279,8 @@
             this.tabEllipse.PerformLayout();
             this.grpWorkRequest.ResumeLayout(false);
             this.grpWorkRequest.PerformLayout();
-            this.ResumeLayout(false);
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -297,6 +312,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateRefCodes;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatMantto;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection
