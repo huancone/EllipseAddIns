@@ -158,8 +158,8 @@ namespace EllipseWorkOrdersClassLibrary
         //public string WorkRequestText;//001_9001
         public string ComentariosDuraciones;//002_9001
         public string ComentariosDuracionesText;//002_9001
-        //public string Comentarios;//003_9001
-        //public string ComentariosText;//003_9001
+        public string EmpleadoId;//003_9001 //Antiguamente Comentario
+        //public string ComentariosText;//003_9001 //Deshabilitado
         //public string ComentarioApertura;//004_9001
         //public string ComentarioAperturaText;//004_9001
         public string NroComponente;//005_9001

@@ -16,6 +16,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using EquipmentReqmntsService = EllipseStandardJobsClassLibrary.EquipmentReqmntsService;
 using EllipseStdTextClassLibrary;
+// ReSharper disable UseNullPropagation
 
 namespace EllipseStandardJobsExcelAddIn
 {
@@ -41,7 +42,7 @@ namespace EllipseStandardJobsExcelAddIn
         private const int ResultColumn02 = 26;
         private const int ResultColumn03 = 14;
         private const int ResultColumnQualRev = 26;
-        private const int ResultColumn05 = 33;
+        private const int ResultColumn05 = 35;
         private const string TableName01 = "StandardJobsTable";
         private const string TableName02 = "SJTasksTable";
         private const string TableName03 = "SJRequirementsTable";
@@ -101,6 +102,8 @@ namespace EllipseStandardJobsExcelAddIn
                 _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
+
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 _quickReview = true;
                 _thread = new Thread(ReviewStandardJobs);
 
@@ -786,7 +789,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
                 // 
                 #endregion
-
+                //CONSTRUYO LA HOJA 5 - REF CODE
                 // ReSharper disable once UseIndexedProperty
                 _excelApp.ActiveWorkbook.Sheets.get_Item(5).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName05;
@@ -838,31 +841,33 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell(5, TitleRow05).Value = "Work Request";
                 _cells.GetCell(6, TitleRow05).Value = "Comentarios Duraciones";
                 _cells.GetCell(7, TitleRow05).Value = "Com.Dur. Text";
-                _cells.GetCell(8, TitleRow05).Value = "Nro. Componente";
-                _cells.GetCell(9, TitleRow05).Value = "P1. Eq.Liv-Med";
-                _cells.GetCell(10, TitleRow05).Value = "P2. Eq.Movil-Minero";
-                _cells.GetCell(11, TitleRow05).Value = "P3. Manejo Sust.Peligrosa";
-                _cells.GetCell(12, TitleRow05).Value = "P4. Guardas Equipo";
-                _cells.GetCell(13, TitleRow05).Value = "P5. Aislamiento";
-                _cells.GetCell(14, TitleRow05).Value = "P6. Trabajos Altura";
-                _cells.GetCell(15, TitleRow05).Value = "P7. Manejo Cargas";
-                _cells.GetCell(16, TitleRow05).Value = "Proyecto ICN";
-                _cells.GetCell(17, TitleRow05).Value = "Reembolsable";
-                _cells.GetCell(18, TitleRow05).Value = "Fecha No Conforme";
-                _cells.GetCell(19, TitleRow05).Value = "Fecha NC Text";
-                _cells.GetCell(20, TitleRow05).Value = "No Conforme?";
-                _cells.GetCell(21, TitleRow05).Value = "Fecha Ejecución";
-                _cells.GetCell(22, TitleRow05).Value = "Hora Ingreso";
-                _cells.GetCell(23, TitleRow05).Value = "Hora Salida";
-                _cells.GetCell(24, TitleRow05).Value = "Nombre Buque";
-                _cells.GetCell(25, TitleRow05).Value = "Calif. Encuesta";
-                _cells.GetCell(26, TitleRow05).Value = "Tarea Crítica?";
-                _cells.GetCell(27, TitleRow05).Value = "Garantía";
-                _cells.GetCell(28, TitleRow05).Value = "Garantía Text";
-                _cells.GetCell(29, TitleRow05).Value = "Cód. Certificación";
-                _cells.GetCell(30, TitleRow05).Value = "Fecha Entrega";
-                _cells.GetCell(31, TitleRow05).Value = "Relacionar EV";
-                _cells.GetCell(32, TitleRow05).Value = "Departamento";
+                _cells.GetCell(8, TitleRow05).Value = "EmpleadoId";
+                _cells.GetCell(9, TitleRow05).Value = "Nro. Componente";
+                _cells.GetCell(10, TitleRow05).Value = "P1. Eq.Liv-Med";
+                _cells.GetCell(11, TitleRow05).Value = "P2. Eq.Movil-Minero";
+                _cells.GetCell(12, TitleRow05).Value = "P3. Manejo Sust.Peligrosa";
+                _cells.GetCell(13, TitleRow05).Value = "P4. Guardas Equipo";
+                _cells.GetCell(14, TitleRow05).Value = "P5. Aislamiento";
+                _cells.GetCell(15, TitleRow05).Value = "P6. Trabajos Altura";
+                _cells.GetCell(16, TitleRow05).Value = "P7. Manejo Cargas";
+                _cells.GetCell(17, TitleRow05).Value = "Proyecto ICN";
+                _cells.GetCell(18, TitleRow05).Value = "Reembolsable";
+                _cells.GetCell(19, TitleRow05).Value = "Fecha No Conforme";
+                _cells.GetCell(20, TitleRow05).Value = "Fecha NC Text";
+                _cells.GetCell(21, TitleRow05).Value = "No Conforme?";
+                _cells.GetCell(22, TitleRow05).Value = "Fecha Ejecución";
+                _cells.GetCell(23, TitleRow05).Value = "Hora Ingreso";
+                _cells.GetCell(24, TitleRow05).Value = "Hora Salida";
+                _cells.GetCell(25, TitleRow05).Value = "Nombre Buque";
+                _cells.GetCell(26, TitleRow05).Value = "Calif. Encuesta";
+                _cells.GetCell(27, TitleRow05).Value = "Tarea Crítica?";
+                _cells.GetCell(28, TitleRow05).Value = "Garantía";
+                _cells.GetCell(29, TitleRow05).Value = "Garantía Text";
+                _cells.GetCell(30, TitleRow05).Value = "Cód. Certificación";
+                _cells.GetCell(31, TitleRow05).Value = "Fecha Entrega";
+                _cells.GetCell(32, TitleRow05).Value = "Relacionar EV";
+                _cells.GetCell(33, TitleRow05).Value = "Departamento";
+                _cells.GetCell(34, TitleRow05).Value = "Localización";
 
                 _cells.GetCell(ResultColumn05, TitleRow05).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn05, TitleRow05).Style = StyleConstants.TitleResult;
@@ -912,6 +917,8 @@ namespace EllipseStandardJobsExcelAddIn
             {
                 try
                 {
+                    //Para resetear el estilo
+                    _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
                     //GENERAL
                     _cells.GetCell(1, i).Value = "" + stdJob.DistrictCode;
                     _cells.GetCell(2, i).Value = "" + stdJob.WorkGroup;
@@ -966,9 +973,10 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(36, i).Value = "" + stdJob.JobCode8;
                     _cells.GetCell(37, i).Value = "" + stdJob.JobCode9;
                     _cells.GetCell(38, i).Value = "" + stdJob.JobCode10;
-
+                    
                     var stdTextId = "SJ" + stdJob.DistrictCode + stdJob.StandardJobNo;
-                    _cells.GetCell(39, i).Value = StdText.GetText(urlService, stOpContext, stdTextId);
+                    var extendedDescription = StdText.GetText(urlService, stOpContext, stdTextId);
+                    _cells.GetCell(39, i).Value = extendedDescription;
                 }
                 catch (Exception ex)
                 {
@@ -995,8 +1003,11 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
-            var i = TitleRow01 + 1;
 
+            var urlService = _eFunctions.GetServicesUrl(_eFunctions.CurrentEnviroment);
+            var stOpContext = StdText.GetStdTextOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
+
+            var i = TitleRow01 + 1;
             while (!string.IsNullOrEmpty("" + _cells.GetCell(3, i).Value))
             {
                 try
@@ -1011,6 +1022,8 @@ namespace EllipseStandardJobsExcelAddIn
                     var stdJob = StandardJobActions.FetchStandardJob(_eFunctions, districtCode, workGroup, stdJobNo);
                     if (stdJob != null)
                     {
+                        //Para resetear el estilo
+                        _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
                         //GENERAL
                         _cells.GetCell(1, i).Value = "" + stdJob.DistrictCode;
                         _cells.GetCell(2, i).Value = "" + stdJob.WorkGroup;
@@ -1064,11 +1077,9 @@ namespace EllipseStandardJobsExcelAddIn
                         _cells.GetCell(36, i).Value = "" + stdJob.JobCode8;
                         _cells.GetCell(37, i).Value = "" + stdJob.JobCode9;
                         _cells.GetCell(38, i).Value = "" + stdJob.JobCode10;
-
-                        _cells.GetCell(39, i).Value =
-                        StdText.GetText(_eFunctions.GetServicesUrl(_eFunctions.CurrentEnviroment),
-                            StdText.GetStdTextOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true),
-                            "SJ" + stdJob.DistrictCode + stdJob.StandardJobNo);
+                        var stdTextId = "SJ" + stdJob.DistrictCode + stdJob.StandardJobNo;
+                        var extendedDescription = StdText.GetText(urlService, stOpContext, stdTextId);
+                        _cells.GetCell(39, i).Value = extendedDescription;
                     }
                     else
                     {
@@ -1127,7 +1138,8 @@ namespace EllipseStandardJobsExcelAddIn
 
                     foreach (var task in taskList)
                     {
-
+                        //Para resetear el estilo
+                        _cells.GetRange(1, i, ResultColumn02, i).Style = StyleConstants.Normal;
                         //GENERAL
                         _cells.GetCell(1, i).Value = "" + task.DistrictCode;
                         _cells.GetCell(2, i).Value = "" + task.WorkGroup;
@@ -1212,10 +1224,12 @@ namespace EllipseStandardJobsExcelAddIn
             var listJobs = StandardJobActions.FetchStandardJob(_eFunctions, districtCode, workGroup, true);
 
 
-            foreach (StandardJob stdJob in listJobs)
+            foreach (var stdJob in listJobs)
             {
                 try
                 {
+                    //Para resetear el estilo
+                    _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
                     //GENERAL
                     _cells.GetCell(1, i).Value = "" + stdJob.DistrictCode;
                     _cells.GetCell(2, i).Value = "" + stdJob.WorkGroup;
@@ -1623,10 +1637,14 @@ namespace EllipseStandardJobsExcelAddIn
                         ComplTextCode = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value),
                         AssignPerson = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value),
                         EstimatedMachHrs = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value),
+                        EstimatedMachHrsSpecified = string.IsNullOrWhiteSpace("" + _cells.GetCell(13, i).Value) ? "N" : "Y",
                         UnitOfWork = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value),
                         UnitsRequired = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value),
+                        UnitsRequiredSpecified = string.IsNullOrWhiteSpace("" + _cells.GetCell(15, i).Value) ? "N" : "Y",
                         UnitsPerDay = _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value),
+                        UnitsPerDaySpecified = string.IsNullOrWhiteSpace("" + _cells.GetCell(16, i).Value) ? "N" : "Y",
                         EstimatedDurationsHrs = _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value),
+                        EstimatedDurationsHrsSpecified = string.IsNullOrWhiteSpace("" + _cells.GetCell(17, i).Value) ? "N" : "Y",
                         NoLabor = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value),
                         NoMaterial = _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value),
                         AplEquipmentGrpId = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
@@ -1890,7 +1908,8 @@ namespace EllipseStandardJobsExcelAddIn
                     taskReq.workGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     taskReq.standardJob = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
                     //STD_JOB_DESC	
-                    taskReq.sJTaskNo = Convert.ToInt32(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value)).ToString();
+                    taskReq.sJTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value);
+                    taskReq.sJTaskNo = string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? "001" : taskReq.sJTaskNo;
                     taskReq.sJTaskDesc = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
                     string action = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);
                     taskReq.reqType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
@@ -2177,37 +2196,39 @@ namespace EllipseStandardJobsExcelAddIn
                     if (std.StandardJobNo == null)
                         throw new Exception("ESTANDAR NO ENCONTRADO");
 
-                    var stdRefCodes = StandardJobActions.GetStandardJobReferenceCodes(_eFunctions, urlService, opSheet, district, standardJobNo);
+                    StandardJobReferenceCodes stdRefCodes = StandardJobActions.GetStandardJobReferenceCodes(_eFunctions, urlService, opSheet, district, standardJobNo);
                     //GENERAL
                     _cells.GetCell(4, i).Value = "'" + std.StandardJobDescription;
                     _cells.GetCell(5, i).Value = "'" + stdRefCodes.WorkRequest;
                     _cells.GetCell(6, i).Value = "'" + stdRefCodes.ComentariosDuraciones;
                     _cells.GetCell(7, i).Value = "'" + stdRefCodes.ComentariosDuracionesText;
-                    _cells.GetCell(8, i).Value = "'" + stdRefCodes.NroComponente;
-                    _cells.GetCell(9, i).Value = "'" + stdRefCodes.P1EqLivMed;
-                    _cells.GetCell(10, i).Value = "'" + stdRefCodes.P2EqMovilMinero;
-                    _cells.GetCell(11, i).Value = "'" + stdRefCodes.P3ManejoSustPeligrosa;
-                    _cells.GetCell(12, i).Value = "'" + stdRefCodes.P4GuardasEquipo;
-                    _cells.GetCell(13, i).Value = "'" + stdRefCodes.P5Aislamiento;
-                    _cells.GetCell(14, i).Value = "'" + stdRefCodes.P6TrabajosAltura;
-                    _cells.GetCell(15, i).Value = "'" + stdRefCodes.P7ManejoCargas;
-                    _cells.GetCell(16, i).Value = "'" + stdRefCodes.ProyectoIcn;
-                    _cells.GetCell(17, i).Value = "'" + stdRefCodes.Reembolsable;
-                    _cells.GetCell(18, i).Value = "'" + stdRefCodes.FechaNoConforme;
-                    _cells.GetCell(19, i).Value = "'" + stdRefCodes.FechaNoConformeText;
-                    _cells.GetCell(20, i).Value = "'" + stdRefCodes.NoConforme;
-                    _cells.GetCell(21, i).Value = "'" + stdRefCodes.FechaEjecucion;
-                    _cells.GetCell(22, i).Value = "'" + stdRefCodes.HoraIngreso;
-                    _cells.GetCell(23, i).Value = "'" + stdRefCodes.HoraSalida;
-                    _cells.GetCell(24, i).Value = "'" + stdRefCodes.NombreBuque;
-                    _cells.GetCell(25, i).Value = "'" + stdRefCodes.CalificacionEncuesta;
-                    _cells.GetCell(26, i).Value = "'" + stdRefCodes.TareaCritica;
-                    _cells.GetCell(27, i).Value = "'" + stdRefCodes.Garantia;
-                    _cells.GetCell(28, i).Value = "'" + stdRefCodes.GarantiaText;
-                    _cells.GetCell(29, i).Value = "'" + stdRefCodes.CodigoCertificacion;
-                    _cells.GetCell(30, i).Value = "'" + stdRefCodes.FechaEntrega;
-                    _cells.GetCell(31, i).Value = "'" + stdRefCodes.RelacionarEv;
-                    _cells.GetCell(32, i).Value = "'" + stdRefCodes.Departamento;
+                    _cells.GetCell(8, i).Value = "'" + stdRefCodes.EmpleadoId;
+                    _cells.GetCell(9, i).Value = "'" + stdRefCodes.NroComponente;
+                    _cells.GetCell(10, i).Value = "'" + stdRefCodes.P1EqLivMed;
+                    _cells.GetCell(11, i).Value = "'" + stdRefCodes.P2EqMovilMinero;
+                    _cells.GetCell(12, i).Value = "'" + stdRefCodes.P3ManejoSustPeligrosa;
+                    _cells.GetCell(13, i).Value = "'" + stdRefCodes.P4GuardasEquipo;
+                    _cells.GetCell(14, i).Value = "'" + stdRefCodes.P5Aislamiento;
+                    _cells.GetCell(15, i).Value = "'" + stdRefCodes.P6TrabajosAltura;
+                    _cells.GetCell(16, i).Value = "'" + stdRefCodes.P7ManejoCargas;
+                    _cells.GetCell(17, i).Value = "'" + stdRefCodes.ProyectoIcn;
+                    _cells.GetCell(18, i).Value = "'" + stdRefCodes.Reembolsable;
+                    _cells.GetCell(19, i).Value = "'" + stdRefCodes.FechaNoConforme;
+                    _cells.GetCell(20, i).Value = "'" + stdRefCodes.FechaNoConformeText;
+                    _cells.GetCell(21, i).Value = "'" + stdRefCodes.NoConforme;
+                    _cells.GetCell(22, i).Value = "'" + stdRefCodes.FechaEjecucion;
+                    _cells.GetCell(23, i).Value = "'" + stdRefCodes.HoraIngreso;
+                    _cells.GetCell(24, i).Value = "'" + stdRefCodes.HoraSalida;
+                    _cells.GetCell(25, i).Value = "'" + stdRefCodes.NombreBuque;
+                    _cells.GetCell(26, i).Value = "'" + stdRefCodes.CalificacionEncuesta;
+                    _cells.GetCell(27, i).Value = "'" + stdRefCodes.TareaCritica;
+                    _cells.GetCell(28, i).Value = "'" + stdRefCodes.Garantia;
+                    _cells.GetCell(29, i).Value = "'" + stdRefCodes.GarantiaText;
+                    _cells.GetCell(30, i).Value = "'" + stdRefCodes.CodigoCertificacion;
+                    _cells.GetCell(31, i).Value = "'" + stdRefCodes.FechaEntrega;
+                    _cells.GetCell(32, i).Value = "'" + stdRefCodes.RelacionarEv;
+                    _cells.GetCell(33, i).Value = "'" + stdRefCodes.Departamento;
+                    _cells.GetCell(34, i).Value = "'" + stdRefCodes.Localizacion;
 
                     _cells.GetCell(ResultColumn05, i).Value = "CONSULTADO";
                     _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Success;
@@ -2290,118 +2311,66 @@ namespace EllipseStandardJobsExcelAddIn
                     var standardJob = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value);
                     var sjRefCodes = new StandardJobReferenceCodes()
                     {
-                        WorkRequest =
-                            Utils.IsTrue(_cells.GetCell(5, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)
-                                : null,
-                        ComentariosDuraciones =
-                            Utils.IsTrue(_cells.GetCell(6, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value)
-                                : null,
-                        ComentariosDuracionesText =
-                            Utils.IsTrue(_cells.GetCell(7, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value)
-                                : null,
-                        NroComponente =
-                            Utils.IsTrue(_cells.GetCell(8, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)
-                                : null,
-                        P1EqLivMed =
-                            Utils.IsTrue(_cells.GetCell(9, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)
-                                : null,
-                        P2EqMovilMinero =
-                            Utils.IsTrue(_cells.GetCell(10, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)
-                                : null,
-                        P3ManejoSustPeligrosa =
-                            Utils.IsTrue(_cells.GetCell(11, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)
-                                : null,
-                        P4GuardasEquipo =
-                            Utils.IsTrue(_cells.GetCell(12, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)
-                                : null,
-                        P5Aislamiento =
-                            Utils.IsTrue(_cells.GetCell(13, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value)
-                                : null,
-                        P6TrabajosAltura =
-                            Utils.IsTrue(_cells.GetCell(14, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value)
-                                : null,
-                        P7ManejoCargas =
-                            Utils.IsTrue(_cells.GetCell(15, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value)
-                                : null,
-                        ProyectoIcn =
-                            Utils.IsTrue(_cells.GetCell(16, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value)
-                                : null,
-                        Reembolsable =
-                            Utils.IsTrue(_cells.GetCell(17, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value)
-                                : null,
-                        FechaNoConforme =
-                            Utils.IsTrue(_cells.GetCell(18, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value)
-                                : null,
-                        FechaNoConformeText =
-                            Utils.IsTrue(_cells.GetCell(19, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value)
-                                : null,
-                        NoConforme =
-                            Utils.IsTrue(_cells.GetCell(20, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value)
-                                : null,
-                        FechaEjecucion =
-                            Utils.IsTrue(_cells.GetCell(21, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value)
-                                : null,
-                        HoraIngreso =
-                            Utils.IsTrue(_cells.GetCell(22, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value)
-                                : null,
-                        HoraSalida =
-                            Utils.IsTrue(_cells.GetCell(23, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value)
-                                : null,
-                        NombreBuque =
-                            Utils.IsTrue(_cells.GetCell(24, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value)
-                                : null,
-                        CalificacionEncuesta =
-                            Utils.IsTrue(_cells.GetCell(25, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value)
-                                : null,
-                        TareaCritica =
-                            Utils.IsTrue(_cells.GetCell(26, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value)
-                                : null,
-                        Garantia =
-                            Utils.IsTrue(_cells.GetCell(27, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value)
-                                : null,
-                        GarantiaText =
-                            Utils.IsTrue(_cells.GetCell(28, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value)
-                                : null,
-                        CodigoCertificacion =
-                            Utils.IsTrue(_cells.GetCell(29, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)
-                                : null,
-                        FechaEntrega =
-                            Utils.IsTrue(_cells.GetCell(30, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value)
-                                : null,
-                        RelacionarEv =
-                            Utils.IsTrue(_cells.GetCell(31, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value)
-                                : null,
-                        Departamento =
-                            Utils.IsTrue(_cells.GetCell(32, validationRow).Value)
-                                ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value)
-                                : null
+                        WorkRequest = Utils.IsTrue(_cells.GetCell(5, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null,
+                        ComentariosDuraciones = Utils.IsTrue(_cells.GetCell(6, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null,
+                        ComentariosDuracionesText = Utils.IsTrue(_cells.GetCell(7, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null,
+                        EmpleadoId = Utils.IsTrue(_cells.GetCell(8, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null,
+                        NroComponente = Utils.IsTrue(_cells.GetCell(9, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null,
+                        P1EqLivMed = Utils.IsTrue(_cells.GetCell(10, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null,
+                        P2EqMovilMinero = Utils.IsTrue(_cells.GetCell(11, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null,
+                        P3ManejoSustPeligrosa = Utils.IsTrue(_cells.GetCell(12, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null,
+                        P4GuardasEquipo = Utils.IsTrue(_cells.GetCell(13, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null,
+                        P5Aislamiento = Utils.IsTrue(_cells.GetCell(14, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null,
+                        P6TrabajosAltura = Utils.IsTrue(_cells.GetCell(15, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
+                        P7ManejoCargas = Utils.IsTrue(_cells.GetCell(16, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
+                        ProyectoIcn = Utils.IsTrue(_cells.GetCell(17, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
+                        Reembolsable = Utils.IsTrue(_cells.GetCell(18, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
+                        FechaNoConforme = Utils.IsTrue(_cells.GetCell(19, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
+                        FechaNoConformeText = Utils.IsTrue(_cells.GetCell(20, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
+                        NoConforme = Utils.IsTrue(_cells.GetCell(21, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
+                        FechaEjecucion = Utils.IsTrue(_cells.GetCell(22, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null,
+                        HoraIngreso = Utils.IsTrue(_cells.GetCell(23, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null,
+                        HoraSalida = Utils.IsTrue(_cells.GetCell(24, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
+                        NombreBuque = Utils.IsTrue(_cells.GetCell(25, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null,
+                        CalificacionEncuesta = Utils.IsTrue(_cells.GetCell(26, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null,
+                        TareaCritica = Utils.IsTrue(_cells.GetCell(27, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null,
+                        Garantia = Utils.IsTrue(_cells.GetCell(28, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
+                        GarantiaText = Utils.IsTrue(_cells.GetCell(29, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null,
+                        CodigoCertificacion = Utils.IsTrue(_cells.GetCell(30, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
+                        FechaEntrega = Utils.IsTrue(_cells.GetCell(31, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
+                        RelacionarEv = Utils.IsTrue(_cells.GetCell(32, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
+                        Departamento = Utils.IsTrue(_cells.GetCell(33, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
+                        Localizacion = Utils.IsTrue(_cells.GetCell(34, validationRow).Value)
+                                ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null
                     };
 
 

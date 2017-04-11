@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using EllipseRequisitionServiceExcelAddIn.IssueRequisitionItemStocklessService;
 using EllipseRequisitionServiceExcelAddIn.Properties;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
+using System.Reflection;
 
 namespace EllipseRequisitionServiceExcelAddIn
 {
@@ -82,7 +83,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                _cells?.SetCursorDefault();
+                if(_cells != null) _cells.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {
@@ -99,6 +100,8 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _excelApp = Globals.ThisAddIn.Application;
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
+                //CONSTRUYO LA HOJA 1
+                _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
                     _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
@@ -212,7 +215,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             }
             finally
             {
-                _cells?.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
         }
 
@@ -616,7 +619,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             }
             finally
             {
-                _cells?.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
                 _eFunctions.SetConnectionPoolingType(true);//Se restaura por 'Pooled Connection Request Timed Out'
             }
         }
@@ -1260,7 +1263,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             }
             finally
             {
-                _cells?.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
                 _eFunctions.SetConnectionPoolingType(true);//Se restaura por 'Pooled Connection Request Timed Out'
             }
         }
@@ -1843,9 +1846,14 @@ namespace EllipseRequisitionServiceExcelAddIn
             }
             finally
             {
-                _cells?.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
                 _eFunctions.SetConnectionPoolingType(true);//Se restaura por 'Pooled Connection Request Timed Out'
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
         }
     }
 

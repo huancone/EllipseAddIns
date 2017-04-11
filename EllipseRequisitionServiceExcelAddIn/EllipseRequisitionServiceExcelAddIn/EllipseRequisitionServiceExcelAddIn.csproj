@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseRequisitionServiceExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.2.1.11</ApplicationVersion>
+    <ApplicationVersion>1.2.1.12</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -421,10 +421,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>EllipseRequisitionServiceExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>AEC056F5C87B197418EEE98E7B51909DE1F40FBA</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>71D178952DC9DEDC686A690839477D40D372A71D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />

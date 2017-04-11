@@ -35,8 +35,8 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\..\EllipseWorkOrderExcelAddIn\packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Service References\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
       <HintPath>Web References\RestSharp.dll</HintPath>
@@ -88,21 +88,20 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Web References\ScreenService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutBoxExcelAddIn.resx">
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAuthenticate.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>FormAuthenticate1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="FormAuthenticate.resx" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

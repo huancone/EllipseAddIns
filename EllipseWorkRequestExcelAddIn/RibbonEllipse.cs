@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
@@ -413,7 +414,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             finally
             {
-                _cells?.SetCursorDefault();
+                if(_cells != null) _cells.SetCursorDefault();
             }
             
         }
@@ -431,7 +432,7 @@ namespace EllipseWorkRequestExcelAddIn
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                _cells?.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {
@@ -1425,7 +1426,7 @@ namespace EllipseWorkRequestExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            _cells?.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
         private void ReviewReferenceCodesList()
         {
@@ -1490,7 +1491,7 @@ namespace EllipseWorkRequestExcelAddIn
             //porque son columnas extensas
             _cells.GetCell(04, 01).ColumnWidth = 30;
             _cells.GetCell(05, 01).ColumnWidth = 30;
-            _cells?.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
         private void ReReviewReferenceCodesList()
         {
@@ -1741,56 +1742,56 @@ namespace EllipseWorkRequestExcelAddIn
                     if (string.IsNullOrWhiteSpace(replySheet.requestId))
                         throw new Exception("No se ha podido crear el WorkRequest");
                     //Creacion de los reference codes
-                    var refCodeOpContext = ReferenceCodeActions.GetRefCodesOpContext(opSheet.district, opSheet.position, opSheet.maxInstances, opSheet.returnWarnings, opSheet.returnWarningsSpecified);
+                    var refCodeOpContext = ReferenceCodeActions.GetRefCodesOpContext(opSheet.district, opSheet.position, opSheet.maxInstances, opSheet.returnWarnings);
                     var stdTextOpContext = StdText.GetCustomOpContext(opSheet.district, opSheet.position, opSheet.maxInstances, opSheet.returnWarnings);
                     var error = "";
                     if (!string.IsNullOrWhiteSpace(wr.ReferenceCodes.StockCode1))
                     {
                         var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9001", wr.ReferenceCodes.StockCode1);
-                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(urlService, refCodeOpContext, refItem);
+                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(_eFunctions, urlService, refCodeOpContext, refItem);
                         var stdTextId = replyRefCode.stdTxtKey;
                         if (!string.IsNullOrWhiteSpace(stdTextId))
-                            StdText.SetCustomText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.StockQuantity1);
+                            StdText.SetText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.StockQuantity1);
                         else
                             error += " / Error al crear SC1";
                     }
                     if (!string.IsNullOrWhiteSpace(wr.ReferenceCodes.StockCode2))
                     {
                         var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9002", wr.ReferenceCodes.StockCode2);
-                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(urlService, refCodeOpContext, refItem);
+                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(_eFunctions, urlService, refCodeOpContext, refItem);
                         var stdTextId = replyRefCode.stdTxtKey;
                         if (!string.IsNullOrWhiteSpace(stdTextId))
-                            StdText.SetCustomText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.StockQuantity2);
+                            StdText.SetText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.StockQuantity2);
                         else
                             error += " / Error al crear SC2";
                     }
                     if (!string.IsNullOrWhiteSpace(wr.ReferenceCodes.StockCode3))
                     {
                         var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9003", wr.ReferenceCodes.StockCode3);
-                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(urlService, refCodeOpContext, refItem);
+                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(_eFunctions, urlService, refCodeOpContext, refItem);
                         var stdTextId = replyRefCode.stdTxtKey;
                         if (!string.IsNullOrWhiteSpace(stdTextId))
-                            StdText.SetCustomText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.StockQuantity3);
+                            StdText.SetText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.StockQuantity3);
                         else
                             error += " / Error al crear SC3";
                     }
                     if (!string.IsNullOrWhiteSpace(wr.ReferenceCodes.StockCode4))
                     {
                         var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9004", wr.ReferenceCodes.StockCode4);
-                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(urlService, refCodeOpContext, refItem);
+                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(_eFunctions, urlService, refCodeOpContext, refItem);
                         var stdTextId = replyRefCode.stdTxtKey;
                         if (!string.IsNullOrWhiteSpace(stdTextId))
-                            StdText.SetCustomText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.StockQuantity4);
+                            StdText.SetText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.StockQuantity4);
                         else
                             error += " / Error al crear SC4";
                     }
                     if (!string.IsNullOrWhiteSpace(wr.ReferenceCodes.StockCode5))
                     {
                         var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9005", wr.ReferenceCodes.StockCode5);
-                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(urlService, refCodeOpContext, refItem);
+                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(_eFunctions, urlService, refCodeOpContext, refItem);
                         var stdTextId = replyRefCode.stdTxtKey;
                         if (!string.IsNullOrWhiteSpace(stdTextId))
-                            StdText.SetCustomText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.StockQuantity5);
+                            StdText.SetText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.StockQuantity5);
                         else
                             error += " / Error al crear SC5";
                     }
@@ -1798,10 +1799,10 @@ namespace EllipseWorkRequestExcelAddIn
                     if (!string.IsNullOrWhiteSpace(wr.ReferenceCodes.HorasHombre))
                     {
                         var refItem = new ReferenceCodeItem("WRQ", requestId, "006", "001", wr.ReferenceCodes.HorasHombre);
-                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(urlService, refCodeOpContext, refItem);
+                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(_eFunctions, urlService, refCodeOpContext, refItem);
                         var stdTextId = replyRefCode.stdTxtKey;
                         if (!string.IsNullOrWhiteSpace(stdTextId))
-                            StdText.SetCustomText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.HorasQty);
+                            StdText.SetText(urlService, stdTextOpContext, stdTextId, wr.ReferenceCodes.HorasQty);
                         else
                             error += " / Error al crear HH";
                     }
@@ -1809,7 +1810,7 @@ namespace EllipseWorkRequestExcelAddIn
                     if (!string.IsNullOrWhiteSpace(wr.ReferenceCodes.DuracionTarea))
                     {
                         var refItem = new ReferenceCodeItem("WRQ", requestId, "007", "001", wr.ReferenceCodes.DuracionTarea);
-                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(urlService, refCodeOpContext, refItem);
+                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(_eFunctions, urlService, refCodeOpContext, refItem);
                         var stdTextId = replyRefCode.stdTxtKey;
                         if (string.IsNullOrWhiteSpace(stdTextId))
                             error += " / Error al crear Duracion";
@@ -1818,7 +1819,7 @@ namespace EllipseWorkRequestExcelAddIn
                     if (!string.IsNullOrWhiteSpace(wr.ReferenceCodes.WorkOrderOrigen))
                     {
                         var refItem = new ReferenceCodeItem("WRQ", requestId, "009", "001", wr.ReferenceCodes.WorkOrderOrigen);
-                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(urlService, refCodeOpContext, refItem);
+                        var replyRefCode = ReferenceCodeActions.ModifyRefCode(_eFunctions, urlService, refCodeOpContext, refItem);
                         var stdTextId = replyRefCode.stdTxtKey;
                         if (string.IsNullOrWhiteSpace(stdTextId))
                             error += " / Error al crear OT Origen";
@@ -2201,6 +2202,11 @@ namespace EllipseWorkRequestExcelAddIn
             }
 
             if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
         }
 
      
