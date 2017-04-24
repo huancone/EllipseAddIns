@@ -68,7 +68,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 _cells.GetCell(1, TittleRow).AddComment("YYYYMMDD");
                 _cells.GetCell(2, TittleRow).Value = "Grupo";
                 _cells.GetCell(3, TittleRow).Value = "Descripcion";
-                _cells.GetCell(4, TittleRow).Value = "Conformidad";
+                _cells.GetCell(4, TittleRow).Value = "Carbon";
                 _cells.GetCell(5, TittleRow).Value = "Usuario";
                 _cells.GetCell(6, TittleRow).Value = "Equipo";
                 _cells.GetCell(ResultColumn, TittleRow).Value = "Resultado";
@@ -161,7 +161,7 @@ namespace EllipseMSO627InspPestanasAddIn
                     var fecha = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
                     var grupo = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
                     var descripcion = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                    var conformidad = (_cells.GetEmptyIfNull((_cells.GetCell(4, currentRow).Value)).Length >= 2)? _cells.GetNullOrTrimmedValue(_cells.GetCell(4, currentRow).Value).Substring(0, 2): null;
+                    var cantidad = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
                     var usuario = _cells.GetEmptyIfNull(_cells.GetCell(5, currentRow).Value);
                     var equipo = _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value);
 
@@ -200,7 +200,8 @@ namespace EllipseMSO627InspPestanasAddIn
 
                                 arrayFields.Add("RAISED_TIME2I1", "00:00");
                                 arrayFields.Add("INCIDENT_DESC2I1", descripcion);
-                                arrayFields.Add("MAINT_TYPE2I1", conformidad);
+                                arrayFields.Add("MAINT_TYPE2I1", "NM");
+                                arrayFields.Add("JOB_DUR_HOURS2I", cantidad);
                                 arrayFields.Add("ORIGINATOR_ID2I1", usuario);
                                 arrayFields.Add("JOB_DUR_FINISH2I1", "00:00");
                                 arrayFields.Add("EQUIP_REF2I1", equipo);
@@ -225,7 +226,7 @@ namespace EllipseMSO627InspPestanasAddIn
                             {
                                 _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                                 _cells.GetCell(ResultColumn, currentRow).Value = "ERROR: " + ex.Message;
-                                ErrorLogger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message,
+                                Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message,
                                     _eFunctions.DebugErrors);
                             }
                         }
@@ -235,7 +236,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 {
                     _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn, currentRow).Value = "ERROR: " + ex.Message;
-                    ErrorLogger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message, _eFunctions.DebugErrors);
                 }
                 finally
                 {
