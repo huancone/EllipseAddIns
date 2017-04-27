@@ -279,7 +279,7 @@
     <ManifestKeyFile>EllipseMSO627RodillosAddin_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D43C2301F41C564348173988AC5FCF011AEDDBE6</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>E09CA01BE579CF6A2A3C9B3BD04B8878F780B13A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

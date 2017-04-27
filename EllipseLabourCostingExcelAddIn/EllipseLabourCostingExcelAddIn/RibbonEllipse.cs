@@ -721,8 +721,7 @@ namespace EllipseLabourCostingExcelAddIn
                     catch (Exception ex)
                     {
                         Debugger.LogError("RibbonEllipse:LoadMso850LabourCost()",
-                            "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                            _eFunctions.DebugErrors);
+                            "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
                         _cells.GetCell(Mso850ResultColumn, i).Value = "ERROR: " + ex.Message;
                         _cells.GetCell(Mso850ResultColumn, i).Style = StyleConstants.Error;
                         _cells.GetCell(Mso850ResultColumn, i).Select();
@@ -1002,8 +1001,10 @@ namespace EllipseLabourCostingExcelAddIn
                 var replyFields = new ArrayScreenNameValue(replySheet.screenFields);
                 //son variables para determinar el cambio de screen real
                 //reajustamos el valor de la tarea a un numérico ###
-                if (string.IsNullOrWhiteSpace(labourEmployee.TASK))
-                    labourEmployee.TASK = "001";
+                if (string.IsNullOrWhiteSpace(labourEmployee.TASK)) 
+                    if (labourEmployee.WOP_IND == "W")
+                        labourEmployee.TASK = labourEmployee.TASK == "" ? "": "001";
+                
 
                 //iniciamos el recorrido
                 while (!labourFoundFlag)
@@ -1013,9 +1014,14 @@ namespace EllipseLabourCostingExcelAddIn
                     var isEmpty = replyFields.GetField("WO_PROJ1I" + rowMso).value.Equals("");
                     var sameWo = labourEmployee.WO_PROJ.Equals(replyFields.GetField("WO_PROJ1I" + rowMso).value);
                     var screenTaskValue = replyFields.GetField("TASK1I" + rowMso).value;
-                    if (string.IsNullOrWhiteSpace(screenTaskValue))
+                    var isWopInd = replyFields.GetField("WOP_IND1I" + rowMso).value.Equals("W");
+
+                    if (string.IsNullOrWhiteSpace(screenTaskValue) && isWopInd)
+                    {
                         screenTaskValue = "001";
-                    var sameTask = int.Parse(labourEmployee.TASK) == int.Parse(screenTaskValue);
+                    }
+
+                    var sameTask = labourEmployee.TASK == screenTaskValue;
                     var sameEarnClass = string.IsNullOrWhiteSpace(labourEmployee.EARN_CLASS) || labourEmployee.EARN_CLASS.Equals(replyFields.GetField("EARN_CLASS1I" + rowMso).value);
                     //si se encuentra una posición para escribir la labor se activa el flag y se sale del while
                     if (isEmpty || (replaceExisting && sameWo && sameTask && sameEarnClass))

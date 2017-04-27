@@ -36,11 +36,16 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpInspPestanas = this.Factory.CreateRibbonGroup();
+            this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormat = this.Factory.CreateRibbonButton();
+            this.btnLimpiezaCarbon = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.btnLoad = this.Factory.CreateRibbonButton();
+            this.menuActions = this.Factory.CreateRibbonMenu();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpInspPestanas.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -51,17 +56,32 @@
             // 
             // grpInspPestanas
             // 
-            this.grpInspPestanas.Items.Add(this.btnFormat);
+            this.grpInspPestanas.Items.Add(this.menuFormat);
             this.grpInspPestanas.Items.Add(this.drpEnviroment);
-            this.grpInspPestanas.Items.Add(this.btnLoad);
+            this.grpInspPestanas.Items.Add(this.menuActions);
             this.grpInspPestanas.Label = "MSO627 Pestanas v1.0.0";
             this.grpInspPestanas.Name = "grpInspPestanas";
             // 
+            // menuFormat
+            // 
+            this.menuFormat.Items.Add(this.btnFormat);
+            this.menuFormat.Items.Add(this.btnLimpiezaCarbon);
+            this.menuFormat.Label = "Formato";
+            this.menuFormat.Name = "menuFormat";
+            // 
             // btnFormat
             // 
-            this.btnFormat.Label = "Format Sheet";
+            this.btnFormat.Label = "Inspeccion Pestañas";
             this.btnFormat.Name = "btnFormat";
+            this.btnFormat.ShowImage = true;
             this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
+            // 
+            // btnLimpiezaCarbon
+            // 
+            this.btnLimpiezaCarbon.Label = "Limpieza de Carbon";
+            this.btnLimpiezaCarbon.Name = "btnLimpiezaCarbon";
+            this.btnLimpiezaCarbon.ShowImage = true;
+            this.btnLimpiezaCarbon.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLimpiezaCarbon_Click);
             // 
             // drpEnviroment
             // 
@@ -70,9 +90,24 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Label = "Load Sheet";
+            this.btnLoad.Label = "Cargar hoja";
             this.btnLoad.Name = "btnLoad";
+            this.btnLoad.ShowImage = true;
             this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
+            // 
+            // menuActions
+            // 
+            this.menuActions.Items.Add(this.btnLoad);
+            this.menuActions.Items.Add(this.btnStopThread);
+            this.menuActions.Label = "Acciones";
+            this.menuActions.Name = "menuActions";
+            // 
+            // btnStopThread
+            // 
+            this.btnStopThread.Label = "Detener Procesos";
+            this.btnStopThread.Name = "btnStopThread";
+            this.btnStopThread.ShowImage = true;
+            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
             // RibbonEllipse
             // 
@@ -84,6 +119,7 @@
             this.tabEllipse.PerformLayout();
             this.grpInspPestanas.ResumeLayout(false);
             this.grpInspPestanas.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
@@ -94,6 +130,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoad;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLimpiezaCarbon;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
     }
 
     partial class ThisRibbonCollection
