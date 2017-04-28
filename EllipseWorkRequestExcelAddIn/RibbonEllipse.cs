@@ -121,7 +121,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(ReReviewWorkRequestList);
+                    _thread = new Thread(ReReviewWorkRequestMnttoList);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -191,6 +191,20 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameM01)
+                {
+                    throw new NotImplementedException();
+                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    //_frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    ////si ya hay un thread corriendo que no se ha detenido
+                    //if (_thread != null && _thread.IsAlive) return;
+
+                    //_thread = new Thread(ModifyWorkRequestMnttoList);
+                    //_thread.SetApartmentState(ApartmentState.STA);
+                    //_thread.Start();
+                }
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
             }
@@ -215,6 +229,19 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread = new Thread(CloseWorkRequestList);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
+                }
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameM02))
+                {
+                    throw new NotImplementedException();
+                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    //_frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    ////si ya hay un thread corriendo que no se ha detenido
+                    //if (_thread != null && _thread.IsAlive) return;
+                    //_thread = new Thread(CloseWorkRequestList);
+                    //_thread.SetApartmentState(ApartmentState.STA);
+                    //_thread.Start();
                 }
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
@@ -241,6 +268,19 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameM02))
+                {
+                    throw new NotImplementedException();
+                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    //_frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    ////si ya hay un thread corriendo que no se ha detenido
+                    //if (_thread != null && _thread.IsAlive) return;
+                    //_thread = new Thread(ReOpenWorkRequestList);
+                    //_thread.SetApartmentState(ApartmentState.STA);
+                    //_thread.Start();
+                }
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
             }
@@ -266,6 +306,19 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameM01))
+                {
+                    throw new NotImplementedException();
+                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    //_frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    ////si ya hay un thread corriendo que no se ha detenido
+                    //if (_thread != null && _thread.IsAlive) return;
+                    //_thread = new Thread(DeleteWorkRequestList);
+                    //_thread.SetApartmentState(ApartmentState.STA);
+                    //_thread.Start();
+                }
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
             }
@@ -290,6 +343,19 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread = new Thread(SetSlaList);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
+                }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameM03))
+                {
+                    throw new NotImplementedException();
+                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    //_frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    ////si ya hay un thread corriendo que no se ha detenido
+                    //if (_thread != null && _thread.IsAlive) return;
+                    //_thread = new Thread(SetSlaList);
+                    //_thread.SetApartmentState(ApartmentState.STA);
+                    //_thread.Start();
                 }
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
@@ -318,6 +384,19 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameM03))
+                {
+                    throw new NotImplementedException();
+                    //_frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    //_frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    //if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    ////si ya hay un thread corriendo que no se ha detenido
+                    //if (_thread != null && _thread.IsAlive) return;
+                    //_thread = new Thread(ResetSlaList);
+                    //_thread.SetApartmentState(ApartmentState.STA);
+                    //_thread.Start();
+                }
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
             }
@@ -340,6 +419,8 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameM01))
+                    MessageBox.Show(@"Para los Reference Codes de Mantenimiento, utilice las acciones del menú principal Work Request");
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
             }
@@ -362,6 +443,8 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameM01))
+                    MessageBox.Show(@"Para los Reference Codes de Mantenimiento, utilice las acciones del menú principal Work Request");
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
             }
@@ -384,6 +467,8 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameM01))
+                    MessageBox.Show(@"Para los Reference Codes de Mantenimiento, utilice las acciones del menú principal Work Request");
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
             }
@@ -475,6 +560,9 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("K4").Style = _cells.GetStyle(StyleConstants.TitleAction);
                 _cells.GetCell("K5").Value = "REQUERIDO ADICIONAL";
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
+
+                List<string> searchTypeList = new List<string>();
+                searchTypeList.Add("WorkGroup");
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = "ICOR";
@@ -997,7 +1085,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetRange(1, TitleRow02 + 1, ResultColumnM02, TitleRow02 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumnM02, TitleRow02 + 1), TableNameM02);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-                ////CONSTRUYO LA HOJA 3 RERFERENCE CODES WR
+                ////CONSTRUYO LA HOJA 3 SLA MNTTO
                 // ReSharper disable once UseIndexedProperty
                 _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetNameM03;
@@ -1005,7 +1093,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
-                _cells.GetCell("C1").Value = "REFERENCE CODES WORK REQUEST - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "SERVICE LEVEL AGREEMENT WORK REQUEST - ELLIPSE 8";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 

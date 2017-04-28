@@ -787,6 +787,8 @@ namespace EllipseStandardJobsClassLibrary
             requestXml = requestXml + "                 <standardJob>" + stdTask.StandardJob + "</standardJob>";
             requestXml = requestXml + "                 <districtCode>" + stdTask.DistrictCode + "</districtCode>";
             requestXml = requestXml + "                 <safetyInstr>" + stdTask.SafetyInstr + "</safetyInstr>";
+            if (Utils.IsTrue(stdTask.UnitsRequiredSpecified))
+                requestXml = requestXml + "                 <unitsRequired>" + stdTask.UnitsRequired + "</unitsRequired>";
             requestXml = requestXml + "                 <unitOfWork>" + stdTask.UnitOfWork + "</unitOfWork>";
             if (Utils.IsTrue(stdTask.EstimatedMachHrsSpecified))
                 requestXml = requestXml + "                 <estimatedMachHrs>" + stdTask.EstimatedMachHrs + "</estimatedMachHrs>";
@@ -798,9 +800,7 @@ namespace EllipseStandardJobsClassLibrary
             requestXml = requestXml + "                 <assignPerson>" + stdTask.AssignPerson + "</assignPerson>";
             requestXml = requestXml + "                 <completeInstr>" + stdTask.CompleteInstr + "</completeInstr>";
             if (Utils.IsTrue(stdTask.EstimatedDurationsHrsSpecified))
-                requestXml = requestXml + "                 <estimatedDurationsHrs>" + stdTask.EstimatedDurationsHrs + "</estimatedDurationsHrs>";   
-            if(Utils.IsTrue(stdTask.UnitsRequiredSpecified))
-                requestXml = requestXml + "                 <unitsRequired>" + stdTask.UnitsRequired + "</unitsRequired>";
+                requestXml = requestXml + "                 <estimatedDurationsHrs>" + stdTask.EstimatedDurationsHrs + "</estimatedDurationsHrs>";
             if(Utils.IsTrue(stdTask.UnitsPerDaySpecified))
                 requestXml = requestXml + "                 <unitsPerDay>" + stdTask.UnitsPerDay + "</unitsPerDay>";
             requestXml = requestXml + "				</dto>";

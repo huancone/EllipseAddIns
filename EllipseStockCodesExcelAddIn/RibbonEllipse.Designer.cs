@@ -42,12 +42,13 @@
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
-            this.btnReviewInventory = this.Factory.CreateRibbonButton();
+            this.btnReview = this.Factory.CreateRibbonButton();
+            this.cbValidOnly = this.Factory.CreateRibbonCheckBox();
+            this.cbPreferedOnly = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.btnReviewPurchaseOrders = this.Factory.CreateRibbonButton();
             this.menuRequisitionActions = this.Factory.CreateRibbonMenu();
-            this.cbValidOnly = this.Factory.CreateRibbonCheckBox();
-            this.cbPreferedOnly = this.Factory.CreateRibbonCheckBox();
+            this.menu1 = this.Factory.CreateRibbonMenu();
             this.tabEllipse.SuspendLayout();
             this.grpStockCodeTrans.SuspendLayout();
             this.box1.SuspendLayout();
@@ -100,19 +101,31 @@
             // 
             // menuActions
             // 
-            this.menuActions.Items.Add(this.btnReviewInventory);
+            this.menuActions.Items.Add(this.btnReview);
             this.menuActions.Items.Add(this.cbValidOnly);
             this.menuActions.Items.Add(this.cbPreferedOnly);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
             // 
-            // btnReviewInventory
+            // btnReview
             // 
-            this.btnReviewInventory.Label = "Consultar Inventario";
-            this.btnReviewInventory.Name = "btnReviewInventory";
-            this.btnReviewInventory.ShowImage = true;
-            this.btnReviewInventory.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewStockCodesRequisitions_Click);
+            this.btnReview.Label = "Consultar";
+            this.btnReview.Name = "btnReview";
+            this.btnReview.ShowImage = true;
+            this.btnReview.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReview_Click);
+            // 
+            // cbValidOnly
+            // 
+            this.cbValidOnly.Checked = true;
+            this.cbValidOnly.Label = "Sólo PNs &Válidos";
+            this.cbValidOnly.Name = "cbValidOnly";
+            // 
+            // cbPreferedOnly
+            // 
+            this.cbPreferedOnly.Checked = true;
+            this.cbPreferedOnly.Label = "Sólo PN Preferido";
+            this.cbPreferedOnly.Name = "cbPreferedOnly";
             // 
             // btnStopThread
             // 
@@ -131,16 +144,10 @@
             this.menuRequisitionActions.Label = "";
             this.menuRequisitionActions.Name = "menuRequisitionActions";
             // 
-            // cbValidOnly
+            // menu1
             // 
-            this.cbValidOnly.Label = "Sólo &Válidos";
-            this.cbValidOnly.Name = "cbValidOnly";
-            // 
-            // cbPreferedOnly
-            // 
-            this.cbPreferedOnly.Label = "Sólo Preferidos";
-            this.cbPreferedOnly.Name = "cbPreferedOnly";
-            this.cbPreferedOnly.Visible = false;
+            this.menu1.Label = "menu1";
+            this.menu1.Name = "menu1";
             // 
             // RibbonEllipse
             // 
@@ -166,7 +173,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewInventory;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReview;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewPurchaseOrders;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuRequisitionActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
@@ -175,6 +182,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbValidOnly;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbPreferedOnly;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
     }
 
     partial class ThisRibbonCollection

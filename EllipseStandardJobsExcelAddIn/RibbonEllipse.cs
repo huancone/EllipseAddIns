@@ -1143,22 +1143,22 @@ namespace EllipseStandardJobsExcelAddIn
                         //GENERAL
                         _cells.GetCell(1, i).Value = "" + task.DistrictCode;
                         _cells.GetCell(2, i).Value = "" + task.WorkGroup;
-                        _cells.GetCell(3, i).Value = "" + task.StandardJob;
+                        _cells.GetCell(3, i).Value = "'" + task.StandardJob;
                         _cells.GetCell(4, i).Value = "" + task.StandardJobDescription;
                         //ACTION
                         _cells.GetCell(5, i).Value = "M";
                         //GENERAL
-                        _cells.GetCell(6, i).Value = "" + task.SjTaskNo;
+                        _cells.GetCell(6, i).Value = "'" + task.SjTaskNo;
                         _cells.GetCell(7, i).Value = "" + task.SjTaskDesc;
-                        _cells.GetCell(8, i).Value = "" + task.JobDescCode;
-                        _cells.GetCell(9, i).Value = "" + task.SafetyInstr;
-                        _cells.GetCell(10, i).Value = "" + task.CompleteInstr;
-                        _cells.GetCell(11, i).Value = "" + task.ComplTextCode;
+                        _cells.GetCell(8, i).Value = "'" + task.JobDescCode;
+                        _cells.GetCell(9, i).Value = "'" + task.SafetyInstr;
+                        _cells.GetCell(10, i).Value = "'" + task.CompleteInstr;
+                        _cells.GetCell(11, i).Value = "'" + task.ComplTextCode;
                         //PLANNING
 
                         _cells.GetCell(12, i).Value = "" + task.AssignPerson;
-                        _cells.GetCell(13, i).Value = "" + task.EstimatedMachHrs;
-                        _cells.GetCell(14, i).Value = "" + task.UnitOfWork;
+                        _cells.GetCell(13, i).Value = "'" + task.EstimatedMachHrs;
+                        _cells.GetCell(14, i).Value = "'" + task.UnitOfWork;
                         _cells.GetCell(15, i).Value = "" + task.UnitsRequired;
                         _cells.GetCell(16, i).Value = "" + task.UnitsPerDay;
 
@@ -1168,11 +1168,11 @@ namespace EllipseStandardJobsExcelAddIn
                         _cells.GetCell(18, i).Value = "" + task.NoLabor;
                         _cells.GetCell(19, i).Value = "" + task.NoMaterial;
                         //APL
-                        _cells.GetCell(20, i).Value = "" + task.AplEquipmentGrpId;
-                        _cells.GetCell(21, i).Value = "" + task.AplType;
-                        _cells.GetCell(22, i).Value = "" + task.AplCompCode;
-                        _cells.GetCell(23, i).Value = "" + task.AplCompModCode;
-                        _cells.GetCell(24, i).Value = "" + task.AplSeqNo;
+                        _cells.GetCell(20, i).Value = "'" + task.AplEquipmentGrpId;
+                        _cells.GetCell(21, i).Value = "'" + task.AplType;
+                        _cells.GetCell(22, i).Value = "'" + task.AplCompCode;
+                        _cells.GetCell(23, i).Value = "'" + task.AplCompModCode;
+                        _cells.GetCell(24, i).Value = "'" + task.AplSeqNo;
                         _cells.GetRange(20, i, 24, i).Style = !string.IsNullOrWhiteSpace(task.AplType)
                             ? StyleConstants.Error : StyleConstants.Normal;
 
@@ -1637,14 +1637,14 @@ namespace EllipseStandardJobsExcelAddIn
                         ComplTextCode = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value),
                         AssignPerson = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value),
                         EstimatedMachHrs = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value),
-                        EstimatedMachHrsSpecified = string.IsNullOrWhiteSpace("" + _cells.GetCell(13, i).Value) ? "N" : "Y",
+                        EstimatedMachHrsSpecified = "Y",
                         UnitOfWork = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value),
                         UnitsRequired = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value),
-                        UnitsRequiredSpecified = string.IsNullOrWhiteSpace("" + _cells.GetCell(15, i).Value) ? "N" : "Y",
+                        UnitsRequiredSpecified = "Y",
                         UnitsPerDay = _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value),
-                        UnitsPerDaySpecified = string.IsNullOrWhiteSpace("" + _cells.GetCell(16, i).Value) ? "N" : "Y",
+                        UnitsPerDaySpecified = "Y",
                         EstimatedDurationsHrs = _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value),
-                        EstimatedDurationsHrsSpecified = string.IsNullOrWhiteSpace("" + _cells.GetCell(17, i).Value) ? "N" : "Y",
+                        EstimatedDurationsHrsSpecified = "Y",
                         NoLabor = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value),
                         NoMaterial = _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value),
                         AplEquipmentGrpId = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
@@ -1660,7 +1660,17 @@ namespace EllipseStandardJobsExcelAddIn
 
                     if (action.Equals("M"))
                     {
-                        StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask, true);
+                        //StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask, true);
+                        var opC = new StandardJobTaskService.OperationContext()
+                        {
+                            district = _frmAuth.EllipseDsct,
+                            position = _frmAuth.EllipsePost,
+                            maxInstances = 100,
+                            maxInstancesSpecified = true,
+                            returnWarnings = _eFunctions.DebugWarnings,
+                            returnWarningsSpecified = true
+                        };
+                        StandardJobActions.ModifyStandardJobTask(urlService, opC, stdTask, true);
                         StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else if (action.Equals("C"))
