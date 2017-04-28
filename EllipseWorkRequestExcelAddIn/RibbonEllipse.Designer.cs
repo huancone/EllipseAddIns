@@ -36,9 +36,11 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpWorkRequest = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnFormatMantto = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuWorkRequest = this.Factory.CreateRibbonMenu();
@@ -60,8 +62,6 @@
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.menu1 = this.Factory.CreateRibbonMenu();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkRequest.SuspendLayout();
             this.box1.SuspendLayout();
@@ -76,10 +76,16 @@
             // grpWorkRequest
             // 
             this.grpWorkRequest.Items.Add(this.box1);
-            this.grpWorkRequest.Items.Add(this.menuFormat);
             this.grpWorkRequest.Items.Add(this.drpEnviroment);
+            this.grpWorkRequest.Items.Add(this.menuActions);
             this.grpWorkRequest.Label = "WorkRequest";
             this.grpWorkRequest.Name = "grpWorkRequest";
+            // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
             // 
             // menuFormat
             // 
@@ -101,6 +107,12 @@
             this.btnFormatMantto.Name = "btnFormatMantto";
             this.btnFormatMantto.ShowImage = true;
             this.btnFormatMantto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatMantto_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnviroment
             // 
@@ -256,18 +268,6 @@
             // 
             this.menu1.Label = "menu1";
             this.menu1.Name = "menu1";
-            // 
-            // box1
-            // 
-            this.box1.Items.Add(this.menuActions);
-            this.box1.Items.Add(this.btnAbout);
-            this.box1.Name = "box1";
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // RibbonEllipse
             // 

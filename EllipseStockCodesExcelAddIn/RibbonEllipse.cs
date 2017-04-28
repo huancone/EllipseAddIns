@@ -20,16 +20,15 @@ namespace EllipseStockCodesExcelAddIn
         FormAuthenticate _frmAuth = new FormAuthenticate();
         Application _excelApp;
 
-        private const string SheetName01 = "ListaStockCodes";//Format Requisition
-        private const string SheetName02 = "ResultadosStockCodes";
-        private const string ValidationSheetName01 = "ValidationSheet";
+        private const string SheetName01 = "SearchOptions";//Format Requisition
+        private const string SheetName02 = "Results";
+        private const string ValidationSheetName = "ValidationSheet";
 
-        private const int TitleRow01 = 6;
+        private const int TitleRow01 = 7;
         private const int TitleRow02 = 5;
         private const int ResultColumn01 = 3;
         private const string TableName01 = "SearchTable";
         private const string TableName02 = "ResultsTable";
-        private string _searchType = SearchType.Inventory;
 
         private Thread _thread;
 
@@ -52,13 +51,12 @@ namespace EllipseStockCodesExcelAddIn
         {
             FormatSheet();
         }
-        private void btnReviewStockCodesRequisitions_Click(object sender, RibbonControlEventArgs e)
+        private void btnReview_Click(object sender, RibbonControlEventArgs e)
         {
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01) || _excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName02))
             {
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
-                _searchType = SearchType.Inventory;
                 _thread = new Thread(GetReviewResult);
 
                 _thread.SetApartmentState(ApartmentState.STA);
@@ -80,7 +78,8 @@ namespace EllipseStockCodesExcelAddIn
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
-                _cells.CreateNewWorksheet(ValidationSheetName01);
+                _cells.SetCursorWait();
+                _cells.CreateNewWorksheet(ValidationSheetName);//hoja de validación
                 
                 //CONSTRUYO LA HOJA 0101
                 _cells.GetCell("A1").Value = "CERREJÓN";
@@ -98,26 +97,36 @@ namespace EllipseStockCodesExcelAddIn
                 _cells.GetCell("K3").Value = "INFORMATIVO";
                 _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
 
+
+                var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
+                var issueCriteriaList = SearchCriteriaIssues.GetSearchCriteriaIssues().Select(g => g.Value).ToList();
+                var typeCriteriaList = SearchCriteriaType.GetSearchCriteriaTypes().Select(g => g.Value).ToList();
+
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("A3").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetCell("B3").Value = "ICOR";
-                _cells.GetCell("B3").Style = _cells.GetStyle(StyleConstants.Select);
-                _cells.GetCell("A4").Value = "BUSCAR POR";
-                _cells.GetCell("A4").Style = _cells.GetStyle(StyleConstants.Option);
-                _cells.GetCell("B4").Value = "StockCode";
-                _cells.GetCell("B4").Style = _cells.GetStyle(StyleConstants.Select);
+                _cells.GetCell("A4").Value = "OPCIÓN";
+                _cells.GetCell("B4").Value = SearchCriteriaIssues.Inventory.Value;
+                _cells.GetCell("A5").Value = "BUSCAR POR";
+                _cells.GetCell("B5").Value = SearchCriteriaType.StockCode.Value;
+                _cells.GetRange("A3", "A5").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("B3", "B5").Style = _cells.GetStyle(StyleConstants.Select);
+
+                _cells.GetCell("C3").Value = "FECHA";
+                _cells.GetCell("D3").Value = SearchDateCriteriaType.Raised.Value;
+                _cells.GetCell("C4").Value = "DESDE";
+                _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
+                _cells.GetCell("D4").AddComment("YYYYMMDD");
+                _cells.GetCell("C5").Value = "HASTA";
+                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+                _cells.GetRange("C3", "C5").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("D3", "D5").Style = _cells.GetStyle(StyleConstants.Select);
 
                 //adicionamos las listas de validación
-                _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList(), ValidationSheetName01, 1);
-
-                var searchCriteriaList = new List<string>();
-                searchCriteriaList.Add(SearchCriteria.StockCode);
-                searchCriteriaList.Add(SearchCriteria.PartNumber);
-                searchCriteriaList.Add(SearchCriteria.RequisitionNo);
-                searchCriteriaList.Add(SearchCriteria.PurchaseOrder);
-                _cells.SetValidationList(_cells.GetCell("B4"), searchCriteriaList, ValidationSheetName01, 2);
-
-                _cells.GetCell(1, TitleRow01).Value = "SC/PN/REQ";
+                _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList(), ValidationSheetName, 1);
+                _cells.SetValidationList(_cells.GetCell("B4"), issueCriteriaList, ValidationSheetName, 2);
+                _cells.SetValidationList(_cells.GetCell("B5"), typeCriteriaList, ValidationSheetName, 3);
+                _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 4);
+                _cells.GetCell(1, TitleRow01).Value = "SC/PN/Item";
                 _cells.GetCell(1, TitleRow01).Style = StyleConstants.TitleRequired;
                 _cells.GetCell(1, TitleRow01 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.GetCell(2, TitleRow01).Value = "EVENTO";
@@ -151,6 +160,10 @@ namespace EllipseStockCodesExcelAddIn
                 Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
+            }
         }
         public void GetReviewResult()
         {
@@ -174,7 +187,12 @@ namespace EllipseStockCodesExcelAddIn
 
                 //Obtengo los parámetros de búsqueda
                 var district = cp.GetEmptyIfNull(cp.GetCell("B3").Value);
-                var searchCriteriaKey = cp.GetEmptyIfNull(cp.GetCell("B4").Value);
+                var searchIssueKey = cp.GetEmptyIfNull(cp.GetCell("B4").Value);
+                var searchCriteriaKey = cp.GetEmptyIfNull(cp.GetCell("B5").Value);
+
+                var searchDateCriteriaKey = cp.GetEmptyIfNull(cp.GetCell("D3").Value);
+                var startDate = cp.GetEmptyIfNull(cp.GetCell("D4").Value);
+                var endDate = cp.GetEmptyIfNull(cp.GetCell("D5").Value);
 
                 var rowParam = TitleRow01 + 1;
                 var rowResult = TitleRow02 + 1;
@@ -186,11 +204,13 @@ namespace EllipseStockCodesExcelAddIn
                     try
                     {
                         var searchCriteriaValue = cp.GetEmptyIfNull(cp.GetCell(1, rowParam).Value);
-                        var sqlQuery = "";
-                        if (_searchType.Equals(SearchType.Inventory))
-                        {
+                        string sqlQuery;
+                        if (searchIssueKey.Equals(SearchCriteriaIssues.Inventory.Value))
                             sqlQuery = Queries.GetFetchInventoryStockCodeQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey, searchCriteriaValue, validOnly, preferedOnly);
-                        }
+                        else if (searchIssueKey.Equals(SearchCriteriaIssues.PurchaseOrder.Value))
+                            sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey, searchCriteriaValue, searchDateCriteriaKey, startDate, endDate, validOnly, preferedOnly);
+                        else if (searchIssueKey.Equals(SearchCriteriaIssues.Requisition.Value))
+                            sqlQuery = Queries.GetFetchRequisitionQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey, searchCriteriaValue, searchDateCriteriaKey, startDate, endDate, validOnly, preferedOnly);
                         else
                         {
                             throw new Exception("Debe seleccionar una opción de búsqueda válida");
@@ -211,7 +231,12 @@ namespace EllipseStockCodesExcelAddIn
                                 TableName02);
                         }
                         //cargo los datos de cada consulta
-                        if (dataReader.IsClosed || !dataReader.HasRows) return;
+                        if (dataReader.IsClosed || !dataReader.HasRows)
+                        {
+                            cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Warning;
+                            cp.GetCell(ResultColumn01, rowParam).Value = "No se encontraron datos. Intente la búsqueda desactivando la opción de sólo Parte Número válido y/o preferido";
+                            return;
+                        }
 
                         while (dataReader.Read())
                         {
@@ -219,11 +244,15 @@ namespace EllipseStockCodesExcelAddIn
                                 cr.GetCell(k + 1, rowResult).Value2 = "'" + dataReader[k].ToString().Trim();
                             rowResult++;
                         }
+                        cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Success;
+                        cp.GetCell(2, rowParam).Value = "Consulta";
+                        cp.GetCell(ResultColumn01, rowParam).Value = "OK";
                     }
                     catch (Exception ex)
                     {
-                        cp.GetCell(1, rowParam).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumn01, rowParam).Value = "ERROR: " + ex.Message;
+                        cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Error;
+                        cp.GetCell(2, rowParam).Value = "Consulta";
+                        cp.GetCell(ResultColumn01, rowParam).Value = "ERROR: " + ex.Message;
                         Debugger.LogError("RibbonEllipse.cs:GetReviewResult()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
                     }
                     finally
@@ -267,6 +296,9 @@ namespace EllipseStockCodesExcelAddIn
         {
             new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
         }
+
+
+        
         
     }
 
@@ -292,18 +324,54 @@ namespace EllipseStockCodesExcelAddIn
         public List<PurchaseOrderItem> Items;
     }
 
-    public static class SearchCriteria
+    public static class SearchCriteriaType
     {
-        public static string StockCode = "StockCode";
-        public static string PartNumber = "PartNumber";
-        public static string RequisitionNo = "RequisitionNo";
-        public static string PurchaseOrder = "PurchaseOrder";
-    }
+        public static KeyValuePair<int, string> None = new KeyValuePair<int, string>(0, "None");
+        public static KeyValuePair<int, string> StockCode = new KeyValuePair<int, string>(1, "StockCode");
+        public static KeyValuePair<int, string> PartNumber = new KeyValuePair<int, string>(2, "PartNumber");
+        public static KeyValuePair<int, string> ItemCode = new KeyValuePair<int, string>(3, "ItemCode");
 
-    public static class SearchType
-    {
-        public static string Inventory = "Inventory";
+        public static List<KeyValuePair<int, string>> GetSearchCriteriaTypes(bool keyOrder = true)
+        {
+            var list = new List<KeyValuePair<int, string>> {None, StockCode, PartNumber, ItemCode};
+
+            return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
+        }
     }
+    public static class SearchCriteriaIssues
+    {
+        public static KeyValuePair<int, string> Inventory = new KeyValuePair<int, string>(0, "Inventory");
+        public static KeyValuePair<int, string> PurchaseOrder = new KeyValuePair<int, string>(1, "PurchaseOrder");
+        public static KeyValuePair<int, string> Requisition = new KeyValuePair<int, string>(2, "Requisition");
+
+        public static List<KeyValuePair<int, string>> GetSearchCriteriaIssues(bool keyOrder = true)
+        {
+            var list = new List<KeyValuePair<int, string>> { Inventory, PurchaseOrder, Requisition};
+
+            return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
+        }
+    }
+    public static class SearchDateCriteriaType
+    {
+        public static KeyValuePair<int, string> None = new KeyValuePair<int, string>(0, "None");
+        public static KeyValuePair<int, string> Raised = new KeyValuePair<int, string>(1, "Raised");
+        //public static KeyValuePair<int, string> Closed = new KeyValuePair<int, string>(2, "Closed");
+        //public static KeyValuePair<int, string> PlannedStart = new KeyValuePair<int, string>(3, "PlannedStart");
+        //public static KeyValuePair<int, string> PlannedFinnish = new KeyValuePair<int, string>(4, "PlannedFinnish");
+        //public static KeyValuePair<int, string> RequiredStart = new KeyValuePair<int, string>(5, "RequiredStart");
+        //public static KeyValuePair<int, string> RequiredBy = new KeyValuePair<int, string>(6, "RequiredBy");
+        //public static KeyValuePair<int, string> Modified = new KeyValuePair<int, string>(7, "Modified");
+        //public static KeyValuePair<int, string> NotFinalized = new KeyValuePair<int, string>(8, "NotFinalized");
+        //public static KeyValuePair<int, string> LastModified = new KeyValuePair<int, string>(9, "LastModified");
+        //public static KeyValuePair<int, string> Finalized = new KeyValuePair<int, string>(10, "Finalized");
+
+        public static List<KeyValuePair<int, string>> GetSearchDateCriteriaTypes(bool keyOrder = true)
+        {
+            //var list = new List<KeyValuePair<int, string>> { None, Raised, Closed, PlannedStart, PlannedFinnish, RequiredStart, RequiredBy, Modified, NotFinalized };
+            var list = new List<KeyValuePair<int, string>> { None, Raised};
+            return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
+        }
+    }  
     public class PurchaseOrderItem
     {
         public string Index;
@@ -368,133 +436,159 @@ namespace EllipseStockCodesExcelAddIn
     {
         public static string GetFetchInventoryStockCodeQuery(string dbReference, string dbLink, string districtCode, string searchCriteriaKey, string searchCriteriaValue, bool validOnly, bool preferedOnly)
         {
-            if (!string.IsNullOrWhiteSpace(districtCode))
-                districtCode = " AND (PN.DSTRCT_CODE = '" + districtCode + "' OR TRIM(PN.DSTRCT_CODE) IS NULL)";
-            var paramSearch = "";
-            if (searchCriteriaKey.Equals(SearchCriteria.StockCode))
-                paramSearch = " AND SC.STOCK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') +"'";
-            else if (searchCriteriaKey.Equals(SearchCriteria.PartNumber))
-                paramSearch = " AND TRIM(PN.PART_NO) = '" + searchCriteriaValue + "'";
 
-            var paramValidOnly = "";
-            if (validOnly)
-                paramValidOnly = "AND PN.STATUS_CODES = 'V'";
+            var paramDistrict = "";
+            if (!string.IsNullOrWhiteSpace(districtCode))
+                paramDistrict = " AND (PN.DSTRCT_CODE = '" + districtCode + "' OR TRIM(PN.DSTRCT_CODE) IS NULL)";
+            string paramSearch;
+            if (searchCriteriaKey.Equals(SearchCriteriaType.StockCode.Value))
+                paramSearch = " AND SC.STOCK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') +"'";
+            else if (searchCriteriaKey.Equals(SearchCriteriaType.PartNumber.Value))
+                paramSearch = " AND TRIM(PN.PART_NO) = '" + searchCriteriaValue + "'";
+            else
+                paramSearch = " AND SC.STOCK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') + "'";
+
+            var paramValidOnly = validOnly ? " AND PN.STATUS_CODES = 'V'" : "";
+            var paramPreferedOnly = preferedOnly ? " WHERE PREF_PART_IND = MINPPI AND ROWPPI = 1" : "";
 
             var sqlQuery = "" +
                            "WITH SCINV AS(" +
                            "    SELECT SC.STOCK_CODE, PN.PART_NO, PN.MNEMONIC, PN.DSTRCT_CODE, SC.ITEM_NAME, SC.STK_DESC, SC.UNIT_OF_ISSUE, SC.DESC_LINEX1, SC.DESC_LINEX2, SC.DESC_LINEX3, SC.DESC_LINEX4, SC.CLASS STOCK_CLASS, SC.STOCK_TYPE," +
                            "        INV.CREATION_DATE, INV.LAST_MOD_DATE, INV.CLASS, INV.RAF, INV.INVENT_COST_PR AS PRICE, INV.HOME_WHOUSE, ELLIPSE.GET_SOH(PN.DSTRCT_CODE, SC.STOCK_CODE) AS SOH," +
                            "        INV.IN_TRANSIT, INV.DUES_IN, INV.DUES_OUT, INV.RESERVED, INV.ROP, INV.ROQ, INV.REORDER_QTY, INV.EXP_ELEMENT, INV.RESTRICT_RULE, INV.DIRECT_ORDER_IND, INV.PURCH_OFFICER, INV.INVT_CONTROLLR," +
-                           "        PN.PREF_PART_IND, PN.STATUS_CODES" +
+                           "        PN.PREF_PART_IND, PN.STATUS_CODES," +
+                           "        MIN(PN.PREF_PART_IND) OVER (PARTITION BY SC.STOCK_CODE) MINPPI, ROW_NUMBER() OVER (PARTITION BY SC.STOCK_CODE ORDER BY SC.STOCK_CODE, PN.PREF_PART_IND ASC) ROWPPI" +
                            "    FROM ELLIPSE.MSF100 SC" +
                            "        LEFT JOIN ELLIPSE.MSF110 PN ON SC.STOCK_CODE = PN.STOCK_CODE" +
                            "        LEFT JOIN ELLIPSE.MSF170 INV ON SC.STOCK_CODE = INV.STOCK_CODE" +
                            "    WHERE " +
-                           "" + paramValidOnly +
-                           "" + districtCode +
-                           "" + paramSearch +
+                           " " + paramValidOnly +
+                           " " + paramDistrict +
+                           " " + paramSearch +
                            ")" +
-                           "SELECT * FROM SCINV";
+                           "SELECT * FROM SCINV" +
+                           " " + paramPreferedOnly;
             sqlQuery = Utils.ReplaceQueryStringRegexWhiteSpaces(sqlQuery, "WHERE AND", "WHERE");
             return sqlQuery;
         }
-        public static string GetFetchRequisitionStockCodeQuery(string dbReference, string dbLink, string districtCode, string stockCode, string scStatus, string startDate, string finishDate, string reqType, string transType, string priorityCode)
+        public static string GetFetchRequisitionQuery(string dbReference, string dbLink, string districtCode, string searchCriteriaKey, string searchCriteriaValue, string dateCriteria, string startDate, string finishDate, bool validOnly, bool preferedOnly)
         {
-            if (!string.IsNullOrWhiteSpace(districtCode))
-                districtCode = " AND SC.DSTRCT_CODE = '" + districtCode + "'";
-            //if (!string.IsNullOrWhiteSpace(scStatus))
-            //{
-            //    if (scStatus.Equals("UNCOMPLETED"))
-            //        scStatus = " AND SC.ITEM_141_STAT <> '" + Requisition.ItemStatus.CompleteCode + "'";
-            //    else
-            //        scStatus = " AND SC.ITEM_141_STAT = '" + scStatus + "'";
-            //}
-            if (!string.IsNullOrWhiteSpace(startDate))
-                startDate = " AND RQ.CREATION_DATE >= " + startDate;
-            if (!string.IsNullOrWhiteSpace(finishDate))
-                finishDate = " AND RQ.CREATION_DATE <= " + finishDate;
-            if (!string.IsNullOrWhiteSpace(reqType))
-                reqType = " AND RQ.IREQ_TYPE = '" + reqType + "'";
-            if (!string.IsNullOrWhiteSpace(transType))
-                transType = " AND RQ.ISS_TRAN_TYPE = '" + transType + "'";
-            if (!string.IsNullOrWhiteSpace(priorityCode))
-                priorityCode = " AND RQ.PRIORITY_CODE = '" + priorityCode + "'";
+            var paramDistrict = "";
+            if (!string.IsNullOrWhiteSpace(districtCode))//muchos stockcodes no tienen registrado distrito en los parte número
+                paramDistrict = " AND RQ.DSTRCT_CODE = '" + districtCode + "'";// + " AND PN.DSTRCT_CODE = '" + districtCode + "'";
+            if (dateCriteria.Equals(SearchDateCriteriaType.Raised.Value))
+            {
+                if (!string.IsNullOrWhiteSpace(startDate))
+                    startDate = " AND RQ.CREATION_DATE >= " + startDate;
+                if (!string.IsNullOrWhiteSpace(finishDate))
+                    finishDate = " AND RQ.CREATION_DATE <= " + finishDate;
+            }
+
+            var paramReqNo = "";
+            var paramStockCode = "";
+            if (searchCriteriaKey.Equals(SearchCriteriaType.ItemCode.Value))
+            {
+                paramReqNo = " AND RQI.IREQ_NO = '" + searchCriteriaValue + "'";
+            }
+            else if (searchCriteriaKey.Equals(SearchCriteriaType.StockCode.Value))
+            {
+                paramStockCode = " AND RQI.STOCK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') + "'";
+            }
+            else
+                paramStockCode = " AND RQI.STOCK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') + "'";
+
+            var paramValidOnly = validOnly ? " AND PN.STATUS_CODES = 'V'" : "";
+            var paramPreferedOnly = preferedOnly ? " WHERE PREF_PART_IND = MINPPI AND ROWPPI = 1" : "";
 
             var sqlQuery = "" +
+                           "WITH REQSC AS (" +
                            " SELECT " +
-                           "   SC.DSTRCT_CODE, SC.IREQ_NO, RQ.IREQ_TYPE, RQ.ISS_TRAN_TYPE, SC.STOCK_CODE, SC.IREQ_ITEM," +
-                           "   RQ.AUTHSD_STATUS, RQ.HDR_140_STATUS, SC.ITEM_141_STAT," +
-                           "   RQ.PRIORITY_CODE, SC.WHOUSE_ID, RQ.REQUESTED_BY, RQ.CREATION_DATE, RQ.REQ_BY_DATE, RQ.DELIV_INSTR_A, RQ.DELIV_INSTR_B," +
-                           "   SC.QTY_REQ, SC.PO_ITEM_NO" +
-                           " FROM ELLIPSE.MSF141 SC" +
-                           " JOIN ELLIPSE.MSF140 RQ" +
-                           " ON SC.IREQ_NO         = RQ.IREQ_NO" +
-                           " WHERE STOCK_CODE      = '" + stockCode + "'" +
-                           districtCode +
-                           scStatus +
-                           startDate +
-                           finishDate +
-                           reqType +
-                           transType +
-                           priorityCode;
+                           "   RQI.DSTRCT_CODE, RQI.IREQ_NO, RQ.IREQ_TYPE, RQ.ISS_TRAN_TYPE, RQI.STOCK_CODE, SC.ITEM_NAME, SC.STK_DESC, SC.UNIT_OF_ISSUE, PN.PART_NO, PN.MNEMONIC, RQI.IREQ_ITEM," +
+                           "   RQ.AUTHSD_STATUS, RQ.HDR_140_STATUS, RQI.ITEM_141_STAT," +
+                           "   RQ.PRIORITY_CODE, RQI.WHOUSE_ID, RQ.REQUESTED_BY, RQ.CREATION_DATE, RQ.REQ_BY_DATE, RQ.DELIV_INSTR_A, RQ.DELIV_INSTR_B," +
+                           "   RQI.QTY_REQ, RQI.PO_ITEM_NO," +
+                           "   PN.PREF_PART_IND, PN.STATUS_CODES," +
+                           "   MIN(PN.PREF_PART_IND) OVER (PARTITION BY RQI.STOCK_CODE) MINPPI, ROW_NUMBER() OVER (PARTITION BY RQI.IREQ_NO, RQI.IREQ_ITEM, RQI.STOCK_CODE ORDER BY RQI.STOCK_CODE, PN.PREF_PART_IND ASC) ROWPPI" +
+                           " FROM ELLIPSE.MSF141 RQI" +
+                           " JOIN ELLIPSE.MSF140 RQ ON RQI.IREQ_NO = RQ.IREQ_NO" +
+                           " LEFT JOIN ELLIPSE.MSF100 SC ON RQI.STOCK_CODE = SC.STOCK_CODE" +
+                           " LEFT JOIN ELLIPSE.MSF110 PN ON RQI.STOCK_CODE = PN.STOCK_CODE" +
+                           " WHERE" +
+                           " " + paramValidOnly +
+                           " " + paramReqNo +
+                           " " + paramStockCode +
+                           " " + paramDistrict +
+                           " " + startDate +
+                           " " + finishDate +
+                           ")" +
+                           "SELECT * FROM REQSC" +
+                           " " + paramPreferedOnly;
+            sqlQuery = Utils.ReplaceQueryStringRegexWhiteSpaces(sqlQuery, "WHERE AND", "WHERE");
+
             return sqlQuery;
         }
 
-        public static string GetFetchPurchaseOrderQuery(string dbReference, string dbLink, string districtCode, string purchaseOrder, string stockCode, string startDate, string finishDate, string poStatus)
+        public static string GetFetchPurchaseOrderQuery(string dbReference, string dbLink, string districtCode, string searchCriteriaKey, string searchCriteriaValue, string dateCriteria, string startDate, string finishDate, bool validOnly, bool preferedOnly)
         {
+            var paramDistrict = "";
             if (!string.IsNullOrWhiteSpace(districtCode))//muchos stockcodes no tienen registrado distrito en los parte número
-                districtCode = " AND PO.DSTRCT_CODE = '" + districtCode + "'";// + " AND PN.DSTRCT_CODE = '" + districtCode + "'";
-            if (!string.IsNullOrWhiteSpace(startDate))
-                startDate = " AND PO.CREATION_DATE >= " + startDate;
-            if (!string.IsNullOrWhiteSpace(finishDate))
-                finishDate = " AND PO.CREATION_DATE <= " + finishDate;
-            if(!string.IsNullOrWhiteSpace(purchaseOrder))
-                purchaseOrder =  " PO.PO_NO = '" + purchaseOrder + "'";
-            if (!string.IsNullOrWhiteSpace(stockCode))
+                paramDistrict = " AND PO.DSTRCT_CODE = '" + districtCode + "'";// + " AND PN.DSTRCT_CODE = '" + districtCode + "'";
+            if (dateCriteria.Equals(SearchDateCriteriaType.Raised.Value))
             {
-                stockCode = " POI.PREQ_STK_CODE = '" + stockCode + "'";
-                if (!string.IsNullOrWhiteSpace(purchaseOrder))
-                    stockCode = " AND " + stockCode;
-            }
-            if (!string.IsNullOrWhiteSpace(poStatus))
-            {
-                if (poStatus.Equals("U"))
-                    poStatus = " AND PO.STATUS_220 NOT IN ('3', '9')";
-                else
-                    poStatus = " AND PO.STATUS_220 = '" + poStatus + "'";
+                if (!string.IsNullOrWhiteSpace(startDate))
+                    startDate = " AND PO.CREATION_DATE >= " + startDate;
+                if (!string.IsNullOrWhiteSpace(finishDate))
+                    finishDate = " AND PO.CREATION_DATE <= " + finishDate;
             }
 
+            var paramPurchaseOrder = "";
+            var paramStockCode = "";
+            if (searchCriteriaKey.Equals(SearchCriteriaType.ItemCode.Value))
+            {
+                paramPurchaseOrder = " PO.PO_NO = '" + searchCriteriaValue + "'";
+            }
+            else if (searchCriteriaKey.Equals(SearchCriteriaType.StockCode.Value))
+            {
+                paramStockCode = " POI.PREQ_STK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') + "'";
+            }
+            else
+            {
+                paramStockCode = " POI.PREQ_STK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') + "'";
+            }
+
+            var paramValidOnly = validOnly ? " AND PN.STATUS_CODES = 'V'" : "";
+            var paramPreferedOnly = preferedOnly ? " WHERE POITEMS.PREF_PART_IND = POITEMS.MINPPI AND ROWPPI = 1" : "";
 
             var sqlQuery = "" +
                            " WITH POITEMS AS(" +
                            "  SELECT" +
-                           "    POI.PO_NO, POI.PO_ITEM_NO, POI.PREQ_STK_CODE, SC.ITEM_NAME, SC.DESC_LINEX1, SC.DESC_LINEX2, SC.DESC_LINEX3, SC.DESC_LINEX4, PN.PART_NO, PN.MNEMONIC, "+
-                           "    POI.GROSS_PRICE_P, POI.UNIT_OF_PURCH, POI.CONV_FACTOR, "+
+                           "    POI.PO_NO, POI.PO_ITEM_NO, POI.PREQ_STK_CODE, SC.ITEM_NAME, SC.DESC_LINEX1, SC.DESC_LINEX2, SC.DESC_LINEX3, SC.DESC_LINEX4, PN.PART_NO, PN.MNEMONIC, " +
+                           "    POI.GROSS_PRICE_P, POI.UNIT_OF_PURCH, POI.CONV_FACTOR, " +
                            "    PN.PREF_PART_IND, MIN(PN.PREF_PART_IND) OVER (PARTITION BY POI.PREQ_STK_CODE) MINPPI, ROW_NUMBER() OVER (PARTITION BY POI.PO_NO, POI.PO_ITEM_NO, POI.PREQ_STK_CODE ORDER BY POI.PREQ_STK_CODE, PN.PREF_PART_IND ASC) ROWPPI, " +
                            "    PO.STATUS_220, PO.CREATION_DATE, PO.ORDER_DATE, POI.ORIG_DUE_DATE, POI.ORIG_NET_PR_I, POI.CURR_NET_PR_I, POI.ORIG_QTY_I, POI.CURR_QTY_I, POI.QTY_RCV_OFST_I, POI.OFST_RCPT_DATE, POI.QTY_RCV_DIR_I, POI.ONST_RCPT_DATE, PO.FREIGHT_CODE, PO.DELIV_LOCATION, POI.EXPEDITE_CODE, PO.SUPPLIER_NO, SUP.SUPPLIER_NAME, PO.PO_MEDIUM_IND, PO.ORIGIN_CODE, PO.PURCH_OFFICER, PO.TEAM_ID" +
                            "  FROM" +
                            "    ELLIPSE.MSF220 PO JOIN ELLIPSE.MSF221 POI ON PO.PO_NO = POI.PO_NO LEFT JOIN ELLIPSE.MSF100 SC ON POI.PREQ_STK_CODE = SC.STOCK_CODE LEFT JOIN ELLIPSE.MSF110 PN ON POI.PREQ_STK_CODE = PN.STOCK_CODE LEFT JOIN ELLIPSE.MSF200 SUP ON PO.SUPPLIER_NO = SUP.SUPPLIER_NO" +
                            "  WHERE" +
-                           purchaseOrder +
-                           stockCode +
-                           districtCode +
-                           startDate +
-                           finishDate +
-                           poStatus +
-                           "    AND PN.STATUS_CODES = 'V'" +
+                           " " + paramPurchaseOrder +
+                           " " + paramStockCode +
+                           " " + paramDistrict +
+                           " " + startDate +
+                           " " + finishDate +
+                           " " + paramValidOnly +
                            "  ORDER BY POI.PO_ITEM_NO" +
                            "  )," +
                            " SCSTAT AS(" +
-                           " SELECT STAT.DSTRCT_CODE, SC.stock_code, STAT.creation_date, STAT.last_mod_date, SC.stk_desc, SC.unit_of_issue, STAT.class, STAT.raf as algoritmo, STAT.invent_cost_pr as price, STAT.home_whouse as bodega_principal, ellipse.get_soh('ICOR',SC.stock_code) as soh, " +
-                           "  STAT.in_transit, STAT.dues_in, STAT.dues_out, STAT.reserved, STAT.rop, STAT.REORDER_QTY roq, STAT.exp_element as detalle_gasto, STAT.restrict_rule as restr, STAT.direct_order_ind as do_ind, STAT.purch_officer as purchaser, " +
-                           "  (select sum(unsched_usage) from ellipse.msf175 where dstrct_code=STAT.dstrct_code and stock_code=SC.stock_code " +
-                           "  and full_acct_per between (select to_char(to_date(max(full_acct_per),'yyyymm')-365,'yyyymm') from ellipse.msf175 where dstrct_code=STAT.dstrct_code and stock_code=SC.stock_code) and (select max(full_acct_per) from ellipse.msf175 where dstrct_code=STAT.dstrct_code and stock_code=SC.stock_code) "+
-                           "  and TRIM(WHOUSE_ID) IS NOT NULL ) as uso12_unsch, " +
-                           "  (select sum(unsched_usage) from ellipse.msf175 where dstrct_code=STAT.dstrct_code and stock_code=SC.stock_code " +
-                           "  and full_acct_per=(select max(full_acct_per) from ellipse.msf175 where dstrct_code=STAT.dstrct_code and stock_code=SC.stock_code) " +
-                           "  and TRIM(WHOUSE_ID) IS NOT NULL ) as current_unsch, " +
-                           "  STAT.invt_controllr as adi from ellipse.msf100 SC LEFT JOIN ellipse.msf170 STAT ON SC.stock_code = STAT.stock_code)" +
-                           "  SELECT * FROM POITEMS LEFT JOIN SCSTAT ON POITEMS.PREQ_STK_CODE = SCSTAT.STOCK_CODE AND SCSTAT.DSTRCT_CODE = 'ICOR' WHERE POITEMS.PREF_PART_IND = POITEMS.MINPPI AND ROWPPI = 1";
+                           " SELECT STAT.DSTRCT_CODE, SC.STOCK_CODE, STAT.CREATION_DATE, STAT.LAST_MOD_DATE, SC.STK_DESC, SC.UNIT_OF_ISSUE, STAT.CLASS, STAT.RAF AS ALGORITMO, STAT.INVENT_COST_PR AS PRICE, STAT.HOME_WHOUSE AS BODEGA_PRINCIPAL, ELLIPSE.GET_SOH('ICOR',SC.STOCK_CODE) AS SOH, " +
+                           "  STAT.IN_TRANSIT, STAT.DUES_IN, STAT.DUES_OUT, STAT.RESERVED, STAT.ROP, STAT.REORDER_QTY ROQ, STAT.EXP_ELEMENT AS DETALLE_GASTO, STAT.RESTRICT_RULE AS RESTR, STAT.DIRECT_ORDER_IND AS DO_IND, STAT.PURCH_OFFICER AS PURCHASER, " +
+                           "  (SELECT SUM(UNSCHED_USAGE) FROM ELLIPSE.MSF175 WHERE DSTRCT_CODE=STAT.DSTRCT_CODE AND STOCK_CODE=SC.STOCK_CODE " +
+                           "  AND FULL_ACCT_PER BETWEEN (SELECT TO_CHAR(TO_DATE(MAX(FULL_ACCT_PER),'YYYYMM')-365,'YYYYMM') FROM ELLIPSE.MSF175 WHERE DSTRCT_CODE=STAT.DSTRCT_CODE AND STOCK_CODE=SC.STOCK_CODE) AND (SELECT MAX(FULL_ACCT_PER) FROM ELLIPSE.MSF175 WHERE DSTRCT_CODE=STAT.DSTRCT_CODE AND STOCK_CODE=SC.STOCK_CODE) " +
+                           "  AND TRIM(WHOUSE_ID) IS NOT NULL ) AS USO12_UNSCH, " +
+                           "  (SELECT SUM(UNSCHED_USAGE) FROM ELLIPSE.MSF175 WHERE DSTRCT_CODE=STAT.DSTRCT_CODE AND STOCK_CODE=SC.STOCK_CODE " +
+                           "  AND FULL_ACCT_PER=(SELECT MAX(FULL_ACCT_PER) FROM ELLIPSE.MSF175 WHERE DSTRCT_CODE=STAT.DSTRCT_CODE AND STOCK_CODE=SC.STOCK_CODE) " +
+                           "  AND TRIM(WHOUSE_ID) IS NOT NULL ) AS CURRENT_UNSCH, " +
+                           "  STAT.INVT_CONTROLLR AS ADI FROM ELLIPSE.MSF100 SC LEFT JOIN ELLIPSE.MSF170 STAT ON SC.STOCK_CODE = STAT.STOCK_CODE)" +
+                           "  SELECT * FROM POITEMS LEFT JOIN SCSTAT ON POITEMS.PREQ_STK_CODE = SCSTAT.STOCK_CODE AND SCSTAT.DSTRCT_CODE = 'ICOR'" +
+                           " " + paramPreferedOnly;
             sqlQuery = sqlQuery.Replace("WHERE AND", "WHERE");
             return sqlQuery;
         }
