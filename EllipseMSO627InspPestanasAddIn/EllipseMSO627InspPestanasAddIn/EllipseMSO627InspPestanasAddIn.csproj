@@ -38,10 +38,10 @@
     <OldToolsVersion>12.0</OldToolsVersion>
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>I:\Mina\Migracion Ellipse 8.5\Ellipse 8 - Release\Generales\EllipseMSO627InspPestanasAddIn\</PublishUrl>
+    <PublishUrl>D:\Projects\Release\EllipseMSO627RodillosAddin\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.3</ApplicationVersion>
+    <ApplicationVersion>1.0.0.4</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -273,7 +273,7 @@
     <ManifestKeyFile>EllipseMSO627InspPestanasAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>9F031A61686FA5FE6F512A4042D1AC5DB60B51DB</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>7D41F9C99BDC267484138CF4F494A7A867C41EEC</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
