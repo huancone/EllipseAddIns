@@ -203,6 +203,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string RelacionarEv;//029_001
         public string Departamento;//030_9001
         //public string DepartamentoText;//030_9001
+        public string Localizacion;//031_001
     }
     [SuppressMessage("ReSharper", "ForCanBeConvertedToForeach")]
     public static class WorkOrderActions
@@ -301,6 +302,10 @@ namespace EllipseWorkOrdersClassLibrary
         }
         public static WorkOrder FetchWorkOrder(EllipseFunctions ef, string district, string workOrder)
         {
+            long number1;
+            if(long.TryParse(workOrder, out number1))
+                workOrder = workOrder.PadLeft(8, '0');
+
             var sqlQuery = GetFetchWoQuery(ef.dbReference, ef.dbLink, district, workOrder);
             var drWorkOrder = ef.GetQueryResult(sqlQuery);
 
@@ -592,6 +597,9 @@ namespace EllipseWorkOrdersClassLibrary
             
             var requestWo = new WorkOrderServiceCompleteRequestDTO();
             proxyWo.Url = urlService + "/WorkOrder";
+            long number1;
+            if(long.TryParse("" + wo.workOrder.prefix + wo.workOrder.no, out number1))
+                wo.workOrder = GetNewWorkOrderDto(("" + wo.workOrder.prefix + wo.workOrder.no).PadLeft(8, '0'));
 
             //se cargan los parámetros de la orden
             requestWo.workOrder = wo.workOrder;
@@ -689,7 +697,7 @@ namespace EllipseWorkOrdersClassLibrary
         public static void SetWorkOrderCloseText(string urlService, string districtCode, string position, bool returnWarnings, WorkOrderDTO wo, string woCloseText)
         {
             //comentario
-            var stdTextId = "SJ" + districtCode + wo.prefix + wo.no;
+            var stdTextId = "CW" + districtCode + wo.prefix + wo.no;
 
             var stdTextCopc = StdText.GetCustomOpContext(districtCode, position, 100, returnWarnings);
 
@@ -924,6 +932,7 @@ namespace EllipseWorkOrdersClassLibrary
             //
             var item001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "001");
             var item002 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "002", "001");
+            var item003 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "003", "001");
             var item005 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "005", "001");
             var item006 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "006", "001");
             var item007 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "007", "001");
@@ -947,12 +956,14 @@ namespace EllipseWorkOrdersClassLibrary
             var item026 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "026", "001");
             var item029 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "029", "001");
             var item030 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "030", "001");
+            var item031 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "031", "001");
 
 
 
             woRefCodes.WorkRequest = item001.RefCode; //001_9001
             woRefCodes.ComentariosDuraciones = item002.RefCode; //002_9001
             woRefCodes.ComentariosDuracionesText = item002.StdText; //002_9001
+            woRefCodes.EmpleadoId = item003.RefCode; //003_001
             woRefCodes.NroComponente = item005.RefCode; //005_9001
             woRefCodes.P1EqLivMed = item006.RefCode; //006_001
             woRefCodes.P2EqMovilMinero = item007.RefCode; //007_9001
@@ -978,6 +989,7 @@ namespace EllipseWorkOrdersClassLibrary
             woRefCodes.FechaEntrega = item026.RefCode; //026_001
             woRefCodes.RelacionarEv = item029.RefCode; //029_001
             woRefCodes.Departamento = item030.RefCode; //030_9001
+            woRefCodes.Localizacion = item031.RefCode; //031_001
 
             newef.CloseConnection();
             return woRefCodes;
@@ -991,6 +1003,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             var item001 = new ReferenceCodeItem(entityType, entityValue, "001", "001", woRefCodes.WorkRequest);
             var item002 = new ReferenceCodeItem(entityType, entityValue, "002", "001", woRefCodes.ComentariosDuraciones, null, woRefCodes.ComentariosDuracionesText);
+            var item003 = new ReferenceCodeItem(entityType, entityValue, "003", "001", woRefCodes.EmpleadoId);
             var item005 = new ReferenceCodeItem(entityType, entityValue, "005", "001", woRefCodes.NroComponente);
             var item006 = new ReferenceCodeItem(entityType, entityValue, "006", "001", woRefCodes.P1EqLivMed);
             var item007 = new ReferenceCodeItem(entityType, entityValue, "007", "001", woRefCodes.P2EqMovilMinero);
@@ -1014,9 +1027,11 @@ namespace EllipseWorkOrdersClassLibrary
             var item026 = new ReferenceCodeItem(entityType, entityValue, "026", "001", woRefCodes.FechaEntrega);
             var item029 = new ReferenceCodeItem(entityType, entityValue, "029", "001", woRefCodes.RelacionarEv);
             var item030 = new ReferenceCodeItem(entityType, entityValue, "030", "001", woRefCodes.Departamento);
+            var item031 = new ReferenceCodeItem(entityType, entityValue, "031", "001", woRefCodes.Localizacion);
 
             itemList.Add(item001);
             itemList.Add(item002);
+            itemList.Add(item003);
             itemList.Add(item005);
             itemList.Add(item006);
             itemList.Add(item007);
@@ -1040,6 +1055,7 @@ namespace EllipseWorkOrdersClassLibrary
             itemList.Add(item026);
             itemList.Add(item029);
             itemList.Add(item030);
+            itemList.Add(item031);
 
             var refOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
 
@@ -1161,6 +1177,8 @@ namespace EllipseWorkOrdersClassLibrary
                 queryCriteria1 = "AND EQ.PARENT_EQUIP = '" + searchCriteriaValue1 + "'";
             else if (searchCriteriaKey1 == SearchFieldCriteriaType.Originator.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
                 queryCriteria1 = "AND WO.ORIGINATOR_ID = '" + searchCriteriaValue1 + "'";
+            else if (searchCriteriaKey1 == SearchFieldCriteriaType.CompletedBy.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                queryCriteria1 = "AND WO.COMPLETED_BY = '" + searchCriteriaValue1 + "'";
             else if (searchCriteriaKey1 == SearchFieldCriteriaType.AccountCode.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
                 queryCriteria1 = "AND TRIM(SUBSTR(WO.DSTRCT_ACCT_CODE, 5)) = '" + searchCriteriaValue1 + "'";
             else if (searchCriteriaKey1 == SearchFieldCriteriaType.WorkRequest.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
@@ -1203,6 +1221,8 @@ namespace EllipseWorkOrdersClassLibrary
                 queryCriteria2 = "AND EQ.PARENT_EQUIP = '" + searchCriteriaValue2 + "'";
             else if (searchCriteriaKey2 == SearchFieldCriteriaType.Originator.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
                 queryCriteria2 = "AND WO.ORIGINATOR_ID = '" + searchCriteriaValue2 + "'";
+            else if (searchCriteriaKey2 == SearchFieldCriteriaType.CompletedBy.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                queryCriteria1 = "AND WO.COMPLETED_BY = '" + searchCriteriaValue2 + "'";
             else if (searchCriteriaKey2 == SearchFieldCriteriaType.AccountCode.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
                 queryCriteria2 = "AND TRIM(SUBSTR(WO.DSTRCT_ACCT_CODE, 5)) = '" + searchCriteriaValue2 + "'";
             else if (searchCriteriaKey2 == SearchFieldCriteriaType.WorkRequest.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
@@ -1378,19 +1398,20 @@ namespace EllipseWorkOrdersClassLibrary
             public static KeyValuePair<int, string> EquipmentReference = new KeyValuePair<int, string>(2, "Equipment No");
             public static KeyValuePair<int, string> ProductiveUnit = new KeyValuePair<int, string>(3, "ProductiveUnit");
             public static KeyValuePair<int, string> Originator = new KeyValuePair<int, string>(4, "Originator");
-            public static KeyValuePair<int, string> AccountCode = new KeyValuePair<int, string>(5, "AccountCode");
-            public static KeyValuePair<int, string> WorkRequest = new KeyValuePair<int, string>(6, "WorkRequest");
-            public static KeyValuePair<int, string> ParentWorkOrder = new KeyValuePair<int, string>(7, "ParentWorkOrder");
-            public static KeyValuePair<int, string> ListType = new KeyValuePair<int, string>(8, "ListType");
-            public static KeyValuePair<int, string> ListId = new KeyValuePair<int, string>(9, "ListId");
-            public static KeyValuePair<int, string> Egi = new KeyValuePair<int, string>(10, "EGI");
-            public static KeyValuePair<int, string> EquipmentClass = new KeyValuePair<int, string>(11, "Equipment Class");
-            public static KeyValuePair<int, string> Area = new KeyValuePair<int, string>(12, "Area");
-            public static KeyValuePair<int, string> Quartermaster = new KeyValuePair<int, string>(13, "SuperIntendencia");
+            public static KeyValuePair<int, string> CompletedBy = new KeyValuePair<int, string>(5, "Originator");
+            public static KeyValuePair<int, string> AccountCode = new KeyValuePair<int, string>(6, "AccountCode");
+            public static KeyValuePair<int, string> WorkRequest = new KeyValuePair<int, string>(7, "WorkRequest");
+            public static KeyValuePair<int, string> ParentWorkOrder = new KeyValuePair<int, string>(8, "ParentWorkOrder");
+            public static KeyValuePair<int, string> ListType = new KeyValuePair<int, string>(9, "ListType");
+            public static KeyValuePair<int, string> ListId = new KeyValuePair<int, string>(10, "ListId");
+            public static KeyValuePair<int, string> Egi = new KeyValuePair<int, string>(11, "EGI");
+            public static KeyValuePair<int, string> EquipmentClass = new KeyValuePair<int, string>(12, "Equipment Class");
+            public static KeyValuePair<int, string> Area = new KeyValuePair<int, string>(13, "Area");
+            public static KeyValuePair<int, string> Quartermaster = new KeyValuePair<int, string>(14, "SuperIntendencia");
 
             public static List<KeyValuePair<int, string>> GetSearchFieldCriteriaTypes(bool keyOrder = true)
             {
-                var list = new List<KeyValuePair<int, string>> { None, WorkGroup, EquipmentReference, ProductiveUnit, Originator, AccountCode, WorkRequest, ParentWorkOrder, ListId, ListType, Egi, EquipmentClass, Area, Quartermaster };
+                var list = new List<KeyValuePair<int, string>> { None, WorkGroup, EquipmentReference, ProductiveUnit, Originator, CompletedBy, AccountCode, WorkRequest, ParentWorkOrder, ListId, ListType, Egi, EquipmentClass, Area, Quartermaster };
 
                 return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
             }

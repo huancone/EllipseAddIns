@@ -50,7 +50,7 @@ namespace EllipseWorkOrderExcelAddIn
         //private const int ResultColumnD01 = 51;
         private const int ResultColumnD02 = 8;
         private const int ResultColumnD03 = 3;
-        private const int ResultColumnD04 = 31;
+        private const int ResultColumnD04 = 33;
         private const int ResultColumnQ01 = 34;
         private const string TableName01 = "WorkOrderTable";
         private const string TableName02 = "WorkOrderCloseTable";
@@ -504,6 +504,13 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = WorkOrderActions.SearchFieldCriteriaType.WorkGroup.Value;
+                _cells.GetCell("A4").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
+                    "INST: IMIS, MINA\n" + 
+                    "MDC: FFCC, PBV, PTAS\n" +
+                    "MNTTO: MINA\n"+ 
+                    "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
+
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
                 _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 3, false);
                 _cells.GetCell("A5").Value = WorkOrderActions.SearchFieldCriteriaType.EquipmentReference.Value;
@@ -696,6 +703,8 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(3, TitleRow02).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(4, TitleRow02).Value = "COMPLETED_BY";
                 _cells.GetCell(5, TitleRow02).Value = "COMPLETED_CODE";
+                var completeCodeList = _eFunctions.GetItemCodes("SC").Select(item => item.code + " - " + item.description).ToList();
+                _cells.SetValidationList(_cells.GetCell(5, TitleRow02 + 1), completeCodeList, ValidationSheetName, 10, false);
                 _cells.GetCell(6, TitleRow02).Value = "OUT_SERV_DATE";
                 _cells.GetCell(6, TitleRow02).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(7, TitleRow02).Value = "COMENTARIO";
@@ -766,6 +775,8 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(3, TitleRow04).Value = "DURATION_DATE";
                 _cells.GetCell(3, TitleRow04).AddComment("yyyyMMdd");
                 _cells.GetCell(4, TitleRow04).Value = "DURATION_CODE";
+                var durationCodeList = _eFunctions.GetItemCodes("JI").Select(item => item.code + " - " + item.description).ToList();
+                _cells.SetValidationList(_cells.GetCell(4, TitleRow04 + 1), durationCodeList, ValidationSheetName, 11, false);
                 _cells.GetCell(5, TitleRow04).Value = "START_HOUR";
                 _cells.GetCell(5, TitleRow04).AddComment("hhmmss");
                 _cells.GetCell(6, TitleRow04).Value = "FINAL_HOUR";
@@ -774,7 +785,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(7, TitleRow04).Style = StyleConstants.TitleAction;
                 _cells.GetCell(7, TitleRow04).AddComment("Crear, Eliminar");
                 var actionsList = new List<string> {"Crear", "Eliminar"};
-                _cells.SetValidationList(_cells.GetCell(7, TitleRow04 + 1), actionsList, ValidationSheetName, 10, false);
+                _cells.SetValidationList(_cells.GetCell(7, TitleRow04 + 1), actionsList, ValidationSheetName, 12, false);
 
                 _cells.GetCell(ResultColumn04, TitleRow04).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn04, TitleRow04).Style = StyleConstants.TitleResult;
@@ -841,6 +852,13 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
+                _cells.GetCell("A4").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
+                    "INST: IMIS, MINA\n" +
+                    "MDC: FFCC, PBV, PTAS\n" +
+                    "MNTTO: MINA\n" +
+                    "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
+
                 _cells.GetCell("A4").Value = WorkOrderActions.SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
                 _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 3, false);
@@ -1032,31 +1050,33 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(3, TitleRowD04).Value = "Work Request";
                 _cells.GetCell(4, TitleRowD04).Value = "Comentarios Duraciones";
                 _cells.GetCell(5, TitleRowD04).Value = "Com.Dur. Text";
-                _cells.GetCell(6, TitleRowD04).Value = "Nro. Componente";
-                _cells.GetCell(7, TitleRowD04).Value = "P1. Eq.Liv-Med";
-                _cells.GetCell(8, TitleRowD04).Value = "P2. Eq.Movil-Minero";
-                _cells.GetCell(9, TitleRowD04).Value = "P3. Manejo Sust.Peligrosa";
-                _cells.GetCell(10, TitleRowD04).Value = "P4. Guardas Equipo";
-                _cells.GetCell(11, TitleRowD04).Value = "P5. Aislamiento";
-                _cells.GetCell(12, TitleRowD04).Value = "P6. Trabajos Altura";
-                _cells.GetCell(13, TitleRowD04).Value = "P7. Manejo Cargas";
-                _cells.GetCell(14, TitleRowD04).Value = "Proyecto ICN";
-                _cells.GetCell(15, TitleRowD04).Value = "Reembolsable";
-                _cells.GetCell(16, TitleRowD04).Value = "Fecha No Conforme";
-                _cells.GetCell(17, TitleRowD04).Value = "Fecha NC Text";
-                _cells.GetCell(18, TitleRowD04).Value = "No Conforme?";
-                _cells.GetCell(19, TitleRowD04).Value = "Fecha Ejecución";
-                _cells.GetCell(20, TitleRowD04).Value = "Hora Ingreso";
-                _cells.GetCell(21, TitleRowD04).Value = "Hora Salida";
-                _cells.GetCell(22, TitleRowD04).Value = "Nombre Buque";
-                _cells.GetCell(23, TitleRowD04).Value = "Calif. Encuesta";
-                _cells.GetCell(24, TitleRowD04).Value = "Tarea Crítica?";
-                _cells.GetCell(25, TitleRowD04).Value = "Garantía";
-                _cells.GetCell(26, TitleRowD04).Value = "Garantía Text";
-                _cells.GetCell(27, TitleRowD04).Value = "Cód. Certificación";
-                _cells.GetCell(28, TitleRowD04).Value = "Fecha Entrega";
-                _cells.GetCell(29, TitleRowD04).Value = "Relacionar EV";
-                _cells.GetCell(30, TitleRowD04).Value = "Departamento";
+                _cells.GetCell(6, TitleRowD04).Value = "EmpleadoId";
+                _cells.GetCell(7, TitleRowD04).Value = "Nro. Componente";
+                _cells.GetCell(8, TitleRowD04).Value = "P1. Eq.Liv-Med";
+                _cells.GetCell(9, TitleRowD04).Value = "P2. Eq.Movil-Minero";
+                _cells.GetCell(10, TitleRowD04).Value = "P3. Manejo Sust.Peligrosa";
+                _cells.GetCell(11, TitleRowD04).Value = "P4. Guardas Equipo";
+                _cells.GetCell(12, TitleRowD04).Value = "P5. Aislamiento";
+                _cells.GetCell(13, TitleRowD04).Value = "P6. Trabajos Altura";
+                _cells.GetCell(14, TitleRowD04).Value = "P7. Manejo Cargas";
+                _cells.GetCell(15, TitleRowD04).Value = "Proyecto ICN";
+                _cells.GetCell(16, TitleRowD04).Value = "Reembolsable";
+                _cells.GetCell(17, TitleRowD04).Value = "Fecha No Conforme";
+                _cells.GetCell(18, TitleRowD04).Value = "Fecha NC Text";
+                _cells.GetCell(19, TitleRowD04).Value = "No Conforme?";
+                _cells.GetCell(20, TitleRowD04).Value = "Fecha Ejecución";
+                _cells.GetCell(21, TitleRowD04).Value = "Hora Ingreso";
+                _cells.GetCell(22, TitleRowD04).Value = "Hora Salida";
+                _cells.GetCell(23, TitleRowD04).Value = "Nombre Buque";
+                _cells.GetCell(24, TitleRowD04).Value = "Calif. Encuesta";
+                _cells.GetCell(25, TitleRowD04).Value = "Tarea Crítica?";
+                _cells.GetCell(26, TitleRowD04).Value = "Garantía";
+                _cells.GetCell(27, TitleRowD04).Value = "Garantía Text";
+                _cells.GetCell(28, TitleRowD04).Value = "Cód. Certificación";
+                _cells.GetCell(29, TitleRowD04).Value = "Fecha Entrega";
+                _cells.GetCell(30, TitleRowD04).Value = "Relacionar EV";
+                _cells.GetCell(31, TitleRowD04).Value = "Departamento";
+                _cells.GetCell(32, TitleRowD04).Value = "Localización";
 
                 
                 _cells.GetCell(ResultColumnD04, TitleRowD04).Value = "RESULTADO";
@@ -1121,6 +1141,13 @@ namespace EllipseWorkOrderExcelAddIn
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("A4").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
+                    "INST: IMIS, MINA\n" +
+                    "MDC: FFCC, PBV, PTAS\n" +
+                    "MNTTO: MINA\n" +
+                    "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
+
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = WorkOrderActions.SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
@@ -1464,7 +1491,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             
-            _cells.ClearTableRange(TableName01);
+            _cells.ClearTableRange(TableNameQ01);
 
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             var searchCriteriaList = WorkOrderActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
@@ -2064,7 +2091,7 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.closedDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
                     wo.closedTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value);
                     wo.completedBy = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value);
-                    wo.completedCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
+                    wo.completedCode = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value));
                     wo.outServDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
                     wo.completeCommentToAppend = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value);
                     if (!ignoreClosedStatus)
@@ -2361,7 +2388,7 @@ namespace EllipseWorkOrderExcelAddIn
                     var duration = new WorkOrderDuration
                     {
                         jobDurationsDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value),
-                        jobDurationsCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value),
+                        jobDurationsCode = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value)),
                         jobDurationsStart = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
                         jobDurationsFinish = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)
                     };
@@ -2446,31 +2473,33 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(3, i).Value = "'" + woRefCodes.WorkRequest;
                     _cells.GetCell(4, i).Value = "'" + woRefCodes.ComentariosDuraciones;
                     _cells.GetCell(5, i).Value = "'" + woRefCodes.ComentariosDuracionesText;
-                    _cells.GetCell(6, i).Value = "'" + woRefCodes.NroComponente;
-                    _cells.GetCell(7, i).Value = "'" + woRefCodes.P1EqLivMed;
-                    _cells.GetCell(8, i).Value = "'" + woRefCodes.P2EqMovilMinero;
-                    _cells.GetCell(9, i).Value = "'" + woRefCodes.P3ManejoSustPeligrosa;
-                    _cells.GetCell(10, i).Value = "'" + woRefCodes.P4GuardasEquipo;
-                    _cells.GetCell(11, i).Value = "'" + woRefCodes.P5Aislamiento;
-                    _cells.GetCell(12, i).Value = "'" + woRefCodes.P6TrabajosAltura;
-                    _cells.GetCell(13, i).Value = "'" + woRefCodes.P7ManejoCargas;
-                    _cells.GetCell(14, i).Value = "'" + woRefCodes.ProyectoIcn;
-                    _cells.GetCell(15, i).Value = "'" + woRefCodes.Reembolsable;
-                    _cells.GetCell(16, i).Value = "'" + woRefCodes.FechaNoConforme;
-                    _cells.GetCell(17, i).Value = "'" + woRefCodes.FechaNoConformeText;
-                    _cells.GetCell(18, i).Value = "'" + woRefCodes.NoConforme;
-                    _cells.GetCell(19, i).Value = "'" + woRefCodes.FechaEjecucion;
-                    _cells.GetCell(20, i).Value = "'" + woRefCodes.HoraIngreso;
-                    _cells.GetCell(21, i).Value = "'" + woRefCodes.HoraSalida;
-                    _cells.GetCell(22, i).Value = "'" + woRefCodes.NombreBuque;
-                    _cells.GetCell(23, i).Value = "'" + woRefCodes.CalificacionEncuesta;
-                    _cells.GetCell(24, i).Value = "'" + woRefCodes.TareaCritica;
-                    _cells.GetCell(25, i).Value = "'" + woRefCodes.Garantia;
-                    _cells.GetCell(26, i).Value = "'" + woRefCodes.GarantiaText;
-                    _cells.GetCell(27, i).Value = "'" + woRefCodes.CodigoCertificacion;
-                    _cells.GetCell(28, i).Value = "'" + woRefCodes.FechaEntrega;
-                    _cells.GetCell(29, i).Value = "'" + woRefCodes.RelacionarEv;
-                    _cells.GetCell(30, i).Value = "'" + woRefCodes.Departamento;
+                    _cells.GetCell(6, i).Value = "'" + woRefCodes.EmpleadoId;
+                    _cells.GetCell(7, i).Value = "'" + woRefCodes.NroComponente;
+                    _cells.GetCell(8, i).Value = "'" + woRefCodes.P1EqLivMed;
+                    _cells.GetCell(9, i).Value = "'" + woRefCodes.P2EqMovilMinero;
+                    _cells.GetCell(10, i).Value = "'" + woRefCodes.P3ManejoSustPeligrosa;
+                    _cells.GetCell(11, i).Value = "'" + woRefCodes.P4GuardasEquipo;
+                    _cells.GetCell(12, i).Value = "'" + woRefCodes.P5Aislamiento;
+                    _cells.GetCell(13, i).Value = "'" + woRefCodes.P6TrabajosAltura;
+                    _cells.GetCell(14, i).Value = "'" + woRefCodes.P7ManejoCargas;
+                    _cells.GetCell(15, i).Value = "'" + woRefCodes.ProyectoIcn;
+                    _cells.GetCell(16, i).Value = "'" + woRefCodes.Reembolsable;
+                    _cells.GetCell(17, i).Value = "'" + woRefCodes.FechaNoConforme;
+                    _cells.GetCell(18, i).Value = "'" + woRefCodes.FechaNoConformeText;
+                    _cells.GetCell(19, i).Value = "'" + woRefCodes.NoConforme;
+                    _cells.GetCell(20, i).Value = "'" + woRefCodes.FechaEjecucion;
+                    _cells.GetCell(21, i).Value = "'" + woRefCodes.HoraIngreso;
+                    _cells.GetCell(22, i).Value = "'" + woRefCodes.HoraSalida;
+                    _cells.GetCell(23, i).Value = "'" + woRefCodes.NombreBuque;
+                    _cells.GetCell(24, i).Value = "'" + woRefCodes.CalificacionEncuesta;
+                    _cells.GetCell(25, i).Value = "'" + woRefCodes.TareaCritica;
+                    _cells.GetCell(26, i).Value = "'" + woRefCodes.Garantia;
+                    _cells.GetCell(27, i).Value = "'" + woRefCodes.GarantiaText;
+                    _cells.GetCell(28, i).Value = "'" + woRefCodes.CodigoCertificacion;
+                    _cells.GetCell(29, i).Value = "'" + woRefCodes.FechaEntrega;
+                    _cells.GetCell(30, i).Value = "'" + woRefCodes.RelacionarEv;
+                    _cells.GetCell(31, i).Value = "'" + woRefCodes.Departamento;
+                    _cells.GetCell(32, i).Value = "'" + woRefCodes.Localizacion;
 
                     _cells.GetCell(ResultColumnD04, i).Value = "CONSULTADO";
                     _cells.GetCell(ResultColumnD04, i).Style = StyleConstants.Success;
@@ -2529,31 +2558,33 @@ namespace EllipseWorkOrderExcelAddIn
                     woRefCodes.WorkRequest = Utils.IsTrue(_cells.GetCell(03, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(03, i).Value) : null;
                     woRefCodes.ComentariosDuraciones = Utils.IsTrue(_cells.GetCell(04, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(04, i).Value) : null;
                     woRefCodes.ComentariosDuracionesText = Utils.IsTrue(_cells.GetCell(05, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(05, i).Value) : null;
-                    woRefCodes.NroComponente = Utils.IsTrue(_cells.GetCell(06, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(06, i).Value) : null;
-                    woRefCodes.P1EqLivMed = Utils.IsTrue(_cells.GetCell(07, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(07, i).Value) : null;
-                    woRefCodes.P2EqMovilMinero = Utils.IsTrue(_cells.GetCell(08, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(08, i).Value) : null;
-                    woRefCodes.P3ManejoSustPeligrosa = Utils.IsTrue(_cells.GetCell(09, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value) : null;
-                    woRefCodes.P4GuardasEquipo = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
-                    woRefCodes.P5Aislamiento = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
-                    woRefCodes.P6TrabajosAltura = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
-                    woRefCodes.P7ManejoCargas = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
-                    woRefCodes.ProyectoIcn = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
-                    woRefCodes.Reembolsable = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
-                    woRefCodes.FechaNoConforme = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
-                    woRefCodes.FechaNoConformeText = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
-                    woRefCodes.NoConforme = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
-                    woRefCodes.FechaEjecucion = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null;
-                    woRefCodes.HoraIngreso = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
-                    woRefCodes.HoraSalida = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
-                    woRefCodes.NombreBuque = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
-                    woRefCodes.CalificacionEncuesta = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
-                    woRefCodes.TareaCritica = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
-                    woRefCodes.Garantia = Utils.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null;
-                    woRefCodes.GarantiaText = Utils.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null;
-                    woRefCodes.CodigoCertificacion = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null;
-                    woRefCodes.FechaEntrega = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;
-                    woRefCodes.RelacionarEv = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
-                    woRefCodes.Departamento = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
+                    woRefCodes.EmpleadoId = Utils.IsTrue(_cells.GetCell(06, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(06, i).Value) : null;
+                    woRefCodes.NroComponente = Utils.IsTrue(_cells.GetCell(07, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(07, i).Value) : null;
+                    woRefCodes.P1EqLivMed = Utils.IsTrue(_cells.GetCell(08, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(08, i).Value) : null;
+                    woRefCodes.P2EqMovilMinero = Utils.IsTrue(_cells.GetCell(09, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value) : null;
+                    woRefCodes.P3ManejoSustPeligrosa = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
+                    woRefCodes.P4GuardasEquipo = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
+                    woRefCodes.P5Aislamiento = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
+                    woRefCodes.P6TrabajosAltura = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
+                    woRefCodes.P7ManejoCargas = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
+                    woRefCodes.ProyectoIcn = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
+                    woRefCodes.Reembolsable = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
+                    woRefCodes.FechaNoConforme = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
+                    woRefCodes.FechaNoConformeText = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
+                    woRefCodes.NoConforme = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null;
+                    woRefCodes.FechaEjecucion = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
+                    woRefCodes.HoraIngreso = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
+                    woRefCodes.HoraSalida = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
+                    woRefCodes.NombreBuque = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
+                    woRefCodes.CalificacionEncuesta = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
+                    woRefCodes.TareaCritica = Utils.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null;
+                    woRefCodes.Garantia = Utils.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null;
+                    woRefCodes.GarantiaText = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null;
+                    woRefCodes.CodigoCertificacion = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;
+                    woRefCodes.FechaEntrega = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
+                    woRefCodes.RelacionarEv = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
+                    woRefCodes.Departamento = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
+                    woRefCodes.Localizacion = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;
 
                     WorkOrderActions.UpdateWorkOrderReferenceCodes(_eFunctions, urlService, opSheet, district, workOrder, woRefCodes);
 
