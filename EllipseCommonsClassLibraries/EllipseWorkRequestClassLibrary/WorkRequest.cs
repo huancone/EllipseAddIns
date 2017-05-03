@@ -554,13 +554,108 @@ namespace EllipseWorkRequestClassLibrary
         {
             public static string GetFetchWorkRequest(string dbReference, string dbLink, string workGroup, string startDate, string endDate, string wrStatus)
             {
+                int searchCriteriaKey1 = 0;
+                string searchCriteriaValue1 = "";
+                int searchCriteriaKey2 = 0;
+                string searchCriteriaValue2 = "";
+                int dateCriteriaKey = 0;
+                string dateCriteriaValue = "";
+
                 //establecemos los parámetrode de grupo
                 if (string.IsNullOrEmpty(workGroup))
                     workGroup = " IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
                 else
                     workGroup = " = '" + workGroup + "'";
 
-                //establecemos los parámetros de estado de orden
+                var queryCriteria1 = "";
+                //establecemos los parámetros del criterio 1
+                if (searchCriteriaKey1 == SearchFieldCriteriaType.WorkGroup.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "AND WR.WORK_GROUP = '" + searchCriteriaValue1 + "'";
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.EquipmentReference.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "AND WR.EQUIP_NO = '" + searchCriteriaValue1 + "'";//Falta buscar el equip ref //to do
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.ProductiveUnit.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NP FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteriaValue1 + "')";
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.Originator.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "AND WR.CREATION_USER = '" + searchCriteriaValue1 + "'";
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.CompletedBy.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "AND WR.COMPLETED_BY = '" + searchCriteriaValue1 + "'";
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.AssignedTo.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "AND WR.ASSIGN_PERSON = '" + searchCriteriaValue1 + "'";
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.RequestType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "WR.WORK_REQ_TYPE = '" + searchCriteriaValue1 + "'";
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
+                    if (searchCriteriaKey2 == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                        queryCriteria1 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue1 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue2 + "')";
+                    else if (searchCriteriaKey2 != SearchFieldCriteriaType.ListId.Key || string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                        queryCriteria1 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue1 + "')";
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
+                    if (searchCriteriaKey2 == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                        queryCriteria1 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue2 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue1 + "')";
+                    else if (searchCriteriaKey2 != SearchFieldCriteriaType.ListType.Key || string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                        queryCriteria1 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteriaValue1 + "')";
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.Egi.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_GRP_ID = '" + searchCriteriaValue1 + "')";
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteriaValue1 + "')";
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteriaValue1).Select(g => g.Name).ToList(), ",", "'") + ")";
+                else if (searchCriteriaKey1 == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                    queryCriteria1 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteriaValue1).Select(g => g.Name).ToList(), ",", "'") + ")";
+                else
+                    queryCriteria1 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
+                //
+
+                var queryCriteria2 = "";
+                //establecemos los parámetros del criterio 2
+                if (searchCriteriaKey2 == SearchFieldCriteriaType.WorkGroup.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "AND WR.WORK_GROUP = '" + searchCriteriaValue2 + "'";
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.EquipmentReference.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "AND WR.EQUIP_NO = '" + searchCriteriaValue2 + "'";//Falta buscar el equip ref //to do
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.ProductiveUnit.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NP FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteriaValue2 + "')";
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.Originator.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "AND WR.CREATION_USER = '" + searchCriteriaValue2 + "'";
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.CompletedBy.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "AND WR.COMPLETED_BY = '" + searchCriteriaValue2 + "'";
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.AssignedTo.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "AND WR.ASSIGN_PERSON = '" + searchCriteriaValue2 + "'";
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.RequestType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "WR.WORK_REQ_TYPE = '" + searchCriteriaValue2 + "'";
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
+                    if (searchCriteriaKey1 == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                        queryCriteria2 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue2 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue1 + "')";
+                    else if (searchCriteriaKey1 != SearchFieldCriteriaType.ListId.Key || string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                        queryCriteria2 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue2 + "')";
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
+                    if (searchCriteriaKey1 == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                        queryCriteria2 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue1 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue2 + "')";
+                    else if (searchCriteriaKey1 != SearchFieldCriteriaType.ListType.Key || string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                        queryCriteria2 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteriaValue2 + "')";
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.Egi.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_GRP_ID = '" + searchCriteriaValue2 + "')";
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteriaValue2 + "')";
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteriaValue2).Select(g => g.Name).ToList(), ",", "'") + ")";
+                else if (searchCriteriaKey2 == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                    queryCriteria2 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteriaValue2).Select(g => g.Name).ToList(), ",", "'") + ")";
+                else
+                    queryCriteria2 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
+                //
+                
+
+
+
+                //
+                //establecemos los parámetros de estado
                 string statusRequirement;
                 if (string.IsNullOrEmpty(wrStatus))
                     statusRequirement = "";
@@ -572,10 +667,22 @@ namespace EllipseWorkRequestClassLibrary
                     statusRequirement = "";
 
                 //establecemos los parámetros para el rango de fechas
+                string dateParameters;
                 if (string.IsNullOrEmpty(startDate))
                     startDate = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 if (string.IsNullOrEmpty(endDate))
                     endDate = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+
+                if (dateCriteriaKey == SearchDateCriteriaType.None.Key)
+                    dateParameters = "";
+                if (dateCriteriaKey == SearchDateCriteriaType.Raised.Key)
+                    dateParameters = " AND WR.RAISED_DATE BETWEEN '" + startDate + "' AND '" + endDate + "'";
+                else if (dateCriteriaKey == SearchDateCriteriaType.Closed.Key)
+                    dateParameters = " AND WR.CLOSED_DATE BETWEEN '" + startDate + "' AND '" + endDate + "'";
+                else if (dateCriteriaKey == SearchDateCriteriaType.Modified.Key)
+                    dateParameters = " AND WR.REQ_BY_DATE BETWEEN '" + startDate + "' AND '" + endDate + "'";
+                else
+                    dateParameters = " AND WR.RAISED_DATE BETWEEN '" + startDate + "' AND '" + endDate + "'";
 
                 //escribimos el query
                 var query = "" +
@@ -751,6 +858,44 @@ namespace EllipseWorkRequestClassLibrary
                             " WHERE" +
                             "   WR.REQUEST_ID = '" + requestId + "'";
                 return query;
+            }
+        }
+        public static class SearchFieldCriteriaType
+        {
+            public static KeyValuePair<int, string> None = new KeyValuePair<int, string>(0, "None");
+            public static KeyValuePair<int, string> WorkGroup = new KeyValuePair<int, string>(1, "WorkGroup");
+            public static KeyValuePair<int, string> EquipmentReference = new KeyValuePair<int, string>(2, "Equipment No");
+            public static KeyValuePair<int, string> ProductiveUnit = new KeyValuePair<int, string>(3, "ProductiveUnit");
+            public static KeyValuePair<int, string> Originator = new KeyValuePair<int, string>(4, "Originator");
+            public static KeyValuePair<int, string> CompletedBy = new KeyValuePair<int, string>(5, "CompletedBy");
+            public static KeyValuePair<int, string> AssignedTo = new KeyValuePair<int, string>(6, "AssignedTo");
+            public static KeyValuePair<int, string> RequestType = new KeyValuePair<int, string>(7, "RequestType");
+            public static KeyValuePair<int, string> ListType = new KeyValuePair<int, string>(8, "ListType");
+            public static KeyValuePair<int, string> ListId = new KeyValuePair<int, string>(9, "ListId");
+            public static KeyValuePair<int, string> Egi = new KeyValuePair<int, string>(10, "EGI");
+            public static KeyValuePair<int, string> EquipmentClass = new KeyValuePair<int, string>(11, "Equipment Class");
+            public static KeyValuePair<int, string> Area = new KeyValuePair<int, string>(12, "Area");
+            public static KeyValuePair<int, string> Quartermaster = new KeyValuePair<int, string>(13, "SuperIntendencia");
+
+            public static List<KeyValuePair<int, string>> GetSearchFieldCriteriaTypes(bool keyOrder = true)
+            {
+                var list = new List<KeyValuePair<int, string>> { None, WorkGroup, EquipmentReference, ProductiveUnit, Originator, CompletedBy, AssignedTo, RequestType, ListId, ListType, Egi, EquipmentClass, Area, Quartermaster };
+
+                return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
+            }
+        }
+        public static class SearchDateCriteriaType
+        {
+            public static KeyValuePair<int, string> None = new KeyValuePair<int, string>(0, "None");
+            public static KeyValuePair<int, string> Raised = new KeyValuePair<int, string>(1, "Raised");
+            public static KeyValuePair<int, string> Closed = new KeyValuePair<int, string>(2, "Closed");
+            public static KeyValuePair<int, string> Modified = new KeyValuePair<int, string>(3, "Modified");
+
+            public static List<KeyValuePair<int, string>> GetSearchDateCriteriaTypes(bool keyOrder = true)
+            {
+                var list = new List<KeyValuePair<int, string>> { None, Raised, Closed, Modified};
+
+                return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
             }
         }
     }
