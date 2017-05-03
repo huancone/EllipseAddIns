@@ -9,9 +9,9 @@ using System.Security;
 [assembly: AssemblyTitle("EllipseStockCodesExcelAddIn")]
 [assembly: AssemblyDescription("Consulta de StockCodes")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hambings SAS")]
+[assembly: AssemblyCompany("Hambings SAS/Cerrejón Ltda")]
 [assembly: AssemblyProduct("EllipseStockCodesExcelAddIn")]
-[assembly: AssemblyCopyright("Copyright ©  2015-2016")]
+[assembly: AssemblyCopyright("Copyright ©  2015-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,6 +33,6 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyFileVersion("1.0.0.1")]
 
