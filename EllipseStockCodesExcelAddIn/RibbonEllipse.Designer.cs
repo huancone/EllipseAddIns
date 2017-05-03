@@ -117,7 +117,6 @@
             // 
             // cbValidOnly
             // 
-            this.cbValidOnly.Checked = true;
             this.cbValidOnly.Label = "Sólo PNs &Válidos";
             this.cbValidOnly.Name = "cbValidOnly";
             // 

@@ -235,18 +235,20 @@ namespace EllipseStockCodesExcelAddIn
                         {
                             cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Warning;
                             cp.GetCell(ResultColumn01, rowParam).Value = "No se encontraron datos. Intente la búsqueda desactivando la opción de sólo Parte Número válido y/o preferido";
-                            return;
                         }
-
-                        while (dataReader.Read())
+                        else
                         {
-                            for (var k = 0; k < dataReader.FieldCount; k++)
-                                cr.GetCell(k + 1, rowResult).Value2 = "'" + dataReader[k].ToString().Trim();
-                            rowResult++;
+                            while (dataReader.Read())
+                            {
+                                for (var k = 0; k < dataReader.FieldCount; k++)
+                                    cr.GetCell(k + 1, rowResult).Value2 = "'" + dataReader[k].ToString().Trim();
+                                rowResult++;
+                            }
+                            cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Success;
+                            cp.GetCell(2, rowParam).Value = "Consulta";
+                            cp.GetCell(ResultColumn01, rowParam).Value = "OK";                          
                         }
-                        cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Success;
-                        cp.GetCell(2, rowParam).Value = "Consulta";
-                        cp.GetCell(ResultColumn01, rowParam).Value = "OK";
+  
                     }
                     catch (Exception ex)
                     {
