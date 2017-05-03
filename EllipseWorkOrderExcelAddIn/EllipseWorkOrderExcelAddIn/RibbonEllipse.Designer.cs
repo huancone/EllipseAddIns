@@ -39,16 +39,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpWorkOrder = this.Factory.CreateRibbonGroup();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.box2 = this.Factory.CreateRibbonBox();
-            this.menuFormat = this.Factory.CreateRibbonMenu();
-            this.btnFormatSheet = this.Factory.CreateRibbonButton();
-            this.btnFormatDetail = this.Factory.CreateRibbonButton();
-            this.btnFormatQuality = this.Factory.CreateRibbonButton();
-            this.btnAbout = this.Factory.CreateRibbonButton();
-            this.box3 = this.Factory.CreateRibbonBox();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
-            this.box4 = this.Factory.CreateRibbonBox();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuGeneral = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
@@ -75,12 +66,15 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReviewQuality = this.Factory.CreateRibbonButton();
             this.btnCleanQualitySheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.box2 = this.Factory.CreateRibbonBox();
+            this.menuFormat = this.Factory.CreateRibbonMenu();
+            this.btnFormatSheet = this.Factory.CreateRibbonButton();
+            this.btnFormatDetail = this.Factory.CreateRibbonButton();
+            this.btnFormatQuality = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
-            this.box1.SuspendLayout();
             this.box2.SuspendLayout();
-            this.box3.SuspendLayout();
-            this.box4.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -91,73 +85,16 @@ namespace EllipseWorkOrderExcelAddIn
             // 
             // grpWorkOrder
             // 
-            this.grpWorkOrder.Items.Add(this.box1);
+            this.grpWorkOrder.Items.Add(this.box2);
+            this.grpWorkOrder.Items.Add(this.drpEnviroment);
+            this.grpWorkOrder.Items.Add(this.menuActions);
             this.grpWorkOrder.Label = "WorkOrders";
             this.grpWorkOrder.Name = "grpWorkOrder";
-            // 
-            // box1
-            // 
-            this.box1.BoxStyle = Microsoft.Office.Tools.Ribbon.RibbonBoxStyle.Vertical;
-            this.box1.Items.Add(this.box2);
-            this.box1.Items.Add(this.box3);
-            this.box1.Items.Add(this.box4);
-            this.box1.Name = "box1";
-            // 
-            // box2
-            // 
-            this.box2.Items.Add(this.menuFormat);
-            this.box2.Items.Add(this.btnAbout);
-            this.box2.Name = "box2";
-            // 
-            // menuFormat
-            // 
-            this.menuFormat.Items.Add(this.btnFormatSheet);
-            this.menuFormat.Items.Add(this.btnFormatDetail);
-            this.menuFormat.Items.Add(this.btnFormatQuality);
-            this.menuFormat.Label = "&Formatos";
-            this.menuFormat.Name = "menuFormat";
-            // 
-            // btnFormatSheet
-            // 
-            this.btnFormatSheet.Label = "&Formato Base";
-            this.btnFormatSheet.Name = "btnFormatSheet";
-            this.btnFormatSheet.ShowImage = true;
-            this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
-            // 
-            // btnFormatDetail
-            // 
-            this.btnFormatDetail.Label = "Formato &Detallado";
-            this.btnFormatDetail.Name = "btnFormatDetail";
-            this.btnFormatDetail.ShowImage = true;
-            this.btnFormatDetail.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatDetail_Click);
-            // 
-            // btnFormatQuality
-            // 
-            this.btnFormatQuality.Label = "&Calidad de OTs";
-            this.btnFormatQuality.Name = "btnFormatQuality";
-            this.btnFormatQuality.ShowImage = true;
-            this.btnFormatQuality.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatQuality_Click);
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
-            // 
-            // box3
-            // 
-            this.box3.Items.Add(this.drpEnviroment);
-            this.box3.Name = "box3";
             // 
             // drpEnviroment
             // 
             this.drpEnviroment.Label = "Env.";
             this.drpEnviroment.Name = "drpEnviroment";
-            // 
-            // box4
-            // 
-            this.box4.Items.Add(this.menuActions);
-            this.box4.Name = "box4";
             // 
             // menuActions
             // 
@@ -183,7 +120,7 @@ namespace EllipseWorkOrderExcelAddIn
             // 
             // btnReview
             // 
-            this.btnReview.Label = "Consultar OTs Grupo";
+            this.btnReview.Label = "Consultar OTs";
             this.btnReview.Name = "btnReview";
             this.btnReview.ShowImage = true;
             this.btnReview.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReview_Click);
@@ -357,6 +294,47 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // box2
+            // 
+            this.box2.Items.Add(this.menuFormat);
+            this.box2.Items.Add(this.btnAbout);
+            this.box2.Name = "box2";
+            // 
+            // menuFormat
+            // 
+            this.menuFormat.Items.Add(this.btnFormatSheet);
+            this.menuFormat.Items.Add(this.btnFormatDetail);
+            this.menuFormat.Items.Add(this.btnFormatQuality);
+            this.menuFormat.Label = "&Formatos";
+            this.menuFormat.Name = "menuFormat";
+            // 
+            // btnFormatSheet
+            // 
+            this.btnFormatSheet.Label = "&Formato Base";
+            this.btnFormatSheet.Name = "btnFormatSheet";
+            this.btnFormatSheet.ShowImage = true;
+            this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
+            // 
+            // btnFormatDetail
+            // 
+            this.btnFormatDetail.Label = "Formato &Detallado";
+            this.btnFormatDetail.Name = "btnFormatDetail";
+            this.btnFormatDetail.ShowImage = true;
+            this.btnFormatDetail.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatDetail_Click);
+            // 
+            // btnFormatQuality
+            // 
+            this.btnFormatQuality.Label = "&Calidad de OTs";
+            this.btnFormatQuality.Name = "btnFormatQuality";
+            this.btnFormatQuality.ShowImage = true;
+            this.btnFormatQuality.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatQuality_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -367,14 +345,8 @@ namespace EllipseWorkOrderExcelAddIn
             this.tabEllipse.PerformLayout();
             this.grpWorkOrder.ResumeLayout(false);
             this.grpWorkOrder.PerformLayout();
-            this.box1.ResumeLayout(false);
-            this.box1.PerformLayout();
             this.box2.ResumeLayout(false);
             this.box2.PerformLayout();
-            this.box3.ResumeLayout(false);
-            this.box3.PerformLayout();
-            this.box4.ResumeLayout(false);
-            this.box4.PerformLayout();
 
         }
 
@@ -384,7 +356,6 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonGroup grpWorkOrder;
         internal RibbonDropDown drpEnviroment;
         internal RibbonButton btnReview;
-        internal RibbonButton btnFormatSheet;
         internal RibbonMenu menuActions;
         internal RibbonButton btnCreate;
         internal RibbonButton btnUpdate;
@@ -402,22 +373,20 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnCleanCloseSheets;
         internal RibbonButton btnCleanDuration;
         internal RibbonButton btnStopThread;
-        internal RibbonMenu menuFormat;
-        internal RibbonButton btnFormatQuality;
         internal RibbonMenu menuQuality;
         internal RibbonButton btnReviewQuality;
         internal RibbonButton btnReReviewQuality;
         internal RibbonButton btnCleanQualitySheet;
         internal RibbonCheckBox cbIgnoreClosedStatus;
-        internal RibbonButton btnFormatDetail;
         internal RibbonMenu menuReferenceCodes;
         internal RibbonButton btnReviewReferenceCodes;
         internal RibbonButton btnUpdateReferenceCodes;
-        internal RibbonBox box1;
         internal RibbonBox box2;
+        internal RibbonMenu menuFormat;
+        internal RibbonButton btnFormatSheet;
+        internal RibbonButton btnFormatDetail;
+        internal RibbonButton btnFormatQuality;
         internal RibbonButton btnAbout;
-        internal RibbonBox box3;
-        internal RibbonBox box4;
     }
 
     partial class ThisRibbonCollection
