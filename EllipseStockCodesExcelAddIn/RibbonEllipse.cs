@@ -235,18 +235,20 @@ namespace EllipseStockCodesExcelAddIn
                         {
                             cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Warning;
                             cp.GetCell(ResultColumn01, rowParam).Value = "No se encontraron datos. Intente la búsqueda desactivando la opción de sólo Parte Número válido y/o preferido";
-                            return;
                         }
-
-                        while (dataReader.Read())
+                        else
                         {
-                            for (var k = 0; k < dataReader.FieldCount; k++)
-                                cr.GetCell(k + 1, rowResult).Value2 = "'" + dataReader[k].ToString().Trim();
-                            rowResult++;
+                            while (dataReader.Read())
+                            {
+                                for (var k = 0; k < dataReader.FieldCount; k++)
+                                    cr.GetCell(k + 1, rowResult).Value2 = "'" + dataReader[k].ToString().Trim();
+                                rowResult++;
+                            }
+                            cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Success;
+                            cp.GetCell(2, rowParam).Value = "Consulta";
+                            cp.GetCell(ResultColumn01, rowParam).Value = "OK";                          
                         }
-                        cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Success;
-                        cp.GetCell(2, rowParam).Value = "Consulta";
-                        cp.GetCell(ResultColumn01, rowParam).Value = "OK";
+  
                     }
                     catch (Exception ex)
                     {
@@ -454,7 +456,7 @@ namespace EllipseStockCodesExcelAddIn
             var sqlQuery = "" +
                            "WITH SCINV AS(" +
                            "    SELECT SC.STOCK_CODE, PN.PART_NO, PN.MNEMONIC, PN.DSTRCT_CODE, SC.ITEM_NAME, SC.STK_DESC, SC.UNIT_OF_ISSUE, SC.DESC_LINEX1, SC.DESC_LINEX2, SC.DESC_LINEX3, SC.DESC_LINEX4, SC.CLASS STOCK_CLASS, SC.STOCK_TYPE," +
-                           "        INV.CREATION_DATE, INV.LAST_MOD_DATE, INV.CLASS, INV.RAF, INV.INVENT_COST_PR AS PRICE, INV.HOME_WHOUSE, ELLIPSE.GET_SOH(PN.DSTRCT_CODE, SC.STOCK_CODE) AS OWNED_SOH, ELLIPSE.GET_CONSIGN_SOH(PN.DSTRCT_CODE, SC.STOCK_CODE) AS CONSIGN_SOH," +
+                           "        INV.CREATION_DATE, INV.LAST_MOD_DATE, INV.CLASS, INV.RAF, INV.INVENT_COST_PR AS PRICE, INV.HOME_WHOUSE, ELLIPSE.GET_SOH('" + districtCode + "', SC.STOCK_CODE) AS OWNED_SOH, ELLIPSE.GET_CONSIGN_SOH('" + districtCode + "', SC.STOCK_CODE) AS CONSIGN_SOH," +
                            "        INV.IN_TRANSIT, INV.DUES_IN, INV.DUES_OUT, INV.RESERVED, INV.ROP, INV.ROQ, INV.REORDER_QTY, INV.EXP_ELEMENT, INV.RESTRICT_RULE, INV.DIRECT_ORDER_IND, INV.PURCH_OFFICER, INV.INVT_CONTROLLR," +
                            "        PN.PREF_PART_IND, PN.STATUS_CODES," +
                            "        MIN(PN.PREF_PART_IND) OVER (PARTITION BY SC.STOCK_CODE) MINPPI, ROW_NUMBER() OVER (PARTITION BY SC.STOCK_CODE ORDER BY SC.STOCK_CODE, PN.PREF_PART_IND ASC) ROWPPI" +
@@ -532,7 +534,7 @@ namespace EllipseStockCodesExcelAddIn
         {
             var paramDistrict = "";
             if (!string.IsNullOrWhiteSpace(districtCode))//muchos stockcodes no tienen registrado distrito en los parte número
-                paramDistrict = " AND PO.DSTRCT_CODE = '" + districtCode + "'";// + " AND PN.DSTRCT_CODE = '" + districtCode + "'";
+                paramDistrict = " AND PO.DSTRCT_CODE = '" + districtCode + "'";
             if (dateCriteria.Equals(SearchDateCriteriaType.Raised.Value))
             {
                 if (!string.IsNullOrWhiteSpace(startDate))
@@ -578,7 +580,7 @@ namespace EllipseStockCodesExcelAddIn
                            "  ORDER BY POI.PO_ITEM_NO" +
                            "  )," +
                            " SCSTAT AS(" +
-                           " SELECT STAT.DSTRCT_CODE, SC.STOCK_CODE, STAT.CREATION_DATE, STAT.LAST_MOD_DATE, SC.STK_DESC, SC.UNIT_OF_ISSUE, STAT.CLASS, STAT.RAF AS ALGORITMO, STAT.INVENT_COST_PR AS PRICE, STAT.HOME_WHOUSE AS BODEGA_PRINCIPAL, ELLIPSE.GET_SOH('ICOR',SC.STOCK_CODE) AS OWNED_SOH, ELLIPSE.GET_CONSIGN_SOH(PN.DSTRCT_CODE, SC.STOCK_CODE) AS CONSIGN_SOH," +
+                           " SELECT STAT.DSTRCT_CODE, SC.STOCK_CODE, STAT.CREATION_DATE, STAT.LAST_MOD_DATE, SC.STK_DESC, SC.UNIT_OF_ISSUE, STAT.CLASS, STAT.RAF AS ALGORITMO, STAT.INVENT_COST_PR AS PRICE, STAT.HOME_WHOUSE AS BODEGA_PRINCIPAL, ELLIPSE.GET_SOH('" + districtCode + "',SC.STOCK_CODE) AS OWNED_SOH, ELLIPSE.GET_CONSIGN_SOH('" + districtCode + "', SC.STOCK_CODE) AS CONSIGN_SOH," +
                            "  STAT.IN_TRANSIT, STAT.DUES_IN, STAT.DUES_OUT, STAT.RESERVED, STAT.ROP, STAT.REORDER_QTY ROQ, STAT.EXP_ELEMENT AS DETALLE_GASTO, STAT.RESTRICT_RULE AS RESTR, STAT.DIRECT_ORDER_IND AS DO_IND, STAT.PURCH_OFFICER AS PURCHASER, " +
                            "  (SELECT SUM(UNSCHED_USAGE) FROM ELLIPSE.MSF175 WHERE DSTRCT_CODE=STAT.DSTRCT_CODE AND STOCK_CODE=SC.STOCK_CODE " +
                            "  AND FULL_ACCT_PER BETWEEN (SELECT TO_CHAR(TO_DATE(MAX(FULL_ACCT_PER),'YYYYMM')-365,'YYYYMM') FROM ELLIPSE.MSF175 WHERE DSTRCT_CODE=STAT.DSTRCT_CODE AND STOCK_CODE=SC.STOCK_CODE) AND (SELECT MAX(FULL_ACCT_PER) FROM ELLIPSE.MSF175 WHERE DSTRCT_CODE=STAT.DSTRCT_CODE AND STOCK_CODE=SC.STOCK_CODE) " +

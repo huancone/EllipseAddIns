@@ -40,8 +40,8 @@
             this.btnFormat = this.Factory.CreateRibbonButton();
             this.btnLimpiezaCarbon = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
-            this.btnLoad = this.Factory.CreateRibbonButton();
             this.menuActions = this.Factory.CreateRibbonMenu();
+            this.btnLoad = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpInspPestanas.SuspendLayout();
@@ -59,7 +59,7 @@
             this.grpInspPestanas.Items.Add(this.menuFormat);
             this.grpInspPestanas.Items.Add(this.drpEnviroment);
             this.grpInspPestanas.Items.Add(this.menuActions);
-            this.grpInspPestanas.Label = "MSO627 Pestanas v1.0.0";
+            this.grpInspPestanas.Label = "MSO627 FFCC v1.0.0";
             this.grpInspPestanas.Name = "grpInspPestanas";
             // 
             // menuFormat
@@ -88,19 +88,19 @@
             this.drpEnviroment.Label = "Env.";
             this.drpEnviroment.Name = "drpEnviroment";
             // 
-            // btnLoad
-            // 
-            this.btnLoad.Label = "Cargar hoja";
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.ShowImage = true;
-            this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
-            // 
             // menuActions
             // 
             this.menuActions.Items.Add(this.btnLoad);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Label = "Cargar hoja";
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.ShowImage = true;
+            this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
             // 
             // btnStopThread
             // 

@@ -15,6 +15,7 @@ namespace EllipseMSO627InspPestanasAddIn
     {
         private const int TittleRow = 7;
         private const int ResultColumn = 7;
+        private const int ResultColumnLimpieza = 8;
         private const int MaxRows = 8;
         private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
         private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
@@ -63,10 +64,10 @@ namespace EllipseMSO627InspPestanasAddIn
 
                 excelSheet.Name = _sheetName02;
 
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Style = _cells.GetStyle(StyleConstants.Normal);
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).ClearFormats();
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).ClearComments();
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Clear();
+                _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).Style = _cells.GetStyle(StyleConstants.Normal);
+                _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).ClearFormats();
+                _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).ClearComments();
+                _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).Clear();
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("B1").Value = "REGISTRO DE LIMPIEZA DE CARBON";
@@ -80,7 +81,8 @@ namespace EllipseMSO627InspPestanasAddIn
                 _cells.GetCell(4, TittleRow).Value = "Cantidad";
                 _cells.GetCell(5, TittleRow).Value = "Usuario";
                 _cells.GetCell(6, TittleRow).Value = "Equipo";
-                _cells.GetCell(ResultColumn, TittleRow).Value = "Resultado";
+                _cells.GetCell(7, TittleRow).Value = "Accion Correctiva";
+                _cells.GetCell(ResultColumnLimpieza, TittleRow).Value = "Resultado";
 
                 #region Instructions
 
@@ -105,12 +107,13 @@ namespace EllipseMSO627InspPestanasAddIn
                 _cells.GetCell(4, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(5, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(6, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(ResultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Style.NumberFormat = "@";
+                _cells.GetCell(7, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(ResultColumnLimpieza, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).Style.NumberFormat = "@";
 
                 #endregion
 
-                _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange, _cells.GetRange(1, TittleRow, ResultColumn, MaxRows), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
+                _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange, _cells.GetRange(1, TittleRow, ResultColumnLimpieza, MaxRows), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
                 _excelSheetItems.Name = "MSO627Limpieza";
 
                 excelSheet.Cells.Columns.AutoFit();
@@ -120,11 +123,11 @@ namespace EllipseMSO627InspPestanasAddIn
 
                 #endregion
 
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).NumberFormat = "@";
+                _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).NumberFormat = "@";
             }
             catch (Exception error)
             {
-                _cells.GetCell(ResultColumn, TittleRow).Value += " Error " + error.Message;
+                _cells.GetCell(ResultColumnLimpieza, TittleRow).Value += " Error " + error.Message;
             }
         }
 
@@ -214,6 +217,8 @@ namespace EllipseMSO627InspPestanasAddIn
         {
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == _sheetName01)
             {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -224,6 +229,8 @@ namespace EllipseMSO627InspPestanasAddIn
             }
             else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == _sheetName02)
             {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -238,10 +245,7 @@ namespace EllipseMSO627InspPestanasAddIn
 
         private void LoadLimpieza()
         {
-            _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-            _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
 
-            if (_frmAuth.ShowDialog() != DialogResult.OK) return;
             var opSheet = new Screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -266,19 +270,18 @@ namespace EllipseMSO627InspPestanasAddIn
                     var fecha = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
                     var grupo = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
                     var descripcion = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                    var cantidad = (_cells.GetEmptyIfNull((_cells.GetCell(4, currentRow).Value)).Length >= 2)
-                        ? _cells.GetNullOrTrimmedValue(_cells.GetCell(4, currentRow).Value).Substring(0, 2)
-                        : null;
+                    var cantidad = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
                     var usuario = _cells.GetEmptyIfNull(_cells.GetCell(5, currentRow).Value);
                     var equipo = _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value);
+                    var accionCorrectiva = _cells.GetEmptyIfNull(_cells.GetCell(7, currentRow).Value);
 
                     _eFunctions.RevertOperation(opSheet, proxySheet);
                     var replySheet = proxySheet.executeScreen(opSheet, "MSO627");
 
                     if (_eFunctions.CheckReplyError(replySheet))
                     {
-                        _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumn, currentRow).Value = replySheet.message;
+                        _cells.GetCell(ResultColumnLimpieza, currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumnLimpieza, currentRow).Value = replySheet.message;
                     }
                     else
                     {
@@ -296,8 +299,8 @@ namespace EllipseMSO627InspPestanasAddIn
 
                         if (_eFunctions.CheckReplyError(replySheet))
                         {
-                            _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
-                            _cells.GetCell(ResultColumn, currentRow).Value = replySheet.message;
+                            _cells.GetCell(ResultColumnLimpieza, currentRow).Style = StyleConstants.Error;
+                            _cells.GetCell(ResultColumnLimpieza, currentRow).Value = replySheet.message;
                         }
                         else if (replySheet.mapName == "MSM627B")
                         {
@@ -312,6 +315,7 @@ namespace EllipseMSO627InspPestanasAddIn
                                 arrayFields.Add("ORIGINATOR_ID2I1", usuario);
                                 arrayFields.Add("JOB_DUR_FINISH2I1", "00:00");
                                 arrayFields.Add("EQUIP_REF2I1", equipo);
+                                arrayFields.Add("CORRECT_DESC2I1", accionCorrectiva);
                                 requestSheet.screenFields = arrayFields.ToArray();
 
                                 requestSheet.screenKey = "1";
@@ -323,16 +327,16 @@ namespace EllipseMSO627InspPestanasAddIn
 
                                 if (_eFunctions.CheckReplyError(replySheet))
                                 {
-                                    _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
-                                    _cells.GetCell(ResultColumn, currentRow).Value = replySheet.message;
+                                    _cells.GetCell(ResultColumnLimpieza, currentRow).Style = StyleConstants.Error;
+                                    _cells.GetCell(ResultColumnLimpieza, currentRow).Value = replySheet.message;
                                 }
                                 else
-                                    _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Success;
+                                    _cells.GetCell(ResultColumnLimpieza, currentRow).Style = StyleConstants.Success;
                             }
                             catch (Exception ex)
                             {
                                 _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
-                                _cells.GetCell(ResultColumn, currentRow).Value = "ERROR: " + ex.Message;
+                                _cells.GetCell(ResultColumnLimpieza, currentRow).Value = "ERROR: " + ex.Message;
                                 Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message,
                                     _eFunctions.DebugErrors);
                             }
@@ -342,7 +346,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 catch (Exception ex)
                 {
                     _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn, currentRow).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumnLimpieza, currentRow).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:MSO627LoadLimpieza()", ex.Message, _eFunctions.DebugErrors);
                 }
                 finally
@@ -354,10 +358,6 @@ namespace EllipseMSO627InspPestanasAddIn
 
         private void LoadInspPestanas()
         {
-            _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-            _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-
-            if (_frmAuth.ShowDialog() != DialogResult.OK) return;
             var opSheet = new Screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
