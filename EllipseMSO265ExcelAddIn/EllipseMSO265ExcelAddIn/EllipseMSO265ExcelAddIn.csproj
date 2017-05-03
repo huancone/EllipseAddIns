@@ -22,40 +22,41 @@
     <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{73E42E35-21F0-4904-B14B-8B6EB5EAF7BE}</ProjectGuid>
+    <ProjectGuid>{1375438C-5513-4BCF-99FB-E1197DA3E812}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <RootNamespace>EllipseWorkOrderExcelAddIn</RootNamespace>
-    <AssemblyName>EllipseWorkOrderExcelAddIn</AssemblyName>
+    <RootNamespace>EllipseMSO265ExcelAddIn</RootNamespace>
+    <AssemblyName>EllipseMSO265ExcelAddIn</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
-    <IsWebBootstrapper>False</IsWebBootstrapper>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>12.0</OldToolsVersion>
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>D:\Projects\Release\EllipseWorkOrderExcelAddIn\</PublishUrl>
+    <PublishUrl>\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.3.0.7</ApplicationVersion>
-    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <ApplicationVersion>1.0.0.1</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
-    <ProductName>EllipseWorkOrderExcelAddIn</ProductName>
-    <PublisherName>Hambings SAS</PublisherName>
+    <ProductName>EllipseMSO265ExcelAddIn</ProductName>
+    <PublisherName />
     <SupportUrl />
-    <FriendlyName>EllipseWorkOrderExcelAddIn</FriendlyName>
-    <OfficeApplicationDescription>Consulta y gestión masiva de Work Orders</OfficeApplicationDescription>
+    <FriendlyName>EllipseMSO265ExcelAddIn</FriendlyName>
+    <OfficeApplicationDescription />
     <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -150,22 +151,26 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="LINQtoCSV, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToCsv.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -176,7 +181,10 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.Services.Ellipse">
-      <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.dll</HintPath>
+      <HintPath>..\..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
+      <HintPath>..\..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -214,6 +222,12 @@
     <Compile Include="RibbonEllipse.Designer.cs">
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </Compile>
+    <Compile Include="Web References\ScreenService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -227,10 +241,8 @@
     <EmbeddedResource Include="RibbonEllipse.resx">
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="EllipseWorkOrderExcelAddIn_TemporaryKey.pfx" />
+    <None Include="app.config" />
+    <None Include="EllipseMSO265ExcelAddIn_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -251,6 +263,14 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <None Include="Web References\ScreenService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ScreenService\ScreenDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ScreenService\ScreenService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -259,17 +279,22 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/ScreenService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ScreenService\</RelPath>
+      <UpdateFromURL>http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/ScreenService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseMSO265ExcelAddIn_ScreenService_ScreenService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
       <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
       <Name>EllipseCommonsClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj">
-      <Project>{093ec04e-6e92-4e59-848b-5b79277ffe9b}</Project>
-      <Name>EllipseReferenceCodesClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseWorkOrdersClassLibrary\EllipseWorkOrdersClassLibrary.csproj">
-      <Project>{b08f098e-e4de-4431-8cf1-0e3156b96a00}</Project>
-      <Name>EllipseWorkOrdersClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -280,10 +305,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>EllipseWorkOrderExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>EllipseMSO265ExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>AE0CA5A6427D655E119252DA0D9A5C4230EE0CFE</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>352BBDBB6CE06EAB43595F7E536FC1C0BE7899DA</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -293,9 +318,9 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\16.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x " AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
-        <Host Name="Excel" GeneratedCodeNamespace="EllipseWorkOrderExcelAddIn" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
-          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="AD1915FF8F60EDA3541DE05F35864DD17CAAE4D7" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
+        <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\15.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x " AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
+        <Host Name="Excel" GeneratedCodeNamespace="EllipseMSO265ExcelAddIn" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="3D4F23233D566A7AE5A1B171C876F6E4C6029CB0" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>

@@ -1,7 +1,7 @@
 ﻿using System;
 using Office = Microsoft.Office.Core;
 
-namespace EllipseWorkOrderExcelAddIn
+namespace EllipseMSO265ExcelAddIn
 {
     public partial class ThisAddIn
     {
@@ -13,16 +13,16 @@ namespace EllipseWorkOrderExcelAddIn
         {
         }
 
-        #region VSTO generated code
+        #region Código generado por VSTO
 
         /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
+        /// Método necesario para admitir el Diseñador. No se puede modificar
+        /// el contenido del método con el editor de código.
         /// </summary>
         private void InternalStartup()
         {
-            Startup += ThisAddIn_Startup;
-            Shutdown += ThisAddIn_Shutdown;
+            this.Startup += new EventHandler(ThisAddIn_Startup);
+            this.Shutdown += new EventHandler(ThisAddIn_Shutdown);
         }
         
         #endregion
