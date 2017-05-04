@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
@@ -109,7 +110,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 _cells.GetCell(6, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(7, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(ResultColumnLimpieza, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).Style.NumberFormat = "@";
+                _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).NumberFormat = "@";
 
                 #endregion
 
@@ -184,7 +185,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 _cells.GetCell(5, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(6, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(ResultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Style.NumberFormat = "@";
+                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).NumberFormat = "@";
 
                 #endregion
 
@@ -270,7 +271,7 @@ namespace EllipseMSO627InspPestanasAddIn
                     var fecha = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
                     var grupo = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
                     var descripcion = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                    var cantidad = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
+                    var cantidad = "" + _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
                     var usuario = _cells.GetEmptyIfNull(_cells.GetCell(5, currentRow).Value);
                     var equipo = _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value);
                     var accionCorrectiva = _cells.GetEmptyIfNull(_cells.GetCell(7, currentRow).Value);
@@ -337,7 +338,7 @@ namespace EllipseMSO627InspPestanasAddIn
                             {
                                 _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                                 _cells.GetCell(ResultColumnLimpieza, currentRow).Value = "ERROR: " + ex.Message;
-                                Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message,
+                                Debugger.LogError("RibbonEllipse.cs:MSO627LoadLimpieza()", ex.Message,
                                     _eFunctions.DebugErrors);
                             }
                         }
@@ -479,6 +480,11 @@ namespace EllipseMSO627InspPestanasAddIn
             {
                 MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
         }
     }
 }
