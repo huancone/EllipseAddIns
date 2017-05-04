@@ -466,15 +466,15 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.location = wo.location ?? requestWo.location;
             requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
             
-            requestWo.calculatedDurationsFlag = Convert.ToBoolean(wo.calculatedDurationsFlag);
+            requestWo.calculatedDurationsFlag = Utils.IsTrue(wo.calculatedDurationsFlag, true);
             requestWo.calculatedDurationsFlagSpecified = wo.calculatedDurationsFlag != null;
-            requestWo.calculatedLabFlag = Convert.ToBoolean(wo.calculatedLabFlag);
+            requestWo.calculatedLabFlag = Utils.IsTrue(wo.calculatedLabFlag, true);
             requestWo.calculatedLabFlagSpecified = wo.calculatedLabFlag != null;
-            requestWo.calculatedMatFlag = Convert.ToBoolean(wo.calculatedMatFlag);
+            requestWo.calculatedMatFlag = Utils.IsTrue(wo.calculatedMatFlag, true);
             requestWo.calculatedMatFlagSpecified = wo.calculatedMatFlag != null;
-            requestWo.calculatedEquipmentFlag = Convert.ToBoolean(wo.calculatedEquipmentFlag);
+            requestWo.calculatedEquipmentFlag = Utils.IsTrue(wo.calculatedEquipmentFlag, true);
             requestWo.calculatedEquipmentFlagSpecified = wo.calculatedEquipmentFlag != null;
-            requestWo.calculatedOtherFlag = Convert.ToBoolean(wo.calculatedOtherFlag);
+            requestWo.calculatedOtherFlag = Utils.IsTrue(wo.calculatedOtherFlag, true);
             requestWo.calculatedOtherFlagSpecified = wo.calculatedOtherFlag != null;
             //se envía la acción
             return proxyWo.create(opContext, requestWo);

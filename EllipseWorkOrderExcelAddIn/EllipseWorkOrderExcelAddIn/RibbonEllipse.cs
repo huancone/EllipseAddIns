@@ -1902,6 +1902,13 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.jobCode9 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(44, i).Value);
                     wo.jobCode10 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(45, i).Value);
                     wo.locationFr = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(46, i).Value);
+
+                    wo.calculatedEquipmentFlag = "true";
+                    wo.calculatedMatFlag = "true";
+                    wo.calculatedOtherFlag = "true";
+                    wo.calculatedLabFlag = "true";
+                    wo.calculatedDurationsFlag = "true";//se está forzando porque recientemente en una actualización de E8, si no se envía (se envía nulo) el predeterminado es falso
+
                     var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
 
                     _cells.GetCell(ResultColumn01, i).Value = "CREADA " + replySheet.workOrder.prefix + replySheet.workOrder.no;
