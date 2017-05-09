@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using EllipseWorkRequestClassLibrary.WorkRequestService;
 using EllipseCommonsClassLibrary;
+using EllipseReferenceCodesClassLibrary;
+using EllipseStdTextClassLibrary;
 
 namespace EllipseWorkRequestClassLibrary
 {
@@ -66,11 +68,9 @@ namespace EllipseWorkRequestClassLibrary
         public decimal priorityValue;
         public bool priorityValueFieldSpecified;
         public ServiceLevelAgreement ServiceLevelAgreement;
-        public WorkRequestReferenceCodes ReferenceCodes;
         public WorkRequest()
         {
             ServiceLevelAgreement = new ServiceLevelAgreement();
-            ReferenceCodes = new WorkRequestReferenceCodes();
         }
     }
 
@@ -101,11 +101,11 @@ namespace EllipseWorkRequestClassLibrary
         public string StockCode4;//001_9004
         public string StockCode5;//001_9005
 
-        public string StockQuantity1;//001_001
-        public string StockQuantity2;//001_002
-        public string StockQuantity3;//001_003
-        public string StockQuantity4;//001_004
-        public string StockQuantity5;//001_005
+        public string StockCode1Qty;//001_001
+        public string StockCode2Qty;//001_002
+        public string StockCode3Qty;//001_003
+        public string StockCode4Qty;//001_004
+        public string StockCode5Qty;//001_005
 
         public string HorasHombre;//006_9001
         public string HorasQty;//006_001
@@ -179,28 +179,6 @@ namespace EllipseWorkRequestClassLibrary
                         WarnTime = drWorkRequest["SLA_WARN_TIME"].ToString().Trim(),
                         WarnHours = drWorkRequest["SLA_WARN_HOURS"].ToString().Trim()
                     },
-                    ReferenceCodes =
-                    {
-                        StockCode1 = drWorkRequest["STOCK_CODE1"].ToString().Trim(),
-                        StockCode2 = drWorkRequest["STOCK_CODE2"].ToString().Trim(),
-                        StockCode3 = drWorkRequest["STOCK_CODE3"].ToString().Trim(),
-                        StockCode4 = drWorkRequest["STOCK_CODE4"].ToString().Trim(),
-                        StockCode5 = drWorkRequest["STOCK_CODE5"].ToString().Trim(),
-                        StockQuantity1 = drWorkRequest["STOCKQTY1"].ToString().Trim(),
-                        StockQuantity2 = drWorkRequest["STOCKQTY2"].ToString().Trim(),
-                        StockQuantity3 = drWorkRequest["STOCKQTY3"].ToString().Trim(),
-                        StockQuantity4 = drWorkRequest["STOCKQTY4"].ToString().Trim(),
-                        StockQuantity5 = drWorkRequest["STOCKQTY5"].ToString().Trim(),
-                        HorasHombre = drWorkRequest["HORASHOMBRE"].ToString().Trim(),
-                        HorasQty = drWorkRequest["HORASHQTY"].ToString().Trim(),
-                        DuracionTarea = drWorkRequest["DURACIONTAREA"].ToString().Trim(),
-                        EquipoDetenido = drWorkRequest["EQUIPODETENIDO"].ToString().Trim(),
-                        WorkOrderOrigen = drWorkRequest["WORKORDERORIGEN"].ToString().Trim(),
-                        RaisedReprogramada = drWorkRequest["RAISEDREPROGRAMADA"].ToString().Trim(),
-                        CambioHora = drWorkRequest["CAMBIOHORA"].ToString().Trim(),
-                        ExtendedDescriptionHeader = drWorkRequest["EXTDESCHEADER"].ToString().Trim(),
-                        ExtendedDescriptionBody = drWorkRequest["EXTDESCBODY"].ToString().Trim()
-                    }
                 };
 
                 list.Add(request);
@@ -211,7 +189,8 @@ namespace EllipseWorkRequestClassLibrary
 
         public static WorkRequest FetchWorkRequest(EllipseFunctions ef, string requestId, bool padNumber = true)
         {
-            if (requestId != null && requestId.All(char.IsDigit) && padNumber)
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
                 requestId = requestId.PadLeft(12, '0');
 
             var sqlQuery = Queries.GetFetchWorkRequest(ef.dbReference, ef.dbLink, requestId);
@@ -270,33 +249,68 @@ namespace EllipseWorkRequestClassLibrary
                     WarnTime = drWorkRequest["SLA_WARN_TIME"].ToString().Trim(),
                     WarnHours = drWorkRequest["SLA_WARN_HOURS"].ToString().Trim()
                 },
-                ReferenceCodes =
-                {
-                    StockCode1 = drWorkRequest["STOCK_CODE1"].ToString().Trim(),
-                    StockCode2 = drWorkRequest["STOCK_CODE2"].ToString().Trim(),
-                    StockCode3 = drWorkRequest["STOCK_CODE3"].ToString().Trim(),
-                    StockCode4 = drWorkRequest["STOCK_CODE4"].ToString().Trim(),
-                    StockCode5 = drWorkRequest["STOCK_CODE5"].ToString().Trim(),
-                    StockQuantity1 = drWorkRequest["STOCKQTY1"].ToString().Trim(),
-                    StockQuantity2 = drWorkRequest["STOCKQTY2"].ToString().Trim(),
-                    StockQuantity3 = drWorkRequest["STOCKQTY3"].ToString().Trim(),
-                    StockQuantity4 = drWorkRequest["STOCKQTY4"].ToString().Trim(),
-                    StockQuantity5 = drWorkRequest["STOCKQTY5"].ToString().Trim(),
-                    HorasHombre = drWorkRequest["HORASHOMBRE"].ToString().Trim(),
-                    HorasQty = drWorkRequest["HORASHQTY"].ToString().Trim(),
-                    DuracionTarea = drWorkRequest["DURACIONTAREA"].ToString().Trim(),
-                    EquipoDetenido = drWorkRequest["EQUIPODETENIDO"].ToString().Trim(),
-                    WorkOrderOrigen = drWorkRequest["WORKORDERORIGEN"].ToString().Trim(),
-                    RaisedReprogramada = drWorkRequest["RAISEDREPROGRAMADA"].ToString().Trim(),
-                    CambioHora = drWorkRequest["CAMBIOHORA"].ToString().Trim(),
-                    ExtendedDescriptionHeader = drWorkRequest["EXTDESCHEADER"].ToString().Trim(),
-                    ExtendedDescriptionBody = drWorkRequest["EXTDESCBODY"].ToString().Trim()
-                }
             };
 
             return request;
         }
 
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        public static WorkRequestReferenceCodes GetWorkRequestReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId)
+        {
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
+
+            var wrRefCodes = new WorkRequestReferenceCodes();
+
+            var rcOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
+            const string entityType = "WRQ";
+            var entityValue = requestId;
+
+            //Se encuentran problemas de implementación, debido a un comportamiento irregular del ODP en Windows. 
+            //Las conexiones cerradas (EllipseFunctions.Close()) vuelven a la piscina (pool) de conexiones por un tiempo antes 
+            //de ser completamente Cerradas (Close) y Dispuestas (Dispose), lo que ocasiona un desbordamiento del
+            //número máximo de conexiones en el pool (100) y la nueva conexión alcanza el tiempo de espera (timeout) antes de
+            //entrar en la cola del pool de conexiones arrojando un error 'Pooled Connection Request Timed Out'.
+            //Para solucionarlo se fuerza el string de conexiones para que no genere una conexión que entre al pool.
+            //Esto implica mayor tiempo de ejecución pero evita la excepción por el desbordamiento y tiempo de espera
+            var newef = new EllipseFunctions(eFunctions);
+            newef.SetConnectionPoolingType(false);
+            //
+            var item001_01 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "001");
+            var item001_02 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "002");
+            var item001_03 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "003");
+            var item001_04 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "004");
+            var item001_05 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "005");
+            var item006 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "006", "001");
+            var item007 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "007", "001");
+            var item008 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "008", "001");
+            var item009 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "009", "001");
+            var item010 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "010", "001");
+            var item011 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "011", "001");
+
+
+            wrRefCodes.StockCode1 = item001_01.RefCode; //001_9001
+            wrRefCodes.StockCode1Qty = item001_01.StdText; //001_9001
+            wrRefCodes.StockCode2 = item001_02.RefCode; //001_9002
+            wrRefCodes.StockCode2Qty = item001_02.StdText; //001_9002
+            wrRefCodes.StockCode3 = item001_03.RefCode; //001_9003
+            wrRefCodes.StockCode3Qty = item001_03.StdText; //001_9003
+            wrRefCodes.StockCode4 = item001_04.RefCode; //001_9004
+            wrRefCodes.StockCode4Qty = item001_04.StdText; //001_9004
+            wrRefCodes.StockCode5 = item001_05.RefCode; //001_9005
+            wrRefCodes.StockCode5Qty = item001_05.StdText; //001_9005
+            wrRefCodes.HorasHombre = item006.RefCode; //006_9001
+            wrRefCodes.HorasQty = item006.StdText; //006_9001
+            wrRefCodes.DuracionTarea = item007.RefCode; //007_001
+            wrRefCodes.EquipoDetenido = item008.RefCode; //008_001
+            wrRefCodes.RaisedReprogramada = item009.RefCode; //009_001
+            wrRefCodes.WorkOrderOrigen = item010.RefCode; //010_001
+            wrRefCodes.CambioHora = item011.RefCode; //011_001
+
+            newef.CloseConnection();
+            return wrRefCodes;
+        }
         /// <summary>
         /// Crea un nuevo WorkRequest a partir de los datos ingresados en la clase WorkRequest wr
         /// </summary>
@@ -420,16 +434,21 @@ namespace EllipseWorkRequestClassLibrary
         /// </summary>
         /// <param name="urlService">string: URL del servicio web (ej. "http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/WorkRequest")</param>
         /// <param name="opContext">WorkRequestService.OperationContext: Contexto de Operación del WorkRequest</param>
-        /// <param name="workRequestId">string: workRequestId a eliminar</param>
-        public static WorkRequestServiceDeleteReplyDTO DeleteWorkRequest(string urlService, OperationContext opContext, string workRequestId)
+        /// <param name="requestId">string: requestId a eliminar</param>
+        public static WorkRequestServiceDeleteReplyDTO DeleteWorkRequest(string urlService, OperationContext opContext, string requestId)
         {
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
+
+
             var proxyWr = new WorkRequestService.WorkRequestService();//ejecuta las acciones del servicio
             var requestWr = new WorkRequestServiceDeleteRequestDTO();
 
             proxyWr.Url = urlService + "/WorkRequest";
 
             //se cargan los parámetros de la orden
-            requestWr.requestId = workRequestId;
+            requestWr.requestId = requestId;
             //se envía la acción
             return proxyWr.delete(opContext, requestWr);
         }
@@ -439,19 +458,23 @@ namespace EllipseWorkRequestClassLibrary
         /// </summary>
         /// <param name="urlService">string: URL del servicio web (ej. "http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/WorkRequest")</param>
         /// <param name="opContext">WorkRequestService.OperationContext: Contexto de Operación del WorkRequest</param>
-        /// <param name="workRequestId">string: workRequestId a cerrar</param>
+        /// <param name="requestId">string: workRequestId a cerrar</param>
         /// <param name="closedBy">string: nombre de usuario que cierra el Work Request</param>
         /// <param name="closedDate">string: fecha en formato yyyymmdd de cierre del Work Request</param>
         /// <param name="closedTime">string: hora en format hhmmss de cierre del Work Request</param>
-        public static WorkRequestServiceCloseReplyDTO CloseWorkRequest(string urlService, OperationContext opContext, string workRequestId, string closedBy, string closedDate, string closedTime = null)
+        public static WorkRequestServiceCloseReplyDTO CloseWorkRequest(string urlService, OperationContext opContext, string requestId, string closedBy, string closedDate, string closedTime = null)
         {
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
+
             var proxyWr = new WorkRequestService.WorkRequestService();//ejecuta las acciones del servicio
             var requestWr = new WorkRequestServiceCloseRequestDTO();
 
             proxyWr.Url = urlService + "/WorkRequest";
 
             //se cargan los parámetros de la orden
-            requestWr.requestId = workRequestId;
+            requestWr.requestId = requestId;
             requestWr.closedBy = closedBy;
             requestWr.closedDate = closedDate;
             requestWr.closedTime = closedTime;
@@ -463,16 +486,20 @@ namespace EllipseWorkRequestClassLibrary
         /// </summary>
         /// <param name="urlService">string: URL del servicio web (ej. "http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/WorkRequest")</param>
         /// <param name="opContext">WorkRequestService.OperationContext: Contexto de Operación del WorkRequest</param>
-        /// <param name="workRequestId">string: workRequestId a cerrar</param>
-        public static WorkRequestServiceReopenReplyDTO ReOpenWorkRequest(string urlService, OperationContext opContext, string workRequestId)
+        /// <param name="requestId">string: workRequestId a cerrar</param>
+        public static WorkRequestServiceReopenReplyDTO ReOpenWorkRequest(string urlService, OperationContext opContext, string requestId)
         {
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
+
             var proxyWr = new WorkRequestService.WorkRequestService();//ejecuta las acciones del servicio
             var requestWr = new WorkRequestServiceReopenRequestDTO();
 
             proxyWr.Url = urlService + "/WorkRequest";
 
             //se cargan los parámetros de la orden
-            requestWr.requestId = workRequestId;
+            requestWr.requestId = requestId;
             //se envía la acción
             return proxyWr.reopen(opContext, requestWr);
         }
@@ -481,17 +508,22 @@ namespace EllipseWorkRequestClassLibrary
         /// </summary>
         /// <param name="urlService">string: URL del servicio web (ej. "http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/WorkRequest")</param>
         /// <param name="opContext">WorkRequestService.OperationContext: Contexto de Operación del WorkRequest</param>
-        /// <param name="workRequestId">string: workRequestId a eliminar</param>
+        /// <param name="requestId">string: workRequestId a eliminar</param>
         /// <param name="sla">ServiceLevelAgreement : SLA a establecer</param>
-        public static WorkRequestServiceSetSLAReplyDTO SetWorkRequestSla(string urlService, OperationContext opContext, string workRequestId, ServiceLevelAgreement sla)
+        public static WorkRequestServiceSetSLAReplyDTO SetWorkRequestSla(string urlService, OperationContext opContext, string requestId, ServiceLevelAgreement sla)
         {
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
+
+
             var proxyWr = new WorkRequestService.WorkRequestService();//ejecuta las acciones del servicio
             var requestWr = new WorkRequestServiceSetSLARequestDTO();
 
             proxyWr.Url = urlService + "/WorkRequest";
 
             //se cargan los parámetros de la orden
-            requestWr.requestId = workRequestId;
+            requestWr.requestId = requestId;
             requestWr.SLA = sla.ServiceLevel;
             requestWr.SLAFailureCode = sla.FailureCode;
             requestWr.SLAStartDate = sla.StartDate;
@@ -511,17 +543,21 @@ namespace EllipseWorkRequestClassLibrary
         /// </summary>
         /// <param name="urlService">string: URL del servicio web (ej. "http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/WorkRequest")</param>
         /// <param name="opContext">WorkRequestService.OperationContext: Contexto de Operación del WorkRequest</param>
-        /// <param name="workRequestId">string: workRequestId a eliminar</param>
+        /// <param name="requestId">string: workRequestId a eliminar</param>
         /// <param name="sla">ServiceLevelAgreement : SLA a establecer</param>
-        public static WorkRequestServiceResetSLAReplyDTO ResetWorkRequestSla(string urlService, OperationContext opContext, string workRequestId, ServiceLevelAgreement sla)
+        public static WorkRequestServiceResetSLAReplyDTO ResetWorkRequestSla(string urlService, OperationContext opContext, string requestId, ServiceLevelAgreement sla)
         {
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
+
             var proxyWr = new WorkRequestService.WorkRequestService();//ejecuta las acciones del servicio
             var requestWr = new WorkRequestServiceResetSLARequestDTO();
 
             proxyWr.Url = urlService + "/WorkRequest";
 
             //se cargan los parámetros de la orden
-            requestWr.requestId = workRequestId;
+            requestWr.requestId = requestId;
             requestWr.SLA = sla.ServiceLevel;
             requestWr.SLAStartDate = sla.StartDate;
             requestWr.SLAStartTime = !string.IsNullOrWhiteSpace(sla.StartTime) ? sla.StartTime : null;
@@ -529,27 +565,7 @@ namespace EllipseWorkRequestClassLibrary
             return proxyWr.resetSLA(opContext, requestWr);
         }
 
-        /// <summary>
-        /// Valida si el uso del estado de usuario de orden está bien relacionado para tiempo de apertura de una orden 
-        /// </summary>
-        /// <param name="raisedDate">string: fecha en formato yyyyMMdd de apertura de una orden</param>
-        /// <param name="daysAllowed">int: número de días válidos en el que una orden puede estar abierta sin necesidad de justificar su estado</param>
-        /// <returns></returns>
-        public static bool ValidateUserStatus(string raisedDate, int daysAllowed)
-        {
-            var date = DateTime.ParseExact(raisedDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
-            return DateTime.Today.Subtract(date).TotalDays <= daysAllowed;
-        }
-
-        /// <summary>
-        /// Obtiene el listado {código, descripción} de los User Status Codes (MSF010WS)
-        /// </summary>
-        /// <param name="ef"></param>
-        /// <returns>List[EllipseCodeItem]: Diccionario{codigo, descripción} del listado de códigos</returns>
-        public static List<EllipseCodeItem> GetUserStatusCodeList(EllipseFunctions ef)
-        {
-            return ef.GetItemCodes("WS");
-        }
+        
 
         public static class Queries
         {
@@ -559,85 +575,83 @@ namespace EllipseWorkRequestClassLibrary
                 var paramCriteria1 = "";
                 //establecemos los parámetros del criterio 1
                 if (searchCriteria1Key == SearchFieldCriteriaType.WorkGroup.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = "AND WR.WORK_GROUP = '" + searchCriteria1Value + "'";
+                    paramCriteria1 = " AND WR.WORK_GROUP = '" + searchCriteria1Value + "'";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.EquipmentReference.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = "AND WR.EQUIP_NO = '" + searchCriteria1Value + "'";//Falta buscar el equip ref //to do
+                    paramCriteria1 = " AND WR.EQUIP_NO = '" + searchCriteria1Value + "'";//Falta buscar el equip ref //to do
                 else if (searchCriteria1Key == SearchFieldCriteriaType.ProductiveUnit.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NP FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteria1Value + "')";
+                    paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NP FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteria1Value + "')";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.Originator.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = "AND WR.CREATION_USER = '" + searchCriteria1Value + "'";
+                    paramCriteria1 = " AND WR.CREATION_USER = '" + searchCriteria1Value + "'";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.CompletedBy.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = "AND WR.COMPLETED_BY = '" + searchCriteria1Value + "'";
+                    paramCriteria1 = " AND WR.COMPLETED_BY = '" + searchCriteria1Value + "'";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.AssignedTo.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = "AND WR.ASSIGN_PERSON = '" + searchCriteria1Value + "'";
+                    paramCriteria1 = " AND WR.ASSIGN_PERSON = '" + searchCriteria1Value + "'";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.RequestType.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
                     paramCriteria1 = "WR.WORK_REQ_TYPE = '" + searchCriteria1Value + "'";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
                 {
                     if (searchCriteria2Key == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                        paramCriteria1 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
+                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
                     else if (searchCriteria2Key != SearchFieldCriteriaType.ListId.Key || string.IsNullOrWhiteSpace(searchCriteria2Value))
-                        paramCriteria1 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "')";
+                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "')";
                 }
                 else if (searchCriteria1Key == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
                 {
                     if (searchCriteria2Key == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                        paramCriteria1 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
+                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
                     else if (searchCriteria2Key != SearchFieldCriteriaType.ListType.Key || string.IsNullOrWhiteSpace(searchCriteria2Value))
-                        paramCriteria1 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
+                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
                 }
                 else if (searchCriteria1Key == SearchFieldCriteriaType.Egi.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_GRP_ID = '" + searchCriteria1Value + "')";
+                    paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_GRP_ID = '" + searchCriteria1Value + "')";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteria1Value + "')";
+                    paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteria1Value + "')";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteria1Value).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    paramCriteria1 = " AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteria1Value).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteria1Value).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    paramCriteria1 = " AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteria1Value).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else
-                    paramCriteria1 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
+                    paramCriteria1 = " AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
                 //
 
                 var paramCriteria2 = "";
                 //establecemos los parámetros del criterio 2
                 if (searchCriteria2Key == SearchFieldCriteriaType.WorkGroup.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = "AND WR.WORK_GROUP = '" + searchCriteria2Value + "'";
+                    paramCriteria2 = " AND WR.WORK_GROUP = '" + searchCriteria2Value + "'";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.EquipmentReference.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = "AND WR.EQUIP_NO = '" + searchCriteria2Value + "'";//Falta buscar el equip ref //to do
+                    paramCriteria2 = " AND WR.EQUIP_NO = '" + searchCriteria2Value + "'";//Falta buscar el equip ref //to do
                 else if (searchCriteria2Key == SearchFieldCriteriaType.ProductiveUnit.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NP FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteria2Value + "')";
+                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NP FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteria2Value + "')";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Originator.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = "AND WR.CREATION_USER = '" + searchCriteria2Value + "'";
+                    paramCriteria2 = " AND WR.CREATION_USER = '" + searchCriteria2Value + "'";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.CompletedBy.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = "AND WR.COMPLETED_BY = '" + searchCriteria2Value + "'";
+                    paramCriteria2 = " AND WR.COMPLETED_BY = '" + searchCriteria2Value + "'";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.AssignedTo.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = "AND WR.ASSIGN_PERSON = '" + searchCriteria2Value + "'";
+                    paramCriteria2 = " AND WR.ASSIGN_PERSON = '" + searchCriteria2Value + "'";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.RequestType.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                     paramCriteria2 = "WR.WORK_REQ_TYPE = '" + searchCriteria2Value + "'";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                 {
                     if (searchCriteria1Key == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                        paramCriteria2 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
+                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
                     else if (searchCriteria1Key != SearchFieldCriteriaType.ListId.Key || string.IsNullOrWhiteSpace(searchCriteria1Value))
-                        paramCriteria2 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "')";
+                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "')";
                 }
                 else if (searchCriteria2Key == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                 {
                     if (searchCriteria1Key == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                        paramCriteria2 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
+                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
                     else if (searchCriteria1Key != SearchFieldCriteriaType.ListType.Key || string.IsNullOrWhiteSpace(searchCriteria1Value))
-                        paramCriteria2 = "AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
+                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
                 }
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Egi.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_GRP_ID = '" + searchCriteria2Value + "')";
+                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_GRP_ID = '" + searchCriteria2Value + "')";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = "AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteria2Value + "')";
+                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteria2Value + "')";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteria2Value).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    paramCriteria2 = " AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteria2Value).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteria2Value).Select(g => g.Name).ToList(), ",", "'") + ")";
-                else
-                    paramCriteria2 = "AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
+                    paramCriteria2 = " AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteria2Value).Select(g => g.Name).ToList(), ",", "'") + ")";
                 //
                 
 
@@ -725,28 +739,7 @@ namespace EllipseWorkRequestClassLibrary
                             "   WR.SLA_WARN_DATE," +
                             "   SUBSTR(WR.SLA_WARN_DAYS, 0, LENGTH(WR.SLA_WARN_DAYS)-1)||SUBSTR(RAWTOHEX(WR.SLA_WARN_DAYS),-1) SLA_WARN_DAYS," +
                             "   WR.SLA_WARN_TIME," +
-                            "   WR.SLA_WARN_HOURS," +
-                            "   (SELECT REPLACE(TRIM(STD_VOLAT_1), '.HEADING ', '') FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'WQ' AND STD_KEY = WR.REQUEST_ID AND STD_LINE_NO = '0000') EXTDESCHEADER, " +
-                            "   REPLACE((SELECT LISTAGG(TEXTO,' ') WITHIN GROUP (ORDER BY STD_LINE_NO) FROM (SELECT STD_KEY, STD_LINE_NO,TRIM(STD_VOLAT_1)||' '||TRIM(STD_VOLAT_2)||' '||TRIM(STD_VOLAT_3)||' '||TRIM(STD_VOLAT_4)||' '||TRIM(STD_VOLAT_5) AS TEXTO " +
-                            "     FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'WQ') WHERE STD_KEY = WR.REQUEST_ID GROUP BY STD_KEY),                                                                                                                               " +
-                            "       '.HEADING '||(SELECT REPLACE(TRIM(STD_VOLAT_1), '.HEADING ', '') FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'WQ' AND STD_KEY   = WR.REQUEST_ID AND STD_LINE_NO     = '0000')||' ','') EXTDESCBODY," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '001' AND SEQ_NUM = '001') STOCK_CODE1," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '001' AND SEQ_NUM = '002') STOCK_CODE2," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '001' AND SEQ_NUM = '003') STOCK_CODE3," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '001' AND SEQ_NUM = '004') STOCK_CODE4," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '001' AND SEQ_NUM = '005') STOCK_CODE5," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '001' AND SEQ_NUM = '001' AND ENTITY_VALUE  = WR.REQUEST_ID)) STOCKQTY1," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '001' AND SEQ_NUM = '002' AND ENTITY_VALUE  = WR.REQUEST_ID)) STOCKQTY2," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '001' AND SEQ_NUM = '003' AND ENTITY_VALUE  = WR.REQUEST_ID)) STOCKQTY3," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '001' AND SEQ_NUM = '004' AND ENTITY_VALUE  = WR.REQUEST_ID)) STOCKQTY4," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '001' AND SEQ_NUM = '005' AND ENTITY_VALUE  = WR.REQUEST_ID)) STOCKQTY5, " +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '006' AND SEQ_NUM = '001') HORASHOMBRE," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '006' AND SEQ_NUM = '001' AND ENTITY_VALUE  = WR.REQUEST_ID)) HORASHQTY," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '007' AND SEQ_NUM = '001') DURACIONTAREA," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '008' AND SEQ_NUM = '001') EQUIPODETENIDO," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '009' AND SEQ_NUM = '001') WORKORDERORIGEN," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '010' AND SEQ_NUM = '001') RAISEDREPROGRAMADA," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '011' AND SEQ_NUM = '001') CAMBIOHORA" +
+                            "   WR.SLA_WARN_HOURS" +
                             " FROM" +
                             "   " + dbReference + ".MSF541" + dbLink + " WR" +
                             "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
@@ -772,6 +765,10 @@ namespace EllipseWorkRequestClassLibrary
             }
             public static string GetFetchWorkRequest(string dbReference, string dbLink, string requestId)
             {
+                long defaultLong;
+                if (long.TryParse(requestId, out defaultLong))
+                    requestId = requestId.PadLeft(12, '0');
+
                 //escribimos el query
                 var query = "" +
                             " SELECT " +
@@ -820,28 +817,7 @@ namespace EllipseWorkRequestClassLibrary
                             "   WR.SLA_WARN_DATE," +
                             "   SUBSTR(WR.SLA_WARN_DAYS, 0, LENGTH(WR.SLA_WARN_DAYS)-1)||SUBSTR(RAWTOHEX(WR.SLA_WARN_DAYS),-1) SLA_WARN_DAYS," +
                             "   WR.SLA_WARN_TIME," +
-                            "   WR.SLA_WARN_HOURS," +
-                            "   (SELECT REPLACE(TRIM(STD_VOLAT_1), '.HEADING ', '') FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'WQ' AND STD_KEY = WR.REQUEST_ID AND STD_LINE_NO = '0000') EXTDESCHEADER, " +
-                            "   REPLACE((SELECT LISTAGG(TEXTO,' ') WITHIN GROUP (ORDER BY STD_LINE_NO) FROM (SELECT STD_KEY, STD_LINE_NO,TRIM(STD_VOLAT_1)||' '||TRIM(STD_VOLAT_2)||' '||TRIM(STD_VOLAT_3)||' '||TRIM(STD_VOLAT_4)||' '||TRIM(STD_VOLAT_5) AS TEXTO " +
-                            "     FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'WQ') WHERE STD_KEY = WR.REQUEST_ID GROUP BY STD_KEY)," +
-                            "       '.HEADING '||(SELECT REPLACE(TRIM(STD_VOLAT_1), '.HEADING ', '') FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'WQ' AND STD_KEY   = WR.REQUEST_ID AND STD_LINE_NO     = '0000')||' ','') EXTDESCBODY," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '001' AND SEQ_NUM = '001') STOCK_CODE1," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '001' AND SEQ_NUM = '002') STOCK_CODE2," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '001' AND SEQ_NUM = '003') STOCK_CODE3," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '001' AND SEQ_NUM = '004') STOCK_CODE4," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '001' AND SEQ_NUM = '005') STOCK_CODE5," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '001' AND SEQ_NUM = '001' AND ENTITY_VALUE  = WR.REQUEST_ID)) STOCKQTY1," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '001' AND SEQ_NUM = '002' AND ENTITY_VALUE  = WR.REQUEST_ID)) STOCKQTY2," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '001' AND SEQ_NUM = '003' AND ENTITY_VALUE  = WR.REQUEST_ID)) STOCKQTY3," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '001' AND SEQ_NUM = '004' AND ENTITY_VALUE  = WR.REQUEST_ID)) STOCKQTY4," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '001' AND SEQ_NUM = '005' AND ENTITY_VALUE  = WR.REQUEST_ID)) STOCKQTY5," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '006' AND SEQ_NUM = '001') HORASHOMBRE," +
-                            "   (SELECT TRIM(STD_VOLAT_1||STD_VOLAT_2||STD_VOLAT_3||STD_VOLAT_4||STD_VOLAT_5) FROM ELLIPSE.MSF096_STD_VOLAT WHERE STD_TEXT_CODE = 'RC' AND STD_KEY = (SELECT STD_TXT_KEY FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND REF_NO = '006' AND SEQ_NUM = '001' AND ENTITY_VALUE  = WR.REQUEST_ID)) HORASHQTY," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '007' AND SEQ_NUM = '001') DURACIONTAREA," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '008' AND SEQ_NUM = '001') EQUIPODETENIDO," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '009' AND SEQ_NUM = '001') WORKORDERORIGEN," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '010' AND SEQ_NUM = '001') RAISEDREPROGRAMADA," +
-                            "   (SELECT REF_CODE FROM ELLIPSE.MSF071 WHERE ENTITY_TYPE = 'WRQ' AND ENTITY_VALUE = WR.REQUEST_ID AND REF_NO = '011' AND SEQ_NUM = '001') CAMBIOHORA" +
+                            "   WR.SLA_WARN_HOURS" +
                             " FROM" +
                             "   " + dbReference + ".MSF541" + dbLink + " WR" +
                             "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
@@ -905,6 +881,273 @@ namespace EllipseWorkRequestClassLibrary
         }
     }
 
+    public static class WorkRequestReferenceCodesActions
+    {
+        public static ReplyMessage CreateReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId, WorkRequestReferenceCodes wrRefCodes)
+        {
+            //Corresponde a la misma acción de modificar, excepto que se garantiza que todos los RefCodes sean actualizados con la nueva información
+            return ModifyReferenceCodes(eFunctions, urlService, opContext, requestId, wrRefCodes);
+        }
+        public static ReplyMessage ModifyReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId, WorkRequestReferenceCodes wrRefCodes)
+        {
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
+
+            var refCodeOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
+            var stdTextOpContext = StdText.GetCustomOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
+            var reply = new ReplyMessage();
+            var error = new List<string>();
+            if (wrRefCodes.StockCode1 != null)
+            {
+                try
+                {
+                    var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9001", wrRefCodes.StockCode1);
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
+                        refItem);
+                    var stdTextId = replyRefCode.stdTxtKey;
+                    if (!string.IsNullOrWhiteSpace(stdTextId))
+                        StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.StockCode1Qty);
+                    else
+                        throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar SC1 " + ex.Message);
+                }
+            }
+            if (wrRefCodes.StockCode2 != null)
+            {
+                try
+                {
+                    var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9002", wrRefCodes.StockCode2);
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
+                        refItem);
+                    var stdTextId = replyRefCode.stdTxtKey;
+                    if (!string.IsNullOrWhiteSpace(stdTextId))
+                        StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.StockCode2Qty);
+                    else
+                        throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar SC2 " + ex.Message);
+                }
+            }
+            if (wrRefCodes.StockCode3 != null)
+            {
+                try
+                {
+                    var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9003", wrRefCodes.StockCode3);
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
+                        refItem);
+                    var stdTextId = replyRefCode.stdTxtKey;
+                    if (!string.IsNullOrWhiteSpace(stdTextId))
+                        StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.StockCode3Qty);
+                    else
+                        throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar SC3 " + ex.Message);
+                }
+            }
+            if (wrRefCodes.StockCode4 != null)
+            {
+                try
+                { 
+                var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9004", wrRefCodes.StockCode4);
+                var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext, refItem);
+                var stdTextId = replyRefCode.stdTxtKey;
+                if (!string.IsNullOrWhiteSpace(stdTextId))
+                    StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.StockCode4Qty);
+                else
+                    throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar SC4 " + ex.Message);
+                }
+            }
+            if (wrRefCodes.StockCode5 != null)
+            {
+                try
+                { 
+                var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9005", wrRefCodes.StockCode5);
+                var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext, refItem);
+                var stdTextId = replyRefCode.stdTxtKey;
+                if (!string.IsNullOrWhiteSpace(stdTextId))
+                    StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.StockCode5Qty);
+                else
+                    throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar SC5 " + ex.Message);
+                }
+            }
+
+            if (wrRefCodes.HorasHombre != null)
+            {
+                try
+                { 
+                var refItem = new ReferenceCodeItem("WRQ", requestId, "006", "001", wrRefCodes.HorasHombre);
+                var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext, refItem);
+                var stdTextId = replyRefCode.stdTxtKey;
+                if (!string.IsNullOrWhiteSpace(stdTextId))
+                    StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.HorasQty);
+                else
+                    throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar HH " + ex.Message);
+                }
+            }
+
+            if (wrRefCodes.DuracionTarea != null)
+            {
+                try
+                {
+                    var refItem = new ReferenceCodeItem("WRQ", requestId, "007", "001", wrRefCodes.DuracionTarea);
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
+                        refItem);
+                    var stdTextId = replyRefCode.stdTxtKey;
+                    if (string.IsNullOrWhiteSpace(stdTextId))
+                        throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar Duración Tarea " + ex.Message);
+                }
+            }
+            if (wrRefCodes.EquipoDetenido != null)
+            {
+                try
+                {
+                    var refItem = new ReferenceCodeItem("WRQ", requestId, "008", "001", wrRefCodes.EquipoDetenido);
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
+                        refItem);
+                    var stdTextId = replyRefCode.stdTxtKey;
+                    if (string.IsNullOrWhiteSpace(stdTextId))
+                        throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar Equipo Detenido " + ex.Message);
+                }
+            }
+            if (wrRefCodes.WorkOrderOrigen != null)
+            {
+                try
+                {
+                    var refItem = new ReferenceCodeItem("WRQ", requestId, "009", "001", wrRefCodes.WorkOrderOrigen);
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
+                        refItem);
+                    var stdTextId = replyRefCode.stdTxtKey;
+                    if (string.IsNullOrWhiteSpace(stdTextId))
+                        throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar OT Origen " + ex.Message);
+                }
+            }
+            if (wrRefCodes.RaisedReprogramada != null)
+            {
+                try
+                {
+                    var refItem = new ReferenceCodeItem("WRQ", requestId, "010", "001", wrRefCodes.RaisedReprogramada);
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
+                        refItem);
+                    var stdTextId = replyRefCode.stdTxtKey;
+                    if (string.IsNullOrWhiteSpace(stdTextId))
+                        throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar Raised Reprogramada " + ex.Message);
+                }
+            }
+            if (wrRefCodes.CambioHora != null)
+            {
+                try
+                {
+                    var refItem = new ReferenceCodeItem("WRQ", requestId, "011", "001", wrRefCodes.CambioHora);
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
+                        refItem);
+                    var stdTextId = replyRefCode.stdTxtKey;
+                    if (string.IsNullOrWhiteSpace(stdTextId))
+                        throw new Exception(": No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar Cambio Hora " + ex.Message);
+                }
+            }
+
+            reply.Errors = error.ToArray();
+            return reply;
+        }
+
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        public static WorkRequestReferenceCodes GetWorkRequestReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId)
+        {
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
+
+            var wrRefCodes = new WorkRequestReferenceCodes();
+
+            var rcOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
+            const string entityType = "WRQ";
+            var entityValue = requestId;
+
+            //Se encuentran problemas de implementación, debido a un comportamiento irregular del ODP en Windows. 
+            //Las conexiones cerradas (EllipseFunctions.Close()) vuelven a la piscina (pool) de conexiones por un tiempo antes 
+            //de ser completamente Cerradas (Close) y Dispuestas (Dispose), lo que ocasiona un desbordamiento del
+            //número máximo de conexiones en el pool (100) y la nueva conexión alcanza el tiempo de espera (timeout) antes de
+            //entrar en la cola del pool de conexiones arrojando un error 'Pooled Connection Request Timed Out'.
+            //Para solucionarlo se fuerza el string de conexiones para que no genere una conexión que entre al pool.
+            //Esto implica mayor tiempo de ejecución pero evita la excepción por el desbordamiento y tiempo de espera
+            var newef = new EllipseFunctions(eFunctions);
+            newef.SetConnectionPoolingType(false);
+            //
+            var item001_01 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "001");
+            var item001_02 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "002");
+            var item001_03 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "003");
+            var item001_04 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "004");
+            var item001_05 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "005");
+
+            var item006 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "006", "001");
+            var item007 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "007", "001");
+            var item008 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "008", "001");
+            var item009 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "009", "001");
+            var item010 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "010", "001");
+            var item011 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "011", "001");
+
+            wrRefCodes.StockCode1 = item001_01.RefCode;
+            wrRefCodes.StockCode1Qty = item001_01.StdText;
+            wrRefCodes.StockCode2 = item001_02.RefCode;
+            wrRefCodes.StockCode2Qty = item001_02.StdText;
+            wrRefCodes.StockCode3 = item001_03.RefCode;
+            wrRefCodes.StockCode3Qty = item001_03.StdText;
+            wrRefCodes.StockCode4 = item001_04.RefCode;
+            wrRefCodes.StockCode4Qty = item001_04.StdText;
+            wrRefCodes.StockCode5 = item001_05.RefCode;
+            wrRefCodes.StockCode5Qty = item001_05.StdText;
+            wrRefCodes.HorasHombre = item006.RefCode;
+            wrRefCodes.HorasQty = item006.StdText;
+            wrRefCodes.DuracionTarea = item007.StdText;
+            wrRefCodes.EquipoDetenido = item008.StdText;
+            wrRefCodes.WorkOrderOrigen = item009.StdText;
+            wrRefCodes.RaisedReprogramada = item010.StdText;
+            wrRefCodes.CambioHora = item011.StdText;
+
+            newef.CloseConnection();
+            return wrRefCodes;
+        }
+    }
     public static class WrStatusList
     {
         public static string Open = "OPEN";
@@ -920,6 +1163,11 @@ namespace EllipseWorkRequestClassLibrary
 
         public static string Uncompleted = "UNCOMPLETED";
 
+        /// <summary>
+        /// Obtiene el código del estado a partir del nombre (Ej. Parámetro OPEN, resultado O)
+        /// </summary>
+        /// <param name="statusName"></param>
+        /// <returns></returns>
         public static string GetStatusCode(string statusName)
         {
             if (statusName == Open)
@@ -934,7 +1182,11 @@ namespace EllipseWorkRequestClassLibrary
                 return EstimatedCode;
             return null;
         }
-
+        /// <summary>
+        /// Obtiene el nombre de un estado a partir del código (Ej. Parámetro O, resultado OPEN)
+        /// </summary>
+        /// <param name="statusCode"></param>
+        /// <returns></returns>
         public static string GetStatusName(string statusCode)
         {
             if (statusCode == OpenCode)

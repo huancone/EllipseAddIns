@@ -402,6 +402,18 @@ namespace EllipseCommonsClassLibrary
             public static string TimeHHMM = "HH-MM";
             public static string TimeHHMMSS = "HH-MM-SS";
         }
+
+        /// <summary>
+        /// Valida si la fecha YYYYMMDD ha superado el tiempo máximo permitido en días
+        /// </summary>
+        /// <param name="date">string: fecha en formato yyyyMMdd</param>
+        /// <param name="daysLimit">int: número de días permitidos</param>
+        /// <returns></returns>
+        public static bool ValidateUserStatus(string date, int daysLimit)
+        {
+            var datetime = DateTime.ParseExact(date, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+            return DateTime.Today.Subtract(datetime).TotalDays <= daysLimit;
+        }
     }
     public class ShiftSlot
     {
