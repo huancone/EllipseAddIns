@@ -43,9 +43,11 @@
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoad = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpInspPestanas.SuspendLayout();
-            this.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -56,10 +58,10 @@
             // 
             // grpInspPestanas
             // 
-            this.grpInspPestanas.Items.Add(this.menuFormat);
+            this.grpInspPestanas.Items.Add(this.box1);
             this.grpInspPestanas.Items.Add(this.drpEnviroment);
             this.grpInspPestanas.Items.Add(this.menuActions);
-            this.grpInspPestanas.Label = "MSO627 FFCC v1.0.0";
+            this.grpInspPestanas.Label = "MSO627 FFCC";
             this.grpInspPestanas.Name = "grpInspPestanas";
             // 
             // menuFormat
@@ -109,6 +111,18 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -119,7 +133,8 @@
             this.tabEllipse.PerformLayout();
             this.grpInspPestanas.ResumeLayout(false);
             this.grpInspPestanas.PerformLayout();
-            this.ResumeLayout(false);
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -134,6 +149,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLimpiezaCarbon;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

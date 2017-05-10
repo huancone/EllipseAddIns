@@ -1009,6 +1009,13 @@ namespace EllipseCommonsClassLibrary
                 DistrictCode = districtCode;
             }
         }
+        
+    }
 
+    public class ReplyMessage
+    {
+        public string[] Errors;
+        public string[] Warnings;
+        public string Message;
     }
 }
