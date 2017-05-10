@@ -40,14 +40,9 @@ namespace EllipseMSO010ExcelAddIn
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpMSO010 = this.Factory.CreateRibbonGroup();
             this.box1 = this.Factory.CreateRibbonBox();
-            this.box2 = this.Factory.CreateRibbonBox();
-            this.box5 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
-            this.box6 = this.Factory.CreateRibbonBox();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.box3 = this.Factory.CreateRibbonBox();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
-            this.box4 = this.Factory.CreateRibbonBox();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
             this.btnCreate = this.Factory.CreateRibbonButton();
@@ -55,11 +50,6 @@ namespace EllipseMSO010ExcelAddIn
             this.tabEllipse.SuspendLayout();
             this.grpMSO010.SuspendLayout();
             this.box1.SuspendLayout();
-            this.box2.SuspendLayout();
-            this.box5.SuspendLayout();
-            this.box6.SuspendLayout();
-            this.box3.SuspendLayout();
-            this.box4.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -71,27 +61,16 @@ namespace EllipseMSO010ExcelAddIn
             // grpMSO010
             // 
             this.grpMSO010.Items.Add(this.box1);
+            this.grpMSO010.Items.Add(this.menuActions);
+            this.grpMSO010.Items.Add(this.drpEnviroment);
             this.grpMSO010.Label = "MSO010 Codes";
             this.grpMSO010.Name = "grpMSO010";
             // 
             // box1
             // 
-            this.box1.BoxStyle = Microsoft.Office.Tools.Ribbon.RibbonBoxStyle.Vertical;
-            this.box1.Items.Add(this.box2);
-            this.box1.Items.Add(this.box3);
-            this.box1.Items.Add(this.box4);
+            this.box1.Items.Add(this.btnFormatSheet);
+            this.box1.Items.Add(this.btnAbout);
             this.box1.Name = "box1";
-            // 
-            // box2
-            // 
-            this.box2.Items.Add(this.box5);
-            this.box2.Items.Add(this.box6);
-            this.box2.Name = "box2";
-            // 
-            // box5
-            // 
-            this.box5.Items.Add(this.btnFormatSheet);
-            this.box5.Name = "box5";
             // 
             // btnFormatSheet
             // 
@@ -100,31 +79,16 @@ namespace EllipseMSO010ExcelAddIn
             this.btnFormatSheet.ShowImage = true;
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatCesantias_Click);
             // 
-            // box6
-            // 
-            this.box6.Items.Add(this.btnAbout);
-            this.box6.Name = "box6";
-            // 
             // btnAbout
             // 
             this.btnAbout.Label = "?";
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // box3
-            // 
-            this.box3.Items.Add(this.drpEnviroment);
-            this.box3.Name = "box3";
-            // 
             // drpEnviroment
             // 
             this.drpEnviroment.Label = "Env.";
             this.drpEnviroment.Name = "drpEnviroment";
-            // 
-            // box4
-            // 
-            this.box4.Items.Add(this.menuActions);
-            this.box4.Name = "box4";
             // 
             // menuActions
             // 
@@ -167,16 +131,6 @@ namespace EllipseMSO010ExcelAddIn
             this.grpMSO010.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
-            this.box2.ResumeLayout(false);
-            this.box2.PerformLayout();
-            this.box5.ResumeLayout(false);
-            this.box5.PerformLayout();
-            this.box6.ResumeLayout(false);
-            this.box6.PerformLayout();
-            this.box3.ResumeLayout(false);
-            this.box3.PerformLayout();
-            this.box4.ResumeLayout(false);
-            this.box4.PerformLayout();
 
         }
 
@@ -191,12 +145,7 @@ namespace EllipseMSO010ExcelAddIn
         internal RibbonButton btnCreate;
         internal RibbonButton btnStopThread;
         internal RibbonBox box1;
-        internal RibbonBox box2;
-        internal RibbonBox box5;
-        internal RibbonBox box6;
         internal RibbonButton btnAbout;
-        internal RibbonBox box3;
-        internal RibbonBox box4;
     }
 
     partial class ThisRibbonCollection

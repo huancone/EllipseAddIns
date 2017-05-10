@@ -10,8 +10,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hambings SAS / Cerrejon Ltda")]
 [assembly: AssemblyProduct("EllipseMSO627RodillosAddin")]
-[assembly: AssemblyCopyright("Copyright ©  2015-2016")]
-[assembly: AssemblyTrademark("hernandezrhectorj@gmail.com/huancone@gmail.com")]
+[assembly: AssemblyCopyright("Copyright ©  2015-2017")]
+[assembly: AssemblyTrademark("Hambings SAS")]
 [assembly: AssemblyCulture("")]
 
 // Si establece ComVisible en false, los tipos de este ensamblado no estarán visibles 
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // mediante el carácter '*', como se muestra a continuación:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.1.4")]
-[assembly: AssemblyFileVersion("1.0.1.4")]
+[assembly: AssemblyVersion("1.0.2.0")]
+[assembly: AssemblyFileVersion("1.0.2.0")]

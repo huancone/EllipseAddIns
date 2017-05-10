@@ -24,9 +24,7 @@ namespace EllipseReportRequestExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -111,7 +109,7 @@ namespace EllipseReportRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -138,7 +136,7 @@ namespace EllipseReportRequestExcelAddIn
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
-                    returnWarnings = _eFunctions.DebugWarnings,
+                    returnWarnings = Debugger.DebugWarnings,
                     returnWarningsSpecified = true
                 };
 
@@ -258,13 +256,17 @@ namespace EllipseReportRequestExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:LoadRequest()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
                 if (_cells != null) _cells.SetCursorDefault();
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

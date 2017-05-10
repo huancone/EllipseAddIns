@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using System.Reflection;
 using EllipseCommonsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
@@ -28,15 +27,11 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
         private const string TableName01 = "WorkOrderTable";
         private const string ValidationSheetName = "ValidationSheetWorkOrder";
         private Thread _thread;
-        private int _debugCounter;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            _eFunctions.DebugQueries= false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -208,7 +203,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
             finally
@@ -245,8 +240,6 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
 
 
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            if (_eFunctions.DebugQueries)
-                _cells.GetCell("L1").Value = WorkOrderActions.GetFetchWoQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var listwo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var i = TitleRow01 + 1;
             foreach (var wo in listwo)
@@ -284,7 +277,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewWoList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewWoList()", ex.Message);
                 }
                 finally
                 {
@@ -311,10 +304,8 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             {
                 try
                 {
-                    string woNo = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
-                    WorkOrder wo = WorkOrderActions.FetchWorkOrder(_eFunctions, _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value), woNo);
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = WorkOrderActions.GetFetchWoQuery(_eFunctions.dbReference, _eFunctions.dbLink, _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value), woNo);
+                    var woNo = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
+                    var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value), woNo);
 					
 					if(wo == null || wo.GetWorkOrderDto().no == null)
                         throw new Exception ("WORK ORDER NO ENCONTRADA");
@@ -348,7 +339,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewWOList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewWOList()", ex.Message);
                 }
                 finally
                 {
@@ -377,7 +368,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -412,7 +403,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:FinalizeWOList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:FinalizeWOList()", ex.Message);
                 }
                 finally
                 {
@@ -437,22 +428,9 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             }
         }
 
-        private void drpEnviroment_SelectionChanged(object sender, RibbonControlEventArgs e)
-        {
-            if (_debugCounter < 10)
-                _debugCounter++;
-            else
-            {
-                MessageBox.Show(@"Se han activado las opciones de depuración");
-                _eFunctions.DebugQueries = true;
-                _eFunctions.DebugWarnings = true;
-                _eFunctions.DebugErrors = true;
-            }
-        }
-
         private void butAbout_Click(object sender, RibbonControlEventArgs e)
         {
-            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 

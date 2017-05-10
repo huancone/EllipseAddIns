@@ -29,9 +29,7 @@ namespace EllipseMSO265ExcelAddIn
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-            EFunctions.DebugQueries = false;
-            EFunctions.DebugErrors = false;
-            EFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -574,7 +572,7 @@ namespace EllipseMSO265ExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = EFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
 
             _cells.GetCell(1, currentRow).Select();
@@ -760,7 +758,7 @@ namespace EllipseMSO265ExcelAddIn
         {
             public static string GetSupplierInvoiceInfo(string districtCode, string supplierNo, string dbReference, string dbLink)
             {
-                var sqlQuery = "SELECT " +
+                var query = "SELECT " +
                                "   TRIM(A.SUPPLIER_NO) SUPPLIER_NO, " +
                                "   TRIM(B.TAX_FILE_NO) TAX_FILE_NO, " +
                                "   TRIM(A.SUP_STATUS) ST_ADRESS, " +
@@ -776,8 +774,15 @@ namespace EllipseMSO265ExcelAddIn
                                "   A.SUPPLIER_NO = B.SUPPLIER_NO " +
                                " AND B.DSTRCT_CODE = '" + districtCode + "' " +
                                " AND B.TAX_FILE_NO = '" + supplierNo + "' ";
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

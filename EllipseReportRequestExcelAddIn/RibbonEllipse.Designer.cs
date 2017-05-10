@@ -40,8 +40,11 @@
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnExecuteRequest = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpRequest.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -52,10 +55,10 @@
             // 
             // grpRequest
             // 
-            this.grpRequest.Items.Add(this.btnFormatSheet);
+            this.grpRequest.Items.Add(this.box1);
             this.grpRequest.Items.Add(this.drpEnviroment);
             this.grpRequest.Items.Add(this.menuActions);
-            this.grpRequest.Label = "Report Req. v1.0.0";
+            this.grpRequest.Label = "Report Req.";
             this.grpRequest.Name = "grpRequest";
             // 
             // btnFormatSheet
@@ -82,6 +85,18 @@
             this.btnExecuteRequest.ShowImage = true;
             this.btnExecuteRequest.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExecuteRequest_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormatSheet);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -92,6 +107,8 @@
             this.tabEllipse.PerformLayout();
             this.grpRequest.ResumeLayout(false);
             this.grpRequest.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -103,6 +120,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExecuteRequest;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

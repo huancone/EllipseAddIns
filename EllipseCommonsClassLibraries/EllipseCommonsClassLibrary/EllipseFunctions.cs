@@ -29,9 +29,6 @@ namespace EllipseCommonsClassLibrary
         private SqlCommand _sqlComm;
         private OracleConnection _sqlOracleConn;
         private OracleCommand _sqlOracleComm;
-        public bool DebugErrors;
-        public bool DebugWarnings;
-        public bool DebugQueries;
 
         public string CurrentEnviroment { get; set; }
     
@@ -49,10 +46,6 @@ namespace EllipseCommonsClassLibrary
 
         public EllipseFunctions(EllipseFunctions ellipseFunctions)
         {
-            DebugQueries = ellipseFunctions.DebugQueries;
-            DebugErrors = ellipseFunctions.DebugErrors;
-            DebugWarnings = ellipseFunctions.DebugWarnings;
-
             SetDBSettings(ellipseFunctions.GetCurrentEnviroment());
         }
         /// <summary>
@@ -297,6 +290,7 @@ namespace EllipseCommonsClassLibrary
         /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
         public OracleDataReader GetQueryResult(string sqlQuery, string connectionString = null)
         {
+            Debugger.LogQuery(sqlQuery);
             var defaultConnString = "Data Source=" + _dbname + ";User ID=" + _dbuser + ";Password=" + _dbpass + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
 
             if (_sqlOracleConn == null && connectionString == null)
@@ -326,7 +320,7 @@ namespace EllipseCommonsClassLibrary
                     GetQueryResult(sqlQuery, connectionString);
                 }
                 
-                Debugger.LogError("EllipseFunctions:GetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, DebugErrors);
+                Debugger.LogError("EllipseFunctions:GetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                 _queryAttempt = 0;
                 throw;
@@ -340,6 +334,7 @@ namespace EllipseCommonsClassLibrary
         /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
         public DataSet GetDataSetQueryResult(string sqlQuery, string connectionString = null)
         {
+            Debugger.LogQuery(sqlQuery);
             var defaultConnString = "Data Source=" + _dbname + ";User ID=" + _dbuser + ";Password=" + _dbpass + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
 
             if (_sqlOracleConn == null && connectionString == null)
@@ -373,7 +368,7 @@ namespace EllipseCommonsClassLibrary
                     GetQueryResult(sqlQuery, connectionString);
                 }
 
-                Debugger.LogError("EllipseFunctions:GetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, DebugErrors);
+                Debugger.LogError("EllipseFunctions:GetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                 _queryAttempt = 0;
                 throw;
@@ -387,6 +382,7 @@ namespace EllipseCommonsClassLibrary
         /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
         public SqlDataReader GetSqlQueryResult(string sqlQuery, string connectionString = null)
         {
+            Debugger.LogQuery(sqlQuery);
             var dbcatalog = "";
             if (_dbcatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
                 dbcatalog = "Initial Catalog=" + _dbcatalog + "; ";
@@ -410,13 +406,14 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, DebugErrors);
+                Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 _queryAttempt = 0;
                 throw;
             }
         }
         public DataSet GetDataSetSqlQueryResult(string sqlQuery, string connectionString = null)
         {
+            Debugger.LogQuery(sqlQuery);
             var dbcatalog = "";
             if (_dbcatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
                 dbcatalog = "Initial Catalog=" + _dbcatalog + "; ";
@@ -444,7 +441,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, DebugErrors);
+                Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 _queryAttempt = 0;
                 throw;
             }
@@ -505,7 +502,7 @@ namespace EllipseCommonsClassLibrary
                 }
                 catch (Exception ex)
                 {
-                    Debugger.LogError("RibbonEllipse:revertOperation(Screen.OperationContext, Screen.ScreenService)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, DebugErrors);
+                    Debugger.LogError("RibbonEllipse:revertOperation(Screen.OperationContext, Screen.ScreenService)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                     prevProgram = actualProgram;
 
                 }
@@ -523,16 +520,16 @@ namespace EllipseCommonsClassLibrary
             //Si no existe un reply es error de ejecución. O si el reply tiene un error de datos
             if (reply == null)
             {
-                Debugger.LogError("RibbonEllipse:checkReplyError(Screen.ScreenDTO)", "null reply error", DebugErrors);
-                if (DebugErrors)
-                    MessageBox.Show("Se ha producido un error en tiempo de ejecución");
+                Debugger.LogError("RibbonEllipse:checkReplyError(Screen.ScreenDTO)", "null reply error");
+                if (Debugger.DebugErrors)
+                    MessageBox.Show(@"Se ha producido un error en tiempo de ejecución");
                 return true;
             }
             // ReSharper disable once InvertIf
             if (reply.message.Length >= 2 && reply.message.Substring(0, 2) == "X2")
             {
-                if (DebugErrors)
-                    MessageBox.Show("Error: " + reply.message);
+                if (Debugger.DebugErrors)
+                    MessageBox.Show(@"Error: " + reply.message);
                 return true;
             }
             return false;
@@ -547,21 +544,21 @@ namespace EllipseCommonsClassLibrary
             //Si no existe un reply es error de ejecución. O si el reply tiene un warning de datos
             if (reply == null)
             {
-                Debugger.LogError("RibbonEllipse:checkReplyWarning(Screen.ScreenDTO)", "null reply error", DebugErrors);
-                if (DebugErrors)
-                    MessageBox.Show("Se ha producido un error en tiempo de ejecución");
+                Debugger.LogError("RibbonEllipse:checkReplyWarning(Screen.ScreenDTO)", "null reply error");
+                if (Debugger.DebugErrors)
+                    MessageBox.Show(@"Se ha producido un error en tiempo de ejecución");
                 return true;
             }
             if (reply.message != null && reply.message.Length >= 2 && reply.message.Substring(0, 2) == "W2")
             {
-                if (DebugWarnings)
-                    MessageBox.Show("Warning: " + reply.message);
+                if (Debugger.DebugWarnings)
+                    MessageBox.Show(@"Warning: " + reply.message);
                 return true;
             }
             if (reply.message == null || reply.functionKeys == null || !reply.functionKeys.StartsWith("XMIT-WARNING"))
                 return false;
-            if (DebugWarnings)
-                MessageBox.Show("Warning: " + reply.functionKeys);
+            if (Debugger.DebugWarnings)
+                MessageBox.Show(@"Warning: " + reply.functionKeys);
             return true;
         }
 
@@ -600,7 +597,7 @@ namespace EllipseCommonsClassLibrary
         public bool CheckUserProgramAccess(string enviroment, string districtCode, string userName, string codeProgram, int accessType)
         {
             SetDBSettings(enviroment);
-            var sqlQuery = "" +
+            var query = "" +
                            " WITH EPROFILES AS(" +
                            " SELECT" +
                            "     EMPOS.EMPLOYEE_ID," +
@@ -626,7 +623,9 @@ namespace EllipseCommonsClassLibrary
                            " FROM EPROFILES JOIN ELLIPSE.MSF02A PACCESS ON EPROFILES.PROFILE = PACCESS.ENTITY" +
                            " WHERE PACCESS.APPLICATION_NAME = '" + codeProgram + "' AND ACCESS_LEVEL = '" + accessType + "'";
 
-            var dReader = GetQueryResult(sqlQuery);
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            var dReader = GetQueryResult(query);
 
             var result = !(dReader == null || dReader.IsClosed || !dReader.HasRows || !dReader.Read());
 
@@ -644,8 +643,10 @@ namespace EllipseCommonsClassLibrary
         public List<EllipseCodeItem> GetItemCodes(string tableType)
         {
             var listItems = new List<EllipseCodeItem>();
-            var sqlQuery = "SELECT * FROM " + dbReference + ".MSF010" + dbLink + " WHERE TABLE_TYPE = '" + tableType + "' AND ACTIVE_FLAG = 'Y'";
-            var drItemCodes = GetQueryResult(sqlQuery);
+            var query = "SELECT * FROM " + dbReference + ".MSF010" + dbLink + " WHERE TABLE_TYPE = '" + tableType + "' AND ACTIVE_FLAG = 'Y'";
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            var drItemCodes = GetQueryResult(query);
 
             if (drItemCodes == null || drItemCodes.IsClosed || !drItemCodes.HasRows) return listItems;
             while (drItemCodes.Read())
@@ -692,7 +693,7 @@ namespace EllipseCommonsClassLibrary
         //public static string SigcorTest = "SIGCOTEST";
 
         public static string EllipseUrlFileServicesLocation = @"\\lmnoas02\SideLine\EllipsePopups\Ellipse8\EllipseConfiguration.xml";
-        public static string EllipseUrlFileServicesLocationLocal = @"c:\Ellipse\EllipseConfiguration.xml";
+        public static string EllipseUrlFileServicesLocationLocal = Debugger.LocalDataPath + @"EllipseConfiguration.xml";
 
         public static string EllipseVarNameServiceProductivo = @"/ellipse/webservice/ellprod";//XPath
         public static string EllipseVarNameServiceContingencia = @"/ellipse/webservice/ellcont";//XPath

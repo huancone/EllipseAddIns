@@ -45,9 +45,6 @@ namespace EllipseDownLostExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
 
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
@@ -80,7 +77,7 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:ReviewDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
 
@@ -102,7 +99,7 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -124,7 +121,7 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -146,7 +143,7 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -170,7 +167,7 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:DeleteDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:DeleteDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -454,7 +451,7 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -732,7 +729,7 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -794,8 +791,7 @@ namespace EllipseDownLostExcelAddIn
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar obtener datos de la opción seleccionado");
             }
             finally
@@ -829,39 +825,17 @@ namespace EllipseDownLostExcelAddIn
                 var endDate = cells.GetNullIfTrimmedEmpty(cells.GetCell("D4").Value);
                 var dataType = cells.GetNullIfTrimmedEmpty(cells.GetCell("D5").Value);
 
-
-                var sqlEquipments = ""; //para la salida del query
                 List<string> equipmentList;
                 if (equipType.Equals("EQUIPMENT"))
-                {
                     equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, districtCode, equipRef);
-                    sqlEquipments = EquipmentActions.Queries.GetEquipReferencesQuery(_eFunctions.dbReference,
-                        _eFunctions.dbLink, districtCode, equipRef);
-                }
                 else if (equipType.Equals("EGI"))
-                {
                     equipmentList = EquipmentActions.GetEgiEquipments(_eFunctions, equipRef);
-                    sqlEquipments = EquipmentActions.Queries.GetEgiEquipmentsQuery(_eFunctions.dbReference,
-                        _eFunctions.dbLink, equipRef);
-                }
                 else if (equipType.Equals("LIST TYPE"))
-                {
                     equipmentList = EquipmentActions.GetListEquipments(_eFunctions, equipRef, listId);
-                    sqlEquipments = EquipmentActions.Queries.GetListEquipmentsQuery(_eFunctions.dbReference,
-                        _eFunctions.dbLink, districtCode, equipRef);
-                }
                 else if (equipType.Equals("PROD.UNIT"))
-                {
                     equipmentList = EquipmentActions.GetProductiveUnitEquipments(_eFunctions, districtCode, equipRef);
-                    sqlEquipments = EquipmentActions.Queries.GetProductiveUnitEquipmentsQuery(_eFunctions.dbReference,
-                        _eFunctions.dbLink, districtCode, equipRef);
-                }
                 else
                     equipmentList = new List<string>();
-
-                //muestra el query para la obtención del/los equipos según el tipo
-                if (_eFunctions.DebugQueries)
-                    cells.GetCell("L1").Value = sqlEquipments;
 
                 var i = TitleRow01 + 1;
 
@@ -872,9 +846,6 @@ namespace EllipseDownLostExcelAddIn
                         var sqlDownQuery = Queries.GetEquipmentDownQuery(_eFunctions.dbReference, _eFunctions.dbLink, equip,
                             startDate, endDate);
                         var ddr = _eFunctions.GetQueryResult(sqlDownQuery);
-
-                        if (_eFunctions.DebugQueries)
-                            cells.GetCell("M1").Value = sqlDownQuery;
 
                         if (ddr != null && !ddr.IsClosed && ddr.HasRows)
                         {
@@ -905,9 +876,6 @@ namespace EllipseDownLostExcelAddIn
                             _eFunctions.dbLink, equip, startDate, endDate);
                         var ddr =
                             _eFunctions.GetQueryResult(lostSqlQuery);
-
-                        if (_eFunctions.DebugQueries)
-                            cells.GetCell("N1").Value = lostSqlQuery;
 
                         if (ddr != null && !ddr.IsClosed && ddr.HasRows)
                         {
@@ -941,8 +909,7 @@ namespace EllipseDownLostExcelAddIn
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:ReviewDownLost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar obtener datos de la opción seleccionado");
             }
             finally
@@ -995,7 +962,7 @@ namespace EllipseDownLostExcelAddIn
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
                                 maxInstancesSpecified = true,
-                                returnWarnings = _eFunctions.DebugWarnings,
+                                returnWarnings = Debugger.DebugWarnings,
                                 returnWarningsSpecified = true
                             };
 
@@ -1119,7 +1086,7 @@ namespace EllipseDownLostExcelAddIn
                             cells.GetCell(resultColumn01, i).Select();
                             Debugger.LogError("RibbonEllipse:CreateDownLost()",
                                 "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace, _eFunctions.DebugErrors);
+                                ex.StackTrace);
                         }
                         finally
                         {
@@ -1137,8 +1104,7 @@ namespace EllipseDownLostExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:CreateDownLost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -1272,7 +1238,7 @@ namespace EllipseDownLostExcelAddIn
                             cells.GetCell(resultColumn01, i).Select();
                             Debugger.LogError("RibbonEllipse:CreateDownLost()",
                                 "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace, _eFunctions.DebugErrors);
+                                ex.StackTrace);
                         }
                         finally
                         {
@@ -1290,8 +1256,7 @@ namespace EllipseDownLostExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:CreateDownLost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -1574,7 +1539,7 @@ namespace EllipseDownLostExcelAddIn
                         stdTextId = "LP" + stdTextId;
                         var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
 
-                        var textResult = StdText.SetCustomText(urlService, StdText.GetCustomOpContext(district, _frmAuth.EllipsePost, 100, false), stdTextId, lost.WoComment);
+                        var textResult = StdText.SetText(urlService, StdText.GetCustomOpContext(district, _frmAuth.EllipsePost, 100, false), stdTextId, lost.WoComment);
 
                         if (!textResult)
                             throw new KeyNotFoundException(
@@ -1632,7 +1597,7 @@ namespace EllipseDownLostExcelAddIn
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
                                 maxInstancesSpecified = true,
-                                returnWarnings = _eFunctions.DebugWarnings,
+                                returnWarnings = Debugger.DebugWarnings,
                                 returnWarningsSpecified = true
                             };
 
@@ -1692,7 +1657,7 @@ namespace EllipseDownLostExcelAddIn
                             cells.GetCell(resultColumn01, i).Style = StyleConstants.Error;
                             Debugger.LogError("RibbonEllipse:DeleteDownLost()",
                                 "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace, _eFunctions.DebugErrors);
+                                ex.StackTrace);
                         }
                         finally
                         {
@@ -1710,8 +1675,7 @@ namespace EllipseDownLostExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:CreateDownLost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -1977,6 +1941,11 @@ namespace EllipseDownLostExcelAddIn
                 MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
             }
         }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
+        }
     }
 
     public class Queries
@@ -1995,7 +1964,7 @@ namespace EllipseDownLostExcelAddIn
             //Se entiende que en la tabla el STOP_TIME es la hora de inicio del Down, por esto es renombrado a START_TIME
             //y START_TIME es la hora de fin del Down por eso es renombrado a FINISH_TIME
             //Así que nuestra franja será [START_TIME, FINISH_TIME] para indiciar Inicio, Fin del Down
-            var sqlQuery = "" +
+            var query = "" +
                 " SELECT" +
                 "     SUBSTR(DW.REC_EQUIP_420,2) EQUIP_NO, DW.COMP_CODE, DW.COMP_MOD_CODE," +
                 "     (99999999 - DW.REV_STAT_DATE) START_DATE, DW.STOP_TIME START_TIME," +
@@ -2011,7 +1980,9 @@ namespace EllipseDownLostExcelAddIn
                 "     AND COD.TABLE_TYPE = 'DT'" +
                 "   ORDER BY EQUIP_NO, COMP_CODE, COMP_MOD_CODE, START_DATE, START_TIME";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
 
         /// <summary>
@@ -2028,7 +1999,7 @@ namespace EllipseDownLostExcelAddIn
             //Se entiende que en la tabla el STOP_TIME es la hora de inicio del Lost, por esto es renombrado a START_TIME
             //y START_TIME es la hora de fin del Lost por eso es renombrado a FINISH_TIME
             //Así que nuestra franja será [START_TIME, FINISH_TIME] para indiciar Inicio, Fin del Lost
-            var sqlQuery = "" +
+            var query = "" +
                 " SELECT" +
                 " LS.EQUIP_NO, '' COMP_CODE, '' COMP_MOD_CODE," +
                 " (99999999 - LS.REV_STAT_DATE) START_DATE, LS.STOP_TIME START_TIME," +
@@ -2045,7 +2016,9 @@ namespace EllipseDownLostExcelAddIn
                 "     AND COD.TABLE_TYPE = 'LP'" +
                 "   ORDER BY EQUIP_NO, COMP_CODE, COMP_MOD_CODE, START_DATE, START_TIME";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
         /// <summary>
         /// Obtiene el query listado de Códigos Down del sistema
@@ -2055,7 +2028,7 @@ namespace EllipseDownLostExcelAddIn
         /// <returns>string: Query para el listado de Códigos Down del Sistema</returns>
         public static string GetDownTimeCodeListQuery(string dbreference, string dblink)
         {
-            var sqlQuery = "" +
+            var query = "" +
             " SELECT" +
             "   CASE COD.TABLE_TYPE WHEN 'LP' THEN 'LOST' WHEN 'DT' THEN 'DOWN' END EVENT_TYPE," +
             "   TRIM(COD.TABLE_CODE) CODE, " +
@@ -2064,7 +2037,9 @@ namespace EllipseDownLostExcelAddIn
             " WHERE TABLE_TYPE = 'DT'" +
             " ORDER BY TABLE_TYPE, TABLE_CODE, TABLE_DESC";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
         /// <summary>
         /// Obtiene el query listado de Códigos Lost Production del sistema
@@ -2074,7 +2049,7 @@ namespace EllipseDownLostExcelAddIn
         /// <returns>string: Query para el listado de Códigos Lost del Sistema</returns>
         public static string GetLostProdCodeListQuery(string dbreference, string dblink)
         {
-            var sqlQuery = "" +
+            var query = "" +
             " SELECT" +
             "   CASE COD.TABLE_TYPE WHEN 'LP' THEN 'LOST' WHEN 'DT' THEN 'DOWN' END EVENT_TYPE," +
             "   TRIM(COD.TABLE_CODE) CODE, " +
@@ -2083,12 +2058,14 @@ namespace EllipseDownLostExcelAddIn
             " WHERE TABLE_TYPE = 'LP'" +
             " ORDER BY TABLE_TYPE, TABLE_CODE, TABLE_DESC";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
         [Obsolete("Utilizado para los métodos que utilizan los servicios de Down directamente. Se marca obsoleto porque el sistema no establece comunicación con el servicio")]
         public static string GetSingleDownQuery(string dbreference, string dblink, string equipmentNo, string downCode, string startDate, string shiftCode, string startTime, string endTime)
         {
-            var sqlQuery = "" +
+            var query = "" +
                 "   SELECT" +
                 "     SUBSTR(DW.REC_EQUIP_420,2) EQUIP_NO, DW.COMP_CODE, DW.COMP_MOD_CODE," +
                 "     DW.SEQUENCE_NO, DW.SHIFT_SEQ_NO, " +
@@ -2105,14 +2082,16 @@ namespace EllipseDownLostExcelAddIn
                 "     AND DW.STOP_TIME = LPAD('" + startTime + "', 4, '0')" +
                 "     AND DW.START_TIME = LPAD('" + endTime + "', 4, '0')";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
         public static string GetSingleLostQuery(string dbreference, string dblink, string equipmentNo, string lostCode, string startDate, string shiftCode, string startTime, string endTime)
         {
             //Se entiende que en la tabla el STOP_TIME es la hora de inicio del Lost, por esto es renombrado a START_TIME
             //y START_TIME es la hora de fin del Lost por eso es renombrado a FINISH_TIME
             //Así que nuestra franja será [START_TIME, FINISH_TIME] para indiciar Inicio, Fin del Lost
-            var sqlQuery = "" +
+            var query = "" +
                 " SELECT" +
                 " LS.EQUIP_NO, '' COMP_CODE, '' COMP_MOD_CODE," +
                 " LS.SEQUENCE_NO, LS.SHIFT_SEQ_NO," +
@@ -2133,7 +2112,9 @@ namespace EllipseDownLostExcelAddIn
                 "     AND LS.STOP_TIME = LPAD('" + startTime + "', 4, '0')" +
                 "     AND LS.START_TIME = LPAD('" + endTime + "', 4, '0')";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
 
         /// <summary>
@@ -2144,7 +2125,7 @@ namespace EllipseDownLostExcelAddIn
         /// <returns></returns>
         public static string GetDownLostPbv(string startDate, string endDate)
         {
-            var sqlQuery = "" +                          
+            var query = "" +                          
                            "WITH " +
                            "  SHIFT AS " +
                            "  ( " +
@@ -2314,7 +2295,9 @@ namespace EllipseDownLostExcelAddIn
                            "FROM " +
                            "  PU_EVENT ";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
@@ -36,9 +35,6 @@ namespace EllipseStockCodesExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -157,7 +153,7 @@ namespace EllipseStockCodesExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
             finally
@@ -255,7 +251,7 @@ namespace EllipseStockCodesExcelAddIn
                         cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Error;
                         cp.GetCell(2, rowParam).Value = "Consulta";
                         cp.GetCell(ResultColumn01, rowParam).Value = "ERROR: " + ex.Message;
-                        Debugger.LogError("RibbonEllipse.cs:GetReviewResult()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                        Debugger.LogError("RibbonEllipse.cs:GetReviewResult()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                     }
                     finally
                     {
@@ -269,7 +265,7 @@ namespace EllipseStockCodesExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:GetReviewResult()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:GetReviewResult()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error. " + ex.Message);
             }
             finally
@@ -296,7 +292,7 @@ namespace EllipseStockCodesExcelAddIn
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
-            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
+            new AboutBoxExcelAddIn().ShowDialog();
         }
 
 
@@ -453,7 +449,7 @@ namespace EllipseStockCodesExcelAddIn
             var paramValidOnly = validOnly ? " AND PN.STATUS_CODES = 'V'" : "";
             var paramPreferedOnly = preferedOnly ? " WHERE PREF_PART_IND = MINPPI AND ROWPPI = 1" : "";
 
-            var sqlQuery = "" +
+            var query = "" +
                            "WITH SCINV AS(" +
                            "    SELECT SC.STOCK_CODE, PN.PART_NO, PN.MNEMONIC, PN.DSTRCT_CODE, SC.ITEM_NAME, SC.STK_DESC, SC.UNIT_OF_ISSUE, SC.DESC_LINEX1, SC.DESC_LINEX2, SC.DESC_LINEX3, SC.DESC_LINEX4, SC.CLASS STOCK_CLASS, SC.STOCK_TYPE," +
                            "        INV.CREATION_DATE, INV.LAST_MOD_DATE, INV.CLASS, INV.RAF, INV.INVENT_COST_PR AS PRICE, INV.HOME_WHOUSE, ELLIPSE.GET_SOH('" + districtCode + "', SC.STOCK_CODE) AS OWNED_SOH, ELLIPSE.GET_CONSIGN_SOH('" + districtCode + "', SC.STOCK_CODE) AS CONSIGN_SOH," +
@@ -470,8 +466,9 @@ namespace EllipseStockCodesExcelAddIn
                            ")" +
                            "SELECT * FROM SCINV" +
                            " " + paramPreferedOnly;
-            sqlQuery = Utils.ReplaceQueryStringRegexWhiteSpaces(sqlQuery, "WHERE AND", "WHERE");
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+
+            return query;
         }
         public static string GetFetchRequisitionQuery(string dbReference, string dbLink, string districtCode, string searchCriteriaKey, string searchCriteriaValue, string dateCriteria, string startDate, string finishDate, bool validOnly, bool preferedOnly)
         {
@@ -502,7 +499,7 @@ namespace EllipseStockCodesExcelAddIn
             var paramValidOnly = validOnly ? " AND PN.STATUS_CODES = 'V'" : "";
             var paramPreferedOnly = preferedOnly ? " WHERE PREF_PART_IND = MINPPI AND ROWPPI = 1" : "";
 
-            var sqlQuery = "" +
+            var query = "" +
                            "WITH REQSC AS (" +
                            " SELECT " +
                            "   RQI.DSTRCT_CODE, RQI.IREQ_NO, RQ.IREQ_TYPE, RQ.ISS_TRAN_TYPE, RQI.STOCK_CODE, SC.ITEM_NAME, SC.STK_DESC, SC.UNIT_OF_ISSUE, PN.PART_NO, PN.MNEMONIC, RQI.IREQ_ITEM," +
@@ -525,9 +522,9 @@ namespace EllipseStockCodesExcelAddIn
                            ")" +
                            "SELECT * FROM REQSC" +
                            " " + paramPreferedOnly;
-            sqlQuery = Utils.ReplaceQueryStringRegexWhiteSpaces(sqlQuery, "WHERE AND", "WHERE");
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
-            return sqlQuery;
+            return query;
         }
 
         public static string GetFetchPurchaseOrderQuery(string dbReference, string dbLink, string districtCode, string searchCriteriaKey, string searchCriteriaValue, string dateCriteria, string startDate, string finishDate, bool validOnly, bool preferedOnly)
@@ -561,7 +558,7 @@ namespace EllipseStockCodesExcelAddIn
             var paramValidOnly = validOnly ? " AND PN.STATUS_CODES = 'V'" : "";
             var paramPreferedOnly = preferedOnly ? " WHERE POITEMS.PREF_PART_IND = POITEMS.MINPPI AND ROWPPI = 1" : "";
 
-            var sqlQuery = "" +
+            var query = "" +
                            " WITH POITEMS AS(" +
                            "  SELECT" +
                            "    POI.PO_NO, POI.PO_ITEM_NO, POI.PREQ_STK_CODE, SC.ITEM_NAME, SC.DESC_LINEX1, SC.DESC_LINEX2, SC.DESC_LINEX3, SC.DESC_LINEX4, PN.PART_NO, PN.MNEMONIC, " +
@@ -591,8 +588,9 @@ namespace EllipseStockCodesExcelAddIn
                            "  STAT.INVT_CONTROLLR AS ADI FROM ELLIPSE.MSF100 SC LEFT JOIN ELLIPSE.MSF170 STAT ON SC.STOCK_CODE = STAT.STOCK_CODE)" +
                            "  SELECT * FROM POITEMS LEFT JOIN SCSTAT ON POITEMS.PREQ_STK_CODE = SCSTAT.STOCK_CODE AND SCSTAT.DSTRCT_CODE = 'ICOR'" +
                            " " + paramPreferedOnly;
-            sqlQuery = sqlQuery.Replace("WHERE AND", "WHERE");
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+
+            return query;
         }
     }
 

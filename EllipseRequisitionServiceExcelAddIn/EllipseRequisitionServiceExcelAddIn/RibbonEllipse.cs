@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using EllipseRequisitionServiceExcelAddIn.IssueRequisitionItemStocklessService;
 using EllipseRequisitionServiceExcelAddIn.Properties;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
-using System.Reflection;
 
 namespace EllipseRequisitionServiceExcelAddIn
 {
@@ -692,7 +691,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
-                    returnWarnings = _eFunctions.DebugWarnings,
+                    returnWarnings = Debugger.DebugWarnings,
                     returnWarningsSpecified = true
                 };
 
@@ -1725,7 +1724,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 var proxyRequisition = new IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessService();
 
                 //Header
-                var opRequisition = new IssueRequisitionItemStocklessService.OperationContext();
+                var opRequisition = new OperationContext();
 
                 //Objeto para crear la coleccion de Items
                 //new RequisitionService.RequisitionServiceCreateItemReplyCollectionDTO();
@@ -1744,7 +1743,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-                var headerCreateReturnReply = new IssueRequisitionItemStocklessService.ImmediateReturnStocklessDTO();
+                var headerCreateReturnReply = new ImmediateReturnStocklessDTO();
 
 
                 while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value) != null ||
@@ -1853,7 +1852,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
-            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 
@@ -1861,16 +1860,20 @@ namespace EllipseRequisitionServiceExcelAddIn
     {
         public static string GetItemUnitOfIssue(string stockCode)
         {
-            var sqlQuery = "SELECT UNIT_OF_ISSUE FROM ELLIPSE.MSF100 SC WHERE SC.STOCK_CODE = '" + stockCode + "' ";
+            var query = "SELECT UNIT_OF_ISSUE FROM ELLIPSE.MSF100 SC WHERE SC.STOCK_CODE = '" + stockCode + "' ";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+
+            return query;
         }
 
         public static string GetItemDirectOrder(string stockCode)
         {
-            var sqlQuery = "SELECT SCI.DIRECT_ORDER_IND FROM ELLIPSE.MSF170 SCI WHERE STOCK_CODE = '" + stockCode + "' ";
+            var query = "SELECT SCI.DIRECT_ORDER_IND FROM ELLIPSE.MSF170 SCI WHERE STOCK_CODE = '" + stockCode + "' ";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+
+            return query;
         }
     }
 }

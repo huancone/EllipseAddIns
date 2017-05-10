@@ -723,7 +723,7 @@ namespace EllipseEquipmentClassLibrary
                 else
                     districtParam = " = '" + districtCode + "'";
 
-                var sqlQuery = "" +
+                var query = "" +
                     " SELECT DISTINCT(EQUIP_NO)" +
                     " FROM (" +
                     "   SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO " +
@@ -739,31 +739,39 @@ namespace EllipseEquipmentClassLibrary
                     "     WHERE REQ.DSTRCT_CODE " + districtParam + " AND TRIM(RAL.ALTERNATE_REF) = '" + equipmentRef + "'" +
                     " )";
 
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
             public static string GetEgiEquipmentsQuery(string dbReference, string dbLink, string egi)
             {
-                var sqlQuery = "" +
+                var query = "" +
                     "SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE TRIM(EQ.EQUIP_GRP_ID) = '" + egi + "'";
 
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
             public static string GetListEquipmentsQuery(string dbReference, string dbLink, string listType, string listId)
             {
-                var sqlQuery = "" +
+                var query = "" +
                     "SELECT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + listType + "' AND TRIM(LI.LIST_ID) = '" + listId + "'";
 
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query; 
             }
             public static string GetProductiveUnitEquipmentsQuery(string dbReference, string dbLink, string district, string productiveUnit)
             {
-                var sqlQuery = "" +
+                var query = "" +
                     " SELECT DISTINCT(EQ.EQUIP_NO)" +
                     " FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.DSTRCT_CODE = '" + district + "'" +
                     "   START WITH EQ.EQUIP_NO       = '" + productiveUnit + "'" +
                     "   CONNECT BY PRIOR EQ.EQUIP_NO = EQ.PARENT_EQUIP";
 
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
 
             public static string GetFetchEquipmentDataQuery(string dbReference, string dbLink, string equipmentNo)
@@ -875,7 +883,7 @@ namespace EllipseEquipmentClassLibrary
                 //
 
 
-                var sqlQuery = "" +
+                var query = "" +
                     " SELECT " +
                     "   EQ.EQUIP_NO, EQ.ACCOUNT_CODE, EQ.ACTIVE_FLG, EQ.ASSOC_EQUIP_SW, EQ.COMP_CODE," +
                     "   EQ.CON_AST_SEG_EN, EQ.CON_AST_SEG_ST," +
@@ -901,15 +909,16 @@ namespace EllipseEquipmentClassLibrary
                     " " + queryCriteria2 +
                     " " + statusRequirement +
                     "";
-                sqlQuery = Utils.ReplaceQueryStringRegexWhiteSpaces(sqlQuery, "WHERE AND", "WHERE");
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
 
             public static string GetFetchLastInstallationQuery(string dbReference, string dbLink, string district, string equipmentNo, string component, string position)
             {
                 var positionString = position == "" ? "    AND TRIM ( SUBSTR ( CO.INSTALL_POSN, 17, 2 ) ) is null" : "    AND TRIM ( SUBSTR ( CO.INSTALL_POSN, 17, 2 ) ) = '" + position + "'";
 
-                var sqlQuery = "" +
+                var query = "" +
                     "WITH " +
                     "  MOV AS " +
                     "  ( " +
@@ -946,7 +955,9 @@ namespace EllipseEquipmentClassLibrary
                     "  MOV " +
                     "WHERE " +
                     "  FECHA = MAX_FECHA";
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
         }
 

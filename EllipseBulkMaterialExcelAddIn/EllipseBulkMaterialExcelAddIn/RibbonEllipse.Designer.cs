@@ -43,9 +43,11 @@
             this.btnImport = this.Factory.CreateRibbonButton();
             this.btnLoad = this.Factory.CreateRibbonButton();
             this.btnUnApplyDelete = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpBulkMaterial.SuspendLayout();
-            this.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -56,15 +58,15 @@
             // 
             // grpBulkMaterial
             // 
-            this.grpBulkMaterial.Items.Add(this.btnBulkMaterialFormatMultiple);
+            this.grpBulkMaterial.Items.Add(this.box1);
             this.grpBulkMaterial.Items.Add(this.drpBulkMaterialEnv);
             this.grpBulkMaterial.Items.Add(this.menuActions);
-            this.grpBulkMaterial.Label = "Bulk Material v2.0.0";
+            this.grpBulkMaterial.Label = "Bulk Material";
             this.grpBulkMaterial.Name = "grpBulkMaterial";
             // 
             // btnBulkMaterialFormatMultiple
             // 
-            this.btnBulkMaterialFormatMultiple.Label = "Format Bulk Material Sheet";
+            this.btnBulkMaterialFormatMultiple.Label = "Format Sheet";
             this.btnBulkMaterialFormatMultiple.Name = "btnBulkMaterialFormatMultiple";
             this.btnBulkMaterialFormatMultiple.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnBulkMaterialFormatMultiple_Click);
             // 
@@ -110,6 +112,18 @@
             this.btnUnApplyDelete.ShowImage = true;
             this.btnUnApplyDelete.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUnApplyDelete_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnBulkMaterialFormatMultiple);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -120,7 +134,8 @@
             this.tabEllipse.PerformLayout();
             this.grpBulkMaterial.ResumeLayout(false);
             this.grpBulkMaterial.PerformLayout();
-            this.ResumeLayout(false);
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -135,6 +150,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnImport;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUnApplyDelete;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnValidateStats;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

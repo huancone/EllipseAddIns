@@ -4,24 +4,13 @@ using System.Windows.Forms;
 
 namespace EllipseCommonsClassLibrary
 {
-    public partial class AboutBoxExcelAddIn : Form
+    partial class SettingsBox : Form
     {
-        private static Assembly _addInAssembly;
-        private int _indexSettings;
-
-        public AboutBoxExcelAddIn()
+        public SettingsBox()
         {
-            _addInAssembly = Assembly.GetExecutingAssembly();//addInAssembly;
-            
             InitializeComponent();
-            this.Text = string.Format("About {0}", AssemblyTitle);
+            this.Text = @"Opciones de Configuración";
             this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = string.Format("Version {0}", AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
-            this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = AssemblyDescription;
-            this.labelDeveloper1.Text = AssemblyDeveloper1;
-            this.labelDeveloper2.Text = AssemblyDeveloper2;
         }
 
         #region Assembly Attribute Accessors
@@ -30,7 +19,7 @@ namespace EllipseCommonsClassLibrary
         {
             get
             {
-                object[] attributes = _addInAssembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
                 if (attributes.Length > 0)
                 {
                     AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
@@ -39,7 +28,7 @@ namespace EllipseCommonsClassLibrary
                         return titleAttribute.Title;
                     }
                 }
-                return System.IO.Path.GetFileNameWithoutExtension(_addInAssembly.CodeBase);
+                return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
             }
         }
 
@@ -47,7 +36,7 @@ namespace EllipseCommonsClassLibrary
         {
             get
             {
-                return _addInAssembly.GetName().Version.ToString();
+                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
         }
 
@@ -55,7 +44,7 @@ namespace EllipseCommonsClassLibrary
         {
             get
             {
-                object[] attributes = _addInAssembly.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
                 if (attributes.Length == 0)
                 {
                     return "";
@@ -68,7 +57,7 @@ namespace EllipseCommonsClassLibrary
         {
             get
             {
-                object[] attributes = _addInAssembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                 if (attributes.Length == 0)
                 {
                     return "";
@@ -81,7 +70,7 @@ namespace EllipseCommonsClassLibrary
         {
             get
             {
-                object[] attributes = _addInAssembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                 if (attributes.Length == 0)
                 {
                     return "";
@@ -94,7 +83,7 @@ namespace EllipseCommonsClassLibrary
         {
             get
             {
-                object[] attributes = _addInAssembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
                 if (attributes.Length == 0)
                 {
                     return "";
@@ -102,29 +91,34 @@ namespace EllipseCommonsClassLibrary
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;
             }
         }
-        public string AssemblyDeveloper1
-        {
-            get { return "hernandezrhectorj@gmail.com"; }
-        }
-        public string AssemblyDeveloper2
-        {
-            get { return "huancone@gmail.com"; }
-        }
         #endregion
 
-        private void tableLayoutPanel_Paint(object sender, PaintEventArgs e)
+        private void SettingsBox_Load(object sender, EventArgs e)
         {
-
+            cbDebugErrors.Checked = Debugger.DebugErrors;
+            cbDebugWarnings.Checked = Debugger.DebugWarnings;
+            cbDebugQueries.Checked = Debugger.DebugQueries;
+            tbLocalDataPath.Text = Debugger.LocalDataPath;
         }
 
-        private void labelProductName_Click(object sender, EventArgs e)
+        private void cbDebugErrors_CheckedChanged(object sender, EventArgs e)
         {
-            _indexSettings++;
-            if (_indexSettings > 3)
-            {
-                new SettingsBox().ShowDialog();
-            }
+            Debugger.DebugErrors = cbDebugErrors.Checked;
         }
 
+        private void cbDebugWarnings_CheckedChanged(object sender, EventArgs e)
+        {
+            Debugger.DebugWarnings = cbDebugWarnings.Checked;
+        }
+
+        private void cbDebugQueries_CheckedChanged(object sender, EventArgs e)
+        {
+            Debugger.DebugQueries = cbDebugQueries.Checked;
+        }
+
+        private void tbLocalDataPath_TextChanged(object sender, EventArgs e)
+        {
+            Debugger.LocalDataPath = tbLocalDataPath.Text;
+        }
     }
 }

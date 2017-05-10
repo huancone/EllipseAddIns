@@ -37,7 +37,6 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpStandardJobs = this.Factory.CreateRibbonGroup();
             this.box1 = this.Factory.CreateRibbonBox();
-            this.box2 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
@@ -71,7 +70,6 @@
             this.tabEllipse.SuspendLayout();
             this.grpStandardJobs.SuspendLayout();
             this.box1.SuspendLayout();
-            this.box2.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -83,22 +81,16 @@
             // grpStandardJobs
             // 
             this.grpStandardJobs.Items.Add(this.box1);
+            this.grpStandardJobs.Items.Add(this.drpEnviroment);
+            this.grpStandardJobs.Items.Add(this.menuActions);
             this.grpStandardJobs.Label = "StandardJobs";
             this.grpStandardJobs.Name = "grpStandardJobs";
             // 
             // box1
             // 
-            this.box1.BoxStyle = Microsoft.Office.Tools.Ribbon.RibbonBoxStyle.Vertical;
-            this.box1.Items.Add(this.box2);
-            this.box1.Items.Add(this.drpEnviroment);
-            this.box1.Items.Add(this.menuActions);
+            this.box1.Items.Add(this.btnFormatSheet);
+            this.box1.Items.Add(this.btnAbout);
             this.box1.Name = "box1";
-            // 
-            // box2
-            // 
-            this.box2.Items.Add(this.btnFormatSheet);
-            this.box2.Items.Add(this.btnAbout);
-            this.box2.Name = "box2";
             // 
             // btnFormatSheet
             // 
@@ -341,8 +333,6 @@
             this.grpStandardJobs.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
-            this.box2.ResumeLayout(false);
-            this.box2.PerformLayout();
 
         }
 
@@ -380,7 +370,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewStandardReferenceCodes;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateStandardReferenceCodes;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 

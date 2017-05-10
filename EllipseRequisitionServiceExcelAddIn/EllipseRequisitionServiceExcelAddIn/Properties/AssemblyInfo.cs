@@ -9,10 +9,10 @@ using System.Security;
 [assembly: AssemblyTitle("EllipseRequisitionServiceExcelAddIn")]
 [assembly: AssemblyDescription("Loader de Requisiciones")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hambings SAS")]
+[assembly: AssemblyCompany("Hambings SAS/Cerrejón Ltda")]
 [assembly: AssemblyProduct("EllipseRequisitionServiceExcelAddIn")]
 [assembly: AssemblyCopyright("Copyright ©  2015-2017")]
-[assembly: AssemblyTrademark("hernandezrhectorj@gmail.com")]
+[assembly: AssemblyTrademark("Hambings SAS")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -33,6 +33,6 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.1.12")]
-[assembly: AssemblyFileVersion("1.2.1.12")]
+[assembly: AssemblyVersion("1.2.2.0")]
+[assembly: AssemblyFileVersion("1.2.2.0")]
 

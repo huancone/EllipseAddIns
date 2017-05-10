@@ -23,9 +23,6 @@ namespace EllipseStatisticsProfileExcelAddIn
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
 
             var enviromentList = EnviromentConstants.GetEnviromentList();
             foreach (var item in enviromentList)
@@ -114,7 +111,7 @@ namespace EllipseStatisticsProfileExcelAddIn
             var arrayFields = new ArrayScreenNameValue();
 
             _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-            _frmAuth.selectedEnviroment = drpEnviroment.SelectedItem.Label;
+            _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
 
             if (_frmAuth.ShowDialog() != DialogResult.OK) return;
             var opSheet = new Screen.OperationContext
@@ -123,7 +120,7 @@ namespace EllipseStatisticsProfileExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -427,6 +424,11 @@ namespace EllipseStatisticsProfileExcelAddIn
                     _cells.GetStyle(StyleConstants.Error);
                 _cells.GetCell("A" + currentRow).AddComment("NPI");
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

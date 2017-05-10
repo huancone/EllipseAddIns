@@ -39,13 +39,7 @@ namespace EllipseMstExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            //Office 2013 requiere no ejecutar esta sentencia al iniciar porque no se cuenta con un libro activo vacío. Se debe ejecutar obligatoriamente al formatear las hojas
-            //adcionalmente validar la cantidad de hojas a utilizar al momento de dar formato
-            //if (_cells == null)
-            //    _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
+            
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -369,8 +363,7 @@ namespace EllipseMstExcelAddIn
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:FormatSheet()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja: " + ex.Message);
             }
         }
@@ -386,14 +379,10 @@ namespace EllipseMstExcelAddIn
 
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
-                var districtCode = _cells.GetCell("B3").Value2;
-                var workGroup = _cells.GetCell("B4").Value2;
-                var schedIndicator = _cells.GetCell("B5").Value2;
+                var districtCode = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value2);
+                var workGroup = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value2);
+                var schedIndicator = _cells.GetEmptyIfNull(_cells.GetCell("B5").Value2);
 
-                var sqlQuery = MstActions.Queries.GetFetchMstListQuery(_eFunctions.dbReference, _eFunctions.dbLink,
-                    districtCode, workGroup, null, null, null, null, schedIndicator);
-                if (_eFunctions.DebugQueries)
-                    _cells.GetCell("L1").Value = sqlQuery;
                 var listmst = MstActions.FetchMaintenanceScheduleTask(_eFunctions, districtCode, workGroup, null, null, null, null, schedIndicator);
                 var i = TitleRow01 + 1;
                 foreach (var mst in listmst)
@@ -458,7 +447,7 @@ namespace EllipseMstExcelAddIn
                     {
                         _cells.GetCell(1, i).Style = StyleConstants.Error;
                         _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                        Debugger.LogError("RibbonEllipse.cs:GetMstList()", ex.Message, _eFunctions.DebugErrors);
+                        Debugger.LogError("RibbonEllipse.cs:GetMstList()", ex.Message);
                     }
                     finally
                     {
@@ -488,7 +477,7 @@ namespace EllipseMstExcelAddIn
 
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
-                var districtCode = _cells.GetCell("B3").Value2;
+                var districtCode = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value2);
 
                 var i = TitleRow01 + 1;
                 while (!string.IsNullOrEmpty("" + _cells.GetCell(3, i).Value))
@@ -501,11 +490,8 @@ namespace EllipseMstExcelAddIn
                         var compCode = "" + _cells.GetCell(4, i).Value2;
                         var compModCode = "" + _cells.GetCell(5, i).Value2;
                         var taskNo = "" + _cells.GetCell(6, i).Value2;
-                        var sqlQuery = MstActions.Queries.GetFetchMstListQuery(_eFunctions.dbReference, _eFunctions.dbLink,
-                            districtCode, workGroup, equipmentNo, compCode, compModCode, taskNo);
-                        if (_eFunctions.DebugQueries)
-                            _cells.GetCell("L1").Value = sqlQuery;
-                        var mst = MstActions.FetchMaintenanceScheduleTask(_eFunctions, districtCode, equipmentNo, compCode, compModCode, taskNo);
+
+                        var mst = MstActions.FetchMaintenanceScheduleTask(_eFunctions, districtCode, workGroup, equipmentNo, compCode, compModCode, taskNo);
                         
 
                         _cells.GetCell("B3").Value2 = "" + mst.DistrictCode;
@@ -565,7 +551,7 @@ namespace EllipseMstExcelAddIn
                     {
                         _cells.GetCell(1, i).Style = StyleConstants.Error;
                         _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                        Debugger.LogError("RibbonEllipse.cs:GetMstList()", ex.Message, _eFunctions.DebugErrors);
+                        Debugger.LogError("RibbonEllipse.cs:GetMstList()", ex.Message);
                     }
                     finally
                     {
@@ -600,7 +586,7 @@ namespace EllipseMstExcelAddIn
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -664,7 +650,7 @@ namespace EllipseMstExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:CreateMstList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:CreateMstList()", ex.Message);
                 }
                 finally
                 {
@@ -688,7 +674,7 @@ namespace EllipseMstExcelAddIn
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -753,7 +739,7 @@ namespace EllipseMstExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateMstList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateMstList()", ex.Message);
                 }
                 finally
                 {
@@ -776,7 +762,7 @@ namespace EllipseMstExcelAddIn
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -839,7 +825,7 @@ namespace EllipseMstExcelAddIn
                     _cells.GetCell(5, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ModifyNextScheduleList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ModifyNextScheduleList()", ex.Message);
                 }
                 finally
                 {
@@ -864,7 +850,7 @@ namespace EllipseMstExcelAddIn
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -898,7 +884,7 @@ namespace EllipseMstExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:DeleteMstList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:DeleteMstList()", ex.Message);
                 }
                 finally
                 {
@@ -922,6 +908,11 @@ namespace EllipseMstExcelAddIn
             {
                 MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
 
      
@@ -996,9 +987,9 @@ namespace EllipseMstExcelAddIn
             
             return list;
         }
-        public static MaintenanceScheduleTask FetchMaintenanceScheduleTask(EllipseFunctions ef, string districtCode, string equipmentNo, string compCode, string compModCode, string taskNo)
+        public static MaintenanceScheduleTask FetchMaintenanceScheduleTask(EllipseFunctions ef, string districtCode, string workGroup, string equipmentNo, string compCode, string compModCode, string taskNo)
         {
-            var sqlQuery = Queries.GetFetchMstListQuery(ef.dbReference, ef.dbLink, districtCode, null, equipmentNo, compCode, compModCode, taskNo);
+            var sqlQuery = Queries.GetFetchMstListQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, equipmentNo, compCode, compModCode, taskNo);
             var mstDataReader = ef.GetQueryResult(sqlQuery);
 
             if (mstDataReader == null || mstDataReader.IsClosed || !mstDataReader.HasRows || !mstDataReader.Read())
@@ -1266,7 +1257,7 @@ namespace EllipseMstExcelAddIn
                 else
                     statusIndicator = "";
 
-                var sqlQuery = "" +
+                var query = "" +
                                " SELECT" +
                                "     MST.DSTRCT_CODE, MST.WORK_GROUP, MST.REC_700_TYPE, MST.EQUIP_NO, EQ.ITEM_NAME_1 EQUIPMENT_DESC, MST.COMP_CODE, MST.COMP_MOD_CODE, MST.MAINT_SCH_TASK," +
                                "     MST.JOB_DESC_CODE, MST.SCHED_DESC_1, MST.SCHED_DESC_2, MST.ASSIGN_PERSON, MST.STD_JOB_NO, MST.AUTO_REQ_IND, MST.MS_HIST_FLG, MST.SCHED_IND_700," +
@@ -1286,8 +1277,9 @@ namespace EllipseMstExcelAddIn
                                taskNo +
                                statusIndicator +
                                " ORDER BY MST.MAINT_SCH_TASK DESC";
-                sqlQuery = sqlQuery.Replace("WHERE AND", "WHERE");
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
         }
     }

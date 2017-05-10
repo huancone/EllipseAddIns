@@ -187,6 +187,8 @@ namespace EllipseReferenceCodesClassLibrary
                         " FROM" +
                         "   " + dbReference + ".MSF070" + dbLink + " RCE" +
                         " WHERE RCE.ENTITY_TYPE = '" + entityType + "'";
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
             return query;
         }
 
@@ -214,6 +216,8 @@ namespace EllipseReferenceCodesClassLibrary
                         " AND RC.ENTITY_VALUE = '" + entityValue + "' " +
                         " " + refNo +
                         " " + seqNum;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
             return query;
         }
 

@@ -36,12 +36,14 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpEllipse = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.menuGroupFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatHeader = this.Factory.CreateRibbonButton();
             this.btnFormatDefault = this.Factory.CreateRibbonButton();
             this.btnFormatMso850 = this.Factory.CreateRibbonButton();
             this.btnFormatElecsa = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoadLaborSheet = this.Factory.CreateRibbonButton();
@@ -50,7 +52,7 @@
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpEllipse.SuspendLayout();
-            this.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -61,11 +63,17 @@
             // 
             // grpEllipse
             // 
-            this.grpEllipse.Items.Add(this.menuFormat);
+            this.grpEllipse.Items.Add(this.box1);
             this.grpEllipse.Items.Add(this.drpEnviroment);
             this.grpEllipse.Items.Add(this.menuActions);
-            this.grpEllipse.Label = "Labour Costing v1.0.7";
+            this.grpEllipse.Label = "Labour Costing";
             this.grpEllipse.Name = "grpEllipse";
+            // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
             // 
             // menuFormat
             // 
@@ -110,6 +118,12 @@
             this.btnFormatElecsa.Name = "btnFormatElecsa";
             this.btnFormatElecsa.ShowImage = true;
             this.btnFormatElecsa.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatElecsa_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnviroment
             // 
@@ -163,7 +177,8 @@
             this.tabEllipse.PerformLayout();
             this.grpEllipse.ResumeLayout(false);
             this.grpEllipse.PerformLayout();
-            this.ResumeLayout(false);
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -183,6 +198,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCleanSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewWorkOrder;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

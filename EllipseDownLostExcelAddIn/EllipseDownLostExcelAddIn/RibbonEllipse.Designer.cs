@@ -36,9 +36,11 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpDownLost = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnFormatDownPbv = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReviewDL = this.Factory.CreateRibbonButton();
@@ -51,7 +53,7 @@
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpDownLost.SuspendLayout();
-            this.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -62,11 +64,17 @@
             // 
             // grpDownLost
             // 
-            this.grpDownLost.Items.Add(this.menuFormat);
+            this.grpDownLost.Items.Add(this.box1);
             this.grpDownLost.Items.Add(this.drpEnviroment);
             this.grpDownLost.Items.Add(this.menuActions);
-            this.grpDownLost.Label = "Down & Lost v1.2.1";
+            this.grpDownLost.Label = "Down & Lost";
             this.grpDownLost.Name = "grpDownLost";
+            // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
             // 
             // menuFormat
             // 
@@ -89,6 +97,12 @@
             this.btnFormatDownPbv.ShowImage = true;
             this.btnFormatDownPbv.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatDownPbv_Click);
             // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // drpEnviroment
             // 
             this.drpEnviroment.Label = "Env.";
@@ -104,7 +118,7 @@
             this.menuActions.Items.Add(this.btnDeleteDL);
             this.menuActions.Items.Add(this.btnClearTable);
             this.menuActions.Items.Add(this.btnStopThread);
-            this.menuActions.Label = "Acciones...";
+            this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
             // 
             // btnReviewDL
@@ -173,7 +187,8 @@
             this.tabEllipse.PerformLayout();
             this.grpDownLost.ResumeLayout(false);
             this.grpDownLost.PerformLayout();
-            this.ResumeLayout(false);
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -194,6 +209,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewDLPbv;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGenerateCollection;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

@@ -41,8 +41,11 @@
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoadModel = this.Factory.CreateRibbonButton();
             this.btnCreateLogSheetStatistics = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpLogSheetStatistics.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -53,10 +56,10 @@
             // 
             // grpLogSheetStatistics
             // 
-            this.grpLogSheetStatistics.Items.Add(this.btnFormatLogSheet);
+            this.grpLogSheetStatistics.Items.Add(this.box1);
             this.grpLogSheetStatistics.Items.Add(this.drpEnviroment);
             this.grpLogSheetStatistics.Items.Add(this.menuActions);
-            this.grpLogSheetStatistics.Label = "LogSheetStatistics v1.0.4";
+            this.grpLogSheetStatistics.Label = "LogSheetStatistics";
             this.grpLogSheetStatistics.Name = "grpLogSheetStatistics";
             // 
             // btnFormatLogSheet
@@ -91,6 +94,18 @@
             this.btnCreateLogSheetStatistics.ShowImage = true;
             this.btnCreateLogSheetStatistics.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreateLogSheetStatistics_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormatLogSheet);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -101,6 +116,8 @@
             this.tabEllipse.PerformLayout();
             this.grpLogSheetStatistics.ResumeLayout(false);
             this.grpLogSheetStatistics.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -113,6 +130,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatLogSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadModel;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

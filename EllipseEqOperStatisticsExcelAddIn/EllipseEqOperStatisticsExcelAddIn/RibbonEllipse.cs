@@ -34,9 +34,6 @@ namespace EllipseEqOperStatisticsExcelAddIn
             //adcionalmente validar la cantidad de hojas a utilizar al momento de dar formato
             //if (_cells == null)
             //    _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -124,7 +121,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -155,7 +152,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                     opSheet.district = _frmAuth.EllipseDsct;
                     opSheet.position = _frmAuth.EllipsePost;
                     opSheet.maxInstances = 100;
-                    opSheet.returnWarnings = _eFunctions.DebugWarnings;
+                    opSheet.returnWarnings = Debugger.DebugWarnings;
                     ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
                     const int startRow = 5;
                     var i = startRow;
@@ -228,8 +225,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:LoadStatistics()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -299,9 +295,11 @@ namespace EllipseEqOperStatisticsExcelAddIn
             var dbReference = _eFunctions.dbReference;
             var dbLink = _eFunctions.dbLink;
 
-            var sqlQuery = "SELECT EQ.* FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE TRIM(EQ.EQUIP_NO) = '" + equipNo + "'";
+            var query = "SELECT EQ.* FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE TRIM(EQ.EQUIP_NO) = '" + equipNo + "'";
 
-            var drEquipments = _eFunctions.GetQueryResult(sqlQuery);
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            var drEquipments = _eFunctions.GetQueryResult(query);
 
             if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
 
@@ -323,7 +321,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
             var dbReference = _eFunctions.dbReference;
             var dbLink = _eFunctions.dbLink;
 
-            var sqlQuery = "" +
+            var query = "" +
                             " SELECT" +
                             "   STAT_DATE," +
                             "   METER_VALUE" +
@@ -342,8 +340,10 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             "   )" +
                             " WHERE" +
                             "   STAT_DATE = MAX_FECHA";
-
-            var drEquipments = _eFunctions.GetQueryResult(sqlQuery);
+            
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            var drEquipments = _eFunctions.GetQueryResult(query);
 
             if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
 
@@ -361,7 +361,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
             var dbReference = _eFunctions.dbReference;
             var dbLink = _eFunctions.dbLink;
 
-            var sqlQuery = "" +
+            var query = "" +
                             " SELECT" +
                             "   METER_VALUE" +
                             " FROM" +
@@ -380,7 +380,9 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             " WHERE" +
                             "   STAT_DATE = MAX_FECHA";
 
-            var drEquipments = _eFunctions.GetQueryResult(sqlQuery);
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            var drEquipments = _eFunctions.GetQueryResult(query);
 
             if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
 
@@ -389,6 +391,11 @@ namespace EllipseEqOperStatisticsExcelAddIn
 
             var stat = drEquipments["METER_VALUE"].ToString();
             return stat;
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

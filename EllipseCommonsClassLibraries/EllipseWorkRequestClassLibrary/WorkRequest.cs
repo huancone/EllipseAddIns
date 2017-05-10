@@ -761,6 +761,7 @@ namespace EllipseWorkRequestClassLibrary
                             "" + paramDate;
 
                 query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
                 return query;
             }
             public static string GetFetchWorkRequest(string dbReference, string dbLink, string requestId)
@@ -836,6 +837,7 @@ namespace EllipseWorkRequestClassLibrary
                             "   WR.REQUEST_ID = '" + requestId + "'";
 
                 query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
                 return query;
             }
         }

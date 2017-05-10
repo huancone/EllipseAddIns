@@ -32,9 +32,6 @@ namespace EllipseMse81SExcelAddin
         {
             _excelApp = Globals.ThisAddIn.Application;
             
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -220,7 +217,7 @@ namespace EllipseMse81SExcelAddin
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja.\n" + ex);
             }
         }
@@ -271,7 +268,7 @@ namespace EllipseMse81SExcelAddin
                 maxInstancesSpecified = true,
                 maxInstances = 100,
                 returnWarningsSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -402,7 +399,7 @@ namespace EllipseMse81SExcelAddin
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewEmployeeList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewEmployeeList()", ex.Message);
                 }
                 finally
                 {
@@ -430,7 +427,7 @@ namespace EllipseMse81SExcelAddin
                 maxInstancesSpecified = true,
                 maxInstances = 100,
                 returnWarningsSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -539,7 +536,7 @@ namespace EllipseMse81SExcelAddin
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:CreateEmployeeList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:CreateEmployeeList()", ex.Message);
                 }
                 finally
                 {
@@ -563,7 +560,7 @@ namespace EllipseMse81SExcelAddin
                 maxInstancesSpecified = true,
                 maxInstances = 100,
                 returnWarningsSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -672,7 +669,7 @@ namespace EllipseMse81SExcelAddin
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateEmployeeList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateEmployeeList()", ex.Message);
                 }
                 finally
                 {
@@ -682,6 +679,11 @@ namespace EllipseMse81SExcelAddin
             }
             _cells.SetCursorDefault();
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
 
         

@@ -33,10 +33,6 @@ namespace EllipseBulkMaterialExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugWarnings = false;
-
             var enviromentList = EnviromentConstants.GetEnviromentList();
             foreach (var item in enviromentList)
             {
@@ -770,7 +766,7 @@ namespace EllipseBulkMaterialExcelAddIn
         {
             public static string GetBulkAccountCode(string equipNo, string dbReference, string dbLink)
             {
-                var sqlQuery = "" +
+                var query = "" +
                     "WITH " +
                     "  REFERENCE AS " +
                     "  ( " +
@@ -800,12 +796,14 @@ namespace EllipseBulkMaterialExcelAddIn
                     "  FECHA = MAX_FECHA " +
                     "AND EQUIP_NO = '" + equipNo + "'";
 
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
 
             public static string GetFuelCapacity(string equipNo, string dbReference, string dbLink)
             {
-                var sqlQuery = "" +
+                var query = "" +
                     "WITH   " +
                     "  EQUIPO AS   " +
                     "  (   " +
@@ -886,12 +884,14 @@ namespace EllipseBulkMaterialExcelAddIn
                     "ORDER BY   " +
                     "  PROFILES.PESO   ";
 
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
 
             public static string GetLastStatistic(string equipNo, string statType, string statDate,  string dbReference, string dbLink)
             {
-                var sqlQuery = "" +
+                var query = "" +
                     "SELECT " +
                     "  STAT.EQUIP_NO, " +
                     "  STAT.ITEM_NAME_1, " +
@@ -926,7 +926,9 @@ namespace EllipseBulkMaterialExcelAddIn
                     "  STAT.MAX_DATE = STAT.STAT_DATE " +
                     "OR STAT.STAT_DATE IS NULL ";
 
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
         }
 
@@ -968,6 +970,11 @@ namespace EllipseBulkMaterialExcelAddIn
             public string StatDate { get; set; }
 
             public string Error { get; set; }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

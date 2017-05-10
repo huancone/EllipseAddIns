@@ -39,8 +39,11 @@
             this.btnFormat = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.btnLoad = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMsss.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -51,10 +54,10 @@
             // 
             // grpMsss
             // 
-            this.grpMsss.Items.Add(this.btnFormat);
+            this.grpMsss.Items.Add(this.box1);
             this.grpMsss.Items.Add(this.drpEnviroment);
             this.grpMsss.Items.Add(this.btnLoad);
-            this.grpMsss.Label = "MSSS v1.0.0";
+            this.grpMsss.Label = "MSSS";
             this.grpMsss.Name = "grpMsss";
             // 
             // btnFormat
@@ -74,6 +77,18 @@
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -84,6 +99,8 @@
             this.tabEllipse.PerformLayout();
             this.grpMsss.ResumeLayout(false);
             this.grpMsss.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -94,6 +111,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoad;
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
@@ -32,9 +31,7 @@ namespace EllipseMSO627InspPestanasAddIn
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -253,7 +250,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -338,8 +335,7 @@ namespace EllipseMSO627InspPestanasAddIn
                             {
                                 _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                                 _cells.GetCell(ResultColumnLimpieza, currentRow).Value = "ERROR: " + ex.Message;
-                                Debugger.LogError("RibbonEllipse.cs:MSO627LoadLimpieza()", ex.Message,
-                                    _eFunctions.DebugErrors);
+                                Debugger.LogError("RibbonEllipse.cs:MSO627LoadLimpieza()", ex.Message);
                             }
                         }
                     }
@@ -348,7 +344,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 {
                     _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnLimpieza, currentRow).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:MSO627LoadLimpieza()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:MSO627LoadLimpieza()", ex.Message);
                 }
                 finally
                 {
@@ -365,7 +361,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -449,8 +445,7 @@ namespace EllipseMSO627InspPestanasAddIn
                             {
                                 _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                                 _cells.GetCell(ResultColumn, currentRow).Value = "ERROR: " + ex.Message;
-                                Debugger.LogError("RibbonEllipse.cs:MSO627LoadPestanas()", ex.Message,
-                                    _eFunctions.DebugErrors);
+                                Debugger.LogError("RibbonEllipse.cs:MSO627LoadPestanas()", ex.Message);
                             }
                         }
                     }
@@ -459,7 +454,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 {
                     _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn, currentRow).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message);
                 }
                 finally
                 {
@@ -484,7 +479,7 @@ namespace EllipseMSO627InspPestanasAddIn
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
-            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

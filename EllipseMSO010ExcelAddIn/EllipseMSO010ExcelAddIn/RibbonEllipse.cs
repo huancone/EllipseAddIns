@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
@@ -9,7 +8,6 @@ using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using Screen = EllipseCommonsClassLibrary.ScreenService; //si es screen service
 using System.Web.Services.Ellipse;
-using Oracle.ManagedDataAccess.Types;
 
 namespace EllipseMSO010ExcelAddIn
 {
@@ -32,9 +30,6 @@ namespace EllipseMSO010ExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -70,7 +65,7 @@ namespace EllipseMSO010ExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:CreateWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:CreateWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -92,7 +87,7 @@ namespace EllipseMSO010ExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReviewCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ReviewCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -172,7 +167,7 @@ namespace EllipseMSO010ExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatQuality()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:FormatQuality()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -207,8 +202,6 @@ namespace EllipseMSO010ExcelAddIn
             var typeCriteriaKey2 = typeCriteriaList.FirstOrDefault(v => v.Value.Equals(typeCriteriaKey2Text)).Key;
             var statusKey = statusCriteriaList.FirstOrDefault(v => v.Value.Equals(statusKeyText)).Key;
 
-            if (_eFunctions.DebugQueries)
-                _cells.GetCell("L1").Value = Queries.GetItemCodeList(_eFunctions.dbReference, _eFunctions.dbLink, searchCriteriaKey1, typeCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, typeCriteriaKey2, searchCriteriaValue2, statusKey);
             var listwo = GetItemList(_eFunctions, searchCriteriaKey1, typeCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, typeCriteriaKey2, searchCriteriaValue2, statusKey);
             var i = TitleRow01 + 1;
             foreach (var item in listwo)
@@ -227,7 +220,7 @@ namespace EllipseMSO010ExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewCodesList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewCodesList()", ex.Message);
                 }
                 finally
                 {
@@ -256,7 +249,7 @@ namespace EllipseMSO010ExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -290,7 +283,7 @@ namespace EllipseMSO010ExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:CreateCodeList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:CreateCodeList()", ex.Message);
                 }
                 finally
                 {
@@ -443,7 +436,7 @@ namespace EllipseMSO010ExcelAddIn
                     statusCriteria = " AND CO.ACTIVE_FLAG = 'Y'";
 
 
-                var sqlQuery = " SELECT CO.TABLE_TYPE," +
+                var query = " SELECT CO.TABLE_TYPE," +
                                "   CO.TABLE_CODE," +
                                "   CO.TABLE_DESC," +
                                "   CO.ACTIVE_FLAG," +
@@ -458,8 +451,9 @@ namespace EllipseMSO010ExcelAddIn
                                " " + statusCriteria + 
                                " ORDER BY CO.TABLE_CODE ASC";
 
-                sqlQuery = Utils.ReplaceQueryStringRegexWhiteSpaces(sqlQuery, "WHERE AND", "WHERE");
-                return sqlQuery;
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                
+                return query;
             }
         }
         public static class SearchFieldCriteriaType
@@ -531,7 +525,7 @@ namespace EllipseMSO010ExcelAddIn
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
-            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

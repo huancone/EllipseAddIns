@@ -39,8 +39,11 @@
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.btnAction = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpVHSAcknowledgement.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -51,10 +54,10 @@
             // 
             // grpVHSAcknowledgement
             // 
-            this.grpVHSAcknowledgement.Items.Add(this.btnFormatSheet);
+            this.grpVHSAcknowledgement.Items.Add(this.box1);
             this.grpVHSAcknowledgement.Items.Add(this.drpEnviroment);
             this.grpVHSAcknowledgement.Items.Add(this.btnAction);
-            this.grpVHSAcknowledgement.Label = "VHSAcknowledgement v1.0.0";
+            this.grpVHSAcknowledgement.Label = "VHSAcknowledgement";
             this.grpVHSAcknowledgement.Name = "grpVHSAcknowledgement";
             // 
             // btnFormatSheet
@@ -74,6 +77,18 @@
             this.btnAction.Name = "btnAction";
             this.btnAction.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAction_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormatSheet);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -84,6 +99,8 @@
             this.tabEllipse.PerformLayout();
             this.grpVHSAcknowledgement.ResumeLayout(false);
             this.grpVHSAcknowledgement.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -94,6 +111,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAction;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

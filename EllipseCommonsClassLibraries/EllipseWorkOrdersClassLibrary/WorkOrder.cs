@@ -1321,7 +1321,8 @@ namespace EllipseWorkOrdersClassLibrary
                     " AND WO.DSTRCT_CODE " + districtCode +
                     dateParameters;
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE");
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
             return query;
         }
         /// <summary>
@@ -1367,6 +1368,8 @@ namespace EllipseWorkOrdersClassLibrary
                     " WO.WORK_ORDER = '" + workOrder + "'" +
                     " AND WO.DSTRCT_CODE " + districtCode;
 
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
             return query;
         }
 

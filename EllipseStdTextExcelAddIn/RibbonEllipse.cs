@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
-using System.Reflection;
-using System.Threading;
 using System.Web.Services.Ellipse;
+using System.Threading;
 using EllipseCommonsClassLibrary;
 using Microsoft.Office.Tools.Ribbon;
 using Excel = Microsoft.Office.Interop.Excel; 
 using EllipseStdTextClassLibrary;
 using EllipseReferenceCodesClassLibrary;
-using EllipseReferenceCodesClassLibrary.RefCodesService;
 
 namespace EllipseStdTextExcelAddIn
 {
@@ -34,9 +32,7 @@ namespace EllipseStdTextExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
+           
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -252,8 +248,7 @@ namespace EllipseStdTextExcelAddIn
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:formatSheet()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -277,7 +272,7 @@ namespace EllipseStdTextExcelAddIn
                     var stdTextId = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value) +
                                     _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value) +
                                     _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
-                    var stdTextOpc = StdText.GetStdTextOpContext(districtCode, position, 100, _eFunctions.DebugWarnings);
+                    var stdTextOpc = StdText.GetStdTextOpContext(districtCode, position, 100, Debugger.DebugWarnings);
                     if (getHeader)
                     {
                         
@@ -296,7 +291,7 @@ namespace EllipseStdTextExcelAddIn
                 {
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:GetStdText(bool, bool)", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:GetStdText(bool, bool)", ex.Message);
                 }
                 finally
                 {
@@ -318,8 +313,8 @@ namespace EllipseStdTextExcelAddIn
             var districtCode = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
             var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
             var position = _frmAuth.EllipsePost;
-            var stdTextOpc = StdText.GetStdTextOpContext(districtCode, position, 100, _eFunctions.DebugWarnings);
-            var stdTextCustomOpc = StdText.GetCustomOpContext(districtCode, position, 100, _eFunctions.DebugWarnings);
+            var stdTextOpc = StdText.GetStdTextOpContext(districtCode, position, 100, Debugger.DebugWarnings);
+            var stdTextCustomOpc = StdText.GetCustomOpContext(districtCode, position, 100, Debugger.DebugWarnings);
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(3, i).Value))
             {
@@ -360,7 +355,7 @@ namespace EllipseStdTextExcelAddIn
                 {
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:GetStdText(bool, bool)", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:GetStdText(bool, bool)", ex.Message);
                 }
                 finally
                 {
@@ -383,7 +378,7 @@ namespace EllipseStdTextExcelAddIn
             var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
             district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
 
-            var rcOpContext = ReferenceCodeActions.GetRefCodesOpContext(district, _frmAuth.EllipsePost, 100, _eFunctions.DebugWarnings);
+            var rcOpContext = ReferenceCodeActions.GetRefCodesOpContext(district, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var i = TitleRow02 + 1;
@@ -408,13 +403,10 @@ namespace EllipseStdTextExcelAddIn
                     var seqNum = "" + _cells.GetCell(5, i).Value;
 
                     refNum = string.IsNullOrWhiteSpace(refNum) ? "001" : refNum.PadLeft(3, '0');
-                    seqNum = string.IsNullOrWhiteSpace(seqNum) ? "001" : seqNum.PadLeft(3, '0'); ;
+                    seqNum = string.IsNullOrWhiteSpace(seqNum) ? "001" : seqNum.PadLeft(3, '0'); 
 
                     if (entityType.Equals("WRQ"))
                         entityValue = entityValue.PadLeft(12, '0');
-
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = Queries.FetchReferenceCodeItems(_eFunctions.dbReference, _eFunctions.dbLink, entityType, refNum, seqNum);
 
                     var refItem = ReferenceCodeActions.FetchReferenceCodeItem(_eFunctions, urlService, rcOpContext, entityType, entityValue, refNum, seqNum);
                     //GENERAL
@@ -430,7 +422,7 @@ namespace EllipseStdTextExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", ex.Message);
                 }
                 finally
                 {
@@ -457,7 +449,7 @@ namespace EllipseStdTextExcelAddIn
             var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
             district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
 
-            var rcOpContext = ReferenceCodeActions.GetRefCodesOpContext(district, _frmAuth.EllipsePost, 100, _eFunctions.DebugWarnings);
+            var rcOpContext = ReferenceCodeActions.GetRefCodesOpContext(district, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var i = TitleRow02 + 1;
@@ -484,7 +476,7 @@ namespace EllipseStdTextExcelAddIn
                     var stdTextId = "" + _cells.GetCell(8, i).Value;
                     var stdText = "" + _cells.GetCell(9, i).Value;
                     refNum = string.IsNullOrWhiteSpace(refNum) ? "001" : refNum.PadLeft(3, '0');
-                    seqNum = string.IsNullOrWhiteSpace(seqNum) ? "001" : seqNum.PadLeft(3, '0'); ;
+                    seqNum = string.IsNullOrWhiteSpace(seqNum) ? "001" : seqNum.PadLeft(3, '0'); 
 
                     if (entityType.Equals("WRQ"))
                         entityValue = entityValue.PadLeft(12, '0');
@@ -499,7 +491,7 @@ namespace EllipseStdTextExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateRefCodesList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateRefCodesList()", ex.Message);
                 }
                 finally
                 {
@@ -541,7 +533,7 @@ namespace EllipseStdTextExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -567,7 +559,7 @@ namespace EllipseStdTextExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:UpdateRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:UpdateRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -586,7 +578,7 @@ namespace EllipseStdTextExcelAddIn
         }
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
-            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

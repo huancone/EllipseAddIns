@@ -13,7 +13,6 @@ using System.Windows.Forms;
 namespace EllipseLogSheetStatisticsExcelAddIn
 {
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
-    [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public partial class RibbonEllipse
     {
         ExcelStyleCells _cells;
@@ -27,13 +26,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            //Office 2013 requiere no ejecutar esta sentencia al iniciar porque no se cuenta con un libro activo vacío. Se debe ejecutar obligatoriamente al formatear las hojas
-            //adcionalmente validar la cantidad de hojas a utilizar al momento de dar formato
-            //if (_cells == null)
-            //    _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -104,7 +97,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -197,11 +190,13 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                                 if (finalValues.ElementAt(k)[3].Equals(finalValues.ElementAt(k + 1)[3]))
                                     finalValues.ElementAt(k)[0] = "I";
 
-                            var opSheet = new Screen.OperationContext();
-                            opSheet.district = _frmAuth.EllipseDsct;
-                            opSheet.position = _frmAuth.EllipsePost;
-                            opSheet.maxInstances = 100;
-                            opSheet.returnWarnings = _eFunctions.DebugWarnings;
+                            var opSheet = new Screen.OperationContext()
+                            {
+                                district = _frmAuth.EllipseDsct,
+                                position = _frmAuth.EllipsePost,
+                                maxInstances = 100,
+                                returnWarnings = Debugger.DebugWarnings
+                            };
                             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
                             var logEndIndex = i - 1;
@@ -267,8 +262,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:createLogSheet()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -365,9 +359,11 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     }
                     screenIndex++;
                 }
-                requestSheet = new Screen.ScreenSubmitRequestDTO();
-                requestSheet.screenFields = arrayFields.ToArray();
-                requestSheet.screenKey = "1";
+                requestSheet = new Screen.ScreenSubmitRequestDTO
+                {
+                    screenFields = arrayFields.ToArray(),
+                    screenKey = "1"
+                };
 
                 replySheet = proxySheet.submit(opSheet, requestSheet);
                 _eFunctions.CheckReplyWarning(replySheet);//si hay debug activo muestra el warning de lo contrario depende del proceso del OP
@@ -403,7 +399,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 var sqlQuery2 = Queries.GetQueryDefaultModelData(modelCode, _eFunctions.dbReference, _eFunctions.dbLink);
                     //Igual que el query de getModelEquipment
 
-                if (_eFunctions.DebugQueries)
+                if (Debugger.DebugQueries)
                 {
                     _cells.GetCell("L1").Value = sqlQuery1;
                     _cells.GetCell("M1").Value = sqlQuery2;
@@ -432,10 +428,12 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     var i = 7;
                     while (drHeaders.Read())
                     {
-                        var hv = new ModelHeaderNameValue();
-                        hv.Name = ("" + drHeaders["HEADER_NAME"]).Trim();
-                        hv.Type = ("" + drHeaders["VALUE_TYPE"]).Trim();
-                        hv.Index = int.Parse("" + drHeaders["INDICE"]);
+                        var hv = new ModelHeaderNameValue
+                        {
+                            Name = ("" + drHeaders["HEADER_NAME"]).Trim(),
+                            Type = ("" + drHeaders["VALUE_TYPE"]).Trim(),
+                            Index = int.Parse("" + drHeaders["INDICE"])
+                        };
 
                         if (hv.Name.Equals("")) continue;
 
@@ -525,7 +523,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetModelData()", ex.Message, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetModelData()", ex.Message);
                 MessageBox.Show(ex.Message);
             }
             finally
@@ -549,7 +547,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:getModelHeader()", ex.Message, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:getModelHeader()", ex.Message);
                 return null;
             }
         }
@@ -562,7 +560,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 //Igual que el query sqlQuery2 de setSheetModelData
                 var sqlQuery = Queries.GetQueryDefaultModelData(modelCode, _eFunctions.dbReference, _eFunctions.dbLink);
 
-                if (_eFunctions.DebugQueries)
+                if (Debugger.DebugQueries)
                     _cells.GetCell("M1").Value = sqlQuery;
 
                 ef.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -581,10 +579,15 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetModelData()", ex.Message, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetModelData()", ex.Message);
                 MessageBox.Show(ex.Message);
                 return null;
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
 
     }
@@ -645,7 +648,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
     {
         public static string GetQueryDefaultModelData(string modelCode, string dbReference, string dbLink)
         {
-            var sqlQuery = "" +
+            var query = "" +
                     " WITH" +
                     "     EGI AS" +
                     "     (" +
@@ -779,11 +782,14 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     "       ME.MODEL_CODE," +
                     "       ME.MODEL_SEQ_NO," +
                     "       ME.ENTRY_GRP";
-            return sqlQuery;
+            
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
         public static string GetDefaultHeaderData(string modelCode, string dbReference, string dbLink)
         {
-            var sqlQuery = "" +
+            var query = "" +
                     " WITH MODEL_COL AS" +
                     "   (SELECT MD.MODEL_CODE," +
                     "     MD.COLUMN_HEAD_1," +
@@ -834,7 +840,9 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     "   )" +
                     " SELECT * FROM HEADER_DEFAULT_VALUES HDV";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
     }
 }

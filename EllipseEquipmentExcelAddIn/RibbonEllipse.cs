@@ -12,7 +12,6 @@ using EllipseEquipmentClassLibrary;
 using EquipmentService = EllipseEquipmentClassLibrary.EquipmentService;
 using EquipTraceService = EllipseEquipmentClassLibrary.EquipTraceService;
 using System.Threading;
-using System.Reflection;
 
 namespace EllipseEquipmentExcelAddIn
 {
@@ -39,13 +38,6 @@ namespace EllipseEquipmentExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            //Office 2013 requiere no ejecutar esta sentencia al iniciar porque no se cuenta con un libro activo vacío. Se debe ejecutar obligatoriamente al formatear las hojas
-            //adcionalmente validar la cantidad de hojas a utilizar al momento de dar formato
-            //if (_cells == null)
-            //    _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -75,7 +67,7 @@ namespace EllipseEquipmentExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewEquipmentList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:ReviewEquipmentList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -97,7 +89,7 @@ namespace EllipseEquipmentExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewEquipmentList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:ReviewEquipmentList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -496,7 +488,7 @@ namespace EllipseEquipmentExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -524,9 +516,6 @@ namespace EllipseEquipmentExcelAddIn
             var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
             var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
 
-
-            if (_eFunctions.DebugQueries)
-                _cells.GetCell("L1").Value = EquipmentActions.Queries.GetFetchEquipmentDataQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, statusKey);
             var listeq = EquipmentActions.FetchEquipmentDataList(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, statusKey);
             var i = TitleRow01 + 1;
             foreach (var eq in listeq)
@@ -618,7 +607,7 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewEquipmentList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewEquipmentList()", ex.Message);
                 }
                 finally
                 {
@@ -645,8 +634,6 @@ namespace EllipseEquipmentExcelAddIn
                 try
                 {
                     var equipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = EquipmentActions.Queries.GetFetchEquipmentDataQuery(_eFunctions.dbReference, _eFunctions.dbLink, equipmentNo);
                     var eq = EquipmentActions.FetchEquipmentData(_eFunctions, equipmentNo);
                     //Para resetear el estilo
                     _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
@@ -733,7 +720,7 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewEquipmentList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewEquipmentList()", ex.Message);
                 }
                 finally
                 {
@@ -758,7 +745,7 @@ namespace EllipseEquipmentExcelAddIn
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -862,7 +849,7 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn01, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message);
                 }
                 finally
                 {
@@ -890,7 +877,7 @@ namespace EllipseEquipmentExcelAddIn
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -998,7 +985,7 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn01, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message);
                 }
                 finally
                 {
@@ -1025,7 +1012,7 @@ namespace EllipseEquipmentExcelAddIn
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -1058,7 +1045,7 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn01, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message);
                 }
                 finally
                 {
@@ -1116,7 +1103,7 @@ namespace EllipseEquipmentExcelAddIn
             //        _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
             //        _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
             //        _cells.GetCell(ResultColumn01, i).Select();
-            //        Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message, _eFunctions.DebugErrors);
+            //        Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message);
             //    }
             //    finally
             //    {
@@ -1143,7 +1130,7 @@ namespace EllipseEquipmentExcelAddIn
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -1190,7 +1177,7 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn02, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message);
                 }
                 finally
                 {
@@ -1217,10 +1204,7 @@ namespace EllipseEquipmentExcelAddIn
             }
         }
 
-        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
-        {
-            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
-        }
+
 
         private void btnReviewFitments_Click(object sender, RibbonControlEventArgs e)
         {
@@ -1239,7 +1223,7 @@ namespace EllipseEquipmentExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:EllipseEquipmentExcelAddIn:ReviewFitments()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:EllipseEquipmentExcelAddIn:ReviewFitments()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -1261,7 +1245,7 @@ namespace EllipseEquipmentExcelAddIn
                 var component = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                 var position = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
 
-                if (_eFunctions.DebugQueries)
+                if (Debugger.DebugQueries)
                     _cells.GetCell("L1").Value = EquipmentActions.Queries.GetFetchLastInstallationQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, equipmentNo, component, position);
 
                 var listeq = EquipmentActions.GetFetchLastInstallation(_eFunctions, district, equipmentNo, component, position);
@@ -1273,6 +1257,10 @@ namespace EllipseEquipmentExcelAddIn
             
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
             _cells?.SetCursorDefault();
+        }
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

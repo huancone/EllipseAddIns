@@ -41,7 +41,7 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.0.0</ApplicationVersion>
+    <ApplicationVersion>1.1.0.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -51,9 +51,7 @@
     <SupportUrl />
     <FriendlyName>EllipseWorkRequestExcelAddIn</FriendlyName>
     <OfficeApplicationDescription>Loader de WorkRequest para Ellipse 8.
-Creación, actualización, eliminación, establecimiento de SLA y otros.
-Desarrollado por Héctor J. Hernández R.
-Hambings SAS</OfficeApplicationDescription>
+Creación, actualización, eliminación, establecimiento de SLA y otros.</OfficeApplicationDescription>
     <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>

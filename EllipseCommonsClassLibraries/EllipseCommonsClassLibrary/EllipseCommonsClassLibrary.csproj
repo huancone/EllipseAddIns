@@ -83,6 +83,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SettingsBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsBox.Designer.cs">
+      <DependentUpon>SettingsBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utils.cs" />
     <Compile Include="Web References\AuthenticatorService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -101,7 +107,13 @@
     <EmbeddedResource Include="AboutBoxExcelAddIn.resx">
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAuthenticate.resx" />
+    <EmbeddedResource Include="FormAuthenticate.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>FormAuthenticate1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsBox.resx">
+      <DependentUpon>SettingsBox.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

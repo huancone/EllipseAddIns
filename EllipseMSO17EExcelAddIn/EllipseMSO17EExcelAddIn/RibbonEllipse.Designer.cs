@@ -36,14 +36,16 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpMSO17E = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormat = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuOptions = this.Factory.CreateRibbonMenu();
             this.btnCheckStocks = this.Factory.CreateRibbonButton();
             this.btnLoadData = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO17E.SuspendLayout();
-            this.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -54,17 +56,29 @@
             // 
             // grpMSO17E
             // 
-            this.grpMSO17E.Items.Add(this.btnFormat);
+            this.grpMSO17E.Items.Add(this.box1);
             this.grpMSO17E.Items.Add(this.drpEnviroment);
             this.grpMSO17E.Items.Add(this.menuOptions);
-            this.grpMSO17E.Label = "MSO17E v1.0.0";
+            this.grpMSO17E.Label = "MSO17E";
             this.grpMSO17E.Name = "grpMSO17E";
+            // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
             // 
             // btnFormat
             // 
             this.btnFormat.Label = "Format Sheet";
             this.btnFormat.Name = "btnFormat";
             this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnviroment
             // 
@@ -102,7 +116,8 @@
             this.tabEllipse.PerformLayout();
             this.grpMSO17E.ResumeLayout(false);
             this.grpMSO17E.PerformLayout();
-            this.ResumeLayout(false);
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -115,6 +130,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuOptions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCheckStocks;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadData;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

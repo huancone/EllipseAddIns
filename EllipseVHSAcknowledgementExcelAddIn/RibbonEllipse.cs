@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
@@ -24,9 +23,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments) { 
                 var item = Factory.CreateRibbonDropDownItem();
@@ -108,7 +105,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         
@@ -133,7 +130,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
-                    returnWarnings = _eFunctions.DebugWarnings,
+                    returnWarnings = Debugger.DebugWarnings,
                     returnWarningsSpecified = true
                 };
 
@@ -141,9 +138,8 @@ namespace EllipseVHSAcknowledgementExcelAddIn
 
                 var proxySheet = new IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessService();
                 var requestSheet = new IssueRequisitionItemStocklessSearchParam();
-                IssueRequisitionItemStocklessServiceResult [] resultSheet;
 
-                var itemDTO = new IssueRequisitionItemStocklessDTO();
+                var itemDto = new IssueRequisitionItemStocklessDTO();
                 proxySheet.Url = urlService;
 
                 //gestionamos y enviamos la solicitud
@@ -152,9 +148,8 @@ namespace EllipseVHSAcknowledgementExcelAddIn
                 requestSheet.issueRequisitionNumber = requisition;
                 requestSheet.defaultQuantityAcknowledged = false;
                 requestSheet.defaultQuantityAcknowledgedSpecified = true;
-                var lista = new List<string>();
 
-                resultSheet = proxySheet.search(opSheet, requestSheet, itemDTO);
+                proxySheet.search(opSheet, requestSheet, itemDto);
                 //IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessAcknowledgeDTO ackDTO = new IssueRequisitionItemStocklessAcknowledgeDTO();
                 //ackDTO.activityCounter = "000";
                 //ackDTO.authorisedStatus = "A";
@@ -168,6 +163,11 @@ namespace EllipseVHSAcknowledgementExcelAddIn
 
 
             
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

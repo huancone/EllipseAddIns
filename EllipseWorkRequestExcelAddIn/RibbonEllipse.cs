@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
@@ -53,9 +52,6 @@ namespace EllipseWorkRequestExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
             
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -99,7 +95,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:ReviewWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -129,7 +125,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReReviewWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:ReReviewWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -169,7 +165,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:CreateWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:CreateWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -208,7 +204,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ModifyWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:ModifyWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -245,7 +241,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:CloseWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:CloseWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -282,7 +278,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:DeleteWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:DeleteWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -322,7 +318,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:DeleteWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:DeleteWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -360,7 +356,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:SetSlaList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:SetSlaList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -400,7 +396,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:SetSlaList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:SetSlaList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -424,7 +420,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewReferenceCodesList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:ReviewReferenceCodesList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -448,7 +444,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReReviewReferenceCodesList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:ReReviewReferenceCodesList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -472,7 +468,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:UpdateReferenceCodesList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:UpdateReferenceCodesList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
             
@@ -494,7 +490,7 @@ namespace EllipseWorkRequestExcelAddIn
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
-                    returnWarnings = _eFunctions.DebugWarnings,
+                    returnWarnings = Debugger.DebugWarnings,
                     returnWarningsSpecified = true
                 };
 
@@ -558,7 +554,7 @@ namespace EllipseWorkRequestExcelAddIn
                         _cells.GetCell(2, i).Style = StyleConstants.Error;
                         _cells.GetCell(ResultColumnM01, i).Style = StyleConstants.Error;
                         _cells.GetCell(ResultColumnM01, i).Value = "ERROR: " + ex.Message;
-                        Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestMnttoList()", ex.Message, _eFunctions.DebugErrors);
+                        Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestMnttoList()", ex.Message);
                     }
                     finally
                     {
@@ -571,9 +567,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:UpdateReferenceCodesList()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:UpdateReferenceCodesList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
             finally
@@ -939,7 +933,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -1276,7 +1270,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -1307,8 +1301,6 @@ namespace EllipseWorkRequestExcelAddIn
             var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
             var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
 
-            if (_eFunctions.DebugQueries)
-                _cells.GetCell("L1").Value = WorkRequestActions.Queries.GetFetchWorkRequest(_eFunctions.dbReference, _eFunctions.dbLink, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var listwr = WorkRequestActions.FetchWorkRequest(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var i = TitleRow01 + 1;
             foreach (var wr in listwr)
@@ -1365,7 +1357,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewWorkRequestList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewWorkRequestList()", ex.Message);
                 }
                 finally
                 {
@@ -1391,7 +1383,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -1412,8 +1404,6 @@ namespace EllipseWorkRequestExcelAddIn
             var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
             var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
 
-            if (_eFunctions.DebugQueries)
-                _cells.GetCell("L1").Value = WorkRequestActions.Queries.GetFetchWorkRequest(_eFunctions.dbReference, _eFunctions.dbLink, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var listwr = WorkRequestActions.FetchWorkRequest(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var i = TitleRowM01 + 1;
             foreach (var wr in listwr)
@@ -1480,7 +1470,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewWorkRequestList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewWorkRequestList()", ex.Message);
                 }
                 finally
                 {
@@ -1507,8 +1497,6 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     var requestId = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     var wr = WorkRequestActions.FetchWorkRequest(_eFunctions, requestId);
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = WorkRequestActions.Queries.GetFetchWorkRequest(_eFunctions.dbReference, _eFunctions.dbLink, requestId);
                     if (wr == null || wr.requestId == null)
                         throw new Exception("WORK REQUEST NO ENCONTRADO");
                     //GENERAL
@@ -1561,7 +1549,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message);
                 }
                 finally
                 {
@@ -1587,7 +1575,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -1598,8 +1586,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     var requestId = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     var wr = WorkRequestActions.FetchWorkRequest(_eFunctions, requestId);
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = WorkRequestActions.Queries.GetFetchWorkRequest(_eFunctions.dbReference, _eFunctions.dbLink, requestId);
+
                     if (wr == null || wr.requestId == null)
                         throw new Exception("WORK REQUEST NO ENCONTRADO");
                     //GENERAL
@@ -1661,7 +1648,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message);
                 }
                 finally
                 {
@@ -1688,7 +1675,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -1709,8 +1696,6 @@ namespace EllipseWorkRequestExcelAddIn
             var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
             var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
 
-            if (_eFunctions.DebugQueries)
-                _cells.GetCell("L1").Value = WorkRequestActions.Queries.GetFetchWorkRequest(_eFunctions.dbReference, _eFunctions.dbLink, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var listwr = WorkRequestActions.FetchWorkRequest(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var i = TitleRow03 + 1;
 
@@ -1750,7 +1735,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewReferenceCodesList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewReferenceCodesList()", ex.Message);
                 }
                 finally
                 {
@@ -1780,7 +1765,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -1791,8 +1776,6 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     var requestId = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     var wr = WorkRequestActions.FetchWorkRequest(_eFunctions, requestId);
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = WorkRequestActions.Queries.GetFetchWorkRequest(_eFunctions.dbReference, _eFunctions.dbLink, requestId);
 
                     if(wr == null || wr.requestId == null)
                         throw new Exception ("WORK REQUEST NO ENCONTRADO");
@@ -1826,7 +1809,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewReferenceCodesList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewReferenceCodesList()", ex.Message);
                 }
                 finally
                 {
@@ -1854,7 +1837,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -1929,7 +1912,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:CreateWorkRequestList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:CreateWorkRequestList()", ex.Message);
                 }
                 finally
                 {
@@ -1953,7 +1936,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -2051,7 +2034,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:CreateWorkRequestMnttoList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:CreateWorkRequestMnttoList()", ex.Message);
                 }
                 finally
                 {
@@ -2076,7 +2059,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -2141,7 +2124,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestList()", ex.Message);
                 }
                 finally
                 {
@@ -2166,7 +2149,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -2266,7 +2249,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestMnttoList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestMnttoList()", ex.Message);
                 }
                 finally
                 {
@@ -2292,7 +2275,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -2316,7 +2299,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:CloseWorkRequestList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:CloseWorkRequestList()", ex.Message);
                 }
                 finally
                 {
@@ -2342,7 +2325,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -2366,7 +2349,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:CloseWorkRequestMnttoList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:CloseWorkRequestMnttoList()", ex.Message);
                 }
                 finally
                 {
@@ -2392,7 +2375,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -2413,7 +2396,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReOpenWorkRequestList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReOpenWorkRequestList()", ex.Message);
                 }
                 finally
                 {
@@ -2440,7 +2423,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -2461,7 +2444,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReOpenWorkRequestMnttoList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReOpenWorkRequestMnttoList()", ex.Message);
                 }
                 finally
                 {
@@ -2488,7 +2471,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -2509,7 +2492,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:DeleteWorkRequestList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:DeleteWorkRequestList()", ex.Message);
                 }
                 finally
                 {
@@ -2535,7 +2518,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -2556,7 +2539,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:DeleteWorkRequestList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:DeleteWorkRequestList()", ex.Message);
                 }
                 finally
                 {
@@ -2583,7 +2566,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -2617,7 +2600,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:SetSlaList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:SetSlaList()", ex.Message);
                 }
                 finally
                 {
@@ -2643,7 +2626,7 @@ namespace EllipseWorkRequestExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -2677,7 +2660,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ResetSlaList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ResetSlaList()", ex.Message);
                 }
                 finally
                 {
@@ -2691,7 +2674,7 @@ namespace EllipseWorkRequestExcelAddIn
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
-            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
+            new AboutBoxExcelAddIn().ShowDialog();
         }
 
      

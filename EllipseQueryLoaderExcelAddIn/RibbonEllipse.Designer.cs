@@ -36,17 +36,20 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpEllipseQueryLoaderExcelAddIn = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnExecuteQuery = this.Factory.CreateRibbonButton();
             this.btnReadFromText = this.Factory.CreateRibbonButton();
             this.btnReadFromFile = this.Factory.CreateRibbonButton();
+            this.cbIgnoreOperators = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
-            this.cbIgnoreOperators = this.Factory.CreateRibbonCheckBox();
             this.tabEllipse.SuspendLayout();
             this.grpEllipseQueryLoaderExcelAddIn.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -57,17 +60,29 @@
             // 
             // grpEllipseQueryLoaderExcelAddIn
             // 
-            this.grpEllipseQueryLoaderExcelAddIn.Items.Add(this.btnFormatSheet);
+            this.grpEllipseQueryLoaderExcelAddIn.Items.Add(this.box1);
             this.grpEllipseQueryLoaderExcelAddIn.Items.Add(this.drpEnviroment);
             this.grpEllipseQueryLoaderExcelAddIn.Items.Add(this.menuActions);
-            this.grpEllipseQueryLoaderExcelAddIn.Label = "QueryLoader v.1.0.0";
+            this.grpEllipseQueryLoaderExcelAddIn.Label = "QueryLoader";
             this.grpEllipseQueryLoaderExcelAddIn.Name = "grpEllipseQueryLoaderExcelAddIn";
+            // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormatSheet);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
             // 
             // btnFormatSheet
             // 
             this.btnFormatSheet.Label = "&Formatear Hoja";
             this.btnFormatSheet.Name = "btnFormatSheet";
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnviroment
             // 
@@ -106,6 +121,12 @@
             this.btnReadFromFile.ShowImage = true;
             this.btnReadFromFile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReadFromFile_Click);
             // 
+            // cbIgnoreOperators
+            // 
+            this.cbIgnoreOperators.Checked = true;
+            this.cbIgnoreOperators.Label = "&Ignorar Operadores";
+            this.cbIgnoreOperators.Name = "cbIgnoreOperators";
+            // 
             // btnStopThread
             // 
             this.btnStopThread.Label = "&Detener Proceso";
@@ -120,12 +141,6 @@
             this.btnCleanSheet.ShowImage = true;
             this.btnCleanSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanSheet_Click);
             // 
-            // cbIgnoreOperators
-            // 
-            this.cbIgnoreOperators.Checked = true;
-            this.cbIgnoreOperators.Label = "&Ignorar Operadores";
-            this.cbIgnoreOperators.Name = "cbIgnoreOperators";
-            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -136,6 +151,8 @@
             this.tabEllipse.PerformLayout();
             this.grpEllipseQueryLoaderExcelAddIn.ResumeLayout(false);
             this.grpEllipseQueryLoaderExcelAddIn.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -152,6 +169,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReadFromText;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReadFromFile;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreOperators;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

@@ -32,9 +32,7 @@ namespace EllipseMSO627RodillosAddin
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -147,7 +145,7 @@ namespace EllipseMSO627RodillosAddin
                 _cells.GetCell(9, TitleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(10, TitleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(ResultColumnPbv, TitleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetRange(1, TitleRow + 1, ResultColumnPbv, MaxRows).Style.NumberFormat = NumberFormatConstants.Text;
+                _cells.GetRange(1, TitleRow + 1, ResultColumnPbv, MaxRows).NumberFormat = NumberFormatConstants.Text;
 
                 #endregion
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow, ResultColumnPbv, TitleRow + 1), TableName01);
@@ -250,8 +248,7 @@ namespace EllipseMSO627RodillosAddin
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:FormatSheetPbv()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al formatear la hoja. " + ex.Message);
             }
             finally
@@ -338,7 +335,7 @@ namespace EllipseMSO627RodillosAddin
                 _cells.GetCell(11, TitleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(12, TitleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(ResultColumnPcs, TitleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetRange(1, TitleRow + 1, ResultColumnPcs, MaxRows).Style.NumberFormat = NumberFormatConstants.Text;
+                _cells.GetRange(1, TitleRow + 1, ResultColumnPcs, MaxRows).NumberFormat = NumberFormatConstants.Text;
 
                 #endregion
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow, ResultColumnPcs, TitleRow + 1), TableName01);
@@ -420,8 +417,7 @@ namespace EllipseMSO627RodillosAddin
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:FormatSheetPbv()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al formatear la hoja. " + ex.Message);
             }
             finally
@@ -459,7 +455,7 @@ namespace EllipseMSO627RodillosAddin
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
-                    returnWarnings = _eFunctions.DebugWarnings
+                    returnWarnings = Debugger.DebugWarnings
                 };
 
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -512,7 +508,7 @@ namespace EllipseMSO627RodillosAddin
                     {
                         _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                         _cells.GetCell(ResultColumnPcs, currentRow).Value = "ERROR: " + ex.Message;
-                        Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message, _eFunctions.DebugErrors);
+                        Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message);
                     }
                     finally
                     {
@@ -524,8 +520,7 @@ namespace EllipseMSO627RodillosAddin
             {
                 MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Debugger.LogError("RibbonEllipse:LoadSheetPbv()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -562,7 +557,7 @@ namespace EllipseMSO627RodillosAddin
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
-                    returnWarnings = _eFunctions.DebugWarnings
+                    returnWarnings = Debugger.DebugWarnings
                 };
 
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -612,7 +607,7 @@ namespace EllipseMSO627RodillosAddin
                     {
                         _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                         _cells.GetCell(ResultColumnPbv, currentRow).Value = "ERROR: " + ex.Message;
-                        Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message, _eFunctions.DebugErrors);
+                        Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message);
                     }
                     finally
                     {
@@ -624,8 +619,7 @@ namespace EllipseMSO627RodillosAddin
             {
                 MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Debugger.LogError("RibbonEllipse:LoadSheetPbv()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -687,6 +681,11 @@ namespace EllipseMSO627RodillosAddin
                     throw new Exception("MSM627B. " + replySheet.message);
             }
             return true;
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
         
     }

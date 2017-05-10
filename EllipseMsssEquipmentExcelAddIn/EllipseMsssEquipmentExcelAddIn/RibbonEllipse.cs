@@ -212,7 +212,7 @@ namespace EllipseMsssEquipmentExcelAddIn
             msssOp.district = _frmAuth.EllipseDsct;
             msssOp.position = _frmAuth.EllipsePost;
             msssOp.maxInstances = 100;
-            msssOp.returnWarnings = EFunctions.DebugWarnings;
+            msssOp.returnWarnings = Debugger.DebugWarnings;
 
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -362,6 +362,11 @@ namespace EllipseMsssEquipmentExcelAddIn
                 currentRow++;
             }
         }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
+        }
         //        private void LoadSheet()
         //        {
         //            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
@@ -479,7 +484,7 @@ namespace EllipseMsssEquipmentExcelAddIn
     {
         public static string GetMsssInfo(string equipmentGrpId, string dbReference, string dbLink)
         {
-            var sqlQuery = "" +
+            var query = "" +
                            "SELECT " +
                            "MSSS.EQUIP_GRP_ID, " +
                            "MSSS.COMP_CODE, " +
@@ -542,7 +547,9 @@ namespace EllipseMsssEquipmentExcelAddIn
                            "AND FNCL.TABLE_TYPE = 'FNCL' " +
                            "WHERE " +
                            "  MSSS.EQUIP_GRP_ID = '" + equipmentGrpId + "'";
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
     }
 }

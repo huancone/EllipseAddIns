@@ -52,8 +52,7 @@ namespace EllipseStdTextClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("StdText:getText(String, StdTextService.OperationContext, string)", ex.Message,
-                    DebugErrors);
+                Debugger.LogError("StdText:getText(String, StdTextService.OperationContext, string)", ex.Message);
                 throw;
             }
         }
@@ -81,8 +80,7 @@ namespace EllipseStdTextClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("StdText:getText(String, StdTextService.OperationContext, string)", ex.Message,
-                    DebugErrors);
+                Debugger.LogError("StdText:getText(String, StdTextService.OperationContext, string)", ex.Message);
                 throw;
             }
         }
@@ -120,8 +118,7 @@ namespace EllipseStdTextClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("StdText:setText(String, StdTextService.OperationContext, string, string)", ex.Message,
-                    DebugErrors);
+                Debugger.LogError("StdText:setText(String, StdTextService.OperationContext, string, string)", ex.Message);
                 throw;
             }
         }
@@ -152,8 +149,7 @@ namespace EllipseStdTextClassLibrary
             catch (Exception ex)
             {
                 Debugger.LogError(
-                    "StdText:setCustomText(String, StdTextCustomService.OperationContext, string, string)", ex.Message,
-                    DebugErrors);
+                    "StdText:setCustomText(String, StdTextCustomService.OperationContext, string, string)", ex.Message);
                 throw;
             }
         }
@@ -189,8 +185,7 @@ namespace EllipseStdTextClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("StdText:setHeading(String, StdTextService.OperationContext, string, string)",
-                    ex.Message, DebugErrors);
+                Debugger.LogError("StdText:setHeading(String, StdTextService.OperationContext, string, string)", ex.Message);
                 throw;
             }
         }

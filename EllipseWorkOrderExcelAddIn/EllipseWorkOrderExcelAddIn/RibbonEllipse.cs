@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
-using EllipseReferenceCodesClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -68,9 +66,6 @@ namespace EllipseWorkOrderExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            _eFunctions.DebugQueries= false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -112,7 +107,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReviewWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ReviewWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -134,7 +129,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReReviewWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ReReviewWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -159,7 +154,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:CreateWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:CreateWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -186,7 +181,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:UpdateWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:UpdateWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -212,7 +207,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:CloseWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:CloseWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -237,7 +232,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReOpenWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ReOpenWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -262,7 +257,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReviewCloseText()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ReviewCloseText()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -288,7 +283,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:UpdateCloseText()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:UpdateCloseText()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -313,7 +308,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:GetDurationWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:GetDurationWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -339,7 +334,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ExecuteDurationWoActions()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ExecuteDurationWoActions()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -378,7 +373,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -403,7 +398,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -430,7 +425,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReviewQuality()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ReviewQuality()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -452,7 +447,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReReviewQuality()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse.cs:ReReviewQuality()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -797,7 +792,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja. " + ex.Message);
             }
             finally
@@ -1089,7 +1084,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatDetailed()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:FormatDetailed()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja. " + ex.Message);
             }
             finally
@@ -1219,7 +1214,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatQuality()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:FormatQuality()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -1252,9 +1247,6 @@ namespace EllipseWorkOrderExcelAddIn
             var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
             var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
 
-
-            if (_eFunctions.DebugQueries)
-                _cells.GetCell("L1").Value = WorkOrderActions.GetFetchWoQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var listwo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var i = TitleRow01 + 1;
             foreach (var wo in listwo)
@@ -1349,7 +1341,7 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewWoList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewWoList()", ex.Message);
                 }
                 finally
                 {
@@ -1380,8 +1372,6 @@ namespace EllipseWorkOrderExcelAddIn
                     district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
                     var woNo = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, woNo);
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = WorkOrderActions.GetFetchWoQuery(_eFunctions.dbReference, _eFunctions.dbLink, district , woNo);
 					
 					if(wo == null || wo.GetWorkOrderDto().no == null)
                         throw new Exception ("WORK ORDER NO ENCONTRADA");
@@ -1473,7 +1463,7 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewWOList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewWOList()", ex.Message);
                 }
                 finally
                 {
@@ -1513,9 +1503,6 @@ namespace EllipseWorkOrderExcelAddIn
             var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
             var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
 
-
-            if (_eFunctions.DebugQueries)
-                _cells.GetCell("L1").Value = WorkOrderActions.GetFetchWoQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var listwo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var i = TitleRowQ01 + 1;
             foreach (var wo in listwo)
@@ -1636,7 +1623,7 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnQ01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewQualityList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewQualityList()", ex.Message);
                 }
                 finally
                 {
@@ -1664,10 +1651,6 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     var woNo = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, "" + _cells.GetCell("B3").Value, woNo);
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = WorkOrderActions.GetFetchWoQuery(_eFunctions.dbReference,
-                            _eFunctions.dbLink,
-                            "" + _cells.GetCell("B3").Value, woNo);
 					if(wo == null || wo.GetWorkOrderDto().no == null)
                         throw new Exception ("WORK ORDER NO ENCONTRADA");
                     //GENERAL
@@ -1784,7 +1767,7 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnQ01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewWOList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewWOList()", ex.Message);
                 }
                 finally
                 {
@@ -1812,7 +1795,7 @@ namespace EllipseWorkOrderExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
 
@@ -1921,7 +1904,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:CreateWOList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:CreateWOList()", ex.Message);
                 }
                 finally
                 {
@@ -1949,7 +1932,7 @@ namespace EllipseWorkOrderExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -2052,7 +2035,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateWOList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateWOList()", ex.Message);
                 }
                 finally
                 {
@@ -2080,7 +2063,7 @@ namespace EllipseWorkOrderExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -2127,7 +2110,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:CompleteWOList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:CompleteWOList()", ex.Message);
                 }
                 finally
                 {
@@ -2155,7 +2138,7 @@ namespace EllipseWorkOrderExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -2187,7 +2170,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReOpenWOList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReOpenWOList()", ex.Message);
                 }
                 finally
                 {
@@ -2219,7 +2202,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //GENERAL
                     var wo = WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
                     string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-                    var closeText = WorkOrderActions.GetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, _eFunctions.DebugWarnings, wo);
+                    var closeText = WorkOrderActions.GetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo);
 
                     _cells.GetCell(ResultColumn03-1, i).Value = closeText;
                     _cells.GetCell(ResultColumn03, i).Value = "CONSULTA";
@@ -2232,7 +2215,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(ResultColumn03 - 1, i).Value = "";
                     _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewCloseText()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewCloseText()", ex.Message);
                 }
                 finally
                 {
@@ -2266,7 +2249,7 @@ namespace EllipseWorkOrderExcelAddIn
                         WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
                     var closeText = _cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value2);
                     var districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-                    WorkOrderActions.SetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, _eFunctions.DebugWarnings, wo, closeText);
+                    WorkOrderActions.SetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo, closeText);
 
                     _cells.GetCell(ResultColumn03, i).Value = "ACTUALIZADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -2277,7 +2260,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateCloseText()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateCloseText()", ex.Message);
                 }
                 finally
                 {
@@ -2311,7 +2294,7 @@ namespace EllipseWorkOrderExcelAddIn
 					position = _frmAuth.EllipsePost,
 					maxInstances = 100,
 					maxInstancesSpecified = true,
-					returnWarnings = _eFunctions.DebugWarnings,
+					returnWarnings = Debugger.DebugWarnings,
 					returnWarningsSpecified = true
                 };
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -2345,7 +2328,7 @@ namespace EllipseWorkOrderExcelAddIn
                         _cells.GetCell(2, k).Value = "" + woCell.GetCell(2, i).Value;
                         _cells.GetCell(2, k).Style = StyleConstants.Error;
                         _cells.GetCell(ResultColumn04, k).Value = "ERROR: " + ex.Message;
-                        Debugger.LogError("RibbonEllipse.cs:GetDurationWOList()", ex.Message, _eFunctions.DebugErrors);
+                        Debugger.LogError("RibbonEllipse.cs:GetDurationWOList()", ex.Message);
                         k++;
                     }
                     finally
@@ -2378,7 +2361,7 @@ namespace EllipseWorkOrderExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -2426,7 +2409,7 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     _cells.GetCell(ResultColumn04, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Error;
-                    Debugger.LogError("RibbonEllipse.cs:ExecuteDurationWOList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ExecuteDurationWOList()", ex.Message);
                 }
                 finally
                 {
@@ -2453,7 +2436,7 @@ namespace EllipseWorkOrderExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -2467,9 +2450,6 @@ namespace EllipseWorkOrderExcelAddIn
                     var district = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
                     district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
                     var workOrder = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
-
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = Queries.FetchReferenceCodeItems(_eFunctions.dbReference, _eFunctions.dbLink, "WKO", "1" + district + workOrder, "001");
 
                     var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, workOrder); 
                     if (wo == null || wo.GetWorkOrderDto().no == null)
@@ -2515,7 +2495,7 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnD04, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", ex.Message);
                 }
                 finally
                 {
@@ -2547,7 +2527,7 @@ namespace EllipseWorkOrderExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings,
+                returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
             
@@ -2604,7 +2584,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnD04, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnD04, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateReferenceCodes()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateReferenceCodes()", ex.Message);
                 }
                 finally
                 {
@@ -2631,7 +2611,7 @@ namespace EllipseWorkOrderExcelAddIn
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
-            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
+            new AboutBoxExcelAddIn().ShowDialog();
         }
 
 

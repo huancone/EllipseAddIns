@@ -15,7 +15,6 @@ namespace EllipseCommonsClassLibrary
         private Worksheet _excelSheet;
 
         private bool _alwaysActiveSheet;
-        private bool _debugErrors;
 
         /// <summary>
         /// Constructor de la clase. Si alwaysActiveSheet es true La clase estará sujeta a la hoja activa con la que se esté trabajando, si es false, estará sujeta exclusivamente a la hoja activa desde la que se invoca este constructor
@@ -78,7 +77,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch(Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:SetActiveSheet", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:SetActiveSheet", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
@@ -102,7 +101,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:SetActiveSheet", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:SetActiveSheet", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
@@ -166,7 +165,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:clearCell(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:clearCell(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
@@ -187,7 +186,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:clearCell(long, long)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:clearCell(long, long)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
@@ -249,7 +248,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:clearRange(string, string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:clearRange(string, string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
@@ -271,7 +270,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:clearRange(long, long, long, long)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:clearRange(long, long, long, long)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
@@ -318,7 +317,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells::setSheetName(int, string)", ex.Message, _debugErrors);
+                Debugger.LogError("ExcelStyleCells::setSheetName(int, string)", ex.Message);
                 return false;
             }
         }
@@ -342,7 +341,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells::setSheetName(int, string)", ex.Message, _debugErrors);
+                Debugger.LogError("ExcelStyleCells::setSheetName(int, string)", ex.Message);
                 return false;
             }
         }
@@ -373,7 +372,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells::setSheetName(int, string)", ex.Message, _debugErrors);
+                Debugger.LogError("ExcelStyleCells::setSheetName(int, string)", ex.Message);
                 return null;
             }
         }
@@ -437,7 +436,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:getStyle(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:getStyle(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return GetStyleNormal();
             }
         }
@@ -458,7 +457,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch(Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:getStyleNormal()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:getStyleNormal()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 CreateStyles();
                 return GetStyleNormal();
             }
@@ -480,7 +479,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:getStyleError()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:getStyleError()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 CreateStyles();
                 return GetStyleError();
             }
@@ -502,7 +501,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:getStyleWarning()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:getStyleWarning()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 CreateStyles();
                 return GetStyleWarning();
             }
@@ -524,7 +523,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:getStyleSuccess()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:getStyleSuccess()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 CreateStyles();
                 return GetStyleSuccess();
             }
@@ -762,23 +761,13 @@ namespace EllipseCommonsClassLibrary
             }
             catch(Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:createStyles()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _debugErrors);
+                Debugger.LogError("ExcelStyleCells:createStyles()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 var styleConstantsList = StyleConstants.GetStyleListName();
                 foreach (Style style in _excelApp.ActiveWorkbook.Styles)
                     if(styleConstantsList.Contains(style.Name))
                         style.Delete();
                 CreateStyles();
             }
-        }
-        
-
-        /// <summary>
-        /// Establece si se hará debug de errores en la clase
-        /// </summary>
-        /// <param name="value"></param>
-        public void SetDebugErrors(bool value)
-        {
-            _debugErrors = value;
         }
 
         /// <summary>

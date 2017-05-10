@@ -45,9 +45,6 @@ namespace EllipseLabourCostingExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -163,7 +160,7 @@ namespace EllipseLabourCostingExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:FormatSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -181,9 +178,6 @@ namespace EllipseLabourCostingExcelAddIn
                 _cells.GetRange("A6", "AZ65536").EntireRow.Delete(Excel.XlDirection.xlUp);
 
                 var sqlQuery = Queries.GetGroupEmployeesQuery(groupName, _eFunctions.dbReference, _eFunctions.dbLink);
-
-                if (_eFunctions.DebugQueries)
-                    _cells.GetCell("L1").Value = sqlQuery;
 
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
                 var drEmployees = _eFunctions.GetQueryResult(sqlQuery);
@@ -289,8 +283,7 @@ namespace EllipseLabourCostingExcelAddIn
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:FormatGroupDefault()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar obtener el formato del grupo seleccionado");
             }
             finally
@@ -383,7 +376,7 @@ namespace EllipseLabourCostingExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -519,7 +512,7 @@ namespace EllipseLabourCostingExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -550,7 +543,7 @@ namespace EllipseLabourCostingExcelAddIn
                     district = _frmAuth.EllipseDsct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
-                    returnWarnings = _eFunctions.DebugWarnings
+                    returnWarnings = Debugger.DebugWarnings
                 };
 
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -604,7 +597,7 @@ namespace EllipseLabourCostingExcelAddIn
                         {
                             Debugger.LogError("RibbonEllipse:LoadDefaultLabourCost()",
                                 "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace, _eFunctions.DebugErrors);
+                                ex.StackTrace);
                             _cells.GetRange(j, i, j + NroEle - 1, i).Style = StyleConstants.Error;
                             _cells.GetRange(j, i, j, i).ClearComments();
                             _cells.GetRange(j, i, j, i).AddComment(ex.Message);
@@ -622,8 +615,7 @@ namespace EllipseLabourCostingExcelAddIn
             {
                 MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Debugger.LogError("RibbonEllipse:LoadDefaultLabourCost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -659,7 +651,7 @@ namespace EllipseLabourCostingExcelAddIn
                     district = _frmAuth.EllipseDsct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
-                    returnWarnings = _eFunctions.DebugWarnings
+                    returnWarnings = Debugger.DebugWarnings
                 };
 
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -721,7 +713,7 @@ namespace EllipseLabourCostingExcelAddIn
                     catch (Exception ex)
                     {
                         Debugger.LogError("RibbonEllipse:LoadMso850LabourCost()",
-                            "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                            "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                         _cells.GetCell(Mso850ResultColumn, i).Value = "ERROR: " + ex.Message;
                         _cells.GetCell(Mso850ResultColumn, i).Style = StyleConstants.Error;
                         _cells.GetCell(Mso850ResultColumn, i).Select();
@@ -736,8 +728,7 @@ namespace EllipseLabourCostingExcelAddIn
             {
                 MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Debugger.LogError("RibbonEllipse:LoadMso850LabourCost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -771,7 +762,7 @@ namespace EllipseLabourCostingExcelAddIn
                     district = _frmAuth.EllipseDsct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
-                    returnWarnings = _eFunctions.DebugWarnings
+                    returnWarnings = Debugger.DebugWarnings
                 };
 
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -839,10 +830,7 @@ namespace EllipseLabourCostingExcelAddIn
                             catch (Exception ex)
                             {
                                 errorFlag = true;
-                                Debugger.LogError("RibbonEllipse:LoadElecsaLabourCost()",
-                                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                    ex.StackTrace,
-                                    _eFunctions.DebugErrors);
+                                Debugger.LogError("RibbonEllipse:LoadElecsaLabourCost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                                 _cells.GetCell(j, i).ClearComments();
                                 _cells.GetCell(j, i).AddComment(ex.Message);
                                 _cells.GetCell(j, i).Style = StyleConstants.Error;
@@ -879,7 +867,7 @@ namespace EllipseLabourCostingExcelAddIn
                     district = _frmAuth.EllipseDsct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
-                    returnWarnings = _eFunctions.DebugWarnings
+                    returnWarnings = Debugger.DebugWarnings
                 };
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -940,8 +928,7 @@ namespace EllipseLabourCostingExcelAddIn
             {
                 MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Debugger.LogError("RibbonEllipse:LoadMso850LabourCost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -1115,10 +1102,7 @@ namespace EllipseLabourCostingExcelAddIn
             //Si no existe un reply es error de ejecución. O si el reply tiene un error de datos
             if (reply == null)
             {
-                Debugger.LogError("RibbonEllipse:ValidateError(Screen.ScreenDTO)", "null reply error",
-                    _eFunctions.DebugErrors);
-                if (_eFunctions.DebugErrors)
-                    MessageBox.Show(@"Se ha producido un error en tiempo de ejecución");
+                Debugger.LogError("RibbonEllipse:ValidateError(Screen.ScreenDTO)", "null reply error");
                 return true;
             }
             if (reply.message.Length < 2 || reply.message.Substring(0, 2) != "X2") return false;
@@ -1135,8 +1119,7 @@ namespace EllipseLabourCostingExcelAddIn
             if (reply.message.Substring(3, 4).Equals("8839")) //8839
                 return false;
 
-            if (_eFunctions.DebugErrors)
-                MessageBox.Show(@"Error: " + reply.message);
+            Debugger.LogError("LabourCosting.ValidateError(ScreenDTO reply)", "Error: " + reply.message);
             return true;
         }
 
@@ -1304,6 +1287,11 @@ namespace EllipseLabourCostingExcelAddIn
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
+        }
     }
 
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -1331,7 +1319,7 @@ namespace EllipseLabourCostingExcelAddIn
     {
         public static string GetGroupEmployeesQuery(string workGroup, string dbReference, string dbLink)
         {
-            var sqlQuery = " SELECT DISTINCT (TRIM(EMP.SURNAME) || ' ' || TRIM(EMP.FIRST_NAME)) NOMBRE ,GEMP.EMPLOYEE_ID CEDULA" +
+            var query = " SELECT DISTINCT (TRIM(EMP.SURNAME) || ' ' || TRIM(EMP.FIRST_NAME)) NOMBRE ,GEMP.EMPLOYEE_ID CEDULA" +
             " FROM " + dbReference + ".MSF723" + dbLink + " GEMP" +
             "     JOIN " + dbReference + ".MSF810" + dbLink + " EMP ON GEMP.EMPLOYEE_ID = EMP.EMPLOYEE_ID" +
             "     JOIN " + dbReference + ".MSF826" + dbLink + " LEMP ON GEMP.EMPLOYEE_ID = LEMP.EMPLOYEE_ID" +
@@ -1341,7 +1329,9 @@ namespace EllipseLabourCostingExcelAddIn
             "     AND GEMP.REC_723_TYPE = 'W'" +
             " ORDER BY CEDULA";
 
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
     }
 }

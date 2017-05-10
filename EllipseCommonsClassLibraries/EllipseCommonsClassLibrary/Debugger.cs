@@ -10,21 +10,30 @@ namespace EllipseCommonsClassLibrary
     /// </summary>
     public static class Debugger
     {
-        private static DebugError _lastError;
+        public static bool DebugErrors = false;
+        public static bool DebugWarnings = false;
+        public static bool DebugQueries = false;
 
+        private static DebugError _lastError;
+        private static string _localDataPath = @"c:\ellipse\";
+        public static string LocalDataPath
+        {
+            get { return _localDataPath; }
+            set { _localDataPath = value; }
+        }
         public static void DebugScreen(Screen.ScreenSubmitRequestDTO request, Screen.ScreenDTO reply, string filename)
         {
             var requestJson = new JavaScriptSerializer().Serialize(request.screenFields);
             var replyJson = new JavaScriptSerializer().Serialize(reply.screenFields);
-            const string filePath = @"C:\Ellipse\Debugger\";
+            var filePath = LocalDataPath + @"debugger\";
             FileWriter.AppendTextToFile(requestJson, "ScreenRequest.txt", filePath);
             FileWriter.AppendTextToFile(replyJson, "ScreenReply.txt", filePath);
         }
-        public static void LogError(string customDetails, string errorMessage, bool debugger = false)
+        public static void LogError(string customDetails, string errorMessage)
         {
             try
             {
-                const string errorFilePath = @"C:\Ellipse\Logs\";
+                var errorFilePath = LocalDataPath + @"logs\";
                 const string errorFileName = @"error.txt";
 
                 var lastError = new DebugError
@@ -37,7 +46,7 @@ namespace EllipseCommonsClassLibrary
 
                 _lastError = lastError;
 
-                if (debugger)
+                if (DebugErrors)
                     MessageBox.Show(lastError.CustomDetails+ ": " + lastError.ErrorMessage, "Error", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
 
@@ -50,6 +59,30 @@ namespace EllipseCommonsClassLibrary
             {
                 MessageBox.Show("No se puede crear el Log de Error\n" + customDetails + ": " + ex + "\n" + errorMessage, "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+            }
+        }
+
+        public static void LogQuery(string query)
+        {
+            try
+            {
+                if (!DebugQueries)
+                    return;
+                
+                var queryFilePath = LocalDataPath + @"queries\";
+                const string queryFileName = @"queries.txt";
+
+                var dateTime = "" + DateTime.Now;
+                var urlLocation = queryFilePath + queryFileName;
+
+                var stringQuery = dateTime + "  : " + query;
+
+                FileWriter.CreateDirectory(queryFilePath);
+                FileWriter.AppendTextToFile(stringQuery, queryFileName, queryFilePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se puede crear el Log del query consultado\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

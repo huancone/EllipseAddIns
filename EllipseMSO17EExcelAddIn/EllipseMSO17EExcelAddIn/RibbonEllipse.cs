@@ -30,9 +30,7 @@ namespace EllipseMSO17EExcelAddIn
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -94,7 +92,7 @@ namespace EllipseMSO17EExcelAddIn
 
                 _cells.GetRange(1, TittleRow, ResultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(ResultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Style.NumberFormat = "@";
+                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).NumberFormat = "@";
 
                 #endregion
 
@@ -161,6 +159,11 @@ namespace EllipseMSO17EExcelAddIn
             public string currentInventoryPrice2 { get; set; }
             public string error                     { get; set; }
         }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
+        }
     }
 
     
@@ -169,7 +172,7 @@ namespace EllipseMSO17EExcelAddIn
     {
         public static string GetStockInfo(string stockCode, string districtCode,  string dbReference, string dbLink)
         {
-            var sqlQuery = " " +
+            var query = " " +
                            "SELECT DISTINCT " +
                            "  EMP.FIRST_NAME || ' ' || EMP.SURNAME NOMBRE " +
                            "FROM " +
@@ -187,7 +190,9 @@ namespace EllipseMSO17EExcelAddIn
                            "  EMPOS.EMPLOYEE_ID = EMP.EMPLOYEE_ID " +
                            "WHERE " +
                            "EMPOS.EMPLOYEE_ID = '" + employeeId + "' ";
-            return sqlQuery;
+            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            
+            return query;
         }
     }
 }
