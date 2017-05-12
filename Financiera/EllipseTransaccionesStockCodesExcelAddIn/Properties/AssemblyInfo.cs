@@ -9,10 +9,10 @@ using System.Security;
 [assembly: AssemblyTitle("EllipseTransaccionesStockCodesExcelAddIn")]
 [assembly: AssemblyDescription("Consulta y Actualización de Vales y Órdenes de Compras")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hambings SAS")]
+[assembly: AssemblyCompany("Hambings SAS/Cerrejón Ltda")]
 [assembly: AssemblyProduct("EllipseTransaccionesStockCodesExcelAddIn")]
-[assembly: AssemblyCopyright("Copyright ©  2015-2016")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright ©  2015-2017")]
+[assembly: AssemblyTrademark("Hambins SAS")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -33,6 +33,6 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.4.1")]
-[assembly: AssemblyFileVersion("1.0.4.1")]
+[assembly: AssemblyVersion("1.0.4.2")]
+[assembly: AssemblyFileVersion("1.0.4.2")]
 

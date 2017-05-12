@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web.Services.Ellipse;
 using Microsoft.Office.Tools.Ribbon;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
-using MSSSService = EllipseMsssEquipmentExcelAddIn.MSSSService;
 using EllipseCommonsClassLibrary;
-using Oracle.ManagedDataAccess.Client;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using EllipseMsssEquipmentExcelAddIn.Properties;

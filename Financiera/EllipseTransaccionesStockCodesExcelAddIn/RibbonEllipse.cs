@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
@@ -64,9 +63,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -374,7 +370,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -543,7 +539,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -718,7 +714,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja." + ex.Message);
             }
         }
@@ -765,8 +761,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                         scStatus = Requisition.ItemStatus.GetStatusCode(scStatus);
 
                     var sqlQuery = Queries.GetFetchRequisitionStockCodeQuery(_eFunctions.dbReference, _eFunctions.dbLink, districtCode, stockCode, scStatus, startDate, endDate, reqType, transType, priorityCode);
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = sqlQuery;
 
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -799,7 +793,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 {
                     scCells.GetCell(ResultColumn0101, j).Style = StyleConstants.Error;
                     scCells.GetCell(ResultColumn0101, j).Value += "ERROR:" + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewReqScList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewReqScList()", ex.Message);
                 }
                 finally
                 {
@@ -861,8 +855,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     stockCode = (stockCode != null && stockCode.Length < 9) ? stockCode.PadLeft(9, '0') : stockCode;
 
                     var sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.dbReference, _eFunctions.dbLink, districtCode, purchaseOrder, stockCode, startDate, endDate, poStatus);
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = sqlQuery;
 
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -907,7 +899,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 {
                     poCells.GetCell(ResultColumn0201, j).Style = StyleConstants.Error;
                     poCells.GetCell(ResultColumn0201, j).Value += "ERROR:" + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewPurchaseOrderList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewPurchaseOrderList()", ex.Message);
                 }
                 finally
                 {
@@ -971,8 +963,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     stockCode = (stockCode != null && stockCode.Length < 9) ? stockCode.PadLeft(9, '0') : stockCode;
 
                     var sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.dbReference, _eFunctions.dbLink, districtCode, purchaseOrder, stockCode, startDate, endDate, poStatus);
-                    if (_eFunctions.DebugQueries)
-                        _cells.GetCell("L1").Value = sqlQuery;
 
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -1020,7 +1010,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 {
                     poCells.GetCell(ResultColumn0301, j).Style = StyleConstants.Error;
                     poCells.GetCell(ResultColumn0301, j).Value += "ERROR:" + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewPurchaseOrderList()", ex.Message, _eFunctions.DebugErrors);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewPurchaseOrderList()", ex.Message);
                 }
                 finally
                 {
@@ -1073,7 +1063,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                                 district = _frmAuth.EllipseDsct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
-                                returnWarnings = _eFunctions.DebugWarnings
+                                returnWarnings = Debugger.DebugWarnings
                             };
 
                             var proxySheet = new Screen.ScreenService();
@@ -1112,7 +1102,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(resultC, i).Style = StyleConstants.Error;
                             Debugger.LogError("RibbonEllipse:DeletePurchaseOrderList()",
                                 "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace, _eFunctions.DebugErrors);
+                                ex.StackTrace);
                         }
                         finally
                         {
@@ -1131,8 +1121,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:DeletePurchaseOrderList()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -1177,7 +1166,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                                 district = _frmAuth.EllipseDsct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
-                                returnWarnings = _eFunctions.DebugWarnings
+                                returnWarnings = Debugger.DebugWarnings
                             };
 
                             var proxySheet = new Screen.ScreenService();
@@ -1216,7 +1205,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(resultC, i).Style = StyleConstants.Error;
                             Debugger.LogError("RibbonEllipse:DeletePurchaseOrderList()",
                                 "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace, _eFunctions.DebugErrors);
+                                ex.StackTrace);
                         }
                         finally
                         {
@@ -1235,8 +1224,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:DeletePurchaseOrderList()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -1270,7 +1258,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                                 district = _frmAuth.EllipseDsct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
-                                returnWarnings = _eFunctions.DebugWarnings
+                                returnWarnings = Debugger.DebugWarnings
                             };
 
                             var proxySheet = new Screen.ScreenService();
@@ -1304,7 +1292,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(ResultColumn0203, i).Style = StyleConstants.Error;
                             Debugger.LogError("RibbonEllipse:DeletePurchaseOrderList()",
                                 "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace, _eFunctions.DebugErrors);
+                                ex.StackTrace);
                         }
                         finally
                         {
@@ -1323,8 +1311,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:DeletePurchaseOrderList()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -1358,7 +1345,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                                 district = _frmAuth.EllipseDsct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
-                                returnWarnings = _eFunctions.DebugWarnings
+                                returnWarnings = Debugger.DebugWarnings
                             };
 
                             var proxySheet = new Screen.ScreenService();
@@ -1392,7 +1379,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(ResultColumn0303, i).Style = StyleConstants.Error;
                             Debugger.LogError("RibbonEllipse:DeletePurchaseOrderList()",
                                 "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace, _eFunctions.DebugErrors);
+                                ex.StackTrace);
                         }
                         finally
                         {
@@ -1411,8 +1398,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:DeletePurchaseOrderList()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -1544,7 +1530,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                                 district = _frmAuth.EllipseDsct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
-                                returnWarnings = _eFunctions.DebugWarnings
+                                returnWarnings = Debugger.DebugWarnings
                             };
 
                             var proxySheet = new Screen.ScreenService();
@@ -1591,7 +1577,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(ResultColumn0203, i).Style = StyleConstants.Error;
                             Debugger.LogError("RibbonEllipse:ModifyPurchaseOrderList()",
                                 "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace, _eFunctions.DebugErrors);
+                                ex.StackTrace);
                         }
                         finally
                         {
@@ -1610,8 +1596,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:ModifyPurchaseOrderList()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -1643,7 +1628,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                                 district = _frmAuth.EllipseDsct,
                                 position = _frmAuth.EllipsePost,
                                 maxInstances = 100,
-                                returnWarnings = _eFunctions.DebugWarnings
+                                returnWarnings = Debugger.DebugWarnings
                             };
 
                             var proxySheet = new Screen.ScreenService();
@@ -1693,7 +1678,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(ResultColumn0303, i).Style = StyleConstants.Error;
                             Debugger.LogError("RibbonEllipse:ModifyPurchaseOrderList()",
                                 "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace, _eFunctions.DebugErrors);
+                                ex.StackTrace);
                         }
                         finally
                         {
@@ -1712,8 +1697,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             {
                 MessageBox.Show(ex.Message);
                 Debugger.LogError("RibbonEllipse:ModifyPurchaseOrderList()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -1807,7 +1791,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
-            new AboutBoxExcelAddIn(Assembly.GetExecutingAssembly()).ShowDialog();
+            new AboutBoxExcelAddIn().ShowDialog();
         }
         
     }

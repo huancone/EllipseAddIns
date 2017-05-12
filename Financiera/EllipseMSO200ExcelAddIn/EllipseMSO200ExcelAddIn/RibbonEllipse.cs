@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
@@ -13,12 +14,13 @@ using screen = EllipseCommonsClassLibrary.ScreenService;
 
 namespace EllipseMSO200ExcelAddIn
 {
+    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     public partial class RibbonEllipse
     {
         private const int TittleRow = 5;
         private static int _resultColumn = 13;
-        public static EllipseFunctions EFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions = new EllipseFunctions();
+        private FormAuthenticate _frmAuth = new FormAuthenticate();
         private ExcelStyleCells _cells;
         private Application _excelApp;
         private ListObject _excelSheetItems;
@@ -28,9 +30,7 @@ namespace EllipseMSO200ExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            EFunctions.DebugQueries = false;
-            EFunctions.DebugErrors = false;
-            EFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -267,10 +267,10 @@ namespace EllipseMSO200ExcelAddIn
                     _cells.GetCell(12, currentRow).Value = "47703371338";
 
 
-                    var sqlQuery = Queries.GetSupplierInvoiceInfo("ICOR", employee.Cedula, EFunctions.dbReference, EFunctions.dbLink);
-                    EFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                    var sqlQuery = Queries.GetSupplierInvoiceInfo("ICOR", employee.Cedula, _eFunctions.dbReference, _eFunctions.dbLink);
+                    _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
-                    var drSupplierInfo = EFunctions.GetQueryResult(sqlQuery);
+                    var drSupplierInfo = _eFunctions.GetQueryResult(sqlQuery);
 
                     if (!drSupplierInfo.Read())
                     {
@@ -344,14 +344,14 @@ namespace EllipseMSO200ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
-            proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = EFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             var currentRow = TittleRow + 1;
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) != null)
@@ -359,9 +359,9 @@ namespace EllipseMSO200ExcelAddIn
                 try
                 {
                     _cells.GetCell(1, currentRow).Select();
-                    EFunctions.RevertOperation(opSheet, proxySheet);
+                    _eFunctions.RevertOperation(opSheet, proxySheet);
                     var replySheet = proxySheet.executeScreen(opSheet, "MSO200");
-                    if (EFunctions.CheckReplyError(replySheet))
+                    if (_eFunctions.CheckReplyError(replySheet))
                     {
                         _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
                         _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
@@ -377,13 +377,13 @@ namespace EllipseMSO200ExcelAddIn
                         requestSheet.screenKey = "1";
                         replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                        while (EFunctions.CheckReplyWarning(replySheet))
+                        while (_eFunctions.CheckReplyWarning(replySheet))
                             replySheet = proxySheet.submit(opSheet, requestSheet);
 
                         if (replySheet.message.Contains("Confirm"))
                             replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                        if (EFunctions.CheckReplyError(replySheet))
+                        if (_eFunctions.CheckReplyError(replySheet))
                         {
                             _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
                             _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
@@ -395,12 +395,12 @@ namespace EllipseMSO200ExcelAddIn
                             requestSheet.screenFields = arrayFields.ToArray();
                             requestSheet.screenKey = "1";
                             replySheet = proxySheet.submit(opSheet, requestSheet);
-                            while (EFunctions.CheckReplyWarning(replySheet))
+                            while (_eFunctions.CheckReplyWarning(replySheet))
                                 replySheet = proxySheet.submit(opSheet, requestSheet);
 
                             if (replySheet.message.Contains("Confirm"))
                                 replySheet = proxySheet.submit(opSheet, requestSheet);
-                            if (EFunctions.CheckReplyError(replySheet))
+                            if (_eFunctions.CheckReplyError(replySheet))
                             {
                                 _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
                                 _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
@@ -430,14 +430,14 @@ namespace EllipseMSO200ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
-            proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = EFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             var currentRow = TittleRow + 1;
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) != null)
@@ -445,9 +445,9 @@ namespace EllipseMSO200ExcelAddIn
                 try
                 {
                     _cells.GetCell(1, currentRow).Select();
-                    EFunctions.RevertOperation(opSheet, proxySheet);
+                    _eFunctions.RevertOperation(opSheet, proxySheet);
                     var replySheet = proxySheet.executeScreen(opSheet, "MSO200");
-                    if (EFunctions.CheckReplyError(replySheet))
+                    if (_eFunctions.CheckReplyError(replySheet))
                     {
                         _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
                         _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
@@ -463,13 +463,13 @@ namespace EllipseMSO200ExcelAddIn
                         requestSheet.screenKey = "1";
                         replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                        while (EFunctions.CheckReplyWarning(replySheet))
+                        while (_eFunctions.CheckReplyWarning(replySheet))
                             replySheet = proxySheet.submit(opSheet, requestSheet);
 
                         if (replySheet.message.Contains("Confirm"))
                             replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                        if (EFunctions.CheckReplyError(replySheet))
+                        if (_eFunctions.CheckReplyError(replySheet))
                         {
                             _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
                             _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
@@ -481,12 +481,12 @@ namespace EllipseMSO200ExcelAddIn
                             requestSheet.screenFields = arrayFields.ToArray();
                             requestSheet.screenKey = "1";
                             replySheet = proxySheet.submit(opSheet, requestSheet);
-                            while (EFunctions.CheckReplyWarning(replySheet))
+                            while (_eFunctions.CheckReplyWarning(replySheet))
                                 replySheet = proxySheet.submit(opSheet, requestSheet);
 
                             if (replySheet.message.Contains("Confirm"))
                                 replySheet = proxySheet.submit(opSheet, requestSheet);
-                            if (EFunctions.CheckReplyError(replySheet))
+                            if (_eFunctions.CheckReplyError(replySheet))
                             {
                                 _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
                                 _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
@@ -516,14 +516,14 @@ namespace EllipseMSO200ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
-            proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = EFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             var currentRow = TittleRow + 1;
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) != null)
@@ -547,9 +547,9 @@ namespace EllipseMSO200ExcelAddIn
                         DefaultBankAccount = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, currentRow).Value),
                         DefaultBankAccountName = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, currentRow).Value)
                     };
-                    EFunctions.RevertOperation(opSheet, proxySheet);
+                    _eFunctions.RevertOperation(opSheet, proxySheet);
                     var replySheet = proxySheet.executeScreen(opSheet, "MSO200");
-                    if (EFunctions.CheckReplyError(replySheet))
+                    if (_eFunctions.CheckReplyError(replySheet))
                     {
                         _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
                         _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
@@ -566,13 +566,13 @@ namespace EllipseMSO200ExcelAddIn
                         requestSheet.screenKey = "1";
                         replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                        while (EFunctions.CheckReplyWarning(replySheet))
+                        while (_eFunctions.CheckReplyWarning(replySheet))
                             replySheet = proxySheet.submit(opSheet, requestSheet);
 
                         if (replySheet.message.Contains("Confirm"))
                             replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                        if (EFunctions.CheckReplyError(replySheet))
+                        if (_eFunctions.CheckReplyError(replySheet))
                         {
                             _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
                             _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
@@ -586,7 +586,7 @@ namespace EllipseMSO200ExcelAddIn
                                 requestSheet.screenFields = arrayFields.ToArray();
                                 replySheet = proxySheet.submit(opSheet, requestSheet);
                             }
-                            if (EFunctions.CheckReplyError(replySheet))
+                            if (_eFunctions.CheckReplyError(replySheet))
                             {
                                 _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
                                 _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
@@ -602,11 +602,11 @@ namespace EllipseMSO200ExcelAddIn
                                     arrayFields = new ArrayScreenNameValue();
                                     requestSheet.screenFields = arrayFields.ToArray();
                                     replySheet = proxySheet.submit(opSheet, requestSheet);
-                                    while (EFunctions.CheckReplyWarning(replySheet))
+                                    while (_eFunctions.CheckReplyWarning(replySheet))
                                         replySheet = proxySheet.submit(opSheet, requestSheet);
                                     if (replySheet.message.Contains("Confirm"))
                                         replySheet = proxySheet.submit(opSheet, requestSheet);
-                                    if (EFunctions.CheckReplyError(replySheet))
+                                    if (_eFunctions.CheckReplyError(replySheet))
                                     {
                                         _cells.GetCell(_resultColumn, currentRow).Style =
                                             _cells.GetStyle(StyleConstants.Error);
@@ -624,15 +624,15 @@ namespace EllipseMSO200ExcelAddIn
                                         requestSheet.screenFields = arrayFields.ToArray();
                                         requestSheet.screenKey = "1";
                                         replySheet = proxySheet.submit(opSheet, requestSheet);
-                                        while (EFunctions.CheckReplyWarning(replySheet))
+                                        while (_eFunctions.CheckReplyWarning(replySheet))
                                             replySheet = proxySheet.submit(opSheet, requestSheet);
                                         if (replySheet.message.Contains("Confirm"))
                                             replySheet = proxySheet.submit(opSheet, requestSheet);
-                                        if (EFunctions.CheckReplyError(replySheet))
+                                        if (_eFunctions.CheckReplyError(replySheet))
                                         {
                                             _cells.GetCell(_resultColumn, currentRow).Style =
                                                 _cells.GetStyle(StyleConstants.Error);
-                                            ;
+                                            
                                             _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
                                         }
                                         else
@@ -641,11 +641,11 @@ namespace EllipseMSO200ExcelAddIn
                                             requestSheet.screenFields = arrayFields.ToArray();
                                             requestSheet.screenKey = "1";
                                             replySheet = proxySheet.submit(opSheet, requestSheet);
-                                            while (EFunctions.CheckReplyWarning(replySheet))
+                                            while (_eFunctions.CheckReplyWarning(replySheet))
                                                 replySheet = proxySheet.submit(opSheet, requestSheet);
                                             if (replySheet.message.Contains("Confirm"))
                                                 replySheet = proxySheet.submit(opSheet, requestSheet);
-                                            if (EFunctions.CheckReplyError(replySheet))
+                                            if (_eFunctions.CheckReplyError(replySheet))
                                             {
                                                 _cells.GetCell(_resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                                 _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
@@ -725,6 +725,11 @@ namespace EllipseMSO200ExcelAddIn
                                "  AND BI.SUP_STATUS  <> 9";
                 return sqlQuery;
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

@@ -236,7 +236,7 @@ namespace EllipseMSO210ExcelAddin
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -526,6 +526,11 @@ namespace EllipseMSO210ExcelAddin
                 _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                 _cells.GetCell(ResultColumn, currentRow).Value = "ERROR:  " + ex.Message;
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 

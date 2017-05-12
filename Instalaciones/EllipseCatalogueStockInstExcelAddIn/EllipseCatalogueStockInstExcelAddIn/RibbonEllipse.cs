@@ -32,9 +32,6 @@ namespace EllipseCatalogueStockInstExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
 
             var enviromentList = EnviromentConstants.GetEnviromentList();
             foreach (var item in enviromentList)
@@ -62,9 +59,6 @@ namespace EllipseCatalogueStockInstExcelAddIn
 
 
             _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange, _cells.GetRange(1, TittleRow, ResultColumn, TittleRow + 1), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
-
-            Microsoft.Office.Tools.Excel.Worksheet worksheet = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
-
             
             _cells.GetCell(1,1).Value = "CERREJÓN";
             _cells.GetCell(2,1).Value = "CREATE STOCKCODES INST";
@@ -204,7 +198,7 @@ namespace EllipseCatalogueStockInstExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = _eFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -666,6 +660,11 @@ namespace EllipseCatalogueStockInstExcelAddIn
                 _cells.GetCell(ResultColumn, currentRow).Value = "ERROR: " + ex.Message;
                 //ErrorLogger.LogError("RibbonEllipse.cs:CreateStock()", Ex.Message, _eFunctions.DebugErrors);
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 

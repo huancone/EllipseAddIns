@@ -32,13 +32,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            //Office 2013 requiere no ejecutar esta sentencia al iniciar porque no se cuenta con un libro activo vacío. Se debe ejecutar obligatoriamente al formatear las hojas
-            //adcionalmente validar la cantidad de hojas a utilizar al momento de dar formato
-            //if (_cells == null)
-            //    _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false; 
-            _eFunctions.DebugErrors = false; 
-            _eFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -145,7 +139,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -171,7 +165,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
-                    returnWarnings = _eFunctions.DebugWarnings,
+                    returnWarnings = Debugger.DebugWarnings,
                     returnWarningsSpecified = true
                 };
 
@@ -199,10 +193,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                         }
                         catch (Exception ex)
                         {
-                            Debugger.LogError("RibbonEllipse:UpdateData()",
-                                "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace,
-                                _eFunctions.DebugErrors);
+                            Debugger.LogError("RibbonEllipse:UpdateData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                             _cells.GetCell(ResultColumn01 - 1, i).Value2 = ex.Message;
                             _cells.GetCell(ResultColumn01 - 1, i).Style = StyleConstants.Error;
                         }
@@ -214,19 +205,14 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                         }
                         catch (Exception ex)
                         {
-                            Debugger.LogError("RibbonEllipse:UpdateData()",
-                                "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace,
-                                _eFunctions.DebugErrors);
+                            Debugger.LogError("RibbonEllipse:UpdateData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                             _cells.GetCell(ResultColumn01, i).Value2 = ex.Message;
                             _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                         }
                     }
                     catch (Exception ex)
                     {
-                        Debugger.LogError("RibbonEllipse:UpdateData()",
-                            "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                            _eFunctions.DebugErrors);
+                        Debugger.LogError("RibbonEllipse:UpdateData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                         _cells.GetCell(ResultColumn01, i).Value2 = ex.Message;
                     }
                     finally
@@ -238,9 +224,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Debugger.LogError("RibbonEllipse:UpdateDate()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace,
-                    _eFunctions.DebugErrors);
+                Debugger.LogError("RibbonEllipse:UpdateDate()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -344,6 +328,11 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
 
 
             return listCode;
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 

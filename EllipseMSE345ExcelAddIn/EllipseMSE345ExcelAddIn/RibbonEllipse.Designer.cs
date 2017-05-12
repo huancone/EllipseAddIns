@@ -44,8 +44,11 @@
             this.fMantto = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.Crear = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpCondMonit.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -56,10 +59,10 @@
             // 
             // grpCondMonit
             // 
-            this.grpCondMonit.Items.Add(this.mFormatear);
+            this.grpCondMonit.Items.Add(this.box1);
             this.grpCondMonit.Items.Add(this.drpEnviroment);
             this.grpCondMonit.Items.Add(this.Crear);
-            this.grpCondMonit.Label = "MSE345 v 1.0.1";
+            this.grpCondMonit.Label = "MSE345";
             this.grpCondMonit.Name = "grpCondMonit";
             // 
             // mFormatear
@@ -100,6 +103,18 @@
             this.Crear.Name = "Crear";
             this.Crear.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Crear_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.mFormatear);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -110,6 +125,8 @@
             this.tabEllipse.PerformLayout();
             this.grpCondMonit.ResumeLayout(false);
             this.grpCondMonit.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -122,6 +139,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton Formatear;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu mFormatear;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton fMantto;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
@@ -27,9 +25,7 @@ namespace EllipseMSO685ExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            EFunctions.DebugQueries = false;
-            EFunctions.DebugErrors = false;
-            EFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -118,7 +114,7 @@ namespace EllipseMSO685ExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = EFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             var currentRow = TittleRow + 1;
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
@@ -225,6 +221,11 @@ namespace EllipseMSO685ExcelAddIn
                     currentRow++;
                 }
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

@@ -19,9 +19,6 @@ namespace EllipseMSQ901ExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
            
-            EFunctions.DebugQueries = false;
-            EFunctions.DebugErrors = false;
-            EFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -517,6 +514,11 @@ namespace EllipseMSQ901ExcelAddIn
                 _cells.GetRange(1, _tittleRow + 1, _resultColumn, MaxRows).NumberFormat = "@";
                 _cells.GetRange(2, 4, 2, 6).NumberFormat = "@";
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 

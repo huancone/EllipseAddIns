@@ -16,6 +16,7 @@ using System.Threading;
 namespace EllipseEquipmentExcelAddIn
 {
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
+    [SuppressMessage("ReSharper", "UseNullPropagation")]
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
@@ -616,7 +617,8 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            _cells?.SetCursorDefault();
+            if(_cells != null) _cells.SetCursorDefault();
+
         }
         public void ReReviewEquipmentList()
         {
@@ -729,7 +731,7 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            _cells?.SetCursorDefault();
+            if(_cells != null) _cells.SetCursorDefault();
         }
         public void CreateEquipment()
         {
@@ -859,7 +861,7 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            _cells?.SetCursorDefault();
+            if(_cells != null) _cells.SetCursorDefault();
         }
 
         public void UpdateEquipment()
@@ -995,7 +997,7 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            _cells?.SetCursorDefault();
+            if(_cells != null) _cells.SetCursorDefault();
         }
 
         public void UpdateEquipmentStatus()
@@ -1055,7 +1057,7 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            _cells?.SetCursorDefault();
+            if(_cells != null) _cells.SetCursorDefault();
         }
 
         public void DeleteEquipment()
@@ -1187,7 +1189,7 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            _cells?.SetCursorDefault();
+            if(_cells != null) _cells.SetCursorDefault();
         }
 
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
@@ -1196,7 +1198,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                _cells?.SetCursorDefault();
+                if(_cells != null) _cells.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {
@@ -1256,7 +1258,7 @@ namespace EllipseEquipmentExcelAddIn
             
             
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            _cells?.SetCursorDefault();
+            if(_cells != null) _cells.SetCursorDefault();
         }
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {

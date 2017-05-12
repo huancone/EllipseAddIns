@@ -39,8 +39,11 @@
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.btnCatStockless = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grp.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -51,15 +54,15 @@
             // 
             // grp
             // 
-            this.grp.Items.Add(this.btnFormatSheet);
+            this.grp.Items.Add(this.box1);
             this.grp.Items.Add(this.drpEnviroment);
             this.grp.Items.Add(this.btnCatStockless);
-            this.grp.Label = "Catalog Stockless INST v1.0.0";
+            this.grp.Label = "Catalog Stockless INST";
             this.grp.Name = "grp";
             // 
             // btnFormatSheet
             // 
-            this.btnFormatSheet.Label = "Format Catalog Stockless Sheet";
+            this.btnFormatSheet.Label = "Format Catalog";
             this.btnFormatSheet.Name = "btnFormatSheet";
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
             // 
@@ -70,9 +73,21 @@
             // 
             // btnCatStockless
             // 
-            this.btnCatStockless.Label = "Execute Catalog Stockless INST";
+            this.btnCatStockless.Label = "Execute Catalog";
             this.btnCatStockless.Name = "btnCatStockless";
             this.btnCatStockless.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCatStockless_Click);
+            // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormatSheet);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // RibbonEllipse
             // 
@@ -84,6 +99,8 @@
             this.tabEllipse.PerformLayout();
             this.grp.ResumeLayout(false);
             this.grp.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -94,6 +111,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCatStockless;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

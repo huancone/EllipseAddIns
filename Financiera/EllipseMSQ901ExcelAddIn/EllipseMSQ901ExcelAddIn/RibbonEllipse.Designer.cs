@@ -42,8 +42,11 @@
             this.btnCustomerInvoice = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.btnConsultar = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSQ901.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -54,10 +57,10 @@
             // 
             // grpMSQ901
             // 
-            this.grpMSQ901.Items.Add(this.menuFormat);
+            this.grpMSQ901.Items.Add(this.box1);
             this.grpMSQ901.Items.Add(this.drpEnviroment);
             this.grpMSQ901.Items.Add(this.btnConsultar);
-            this.grpMSQ901.Label = "MSQ901 v1.0.0";
+            this.grpMSQ901.Label = "MSQ901";
             this.grpMSQ901.Name = "grpMSQ901";
             // 
             // menuFormat
@@ -100,6 +103,18 @@
             this.btnConsultar.Name = "btnConsultar";
             this.btnConsultar.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnConsultar_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -110,6 +125,8 @@
             this.tabEllipse.PerformLayout();
             this.grpMSQ901.ResumeLayout(false);
             this.grpMSQ901.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -123,6 +140,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConsultar;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnJournal;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCustomerInvoice;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

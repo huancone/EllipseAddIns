@@ -27,9 +27,7 @@ namespace EllipseMSO265ExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            EFunctions.DebugQueries = false;
-            EFunctions.DebugErrors = false;
-            EFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -983,7 +981,7 @@ namespace EllipseMSO265ExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = EFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
 
             _cells.GetCell(1, currentRow).Select();
@@ -1311,6 +1309,11 @@ namespace EllipseMSO265ExcelAddIn
 
             [CsvColumn(FieldIndex = 25)]
             public string value10 { get; set; }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

@@ -37,15 +37,12 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpStockCodeTrans = this.Factory.CreateRibbonGroup();
             this.box1 = this.Factory.CreateRibbonBox();
-            this.box2 = this.Factory.CreateRibbonBox();
             this.menuFormatSheet = this.Factory.CreateRibbonMenu();
             this.btnFormatRequisitions = this.Factory.CreateRibbonButton();
             this.btnFormatPurchaseOrders = this.Factory.CreateRibbonButton();
             this.btnFormatPurchaseOrdersExtended = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.box3 = this.Factory.CreateRibbonBox();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
-            this.box4 = this.Factory.CreateRibbonBox();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuRequisitionActions = this.Factory.CreateRibbonMenu();
             this.btnReviewStockCodesRequisitions = this.Factory.CreateRibbonButton();
@@ -58,9 +55,6 @@
             this.tabEllipse.SuspendLayout();
             this.grpStockCodeTrans.SuspendLayout();
             this.box1.SuspendLayout();
-            this.box2.SuspendLayout();
-            this.box3.SuspendLayout();
-            this.box4.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -72,22 +66,16 @@
             // grpStockCodeTrans
             // 
             this.grpStockCodeTrans.Items.Add(this.box1);
-            this.grpStockCodeTrans.Label = "StockCode Trans. v1.0.4";
+            this.grpStockCodeTrans.Items.Add(this.drpEnviroment);
+            this.grpStockCodeTrans.Items.Add(this.menuActions);
+            this.grpStockCodeTrans.Label = "StockCode Trans.";
             this.grpStockCodeTrans.Name = "grpStockCodeTrans";
             // 
             // box1
             // 
-            this.box1.BoxStyle = Microsoft.Office.Tools.Ribbon.RibbonBoxStyle.Vertical;
-            this.box1.Items.Add(this.box2);
-            this.box1.Items.Add(this.box3);
-            this.box1.Items.Add(this.box4);
+            this.box1.Items.Add(this.menuFormatSheet);
+            this.box1.Items.Add(this.btnAbout);
             this.box1.Name = "box1";
-            // 
-            // box2
-            // 
-            this.box2.Items.Add(this.menuFormatSheet);
-            this.box2.Items.Add(this.btnAbout);
-            this.box2.Name = "box2";
             // 
             // menuFormatSheet
             // 
@@ -124,20 +112,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // box3
-            // 
-            this.box3.Items.Add(this.drpEnviroment);
-            this.box3.Name = "box3";
-            // 
             // drpEnviroment
             // 
             this.drpEnviroment.Label = "Env.";
             this.drpEnviroment.Name = "drpEnviroment";
-            // 
-            // box4
-            // 
-            this.box4.Items.Add(this.menuActions);
-            this.box4.Name = "box4";
             // 
             // menuActions
             // 
@@ -218,12 +196,6 @@
             this.grpStockCodeTrans.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
-            this.box2.ResumeLayout(false);
-            this.box2.PerformLayout();
-            this.box3.ResumeLayout(false);
-            this.box3.PerformLayout();
-            this.box4.ResumeLayout(false);
-            this.box4.PerformLayout();
 
         }
 
@@ -246,9 +218,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatPurchaseOrdersExtended;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box3;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box4;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 

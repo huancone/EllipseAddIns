@@ -21,7 +21,7 @@ namespace EllipseMSE345ExcelAddIn
         Excel.Application _excelApp;
         private const string SheetName01 = "MSE345";
         private const string SheetName01Mtto = "MSE345_MTTO";
-        private const bool DebugErrors = false;
+
         string _narrativeNo;
         decimal _valor;
         Worksheet _worksheet;
@@ -32,9 +32,6 @@ namespace EllipseMSE345ExcelAddIn
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
         }
 
         private void Crear_Click(object sender, RibbonControlEventArgs e)
@@ -111,7 +108,7 @@ namespace EllipseMSE345ExcelAddIn
                                 opSheet.district = _frmAuth.EllipseDsct;
                                 opSheet.position = _frmAuth.EllipsePost;
                                 opSheet.maxInstances = 100;
-                                opSheet.returnWarnings = _eFunctions.DebugWarnings;
+                                opSheet.returnWarnings = Debugger.DebugWarnings;
 
                                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -149,7 +146,7 @@ namespace EllipseMSE345ExcelAddIn
                                         _narrativeNo = odr["narrative_no"] + "";
                                     }
 
-                                    StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "ME" + _narrativeNo, comentario);
+                                    StdText.SetText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "ME" + _narrativeNo, comentario);
                                 }
 
                                 _cells.GetCell("I" + currentRow).Value = "OK";
@@ -161,7 +158,7 @@ namespace EllipseMSE345ExcelAddIn
                                 _cells.GetCell("I" + currentRow).Value = ex.Message;
                                 _cells.GetCell("I" + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
                                 _cells.GetCell("I" + currentRow).Select();
-                                Debugger.LogError("RibbonEllipse:startLabourCostLoad()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                                Debugger.LogError("RibbonEllipse:startLabourCostLoad()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                             }
                             finally
@@ -266,7 +263,7 @@ namespace EllipseMSE345ExcelAddIn
                             opSheet.district = _frmAuth.EllipseDsct;
                             opSheet.position = _frmAuth.EllipsePost;
                             opSheet.maxInstances = 100;
-                            opSheet.returnWarnings = _eFunctions.DebugWarnings;
+                            opSheet.returnWarnings = Debugger.DebugWarnings;
 
                             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -307,7 +304,7 @@ namespace EllipseMSE345ExcelAddIn
                                     _narrativeNo = odr["narrative_no"] + "";
                                 }
 
-                                StdText.SetCustomText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "ME" + _narrativeNo, comentario);
+                                StdText.SetText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, false), "ME" + _narrativeNo, comentario);
                             }
 
                             _cells.GetCell("L" + currentRow).Value = "OK";
@@ -319,7 +316,7 @@ namespace EllipseMSE345ExcelAddIn
                             _cells.GetCell("L" + currentRow).Value = ex.Message;
                             _cells.GetCell("L" + currentRow).Style = _cells.GetStyle(StyleConstants.TitleAction);
                             _cells.GetCell("L" + currentRow).Select();
-                            Debugger.LogError("RibbonEllipse:startLabourCostLoad()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, _eFunctions.DebugErrors);
+                            Debugger.LogError("RibbonEllipse:startLabourCostLoad()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                         }
                         finally
@@ -518,7 +515,7 @@ namespace EllipseMSE345ExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, DebugErrors);
+                Debugger.LogError("ExcelStyleCells:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -1169,7 +1166,7 @@ namespace EllipseMSE345ExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace, DebugErrors);
+                Debugger.LogError("ExcelStyleCells:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -1192,6 +1189,12 @@ namespace EllipseMSE345ExcelAddIn
                         "0");
         }
 
+       private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+       {
+           new AboutBoxExcelAddIn().ShowDialog();
+       }
+
     }
 }
 //Desarrollado por Ing. Hussein Villamizar - Septiembre de 2015
+//Actualizado por Ing. Héctor Hernández - Mayo de 2017

@@ -30,9 +30,6 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
             
-            EFunctions.DebugQueries = false;
-            EFunctions.DebugErrors = false;
-            EFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -163,7 +160,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show($"Error: {error.Message}");
+                    MessageBox.Show("Error: " + error.Message);
                 }
             }
 
@@ -363,7 +360,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = EFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
             _cells.GetCell(1, currentRow).Select();
 
@@ -638,6 +635,11 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
 
                 return sqlQuery;
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

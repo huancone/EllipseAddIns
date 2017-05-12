@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-using Oracle.ManagedDataAccess.Client;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseMSO905ExcelAddIn.Properties;
@@ -29,9 +25,7 @@ namespace EllipseMSO905ExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            EFunctions.DebugQueries = false;
-            EFunctions.DebugErrors = false;
-            EFunctions.DebugWarnings = false;
+
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -53,9 +47,6 @@ namespace EllipseMSO905ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             var excelBook = _excelApp.Workbooks.Add();
             Worksheet excelSheet = excelBook.ActiveSheet;
-
-            Microsoft.Office.Tools.Excel.Worksheet workSheet = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
-
 
             excelSheet.Name = _sheetName01;
 
@@ -210,7 +201,7 @@ namespace EllipseMSO905ExcelAddIn
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     maxInstancesSpecified = true,
-                    returnWarnings = EFunctions.DebugWarnings
+                    returnWarnings = Debugger.DebugWarnings
                 };
                 _cells.GetCell(7, _currentRow).Select();
 
@@ -666,6 +657,11 @@ namespace EllipseMSO905ExcelAddIn
 
                 return sqlQuery;
             }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
 
     }

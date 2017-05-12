@@ -12,7 +12,7 @@ namespace EllipseCommonsClassLibrary
         public string EllipsePost = "";
         public string EllipseDsct = "";
 
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        // ReSharper disable once FieldCanBeMadeReadOny.Local
         EllipseFunctions _eFunctions = new EllipseFunctions();
         public string SelectedEnviroment = null;
 

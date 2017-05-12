@@ -33,9 +33,6 @@ namespace EllipseCreateStockInstExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugWarnings = false;
 
             var enviromentList = EnviromentConstants.GetEnviromentList();
             foreach (var item in enviromentList)
@@ -194,12 +191,12 @@ namespace EllipseCreateStockInstExcelAddIn
             catalogueOp.district = _frmAuth.EllipseDsct;
             catalogueOp.position = _frmAuth.EllipsePost;
             catalogueOp.maxInstances = 100;
-            catalogueOp.returnWarnings = _eFunctions.DebugWarnings;
+            catalogueOp.returnWarnings = Debugger.DebugWarnings;
 
             productServiceOp.district = _frmAuth.EllipseDsct;
             productServiceOp.position = _frmAuth.EllipsePost;
             productServiceOp.maxInstances = 100;
-            productServiceOp.returnWarnings = _eFunctions.DebugWarnings;
+            productServiceOp.returnWarnings = Debugger.DebugWarnings;
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -390,6 +387,11 @@ namespace EllipseCreateStockInstExcelAddIn
 
         private void drpEnviroment_SelectionChanged(object sender, RibbonControlEventArgs e)
         {
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 

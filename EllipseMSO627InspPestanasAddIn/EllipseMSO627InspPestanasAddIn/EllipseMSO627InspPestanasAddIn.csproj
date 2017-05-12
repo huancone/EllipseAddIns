@@ -38,7 +38,7 @@
     <OldToolsVersion>12.0</OldToolsVersion>
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>D:\Projects\Release\EllipseMSO627RodillosAddin\</PublishUrl>
+    <PublishUrl>D:\Projects\Release\EllipseMSO627InsPestanasAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
     <ApplicationVersion>1.0.1.0</ApplicationVersion>

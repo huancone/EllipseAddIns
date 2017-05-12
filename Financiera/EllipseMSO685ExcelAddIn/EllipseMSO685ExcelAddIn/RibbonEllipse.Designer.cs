@@ -41,8 +41,11 @@
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnAccion3 = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO685.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -53,10 +56,10 @@
             // 
             // grpMSO685
             // 
-            this.grpMSO685.Items.Add(this.menuFormats);
+            this.grpMSO685.Items.Add(this.box1);
             this.grpMSO685.Items.Add(this.drpEnviroment);
             this.grpMSO685.Items.Add(this.menuActions);
-            this.grpMSO685.Label = "group1";
+            this.grpMSO685.Label = "MSO685.3";
             this.grpMSO685.Name = "grpMSO685";
             // 
             // menuFormats
@@ -90,6 +93,18 @@
             this.btnAccion3.ShowImage = true;
             this.btnAccion3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAccion3_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuFormats);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -100,6 +115,8 @@
             this.tabEllipse.PerformLayout();
             this.grpMSO685.ResumeLayout(false);
             this.grpMSO685.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -112,6 +129,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAccion3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

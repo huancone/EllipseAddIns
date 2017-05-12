@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseStdTextClassLibrary"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseWorkOrdersClassLibrary", "..\EllipseCommonsClassLibraries\EllipseWorkOrdersClassLibrary\EllipseWorkOrdersClassLibrary.csproj", "{B08F098E-E4DE-4431-8CF1-0E3156B96A00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseReferenceCodesClassLibrary", "..\EllipseCommonsClassLibraries\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj", "{093EC04E-6E92-4E59-848B-5B79277FFE9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

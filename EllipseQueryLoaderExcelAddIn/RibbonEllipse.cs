@@ -141,27 +141,25 @@ namespace EllipseQueryLoaderExcelAddIn
 
                 _cells.GetCell("B1").Value = "QUERY LOADER";
                 _cells.GetCell("B1").Style = StyleConstants.HeaderDefault;
-                _cells.MergeCells(2, 1, 7, 1);
 
-                _cells.GetCell(8, 1).Value = "OBLIGATORIO";
-                _cells.GetCell(8, 1).Style = StyleConstants.TitleRequired;
-                _cells.GetCell(8, 2).Value = "OPCIONAL";
-                _cells.GetCell(8, 2).Style = StyleConstants.TitleOptional;
-                _cells.GetCell(8, 3).Value = "INFORMATIVO";
-                _cells.GetCell(8, 3).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(3, 1).Value = "OBLIGATORIO";
+                _cells.GetCell(3, 1).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(3, 2).Value = "OPCIONAL";
+                _cells.GetCell(3, 2).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(3, 3).Value = "INFORMATIVO";
+                _cells.GetCell(3, 3).Style = StyleConstants.TitleInformation;
 
                 _cells.GetCell(1, 5).Value = "QUERY";
-                _cells.GetCell(1, 5).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(1, 5).Style = StyleConstants.Option;
                 _cells.GetCell(2, 5).Value = "";
-                _cells.MergeCells(2, 5, 8, 5);
-                _cells.GetRange(2, 5, 8, 5).Style = StyleConstants.Select;
+                _cells.GetCell(2, 5).Style = StyleConstants.Select;
                 _cells.GetCell(1, 6).Value = "DECODED QUERY";
-                _cells.GetCell(1, 6).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(1, 6).Style = StyleConstants.Option;
                 _cells.GetCell(2, 6).Value = "";
-                _cells.MergeCells(2, 6, 8, 6);
-                _cells.GetRange(2, 6, 8, 6).Style = StyleConstants.TitleResult;
+                _cells.GetCell(2, 6).Style = StyleConstants.Option;
 
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                _cells.GetCell(2, 6).ColumnWidth = 60;
                 //CONSTRUYO LA HOJA 2 - QUERYRESULT
                 // ReSharper disable once UseIndexedProperty
                 _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
