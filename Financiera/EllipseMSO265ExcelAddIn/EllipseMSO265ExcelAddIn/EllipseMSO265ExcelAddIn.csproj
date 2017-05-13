@@ -47,10 +47,10 @@
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
     <ProductName>EllipseMSO265ExcelAddIn</ProductName>
-    <PublisherName />
+    <PublisherName>Hambings SAS</PublisherName>
     <SupportUrl />
     <FriendlyName>EllipseMSO265ExcelAddIn</FriendlyName>
-    <OfficeApplicationDescription />
+    <OfficeApplicationDescription>Loader MSO265</OfficeApplicationDescription>
     <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>

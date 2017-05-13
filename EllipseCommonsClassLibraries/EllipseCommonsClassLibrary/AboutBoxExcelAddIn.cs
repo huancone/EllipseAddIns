@@ -11,7 +11,7 @@ namespace EllipseCommonsClassLibrary
 
         public AboutBoxExcelAddIn()
         {
-            _addInAssembly = Assembly.GetExecutingAssembly();//addInAssembly;
+            _addInAssembly = Assembly.GetCallingAssembly();
             
             InitializeComponent();
             this.Text = string.Format("About {0}", AssemblyTitle);
@@ -122,7 +122,7 @@ namespace EllipseCommonsClassLibrary
             _indexSettings++;
             if (_indexSettings > 3)
             {
-                new SettingsBox().ShowDialog();
+                new SettingsBox(AssemblyProduct).ShowDialog();
             }
         }
 

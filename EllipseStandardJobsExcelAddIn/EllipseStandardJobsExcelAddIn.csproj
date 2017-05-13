@@ -46,7 +46,7 @@
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
     <ProductName>EllipseStandardJobsExcelAddIn</ProductName>
-    <PublisherName>Hambings SAS - Cerrejon Ltda</PublisherName>
+    <PublisherName>Hambings SAS</PublisherName>
     <SupportUrl />
     <FriendlyName>EllipseStandardJobsExcelAddIn</FriendlyName>
     <OfficeApplicationDescription>Loader de Actualización masiva de Standard Jobs</OfficeApplicationDescription>

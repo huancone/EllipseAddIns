@@ -6,11 +6,11 @@ namespace EllipseCommonsClassLibrary
 {
     partial class SettingsBox : Form
     {
-        public SettingsBox()
+        public SettingsBox(string productName)
         {
             InitializeComponent();
             this.Text = @"Opciones de Configuración";
-            this.labelProductName.Text = AssemblyProduct;
+            this.labelProductName.Text = productName;
         }
 
         #region Assembly Attribute Accessors

@@ -46,7 +46,7 @@
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
     <ProductName>EllipseStdTextExcelAddIn</ProductName>
-    <PublisherName>Hambings SAS - Cerrejon Ltda</PublisherName>
+    <PublisherName>Hambings SAS</PublisherName>
     <SupportUrl />
     <FriendlyName>EllipseStdTextExcelAddIn</FriendlyName>
     <OfficeApplicationDescription>Loader de Consulta y Actualización de StdText y Reference Codes</OfficeApplicationDescription>
