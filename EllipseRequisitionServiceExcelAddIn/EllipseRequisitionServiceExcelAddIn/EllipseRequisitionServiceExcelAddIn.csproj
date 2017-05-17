@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseRequisitionServiceExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.2.2.0</ApplicationVersion>
+    <ApplicationVersion>1.2.2.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>

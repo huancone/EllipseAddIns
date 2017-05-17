@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\Financiera\EllipseTransaccionesStockCodesExcelAddin\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.4.2</ApplicationVersion>
+    <ApplicationVersion>1.0.4.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>

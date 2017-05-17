@@ -41,7 +41,7 @@
     <PublishUrl>D:\Projects\Release\Financiera\EllipseMSO905ExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.13</ApplicationVersion>
+    <ApplicationVersion>1.0.0.14</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>

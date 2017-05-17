@@ -1292,9 +1292,9 @@ namespace EllipseWorkRequestExcelAddIn
             var searchCriteriaKey2Text = _cells.GetEmptyIfNull(_cells.GetCell("A4").Value);
             var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
             var statusKey = _cells.GetEmptyIfNull(_cells.GetCell("B5").Value);
-            var dateCriteriaKeyText = _cells.GetEmptyIfNull(_cells.GetCell("D2").Value);
-            var startDate = _cells.GetEmptyIfNull(_cells.GetCell("D3").Value);
-            var endDate = _cells.GetEmptyIfNull(_cells.GetCell("D4").Value);
+            var dateCriteriaKeyText = _cells.GetEmptyIfNull(_cells.GetCell("D3").Value);
+            var startDate = _cells.GetEmptyIfNull(_cells.GetCell("D4").Value);
+            var endDate = _cells.GetEmptyIfNull(_cells.GetCell("D5").Value);
 
             //Convierto los nombres de las opciones a llaves
             var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;

@@ -45,8 +45,11 @@
             this.menuAction = this.Factory.CreateRibbonMenu();
             this.btnValidar = this.Factory.CreateRibbonButton();
             this.btnExportar = this.Factory.CreateRibbonButton();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpSAO900.SuspendLayout();
+            this.box1.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -57,10 +60,10 @@
             // 
             // grpSAO900
             // 
-            this.grpSAO900.Items.Add(this.menuFormat);
+            this.grpSAO900.Items.Add(this.box1);
             this.grpSAO900.Items.Add(this.drpEnviroment);
             this.grpSAO900.Items.Add(this.menuAction);
-            this.grpSAO900.Label = "SAO900 v1.0.0";
+            this.grpSAO900.Label = "SAO900";
             this.grpSAO900.Name = "grpSAO900";
             // 
             // menuFormat
@@ -126,6 +129,18 @@
             this.btnExportar.ShowImage = true;
             this.btnExportar.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExportar_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -136,6 +151,8 @@
             this.tabEllipse.PerformLayout();
             this.grpSAO900.ResumeLayout(false);
             this.grpSAO900.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
 
         }
 
@@ -152,6 +169,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAction;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnValidar;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExportar;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }
 
     partial class ThisRibbonCollection

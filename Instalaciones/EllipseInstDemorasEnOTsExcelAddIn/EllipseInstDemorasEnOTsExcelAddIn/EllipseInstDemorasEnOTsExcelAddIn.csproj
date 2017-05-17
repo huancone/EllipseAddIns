@@ -34,7 +34,7 @@
     <PublishUrl>D:\Projects\Release\Instalaciones\EllipseInstDemorasEnOTsExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.3.4</ApplicationVersion>
+    <ApplicationVersion>1.0.3.5</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>

@@ -41,8 +41,8 @@
     <PublishUrl>D:\Projects\Financiera\Release\EllipseSAO900ExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.15</ApplicationVersion>
-    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <ApplicationVersion>1.0.0.16</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
@@ -76,7 +76,7 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Runtime de Microsoft Visual Studio 2010 Tools para Office %28x86 y x64%29</ProductName>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
@@ -168,8 +168,7 @@
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -181,7 +180,7 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.Services.Ellipse">
-      <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.dll</HintPath>
+      <HintPath>..\..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -275,10 +274,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>EllipseSAO900AddIn_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>A1B3C0761D57C94795E35CAE0F8B060937F5E8A1</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>71D178952DC9DEDC686A690839477D40D372A71D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

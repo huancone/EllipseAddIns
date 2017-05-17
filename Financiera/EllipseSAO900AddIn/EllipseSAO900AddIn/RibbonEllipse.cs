@@ -7,7 +7,6 @@ using EllipseSAO900AddIn.Properties;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-using Oracle.ManagedDataAccess.Client;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using screen = EllipseCommonsClassLibrary.ScreenService;
 
@@ -27,12 +26,6 @@ namespace EllipseSAO900AddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            //Office requiere no ejecutar esta sentencia al iniciar porque cambio el orden de sucesos y creacion > tIENES QUE EJECUtarla ahora cuando le des format y cuando le des ejecutar alguna acci[on
-            //if (_cells == null)
-            //    _cells = new ExcelStyleCells(_excelApp);
-            EFunctions.DebugQueries = false;
-            EFunctions.DebugErrors = false;
-            EFunctions.DebugWarnings = false;
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -1202,7 +1195,7 @@ namespace EllipseSAO900AddIn
                 position = FrmAuth.EllipsePost,
                 maxInstances = 100,
                 maxInstancesSpecified = true,
-                returnWarnings = EFunctions.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings
             };
 
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(transactionColumn, currentRow).Value) != null)
@@ -1676,6 +1669,11 @@ namespace EllipseSAO900AddIn
 
             [CsvColumn(Name = "RAZON DEL CAMBIO", FieldIndex = 14)]
             public string Razon { get; set; }
+        }
+
+        private void btnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AboutBoxExcelAddIn().ShowDialog();
         }
     }
 }

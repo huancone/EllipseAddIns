@@ -948,7 +948,7 @@ namespace EllipseStandardJobsClassLibrary
             requestTaskReq.SJTaskNo = taskReq.sJTaskNo ?? requestTaskReq.SJTaskNo;
 
             requestTaskReq.seqNo = taskReq.seqNo ?? requestTaskReq.seqNo;
-            requestTaskReq.stockCode = taskReq.reqCode.Substring(1);
+            requestTaskReq.stockCode = taskReq.reqCode.Substring(1).PadLeft(9, '0');
             requestTaskReq.unitQuantityReqd = taskReq.qtyReq != null ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal);
             requestTaskReq.unitQuantityReqdSpecified = true;
             requestTaskReq.catalogueFlag = true;
@@ -1014,7 +1014,7 @@ namespace EllipseStandardJobsClassLibrary
                 stdJobNo = taskReq.standardJob,
                 SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? taskReq.sJTaskNo : null,
                 seqNo = taskReq.seqNo,
-                stockCode = taskReq.reqCode.Substring(1),
+                stockCode = taskReq.reqCode.Substring(1).PadLeft(9, '0'),
                 unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.qtyReq) ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal),
                 unitQuantityReqdSpecified = true,
                 catalogueFlag = true,

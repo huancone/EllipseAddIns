@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseLabourCostingExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.8.0</ApplicationVersion>
+    <ApplicationVersion>1.0.8.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>

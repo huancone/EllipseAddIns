@@ -41,7 +41,7 @@
     <PublishUrl>D:\Projects\Release\EllipseMSO627RodillosAddin\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.2.0</ApplicationVersion>
+    <ApplicationVersion>1.0.2.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
