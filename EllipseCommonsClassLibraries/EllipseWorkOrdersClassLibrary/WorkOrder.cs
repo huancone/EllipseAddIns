@@ -35,6 +35,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string requestId;
 
         public string stdJobNo;
+        public string maintSchTask;
         public string assignPerson;
         public string planPriority;
         public string requisitionStartDate;
@@ -47,11 +48,14 @@ namespace EllipseWorkOrdersClassLibrary
         public string planFinTime;
         public string unitOfWork;
         public string unitsRequired;
+        public string pcComplete;
+        public string unitsComplete;
         private WorkOrderDTO relatedWoDTO;
         public string accountCode;
         public string projectNo;
         public string parentWo;
         public string autoRequisitionInd;
+        public string failurePart;
         public string jobCode1;
         public string jobCode2;
         public string jobCode3;
@@ -102,6 +106,8 @@ namespace EllipseWorkOrdersClassLibrary
         public string actualOtherCost;
 
         public string finalCosts;
+
+        private ExtendedDescription _extendedDescription;
         /// <summary>
         /// Obtiene los campos de WorkOrderDTO para las acciones requeridas por el servicio
         /// </summary>
@@ -144,16 +150,120 @@ namespace EllipseWorkOrdersClassLibrary
 
         public void SetStatus(string statusName)
         {
-            if(WoStatusList.GetStatusCode(statusName) != null)
+            if(!string.IsNullOrEmpty(WoStatusList.GetStatusCode(statusName)))
                 workOrderStatusM = WoStatusList.GetStatusCode(statusName);
         }
 
+        public ExtendedDescription GetExtendedDescription(string urlService, OperationContext opContext)
+        {
+            if (_extendedDescription != null) return _extendedDescription;
+
+            _extendedDescription = WorkOrderActions.GetWOrkOrderExtendedDescription(urlService, opContext, districtCode, GetWorkOrderDto().prefix + GetWorkOrderDto().no);
+
+            return _extendedDescription;
+        }
+
+        public void SetExtendedDescription(string header, string body)
+        {
+            if (_extendedDescription == null)
+                _extendedDescription = new ExtendedDescription();
+            _extendedDescription.Header = header;
+            _extendedDescription.Body = body;
+        }
+    }
+    public class ExtendedDescription
+    {
+        public string Header;
+        public string Body;
+    }
+    public class WorkOrderQualityStyles
+    {
+        public string WorkGroup;
+        public string EquipmentNo;
+        public string WorkOrderStatusM;//Estado de orden (si fue reabierta)
+        public string WorkOrderStatusU;//User status
+        public string CompCode;
+        public string WorkOrderType;
+        public string MaintenanceType;
+        public string OriginatorPriority;
+        public string PlanPriority;
+        public string UnitOfWork;
+        public string UnitsRequired;
+        public string UnitsCompleted;
+        public string ActualDurationHrs;
+        public string ActualLabHrs;
+        public string ActualLabCost;
+        public string ActualMatCost;
+        public string ActualOtherCost;
+        public string JobCodesFlag;
+        public string CompleteTextFlag ;
+
+        public WorkOrderQualityStyles(WorkOrder wo)
+        {
+            WorkGroup = string.IsNullOrWhiteSpace(wo.workGroup) ? StyleConstants.Warning : StyleConstants.Normal;
+            EquipmentNo = !wo.maintenanceType.Equals("NM") && string.IsNullOrWhiteSpace(wo.equipmentNo) ? StyleConstants.Warning : StyleConstants.Normal;
+            WorkOrderStatusM = wo.workOrderStatusM != "C" && !string.IsNullOrWhiteSpace(wo.completedCode) ? StyleConstants.Warning : StyleConstants.Normal;
+            CompCode = wo.workOrderType.Equals("RE") && string.IsNullOrWhiteSpace(wo.compCode) ? StyleConstants.Error : StyleConstants.Normal;
+            WorkOrderType = !WoTypeMtType.ValidateWoMtTypeCode(wo.workOrderType, wo.maintenanceType) ? StyleConstants.Error : StyleConstants.Normal;
+            MaintenanceType = !WoTypeMtType.ValidateWoMtTypeCode(wo.workOrderType, wo.maintenanceType) ? StyleConstants.Error : StyleConstants.Normal;
+            WorkOrderStatusU = wo.workOrderStatusM != "C" && string.IsNullOrEmpty(wo.workOrderStatusU) && !WorkOrderActions.ValidateUserStatus(wo.raisedDate, 60) ? StyleConstants.Warning : StyleConstants.Normal;
+            OriginatorPriority = !WoTypeMtType.ValidatePriority(wo.origPriority) ? StyleConstants.Error : StyleConstants.Normal;
+            PlanPriority = !WoTypeMtType.ValidatePriority(wo.origPriority) ? StyleConstants.Error : StyleConstants.Normal;
+            int result;
+            var unitsRequired = int.TryParse(wo.unitsRequired, out result) ? int.Parse(wo.unitsRequired) : 0;
+            var unitsCompleted = int.TryParse(wo.unitsRequired, out result) ? int.Parse(wo.unitsComplete) : 0;
+            UnitOfWork = !string.IsNullOrWhiteSpace(wo.unitOfWork) != (unitsRequired > 0) ? StyleConstants.Warning : StyleConstants.Normal;
+            UnitsRequired = !string.IsNullOrWhiteSpace(wo.unitOfWork) != (unitsRequired > 0) ? StyleConstants.Warning : StyleConstants.Normal;
+            UnitsCompleted = unitsRequired > 0 && unitsCompleted < unitsRequired ? StyleConstants.Warning : StyleConstants.Normal;
+
+            var warningStyle = StyleConstants.Warning;
+            if (!wo.workOrderType.Equals("RE") && !string.IsNullOrWhiteSpace(wo.stdJobNo) && !wo.maintenanceType.Equals("NM"))
+                warningStyle = StyleConstants.Error;
+
+            var estimateDurHrs = wo.estimatedDurationsHrs;
+            var estimateLabHrs = (wo.calculatedLabFlag.Equals("Y") ? wo.calculatedLabHrs : wo.estimatedLabHrs);
+            var estimateLabCost = (wo.calculatedLabFlag.Equals("Y") ? wo.calculatedLabCost : wo.estimatedLabCost);
+            var estimateMatCost = (wo.calculatedMatFlag.Equals("Y") ? wo.calculatedMatCost : wo.estimatedMatCost);
+
+            ActualDurationHrs = StyleConstants.Normal;
+            ActualLabHrs = StyleConstants.Normal;
+            ActualLabCost = StyleConstants.Normal;
+            ActualMatCost = StyleConstants.Normal;
+            ActualOtherCost = StyleConstants.Normal;
+            //durationHrs
+            if (!MathUtil.InThreshold(estimateDurHrs, wo.actualDurationsHrs, 1f))
+                ActualDurationHrs = StyleConstants.Error;
+            else if (!MathUtil.InThreshold(estimateDurHrs, wo.actualDurationsHrs, .2f))
+                ActualDurationHrs = warningStyle;
+            //lab hrs
+            if (!MathUtil.InThreshold(estimateLabHrs, wo.actualLabHrs, 1f))
+                ActualLabHrs = StyleConstants.Error;
+            else if (!MathUtil.InThreshold(estimateLabHrs, wo.actualLabHrs, .2f))
+                ActualLabHrs = warningStyle;
+            //lab cost
+            if (!MathUtil.InThreshold(estimateLabCost, wo.actualLabCost, 1f))
+                ActualLabCost = StyleConstants.Error;
+            else if (!MathUtil.InThreshold(estimateLabCost, wo.actualLabCost, .2f))
+                ActualLabCost = warningStyle;
+            //mat cost
+            if (!MathUtil.InThreshold(estimateMatCost, wo.actualMatCost, 1f))
+                ActualMatCost = StyleConstants.Error;
+            else if (!MathUtil.InThreshold(estimateMatCost, wo.actualMatCost, .2f))
+                ActualMatCost = warningStyle;
+            //other cost
+            if (!MathUtil.InThreshold(wo.estimatedOtherCost, wo.actualOtherCost, 1f))
+                ActualOtherCost = StyleConstants.Error;
+            else if (!MathUtil.InThreshold(wo.estimatedOtherCost, wo.actualOtherCost, .2f))
+                ActualOtherCost = warningStyle;
+
+
+            JobCodesFlag = wo.maintenanceType.Equals("CO") && !wo.jobCodeFlag.Equals("Y") ? StyleConstants.Error : StyleConstants.Normal;
+            CompleteTextFlag = wo.completeTextFlag == "N" ? StyleConstants.Warning : StyleConstants.Normal;
+        }
 
     }
     public class WorkOrderReferenceCodes
     {
-        //public string ExtendedDescriptionHeader;
-        //public string ExtendedDescriptionBody;
         public string WorkRequest;//001_9001
         //public string WorkRequestText;//001_9001
         public string ComentariosDuraciones;//002_9001
@@ -237,6 +347,7 @@ namespace EllipseWorkOrdersClassLibrary
                     origDocNo = drWorkOrder["ORIG_DOC_NO"].ToString().Trim(),
                     requestId = drWorkOrder["REQUEST_ID"].ToString().Trim(),
                     stdJobNo = drWorkOrder["STD_JOB_NO"].ToString().Trim(),
+                    maintSchTask = drWorkOrder["MAINT_SCH_TASK"].ToString().Trim(),
                     autoRequisitionInd = drWorkOrder["AUTO_REQ_IND"].ToString().Trim(),
                     assignPerson = drWorkOrder["ASSIGN_PERSON"].ToString().Trim(),
                     planPriority = drWorkOrder["PLAN_PRIORITY"].ToString().Trim(),
@@ -250,9 +361,12 @@ namespace EllipseWorkOrdersClassLibrary
                     planFinTime = drWorkOrder["PLAN_FIN_TIME"].ToString().Trim(),
                     unitOfWork = drWorkOrder["UNIT_OF_WORK"].ToString().Trim(),
                     unitsRequired = drWorkOrder["UNITS_REQUIRED"].ToString().Trim(),
+                    pcComplete = drWorkOrder["PC_COMPLETE"].ToString().Trim(),
+                    unitsComplete = drWorkOrder["UNITS_COMPLETE"].ToString().Trim(),
                     accountCode = drWorkOrder["DSTRCT_ACCT_CODE"].ToString().Trim(),
                     projectNo = drWorkOrder["PROJECT_NO"].ToString().Trim(),
                     parentWo = drWorkOrder["PARENT_WO"].ToString().Trim(),
+                    failurePart = drWorkOrder["FAILURE_PART"].ToString().Trim(),
                     jobCode1 = drWorkOrder["WO_JOB_CODEX1"].ToString().Trim(),
                     jobCode2 = drWorkOrder["WO_JOB_CODEX2"].ToString().Trim(),
                     jobCode3 = drWorkOrder["WO_JOB_CODEX3"].ToString().Trim(),
@@ -300,6 +414,11 @@ namespace EllipseWorkOrdersClassLibrary
 
             return list;
         }
+
+        public static WorkOrder FetchWorkOrder(EllipseFunctions ef, string district, WorkOrderDTO workOrder)
+        {
+            return FetchWorkOrder(ef, district, workOrder.prefix + workOrder.no);
+        }
         public static WorkOrder FetchWorkOrder(EllipseFunctions ef, string district, string workOrder)
         {
             long number1;
@@ -331,6 +450,7 @@ namespace EllipseWorkOrdersClassLibrary
                 origDocNo = drWorkOrder["ORIG_DOC_NO"].ToString().Trim(),
                 requestId = drWorkOrder["REQUEST_ID"].ToString().Trim(),
                 stdJobNo = drWorkOrder["STD_JOB_NO"].ToString().Trim(),
+                maintSchTask = drWorkOrder["MAINT_SCH_TASK"].ToString().Trim(),
                 autoRequisitionInd = drWorkOrder["AUTO_REQ_IND"].ToString().Trim(),
                 assignPerson = drWorkOrder["ASSIGN_PERSON"].ToString().Trim(),
                 planPriority = drWorkOrder["PLAN_PRIORITY"].ToString().Trim(),
@@ -344,9 +464,12 @@ namespace EllipseWorkOrdersClassLibrary
                 planFinTime = drWorkOrder["PLAN_FIN_TIME"].ToString().Trim(),
                 unitOfWork = drWorkOrder["UNIT_OF_WORK"].ToString().Trim(),
                 unitsRequired = drWorkOrder["UNITS_REQUIRED"].ToString().Trim(),
+                pcComplete = drWorkOrder["PC_COMPLETE"].ToString().Trim(),
+                unitsComplete = drWorkOrder["UNITS_COMPLETE"].ToString().Trim(),
                 accountCode = drWorkOrder["DSTRCT_ACCT_CODE"].ToString().Trim(),
                 projectNo = drWorkOrder["PROJECT_NO"].ToString().Trim(),
                 parentWo = drWorkOrder["PARENT_WO"].ToString().Trim(),
+                failurePart = drWorkOrder["FAILURE_PART"].ToString().Trim(),
                 jobCode1 = drWorkOrder["WO_JOB_CODEX1"].ToString().Trim(),
                 jobCode2 = drWorkOrder["WO_JOB_CODEX2"].ToString().Trim(),
                 jobCode3 = drWorkOrder["WO_JOB_CODEX3"].ToString().Trim(),
@@ -391,7 +514,57 @@ namespace EllipseWorkOrdersClassLibrary
             order.SetRelatedWoDto(drWorkOrder["RELATED_WO"].ToString().Trim());
             return order;
         }
+        public static ExtendedDescription GetWOrkOrderExtendedDescription(string urlService, OperationContext opContext, string district, string workOrder)
+        {
+            var description = new ExtendedDescription();
+            var stdTextOpContext = StdText.GetStdTextOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
 
+            var stdTextId = "WO" + district + workOrder;
+
+            description.Header = StdText.GetHeader(urlService, stdTextOpContext, stdTextId);
+            description.Body = StdText.GetText(urlService, stdTextOpContext, stdTextId);
+            return description;
+        }
+
+        public static ReplyMessage UpdateWorkOrderExtendedDescription(string urlService, OperationContext opContext, string district, string workOrder, ExtendedDescription description)
+        {
+            return UpdateWorkOrderExtendedDescription(urlService, opContext, district, workOrder, description.Header, description.Body);
+        }
+
+        public static ReplyMessage UpdateWorkOrderExtendedDescription(string urlService, OperationContext opContext, string district, string workOrder, string headerText, string bodyText)
+        {
+            var reply = new ReplyMessage();
+            try
+            {
+                var stdTextOpContext = StdText.GetCustomOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
+                var stdTextId = "WO" + district + workOrder;
+                bool headerReply = true, bodyReply = true;
+                if (!string.IsNullOrEmpty(headerText))
+                    headerReply = StdText.SetHeader(urlService, stdTextOpContext, stdTextId, headerText);
+                if (!string.IsNullOrEmpty(bodyText))
+                    bodyReply = StdText.SetText(urlService, stdTextOpContext, stdTextId, bodyText);
+
+                if (headerReply && bodyReply)
+                    return reply;
+                var errorList = new List<string>();
+                if(!headerReply)
+                    errorList.Add("No se pudo actualizar el encabezado de texto del StdText WO" + workOrder);
+                if (!bodyReply)
+                    errorList.Add("No se pudo actualizar el cuerpo de texto del StdText WO" + workOrder);
+                reply.Errors = errorList.ToArray();
+                reply.Message = "Error al actualizar el texto extendido de orden " + workOrder;
+
+
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("WorkOrder.UpdateWorkOrderExtendedDescription()", ex.Message);
+                reply.Message = "Error al actualizar el texto extendido de orden " + workOrder;
+                var errorList = new List<string> {"No se pudo actualizar el texto del StdText WO" + workOrder};
+                reply.Errors = errorList.ToArray();
+            }
+            return reply;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -408,7 +581,7 @@ namespace EllipseWorkOrdersClassLibrary
             //se cargan los parámetros de la orden
             requestWo.districtCode = wo.districtCode ?? requestWo.districtCode;
             requestWo.workGroup = wo.workGroup ?? requestWo.workGroup;
-            if (wo.GetWorkOrderDto().no == null && wo.GetWorkOrderDto().prefix != null)
+            if (string.IsNullOrWhiteSpace(wo.GetWorkOrderDto().no) && !string.IsNullOrWhiteSpace(wo.GetWorkOrderDto().prefix))
                 requestWo.workOrderPrefix = wo.GetWorkOrderDto().prefix;
             else
                 requestWo.workOrder = wo.GetWorkOrderDto();
@@ -434,6 +607,7 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.requestId = wo.requestId ?? requestWo.requestId;
 
             requestWo.stdJobNo = wo.stdJobNo ?? requestWo.stdJobNo;
+            requestWo.maintenanceSchedTask = wo.maintSchTask ?? requestWo.maintenanceSchedTask;
             requestWo.autoRequisitionInd = !string.IsNullOrWhiteSpace(wo.autoRequisitionInd) && wo.autoRequisitionInd.Equals("Y");
             requestWo.assignPerson = wo.assignPerson ?? requestWo.assignPerson;
             requestWo.planPriority = wo.planPriority ?? requestWo.planPriority;
@@ -446,12 +620,13 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.planFinDate = wo.planFinDate ?? requestWo.planFinDate;
             requestWo.planFinTime = wo.planFinTime ?? requestWo.planFinTime;
             requestWo.unitOfWork = wo.unitOfWork ?? requestWo.unitOfWork;
-            requestWo.unitsRequired = wo.unitsRequired != null ? Convert.ToDecimal(wo.unitsRequired) : default(decimal);
-
+            requestWo.unitsRequired = !string.IsNullOrWhiteSpace(wo.unitsRequired) ? Convert.ToDecimal(wo.unitsRequired) : default(decimal);
+            requestWo.unitsRequiredSpecified = !string.IsNullOrEmpty(wo.unitsRequired);
             requestWo.accountCode = wo.accountCode ?? requestWo.accountCode;
             requestWo.projectNo = wo.projectNo ?? requestWo.projectNo;
             requestWo.parentWo = wo.parentWo ?? requestWo.parentWo;
 
+            requestWo.failurePart = wo.failurePart ?? requestWo.failurePart;
             requestWo.jobCode1 = wo.jobCode1 ?? requestWo.jobCode1;
             requestWo.jobCode2 = wo.jobCode2 ?? requestWo.jobCode2;
             requestWo.jobCode3 = wo.jobCode3 ?? requestWo.jobCode3;
@@ -467,15 +642,15 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
             
             requestWo.calculatedDurationsFlag = Utils.IsTrue(wo.calculatedDurationsFlag, true);
-            requestWo.calculatedDurationsFlagSpecified = wo.calculatedDurationsFlag != null;
+            requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
             requestWo.calculatedLabFlag = Utils.IsTrue(wo.calculatedLabFlag, true);
-            requestWo.calculatedLabFlagSpecified = wo.calculatedLabFlag != null;
+            requestWo.calculatedLabFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedLabFlag);
             requestWo.calculatedMatFlag = Utils.IsTrue(wo.calculatedMatFlag, true);
-            requestWo.calculatedMatFlagSpecified = wo.calculatedMatFlag != null;
+            requestWo.calculatedMatFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedMatFlag);
             requestWo.calculatedEquipmentFlag = Utils.IsTrue(wo.calculatedEquipmentFlag, true);
-            requestWo.calculatedEquipmentFlagSpecified = wo.calculatedEquipmentFlag != null;
+            requestWo.calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag);
             requestWo.calculatedOtherFlag = Utils.IsTrue(wo.calculatedOtherFlag, true);
-            requestWo.calculatedOtherFlagSpecified = wo.calculatedOtherFlag != null;
+            requestWo.calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag);
             //se envía la acción
             return proxyWo.create(opContext, requestWo);
         }
@@ -521,6 +696,7 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.requestId = wo.requestId ?? requestWo.requestId;
 
             requestWo.stdJobNo = wo.stdJobNo ?? requestWo.stdJobNo;
+            requestWo.maintenanceSchedTask = wo.maintSchTask ?? requestWo.maintenanceSchedTask;
             requestWo.autoRequisitionInd = !string.IsNullOrWhiteSpace(wo.autoRequisitionInd) && wo.autoRequisitionInd.Equals("Y");
             requestWo.assignPerson = wo.assignPerson ?? requestWo.assignPerson;
             requestWo.planPriority = wo.planPriority ?? requestWo.planPriority;
@@ -535,15 +711,14 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.planFinTime = wo.planFinTime ?? requestWo.planFinTime;
 
             requestWo.unitOfWork = wo.unitOfWork ?? requestWo.unitOfWork;
-            if (wo.unitsRequired != null && wo.unitsRequired == "")
-                wo.unitsRequired = "0";
-            requestWo.unitsRequired = wo.unitsRequired != null ? Convert.ToDecimal(wo.unitsRequired) : default(decimal);
-            requestWo.unitsRequiredSpecified = wo.unitsRequired != null;
+            requestWo.unitsRequired = !string.IsNullOrWhiteSpace(wo.unitsRequired) ? Convert.ToDecimal(wo.unitsRequired) : default(decimal);
+            requestWo.unitsRequiredSpecified = !string.IsNullOrEmpty(wo.unitsRequired);
 
             requestWo.accountCode = wo.accountCode ?? requestWo.accountCode;
             requestWo.projectNo = wo.projectNo ?? requestWo.projectNo;
             requestWo.parentWo = wo.parentWo ?? requestWo.parentWo;
 
+            requestWo.failurePart = wo.failurePart ?? requestWo.failurePart;
             requestWo.jobCode1 = wo.jobCode1 ?? requestWo.jobCode1;
             requestWo.jobCode2 = wo.jobCode2 ?? requestWo.jobCode2;
             requestWo.jobCode3 = wo.jobCode3 ?? requestWo.jobCode3;
@@ -559,7 +734,7 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
 
             requestWo.calculatedDurationsFlag = Convert.ToBoolean(wo.calculatedDurationsFlag);
-            requestWo.calculatedDurationsFlagSpecified = wo.calculatedDurationsFlag != null;
+            requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
             //
             if (wo.calculatedLabFlag == null && wo.calculatedMatFlag == null && wo.calculatedEquipmentFlag == null && wo.calculatedOtherFlag == null) 
                 return proxyWo.modify(opContext, requestWo);
@@ -569,13 +744,13 @@ namespace EllipseWorkOrdersClassLibrary
                 districtCode = wo.districtCode,
                 workOrder = wo.GetWorkOrderDto(),
                 calculatedLabFlag = Convert.ToBoolean(wo.calculatedLabFlag),
-                calculatedLabFlagSpecified = wo.calculatedLabFlag != null,
+                calculatedLabFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedLabFlag),
                 calculatedMatFlag = Convert.ToBoolean(wo.calculatedMatFlag),
-                calculatedMatFlagSpecified = wo.calculatedMatFlag != null,
+                calculatedMatFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedMatFlag),
                 calculatedEquipmentFlag = Convert.ToBoolean(wo.calculatedEquipmentFlag),
-                calculatedEquipmentFlagSpecified = wo.calculatedEquipmentFlag != null,
+                calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag),
                 calculatedOtherFlag = Convert.ToBoolean(wo.calculatedOtherFlag),
-                calculatedOtherFlagSpecified = wo.calculatedOtherFlag != null,
+                calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag),
             };
 
             proxyWo.updateEstimates(opContext, requestEstimates);
@@ -621,7 +796,7 @@ namespace EllipseWorkOrdersClassLibrary
             var replyWo = proxyWo.complete(opContext, requestWo);
             
             //comentario
-            if (!appendCloseComment) return replyWo;
+            if (!appendCloseComment || string.IsNullOrWhiteSpace(wo.completeCommentToAppend)) return replyWo;
             AppendTextToCloseComment(urlService, opContext, replyWo.districtCode, replyWo.workOrder.prefix + replyWo.workOrder.no, wo.completeCommentToAppend);
             //
             return replyWo;
@@ -995,39 +1170,42 @@ namespace EllipseWorkOrdersClassLibrary
             return woRefCodes;
         }
 
-        public static bool UpdateWorkOrderReferenceCodes(EllipseFunctions ef, string urlService, OperationContext opContext, string district, string workOrder, WorkOrderReferenceCodes woRefCodes)
+        public static ReplyMessage UpdateWorkOrderReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string district, string workOrder, WorkOrderReferenceCodes woRefCodes)
         {
+            var reply = new ReplyMessage();
+            var error = new List<string>();
+
             const string entityType = "WKO";
             var entityValue = "1" + district + workOrder;
             var itemList = new List<ReferenceCodeItem>();
 
-            var item001 = new ReferenceCodeItem(entityType, entityValue, "001", "001", woRefCodes.WorkRequest);
-            var item002 = new ReferenceCodeItem(entityType, entityValue, "002", "001", woRefCodes.ComentariosDuraciones, null, woRefCodes.ComentariosDuracionesText);
-            var item003 = new ReferenceCodeItem(entityType, entityValue, "003", "001", woRefCodes.EmpleadoId);
-            var item005 = new ReferenceCodeItem(entityType, entityValue, "005", "001", woRefCodes.NroComponente);
-            var item006 = new ReferenceCodeItem(entityType, entityValue, "006", "001", woRefCodes.P1EqLivMed);
-            var item007 = new ReferenceCodeItem(entityType, entityValue, "007", "001", woRefCodes.P2EqMovilMinero);
-            var item008 = new ReferenceCodeItem(entityType, entityValue, "008", "001", woRefCodes.P3ManejoSustPeligrosa);
-            var item009 = new ReferenceCodeItem(entityType, entityValue, "009", "001", woRefCodes.P4GuardasEquipo);
-            var item010 = new ReferenceCodeItem(entityType, entityValue, "010", "001", woRefCodes.P5Aislamiento);
-            var item011 = new ReferenceCodeItem(entityType, entityValue, "011", "001", woRefCodes.P6TrabajosAltura);
-            var item012 = new ReferenceCodeItem(entityType, entityValue, "012", "001", woRefCodes.P7ManejoCargas);
-            var item013 = new ReferenceCodeItem(entityType, entityValue, "013", "001", woRefCodes.ProyectoIcn);
-            var item014 = new ReferenceCodeItem(entityType, entityValue, "014", "001", woRefCodes.Reembolsable);
-            var item015 = new ReferenceCodeItem(entityType, entityValue, "015", "001", woRefCodes.FechaNoConforme, null, woRefCodes.FechaNoConformeText);
-            var item016 = new ReferenceCodeItem(entityType, entityValue, "016", "001", woRefCodes.NoConforme);
-            var item017 = new ReferenceCodeItem(entityType, entityValue, "017", "001", woRefCodes.FechaEjecucion);
-            var item018 = new ReferenceCodeItem(entityType, entityValue, "018", "001", woRefCodes.HoraIngreso);
-            var item019 = new ReferenceCodeItem(entityType, entityValue, "019", "001", woRefCodes.HoraSalida);
-            var item020 = new ReferenceCodeItem(entityType, entityValue, "020", "001", woRefCodes.NombreBuque);
-            var item021 = new ReferenceCodeItem(entityType, entityValue, "021", "001", woRefCodes.CalificacionEncuesta);
-            var item022 = new ReferenceCodeItem(entityType, entityValue, "022", "001", woRefCodes.TareaCritica);
-            var item024 = new ReferenceCodeItem(entityType, entityValue, "024", "001", woRefCodes.Garantia, null, woRefCodes.GarantiaText);
-            var item025 = new ReferenceCodeItem(entityType, entityValue, "025", "001", woRefCodes.CodigoCertificacion);
-            var item026 = new ReferenceCodeItem(entityType, entityValue, "026", "001", woRefCodes.FechaEntrega);
-            var item029 = new ReferenceCodeItem(entityType, entityValue, "029", "001", woRefCodes.RelacionarEv);
-            var item030 = new ReferenceCodeItem(entityType, entityValue, "030", "001", woRefCodes.Departamento);
-            var item031 = new ReferenceCodeItem(entityType, entityValue, "031", "001", woRefCodes.Localizacion);
+            var item001 = new ReferenceCodeItem(entityType, entityValue, "001", "001", woRefCodes.WorkRequest) { ShortName = "WorkRequest" };
+            var item002 = new ReferenceCodeItem(entityType, entityValue, "002", "001", woRefCodes.ComentariosDuraciones, null, woRefCodes.ComentariosDuracionesText) { ShortName = "ComentariosDur" };
+            var item003 = new ReferenceCodeItem(entityType, entityValue, "003", "001", woRefCodes.EmpleadoId) { ShortName = "EmpleadoId" };
+            var item005 = new ReferenceCodeItem(entityType, entityValue, "005", "001", woRefCodes.NroComponente) { ShortName = "NroComponente" };
+            var item006 = new ReferenceCodeItem(entityType, entityValue, "006", "001", woRefCodes.P1EqLivMed) { ShortName = "P1EqLivMed" };
+            var item007 = new ReferenceCodeItem(entityType, entityValue, "007", "001", woRefCodes.P2EqMovilMinero) { ShortName = "P2EqMovilMinero" };
+            var item008 = new ReferenceCodeItem(entityType, entityValue, "008", "001", woRefCodes.P3ManejoSustPeligrosa) { ShortName = "P3ManejoSustPelig" };
+            var item009 = new ReferenceCodeItem(entityType, entityValue, "009", "001", woRefCodes.P4GuardasEquipo) { ShortName = "P4GuardasEquipo" };
+            var item010 = new ReferenceCodeItem(entityType, entityValue, "010", "001", woRefCodes.P5Aislamiento) { ShortName = "P5Aislamiento" };
+            var item011 = new ReferenceCodeItem(entityType, entityValue, "011", "001", woRefCodes.P6TrabajosAltura) { ShortName = "P6TrabajosAltura" };
+            var item012 = new ReferenceCodeItem(entityType, entityValue, "012", "001", woRefCodes.P7ManejoCargas) { ShortName = "P7ManejoCargas" };
+            var item013 = new ReferenceCodeItem(entityType, entityValue, "013", "001", woRefCodes.ProyectoIcn) { ShortName = "ProyectoIcn" };
+            var item014 = new ReferenceCodeItem(entityType, entityValue, "014", "001", woRefCodes.Reembolsable) { ShortName = "Reembolsable" };
+            var item015 = new ReferenceCodeItem(entityType, entityValue, "015", "001", woRefCodes.FechaNoConforme, null, woRefCodes.FechaNoConformeText) { ShortName = "FechaNoConforme" };
+            var item016 = new ReferenceCodeItem(entityType, entityValue, "016", "001", woRefCodes.NoConforme) { ShortName = "NoConforme" };
+            var item017 = new ReferenceCodeItem(entityType, entityValue, "017", "001", woRefCodes.FechaEjecucion) { ShortName = "FechaEjecucion" };
+            var item018 = new ReferenceCodeItem(entityType, entityValue, "018", "001", woRefCodes.HoraIngreso) { ShortName = "HoraIngreso" };
+            var item019 = new ReferenceCodeItem(entityType, entityValue, "019", "001", woRefCodes.HoraSalida) { ShortName = "HoraSalida" };
+            var item020 = new ReferenceCodeItem(entityType, entityValue, "020", "001", woRefCodes.NombreBuque) { ShortName = "NombreBuque" };
+            var item021 = new ReferenceCodeItem(entityType, entityValue, "021", "001", woRefCodes.CalificacionEncuesta) { ShortName = "CalifEncuesta" };
+            var item022 = new ReferenceCodeItem(entityType, entityValue, "022", "001", woRefCodes.TareaCritica) { ShortName = "TareaCritica" };
+            var item024 = new ReferenceCodeItem(entityType, entityValue, "024", "001", woRefCodes.Garantia, null, woRefCodes.GarantiaText) { ShortName = "Garantia" };
+            var item025 = new ReferenceCodeItem(entityType, entityValue, "025", "001", woRefCodes.CodigoCertificacion) { ShortName = "CodCertificacion" };
+            var item026 = new ReferenceCodeItem(entityType, entityValue, "026", "001", woRefCodes.FechaEntrega) { ShortName = "FechaEntrega" };
+            var item029 = new ReferenceCodeItem(entityType, entityValue, "029", "001", woRefCodes.RelacionarEv) { ShortName = "RelacionarEv" };
+            var item030 = new ReferenceCodeItem(entityType, entityValue, "030", "001", woRefCodes.Departamento) { ShortName = "Departamento" };
+            var item031 = new ReferenceCodeItem(entityType, entityValue, "031", "001", woRefCodes.Localizacion) { ShortName = "Localizacion" };
 
             itemList.Add(item001);
             itemList.Add(item002);
@@ -1057,13 +1235,55 @@ namespace EllipseWorkOrdersClassLibrary
             itemList.Add(item030);
             itemList.Add(item031);
 
-            var refOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
+            var refCodeOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
 
-            foreach(var item in itemList)
-                ReferenceCodeActions.ModifyRefCode(ef, urlService, refOpContext, item);
-            return true;
+            foreach (var item in itemList)
+            {
+                try
+                {
+                    if (item.RefCode == null)
+                        continue;
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext, item);
+                    var stdTextId = replyRefCode.stdTxtKey;
+                    if (string.IsNullOrWhiteSpace(stdTextId))
+                        throw new Exception("No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar " + item.ShortName + ": " + ex.Message);
+                }
+            }
+
+            reply.Errors = error.ToArray();
+            return reply;
         }
 
+        public static WorkOrderServiceRecordWorkProgressReplyDTO RecordWorkProgress(string urlService, OperationContext opContext, string districtCode, WorkOrderDTO workOrder, string percentComplete, string unitsComplete, string unitsRequired = null)
+        {
+            var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
+
+            var requestWo = new WorkOrderServiceRecordWorkProgressRequestDTO();
+
+            proxyWo.Url = urlService + "/WorkOrder";
+
+            //se cargan los parámetros de la orden
+            requestWo.districtCode = districtCode;
+            requestWo.workOrder = workOrder;
+            requestWo.pcComplete = !string.IsNullOrWhiteSpace(percentComplete) ? Convert.ToDecimal(percentComplete) : default(decimal);
+            requestWo.pcCompleteSpecified = !string.IsNullOrEmpty(percentComplete);
+            requestWo.unitsComplete = !string.IsNullOrWhiteSpace(unitsComplete) ? Convert.ToDecimal(unitsComplete) : default(decimal);
+            requestWo.unitsCompleteSpecified = !string.IsNullOrEmpty(unitsComplete);
+            requestWo.unitsRequired = !string.IsNullOrWhiteSpace(unitsRequired) ? Convert.ToDecimal(unitsRequired) : default(decimal);
+            requestWo.unitsRequiredSpecified = !string.IsNullOrEmpty(unitsRequired);
+            //se envía la acción
+            var replyWo = proxyWo.recordWorkProgress(opContext, requestWo);
+            //
+            return replyWo;
+        }
+        public static WorkOrderServiceRecordWorkProgressReplyDTO CompleteWorkProgress(string urlService, OperationContext opContext, string districtCode, WorkOrderDTO workOrder)
+        {
+            return RecordWorkProgress(urlService, opContext, districtCode, workOrder, "100", null);
+        }
 
         /// <summary>
         /// Obtiene un nuevo objeto de tipo WorkOrderDTO a partir del número de la orden
@@ -1078,29 +1298,6 @@ namespace EllipseWorkOrdersClassLibrary
             no = no.Trim();
             if(no.Length < 3)
                 throw new Exception(@"El número de orden no corresponde a una orden válida");
-            //if (no.All(char.IsDigit))
-            //{
-            //    if (no.Length < 8)
-            //    {
-            //        workOrderDto.prefix = no.PadLeft(8).Substring(0, 2);
-            //        workOrderDto.no = no.PadLeft(8).Substring(2, no.PadLeft(8).Length - 2);
-            //    }
-            //    else
-            //    {
-            //        workOrderDto.prefix = no.Substring(0, 2);
-            //        workOrderDto.no = no.Substring(2, no.Length - 2);
-            //    }
-            //}
-            //else
-            //{
-            //    if (!no.Substring(0, 2).All(char.IsDigit) && no.Substring(2, no.Length - 2).All(char.IsDigit))
-            //    {
-            //        workOrderDto.prefix = no.Substring(0, 2);
-            //        workOrderDto.no = no.Substring(2, no.Length - 2);
-            //    }
-            //    else
-            //        workOrderDto.no = no;
-            //}
             workOrderDto.prefix = no.Substring(0, 2);
             workOrderDto.no = no.Substring(2, no.Length - 2);
             return workOrderDto;
@@ -1295,7 +1492,7 @@ namespace EllipseWorkOrdersClassLibrary
                     " WO.DSTRCT_CODE, WO.WORK_GROUP, WO.WORK_ORDER, WO.WO_STATUS_M, WO.WO_DESC, " +
                     " WO.EQUIP_NO, WO.COMP_CODE, WO.COMP_MOD_CODE, WO.LOCATION, WO.RAISED_DATE, WO.RAISED_TIME," +
                     " WO.ORIGINATOR_ID, WO.ORIG_PRIORITY, WO.ORIG_DOC_TYPE, WO.ORIG_DOC_NO, WO.REQUEST_ID, WO.MSSS_STATUS_IND," +
-                    " WO.WO_TYPE, WO.MAINT_TYPE, WO.WO_STATUS_U, WO.STD_JOB_NO, WO.AUTO_REQ_IND, WO.ASSIGN_PERSON, WO.PLAN_PRIORITY, WO.CLOSED_COMMIT_DT, WO.UNIT_OF_WORK, WO.UNITS_REQUIRED, WO.RELATED_WO," +
+                    " WO.WO_TYPE, WO.MAINT_TYPE, WO.WO_STATUS_U, WO.STD_JOB_NO, WO.MAINT_SCH_TASK, WO.AUTO_REQ_IND, WO.ASSIGN_PERSON, WO.PLAN_PRIORITY, WO.CLOSED_COMMIT_DT, WO.UNIT_OF_WORK, WO.UNITS_REQUIRED, FAILURE_PART, PC_COMPLETE, UNITS_COMPLETE, WO.RELATED_WO," +
                     " WO.REQ_START_DATE, WO.REQ_START_TIME, WO.REQ_BY_DATE, WO.REQ_BY_TIME, WO.PLAN_STR_DATE, WO.PLAN_STR_TIME, WO.PLAN_FIN_DATE, WO.PLAN_FIN_TIME," +
                     " SUBSTR(WO.DSTRCT_ACCT_CODE, 5) DSTRCT_ACCT_CODE, WO.PROJECT_NO, WO.PARENT_WO," +
                     " WO.WO_JOB_CODEX1, WO.WO_JOB_CODEX2, WO.WO_JOB_CODEX3, WO.WO_JOB_CODEX4, WO.WO_JOB_CODEX5, WO.WO_JOB_CODEX6, WO.WO_JOB_CODEX7, WO.WO_JOB_CODEX8, WO.WO_JOB_CODEX9, WO.WO_JOB_CODEX10," +
@@ -1347,7 +1544,7 @@ namespace EllipseWorkOrdersClassLibrary
                     " WO.DSTRCT_CODE, WO.WORK_GROUP, WO.WORK_ORDER, WO.WO_STATUS_M, WO.WO_DESC, " +
                     " WO.EQUIP_NO, WO.COMP_CODE, WO.COMP_MOD_CODE, WO.LOCATION, WO.RAISED_DATE, WO.RAISED_TIME," +
                     " WO.ORIGINATOR_ID, WO.ORIG_PRIORITY, WO.ORIG_DOC_TYPE, WO.ORIG_DOC_NO, WO.REQUEST_ID, WO.MSSS_STATUS_IND," +
-                    " WO.WO_TYPE, WO.MAINT_TYPE, WO.WO_STATUS_U, WO.STD_JOB_NO, WO.AUTO_REQ_IND, WO.ASSIGN_PERSON, WO.PLAN_PRIORITY, WO.CLOSED_COMMIT_DT, WO.UNIT_OF_WORK, WO.UNITS_REQUIRED, WO.RELATED_WO," +
+                    " WO.WO_TYPE, WO.MAINT_TYPE, WO.WO_STATUS_U, WO.STD_JOB_NO, WO.MAINT_SCH_TASK, WO.AUTO_REQ_IND, WO.ASSIGN_PERSON, WO.PLAN_PRIORITY, WO.CLOSED_COMMIT_DT, WO.UNIT_OF_WORK, WO.UNITS_REQUIRED, FAILURE_PART, PC_COMPLETE, UNITS_COMPLETE, WO.RELATED_WO," +
                     " WO.REQ_START_DATE, WO.REQ_START_TIME, WO.REQ_BY_DATE, WO.REQ_BY_TIME, WO.PLAN_STR_DATE, WO.PLAN_STR_TIME, WO.PLAN_FIN_DATE, WO.PLAN_FIN_TIME," +
                     " SUBSTR(WO.DSTRCT_ACCT_CODE, 5) DSTRCT_ACCT_CODE, WO.PROJECT_NO, WO.PARENT_WO," +
                     " WO.WO_JOB_CODEX1, WO.WO_JOB_CODEX2, WO.WO_JOB_CODEX3, WO.WO_JOB_CODEX4, WO.WO_JOB_CODEX5, WO.WO_JOB_CODEX6, WO.WO_JOB_CODEX7, WO.WO_JOB_CODEX8, WO.WO_JOB_CODEX9, WO.WO_JOB_CODEX10," +

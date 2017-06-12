@@ -29,13 +29,16 @@ namespace EllipseCommonsClassLibrary
         private SqlCommand _sqlComm;
         private OracleConnection _sqlOracleConn;
         private OracleCommand _sqlOracleComm;
+        private string _currentConnectionString;
 
+        private string _currentEnviroment;
         public string CurrentEnviroment { get; set; }
     
         private int _connectionTimeOut = 30;//default ODP 15
         private bool _poolingDataBase = true;//default ODP true
         public PostService PostServiceProxy;
         private int _queryAttempt;
+
         /// <summary>
         /// Constructor de la clase. Inicia la clase con el nombre de ambientes disponibles (Ej. Productivo, Test, etc) y sus respectivas direcciones web de conexión a los web services
         /// </summary>
@@ -147,11 +150,11 @@ namespace EllipseCommonsClassLibrary
         }
         public string GetCurrentEnviroment()
         {
-            return CurrentEnviroment;
+            return _currentEnviroment;
         }
         public void SetCurrentEnviroment(string enviroment)
         {
-            CurrentEnviroment = enviroment;
+            _currentEnviroment = enviroment;
         }
         /// <summary>
         /// Establece la base de datos según la información ingresada
@@ -214,8 +217,8 @@ namespace EllipseCommonsClassLibrary
                 try
                 {
                     //Primeramente intenta conseguir la URL del archivo local o de red
-                    var localFile = EnviromentConstants.EllipseUrlFileServicesLocationLocal;
-                    var networkFile = EnviromentConstants.EllipseUrlFileServicesLocation;
+                    var localFile = Debugger.LocalDataPath + EnviromentConstants.ConfigXmlFileName;
+                    var networkFile = EnviromentConstants.UrlServiceFileLocation + EnviromentConstants.ConfigXmlFileName;
                     var doc = File.Exists(localFile) ? XDocument.Load(localFile) : XDocument.Load(networkFile);
 
                     var urlServer = "";
@@ -250,8 +253,8 @@ namespace EllipseCommonsClassLibrary
                 try
                 {
                     //Primeramente intenta conseguir la URL del archivo local o de red
-                    var localFile = EnviromentConstants.EllipseUrlFileServicesLocationLocal;
-                    var networkFile = EnviromentConstants.EllipseUrlFileServicesLocation;
+                    var localFile = Debugger.LocalDataPath + EnviromentConstants.ConfigXmlFileName;
+                    var networkFile = EnviromentConstants.UrlServiceFileLocation + EnviromentConstants.ConfigXmlFileName;
                     var doc = File.Exists(localFile) ? XDocument.Load(localFile) : XDocument.Load(networkFile);
 
                     var urlServer = "";
@@ -286,17 +289,18 @@ namespace EllipseCommonsClassLibrary
         /// Obtiene el data reader con los resultados de una consulta
         /// </summary>
         /// <param name="sqlQuery">Query a consultar</param>
-        /// <param name="connectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
+        /// <param name="customConnectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
         /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
-        public OracleDataReader GetQueryResult(string sqlQuery, string connectionString = null)
+        public OracleDataReader GetQueryResult(string sqlQuery, string customConnectionString = null)
         {
             Debugger.LogQuery(sqlQuery);
             var defaultConnString = "Data Source=" + _dbname + ";User ID=" + _dbuser + ";Password=" + _dbpass + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
 
-            if (_sqlOracleConn == null && connectionString == null)
-                _sqlOracleConn = new OracleConnection(defaultConnString);
-            else if (_sqlOracleConn == null || connectionString != null)
+            var connectionString = customConnectionString ?? defaultConnString;
+
+            if (_sqlOracleConn == null || _currentConnectionString != connectionString)
                 _sqlOracleConn = new OracleConnection(connectionString);
+            _currentConnectionString = connectionString;
             
             _sqlOracleComm = new OracleCommand();
 
@@ -317,7 +321,7 @@ namespace EllipseCommonsClassLibrary
                 if (ex.Message.Contains("ORA-12516") && _queryAttempt < 3)
                 {
                     Thread.Sleep(_connectionTimeOut * 10);
-                    GetQueryResult(sqlQuery, connectionString);
+                    GetQueryResult(sqlQuery, customConnectionString);
                 }
                 
                 Debugger.LogError("EllipseFunctions:GetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
@@ -330,17 +334,18 @@ namespace EllipseCommonsClassLibrary
         /// Obtiene el data set con los resultados de una consulta
         /// </summary>
         /// <param name="sqlQuery">Query a consultar</param>
-        /// <param name="connectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
+        /// <param name="customConnectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
         /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
-        public DataSet GetDataSetQueryResult(string sqlQuery, string connectionString = null)
+        public DataSet GetDataSetQueryResult(string sqlQuery, string customConnectionString = null)
         {
             Debugger.LogQuery(sqlQuery);
             var defaultConnString = "Data Source=" + _dbname + ";User ID=" + _dbuser + ";Password=" + _dbpass + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
 
-            if (_sqlOracleConn == null && connectionString == null)
-                _sqlOracleConn = new OracleConnection(defaultConnString);
-            else if (_sqlOracleConn == null || connectionString != null)
+            var connectionString = customConnectionString ?? defaultConnString;
+
+            if (_sqlOracleConn == null || _currentConnectionString != connectionString)
                 _sqlOracleConn = new OracleConnection(connectionString);
+            _currentConnectionString = connectionString;
 
             _sqlOracleComm = new OracleCommand();
 
@@ -365,7 +370,7 @@ namespace EllipseCommonsClassLibrary
                 if (ex.Message.Contains("ORA-12516") && _queryAttempt < 3)
                 {
                     Thread.Sleep(_connectionTimeOut);
-                    GetQueryResult(sqlQuery, connectionString);
+                    GetQueryResult(sqlQuery, customConnectionString);
                 }
 
                 Debugger.LogError("EllipseFunctions:GetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
@@ -378,9 +383,9 @@ namespace EllipseCommonsClassLibrary
         /// Obtiene el data reader con los resultados de una consulta
         /// </summary>
         /// <param name="sqlQuery">Query a consultar</param>
-        /// <param name="connectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
+        /// <param name="customConnectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
         /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
-        public SqlDataReader GetSqlQueryResult(string sqlQuery, string connectionString = null)
+        public SqlDataReader GetSqlQueryResult(string sqlQuery, string customConnectionString = null)
         {
             Debugger.LogQuery(sqlQuery);
             var dbcatalog = "";
@@ -388,10 +393,11 @@ namespace EllipseCommonsClassLibrary
                 dbcatalog = "Initial Catalog=" + _dbcatalog + "; ";
             var defaultConnectionString = "Data Source=" + _dbname + "; " + dbcatalog + "User Id=" + _dbuser + "; Password=" + _dbpass + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
 
-            if (_sqlConn == null && connectionString == null)
-                _sqlConn = new SqlConnection(defaultConnectionString);
-            else if (_sqlConn == null || connectionString != null)
-                _sqlConn = new SqlConnection(connectionString ?? defaultConnectionString);
+            var connectionString = customConnectionString ?? defaultConnectionString;
+
+            if (_sqlConn == null || _currentConnectionString != connectionString)
+                _sqlConn = new SqlConnection(connectionString);
+            _currentConnectionString = connectionString;
 
             _sqlComm = new SqlCommand();
             _queryAttempt++;
@@ -411,7 +417,7 @@ namespace EllipseCommonsClassLibrary
                 throw;
             }
         }
-        public DataSet GetDataSetSqlQueryResult(string sqlQuery, string connectionString = null)
+        public DataSet GetDataSetSqlQueryResult(string sqlQuery, string customConnectionString = null)
         {
             Debugger.LogQuery(sqlQuery);
             var dbcatalog = "";
@@ -419,10 +425,11 @@ namespace EllipseCommonsClassLibrary
                 dbcatalog = "Initial Catalog=" + _dbcatalog + "; ";
             var defaultConnectionString = "Data Source=" + _dbname + "; " + dbcatalog + "User Id=" + _dbuser + "; Password=" + _dbpass + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
 
-            if (_sqlConn == null && connectionString == null)
-                _sqlConn = new SqlConnection(defaultConnectionString);
-            else if (_sqlConn == null || connectionString != null)
-                _sqlConn = new SqlConnection(connectionString ?? defaultConnectionString);
+            var connectionString = customConnectionString ?? defaultConnectionString;
+
+            if (_sqlConn == null || _currentConnectionString != connectionString)
+                _sqlConn = new SqlConnection(connectionString);
+            _currentConnectionString = connectionString;
 
             _sqlComm = new SqlCommand();
             _queryAttempt++;
@@ -520,16 +527,13 @@ namespace EllipseCommonsClassLibrary
             //Si no existe un reply es error de ejecución. O si el reply tiene un error de datos
             if (reply == null)
             {
-                Debugger.LogError("RibbonEllipse:checkReplyError(Screen.ScreenDTO)", "null reply error");
-                if (Debugger.DebugErrors)
-                    MessageBox.Show(@"Se ha producido un error en tiempo de ejecución");
+                Debugger.LogError("RibbonEllipse:checkReplyError(Screen.ScreenDTO)", "Se ha producido un error en tiempo de ejecución: null reply error");
                 return true;
             }
             // ReSharper disable once InvertIf
             if (reply.message.Length >= 2 && reply.message.Substring(0, 2) == "X2")
             {
-                if (Debugger.DebugErrors)
-                    MessageBox.Show(@"Error: " + reply.message);
+                Debugger.LogError("RibbonEllipse: checkReplyError(Screen.ScreenDTO)", reply.message);
                 return true;
             }
             return false;
@@ -544,46 +548,44 @@ namespace EllipseCommonsClassLibrary
             //Si no existe un reply es error de ejecución. O si el reply tiene un warning de datos
             if (reply == null)
             {
-                Debugger.LogError("RibbonEllipse:checkReplyWarning(Screen.ScreenDTO)", "null reply error");
-                if (Debugger.DebugErrors)
-                    MessageBox.Show(@"Se ha producido un error en tiempo de ejecución");
+                Debugger.LogError("RibbonEllipse:checkReplyWarning(Screen.ScreenDTO)", "Se ha producido un error en tiempo de ejecución: null reply error");
                 return true;
             }
             if (reply.message != null && reply.message.Length >= 2 && reply.message.Substring(0, 2) == "W2")
             {
-                if (Debugger.DebugWarnings)
-                    MessageBox.Show(@"Warning: " + reply.message);
+                Debugger.LogWarning("Warning", reply.message);
+
                 return true;
             }
             if (reply.message == null || reply.functionKeys == null || !reply.functionKeys.StartsWith("XMIT-WARNING"))
                 return false;
-            if (Debugger.DebugWarnings)
-                MessageBox.Show(@"Warning: " + reply.functionKeys);
+
+            Debugger.LogWarning("Warning", reply.functionKeys);
             return true;
         }
 
-        //public bool CheckReplyError(ResponseDTO reply)
-        //{
-        //    //TO DO
-        //    if (!reply.GotErrorMessages()) return true;
-        //    //var errorMessage = "";
-        //    //foreach (var msg in reply.errors)
-        //    //    errorMessage += msg.Field + " " + msg.Text;
-        //    //if (!errorMessage.Equals(""))
-        //    //    throw new Exception(errorMessage);
-        //    return false;
-        //}
-        //public bool CheckReplyWarning(ResponseDTO reply)
-        //{
-        //    //TO DO
-        //    if (!reply.GotWarningMessages()) return true;
-        //    //var warningMessage = "";
-        //    //foreach (var msg in reply.Warnings)
-        //    //    warningMessage += msg.Field + " " + msg.Text;
-        //    //if (!warningMessage.Equals(""))
-        //    //    throw new Exception(warningMessage);
-        //    return false;
-        //}
+        public bool CheckReplyError(ResponseDTO reply)
+        {
+            
+            if (!reply.GotErrorMessages()) return true;
+            var errorMessage = "";
+            foreach (var msg in reply.Errors)
+                errorMessage += msg.Field + " " + msg.Text;
+            if (!errorMessage.Equals(""))
+                throw new Exception(errorMessage);
+            return false;
+        }
+        public bool CheckReplyWarning(ResponseDTO reply)
+        {
+            
+            if (!reply.GotWarningMessages()) return true;
+            var warningMessage = "";
+            foreach (var msg in reply.Warnings)
+                warningMessage += msg.Field + " " + msg.Text;
+            if (!warningMessage.Equals(""))
+                throw new Exception(warningMessage);
+            return false;
+        }
 
         /// <summary>
         /// Verifica si un usuario tiene acceso a una aplicación especificada de Ellipse
@@ -658,6 +660,12 @@ namespace EllipseCommonsClassLibrary
             return listItems;
         }
 
+        public Dictionary<string, string> GetDictionaryItemCodes(string tableType)
+        {
+            var itemList = GetItemCodes(tableType);
+            return itemList.ToDictionary(item => item.code, item => item.description);
+        }
+
         public void SetPostService(string ellipseUser, string ellipsePswd, string ellipsePost, string ellipseDsct, string urlService)
         {
             PostServiceProxy = new PostService(ellipseUser, ellipsePswd, ellipsePost, ellipseDsct, urlService);
@@ -683,6 +691,7 @@ namespace EllipseCommonsClassLibrary
             public static string EwsService = "EWS";
         }
 
+        public static string ConfigXmlFileName = @"EllipseConfiguration.xml";
         public static string EllipseProductivo = "Productivo";
         public static string EllipseTest = "Test";
         public static string EllipseContingencia = "Contingencia";
@@ -690,30 +699,28 @@ namespace EllipseCommonsClassLibrary
         public static string SigcorProductivo = "SIGCOPROD";
         public static string ScadaRdb = "SCADARDB";
         public static string CustomDatabase = "Personalizada";
+        public static string UrlServiceFileLocation = @"\\lmnoas02\SideLine\EllipsePopups\Ellipse8\";
         //public static string SigcorTest = "SIGCOTEST";
-
-        public static string EllipseUrlFileServicesLocation = @"\\lmnoas02\SideLine\EllipsePopups\Ellipse8\EllipseConfiguration.xml";
-        public static string EllipseUrlFileServicesLocationLocal = Debugger.LocalDataPath + @"EllipseConfiguration.xml";
 
         public static string EllipseVarNameServiceProductivo = @"/ellipse/webservice/ellprod";//XPath
         public static string EllipseVarNameServiceContingencia = @"/ellipse/webservice/ellcont";//XPath
-        public static string EllipseVarNameServiceTest = @"/ellipse/webservice/elltest";//XPath
         public static string EllipseVarNameServiceDesarrollo = @"/ellipse/webservice/elldesa";//XPath
+        public static string EllipseVarNameServiceTest = @"/ellipse/webservice/elltest";//XPath
 
         public static string EllipseUrlServicesProductivo = "http://ews-el8prod.lmnerp01.cerrejon.com/ews/services";
         public static string EllipseUrlServicesContingencia = "http://ews-el8prod.lmnerp02.cerrejon.com/ews/services";
-        public static string EllipseUrlServicesTest = "http://ews-el8test.lmnerp03.cerrejon.com/ews/services";
         public static string EllipseUrlServicesDesarrollo = "http://ews-el8desa.lmnerp03.cerrejon.com/ews/services";
+        public static string EllipseUrlServicesTest = "http://ews-el8test.lmnerp03.cerrejon.com/ews/services";
 
         public static string EllipseVarNamePostProductivo = @"/ellipse/url/ellprod";//XPath
         public static string EllipseVarNamePostContingencia = @"/ellipse/url/ellcont";//XPath
-        public static string EllipseVarNamePostTest = @"/ellipse/url/elltest";//XPath
         public static string EllipseVarNamePostDesarrollo = @"/ellipse/url/elldesa";//XPath
+        public static string EllipseVarNamePostTest = @"/ellipse/url/elltest";//XPath
 
-        public static string EllipseUrlPostServicesProductivo = "http://ellipse-el8prod.lmnerp01.cerrejon.com/ria-Ellipse-8.4.29_31/bind?app=";
-        public static string EllipseUrlPostServicesContingencia = "http://ellipse-el8prod.lmnerp02.cerrejon.com/ria-Ellipse-8.4.29_31/bind?app=";
-        public static string EllipseUrlPostServicesTest = "http://ellipse-el8test.lmnerp03.cerrejon.com/ria-Ellipse-8.4.29_31/bind?app=";
-        public static string EllipseUrlPostServicesDesarrollo = "http://ellipse-el8desa.lmnerp03.cerrejon.com/ria-Ellipse-8.4.27.2_76/bind?app=";
+        public static string EllipseUrlPostServicesProductivo = "http://ellipse-el8prod.lmnerp01.cerrejon.com/ria-Ellipse-8.4.31_112/bind?app=";
+        public static string EllipseUrlPostServicesContingencia = "http://ellipse-el8prod.lmnerp02.cerrejon.com/ria-Ellipse-8.4.31_112/bind?app=";
+        public static string EllipseUrlPostServicesDesarrollo = "http://ellipse-el8desa.lmnerp03.cerrejon.com/ria-Ellipse-8.4.29_31/bind?app=";
+        public static string EllipseUrlPostServicesTest = "http://ellipse-el8test.lmnerp03.cerrejon.com/ria-Ellipse-8.4.31_112/bind?app=";
 
 
         public static List<string> GetEnviromentList() {
@@ -725,6 +732,72 @@ namespace EllipseCommonsClassLibrary
             enviromentList.Add(EllipseContingencia);
 
             return enviromentList;
+        }
+
+        public static void GenerateEllipseConfigurationXmlFile()
+        {
+            var xmlFile = "";
+
+            xmlFile += @"<?xml version=""1.0"" encoding=""UTF-8""?>";
+            xmlFile += @"<ellipse>";
+            xmlFile += @"  <env>test</env>";
+            xmlFile += @"  <url>";
+            xmlFile += @"    <ellprod>" + EllipseUrlPostServicesProductivo + "</ellprod>";
+            xmlFile += @"    <ellcont>" + EllipseUrlPostServicesContingencia + "</ellcont>";
+            xmlFile += @"    <elldesa>" + EllipseUrlPostServicesDesarrollo + "</elldesa>";
+            xmlFile += @"    <elltest>" + EllipseUrlPostServicesTest + "</elltest>";
+            xmlFile += @"  </url>";
+            xmlFile += @"  <webservice>";
+            xmlFile += @"    <ellprod>" + EllipseUrlServicesProductivo + "</ellprod>";
+            xmlFile += @"    <ellcont>" + EllipseUrlServicesContingencia + "</ellcont>";
+            xmlFile += @"    <elldesa>" + EllipseUrlServicesDesarrollo + "</elldesa>";
+            xmlFile += @"    <elltest>" + EllipseUrlServicesTest + "</elltest>";
+            xmlFile += @"  </webservice>";
+            xmlFile += @"</ellipse>";
+
+            try
+            {
+                var configFilePath = Debugger.LocalDataPath;
+                var configFileName = ConfigXmlFileName;
+
+                FileWriter.CreateDirectory(configFilePath);
+                FileWriter.WriteTextToFile(xmlFile, configFileName, configFilePath);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("GenerateEllipseConfigurationXmlFile", "No se puede crear el archivo de configuración\n" + ex.Message);
+                throw;
+            }
+        }
+
+        public static void GenerateEllipseConfigurationXmlFile(string networkUrl)
+        {
+            try
+            {
+                var configFilePath = Debugger.LocalDataPath;
+                var configFileName = ConfigXmlFileName;
+
+                FileWriter.CreateDirectory(configFilePath);
+                FileWriter.CopyFileToDirectory(configFileName, networkUrl, configFilePath);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("GenerateEllipseConfigurationXmlFile", "No se puede crear el archivo de configuración\n" + ex.Message);
+                throw;
+            }
+        }
+
+        public static void DeleteEllipseConfigurationXmlFile()
+        {
+            try
+            {
+                FileWriter.DeleteFile(Debugger.LocalDataPath, ConfigXmlFileName);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("No se puede eliminar el archivo de configuración",  ex.Message);
+                throw;
+            }
         }
     }
 

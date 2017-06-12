@@ -15,6 +15,7 @@ namespace EllipseCommonsClassLibrary
         public static bool DebugQueries = false;
 
         private static DebugError _lastError;
+        private static DebugError _lastWarning;
         private static string _localDataPath = @"c:\ellipse\";
         public static string LocalDataPath
         {
@@ -61,7 +62,38 @@ namespace EllipseCommonsClassLibrary
                     MessageBoxIcon.Error);
             }
         }
+        public static void LogWarning(string customDetails, string warningMessage)
+        {
+            try
+            {
+                var warningFilePath = LocalDataPath + @"logs\";
+                const string warningFileName = @"warning.txt";
 
+                var lastWarning = new DebugError
+                {
+                    CustomDetails = customDetails,
+                    ErrorMessage = warningMessage,
+                    DateTime = "" + DateTime.Now,
+                    UrlLocation = warningFilePath + warningFileName
+                };
+
+                _lastWarning = lastWarning;
+
+                if (DebugWarnings)
+                    MessageBox.Show(lastWarning.CustomDetails + ": " + lastWarning.ErrorMessage, "Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
+                var stringWarning = lastWarning.DateTime + " - " + lastWarning.CustomDetails + " : " + lastWarning.ErrorMessage;
+
+                FileWriter.CreateDirectory(warningFilePath);
+                FileWriter.AppendTextToFile(stringWarning, warningFileName, warningFilePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se puede crear el Log de Warning\n" + customDetails + ": " + ex + "\n" + warningMessage, "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
         public static void LogQuery(string query)
         {
             try

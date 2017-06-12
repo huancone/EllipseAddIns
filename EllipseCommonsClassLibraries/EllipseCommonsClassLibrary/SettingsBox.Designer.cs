@@ -36,8 +36,16 @@
             this.tbLocalDataPath = new System.Windows.Forms.TextBox();
             this.lblLocalDataPath = new System.Windows.Forms.Label();
             this.gbGlobalSettings = new System.Windows.Forms.GroupBox();
+            this.gbEllipseSettings = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnDeleteLocalEllipseSettings = new System.Windows.Forms.Button();
+            this.btnGenerateDefault = new System.Windows.Forms.Button();
+            this.btnGenerateFromNetwork = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbServiceFileNetworkUrl = new System.Windows.Forms.TextBox();
             this.gbDebugging.SuspendLayout();
             this.gbGlobalSettings.SuspendLayout();
+            this.gbEllipseSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelProductName
@@ -56,11 +64,12 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(229, 210);
+            this.okButton.Location = new System.Drawing.Point(229, 335);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 26);
             this.okButton.TabIndex = 30;
             this.okButton.Text = "&OK";
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // gbDebugging
             // 
@@ -111,7 +120,7 @@
             // 
             this.tbLocalDataPath.Location = new System.Drawing.Point(9, 32);
             this.tbLocalDataPath.Name = "tbLocalDataPath";
-            this.tbLocalDataPath.Size = new System.Drawing.Size(251, 20);
+            this.tbLocalDataPath.Size = new System.Drawing.Size(263, 20);
             this.tbLocalDataPath.TabIndex = 41;
             this.tbLocalDataPath.TextChanged += new System.EventHandler(this.tbLocalDataPath_TextChanged);
             // 
@@ -135,11 +144,82 @@
             this.gbGlobalSettings.TabStop = false;
             this.gbGlobalSettings.Text = "Configuración Global:";
             // 
+            // gbEllipseSettings
+            // 
+            this.gbEllipseSettings.Controls.Add(this.label2);
+            this.gbEllipseSettings.Controls.Add(this.btnDeleteLocalEllipseSettings);
+            this.gbEllipseSettings.Controls.Add(this.btnGenerateDefault);
+            this.gbEllipseSettings.Controls.Add(this.btnGenerateFromNetwork);
+            this.gbEllipseSettings.Controls.Add(this.label1);
+            this.gbEllipseSettings.Controls.Add(this.tbServiceFileNetworkUrl);
+            this.gbEllipseSettings.Location = new System.Drawing.Point(12, 205);
+            this.gbEllipseSettings.Name = "gbEllipseSettings";
+            this.gbEllipseSettings.Size = new System.Drawing.Size(296, 124);
+            this.gbEllipseSettings.TabIndex = 39;
+            this.gbEllipseSettings.TabStop = false;
+            this.gbEllipseSettings.Text = "Configuración Ellipse:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 68);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(116, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Generar Archivo Local:";
+            // 
+            // btnDeleteLocalEllipseSettings
+            // 
+            this.btnDeleteLocalEllipseSettings.Location = new System.Drawing.Point(186, 84);
+            this.btnDeleteLocalEllipseSettings.Name = "btnDeleteLocalEllipseSettings";
+            this.btnDeleteLocalEllipseSettings.Size = new System.Drawing.Size(87, 23);
+            this.btnDeleteLocalEllipseSettings.TabIndex = 4;
+            this.btnDeleteLocalEllipseSettings.Text = "&Eliminar Local";
+            this.btnDeleteLocalEllipseSettings.UseVisualStyleBackColor = true;
+            this.btnDeleteLocalEllipseSettings.Click += new System.EventHandler(this.btnDeleteLocalEllipseSettings_Click);
+            // 
+            // btnGenerateDefault
+            // 
+            this.btnGenerateDefault.Location = new System.Drawing.Point(87, 84);
+            this.btnGenerateDefault.Name = "btnGenerateDefault";
+            this.btnGenerateDefault.Size = new System.Drawing.Size(93, 23);
+            this.btnGenerateDefault.TabIndex = 3;
+            this.btnGenerateDefault.Text = "&Predeterminado";
+            this.btnGenerateDefault.UseVisualStyleBackColor = true;
+            this.btnGenerateDefault.Click += new System.EventHandler(this.btnGenerateDefault_Click);
+            // 
+            // btnGenerateFromNetwork
+            // 
+            this.btnGenerateFromNetwork.Location = new System.Drawing.Point(6, 84);
+            this.btnGenerateFromNetwork.Name = "btnGenerateFromNetwork";
+            this.btnGenerateFromNetwork.Size = new System.Drawing.Size(75, 23);
+            this.btnGenerateFromNetwork.TabIndex = 2;
+            this.btnGenerateFromNetwork.Text = "Desde &Url";
+            this.btnGenerateFromNetwork.UseVisualStyleBackColor = true;
+            this.btnGenerateFromNetwork.Click += new System.EventHandler(this.btnGenerateFromNetwork_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(174, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Ruta de Información de Servidores:";
+            // 
+            // tbServiceFileNetworkUrl
+            // 
+            this.tbServiceFileNetworkUrl.Location = new System.Drawing.Point(6, 36);
+            this.tbServiceFileNetworkUrl.Name = "tbServiceFileNetworkUrl";
+            this.tbServiceFileNetworkUrl.Size = new System.Drawing.Size(266, 20);
+            this.tbServiceFileNetworkUrl.TabIndex = 0;
+            // 
             // SettingsBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(316, 248);
+            this.ClientSize = new System.Drawing.Size(316, 373);
+            this.Controls.Add(this.gbEllipseSettings);
             this.Controls.Add(this.gbGlobalSettings);
             this.Controls.Add(this.gbDebugging);
             this.Controls.Add(this.okButton);
@@ -158,6 +238,8 @@
             this.gbDebugging.PerformLayout();
             this.gbGlobalSettings.ResumeLayout(false);
             this.gbGlobalSettings.PerformLayout();
+            this.gbEllipseSettings.ResumeLayout(false);
+            this.gbEllipseSettings.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -173,6 +255,13 @@
         private System.Windows.Forms.CheckBox cbDebugQueries;
         private System.Windows.Forms.Label lblLocalDataPath;
         private System.Windows.Forms.GroupBox gbGlobalSettings;
+        private System.Windows.Forms.GroupBox gbEllipseSettings;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnDeleteLocalEllipseSettings;
+        private System.Windows.Forms.Button btnGenerateDefault;
+        private System.Windows.Forms.Button btnGenerateFromNetwork;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbServiceFileNetworkUrl;
 
     }
 }

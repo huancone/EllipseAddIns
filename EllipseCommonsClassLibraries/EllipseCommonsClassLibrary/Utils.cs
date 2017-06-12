@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -636,35 +637,35 @@ namespace EllipseCommonsClassLibrary
     {
         public static void WriteTextToFile(string text, string filename, string urlPath = "")
         {
-            if (!string.IsNullOrWhiteSpace(urlPath) &&
-                !(urlPath.EndsWith("" + Path.DirectorySeparatorChar) ||
-                  urlPath.EndsWith("" + Path.AltDirectorySeparatorChar)))
-                urlPath = urlPath + Path.DirectorySeparatorChar;
-            // Example #1: Write a string to a file.
-            File.WriteAllText(urlPath + filename, text);
+            //if (!string.IsNullOrWhiteSpace(urlPath) &&
+            //    !(urlPath.EndsWith("" + Path.DirectorySeparatorChar) || urlPath.EndsWith("" + Path.AltDirectorySeparatorChar)))
+            //    urlPath = urlPath + Path.DirectorySeparatorChar;
+            
+            if (urlPath == null)
+                urlPath = "";
+            File.WriteAllText(Path.Combine(urlPath, filename), text);
         }
         public static void WriteTextToFile(string [] text, string filename, string urlPath = "")
         {
-            if (!string.IsNullOrWhiteSpace(urlPath) &&
-                !(urlPath.EndsWith("" + Path.DirectorySeparatorChar) ||
-                  urlPath.EndsWith("" + Path.AltDirectorySeparatorChar)))
-                urlPath = urlPath + Path.DirectorySeparatorChar;
-            // Example #2: Write an array of strings to a file.
-            // WriteAllLines creates a file, writes a collection of strings to the file,
-            // and then closes the file.  You do NOT need to call Flush() or Close().
-            File.WriteAllLines(urlPath + filename, text);
+            //if (!string.IsNullOrWhiteSpace(urlPath) &&
+            //    !(urlPath.EndsWith("" + Path.DirectorySeparatorChar) ||
+            //      urlPath.EndsWith("" + Path.AltDirectorySeparatorChar)))
+            //    urlPath = urlPath + Path.DirectorySeparatorChar;
+
+            if (urlPath == null)
+                urlPath = "";
+            File.WriteAllLines(Path.Combine(urlPath, filename), text);
         }
         public static void AppendTextToFile(string text, string filename, string urlPath = "")
         {
-            if (!string.IsNullOrWhiteSpace(urlPath) &&
-                !(urlPath.EndsWith("" + Path.DirectorySeparatorChar) ||
-                  urlPath.EndsWith("" + Path.AltDirectorySeparatorChar)))
-                urlPath = urlPath + Path.DirectorySeparatorChar;
+            //if (!string.IsNullOrWhiteSpace(urlPath) &&
+            //    !(urlPath.EndsWith("" + Path.DirectorySeparatorChar) ||
+            //      urlPath.EndsWith("" + Path.AltDirectorySeparatorChar)))
+            //    urlPath = urlPath + Path.DirectorySeparatorChar;
 
-            // Example #3: Append new text to an existing file.
-            // The using statement automatically flushes AND CLOSES the stream and calls 
-            // IDisposable.Dispose on the stream object.
-            using (var file = new StreamWriter(urlPath + filename, true))
+            if (urlPath == null)
+                urlPath = "";
+            using (var file = new StreamWriter(Path.Combine(urlPath, filename), true))
             {
                 file.WriteLine(text);
             }
@@ -684,7 +685,7 @@ namespace EllipseCommonsClassLibrary
             catch (Exception ex)
             {
                 Debugger.LogError("FileWriter:CreateDirectory::" + directoryPath, ex.Message);
-                throw new Exception(ex.Message);
+                throw;
             }
 
         }
@@ -703,7 +704,29 @@ namespace EllipseCommonsClassLibrary
             catch (Exception ex)
             {
                 Debugger.LogError("FileWriter:DeleteDirectory::" + directoryPath, ex.Message);
-                throw new Exception(ex.Message);
+                throw;
+            }
+        }
+        public static void DeleteFile(string directoryPath, string fileName)
+        {
+            DeleteFile(Path.Combine(directoryPath, fileName));
+        }
+        public static void DeleteFile(string urlFileName)
+        {
+            try
+            {
+                // Determine whether the file exists.
+                if (!File.Exists(urlFileName))
+                    return;
+
+                // Try to delete the file.
+                var fi = new FileInfo(urlFileName);
+                fi.Delete();
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("FileWriter:DeleteFile::" + urlFileName, ex.Message);
+                throw;
             }
         }
         public static bool CheckDirectoryExist(string directoryPath)
@@ -716,10 +739,26 @@ namespace EllipseCommonsClassLibrary
             catch (Exception ex)
             {
                 Debugger.LogError("FileWriter:CheckDirectoryExist::" + directoryPath, ex.Message);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
-        
+
+        public static void CopyFileToDirectory(string fileName, string sourcePath, string targetPath, bool overwrite = true)
+        {
+            try
+            {
+                var sourceFile = Path.Combine(sourcePath, fileName);
+                var destFile = Path.Combine(targetPath, fileName);
+
+                File.Copy(sourceFile, destFile, overwrite);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("FileWriter:CopyFileToDirectory", ex.Message);
+                throw;
+            }
+        }
+
     }
 
     public static class MathUtil

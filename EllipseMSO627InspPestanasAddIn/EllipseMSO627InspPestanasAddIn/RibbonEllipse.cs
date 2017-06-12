@@ -29,8 +29,6 @@ namespace EllipseMSO627InspPestanasAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
 
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
@@ -62,6 +60,9 @@ namespace EllipseMSO627InspPestanasAddIn
 
                 excelSheet.Name = _sheetName02;
 
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+
                 _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).Style = _cells.GetStyle(StyleConstants.Normal);
                 _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).ClearFormats();
                 _cells.GetRange(1, TittleRow + 1, ResultColumnLimpieza, MaxRows).ClearComments();
@@ -75,11 +76,11 @@ namespace EllipseMSO627InspPestanasAddIn
                 _cells.GetCell(1, TittleRow).Value = "Fecha";
                 _cells.GetCell(1, TittleRow).AddComment("YYYYMMDD");
                 _cells.GetCell(2, TittleRow).Value = "Grupo";
-                _cells.GetCell(3, TittleRow).Value = "Descripcion";
+                _cells.GetCell(3, TittleRow).Value = "Sitio";
                 _cells.GetCell(4, TittleRow).Value = "Cantidad";
                 _cells.GetCell(5, TittleRow).Value = "Usuario";
                 _cells.GetCell(6, TittleRow).Value = "Equipo";
-                _cells.GetCell(7, TittleRow).Value = "Accion Correctiva";
+                _cells.GetCell(7, TittleRow).Value = "Orden de trabajo";
                 _cells.GetCell(ResultColumnLimpieza, TittleRow).Value = "Resultado";
 
                 #region Instructions
@@ -138,6 +139,9 @@ namespace EllipseMSO627InspPestanasAddIn
                 Worksheet excelSheet = excelBook.ActiveSheet;
 
                 excelSheet.Name = _sheetName01;
+
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
 
                 _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Style = _cells.GetStyle(StyleConstants.Normal);
                 _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).ClearFormats();
@@ -243,6 +247,8 @@ namespace EllipseMSO627InspPestanasAddIn
 
         private void LoadLimpieza()
         {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
 
             var opSheet = new Screen.OperationContext
             {
@@ -265,13 +271,34 @@ namespace EllipseMSO627InspPestanasAddIn
             {
                 try
                 {
+                    //parámetros de input
                     var fecha = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
                     var grupo = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
-                    var descripcion = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                    var cantidad = "" + _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
+                    var sitio = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+                    var cantidad = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
                     var usuario = _cells.GetEmptyIfNull(_cells.GetCell(5, currentRow).Value);
                     var equipo = _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value);
-                    var accionCorrectiva = _cells.GetEmptyIfNull(_cells.GetCell(7, currentRow).Value);
+                    var orden = _cells.GetEmptyIfNull(_cells.GetCell(7, currentRow).Value);
+                    cantidad = string.IsNullOrWhiteSpace(cantidad) ? "0" : cantidad;
+
+                    //parámetros del mso627
+                    var workGroup = grupo;
+                    var raisedDate = fecha;
+                    //var shift = "";
+                    var startTime = "00:00";
+                    var incidentDescription = cantidad + ";" + sitio;
+                    var maintenanceType = "NM";
+                    var originatorId = usuario;
+                    var endTime = "00:00";
+                    //var incidentStatus = "";
+                    var equipmentRef = equipo;
+                    //var compCode = "";
+                    //var compModCode = "";
+                    //var jobDurationCode = "";
+                    //var jobDurationHours = "";
+                    //var standardJob = "";
+                    var correctiveAction = orden;
+                    var workOrder = orden;
 
                     _eFunctions.RevertOperation(opSheet, proxySheet);
                     var replySheet = proxySheet.executeScreen(opSheet, "MSO627");
@@ -285,8 +312,9 @@ namespace EllipseMSO627InspPestanasAddIn
                     {
                         var arrayFields = new ArrayScreenNameValue();
                         arrayFields.Add("OPTION1I", "1");
-                        arrayFields.Add("WORK_GROUP1I", grupo);
-                        arrayFields.Add("RAISED_DATE1I", fecha);
+                        arrayFields.Add("WORK_GROUP1I", workGroup);
+                        arrayFields.Add("RAISED_DATE1I", raisedDate);
+                        //arrayFields.Add("SHIFT1I", shift);
                         requestSheet.screenFields = arrayFields.ToArray();
 
                         requestSheet.screenKey = "1";
@@ -306,14 +334,20 @@ namespace EllipseMSO627InspPestanasAddIn
                             {
                                 arrayFields = new ArrayScreenNameValue();
 
-                                arrayFields.Add("RAISED_TIME2I1", "00:00");
-                                arrayFields.Add("INCIDENT_DESC2I1", descripcion);
-                                arrayFields.Add("MAINT_TYPE2I1", "NM");
-                                arrayFields.Add("JOB_DUR_HOURS2I1", cantidad);
-                                arrayFields.Add("ORIGINATOR_ID2I1", usuario);
-                                arrayFields.Add("JOB_DUR_FINISH2I1", "00:00");
-                                arrayFields.Add("EQUIP_REF2I1", equipo);
-                                arrayFields.Add("CORRECT_DESC2I1", accionCorrectiva);
+                                arrayFields.Add("RAISED_TIME2I1", startTime);
+                                arrayFields.Add("INCIDENT_DESC2I1", incidentDescription);
+                                arrayFields.Add("MAINT_TYPE2I1", maintenanceType);
+                                arrayFields.Add("ORIGINATOR_ID2I1", originatorId);
+                                arrayFields.Add("JOB_DUR_FINISH2I1", endTime);
+                                //arrayFields.Add("INCID_STATUS2I1", incidentStatus);
+                                arrayFields.Add("EQUIP_REF2I1", equipmentRef);
+                                //arrayFields.Add("COMP_CODE2I1", compCode);
+                                //arrayFields.Add("COMP_MOD_CODE2I1", compModCode);
+                                //arrayFields.Add("JOB_DUR_CODE2I1", jobDurationCode);
+                                //arrayFields.Add("JOB_DUR_HOURS2I1", jobDurationHours);
+                                //arrayFields.Add("STD_JOB_NO2I1", standardJob);
+                                arrayFields.Add("CORRECT_DESC2I1", correctiveAction);
+                                arrayFields.Add("WORK_ORDER2I1", workOrder);
                                 requestSheet.screenFields = arrayFields.ToArray();
 
                                 requestSheet.screenKey = "1";
@@ -355,6 +389,9 @@ namespace EllipseMSO627InspPestanasAddIn
 
         private void LoadInspPestanas()
         {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
             var opSheet = new Screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,

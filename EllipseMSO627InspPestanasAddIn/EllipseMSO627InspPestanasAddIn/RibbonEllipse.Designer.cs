@@ -36,15 +36,15 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpInspPestanas = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormat = this.Factory.CreateRibbonButton();
             this.btnLimpiezaCarbon = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoad = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpInspPestanas.SuspendLayout();
             this.box1.SuspendLayout();
@@ -63,6 +63,12 @@
             this.grpInspPestanas.Items.Add(this.menuActions);
             this.grpInspPestanas.Label = "MSO627 FFCC";
             this.grpInspPestanas.Name = "grpInspPestanas";
+            // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
             // 
             // menuFormat
             // 
@@ -84,6 +90,12 @@
             this.btnLimpiezaCarbon.Name = "btnLimpiezaCarbon";
             this.btnLimpiezaCarbon.ShowImage = true;
             this.btnLimpiezaCarbon.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLimpiezaCarbon_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnviroment
             // 
@@ -110,18 +122,6 @@
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
-            // box1
-            // 
-            this.box1.Items.Add(this.menuFormat);
-            this.box1.Items.Add(this.btnAbout);
-            this.box1.Name = "box1";
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // RibbonEllipse
             // 

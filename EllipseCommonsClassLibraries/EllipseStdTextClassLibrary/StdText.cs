@@ -64,8 +64,7 @@ namespace EllipseStdTextClassLibrary
         /// <param name="opContext">StdTextCustomService.OperationContext: Contexto del servicio stdTextCustom. Puede crear uno mediante el uso de StdText.getCustomOpContext()</param>
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <returns>string: Texto del elemento ingresado. Retorna vacío si el Id no existe</returns>
-        public static string GetText(string urlService, StdTextCustomService.OperationContext opContext,
-            string stdTextId)
+        public static string GetText(string urlService, StdTextCustomService.OperationContext opContext, string stdTextId)
         {
             try
             {
@@ -96,8 +95,7 @@ namespace EllipseStdTextClassLibrary
         /// <returns>bool: True si se culmina sin problemas</returns>
         [Obsolete("setText está obsoleto. Genera errores y no es utilizado. Utilizar setText(StdTextCustomService.OperationContext) en su lugar",
             true)]
-        public static bool SetText(string urlService, StdTextService.OperationContext opContext, string stdTextId,
-            string text)
+        public static bool SetText(string urlService, StdTextService.OperationContext opContext, string stdTextId, string text)
         {
             try
             {
@@ -131,12 +129,11 @@ namespace EllipseStdTextClassLibrary
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <param name="text">string: Texto a ingresar para el stdTextId</param>
         /// <returns>bool: True si se culmina sin problemas</returns>
-        public static bool SetText(string urlService, StdTextCustomService.OperationContext opContext,
-            string stdTextId, string text)
+        public static bool SetText(string urlService, StdTextCustomService.OperationContext opContext, string stdTextId, string text)
         {
             try
             {
-                var proxySt = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustomService"};
+                var proxySt = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustom"};
 
                 //text = SpliceText(text, _lineLength);
                 var arrayText = Utils.SplitText(text, _lineLength);
@@ -162,8 +159,7 @@ namespace EllipseStdTextClassLibrary
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <param name="text">string: Texto a ingresar para el stdTextId</param>
         /// <returns>bool: True si se culmina sin problemas</returns>
-        public static bool SetHeader(string urlService, StdTextService.OperationContext opContext, string stdTextId,
-            string text)
+        public static bool SetHeader(string urlService, StdTextService.OperationContext opContext, string stdTextId, string text)
         {
             try
             {
@@ -189,7 +185,31 @@ namespace EllipseStdTextClassLibrary
                 throw;
             }
         }
+        /// <summary>
+        /// Establece el texto para el encabezado de un elemento stdText de id stdTextId
+        /// </summary>
+        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnviroment.SelectedItem.Label))</param>
+        /// <param name="opContext">StdTextCustomService.OperationContext: Contexto del servicio stdTextCustom. Puede crear uno mediante el uso de StdText.getCustomOpContext()</param>
+        /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
+        /// <param name="text">string: Texto a ingresar para el stdTextId</param>
+        /// <returns>bool: True si se culmina sin problemas</returns>
+        public static bool SetHeader(string urlService, StdTextCustomService.OperationContext opContext, string stdTextId, string text)
+        {
+            try
+            {
+                var proxySt = new StdTextCustomService.StdTextCustomService { Url = urlService + "/StdTextCustom" };
 
+                //se envía la acción
+                proxySt.setExtendedTextHeading(opContext, stdTextId, text);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("StdText:setHeading(String, StdTextService.OperationContext, string, string)", ex.Message);
+                throw;
+            }
+        }
         /// <summary>
         /// Obtiene el encabezado de un elemento a partir de su stdTextId
         /// </summary>
@@ -215,7 +235,20 @@ namespace EllipseStdTextClassLibrary
 
             return replySt.headingLine;
         }
+        /// <summary>
+        /// Obtiene el encabezado de un elemento a partir de su stdTextId
+        /// </summary>
+        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnviroment.SelectedItem.Label))</param>
+        /// <param name="opContext">StdTextCustomService.OperationContext: Contexto del servicio stdTextCustom. Puede crear uno mediante el uso de StdText.getCustomOpContext()</param>
+        /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
+        /// <returns>string: Encabezado del elemento ingresado</returns>
+        public static string GetHeader(string urlService, StdTextCustomService.OperationContext opContext, string stdTextId)
+        {
+            var proxySt = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustom"}; //ejecuta las acciones del servicio
 
+            //se envía la acción
+            return proxySt.getExtendedTextHeading(opContext, stdTextId);
+        }
         /// <summary>
         /// Crea un nuevo operador de contexto para los métodos de la clase
         /// </summary>

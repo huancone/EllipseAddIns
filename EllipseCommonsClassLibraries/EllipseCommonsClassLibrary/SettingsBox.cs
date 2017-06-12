@@ -99,6 +99,7 @@ namespace EllipseCommonsClassLibrary
             cbDebugWarnings.Checked = Debugger.DebugWarnings;
             cbDebugQueries.Checked = Debugger.DebugQueries;
             tbLocalDataPath.Text = Debugger.LocalDataPath;
+            tbServiceFileNetworkUrl.Text = EnviromentConstants.UrlServiceFileLocation;
         }
 
         private void cbDebugErrors_CheckedChanged(object sender, EventArgs e)
@@ -119,6 +120,50 @@ namespace EllipseCommonsClassLibrary
         private void tbLocalDataPath_TextChanged(object sender, EventArgs e)
         {
             Debugger.LocalDataPath = tbLocalDataPath.Text;
+        }
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnGenerateFromNetwork_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnviromentConstants.GenerateEllipseConfigurationXmlFile(tbServiceFileNetworkUrl.Text);
+                MessageBox.Show("Se ha generado el archivo local de configuración de Ellipse a partir del archivo de red " + EnviromentConstants.UrlServiceFileLocation + EnviromentConstants.ConfigXmlFileName, "Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Generate Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnGenerateDefault_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnviromentConstants.GenerateEllipseConfigurationXmlFile();
+                MessageBox.Show("Se ha generado el archivo local de configuración de Ellipse de forma predeterminada", "Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnDeleteLocalEllipseSettings_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnviromentConstants.DeleteEllipseConfigurationXmlFile();
+                MessageBox.Show("Se ha eliminado el archivo local de configuración de Ellipse", "Delete Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Delete Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
