@@ -1091,7 +1091,69 @@ namespace EllipseWorkRequestClassLibrary
             reply.Errors = error.ToArray();
             return reply;
         }
+        public static ReplyMessage ModifyReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId, WorkRequestReferenceCodes wrRefCodes)
+        {
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
 
+            var refCodeOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
+
+            const string entityType = "WRQ";
+            var entityValue = requestId;
+
+            var reply = new ReplyMessage();
+            var error = new List<string>();
+
+            var refItemList = new List<ReferenceCodeItem>();
+
+
+            var riStockCode01 = new ReferenceCodeItem(entityType, entityValue, "001", "9001", wrRefCodes.StockCode1, null, wrRefCodes.StockCode1Qty) { ShortName = "StockCode 01" };
+            var riStockCode02 = new ReferenceCodeItem(entityType, entityValue, "001", "9002", wrRefCodes.StockCode2, null, wrRefCodes.StockCode2Qty) { ShortName = "StockCode 02" };
+            var riStockCode03 = new ReferenceCodeItem(entityType, entityValue, "001", "9003", wrRefCodes.StockCode3, null, wrRefCodes.StockCode3Qty) { ShortName = "StockCode 03" };
+            var riStockCode04 = new ReferenceCodeItem(entityType, entityValue, "001", "9004", wrRefCodes.StockCode4, null, wrRefCodes.StockCode4Qty) { ShortName = "StockCode 04" };
+            var riStockCode05 = new ReferenceCodeItem(entityType, entityValue, "001", "9005", wrRefCodes.StockCode5, null, wrRefCodes.StockCode5Qty) { ShortName = "StockCode 05" };
+            var riHorasHombre = new ReferenceCodeItem(entityType, entityValue, "006", "001", wrRefCodes.HorasHombre, null, wrRefCodes.HorasQty) { ShortName = "Horas Hombre" };
+
+            refItemList.Add(riStockCode01);
+            refItemList.Add(riStockCode02);
+            refItemList.Add(riStockCode03);
+            refItemList.Add(riStockCode04);
+            refItemList.Add(riStockCode05);
+            refItemList.Add(riHorasHombre);
+
+            var riDuracionTarea = new ReferenceCodeItem(entityType, entityValue, "007", "001", wrRefCodes.DuracionTarea) { ShortName = "Duracion Tarea"};
+            var riEquipoDetenido = new ReferenceCodeItem(entityType, entityValue, "008", "001", wrRefCodes.EquipoDetenido) { ShortName = "Equipo Detenido"};
+            var riWorkOrderOrigen = new ReferenceCodeItem(entityType, entityValue, "009", "001", wrRefCodes.WorkOrderOrigen) { ShortName = "OT Origen"};
+            var riRaisedReprogramada = new ReferenceCodeItem(entityType, entityValue, "010", "001", wrRefCodes.RaisedReprogramada) { ShortName = "Raised Reprogramada"};
+            var riCambioHora = new ReferenceCodeItem(entityType, entityValue, "011", "001", wrRefCodes.CambioHora) { ShortName = "Cambio Hora"};
+            
+            refItemList.Add(riDuracionTarea);
+            refItemList.Add(riEquipoDetenido);
+            refItemList.Add(riWorkOrderOrigen);
+            refItemList.Add(riRaisedReprogramada);
+            refItemList.Add(riCambioHora);
+
+            foreach (var item in refItemList)
+            {
+                try
+                {
+				if (item.RefCode == null)
+                        continue;
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext, item);
+                    var stdTextId = replyRefCode.stdTxtKey;
+                    if (string.IsNullOrWhiteSpace(stdTextId))
+                        throw new Exception("No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar " + item.ShortName + ": " + ex.Message);
+                }
+            }
+
+            reply.Errors = error.ToArray();
+            return reply;
+        }
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         public static WorkRequestReferenceCodes GetWorkRequestReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId)
         {

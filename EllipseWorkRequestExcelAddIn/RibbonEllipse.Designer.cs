@@ -62,6 +62,7 @@
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.menu1 = this.Factory.CreateRibbonMenu();
+            this.btnFormatFcVagones = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkRequest.SuspendLayout();
             this.box1.SuspendLayout();
@@ -91,6 +92,7 @@
             // 
             this.menuFormat.Items.Add(this.btnFormatSheet);
             this.menuFormat.Items.Add(this.btnFormatMantto);
+            this.menuFormat.Items.Add(this.btnFormatFcVagones);
             this.menuFormat.Label = "&Formatear";
             this.menuFormat.Name = "menuFormat";
             // 
@@ -269,6 +271,13 @@
             this.menu1.Label = "menu1";
             this.menu1.Name = "menu1";
             // 
+            // btnFormatFcVagones
+            // 
+            this.btnFormatFcVagones.Label = "Registro Fc Vagones";
+            this.btnFormatFcVagones.Name = "btnFormatFcVagones";
+            this.btnFormatFcVagones.ShowImage = true;
+            this.btnFormatFcVagones.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatFcVagones_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -314,6 +323,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatMantto;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatFcVagones;
     }
 
     partial class ThisRibbonCollection
