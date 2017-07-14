@@ -890,7 +890,7 @@ namespace EllipseWorkRequestClassLibrary
             //Corresponde a la misma acción de modificar, excepto que se garantiza que todos los RefCodes sean actualizados con la nueva información
             return ModifyReferenceCodes(eFunctions, urlService, opContext, requestId, wrRefCodes);
         }
-        public static ReplyMessage ModifyReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId, WorkRequestReferenceCodes wrRefCodes)
+        public static ReplyMessage ModifyReferenceCodes2(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId, WorkRequestReferenceCodes wrRefCodes)
         {
             long defaultLong;
             if (long.TryParse(requestId, out defaultLong))
