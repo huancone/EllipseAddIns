@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CriticalControl.cs" />
+    <Compile Include="CriticalControlActions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -56,6 +58,10 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Compile Include="WorkOrder.cs" />
+    <Compile Include="WorkOrderActions.cs" />
+    <Compile Include="WorkOrderQualityStyles.cs" />
+    <Compile Include="WorkOrderReferenceCodes.cs" />
+    <Compile Include="SearchConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">

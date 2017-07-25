@@ -68,12 +68,34 @@ namespace EllipseWorkRequestClassLibrary
         public decimal priorityValue;
         public bool priorityValueFieldSpecified;
         public ServiceLevelAgreement ServiceLevelAgreement;
+        private ExtendedDescription _extendedDescription;
+
         public WorkRequest()
         {
             ServiceLevelAgreement = new ServiceLevelAgreement();
         }
-    }
+        public ExtendedDescription GetExtendedDescription(string urlService, OperationContext opContext)
+        {
+            if (_extendedDescription != null) return _extendedDescription;
 
+            _extendedDescription = WorkRequestActions.GetWorkRequestExtendedDescription(urlService, opContext, requestId);
+
+            return _extendedDescription;
+        }
+
+        public void SetExtendedDescription(string header, string body)
+        {
+            if (_extendedDescription == null)
+                _extendedDescription = new ExtendedDescription();
+            _extendedDescription.Header = header;
+            _extendedDescription.Body = body;
+        }
+    }
+    public class ExtendedDescription
+    {
+        public string Header;
+        public string Body;
+    }
     public class ServiceLevelAgreement
     {
         public string ServiceLevel;
@@ -92,9 +114,6 @@ namespace EllipseWorkRequestClassLibrary
 
     public class WorkRequestReferenceCodes
     {
-        public string ExtendedDescriptionHeader;
-        public string ExtendedDescriptionBody;
-
         public string StockCode1;//001_9001
         public string StockCode2;//001_9002
         public string StockCode3;//001_9003
@@ -564,7 +583,63 @@ namespace EllipseWorkRequestClassLibrary
             //se envía la acción
             return proxyWr.resetSLA(opContext, requestWr);
         }
+        public static ExtendedDescription GetWorkRequestExtendedDescription(string urlService, OperationContext opContext, string requestId)
+        {
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
+            var description = new ExtendedDescription();
+            var stdTextOpContext = StdText.GetStdTextOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
 
+            var stdTextId = "WQ" + requestId;
+
+            description.Header = StdText.GetHeader(urlService, stdTextOpContext, stdTextId);
+            description.Body = StdText.GetText(urlService, stdTextOpContext, stdTextId);
+            return description;
+        }
+
+        public static ReplyMessage UpdateWorkRequestExtendedDescription(string urlService, OperationContext opContext, string requestId, ExtendedDescription description)
+        {
+            return UpdateWorkRequestExtendedDescription(urlService, opContext, requestId, description.Header, description.Body);
+        }
+
+        public static ReplyMessage UpdateWorkRequestExtendedDescription(string urlService, OperationContext opContext, string requestId, string headerText, string bodyText)
+        {
+            var reply = new ReplyMessage();
+            long defaultLong;
+            if (long.TryParse(requestId, out defaultLong))
+                requestId = requestId.PadLeft(12, '0');
+            try
+            {
+                var stdTextOpContext = StdText.GetCustomOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
+                var stdTextId = "WQ" + requestId;
+                bool headerReply = true, bodyReply = true;
+                if (!string.IsNullOrEmpty(headerText))
+                    headerReply = StdText.SetHeader(urlService, stdTextOpContext, stdTextId, headerText);
+                if (!string.IsNullOrEmpty(bodyText))
+                    bodyReply = StdText.SetText(urlService, stdTextOpContext, stdTextId, bodyText);
+
+                if (headerReply && bodyReply)
+                    return reply;
+                var errorList = new List<string>();
+                if (!headerReply)
+                    errorList.Add("No se pudo actualizar el encabezado de texto del StdText " + stdTextId);
+                if (!bodyReply)
+                    errorList.Add("No se pudo actualizar el cuerpo de texto del StdText " + stdTextId);
+                reply.Errors = errorList.ToArray();
+                reply.Message = "Error al actualizar el texto extendido de WorkRequest " + requestId;
+
+
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("WorkOrder.UpdateWorkOrderExtendedDescription()", ex.Message);
+                reply.Message = "Error al actualizar el texto extendido de WorkRequest " + requestId;
+                var errorList = new List<string> { "No se pudo actualizar el texto del StdText WQ" + requestId };
+                reply.Errors = errorList.ToArray();
+            }
+            return reply;
+        }
         
 
         public static class Queries

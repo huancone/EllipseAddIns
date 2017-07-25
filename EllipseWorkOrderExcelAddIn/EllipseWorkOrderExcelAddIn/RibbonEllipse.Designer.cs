@@ -44,6 +44,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnFormatDetail = this.Factory.CreateRibbonButton();
             this.btnFormatQuality = this.Factory.CreateRibbonButton();
+            this.btnFormatCriticalControls = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
@@ -64,6 +65,11 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnDurationsReview = this.Factory.CreateRibbonButton();
             this.btnDurationsAction = this.Factory.CreateRibbonButton();
             this.btnCleanDuration = this.Factory.CreateRibbonButton();
+            this.menuWorkProgress = this.Factory.CreateRibbonMenu();
+            this.btnReviewWorkProgress = this.Factory.CreateRibbonButton();
+            this.btnUpdatePercentProgress = this.Factory.CreateRibbonButton();
+            this.btnUpdateUnitsProgress = this.Factory.CreateRibbonButton();
+            this.btnUpdateUnitsRequired = this.Factory.CreateRibbonButton();
             this.menuReferenceCodes = this.Factory.CreateRibbonMenu();
             this.btnReviewReferenceCodes = this.Factory.CreateRibbonButton();
             this.btnUpdateReferenceCodes = this.Factory.CreateRibbonButton();
@@ -72,11 +78,10 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReviewQuality = this.Factory.CreateRibbonButton();
             this.btnCleanQualitySheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.menuWorkProgress = this.Factory.CreateRibbonMenu();
-            this.btnReviewWorkProgress = this.Factory.CreateRibbonButton();
-            this.btnUpdatePercentProgress = this.Factory.CreateRibbonButton();
-            this.btnUpdateUnitsProgress = this.Factory.CreateRibbonButton();
-            this.btnUpdateUnitsRequired = this.Factory.CreateRibbonButton();
+            this.menuCriticalControls = this.Factory.CreateRibbonMenu();
+            this.btnReviewCriticalControls = this.Factory.CreateRibbonButton();
+            this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
+            this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
@@ -107,6 +112,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuFormat.Items.Add(this.btnFormatSheet);
             this.menuFormat.Items.Add(this.btnFormatDetail);
             this.menuFormat.Items.Add(this.btnFormatQuality);
+            this.menuFormat.Items.Add(this.btnFormatCriticalControls);
             this.menuFormat.Label = "&Formatos";
             this.menuFormat.Name = "menuFormat";
             // 
@@ -131,6 +137,13 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnFormatQuality.ShowImage = true;
             this.btnFormatQuality.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatQuality_Click);
             // 
+            // btnFormatCriticalControls
+            // 
+            this.btnFormatCriticalControls.Label = "Cont&roles Críticos";
+            this.btnFormatCriticalControls.Name = "btnFormatCriticalControls";
+            this.btnFormatCriticalControls.ShowImage = true;
+            this.btnFormatCriticalControls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatCriticalControls_Click);
+            // 
             // btnAbout
             // 
             this.btnAbout.Label = "?";
@@ -151,6 +164,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuActions.Items.Add(this.menuReferenceCodes);
             this.menuActions.Items.Add(this.menuQuality);
             this.menuActions.Items.Add(this.btnStopThread);
+            this.menuActions.Items.Add(this.menuCriticalControls);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
             // 
@@ -282,6 +296,44 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnCleanDuration.ShowImage = true;
             this.btnCleanDuration.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanDuration_Click);
             // 
+            // menuWorkProgress
+            // 
+            this.menuWorkProgress.Items.Add(this.btnReviewWorkProgress);
+            this.menuWorkProgress.Items.Add(this.btnUpdatePercentProgress);
+            this.menuWorkProgress.Items.Add(this.btnUpdateUnitsProgress);
+            this.menuWorkProgress.Items.Add(this.btnUpdateUnitsRequired);
+            this.menuWorkProgress.Label = "&Progreso de OTs";
+            this.menuWorkProgress.Name = "menuWorkProgress";
+            this.menuWorkProgress.ShowImage = true;
+            // 
+            // btnReviewWorkProgress
+            // 
+            this.btnReviewWorkProgress.Label = "&Consultar Progreso";
+            this.btnReviewWorkProgress.Name = "btnReviewWorkProgress";
+            this.btnReviewWorkProgress.ShowImage = true;
+            this.btnReviewWorkProgress.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewWorkProgress_Click);
+            // 
+            // btnUpdatePercentProgress
+            // 
+            this.btnUpdatePercentProgress.Label = "Actualizar &Porcentaje";
+            this.btnUpdatePercentProgress.Name = "btnUpdatePercentProgress";
+            this.btnUpdatePercentProgress.ShowImage = true;
+            this.btnUpdatePercentProgress.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdatePercentProgress_Click);
+            // 
+            // btnUpdateUnitsProgress
+            // 
+            this.btnUpdateUnitsProgress.Label = "&Actualizar Completadas";
+            this.btnUpdateUnitsProgress.Name = "btnUpdateUnitsProgress";
+            this.btnUpdateUnitsProgress.ShowImage = true;
+            this.btnUpdateUnitsProgress.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateUnitsProgress_Click);
+            // 
+            // btnUpdateUnitsRequired
+            // 
+            this.btnUpdateUnitsRequired.Label = "Actualizar &Requeridas";
+            this.btnUpdateUnitsRequired.Name = "btnUpdateUnitsRequired";
+            this.btnUpdateUnitsRequired.ShowImage = true;
+            this.btnUpdateUnitsRequired.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateUnitsRequired_Click);
+            // 
             // menuReferenceCodes
             // 
             this.menuReferenceCodes.Items.Add(this.btnReviewReferenceCodes);
@@ -341,43 +393,35 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
-            // menuWorkProgress
+            // menuCriticalControls
             // 
-            this.menuWorkProgress.Items.Add(this.btnReviewWorkProgress);
-            this.menuWorkProgress.Items.Add(this.btnUpdatePercentProgress);
-            this.menuWorkProgress.Items.Add(this.btnUpdateUnitsProgress);
-            this.menuWorkProgress.Items.Add(this.btnUpdateUnitsRequired);
-            this.menuWorkProgress.Label = "&Progreso de OTs";
-            this.menuWorkProgress.Name = "menuWorkProgress";
-            this.menuWorkProgress.ShowImage = true;
+            this.menuCriticalControls.Items.Add(this.btnReviewCriticalControls);
+            this.menuCriticalControls.Items.Add(this.btnReReviewCritialControls);
+            this.menuCriticalControls.Items.Add(this.btnExportCriticalControls);
+            this.menuCriticalControls.Label = "Controles Críticos";
+            this.menuCriticalControls.Name = "menuCriticalControls";
+            this.menuCriticalControls.ShowImage = true;
             // 
-            // btnReviewWorkProgress
+            // btnReviewCriticalControls
             // 
-            this.btnReviewWorkProgress.Label = "&Consultar Progreso";
-            this.btnReviewWorkProgress.Name = "btnReviewWorkProgress";
-            this.btnReviewWorkProgress.ShowImage = true;
-            this.btnReviewWorkProgress.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewWorkProgress_Click);
+            this.btnReviewCriticalControls.Label = "&Consultar OTs";
+            this.btnReviewCriticalControls.Name = "btnReviewCriticalControls";
+            this.btnReviewCriticalControls.ShowImage = true;
+            this.btnReviewCriticalControls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewCriticalControls_Click);
             // 
-            // btnUpdatePercentProgress
+            // btnReReviewCritialControls
             // 
-            this.btnUpdatePercentProgress.Label = "Actualizar &Porcentaje";
-            this.btnUpdatePercentProgress.Name = "btnUpdatePercentProgress";
-            this.btnUpdatePercentProgress.ShowImage = true;
-            this.btnUpdatePercentProgress.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdatePercentProgress_Click);
+            this.btnReReviewCritialControls.Label = "&ReConsultar OTs";
+            this.btnReReviewCritialControls.Name = "btnReReviewCritialControls";
+            this.btnReReviewCritialControls.ShowImage = true;
+            this.btnReReviewCritialControls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReReviewCritialControls_Click);
             // 
-            // btnUpdateUnitsProgress
+            // btnExportCriticalControls
             // 
-            this.btnUpdateUnitsProgress.Label = "&Actualizar Completadas";
-            this.btnUpdateUnitsProgress.Name = "btnUpdateUnitsProgress";
-            this.btnUpdateUnitsProgress.ShowImage = true;
-            this.btnUpdateUnitsProgress.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateUnitsProgress_Click);
-            // 
-            // btnUpdateUnitsRequired
-            // 
-            this.btnUpdateUnitsRequired.Label = "Actualizar &Requeridas";
-            this.btnUpdateUnitsRequired.Name = "btnUpdateUnitsRequired";
-            this.btnUpdateUnitsRequired.ShowImage = true;
-            this.btnUpdateUnitsRequired.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateUnitsRequired_Click);
+            this.btnExportCriticalControls.Label = "&Exportar a RTF";
+            this.btnExportCriticalControls.Name = "btnExportCriticalControls";
+            this.btnExportCriticalControls.ShowImage = true;
+            this.btnExportCriticalControls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExportCriticalControls_Click);
             // 
             // RibbonEllipse
             // 
@@ -436,6 +480,11 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnUpdatePercentProgress;
         internal RibbonButton btnUpdateUnitsProgress;
         internal RibbonButton btnUpdateUnitsRequired;
+        internal RibbonButton btnFormatCriticalControls;
+        internal RibbonMenu menuCriticalControls;
+        internal RibbonButton btnReviewCriticalControls;
+        internal RibbonButton btnReReviewCritialControls;
+        internal RibbonButton btnExportCriticalControls;
     }
 
     partial class ThisRibbonCollection

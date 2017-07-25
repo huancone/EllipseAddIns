@@ -35,7 +35,7 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 var errorFilePath = LocalDataPath + @"logs\";
-                const string errorFileName = @"error.txt";
+                var errorFileName = @"error" + TimeOperations.FormatDateToString(DateTime.Today, TimeOperations.DateTimeFormats.DateYYYYMMDD) + ".txt";
 
                 var lastError = new DebugError
                 {
@@ -67,7 +67,7 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 var warningFilePath = LocalDataPath + @"logs\";
-                const string warningFileName = @"warning.txt";
+                var warningFileName = @"warning" + TimeOperations.FormatDateToString(DateTime.Today, TimeOperations.DateTimeFormats.DateYYYYMMDD) + ".txt";
 
                 var lastWarning = new DebugError
                 {
@@ -102,7 +102,7 @@ namespace EllipseCommonsClassLibrary
                     return;
                 
                 var queryFilePath = LocalDataPath + @"queries\";
-                const string queryFileName = @"queries.txt";
+                var queryFileName = @"queries" + TimeOperations.FormatDateToString(DateTime.Today, TimeOperations.DateTimeFormats.DateYYYYMMDD) + ".txt";
 
                 var dateTime = "" + DateTime.Now;
                 var urlLocation = queryFilePath + queryFileName;

@@ -31,6 +31,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const string SheetNameD03 = "WORequirements";
         private const string SheetNameD04 = "WOReferenceCodes";
         private const string SheetNameQ01 = "QualityWorkOrders";
+        private const string SheetNameCc01 = "Critical Controls";
 
         private const int TitleRow01 = 9;
         private const int TitleRow02 = 6;
@@ -42,6 +43,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const int TitleRowD03 = 6;
         private const int TitleRowD04 = 6;
         private const int TitleRowQ01 = 7;
+        private const int TitleRowCc01 = 6;
         private const int ResultColumn01 = 54;
         private const int ResultColumn02 = 8;
         private const int ResultColumn03 = 3;
@@ -52,6 +54,8 @@ namespace EllipseWorkOrderExcelAddIn
         private const int ResultColumnD03 = 3;
         private const int ResultColumnD04 = 33;
         private const int ResultColumnQ01 = 36;
+        private const int ResultColumnCc01 = 20;
+
         private const string TableName01 = "WorkOrderTable";
         private const string TableName02 = "WorkOrderCloseTable";
         private const string TableName03 = "WorkOrderCompleteTextTable";
@@ -62,6 +66,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const string TableNameD03 = "WorkOrderRequirmentsTable";
         private const string TableNameD04 = "WorkOrderReferenceCodesTable";
         private const string TableNameQ01 = "WorkOrderQualityTable";
+        private const string TableNameCc01 = "CriticalControlsTable";
         private const string ValidationSheetName = "ValidationSheetWorkOrder";
         private Thread _thread;
         private bool _progressUpdate = true;
@@ -833,25 +838,25 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
                 var districtList = DistrictConstants.GetDistrictList();
-                var searchCriteriaList = WorkOrderActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
+                var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
                 var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WoStatusList.GetStatusNames(true);
-                var dateCriteriaList = WorkOrderActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
+                var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
-                _cells.GetCell("A4").Value = WorkOrderActions.SearchFieldCriteriaType.WorkGroup.Value;
-                _cells.GetCell("A4").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
-                    "INST: IMIS, MINA\n" + 
-                    "MDC: FFCC, PBV, PTAS\n" +
-                    "MNTTO: MINA\n"+ 
-                    "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
+                _cells.GetCell("A4").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
+                    "INST: IMIS, MINA\n" +
+                    "" + ManagementArea.ManejoDeCarbon.Key + ": " + QuarterMasters.Ferrocarril.Key + ", " + QuarterMasters.PuertoBolivar.Key + ", " + QuarterMasters.PlantasDeCarbon.Key + "\n" +
+                    "" + ManagementArea.Mantenimiento.Key + ": MINA\n"+ 
+                    "" + ManagementArea.SoporteOperacion.Key + ": ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
 
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
                 _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 3, false);
-                _cells.GetCell("A5").Value = WorkOrderActions.SearchFieldCriteriaType.EquipmentReference.Value;
+                _cells.GetCell("A5").Value = SearchFieldCriteriaType.EquipmentReference.Value;
                 _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);
                 _cells.GetCell("A6").Value = "STATUS";
                 _cells.SetValidationList(_cells.GetCell("B6"), statusList, ValidationSheetName, 4);
@@ -859,7 +864,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetRange("B3", "B6").Style = _cells.GetStyle(StyleConstants.Select);
                 
                 _cells.GetCell("C3").Value = "FECHA";
-                _cells.GetCell("D3").Value = WorkOrderActions.SearchDateCriteriaType.Raised.Value;
+                _cells.GetCell("D3").Value = SearchDateCriteriaType.Raised.Value;
                 _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 5);
                 _cells.GetCell("C4").Value = "DESDE";
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
@@ -1226,15 +1231,15 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
                 var districtList = DistrictConstants.GetDistrictList();
-                var searchCriteriaList = WorkOrderActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
+                var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
                 var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WoStatusList.GetStatusNames(true);
-                var dateCriteriaList = WorkOrderActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
+                var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
-                _cells.GetCell("A4").Value = WorkOrderActions.SearchFieldCriteriaType.WorkGroup.Value;
+                _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("A4").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
                     "INST: IMIS, MINA\n" +
                     "MDC: FFCC, PBV, PTAS\n" +
@@ -1244,7 +1249,7 @@ namespace EllipseWorkOrderExcelAddIn
 
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
                 _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 3, false);
-                _cells.GetCell("A5").Value = WorkOrderActions.SearchFieldCriteriaType.EquipmentReference.Value;
+                _cells.GetCell("A5").Value = SearchFieldCriteriaType.EquipmentReference.Value;
                 _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);
                 _cells.GetCell("A6").Value = "STATUS";
                 _cells.SetValidationList(_cells.GetCell("B6"), statusList, ValidationSheetName, 4);
@@ -1252,7 +1257,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetRange("B3", "B6").Style = _cells.GetStyle(StyleConstants.Select);
 
                 _cells.GetCell("C3").Value = "FECHA";
-                _cells.GetCell("D3").Value = WorkOrderActions.SearchDateCriteriaType.Raised.Value;
+                _cells.GetCell("D3").Value = SearchDateCriteriaType.Raised.Value;
                 _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 5);
                 _cells.GetCell("C4").Value = "DESDE";
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
@@ -1516,8 +1521,8 @@ namespace EllipseWorkOrderExcelAddIn
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            var searchCriteriaList = WorkOrderActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
-            var dateCriteriaList = WorkOrderActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes();
+            var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
+            var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes();
 
             //Obtengo los valores de las opciones de búsqueda
             var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
@@ -2070,10 +2075,10 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
                 var districtList = DistrictConstants.GetDistrictList();
-                var searchCriteriaList = WorkOrderActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
+                var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
                 var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WoStatusList.GetStatusNames(true);
-                var dateCriteriaList = WorkOrderActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
+                var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
@@ -2085,10 +2090,10 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
 
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
-                _cells.GetCell("A4").Value = WorkOrderActions.SearchFieldCriteriaType.WorkGroup.Value;
+                _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
                 _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 3, false);
-                _cells.GetCell("A5").Value = WorkOrderActions.SearchFieldCriteriaType.EquipmentReference.Value;
+                _cells.GetCell("A5").Value = SearchFieldCriteriaType.EquipmentReference.Value;
                 _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);
                 _cells.GetCell("A6").Value = "STATUS";
                 _cells.SetValidationList(_cells.GetCell("B6"), statusList, ValidationSheetName, 4);
@@ -2096,7 +2101,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetRange("B3", "B6").Style = _cells.GetStyle(StyleConstants.Select);
 
                 _cells.GetCell("C3").Value = "FECHA";
-                _cells.GetCell("D3").Value = WorkOrderActions.SearchDateCriteriaType.Raised.Value;
+                _cells.GetCell("D3").Value = SearchDateCriteriaType.Raised.Value;
                 _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 5);
                 _cells.GetCell("C4").Value = "DESDE";
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
@@ -2171,8 +2176,8 @@ namespace EllipseWorkOrderExcelAddIn
 
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
-            var searchCriteriaList = WorkOrderActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
-            var dateCriteriaList = WorkOrderActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes();
+            var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
+            var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes();
 
             //Obtengo los valores de las opciones de búsqueda
             var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
@@ -2383,8 +2388,8 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRange(TableNameQ01);
 
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var searchCriteriaList = WorkOrderActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
-            var dateCriteriaList = WorkOrderActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes();
+            var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
+            var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes();
 
             //Obtengo los valores de las opciones de búsqueda
             var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
@@ -3449,8 +3454,454 @@ namespace EllipseWorkOrderExcelAddIn
             new AboutBoxExcelAddIn().ShowDialog();
         }
 
-           
-        
+        private void btnFormatCriticalControls_Click(object sender, RibbonControlEventArgs e)
+        {
+            FormatCriticalControls();
+        }
+        private void FormatCriticalControls()
+        {
+            try
+            {
+                _excelApp = Globals.ThisAddIn.Application;
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+                //CONSTRUYO LA HOJA 1
+                _excelApp.Workbooks.Add();
+                while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
+                    _excelApp.ActiveWorkbook.Worksheets.Add();
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 4
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetNameCc01;
+                _cells.CreateNewWorksheet(ValidationSheetName);//hoja de validación
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "B2");
+
+                _cells.GetCell("C1").Value = "CONTROLES CRÍTICOS - ELLIPSE 8";
+                _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("C1", "J2");
+
+
+                _cells.GetCell("A3").AddComment("--SUPERINTENDENCIA--\n" +
+                    "FFCC, PBV, PTAS\n");
+                _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
+
+                var quartermasterList = new List<string> {"PUERTO BOLIVAR", "FERROCARRIL", "PLANTAS DE CARBON"};
+                _cells.GetCell("A3").Value = SearchFieldCriteriaType.Quartermaster.Value;
+                _cells.GetCell("A3").Style = StyleConstants.Option;
+                _cells.GetCell("B3").Style = StyleConstants.Select;
+                _cells.SetValidationList(_cells.GetCell("B3"), quartermasterList, ValidationSheetName, 1);
+
+                _cells.GetRange(1, TitleRowCc01, ResultColumnCc01, TitleRowCc01).Style = StyleConstants.TitleRequired;
+
+                //GENERAL
+
+                _cells.GetCell(01, TitleRowCc01).Value = "Work Order";
+                _cells.GetCell(02, TitleRowCc01).Value = "Tarea Nro";
+                _cells.GetCell(03, TitleRowCc01).Value = "Descripción Tarea";
+                _cells.GetCell(04, TitleRowCc01).Value = "Bow Tie";
+                _cells.GetCell(05, TitleRowCc01).Value = "Descripción General";
+                _cells.GetCell(06, TitleRowCc01).Value = "Equipo No";
+                _cells.GetCell(07, TitleRowCc01).Value = "SuperIntendencia";
+                _cells.GetCell(08, TitleRowCc01).Value = "Departamento";
+                _cells.GetCell(09, TitleRowCc01).Value = "Asignado";
+                _cells.GetCell(10, TitleRowCc01).Value = "Fecha Planeada";
+                _cells.GetCell(11, TitleRowCc01).Value = "Fecha Creación";
+                _cells.GetCell(12, TitleRowCc01).Value = "Maint Sch Task";
+                _cells.GetCell(13, TitleRowCc01).Value = "Standard Job";
+                _cells.GetCell(14, TitleRowCc01).Value = "Estado";
+                _cells.GetCell(15, TitleRowCc01).Value = "Cód Completado";
+                _cells.GetCell(16, TitleRowCc01).Value = "Completado Por";
+                _cells.GetCell(17, TitleRowCc01).Value = "Fecha de Completado";
+                _cells.GetCell(18, TitleRowCc01).Value = "Frecuencia";
+                _cells.GetCell(19, TitleRowCc01).Value = "Texto Instrucciones";
+
+                _cells.GetCell(ResultColumnCc01, TitleRowCc01).Value = "RESULTADO";
+                _cells.GetCell(ResultColumnCc01, TitleRowCc01).Style = StyleConstants.TitleResult;
+
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRowCc01, ResultColumnCc01, TitleRowCc01 + 1), TableNameCc01);
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+
+                _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:FormatQuality()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+            }
+        }
+
+        private void btnReviewCriticalControls_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameCc01))
+                {
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(ReviewCriticalControlsList);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewCriticalControlsList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+        private void ReviewCriticalControlsList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _cells.ClearTableRange(TableNameCc01);
+
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var opSheet = new OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
+
+            //Obtengo los valores de las opciones de búsqueda
+            var district = "ICOR";
+            var searchCriteriaKey1Text = SearchFieldCriteriaType.Quartermaster.Value;
+            var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+
+            //Convierto los nombres de las opciones a llaves
+            var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
+
+            var listcc = CriticalControlActions.FetchCriticalControl(_eFunctions, urlService, opSheet, district, searchCriteriaKey1, searchCriteriaValue1);
+            var i = TitleRowCc01 + 1;
+            foreach (var cc in listcc)
+            {
+                try
+                {
+                    //GENERAL
+                    //Para resetear el estilo
+                    _cells.GetRange(1, i, ResultColumnCc01, i).Style = StyleConstants.Normal;
+                    _cells.GetCell(1, i).Value = "'" + cc.WorkOrder;
+                    _cells.GetCell(2, i).Value = "'" + cc.TaskNo;
+                    _cells.GetCell(3, i).Value = "" + cc.TaskDescription;
+                    _cells.GetCell(4, i).Value = "" + cc.CriticalDescription;
+                    _cells.GetCell(5, i).Value = "" + cc.WorkOrderDescription;
+                    _cells.GetCell(6, i).Value = "'" + cc.EquipmentNo;
+                    _cells.GetCell(7, i).Value = "" + cc.Quartermaster;
+                    _cells.GetCell(8, i).Value = "" + cc.Department;
+                    _cells.GetCell(9, i).Value = "" + cc.AssignPerson;
+                    _cells.GetCell(10, i).Value = "" + cc.PlanStartDate;
+                    _cells.GetCell(11, i).Value = "" + cc.RaisedDate;
+                    _cells.GetCell(12, i).Value = "'" + cc.MaintSchTask;
+                    _cells.GetCell(13, i).Value = "'" + cc.StdJobNo;
+                    _cells.GetCell(14, i).Value = "" + cc.Status;
+                    _cells.GetCell(15, i).Value = "'" + cc.CompletedCode;
+                    _cells.GetCell(16, i).Value = "" + cc.CompletedBy;
+                    _cells.GetCell(17, i).Value = "" + cc.CompletedDate;
+                    _cells.GetCell(18, i).Value = "" + cc.FrequencyText;
+                    _cells.GetCell(19, i).Value = "" + cc.InstructionsText;
+                    _cells.GetCell(19, i).WrapText = false;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnCc01, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReviewCriticalControlsList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void btnReReviewCritialControls_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameCc01))
+                {
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(ReReviewCriticalControlsList);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReReviewCriticalControlsList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+        private void ReReviewCriticalControlsList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var opSheet = new OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            //Obtengo los valores de las opciones de búsqueda
+            var district = "ICOR";
+
+            var i = TitleRowCc01 + 1;
+            while(!string.IsNullOrWhiteSpace(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value)))
+            {
+                try
+                {
+                    var workOrder = "" + _cells.GetCell(1, i).Value;
+                    var cc = CriticalControlActions.FetchCriticalControl(_eFunctions, urlService, opSheet, district, workOrder);
+                    //GENERAL
+                    //Para resetear el estilo
+                    _cells.GetRange(1, i, ResultColumnCc01, i).Style = StyleConstants.Normal;
+                    _cells.GetCell(1, i).Value = "'" + cc.WorkOrder;
+                    _cells.GetCell(2, i).Value = "'" + cc.TaskNo;
+                    _cells.GetCell(3, i).Value = "" + cc.TaskDescription;
+                    _cells.GetCell(4, i).Value = "" + cc.CriticalDescription;
+                    _cells.GetCell(5, i).Value = "" + cc.WorkOrderDescription;
+                    _cells.GetCell(6, i).Value = "'" + cc.EquipmentNo;
+                    _cells.GetCell(7, i).Value = "" + cc.Quartermaster;
+                    _cells.GetCell(8, i).Value = "" + cc.Department;
+                    _cells.GetCell(9, i).Value = "" + cc.AssignPerson;
+                    _cells.GetCell(10, i).Value = "" + cc.PlanStartDate;
+                    _cells.GetCell(11, i).Value = "" + cc.RaisedDate;
+                    _cells.GetCell(12, i).Value = "'" + cc.MaintSchTask;
+                    _cells.GetCell(13, i).Value = "'" + cc.StdJobNo;
+                    _cells.GetCell(14, i).Value = "" + cc.Status;
+                    _cells.GetCell(15, i).Value = "'" + cc.CompletedCode;
+                    _cells.GetCell(16, i).Value = "" + cc.CompletedBy;
+                    _cells.GetCell(17, i).Value = "" + cc.CompletedDate;
+                    _cells.GetCell(18, i).Value = "" + cc.FrequencyText;
+                    _cells.GetCell(19, i).Value = "" + cc.InstructionsText;
+                    _cells.GetCell(19, i).WrapText = false;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnCc01, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewCriticalControlsList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void btnExportCriticalControls_Click(object sender, RibbonControlEventArgs e)
+        {
+            ExportRichTextBox();
+        }
+
+        private void ExportRichTextBox()
+        {
+            var dc = new CriticalControlDefaultExport();
+
+            //Creo el formulario de Opciones del Export
+            #region Formulario Export
+            //CheckBoxes
+            var cbWorkOrder = new CheckBox { AutoSize = true,  Text = @"Orden de Trabajo", Checked = dc.WorkOrder};
+            var cbTaskNo = new CheckBox { AutoSize = true,  Text = @"Tarea No", Checked = dc.TaskNo};
+            var cbTaskDescription = new CheckBox { AutoSize = true,  Text = @"Descripción Tarea", Checked = dc.TaskDescription };
+            var cbWorkOrderDescription = new CheckBox { AutoSize = true,  Text = @"Descripción General", Checked = dc.WorkOrderDescription };
+            var cbCriticalDescription = new CheckBox { AutoSize = true,  Text = @"Descripción BT", Checked = dc.CriticalDescription };
+            var cbEquipmentNo = new CheckBox { AutoSize = true,  Text = @"Equipo.", Checked = dc.EquipmentNo };
+            var cbAssignPerson = new CheckBox { AutoSize = true,  Text = @"Responsable", Checked = dc.AssignPerson };
+            var cbDepartment = new CheckBox { AutoSize = true,  Text = @"Departamento", Checked = dc.Department };
+            var cbQuartermaster = new CheckBox { AutoSize = true,  Text = @"SuperIntendencia", Checked = dc.Quartermaster };
+            var cbPlanStartDate = new CheckBox { AutoSize = true,  Text = @"Fecha Planeada", Checked = dc.PlanStartDate };
+            var cbRaisedDate = new CheckBox { AutoSize = true,  Text = @"Fecha Origen", Checked = dc.RaisedDate };
+            var cbMaintSchTask = new CheckBox { AutoSize = true,  Text = @"Mst No.", Checked = dc.MaintSchTask };
+            var cbStdJobNo = new CheckBox { AutoSize = true,  Text = @"Estándar Job No.", Checked = dc.StdJobNo };
+            var cbStatus = new CheckBox { AutoSize = true,  Text = @"Estado", Checked = dc.Status };
+            var cbCompletedCode = new CheckBox { AutoSize = true,  Text = @"Código Completado", Checked = dc.CompletedCode };
+            var cbCompletedBy = new CheckBox { AutoSize = true,  Text = @"Completado Por", Checked = dc.CompletedBy };
+            var cbCompletedDate = new CheckBox { AutoSize = true,  Text = @"Fecha Completado", Checked = dc.CompletedDate };
+            var cbInstructionsText = new CheckBox { AutoSize = true,  Text = @"Instrucciones", Checked = dc.InstructionsText };
+            var cbFrequencyText = new CheckBox { AutoSize = true,  Text = @"Frecuencia", Checked = dc.FrequencyText };
+
+            var comboList = new List<CheckBox>
+            {
+                cbWorkOrder, 
+                cbTaskNo, 
+                cbTaskDescription, 
+                cbWorkOrderDescription, 
+                cbCriticalDescription, 
+                cbEquipmentNo, 
+                cbAssignPerson, 
+                cbDepartment, 
+                cbQuartermaster, 
+                cbPlanStartDate, 
+                cbRaisedDate, 
+                cbMaintSchTask, 
+                cbStdJobNo, 
+                cbStatus, 
+                cbCompletedCode, 
+                cbCompletedBy, 
+                cbCompletedDate, 
+                cbInstructionsText, 
+                cbFrequencyText
+            };
+
+            //Button Pane
+            var okButton = new Button { DialogResult = DialogResult.OK, Text = @"Generar RTF"};
+            var cancelButton = new Button { DialogResult = DialogResult.Cancel, Text = @"Cancelar"};
+            var btnPane = new FlowLayoutPanel()
+            {
+                FlowDirection = FlowDirection.LeftToRight,
+                
+            };
+            
+            btnPane.Controls.Add(okButton);
+            btnPane.Controls.Add(cancelButton);
+            
+            //Tab Pane
+            var tabPane = new TableLayoutPanel { AutoSize = true, Padding = new Padding(9), ColumnCount = 2 };
+            var comboArray = comboList.ToArray();
+            for (var k = 0; k < comboArray.Length; k++)
+                tabPane.Controls.Add(comboArray[k], 0, k);
+            tabPane.Controls.Add(btnPane);
+            tabPane.SetColumnSpan(btnPane, 2);
+            var exportForm = new Form
+            {
+                Text = @"Exportar...",
+                AutoSize = true
+            };
+            exportForm.Controls.Add(tabPane);
+            #endregion
+            if (exportForm.ShowDialog() != DialogResult.OK) return;
+            _cells.SetCursorWait();
+
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+
+            var i = TitleRowCc01 + 1;
+            try
+            {
+                //Recorremos la hoja para general el listado a convertir a RTF
+                var controlList = new List<CriticalControl>();
+                while (!string.IsNullOrWhiteSpace(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value)))
+                {
+
+                    var cc = new CriticalControl
+                    {
+                        WorkOrder = "" + _cells.GetCell(1, i).Value,
+                        TaskNo = "" + _cells.GetCell(2, i).Value,
+                        TaskDescription = "" + _cells.GetCell(3, i).Value,
+                        CriticalDescription = "" + _cells.GetCell(4, i).Value,
+                        WorkOrderDescription = "" + _cells.GetCell(5, i).Value,
+                        EquipmentNo = "" + _cells.GetCell(6, i).Value,
+                        Quartermaster = "" + _cells.GetCell(7, i).Value,
+                        Department = "" + _cells.GetCell(8, i).Value,
+                        AssignPerson = "" + _cells.GetCell(9, i).Value,
+                        PlanStartDate = "" + _cells.GetCell(10, i).Value,
+                        RaisedDate = "" + _cells.GetCell(11, i).Value,
+                        MaintSchTask = "" + _cells.GetCell(12, i).Value,
+                        StdJobNo = "" + _cells.GetCell(13, i).Value,
+                        Status = "" + _cells.GetCell(14, i).Value,
+                        CompletedCode = "" + _cells.GetCell(15, i).Value,
+                        CompletedBy = "" + _cells.GetCell(16, i).Value,
+                        CompletedDate = "" + _cells.GetCell(17, i).Value,
+                        FrequencyText = "" + _cells.GetCell(18, i).Value,
+                        InstructionsText = "" + _cells.GetCell(19, i).Value
+                    };
+
+                    controlList.Add(cc);
+                    i++;
+                }
+
+                #region Formulario RTF
+
+                exportForm.Controls.Remove(tabPane);
+
+                var exportOptions = new CriticalControlDefaultExport
+                {
+                    WorkOrder = cbWorkOrder.Checked,
+                    TaskNo = cbTaskNo.Checked,
+                    TaskDescription = cbTaskDescription.Checked,
+                    WorkOrderDescription = cbWorkOrderDescription.Checked,
+                    CriticalDescription = cbCriticalDescription.Checked,
+                    EquipmentNo = cbEquipmentNo.Checked,
+                    AssignPerson = cbAssignPerson.Checked,
+                    Department = cbDepartment.Checked,
+                    Quartermaster = cbQuartermaster.Checked,
+                    PlanStartDate = cbPlanStartDate.Checked,
+                    RaisedDate = cbRaisedDate.Checked,
+                    MaintSchTask = cbMaintSchTask.Checked,
+                    StdJobNo = cbStdJobNo.Checked,
+                    Status = cbStatus.Checked,
+                    CompletedCode = cbCompletedCode.Checked,
+                    CompletedBy = cbCompletedBy.Checked,
+                    CompletedDate = cbCompletedDate.Checked,
+                    InstructionsText = cbInstructionsText.Checked,
+                    FrequencyText = cbFrequencyText.Checked
+                };
+                var textBox = new RichTextBox
+                {
+                    Dock = DockStyle.Fill,
+                    Rtf = CriticalControlActions.GetStringForExport(controlList, exportOptions)
+                };
+                exportForm.Controls.Add(textBox);
+                exportForm.Controls.Add(cancelButton);
+                exportForm.Width = 800;
+                exportForm.Width = 600;
+                #endregion
+                exportForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"No se han podido generar los resultados. Se ha encontrado un error en la línea " + i);
+                Debugger.LogError("RibbonEllipse.cs:ExportCriticalControlsList()", ex.Message);
+            }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
+            }
+
+            
+        }
     }
 
 }

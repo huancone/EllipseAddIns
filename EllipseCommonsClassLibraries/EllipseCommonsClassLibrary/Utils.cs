@@ -322,7 +322,13 @@ namespace EllipseCommonsClassLibrary
             var newHour = hh + separator + (Convert.ToInt32(mm)).ToString("D2");
             return newHour;
         }
-
+        /// <summary>
+        /// Formatea un DateTime a String con el format especificado en format
+        /// </summary>
+        /// <param name="date">DateTime</param>
+        /// <param name="format">DateTimeFormats</param>
+        /// <param name="dateSeparator">string separator for format (-, /). Default no separator</param>
+        /// <returns></returns>
         public static string FormatDateToString(DateTime date, string format, string dateSeparator = "")
         {
             if (format.Equals(DateTimeFormats.DateYYMMDD))

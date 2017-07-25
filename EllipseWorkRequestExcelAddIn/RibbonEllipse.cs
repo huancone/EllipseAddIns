@@ -425,6 +425,10 @@ namespace EllipseWorkRequestExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName03))
                 {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(ReviewReferenceCodesList);
@@ -449,6 +453,10 @@ namespace EllipseWorkRequestExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName03))
                 {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(ReReviewReferenceCodesList);
@@ -522,10 +530,12 @@ namespace EllipseWorkRequestExcelAddIn
                     try
                     {
                         var requestId = _cells.GetEmptyIfNull(_cells.GetCell(02, i).Value);
+                        var wr = new WorkRequest();
+                        string header = Utils.IsTrue(_cells.GetCell(04, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(04, i).Value) : null;
+                        string body = Utils.IsTrue(_cells.GetCell(05, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(05, i).Value) : null;
+                        wr.SetExtendedDescription(header, body);
                         var wrRefCodes = new WorkRequestReferenceCodes
                         {
-                            ExtendedDescriptionHeader = Utils.IsTrue(_cells.GetCell(04, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(04, i).Value) : null,
-                            ExtendedDescriptionBody = Utils.IsTrue(_cells.GetCell(05, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(05, i).Value) : null,
                             WorkOrderOrigen = Utils.IsTrue(_cells.GetCell(06, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(06, i).Value) : null,
                             StockCode1 = Utils.IsTrue(_cells.GetCell(07, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(07, i).Value) : null,
                             StockCode1Qty = Utils.IsTrue(_cells.GetCell(08, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(08, i).Value) : null,
@@ -545,13 +555,19 @@ namespace EllipseWorkRequestExcelAddIn
                             CambioHora = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null
                         };
 
+                        var errorList = "";
+                        var replyExtended = WorkRequestActions.UpdateWorkRequestExtendedDescription(urlService, opContext, requestId, wr.GetExtendedDescription(urlService, opContext));
+                        if (replyExtended != null && replyExtended.Errors != null && replyExtended.Errors.Length > 0)
+                            foreach (var error in replyExtended.Errors)
+                                errorList += "\nError: " + error;
+
                         var replyRefCode = WorkRequestReferenceCodesActions.ModifyReferenceCodes(_eFunctions, urlService, opContext, requestId, wrRefCodes);
-                        if (replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
+                        if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
+                            foreach (var error in replyExtended.Errors)
+                                errorList += "\nError: " + error;
+
+                        if(!string.IsNullOrWhiteSpace(errorList))
                         {
-                            var errorList = "";
-                            // ReSharper disable once LoopCanBeConvertedToQuery
-                            foreach (var error in replyRefCode.Errors)
-                                errorList = errorList + "\nError: " + error;
                             _cells.GetCell(2, i).Value = "'" + requestId;
                             _cells.GetCell(2, i).Style = StyleConstants.Success;
 
@@ -1465,8 +1481,9 @@ namespace EllipseWorkRequestExcelAddIn
 
                     var wrRefCodes = WorkRequestReferenceCodesActions.GetWorkRequestReferenceCodes(_eFunctions, urlService, opContext, wr.requestId);
                     //REFERENCE CODES    
-                    _cells.GetCell(28, i).Value = "'" + wrRefCodes.ExtendedDescriptionHeader;
-                    _cells.GetCell(29, i).Value = "'" + wrRefCodes.ExtendedDescriptionBody;
+                    _cells.GetCell(28, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Header;
+                    _cells.GetCell(29, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Body;
+                    _cells.GetCell(29, 1).WrapText = false;
                     _cells.GetCell(30, i).Value = "'" + wrRefCodes.WorkOrderOrigen;
                     _cells.GetCell(31, i).Value = "'" + wrRefCodes.StockCode1;
                     _cells.GetCell(32, i).Value = "'" + wrRefCodes.StockCode1Qty;
@@ -1643,8 +1660,9 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(27, i).Value = "'" + wr.standardJobDistrict;
                     var wrRefCodes = WorkRequestReferenceCodesActions.GetWorkRequestReferenceCodes(_eFunctions, urlService, opContext, wr.requestId);
                     //REFERENCE CODES    
-                    _cells.GetCell(28, i).Value = "'" + wrRefCodes.ExtendedDescriptionHeader;
-                    _cells.GetCell(29, i).Value = "'" + wrRefCodes.ExtendedDescriptionBody;
+                    _cells.GetCell(28, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Header;
+                    _cells.GetCell(29, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Body;
+                    _cells.GetCell(29, i).WrapText = false;
                     _cells.GetCell(30, i).Value = "'" + wrRefCodes.WorkOrderOrigen;
                     _cells.GetCell(31, i).Value = "'" + wrRefCodes.StockCode1;
                     _cells.GetCell(32, i).Value = "'" + wrRefCodes.StockCode1Qty;
@@ -1728,8 +1746,9 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(03, i).Value = "'" + wr.requestIdDescription1 + " " + wr.requestIdDescription2;
 
                     var wrRefCodes = WorkRequestReferenceCodesActions.GetWorkRequestReferenceCodes(_eFunctions, urlService, opContext, wr.requestId);
-                    _cells.GetCell(04, i).Value = "'" + wrRefCodes.ExtendedDescriptionHeader;
-                    _cells.GetCell(05, i).Value = "'" + wrRefCodes.ExtendedDescriptionBody;
+                    _cells.GetCell(04, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Header;
+                    _cells.GetCell(05, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Body;
+                    _cells.GetCell(05, i).WrapText = false;
                     _cells.GetCell(06, i).Value = "'" + wrRefCodes.WorkOrderOrigen;
                     _cells.GetCell(07, i).Value = "'" + wrRefCodes.StockCode1;
                     _cells.GetCell(08, i).Value = "'" + wrRefCodes.StockCode1Qty;
@@ -1802,8 +1821,9 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(02, i).Value = "'" + wr.requestId;
                     _cells.GetCell(03, i).Value = "'" + wr.requestIdDescription1 + " " + wr.requestIdDescription2;
                     var wrRefCodes = WorkRequestReferenceCodesActions.GetWorkRequestReferenceCodes(_eFunctions, urlService, opContext, wr.requestId);
-                    _cells.GetCell(04, i).Value = "'" + wrRefCodes.ExtendedDescriptionHeader;
-                    _cells.GetCell(05, i).Value = "'" + wrRefCodes.ExtendedDescriptionBody;
+                    _cells.GetCell(04, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Header;
+                    _cells.GetCell(05, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Body;
+                    _cells.GetCell(05, i).WrapText = false;
                     _cells.GetCell(06, i).Value = "'" + wrRefCodes.WorkOrderOrigen;
                     _cells.GetCell(07, i).Value = "'" + wrRefCodes.StockCode1;
                     _cells.GetCell(08, i).Value = "'" + wrRefCodes.StockCode1Qty;
@@ -2000,11 +2020,11 @@ namespace EllipseWorkRequestExcelAddIn
                         standardJob = _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value),
                         standardJobDistrict = _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value),
                     };
-
+                    var header = _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value);
+                    var body = _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value);
+                    wr.SetExtendedDescription(header, body);
                     var wrRefCodes = new WorkRequestReferenceCodes
                     {
-                        ExtendedDescriptionHeader = _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value),
-                        ExtendedDescriptionBody = _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value),
                         WorkOrderOrigen = _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value),
                         StockCode1 = _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value),
                         StockCode1Qty = _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value),
@@ -2027,11 +2047,19 @@ namespace EllipseWorkRequestExcelAddIn
                     var requestId = replySheet.requestId;
                     if (string.IsNullOrWhiteSpace(replySheet.requestId))
                         throw new Exception("No se ha podido crear el WorkRequest");
+                    var errorList = "";
+                    var replyExtended = WorkRequestActions.UpdateWorkRequestExtendedDescription(urlService, opContext, requestId, wr.GetExtendedDescription(urlService, opContext));
+                    if (replyExtended != null && replyExtended.Errors != null && replyExtended.Errors.Length > 0)
+                        foreach (var error in replyExtended.Errors)
+                            errorList += "\nError: " + error;
 
-                    var replyRefCode = WorkRequestReferenceCodesActions.CreateReferenceCodes(_eFunctions, urlService, opContext, requestId, wrRefCodes);
-                    if (replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
+                    var replyRefCode = WorkRequestReferenceCodesActions.ModifyReferenceCodes(_eFunctions, urlService, opContext, requestId, wrRefCodes);
+                    if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
+                        foreach (var error in replyExtended.Errors)
+                            errorList += "\nError: " + error;
+
+                    if (!string.IsNullOrWhiteSpace(errorList))
                     {
-                        var errorList = replyRefCode.Errors.Aggregate("", (current, error) => current + "\nerror");
                         _cells.GetCell(2, i).Value = "'" + requestId;
                         _cells.GetCell(2, i).Style = StyleConstants.Success;
 
@@ -2216,10 +2244,11 @@ namespace EllipseWorkRequestExcelAddIn
                         standardJobDistrict = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null,
                     };
 
+                    string header = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;
+                    string body = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
+                    wr.SetExtendedDescription(header, body);
                     var wrRefCodes = new WorkRequestReferenceCodes
                     {
-                        ExtendedDescriptionHeader = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
-                        ExtendedDescriptionBody = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null,
                         WorkOrderOrigen = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
                         StockCode1 = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
                         StockCode1Qty = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
@@ -2242,11 +2271,19 @@ namespace EllipseWorkRequestExcelAddIn
                     var requestId = replySheet.requestId;
                     if (string.IsNullOrWhiteSpace(replySheet.requestId))
                         throw new Exception("No se ha podido crear el WorkRequest");
+                    var errorList = "";
+                    var replyExtended = WorkRequestActions.UpdateWorkRequestExtendedDescription(urlService, opContext, requestId, wr.GetExtendedDescription(urlService, opContext));
+                    if (replyExtended != null && replyExtended.Errors != null && replyExtended.Errors.Length > 0)
+                        foreach (var error in replyExtended.Errors)
+                            errorList += "\nError: " + error;
 
                     var replyRefCode = WorkRequestReferenceCodesActions.ModifyReferenceCodes(_eFunctions, urlService, opContext, requestId, wrRefCodes);
-                    if (replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
+                    if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
+                        foreach (var error in replyExtended.Errors)
+                            errorList += "\nError: " + error;
+
+                    if (!string.IsNullOrWhiteSpace(errorList))
                     {
-                        var errorList = replyRefCode.Errors.Aggregate("", (current, error) => current + "\nerror");
                         _cells.GetCell(2, i).Value = "'" + requestId;
                         _cells.GetCell(2, i).Style = StyleConstants.Success;
 
@@ -2707,6 +2744,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 1
+                _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
                     _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
@@ -2744,6 +2782,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(01, TitleRowV01).Value = "DESCRIPCIÓN";
                 _cells.GetCell(02, TitleRowV01).Value = "ACCIÓN A REALIZAR";
                 _cells.GetCell(03, TitleRowV01).Value = "EQUIPO";
+                _cells.GetCell(03, TitleRowV01).AddComment("110XXXX (Ej. Vagón 300 es 1100300. Vagón 1040 es 1101040)");
                 _cells.GetCell(04, TitleRowV01).Value = "EMPLEADO";
                 _cells.GetCell(04, TitleRowV01).AddComment("Si no se digita usará el usuario de autenticación de Ellipse");
                 _cells.GetCell(04, TitleRowV01).Style = StyleConstants.TitleOptional;

@@ -40,6 +40,7 @@
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnFormatMantto = this.Factory.CreateRibbonButton();
+            this.btnFormatFcVagones = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
@@ -62,7 +63,6 @@
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.menu1 = this.Factory.CreateRibbonMenu();
-            this.btnFormatFcVagones = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkRequest.SuspendLayout();
             this.box1.SuspendLayout();
@@ -109,6 +109,13 @@
             this.btnFormatMantto.Name = "btnFormatMantto";
             this.btnFormatMantto.ShowImage = true;
             this.btnFormatMantto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatMantto_Click);
+            // 
+            // btnFormatFcVagones
+            // 
+            this.btnFormatFcVagones.Label = "Registro Fc Vagones";
+            this.btnFormatFcVagones.Name = "btnFormatFcVagones";
+            this.btnFormatFcVagones.ShowImage = true;
+            this.btnFormatFcVagones.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatFcVagones_Click);
             // 
             // btnAbout
             // 
@@ -270,13 +277,6 @@
             // 
             this.menu1.Label = "menu1";
             this.menu1.Name = "menu1";
-            // 
-            // btnFormatFcVagones
-            // 
-            this.btnFormatFcVagones.Label = "Registro Fc Vagones";
-            this.btnFormatFcVagones.Name = "btnFormatFcVagones";
-            this.btnFormatFcVagones.ShowImage = true;
-            this.btnFormatFcVagones.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatFcVagones_Click);
             // 
             // RibbonEllipse
             // 

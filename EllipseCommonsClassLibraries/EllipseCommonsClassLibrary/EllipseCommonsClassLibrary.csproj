@@ -109,6 +109,9 @@
     <EmbeddedResource Include="AboutBoxExcelAddIn.resx">
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormAuthenticate.resx">
+      <DependentUpon>FormAuthenticate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SettingsBox.resx">
       <DependentUpon>SettingsBox.cs</DependentUpon>
     </EmbeddedResource>
