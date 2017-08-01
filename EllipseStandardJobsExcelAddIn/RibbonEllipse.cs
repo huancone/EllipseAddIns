@@ -1329,7 +1329,8 @@ namespace EllipseStandardJobsExcelAddIn
                     stdJob.JobCode10 = Utils.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
                     stdJob.ExtText = Utils.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
                     StandardJobActions.CreateStandardJob(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, stdJob);
-                    StandardJobActions.SetStandardJobText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
+                    if(!string.IsNullOrWhiteSpace(stdJob.ExtText))
+                        StandardJobActions.SetStandardJobText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
 
                     _cells.GetCell(ResultColumn01, i).Value = "CREADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1647,12 +1648,12 @@ namespace EllipseStandardJobsExcelAddIn
                             returnWarnings = Debugger.DebugWarnings,
                             returnWarningsSpecified = true
                         };
-                        StandardJobActions.ModifyStandardJobTask(urlService, opC, stdTask, true);
+                        StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask);
                         StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else if (action.Equals("C"))
                     {
-                        StandardJobActions.CreateStandardJobTaskPost(_eFunctions, stdTask, true);
+                        StandardJobActions.CreateStandardJobTaskPost(_eFunctions, stdTask);
                         StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else

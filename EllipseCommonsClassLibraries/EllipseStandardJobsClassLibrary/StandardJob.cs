@@ -368,27 +368,28 @@ namespace EllipseStandardJobsClassLibrary
             requestStdJob.maintenanceType = stdJob.MaintenanceType ?? requestStdJob.maintenanceType;
             requestStdJob.compCode = stdJob.CompCode ?? requestStdJob.compCode;
             requestStdJob.compModCode = stdJob.CompModCode ?? requestStdJob.compModCode;
-            requestStdJob.unitOfWork = stdJob.UnitOfWork ?? requestStdJob.unitOfWork;
-            requestStdJob.unitsRequired = stdJob.UnitsRequired != null ? Convert.ToDecimal(stdJob.UnitsRequired) : default(decimal);
-            requestStdJob.unitsRequiredSpecified = stdJob.UnitsRequired != null;
+
+            requestStdJob.unitOfWork = !string.IsNullOrWhiteSpace(stdJob.UnitOfWork) ? stdJob.UnitOfWork : null;
+            requestStdJob.unitsRequired = !string.IsNullOrWhiteSpace(stdJob.UnitOfWork) ? Convert.ToDecimal(stdJob.UnitsRequired) : default(decimal); ;
+            requestStdJob.unitsRequiredSpecified = !string.IsNullOrWhiteSpace(stdJob.UnitOfWork);
 
             requestStdJob.accountCode = stdJob.AccountCode ?? requestStdJob.accountCode;
             requestStdJob.reallocAccCode = stdJob.ReallocAccCode ?? requestStdJob.reallocAccCode;
             requestStdJob.projectNo = stdJob.ProjectNo ?? requestStdJob.projectNo;
-            requestStdJob.estimatedOtherCost = stdJob.EstimatedOtherCost != null ? Convert.ToDecimal(stdJob.EstimatedOtherCost) : default(decimal);
-            requestStdJob.estimatedOtherCostSpecified = stdJob.EstimatedOtherCostSpecified != null;
-            requestStdJob.estimatedDurationsHrs = stdJob.EstimatedDurationsHrs != null ? Convert.ToDecimal(stdJob.EstimatedDurationsHrs) : default(decimal);
-            requestStdJob.estimatedDurationsHrsSpecified = stdJob.EstimatedDurationsHrs != null;
+            requestStdJob.estimatedOtherCost = !string.IsNullOrWhiteSpace(stdJob.EstimatedOtherCost) ? Convert.ToDecimal(stdJob.EstimatedOtherCost) : default(decimal);
+            requestStdJob.estimatedOtherCostSpecified = !string.IsNullOrWhiteSpace(stdJob.EstimatedOtherCost);
+            requestStdJob.estimatedDurationsHrs = !string.IsNullOrWhiteSpace(stdJob.EstimatedDurationsHrs) ? Convert.ToDecimal(stdJob.EstimatedDurationsHrs) : default(decimal);
+            requestStdJob.estimatedDurationsHrsSpecified = !string.IsNullOrWhiteSpace(stdJob.EstimatedDurationsHrs);
             requestStdJob.calculatedDurationsHrsFlg = Convert.ToBoolean(stdJob.CalculatedDurationsHrsFlg);
-            requestStdJob.calculatedDurationsHrsFlgSpecified = stdJob.CalculatedDurationsHrsFlg != null;
+            requestStdJob.calculatedDurationsHrsFlgSpecified = !string.IsNullOrWhiteSpace(stdJob.CalculatedDurationsHrsFlg);
             requestStdJob.resUpdateFlag = Convert.ToBoolean(stdJob.ResUpdateFlag);
-            requestStdJob.resUpdateFlagSpecified = stdJob.ResUpdateFlag != null;
+            requestStdJob.resUpdateFlagSpecified = !string.IsNullOrWhiteSpace(stdJob.ResUpdateFlag);
             requestStdJob.matUpdateFlag = Convert.ToBoolean(stdJob.MatUpdateFlag);
-            requestStdJob.matUpdateFlagSpecified = stdJob.MatUpdateFlag != null;
+            requestStdJob.matUpdateFlagSpecified = !string.IsNullOrWhiteSpace(stdJob.MatUpdateFlag);
             requestStdJob.equipmentUpdateFlag = Convert.ToBoolean(stdJob.EquipmentUpdateFlag);
-            requestStdJob.equipmentUpdateFlagSpecified = stdJob.EquipmentUpdateFlag != null;
+            requestStdJob.equipmentUpdateFlagSpecified = !string.IsNullOrWhiteSpace(stdJob.EquipmentUpdateFlag);
             requestStdJob.otherUpdateFlag = Convert.ToBoolean(stdJob.OtherUpdateFlag);
-            requestStdJob.otherUpdateFlagSpecified = stdJob.OtherUpdateFlag != null;
+            requestStdJob.otherUpdateFlagSpecified = !string.IsNullOrWhiteSpace(stdJob.OtherUpdateFlag);
             //requestStdJob.totalUpdateFlag = true;//no se encuentran en la base de datos. Al parecer son calculados según la selección de los anteriores
             //requestStdJob.totalUpdateFlagSpecified = true;
 
@@ -704,15 +705,15 @@ namespace EllipseStandardJobsClassLibrary
             requestStdTask.completeInstr = stdTask.CompleteInstr ?? requestStdTask.completeInstr;
             requestStdTask.complTextCode = stdTask.ComplTextCode ?? requestStdTask.complTextCode;
             requestStdTask.assignPerson = stdTask.AssignPerson ?? requestStdTask.assignPerson;
-            requestStdTask.estimatedMachHrs = stdTask.EstimatedMachHrs != null ? Convert.ToDecimal(stdTask.EstimatedMachHrs) : default(decimal);
-            requestStdTask.estimatedMachHrsSpecified = stdTask.EstimatedMachHrs != null;
+            requestStdTask.estimatedMachHrs = !string.IsNullOrEmpty(stdTask.EstimatedMachHrs) ? Convert.ToDecimal(stdTask.EstimatedMachHrs) : default(decimal);
+            requestStdTask.estimatedMachHrsSpecified = !string.IsNullOrEmpty(stdTask.EstimatedMachHrs);
             requestStdTask.unitOfWork = stdTask.UnitOfWork ?? requestStdTask.unitOfWork;
-            requestStdTask.unitsRequired = stdTask.UnitsRequired != null ? Convert.ToDecimal(stdTask.UnitsRequired) : default(decimal);
-            requestStdTask.unitsRequiredSpecified = stdTask.UnitsRequired != null;
-            requestStdTask.unitsPerDay = stdTask.UnitsPerDay != null ? Convert.ToDecimal(stdTask.UnitsPerDay) : default(decimal);
-            requestStdTask.unitsPerDaySpecified = stdTask.UnitsPerDay != null;
-            requestStdTask.estimatedDurationsHrs = stdTask.EstimatedDurationsHrs != null ? Convert.ToDecimal(stdTask.EstimatedDurationsHrs) : default(decimal);
-            requestStdTask.estimatedDurationsHrsSpecified = stdTask.EstimatedDurationsHrs != null;
+            requestStdTask.unitsRequired = !string.IsNullOrEmpty(stdTask.UnitsRequired) ? Convert.ToDecimal(stdTask.UnitsRequired) : default(decimal);
+            requestStdTask.unitsRequiredSpecified = !string.IsNullOrEmpty(stdTask.UnitsRequired);
+            requestStdTask.unitsPerDay = !string.IsNullOrEmpty(stdTask.UnitsPerDay) ? Convert.ToDecimal(stdTask.UnitsPerDay) : default(decimal);
+            requestStdTask.unitsPerDaySpecified = !string.IsNullOrEmpty(stdTask.UnitsPerDay);
+            requestStdTask.estimatedDurationsHrs =!string.IsNullOrEmpty(stdTask.EstimatedDurationsHrs) ? Convert.ToDecimal(stdTask.EstimatedDurationsHrs) : default(decimal);
+            requestStdTask.estimatedDurationsHrsSpecified = !string.IsNullOrEmpty(stdTask.EstimatedDurationsHrs);
             requestStdTask.APLEquipmentGrpId = stdTask.AplEquipmentGrpId ?? requestStdTask.APLEquipmentGrpId;
             requestStdTask.APLType = stdTask.AplType ?? requestStdTask.APLType;
             requestStdTask.APLCompCode = stdTask.AplCompCode ?? requestStdTask.APLCompCode;
@@ -767,7 +768,7 @@ namespace EllipseStandardJobsClassLibrary
             proxyStdTask.create(opContext, requestStdTask);
         }
 
-        public static void ModifyStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask, bool v)
+        public static void ModifyStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask)
         {
 
 
@@ -823,7 +824,7 @@ namespace EllipseStandardJobsClassLibrary
                 throw new Exception(errorMessage);
         }
 
-        public static void CreateStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask, bool v)
+        public static void CreateStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask)
         {
 
             ef.InitiatePostConnection();

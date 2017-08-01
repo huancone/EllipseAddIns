@@ -234,8 +234,6 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
-    <None Include="Certificate-cerrejon-hhernand.pfx" />
-    <None Include="certificate-CerrejonCoalIssuingCA1.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
