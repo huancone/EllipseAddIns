@@ -25,14 +25,18 @@ namespace EllipseEquipmentExcelAddIn
         Excel.Application _excelApp;
         private const string SheetName01 = "EquipmentFull";
         private const string SheetName02 = "TracingActions";
+        private const string SheetName03 = "ListEquipments";
         private const string ValidationSheetName = "ValidationSheetEquipment";
 
         private const int TitleRow01 = 9;
         private const int TitleRow02 = 8;
+        private const int TitleRow03 = 8;
         private const int ResultColumn01 = 73;
         private const int ResultColumn02 = 10;
+        private const int ResultColumn03 = 10;
         private const string TableName01 = "EquipmentTable";
         private const string TableName02 = "FitmentDefitmentTable";
+        private const string TableName03 = "ListEquipsTable";
 
         private Thread _thread;
 
@@ -192,10 +196,11 @@ namespace EllipseEquipmentExcelAddIn
                     _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
-                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name = SheetName01;
 
                 _cells.CreateNewWorksheet(ValidationSheetName);
 
+                #region Hoja 1 - Equipment
+                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name = SheetName01;
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
@@ -212,17 +217,17 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
 
                 var districtList = DistrictConstants.GetDistrictList();
-                var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
+                var searchCriteriaList = SearchFieldCriteria.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
                 var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
                 var eqStatusList = EquipmentActions.GetEquipmentStatusCodeList(_eFunctions).Select(g => g.code + " - " + g.description).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
-                _cells.GetCell("A4").Value = SearchFieldCriteriaType.ProductiveUnit.Value;
+                _cells.GetCell("A4").Value = SearchFieldCriteria.ProductiveUnit.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
                 _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 3, false);
-                _cells.GetCell("A5").Value = SearchFieldCriteriaType.Egi.Value;
+                _cells.GetCell("A5").Value = SearchFieldCriteria.Egi.Value;
                 _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);
                 _cells.GetCell("A6").Value = "STATUS";
                 _cells.SetValidationList(_cells.GetCell("B6"), eqStatusList, ValidationSheetName, 4);
@@ -239,8 +244,6 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(i, TitleRow01 - 1).Value = "true";
                 }
 
-
-                #region GENERAL
                 _cells.GetCell(1, TitleRow01 - 2).Value = "GENERAL";
                 _cells.MergeCells(1, TitleRow01 - 2, 23, TitleRow01 - 2);
                 _cells.GetCell(1, TitleRow01).Value = "EQUIPMENT REFERENCE";
@@ -342,7 +345,6 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
-                //validationRows
 
                 //asigno la validación de celda
                 _cells.SetValidationList(_cells.GetCell(2, TitleRow01 + 1), ValidationSheetName, 4, false);
@@ -415,7 +417,7 @@ namespace EllipseEquipmentExcelAddIn
                 ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit(); 
                 #endregion
 
-                #region HOJA 2 - TRACING ACTIONS
+                #region Hoja 2 - Tracing Actions
                 ((Excel.Worksheet)_excelApp.ActiveWorkbook.Sheets[2]).Select(Type.Missing);
 
                 ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name = SheetName02;
@@ -474,17 +476,62 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell(ResultColumn02, TitleRow02).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn02, TitleRow02).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
-                #endregion
-                //validationRows
-
                 //asigno la validación de celda
                 var listTypeAction = new List<string> { "F - Fitment", "D - Defitment" };
                 _cells.SetValidationList(_cells.GetCell(4, TitleRow02 + 1), listTypeAction, ValidationSheetName, 35, false);
 
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
-                //búsquedas especiales de tabla
+
+                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+                #endregion
+
+                #region Hoja 3 - List Equipments List
+                ((Excel.Worksheet)_excelApp.ActiveWorkbook.Sheets[3]).Select(Type.Missing);
+                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name = SheetName03;
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "A2");
+
+                _cells.GetCell("B1").Value = "LIST EQUIPMENTS - ELLIPSE 8";
+                _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("B1", "J2");
+
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+
+                var listSearchCriteriaList = EquipListSearchFieldCriteria.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
+
+                _cells.GetCell("A3").Value = EquipListSearchFieldCriteria.ListType.Value;
+                _cells.SetValidationList(_cells.GetCell("A3"), listSearchCriteriaList, ValidationSheetName, 23);
+                _cells.GetCell("A4").Value = EquipListSearchFieldCriteria.ListId.Value;
+                _cells.SetValidationList(_cells.GetCell("A4"), ValidationSheetName, 23);
+                _cells.GetRange("A3", "A4").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
+
+                _cells.GetRange(1, TitleRow03, ResultColumn03 - 1, TitleRow03).Style = StyleConstants.TitleInformation;
+
+                _cells.GetCell(1, TitleRow03).Value = "Equipment No";
+                _cells.GetCell(2, TitleRow03).Value = "Equipment Desc.";
+                _cells.GetCell(3, TitleRow03).Value = "List Type";
+                _cells.GetCell(4, TitleRow03).Value = "List Id";
+                _cells.GetCell(5, TitleRow03).Value = "List Number";
+                _cells.GetCell(6, TitleRow03).Value = "List Description";
+                _cells.GetCell(7, TitleRow03).Value = "List Reference";
+                _cells.GetCell(8, TitleRow03).Value = "List Owner";
+                _cells.GetCell(9, TitleRow03).Value = "List Owner Position";
+
+                _cells.GetCell(ResultColumn03, TitleRow03).Value = "RESULTADO";
+                _cells.GetCell(ResultColumn03, TitleRow03).Style = _cells.GetStyle(StyleConstants.TitleResult);
+
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow03, ResultColumn03, TitleRow03 + 1), TableName02);
+
                 ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
 
+                #endregion
                 ((Excel.Worksheet)_excelApp.ActiveWorkbook.Sheets[1]).Select(Type.Missing);
             }
             catch (Exception ex)
@@ -503,7 +550,7 @@ namespace EllipseEquipmentExcelAddIn
 
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
-            var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
+            var searchCriteriaList = SearchFieldCriteria.GetSearchFieldCriteriaTypes();
 
             //Obtengo los valores de las opciones de búsqueda
             var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
@@ -1263,6 +1310,85 @@ namespace EllipseEquipmentExcelAddIn
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();
+        }
+
+        private void btnReviewListEquips_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReviewListEquipmentsList);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ReviewListEquipmentsList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+        private void ReviewListEquipmentsList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _cells.ClearTableRange(TableName03);
+
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+            var searchCriteriaList = EquipListSearchFieldCriteria.GetSearchFieldCriteriaTypes();
+
+            //Obtengo los valores de las opciones de búsqueda
+            var searchCriteriaKey1Text = _cells.GetEmptyIfNull(_cells.GetCell("A3").Value);
+            var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            var searchCriteriaKey2Text = _cells.GetEmptyIfNull(_cells.GetCell("A4").Value);
+            var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
+
+            //Convierto los nombres de las opciones a llaves
+            var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
+            var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
+
+            var listeq = EquipmentListActions.FetchListEquipmentsList(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2);
+            var i = TitleRow03 + 1;
+            foreach (var eq in listeq)
+            {
+                try
+                {
+                    //Para resetear el estilo
+                    _cells.GetRange(1, i, ResultColumn03, i).Style = StyleConstants.Normal;
+                    //GENERAL
+                    _cells.GetCell(1, i).Value = "" + eq.EquipNo;
+                    _cells.GetCell(2, i).Value = "" + eq.EquipDescription;
+                    _cells.GetCell(3, i).Value = "" + eq.ListType;
+                    _cells.GetCell(4, i).Value = "" + eq.ListId;
+                    _cells.GetCell(5, i).Value = "" + eq.ListNumber;
+                    _cells.GetCell(6, i).Value = "" + eq.ListDescription;
+                    _cells.GetCell(7, i).Value = "" + eq.ListReference;
+                    _cells.GetCell(8, i).Value = "" + eq.ListOwner;
+                    _cells.GetCell(9, i).Value = "" + eq.ListOwnerPosition;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReviewListEquipmentsList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+            ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+
         }
     }
 }
