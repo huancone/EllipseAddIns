@@ -27,10 +27,12 @@ namespace EllipseWorkRequestExcelAddIn
         private const string SheetNameM02 = "WorkRequestMnttoClose";
         private const string SheetNameM03 = "WorkRequestsMnttoSLA";
         private const string SheetNameV01 = "WorkRequestVagones";
+        private const string SheetNamePfc01 = "WorkRequestSolicitudesFC";
         //private const string SheetName04 = "WorkOrdersRelated";
         private const int TitleRow01 = 9;
         private const int TitleRow02 = 6;
         private const int TitleRow03 = 9;
+        private const int TitleRowPfc01 = 5;
         private const int ResultColumn01 = 38;
         private const int ResultColumn02 = 5;
         private const int ResultColumn03 = 23;
@@ -41,6 +43,7 @@ namespace EllipseWorkRequestExcelAddIn
         //private const int ResultColumnM03 = 14;
         private const int TitleRowV01 = 5;
         private const int ResultColumnV01 = 11;
+        private const int ResultColumnPfc01 = 10;
         private const string TableName01 = "WorkRequestTable";
         private const string TableName02 = "WorkRequestCloseTable";
         private const string TableName03 = "WorkRequestsReferencesTable";
@@ -48,15 +51,14 @@ namespace EllipseWorkRequestExcelAddIn
         private const string TableNameM02 = "WorkRequestCloseTable";
         private const string TableNameM03 = "WorkRequestSLATable";
         private const string TableNameV01 = "WorkRequestVagonesTable";
+        private const string TableNamePfc01 = "WorkRequestSolicitudesFCTable";
         //private const string TableName04 = "WorkOrdersRelatedTable";
         private const string ValidationSheetName = "ValidationSheet";
-
         private Thread _thread;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            
             var enviroments = EnviromentConstants.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -71,10 +73,12 @@ namespace EllipseWorkRequestExcelAddIn
         {
             FormatSheet();
         }
+
         private void btnFormatMantto_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheetMtto();
         }
+
         private void btnReviewWorkRequest_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -178,6 +182,19 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNamePfc01)
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+
+                    _thread = new Thread(CreateWorkRequestPfcList);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
             }
@@ -186,6 +203,87 @@ namespace EllipseWorkRequestExcelAddIn
                 Debugger.LogError("RibbonEllipse:CreateWorkRequest()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
+        }
+
+        private void CreateWorkRequestPfcList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
+
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var opSheet = new OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            var i = TitleRowPfc01 + 1;
+            //default values
+            var todayDate = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) +
+                            string.Format("{0:00}", DateTime.Now.Day);
+            //To Do change for ICARROS Group Admin
+            var employee = _frmAuth.EllipseUser;
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var wr = new WorkRequest
+                    {
+                        workGroup = "PLANFC",
+                        requestId = null,
+                        requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
+                        requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
+                        equipmentNo = "FERROCARRIL",
+                        employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value))
+                                ? employee
+                                : _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
+                        classification = "SS",
+                        requestType = "ES",
+                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)),
+                        contactId = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
+                        sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
+                        raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value))
+                                    ? todayDate
+                                    : _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
+                        ServiceLevelAgreement =
+                        {
+                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
+                            StartDate = todayDate
+                        }
+                    };
+
+                    if (string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.ServiceLevel) ||
+                        string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.StartDate))
+                        throw new Exception("No se puede crear Work Request. Falta la información del Service Level");
+                    var replySheet = WorkRequestActions.CreateWorkRequest(urlService, opSheet, wr);
+                    var requestId = replySheet.requestId;
+
+                    WorkRequestActions.SetWorkRequestSla(urlService, opSheet, requestId, wr.ServiceLevelAgreement);
+                    _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Success;
+                    _cells.GetCell(01, i).Value = requestId;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(2, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:CreateWorkRequestVagonesList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumnPfc01, i).Select();
+                    i++;
+                }
+            }
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         private void btnModifyWorkRequest_Click(object sender, RibbonControlEventArgs e)
@@ -226,6 +324,7 @@ namespace EllipseWorkRequestExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
         private void btnCloseWorkRequest_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -263,6 +362,7 @@ namespace EllipseWorkRequestExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
         private void btnReOpenWorkRequest_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -300,6 +400,7 @@ namespace EllipseWorkRequestExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
         private void btnDeleteWorkRequest_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -340,6 +441,7 @@ namespace EllipseWorkRequestExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
         private void btnSetSla_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -379,7 +481,6 @@ namespace EllipseWorkRequestExcelAddIn
             }
         }
 
-        
         private void btnResetSla_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -497,7 +598,6 @@ namespace EllipseWorkRequestExcelAddIn
                 Debugger.LogError("RibbonEllipse:UpdateReferenceCodesList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
-            
         }
 
         private void UpdateReferenceCodesList()
@@ -524,7 +624,6 @@ namespace EllipseWorkRequestExcelAddIn
 
                 var i = TitleRow03 + 1;
                 const int validationRow = TitleRow03 - 1;
-                
                 while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
                 {
                     try
@@ -608,9 +707,7 @@ namespace EllipseWorkRequestExcelAddIn
             {
                 if(_cells != null) _cells.SetCursorDefault();
             }
-            
         }
-
 
         private void btnCleanSheet_Click(object sender, RibbonControlEventArgs e)
         {
@@ -623,6 +720,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRange(TableNameM03);
             //_cells.ClearTableRange(TableNameM04);
         }
+
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -636,14 +734,14 @@ namespace EllipseWorkRequestExcelAddIn
                 MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
             }
         }
-        
+
         private void FormatSheet()
         {
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-                
+
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
@@ -681,10 +779,10 @@ namespace EllipseWorkRequestExcelAddIn
                 var dateCriteriaList = WorkRequestActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
-                    "INST: IMIS, MINA\n" +
-                    "MDC: FFCC, PBV, PTAS\n" +
-                    "MNTTO: MINA\n" +
-                    "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                                                "INST: IMIS, MINA\n" +
+                                                "MDC: FFCC, PBV, PTAS\n" +
+                                                "MNTTO: MINA\n" +
+                                                "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
                 _cells.GetCell("A3").Value = WorkRequestActions.SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.SetValidationList(_cells.GetCell("A3"), searchCriteriaList, ValidationSheetName, 1, false);
@@ -703,7 +801,9 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D4").AddComment("YYYYMMDD");
                 _cells.GetCell("C5").Value = "HASTA";
-                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) +
+                                             string.Format("{0:00}", DateTime.Now.Month) +
+                                             string.Format("{0:00}", DateTime.Now.Day);
                 _cells.GetCell("D5").AddComment("YYYYMMDD");
                 _cells.GetRange("C3", "C5").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("D3", "D5").Style = _cells.GetStyle(StyleConstants.Select);
@@ -761,7 +861,7 @@ namespace EllipseWorkRequestExcelAddIn
 
                 var regionList = _eFunctions.GetItemCodes("REGN").Select(item => item.code + " - " + item.description).ToList();
                 _cells.SetValidationList(_cells.GetCell(12, TitleRow01 + 1), regionList, ValidationSheetName, 9, false);
-                
+
                 //SOURCE
                 _cells.GetCell(13, TitleRow01 - 2).Value = "SOURCE";
                 _cells.MergeCells(13, TitleRow01 - 2, 15, TitleRow01 - 2);
@@ -895,10 +995,10 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("K5").Style = StyleConstants.TitleAdditional;
 
                 _cells.GetCell("A3").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
-                    "INST: IMIS, MINA\n" +
-                    "MDC: FFCC, PBV, PTAS\n" +
-                    "MNTTO: MINA\n" +
-                    "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                                                "INST: IMIS, MINA\n" +
+                                                "MDC: FFCC, PBV, PTAS\n" +
+                                                "MNTTO: MINA\n" +
+                                                "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
                 _cells.GetCell("A3").Value = WorkRequestActions.SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.SetValidationList(_cells.GetCell("A3"), ValidationSheetName, 1, false);
@@ -917,7 +1017,9 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D4").AddComment("YYYYMMDD");
                 _cells.GetCell("C5").Value = "HASTA";
-                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) +
+                                             string.Format("{0:00}", DateTime.Now.Month) +
+                                             string.Format("{0:00}", DateTime.Now.Day);
                 _cells.GetCell("D5").AddComment("YYYYMMDD");
                 _cells.GetRange("C3", "C5").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("D3", "D5").Style = _cells.GetStyle(StyleConstants.Select);
@@ -933,7 +1035,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(02, TitleRow03).Style = StyleConstants.TitleRequired;
                 _cells.GetCell(03, TitleRow03).Style = StyleConstants.TitleInformation;
 
-                _cells.GetCell(01, TitleRow03).Value = "WORKGROUP"; 
+                _cells.GetCell(01, TitleRow03).Value = "WORKGROUP";
                 _cells.GetCell(02, TitleRow03).Value = "REQUEST ID";
                 _cells.GetCell(03, TitleRow03).Value = "DESCRIPTION";
                 _cells.GetCell(04, TitleRow03).Value = "DESC EXTEND HEADER";
@@ -962,7 +1064,6 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetRange(1, TitleRow03 + 1, ResultColumn03, TitleRow03 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow03, ResultColumn03, TitleRow03 + 1), TableName03);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-                
                 _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
             }
             catch (Exception ex)
@@ -1016,10 +1117,10 @@ namespace EllipseWorkRequestExcelAddIn
                 var dateCriteriaList = WorkRequestActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
-                    "INST: IMIS, MINA\n" +
-                    "MDC: FFCC, PBV, PTAS\n" +
-                    "MNTTO: MINA\n" +
-                    "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                                                "INST: IMIS, MINA\n" +
+                                                "MDC: FFCC, PBV, PTAS\n" +
+                                                "MNTTO: MINA\n" +
+                                                "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
                 _cells.GetCell("A3").Value = WorkRequestActions.SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.SetValidationList(_cells.GetCell("A3"), searchCriteriaList, ValidationSheetName, 1, false);
@@ -1038,7 +1139,9 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D4").AddComment("YYYYMMDD");
                 _cells.GetCell("C5").Value = "HASTA";
-                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) +
+                                             string.Format("{0:00}", DateTime.Now.Month) +
+                                             string.Format("{0:00}", DateTime.Now.Day);
                 _cells.GetCell("D5").AddComment("YYYYMMDD");
                 _cells.GetRange("C3", "C5").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("D3", "D5").Style = _cells.GetStyle(StyleConstants.Select);
@@ -1171,7 +1274,6 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(46, TitleRow03).AddComment("HH:MM");
 
 
-              
                 //
                 _cells.GetRange(28, TitleRow01, ResultColumnM01 - 1, TitleRow01).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(ResultColumnM01, TitleRow01).Value = "RESULTADO";
@@ -1402,6 +1504,7 @@ namespace EllipseWorkRequestExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void ReviewWorkRequestMnttoList()
         {
             if (_cells == null)
@@ -1516,11 +1619,102 @@ namespace EllipseWorkRequestExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void ReReviewWorkRequestList()
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+
+                    _thread = new Thread(ReReviewWorkRequest);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNamePfc01)
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+
+                    _thread = new Thread(ReReviewWorkRequestPfc);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:CreateWorkRequest()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void ReReviewWorkRequestPfc()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
+
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+            var i = TitleRowPfc01 + 1;
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
+            {
+                try
+                {
+                    var requestId = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+                    var wr = WorkRequestActions.FetchWorkRequest(_eFunctions, requestId);
+                    if (wr == null || wr.requestId == null)
+                        throw new Exception("WORK REQUEST NO ENCONTRADO");
+                    //GENERAL
+                    _cells.GetCell(01, i).Value = "'" + wr.requestId;
+                    _cells.GetCell(02, i).Value = "'" + wr.requestIdDescription1;
+                    _cells.GetCell(03, i).Value = "'" + wr.requestIdDescription2;
+
+                    //WORK                        
+                    _cells.GetCell(04, i).Value = "'" + wr.employee;
+                    _cells.GetCell(05, i).Value = "'" + wr.priorityCode;
+                    _cells.GetCell(06, i).Value = "'" + wr.contactId;
+                    _cells.GetCell(07, i).Value = "'" + wr.sourceReference;
+                    _cells.GetCell(08, i).Value = "'" + wr.raisedDate;
+                    _cells.GetCell(09, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
+
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(2, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void ReReviewWorkRequest()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();   
+            _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -1595,6 +1789,7 @@ namespace EllipseWorkRequestExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void ReReviewWorkRequestMnttoList()
         {
             if (_cells == null)
@@ -1695,6 +1890,7 @@ namespace EllipseWorkRequestExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void ReviewReferenceCodesList()
         {
             if (_cells == null)
@@ -1732,14 +1928,12 @@ namespace EllipseWorkRequestExcelAddIn
             var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
             var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
 
-            var listwr = WorkRequestActions.FetchWorkRequest(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var i = TitleRow03 + 1;
 
             foreach (var wr in listwr)
             {
                 try
                 {
-                    
                     //GENERAL
                     _cells.GetCell(01, i).Value = "'" + wr.workGroup;
                     _cells.GetCell(02, i).Value = "'" + wr.requestId;
@@ -1786,11 +1980,13 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.GetCell(05, 01).ColumnWidth = 30;
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void ReReviewReferenceCodesList()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             
+
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName03, ResultColumn03);
 
@@ -1841,7 +2037,6 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(20, i).Value = "'" + wrRefCodes.EquipoDetenido;
                     _cells.GetCell(21, i).Value = "'" + wrRefCodes.RaisedReprogramada;
                     _cells.GetCell(22, i).Value = "'" + wrRefCodes.CambioHora;
-
                 }
                 catch (Exception ex)
                 {
@@ -1861,6 +2056,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.GetCell(04, 01).ColumnWidth = 30;
             _cells.GetCell(05, 01).ColumnWidth = 30;
         }
+
         private void CreateWorkRequestList()
         {
             if (_cells == null)
@@ -1890,22 +2086,18 @@ namespace EllipseWorkRequestExcelAddIn
                     {
                         workGroup = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value),
                         requestId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value),
-
                         requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
                         requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
                         equipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
-
                         employee = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
                         classification = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
                         requestType = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
                         userStatus = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)),
                         priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)),
                         region = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)),
-
                         contactId = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value),
                         source = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value),
                         sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value),
-
                         requiredByDate = _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value),
                         requiredByTime = _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value),
                         raisedUser = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value),
@@ -1913,14 +2105,11 @@ namespace EllipseWorkRequestExcelAddIn
                         raisedTime = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
                         closedBy = _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value),
                         closedDate = _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value),
-
                         assignPerson = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value),
                         ownerId = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value),
-
                         estimateNo = _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value),
                         standardJob = _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value),
                         standardJobDistrict = _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value),
-
                         ServiceLevelAgreement =
                         {
                             ServiceLevel = _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value),
@@ -1960,6 +2149,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void CreateWorkRequestMnttoList()
         {
             if (_cells == null)
@@ -1989,22 +2179,18 @@ namespace EllipseWorkRequestExcelAddIn
                     {
                         workGroup = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value),
                         requestId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value),
-
                         requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
                         requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
                         equipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
-
                         employee = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
                         classification = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
                         requestType = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
                         userStatus = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)),
                         priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)),
                         region = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)),
-
                         contactId = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value),
                         source = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value),
                         sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value),
-
                         requiredByDate = _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value),
                         requiredByTime = _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value),
                         raisedUser = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value),
@@ -2012,13 +2198,11 @@ namespace EllipseWorkRequestExcelAddIn
                         raisedTime = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
                         closedBy = _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value),
                         closedDate = _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value),
-
                         assignPerson = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value),
                         ownerId = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value),
-
                         estimateNo = _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value),
                         standardJob = _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value),
-                        standardJobDistrict = _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value),
+                        standardJobDistrict = _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value)
                     };
                     var header = _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value);
                     var body = _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value);
@@ -2092,6 +2276,120 @@ namespace EllipseWorkRequestExcelAddIn
         }
 
         private void ModifyWorkRequestList()
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+
+                    _thread = new Thread(ModifyWorkRequest);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNamePfc01)
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+
+                    _thread = new Thread(ModifyWorkRequestPfc);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:CreateWorkRequest()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void ModifyWorkRequestPfc()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
+
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var opSheet = new OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            var i = TitleRowPfc01 + 1;
+
+            var employee = _frmAuth.EllipseUser;
+            var todayDate = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
+            {
+                try
+                {
+                    var wr = new WorkRequest
+                    {
+                        workGroup = "PLANFC",
+                        requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
+                        requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
+                        equipmentNo = "FERROCARRIL",
+                        employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value))
+                                ? employee
+                                : _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
+                        classification = "SS",
+                        requestType = "ES",
+                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)),
+                        contactId = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
+                        sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
+                        raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value))
+                                    ? todayDate
+                                    : _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
+                        ServiceLevelAgreement =
+                        {
+                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
+                            StartDate = todayDate
+                        }
+                    };
+
+                    WorkRequestActions.ModifyWorkRequest(urlService, opSheet, wr);
+                    _cells.GetCell(2, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumnPfc01, i).Value = "ACTUALIZADO";
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(2, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void ModifyWorkRequest()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -2314,12 +2612,13 @@ namespace EllipseWorkRequestExcelAddIn
             }
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void CloseWorkRequestList()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
 
             var i = TitleRow02 + 1;
@@ -2347,7 +2646,6 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn02, i).Value = "CERRADO";
-
                 }
                 catch (Exception ex)
                 {
@@ -2364,6 +2662,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void CloseWorkRequestMnttoList()
         {
             if (_cells == null)
@@ -2397,7 +2696,6 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumnM02, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumnM02, i).Value = "CERRADO";
-
                 }
                 catch (Exception ex)
                 {
@@ -2414,12 +2712,13 @@ namespace EllipseWorkRequestExcelAddIn
             }
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void ReOpenWorkRequestList()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
 
             var i = TitleRow02 + 1;
@@ -2444,7 +2743,6 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn02, i).Value = "REABIERTA";
-
                 }
                 catch (Exception ex)
                 {
@@ -2462,6 +2760,7 @@ namespace EllipseWorkRequestExcelAddIn
 
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void ReOpenWorkRequestMnttoList()
         {
             if (_cells == null)
@@ -2492,7 +2791,6 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumnM02, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumnM02, i).Value = "REABIERTA";
-
                 }
                 catch (Exception ex)
                 {
@@ -2510,12 +2808,13 @@ namespace EllipseWorkRequestExcelAddIn
 
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void DeleteWorkRequestList()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
             var i = TitleRow01 + 1;
@@ -2540,7 +2839,6 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Value = "ELIMINADO";
-
                 }
                 catch (Exception ex)
                 {
@@ -2557,6 +2855,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void DeleteWorkRequestMnttoList()
         {
             if (_cells == null)
@@ -2587,7 +2886,6 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumnM01, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumnM01, i).Value = "ELIMINADO";
-
                 }
                 catch (Exception ex)
                 {
@@ -2604,12 +2902,13 @@ namespace EllipseWorkRequestExcelAddIn
             }
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void SetSlaList()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
             var i = TitleRow01 + 1;
@@ -2643,12 +2942,11 @@ namespace EllipseWorkRequestExcelAddIn
                             WarnTime = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
                             WarnDays = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null
                     };
-                    
+
                     WorkRequestActions.SetWorkRequestSla(urlService, opSheet, requestId, serviceLevelAgreement);
                     _cells.GetCell(2, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Value = "SLA ESTABLECIDO";
-
                 }
                 catch (Exception ex)
                 {
@@ -2665,6 +2963,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         private void ResetSlaList()
         {
             if (_cells == null)
@@ -2708,7 +3007,6 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Value = "SLA RESETEADO";
-
                 }
                 catch (Exception ex)
                 {
@@ -2736,6 +3034,7 @@ namespace EllipseWorkRequestExcelAddIn
         {
             FormatFcVagones();
         }
+
         private void FormatFcVagones()
         {
             try
@@ -2802,8 +3101,15 @@ namespace EllipseWorkRequestExcelAddIn
                 var actionList = new List<string> {"HACER SEGUIMIENTO", "SOLICITAR A OPERACIONES REPARAR"};
                 _cells.SetValidationList(_cells.GetCell(02, TitleRowV01 + 1), actionList, ValidationSheetName, 1);
 
-                var clasificationList = new List<string> { "ME - MECANICO", "ES - ESTRUCTURAL", "NE - NEUMATICO", "ET - ELECTRICO" };
-                _cells.SetValidationList(_cells.GetCell(05, TitleRowV01 + 1), clasificationList, ValidationSheetName, 2, false);
+                var clasificationList = new List<string>
+                {
+                    "ME - MECANICO",
+                    "ES - ESTRUCTURAL",
+                    "NE - NEUMATICO",
+                    "ET - ELECTRICO"
+                };
+                _cells.SetValidationList(_cells.GetCell(05, TitleRowV01 + 1), clasificationList, ValidationSheetName, 2,
+                    false);
 
                 var priorityList = new List<string> { "P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA" };
                 _cells.SetValidationList(_cells.GetCell(06, TitleRowV01 + 1), priorityList, ValidationSheetName, 3, false);
@@ -2811,10 +3117,16 @@ namespace EllipseWorkRequestExcelAddIn
                 var agreementList = new List<string> { "1D - UN DÍA", "7D - 7 DÍAS", "14 - 14 DÍAS", "1Y - 1 AÑO" };
                 _cells.SetValidationList(_cells.GetCell(07, TitleRowV01 + 1), agreementList, ValidationSheetName, 4, false);
 
-                var failureList = new List<string> { "03 - SISTEMA DE APERTURA", "07 - SISTEMA ESTRUCTURAL", "04 - SISTEMA ELECTRICO", "13 - SISTEMA NEUMATICO" };
+                var failureList = new List<string>
+                {
+                    "03 - SISTEMA DE APERTURA",
+                    "07 - SISTEMA ESTRUCTURAL",
+                    "04 - SISTEMA ELECTRICO",
+                    "13 - SISTEMA NEUMATICO"
+                };
                 _cells.SetValidationList(_cells.GetCell(08, TitleRowV01 + 1), failureList, ValidationSheetName, 5, false);
 
-                
+
                 //
                 _cells.GetCell(ResultColumnV01, TitleRowV01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumnV01, TitleRowV01).Style = StyleConstants.TitleResult;
@@ -2831,6 +3143,7 @@ namespace EllipseWorkRequestExcelAddIn
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
+
         private void CreateWorkRequestVagonesList()
         {
             if (_cells == null)
@@ -2865,7 +3178,6 @@ namespace EllipseWorkRequestExcelAddIn
                     {
                         workGroup = "ICARROS",
                         requestId = null,
-
                         requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value),
                         requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
                         equipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
@@ -2884,7 +3196,9 @@ namespace EllipseWorkRequestExcelAddIn
                         }
                     };
 
-                    if(string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.ServiceLevel) || string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.FailureCode) || string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.StartDate))
+                    if (string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.ServiceLevel) ||
+                        string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.FailureCode) ||
+                        string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.StartDate))
                         throw new Exception("No se puede crear Work Request. Falta la información del Service Level");
                     var replySheet = WorkRequestActions.CreateWorkRequest(urlService, opSheet, wr);
                     var requestId = replySheet.requestId;
@@ -2908,6 +3222,96 @@ namespace EllipseWorkRequestExcelAddIn
             }
             if (_cells != null) _cells.SetCursorDefault();
         }
-     
+
+        private void btnPlanFc_Click(object sender, RibbonControlEventArgs e)
+        {
+            FormatPfc();
+        }
+
+        private void FormatPfc()
+        {
+            try
+            {
+                _excelApp = Globals.ThisAddIn.Application;
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+                //CONSTRUYO LA HOJA 1
+                _excelApp.Workbooks.Add();
+                while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
+                    _excelApp.ActiveWorkbook.Worksheets.Add();
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                _excelApp.ActiveWorkbook.Worksheets.Add();
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetNamePfc01;
+                _cells.CreateNewWorksheet(ValidationSheetName);
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "B2");
+
+                _cells.GetCell("C1").Value = "WORK REQUEST REGISTRO DE FALLAS VAGONES - ELLIPSE 8";
+                _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("C1", "J2");
+
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+
+                _cells.GetRange(01, TitleRowPfc01, ResultColumnPfc01 - 1, TitleRowPfc01).Style =
+                    StyleConstants.TitleRequired;
+                //GENERAL
+                _cells.GetCell(01, TitleRowPfc01).Value = "REQUEST ID";
+                _cells.GetCell(02, TitleRowPfc01).Value = "DESCRIPCIÓN 1";
+                _cells.GetCell(03, TitleRowPfc01).Value = "DESCRIPCIÓN 2";
+                _cells.GetCell(04, TitleRowPfc01).Value = "SOLICITADO POR";
+                _cells.GetCell(04, TitleRowPfc01).AddComment("Si no se digita usará el usuario de autenticación de Ellipse");
+                _cells.GetCell(04, TitleRowPfc01).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(05, TitleRowPfc01).Value = "PRIORIDAD";
+                _cells.GetCell(06, TitleRowPfc01).Value = "ID DE SEGUIMIENTO";
+                _cells.GetCell(07, TitleRowPfc01).Value = "REFERENCIA";
+                _cells.GetCell(08, TitleRowPfc01).Value = "FECHA";
+                _cells.GetCell(09, TitleRowPfc01).Value = "NIVEL DE SERVICIO";
+
+                var priorityList = new List<string> { "P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA" };
+                _cells.SetValidationList(_cells.GetCell(05, TitleRowPfc01 + 1), priorityList, ValidationSheetName, 1,
+                    false);
+
+                var agreementList = new List<string> { "1D - UN DÍA", "7D - 7 DÍAS", "14 - 14 DÍAS", "1Y - 1 AÑO" };
+                _cells.SetValidationList(_cells.GetCell(09, TitleRowPfc01 + 1), agreementList, ValidationSheetName, 2,
+                    false);
+
+                var referenceList = new List<string>
+                {
+                    "CONTRATACION MAYOR",
+                    "CONTRATACION DELEGADA",
+                    "IMIS",
+                    "VPP",
+                    "CAPEX",
+                    "OTRO"
+                };
+                _cells.SetValidationList(_cells.GetCell(07, TitleRowPfc01 + 1), referenceList, ValidationSheetName, 3,
+                    false);
+
+                //
+                _cells.GetCell(ResultColumnPfc01, TitleRowPfc01).Value = "RESULTADO";
+                _cells.GetCell(ResultColumnPfc01, TitleRowPfc01).Style = StyleConstants.TitleResult;
+
+
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRowPfc01, ResultColumnPfc01, TitleRowPfc01 + 1),
+                    TableName01);
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+
+                _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:formatFcVagones()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+            }
+        }
     }
 }

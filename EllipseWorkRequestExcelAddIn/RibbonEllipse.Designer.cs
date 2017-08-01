@@ -34,6 +34,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.menu1 = this.Factory.CreateRibbonMenu();
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpWorkRequest = this.Factory.CreateRibbonGroup();
             this.box1 = this.Factory.CreateRibbonBox();
@@ -41,6 +42,7 @@
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnFormatMantto = this.Factory.CreateRibbonButton();
             this.btnFormatFcVagones = this.Factory.CreateRibbonButton();
+            this.btnPlanFc = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
@@ -62,10 +64,15 @@
             this.btnUpdateRefCodes = this.Factory.CreateRibbonButton();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.menu1 = this.Factory.CreateRibbonMenu();
             this.tabEllipse.SuspendLayout();
             this.grpWorkRequest.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // menu1
+            // 
+            this.menu1.Label = "menu1";
+            this.menu1.Name = "menu1";
             // 
             // tabEllipse
             // 
@@ -93,6 +100,7 @@
             this.menuFormat.Items.Add(this.btnFormatSheet);
             this.menuFormat.Items.Add(this.btnFormatMantto);
             this.menuFormat.Items.Add(this.btnFormatFcVagones);
+            this.menuFormat.Items.Add(this.btnPlanFc);
             this.menuFormat.Label = "&Formatear";
             this.menuFormat.Name = "menuFormat";
             // 
@@ -116,6 +124,13 @@
             this.btnFormatFcVagones.Name = "btnFormatFcVagones";
             this.btnFormatFcVagones.ShowImage = true;
             this.btnFormatFcVagones.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatFcVagones_Click);
+            // 
+            // btnPlanFc
+            // 
+            this.btnPlanFc.Label = "Registro Solicitudes FC";
+            this.btnPlanFc.Name = "btnPlanFc";
+            this.btnPlanFc.ShowImage = true;
+            this.btnPlanFc.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPlanFc_Click);
             // 
             // btnAbout
             // 
@@ -273,11 +288,6 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
-            // menu1
-            // 
-            this.menu1.Label = "menu1";
-            this.menu1.Name = "menu1";
-            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -290,6 +300,7 @@
             this.grpWorkRequest.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
@@ -324,6 +335,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatFcVagones;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnPlanFc;
     }
 
     partial class ThisRibbonCollection
