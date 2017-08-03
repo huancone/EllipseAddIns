@@ -136,6 +136,14 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNamePfc01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReReviewWorkRequestPfc);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
                 else
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
             }
@@ -319,6 +327,19 @@ namespace EllipseWorkRequestExcelAddIn
                     if (_thread != null && _thread.IsAlive) return;
 
                     _thread = new Thread(ModifyWorkRequestMnttoList);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetNamePfc01))
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+
+                    _thread = new Thread(ModifyWorkRequestPfc);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -1704,94 +1725,6 @@ namespace EllipseWorkRequestExcelAddIn
 
         private void ReReviewWorkRequestList()
         {
-            try
-            {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
-                {
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-
-                    _thread = new Thread(ReReviewWorkRequest);
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNamePfc01)
-                {
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-
-                    _thread = new Thread(ReReviewWorkRequestPfc);
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else
-                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("RibbonEllipse:CreateWorkRequest()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-            }
-        }
-
-        private void ReReviewWorkRequestPfc()
-        {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            _cells.SetCursorWait();
-            _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
-
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-
-            var i = TitleRowPfc01 + 1;
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
-            {
-                try
-                {
-                    var requestId = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
-                    var wr = WorkRequestActions.FetchWorkRequest(_eFunctions, requestId);
-                    if (wr == null || wr.requestId == null)
-                        throw new Exception("WORK REQUEST NO ENCONTRADO");
-                    //GENERAL
-                    _cells.GetCell(01, i).Value = "'" + wr.requestId;
-                    _cells.GetCell(02, i).Value = "'" + wr.requestIdDescription1;
-                    _cells.GetCell(03, i).Value = "'" + wr.requestIdDescription2;
-
-                    //WORK                        
-                    _cells.GetCell(04, i).Value = "'" + wr.employee;
-                    _cells.GetCell(05, i).Value = "'" + wr.priorityCode;
-                    _cells.GetCell(06, i).Value = "'" + wr.contactId;
-                    _cells.GetCell(07, i).Value = "'" + wr.sourceReference;
-                    _cells.GetCell(08, i).Value = "'" + wr.raisedDate;
-                    _cells.GetCell(09, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
-                }
-                catch (Exception ex)
-                {
-                    _cells.GetCell(2, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message);
-                }
-                finally
-                {
-                    _cells.GetCell(2, i).Select();
-                    i++;
-                }
-            }
-            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
-        }
-
-        private void ReReviewWorkRequest()
-        {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1859,6 +1792,53 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void ReReviewWorkRequestPfc()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
+
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+            var i = TitleRowPfc01 + 1;
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
+            {
+                try
+                {
+                    var requestId = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+                    var wr = WorkRequestActions.FetchWorkRequest(_eFunctions, requestId);
+                    if (wr == null || wr.requestId == null)
+                        throw new Exception("WORK REQUEST NO ENCONTRADO");
+                    //GENERAL
+                    _cells.GetCell(01, i).Value = "'" + wr.requestId;
+                    _cells.GetCell(02, i).Value = "'" + wr.requestIdDescription1;
+                    _cells.GetCell(03, i).Value = "'" + wr.requestIdDescription2;
+
+                    //WORK                        
+                    _cells.GetCell(04, i).Value = "'" + wr.employee;
+                    _cells.GetCell(05, i).Value = "'" + wr.priorityCode;
+                    _cells.GetCell(06, i).Value = "'" + wr.contactId;
+                    _cells.GetCell(07, i).Value = "'" + wr.sourceReference;
+                    _cells.GetCell(08, i).Value = "'" + wr.raisedDate;
+                    _cells.GetCell(09, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(2, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message);
                 }
                 finally
@@ -2359,120 +2339,6 @@ namespace EllipseWorkRequestExcelAddIn
 
         private void ModifyWorkRequestList()
         {
-            try
-            {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
-                {
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-
-                    _thread = new Thread(ModifyWorkRequest);
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNamePfc01)
-                {
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-
-                    _thread = new Thread(ModifyWorkRequestPfc);
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else
-                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("RibbonEllipse:CreateWorkRequest()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-            }
-        }
-
-        private void ModifyWorkRequestPfc()
-        {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            _cells.SetCursorWait();
-            _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
-
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
-            var opSheet = new OperationContext
-            {
-                district = _frmAuth.EllipseDsct,
-                position = _frmAuth.EllipsePost,
-                maxInstances = 100,
-                maxInstancesSpecified = true,
-                returnWarnings = Debugger.DebugWarnings,
-                returnWarningsSpecified = true
-            };
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
-            var i = TitleRowPfc01 + 1;
-
-            var employee = _frmAuth.EllipseUser;
-            var todayDate = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
-
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
-            {
-                try
-                {
-                    var wr = new WorkRequest
-                    {
-                        workGroup = "PLANFC",
-                        requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
-                        requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
-                        equipmentNo = "FERROCARRIL",
-                        employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value))
-                            ? employee
-                            : _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
-                        classification = "SS",
-                        requestType = "ES",
-                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)),
-                        contactId = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
-                        sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
-                        raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value))
-                            ? todayDate
-                            : _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
-                        ServiceLevelAgreement =
-                        {
-                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
-                            StartDate = todayDate
-                        }
-                    };
-
-                    WorkRequestActions.ModifyWorkRequest(urlService, opSheet, wr);
-                    _cells.GetCell(2, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumnPfc01, i).Value = "ACTUALIZADO";
-                }
-                catch (Exception ex)
-                {
-                    _cells.GetCell(2, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestList()", ex.Message);
-                }
-                finally
-                {
-                    _cells.GetCell(2, i).Select();
-                    i++;
-                }
-            }
-            if (_cells != null) _cells.SetCursorDefault();
-        }
-
-        private void ModifyWorkRequest()
-        {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -2550,6 +2416,79 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void ModifyWorkRequestPfc()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
+
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var opSheet = new OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            var i = TitleRowPfc01 + 1;
+
+            var employee = _frmAuth.EllipseUser;
+            var todayDate = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
+            {
+                try
+                {
+                    var wr = new WorkRequest
+                    {
+                        workGroup = "PLANFC",
+                        requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
+                        requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
+                        equipmentNo = "FERROCARRIL",
+                        employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value))
+                            ? employee
+                            : _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
+                        classification = "SS",
+                        requestType = "ES",
+                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)),
+                        contactId = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
+                        sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
+                        raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value))
+                            ? todayDate
+                            : _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
+                        ServiceLevelAgreement =
+                        {
+                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
+                            StartDate = todayDate
+                        }
+                    };
+
+                    WorkRequestActions.ModifyWorkRequest(urlService, opSheet, wr);
+                    _cells.GetCell(2, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumnPfc01, i).Value = "ACTUALIZADO";
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(2, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestList()", ex.Message);
                 }
                 finally

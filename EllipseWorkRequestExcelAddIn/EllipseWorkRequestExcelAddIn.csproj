@@ -42,7 +42,7 @@
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
     <ApplicationVersion>1.1.1.5</ApplicationVersion>
-    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
@@ -290,7 +290,7 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
   <PropertyGroup>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>552CF69F67C7BFCCE232611E8C60B59BAA83E9C5</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>DFE4C674FF06EDB9E74564F98874E2828A74E996</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>EllipseWorkRequestExcelAddIn_1_TemporaryKey.pfx</ManifestKeyFile>
