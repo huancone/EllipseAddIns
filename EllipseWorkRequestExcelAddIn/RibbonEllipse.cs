@@ -37,7 +37,7 @@ namespace EllipseWorkRequestExcelAddIn
         //private const int ResultColumnM03 = 14;
         private const int TitleRowV01 = 5;
         private const int ResultColumnV01 = 11;
-        private const int ResultColumnPfc01 = 10;
+        private const int ResultColumnPfc01 = 9;
         private const string TableName01 = "WorkRequestTable";
         private const string TableName02 = "WorkRequestCloseTable";
         private const string TableName03 = "WorkRequestsReferencesTable";
@@ -252,25 +252,24 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     var wr = new WorkRequest
                     {
-                        workGroup = "PLANFC",
                         requestId = null,
+                        workGroup = "PLANFC",
                         requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
-                        requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                         equipmentNo = "FERROCARRIL",
-                        employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value))
+                        employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(3, i).Value))
                             ? employee
-                            : _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
+                            : _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                         classification = "SS",
                         requestType = "ES",
-                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)),
-                        contactId = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
-                        sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
-                        raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value))
+                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value)),
+                        requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
+                        sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
+                        raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))
                             ? todayDate
-                            : _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
+                            : _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
                         ServiceLevelAgreement =
                         {
-                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
+                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
                             StartDate = todayDate
                         }
                     };
@@ -1576,31 +1575,24 @@ namespace EllipseWorkRequestExcelAddIn
             {
                 try
                 {
-                    //GENERAL
                     _cells.GetCell(01, i).Value = "'" + wr.requestId;
                     _cells.GetCell(02, i).Value = "'" + wr.requestIdDescription1;
-                    _cells.GetCell(03, i).Value = "'" + wr.requestIdDescription2;
-
-                    //WORK                        
-                    _cells.GetCell(04, i).Value = "'" + wr.employee;
-                    _cells.GetCell(05, i).Value = "'" + wr.priorityCode;
-                    //SOURCE                      
-                    _cells.GetCell(06, i).Value = "'" + wr.contactId;
-                    _cells.GetCell(07, i).Value = "'" + wr.sourceReference;
-                    //DATES                       
-                    _cells.GetCell(08, i).Value = "'" + wr.raisedDate;
-                    //SERVICE LEVEL AGREEMENT     
-                    _cells.GetCell(09, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
+                    _cells.GetCell(03, i).Value = "'" + wr.employee;
+                    _cells.GetCell(04, i).Value = "'" + wr.priorityCode;
+                    _cells.GetCell(05, i).Value = "'" + wr.requestIdDescription2;
+                    _cells.GetCell(06, i).Value = "'" + wr.sourceReference;
+                    _cells.GetCell(07, i).Value = "'" + wr.raisedDate;
+                    _cells.GetCell(08, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(2, i).Style = StyleConstants.Error;
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:ReviewWorkRequestList()", ex.Message);
                 }
                 finally
                 {
-                    _cells.GetCell(2, i).Select();
+                    _cells.GetCell(1, i).Select();
                     i++;
                 }
             }
@@ -1814,7 +1806,7 @@ namespace EllipseWorkRequestExcelAddIn
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
             var i = TitleRowPfc01 + 1;
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
             {
                 try
                 {
@@ -1824,26 +1816,23 @@ namespace EllipseWorkRequestExcelAddIn
                         throw new Exception("WORK REQUEST NO ENCONTRADO");
                     //GENERAL
                     _cells.GetCell(01, i).Value = "'" + wr.requestId;
-                    _cells.GetCell(02, i).Value = "'" + wr.requestIdDescription1;
-                    _cells.GetCell(03, i).Value = "'" + wr.requestIdDescription2;
-
-                    //WORK                        
-                    _cells.GetCell(04, i).Value = "'" + wr.employee;
-                    _cells.GetCell(05, i).Value = "'" + wr.priorityCode;
-                    _cells.GetCell(06, i).Value = "'" + wr.contactId;
-                    _cells.GetCell(07, i).Value = "'" + wr.sourceReference;
-                    _cells.GetCell(08, i).Value = "'" + wr.raisedDate;
-                    _cells.GetCell(09, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
+                    _cells.GetCell(02, i).Value = "'" + wr.requestIdDescription1;                       
+                    _cells.GetCell(03, i).Value = "'" + wr.employee;
+                    _cells.GetCell(04, i).Value = "'" + wr.priorityCode;
+                    _cells.GetCell(05, i).Value = "'" + wr.requestIdDescription2;
+                    _cells.GetCell(06, i).Value = "'" + wr.sourceReference;
+                    _cells.GetCell(07, i).Value = "'" + wr.raisedDate;
+                    _cells.GetCell(08, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(2, i).Style = StyleConstants.Error;
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message);
                 }
                 finally
                 {
-                    _cells.GetCell(2, i).Select();
+                    _cells.GetCell(1, i).Select();
                     i++;
                 }
             }
@@ -2457,25 +2446,21 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     var wr = new WorkRequest
                     {
+                        requestId = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value),
                         workGroup = "PLANFC",
                         requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
-                        requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                         equipmentNo = "FERROCARRIL",
-                        employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value))
-                            ? employee
-                            : _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
+                        employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(3, i).Value))? employee: _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                         classification = "SS",
                         requestType = "ES",
-                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)),
-                        contactId = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
-                        sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
-                        raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value))
-                            ? todayDate
-                            : _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
+                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value)),
+                        requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
+                        sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
+                        raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))? todayDate: _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
                         ServiceLevelAgreement =
                         {
-                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
-                            StartDate = todayDate
+                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
+                            StartDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))? todayDate: _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value)
                         }
                     };
 
@@ -2486,7 +2471,7 @@ namespace EllipseWorkRequestExcelAddIn
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(2, i).Style = StyleConstants.Error;
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestList()", ex.Message);
@@ -3363,21 +3348,20 @@ namespace EllipseWorkRequestExcelAddIn
                 //GENERAL
                 _cells.GetCell(01, TitleRowPfc01).Value = "REQUEST ID";
                 _cells.GetCell(02, TitleRowPfc01).Value = "DESCRIPCIÓN 1";
-                _cells.GetCell(03, TitleRowPfc01).Value = "DESCRIPCIÓN 2";
-                _cells.GetCell(04, TitleRowPfc01).Value = "SOLICITADO POR";
-                _cells.GetCell(04, TitleRowPfc01).AddComment("Si no se digita usará el usuario de autenticación de Ellipse");
-                _cells.GetCell(04, TitleRowPfc01).Style = StyleConstants.TitleOptional;
-                _cells.GetCell(05, TitleRowPfc01).Value = "PRIORIDAD";
-                _cells.GetCell(06, TitleRowPfc01).Value = "ID DE SEGUIMIENTO";
-                _cells.GetCell(07, TitleRowPfc01).Value = "REFERENCIA";
-                _cells.GetCell(08, TitleRowPfc01).Value = "FECHA";
-                _cells.GetCell(09, TitleRowPfc01).Value = "NIVEL DE SERVICIO";
+                _cells.GetCell(03, TitleRowPfc01).Value = "SOLICITADO POR";
+                _cells.GetCell(03, TitleRowPfc01).AddComment("Si no se digita usará el usuario de autenticación de Ellipse");
+                _cells.GetCell(03, TitleRowPfc01).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(04, TitleRowPfc01).Value = "PRIORIDAD";
+                _cells.GetCell(05, TitleRowPfc01).Value = "SEGUIMIENTO";
+                _cells.GetCell(06, TitleRowPfc01).Value = "REFERENCIA";
+                _cells.GetCell(07, TitleRowPfc01).Value = "FECHA";
+                _cells.GetCell(08, TitleRowPfc01).Value = "NIVEL DE SERVICIO";
 
                 var priorityList = new List<string> {"P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA"};
-                _cells.SetValidationList(_cells.GetCell(05, TitleRowPfc01 + 1), priorityList, ValidationSheetName, 5,false);
+                _cells.SetValidationList(_cells.GetCell(04, TitleRowPfc01 + 1), priorityList, ValidationSheetName, 5,false);
 
                 var agreementList = new List<string> {"1D - UN DÍA", "7D - 7 DÍAS", "14 - 14 DÍAS", "1Y - 1 AÑO"};
-                _cells.SetValidationList(_cells.GetCell(09, TitleRowPfc01 + 1), agreementList, ValidationSheetName, 6,false);
+                _cells.SetValidationList(_cells.GetCell(08, TitleRowPfc01 + 1), agreementList, ValidationSheetName, 6,false);
 
                 var referenceList = new List<string>
                 {
@@ -3388,7 +3372,7 @@ namespace EllipseWorkRequestExcelAddIn
                     "CAPEX",
                     "OTRO"
                 };
-                _cells.SetValidationList(_cells.GetCell(07, TitleRowPfc01 + 1), referenceList, ValidationSheetName, 7,false);
+                _cells.SetValidationList(_cells.GetCell(05, TitleRowPfc01 + 1), referenceList, ValidationSheetName, 7,false);
 
                 //
                 _cells.GetCell(ResultColumnPfc01, TitleRowPfc01).Value = "RESULTADO";

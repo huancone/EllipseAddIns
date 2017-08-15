@@ -290,7 +290,7 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
   <PropertyGroup>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>DFE4C674FF06EDB9E74564F98874E2828A74E996</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>86626D50D631F970D8E68257BAEA41F8C6AF9508</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>EllipseWorkRequestExcelAddIn_1_TemporaryKey.pfx</ManifestKeyFile>
