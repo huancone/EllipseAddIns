@@ -37,7 +37,7 @@ namespace EllipseWorkRequestExcelAddIn
         //private const int ResultColumnM03 = 14;
         private const int TitleRowV01 = 5;
         private const int ResultColumnV01 = 11;
-        private const int ResultColumnPfc01 = 9;
+        private const int ResultColumnPfc01 = 10;
         private const string TableName01 = "WorkRequestTable";
         private const string TableName02 = "WorkRequestCloseTable";
         private const string TableName03 = "WorkRequestsReferencesTable";
@@ -267,11 +267,8 @@ namespace EllipseWorkRequestExcelAddIn
                         raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))
                             ? todayDate
                             : _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
-                        ServiceLevelAgreement =
-                        {
-                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
-                            StartDate = todayDate
-                        }
+                        requiredByDate = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
+                        closedDate = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)
                     };
 
                     if (string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.ServiceLevel) ||
@@ -1582,7 +1579,8 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(05, i).Value = "'" + wr.requestIdDescription2;
                     _cells.GetCell(06, i).Value = "'" + wr.sourceReference;
                     _cells.GetCell(07, i).Value = "'" + wr.raisedDate;
-                    _cells.GetCell(08, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
+                    _cells.GetCell(08, i).Value = "'" + wr.requiredByDate;
+                    _cells.GetCell(09, i).Value = "'" + wr.closedDate;
                 }
                 catch (Exception ex)
                 {
@@ -1822,7 +1820,8 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(05, i).Value = "'" + wr.requestIdDescription2;
                     _cells.GetCell(06, i).Value = "'" + wr.sourceReference;
                     _cells.GetCell(07, i).Value = "'" + wr.raisedDate;
-                    _cells.GetCell(08, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
+                    _cells.GetCell(08, i).Value = "'" + wr.requiredByDate;
+                    _cells.GetCell(09, i).Value = "'" + wr.closedDate;
                 }
                 catch (Exception ex)
                 {
@@ -2457,12 +2456,9 @@ namespace EllipseWorkRequestExcelAddIn
                         requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
                         sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
                         raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))? todayDate: _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
-                        ServiceLevelAgreement =
-                        {
-                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
-                            StartDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))? todayDate: _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value)
-                        }
-                    };
+                        requiredByDate = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
+                        closedDate = _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value)
+                };
 
                     WorkRequestActions.ModifyWorkRequest(urlService, opSheet, wr);
                     _cells.GetCell(2, i).Style = StyleConstants.Success;
@@ -3355,7 +3351,8 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(05, TitleRowPfc01).Value = "SEGUIMIENTO";
                 _cells.GetCell(06, TitleRowPfc01).Value = "REFERENCIA";
                 _cells.GetCell(07, TitleRowPfc01).Value = "FECHA";
-                _cells.GetCell(08, TitleRowPfc01).Value = "NIVEL DE SERVICIO";
+                _cells.GetCell(08, TitleRowPfc01).Value = "FECHA DE REQUERIDO";
+                _cells.GetCell(09, TitleRowPfc01).Value = "FECHA DE CIERRE";
 
                 var priorityList = new List<string> {"P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA"};
                 _cells.SetValidationList(_cells.GetCell(04, TitleRowPfc01 + 1), priorityList, ValidationSheetName, 5,false);
