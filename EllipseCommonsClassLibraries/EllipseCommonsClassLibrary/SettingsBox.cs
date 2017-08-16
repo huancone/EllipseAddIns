@@ -165,5 +165,10 @@ namespace EllipseCommonsClassLibrary
                 MessageBox.Show(ex.Message, "Delete Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void cbForceRegionConfig_CheckedChanged(object sender, EventArgs e)
+        {
+            Debugger.DebugErrors = cbDebugErrors.Checked;
+        }
     }
 }

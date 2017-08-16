@@ -12,22 +12,31 @@ using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using BMUSheet = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetService;
 using BMUSheetItem = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService;
+using EllipseEquipmentClassLibrary;
+using ListService = EllipseEquipmentClassLibrary.EquipmentListService;
+using System.Threading;
 
 namespace EllipseBulkMaterialExcelAddIn
 {
     public partial class RibbonEllipse
     {
         private const string SheetName01 = "BulkMaterialSheet";
-        private const string SheetName02 = "BulkMaterialSheetErrors";
-        private const int TittleRow = 7;
-        private const int ResultColumn = 18;
+        private const string SheetName02 = "EquipmentsLists";
+        private const string TableName01 = "ExcelSheetItems";
+        private const string TableName02 = "FuelListItems";
+        private const int TitleRow01 = 7;
+        private const int TitleRow02 = 7;
+        private const int ResultColumn01 = 18;
+        private const int ResultColumn02 = 20;
         private const int MaxRows = 5000;
         private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
         private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
         private ExcelStyleCells _cells;
         private Application _excelApp;
-        private ListObject _excelSheetItems;
+
         private List<string> _optionList;
+        private const string ValidationSheetName = "ValidationListSheet";
+        private Thread _thread;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
@@ -38,20 +47,54 @@ namespace EllipseBulkMaterialExcelAddIn
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
                 drpItem.Label = item;
-                drpBulkMaterialEnv.Items.Add(drpItem);
+                drpEnviroment.Items.Add(drpItem);
             }
 
-            drpBulkMaterialEnv.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_Productivo;
+            drpEnviroment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_Productivo;
         }
 
         private void btnLoad_Click(object sender, RibbonControlEventArgs e)
         {
-            BulkMaterialExcecute();
+            try
+            {
+                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(BulkMaterialExcecute);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:BulkMaterialExcecute()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private void btnImport_Click(object sender, RibbonControlEventArgs e)
         {
-            ImportFile();
+            try
+            {
+                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ImportFile);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ImportFile()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private void btnBulkMaterialFormatMultiple_Click(object sender, RibbonControlEventArgs e)
@@ -63,20 +106,22 @@ namespace EllipseBulkMaterialExcelAddIn
         {
             try
             {
+                //CONSTRUYO LA HOJA 1
+                _excelApp.Workbooks.Add();
+                while (_excelApp.ActiveWorkbook.Sheets.Count < 2)
+                    _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
-                var excelBook = _excelApp.Workbooks.Add();
-                Worksheet excelSheet = excelBook.ActiveSheet;
+                _cells.CreateNewWorksheet(ValidationSheetName);//hoja de validación
+                _cells.SetCursorWait();
 
-                excelSheet.Name = SheetName01;
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
 
-                _cells = new ExcelStyleCells(_excelApp);
-
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Style = _cells.GetStyle(StyleConstants.Normal);
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).ClearFormats();
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).ClearComments();
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Clear();
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, TittleRow + 1).NumberFormat = "@";
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).Style = _cells.GetStyle(StyleConstants.Normal);
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).Clear();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, TitleRow01 + 1).NumberFormat = "@";
 
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
@@ -85,47 +130,47 @@ namespace EllipseBulkMaterialExcelAddIn
                 _cells.GetRange("A1", "B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.GetRange("B1", "D1").Merge();
 
-                _cells.GetCell(1, TittleRow).Value = "Usage Sheet Id";
-                _cells.GetCell(2, TittleRow).Value = "District";
-                _cells.GetCell(3, TittleRow).Value = "Warehouse";
-                _cells.GetCell(4, TittleRow).Value = "Usage Date";
-                _cells.GetCell(5, TittleRow).Value = "Usage Time";
-                _cells.GetCell(6, TittleRow).Value = "General Account Code";
+                _cells.GetCell(1, TitleRow01).Value = "Usage Sheet Id";
+                _cells.GetCell(2, TitleRow01).Value = "District";
+                _cells.GetCell(3, TitleRow01).Value = "Warehouse";
+                _cells.GetCell(4, TitleRow01).Value = "Usage Date";
+                _cells.GetCell(5, TitleRow01).Value = "Usage Time";
+                _cells.GetCell(6, TitleRow01).Value = "General Account Code";
 
-                _cells.GetCell(7, TittleRow).Value = "Usage Item Id";
+                _cells.GetCell(7, TitleRow01).Value = "Usage Item Id";
 
-                _cells.GetCell(8, TittleRow).Value = "Equipment Reference";
-                _cells.GetCell(9, TittleRow).Value = "Component Code";
-                _cells.GetCell(10, TittleRow).Value = "Modifier Code";
-                _cells.GetCell(11, TittleRow).Value = "Bulk Material Type";
-                _cells.GetCell(12, TittleRow).Value = "Condition Monitoring Action";
-                _cells.GetCell(13, TittleRow).Value = "Quantity";
-                _cells.GetCell(14, TittleRow).Value = "Transaction Date";
-                _cells.GetCell(15, TittleRow).Value = "Statistic Time";
-                _cells.GetCell(16, TittleRow).Value = "Statistic Type";
-                _cells.GetCell(17, TittleRow).Value = "Statistic Meter";
-                _cells.GetCell(ResultColumn, TittleRow).Value = "Result";
+                _cells.GetCell(8, TitleRow01).Value = "Equipment Reference";
+                _cells.GetCell(9, TitleRow01).Value = "Component Code";
+                _cells.GetCell(10, TitleRow01).Value = "Modifier Code";
+                _cells.GetCell(11, TitleRow01).Value = "Bulk Material Type";
+                _cells.GetCell(12, TitleRow01).Value = "Condition Monitoring Action";
+                _cells.GetCell(13, TitleRow01).Value = "Quantity";
+                _cells.GetCell(14, TitleRow01).Value = "Transaction Date";
+                _cells.GetCell(15, TitleRow01).Value = "Statistic Time";
+                _cells.GetCell(16, TitleRow01).Value = "Statistic Type";
+                _cells.GetCell(17, TitleRow01).Value = "Statistic Meter";
+                _cells.GetCell(ResultColumn01, TitleRow01).Value = "Result";
 
                 #region Styles
 
-                _cells.GetCell(1, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetCell(2, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(3, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(4, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(5, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(6, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(7, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetCell(8, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(9, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(10, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(11, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(12, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(13, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(14, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(15, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(16, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(17, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(ResultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell(1, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell(2, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(3, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(4, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(5, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(6, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(7, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell(8, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(9, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(10, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(11, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(12, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(13, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(14, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(15, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(16, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(17, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleInformation);
 
                 #endregion
 
@@ -154,19 +199,98 @@ namespace EllipseBulkMaterialExcelAddIn
                     "A - Oil Added",
                     "F - Filter Changed"
                 };
-                _cells.SetValidationList(_cells.GetCell(12, TittleRow + 1), _optionList);
 
-                _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange,
-                    _cells.GetRange(1, TittleRow, ResultColumn, MaxRows), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
-                _excelSheetItems.Name = "ExcelSheetItems";
+                _cells.SetValidationList(_cells.GetCell(12, TitleRow01 + 1), _optionList, ValidationSheetName, 1);
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).NumberFormat = "@";
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1), TableName01);
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).NumberFormat = "@";
+                OrderAndSort(_excelApp.ActiveWorkbook.ActiveSheet);
 
-                OrderAndSort(excelSheet);
+                //Hoja 2
+                #region Hoja de Listas
+                _excelApp.ActiveWorkbook.Sheets[2].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName02;
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "B2");
+                _cells.GetCell("C1").Value = "EQUIPMENT LIST CHECKER - ELLIPSE 8";
+                _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("C1", "J2");
+
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+
+                _cells.GetCell("A3").Value = EquipListSearchFieldCriteria.ListType.Value;
+                _cells.GetCell("B3").Value = "PCOMBU";
+                _cells.GetCell("A4").Value = EquipListSearchFieldCriteria.ListId.Value;
+                _cells.SetValidationList(_cells.GetCell("B4"), GetListIdList("PCOMBU"), ValidationSheetName, 2);
+                _cells.GetRange("A3", "A4").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
+                
+                var statusCodeList = _eFunctions.GetItemCodes("ES").Select(item => item.code + " - " + item.description).ToList();
+                var equipClassCodeList = _eFunctions.GetItemCodes("EC").Select(item => item.code + " - " + item.description).ToList();
+                var equipTypeCodeList = _eFunctions.GetItemCodes("ET").Select(item => item.code + " - " + item.description).ToList();
+                var compCodeList = _eFunctions.GetItemCodes("CO").Select(item => item.code + " - " + item.description).ToList();
+                var mnemonicCodeList = _eFunctions.GetItemCodes("AA").Select(item => item.code + " - " + item.description).ToList();
+                var classTypeCodeList = _eFunctions.GetItemCodes("E0").Select(item => item.code + " - " + item.description).ToList();
+                var fuelTypeCodeList = _eFunctions.GetItemCodes("E2").Select(item => item.code + " - " + item.description).ToList();
+
+                _cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02).Style = StyleConstants.TitleInformation;
+
+                _cells.GetCell(1, TitleRow02).Value = "Equipment Number";
+                _cells.GetCell(1, TitleRow02).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(2, TitleRow02).Value = "Description 1";
+                _cells.GetCell(3, TitleRow02).Value = "Description 2";
+                _cells.GetCell(4, TitleRow02).Value = "Status";
+                _cells.GetCell(5, TitleRow02).Value = "List Type";
+                _cells.GetCell(5, TitleRow02).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(6, TitleRow02).Value = "List Id";
+                _cells.GetCell(6, TitleRow02).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(7, TitleRow02).Value = "Equipment Class";
+                _cells.GetCell(8, TitleRow02).Value = "Equipment Type";
+                _cells.GetCell(9, TitleRow02).Value = "EGI";
+                _cells.GetCell(10, TitleRow02).Value = "Serial Number";
+                _cells.GetCell(11, TitleRow02).Value = "Operator Id/Pos";
+                _cells.GetCell(12, TitleRow02).Value = "Input By";
+                _cells.GetCell(13, TitleRow02).Value = "Account Code";
+                _cells.GetCell(14, TitleRow02).Value = "Component Code";
+                _cells.GetCell(15, TitleRow02).Value = "Mnemonic";
+                _cells.GetCell(16, TitleRow02).Value = "Stock Code";
+                _cells.GetCell(17, TitleRow02).Value = "Part Number";
+                _cells.GetCell(18, TitleRow02).Value = "E0. Class Type";
+                _cells.GetCell(19, TitleRow02).Value = "E2. Fuel Type";
+
+                _cells.SetValidationList(_cells.GetCell(4, TitleRow02 + 1), statusCodeList, ValidationSheetName, 3);
+                _cells.SetValidationList(_cells.GetCell(7, TitleRow02 + 1), equipClassCodeList, ValidationSheetName, 4);
+                _cells.SetValidationList(_cells.GetCell(8, TitleRow02 + 1), equipTypeCodeList, ValidationSheetName, 5);
+                _cells.SetValidationList(_cells.GetCell(14, TitleRow02 + 1), compCodeList, ValidationSheetName, 6);
+                _cells.SetValidationList(_cells.GetCell(15, TitleRow02 + 1), mnemonicCodeList, ValidationSheetName, 7);
+                _cells.SetValidationList(_cells.GetCell(18, TitleRow02 + 1), classTypeCodeList, ValidationSheetName, 8);
+                _cells.SetValidationList(_cells.GetCell(19, TitleRow02 + 1), fuelTypeCodeList, ValidationSheetName, 9);
+
+
+                _cells.GetCell(20, TitleRow02).Value = "RESULTADO";
+                _cells.GetCell(20, TitleRow02).Style = StyleConstants.TitleResult;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
+                
+                ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+
+                #endregion
+                ((Worksheet)_excelApp.ActiveWorkbook.Sheets[1]).Select(Type.Missing);
             }
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
+            }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
             }
         }
 
@@ -177,16 +301,17 @@ namespace EllipseBulkMaterialExcelAddIn
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
 
-            _excelSheetItems.Sort.SortFields.Clear();
-            _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(2, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-            _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(3, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-            _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(4, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-            _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(6, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-            _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-            _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-            _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(10, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-            _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(11, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-            _excelSheetItems.Sort.Apply();
+            var tableSheetItems = _cells.GetRange(TableName01).ListObject;
+            tableSheetItems.Sort.SortFields.Clear();
+            tableSheetItems.Sort.SortFields.Add(_cells.GetCell(2, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+            tableSheetItems.Sort.SortFields.Add(_cells.GetCell(3, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+            tableSheetItems.Sort.SortFields.Add(_cells.GetCell(4, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+            tableSheetItems.Sort.SortFields.Add(_cells.GetCell(6, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+            tableSheetItems.Sort.SortFields.Add(_cells.GetCell(9, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+            tableSheetItems.Sort.SortFields.Add(_cells.GetCell(9, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+            tableSheetItems.Sort.SortFields.Add(_cells.GetCell(10, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+            tableSheetItems.Sort.SortFields.Add(_cells.GetCell(11, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+            tableSheetItems.Sort.Apply();
         }
 
         private void ImportFile()
@@ -198,10 +323,10 @@ namespace EllipseBulkMaterialExcelAddIn
 
             if (excelSheet.Name != SheetName01) return;
 
-            _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).ClearFormats();
-            _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).ClearComments();
-            _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).ClearContents();
-            _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).NumberFormat = "@";
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearContents();
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).NumberFormat = "@";
 
             var openFileDialog1 = new OpenFileDialog
             {
@@ -226,7 +351,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
             var bulkMaterials = cc.Read<BulkMaterial>(filePath, inputFileDescription);
 
-            var currentRow = TittleRow + 1;
+            var currentRow = TitleRow01 + 1;
             foreach (var bulkMaterial in bulkMaterials)
             {
                 try
@@ -239,7 +364,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 }
                 catch (Exception error)
                 {
-                    _cells.GetCell(ResultColumn, currentRow).Value = "Error: " + error.Message;
+                    _cells.GetCell(ResultColumn01, currentRow).Value = "Error: " + error.Message;
                 }
                 finally { currentRow++; }
             }
@@ -254,8 +379,8 @@ namespace EllipseBulkMaterialExcelAddIn
         {
             try
             {
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).ClearFormats();
-                _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).ClearComments();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
 
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
@@ -270,10 +395,10 @@ namespace EllipseBulkMaterialExcelAddIn
                 var opItem = new BMUSheetItem.OperationContext();
 
 
-                if (drpBulkMaterialEnv.Label == null || drpBulkMaterialEnv.Label.Equals("")) return;
-                proxySheet.Url = _eFunctions.GetServicesUrl(drpBulkMaterialEnv.SelectedItem.Label) + "/BulkMaterialUsageSheet";
-                proxyItem.Url = _eFunctions.GetServicesUrl(drpBulkMaterialEnv.SelectedItem.Label) + "/BulkMaterialUsageSheetItem";
-                _frmAuth.SelectedEnviroment = drpBulkMaterialEnv.SelectedItem.Label;
+                if (drpEnviroment.Label == null || drpEnviroment.Label.Equals("")) return;
+                proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/BulkMaterialUsageSheet";
+                proxyItem.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/BulkMaterialUsageSheetItem";
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -290,18 +415,19 @@ namespace EllipseBulkMaterialExcelAddIn
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
                 try
                 {
-                    _excelSheetItems.Sort.SortFields.Clear();
-                    _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(2, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-                    _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(3, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-                    _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(4, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-                    _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(6, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-                    _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-                    _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-                    _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(10, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-                    _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(11, TittleRow), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-                    _excelSheetItems.Sort.Apply();
+                    var tableSheetItems = _cells.GetRange(TableName01).ListObject;
+                    tableSheetItems.Sort.SortFields.Clear();
+                    tableSheetItems.Sort.SortFields.Add(_cells.GetCell(2, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+                    tableSheetItems.Sort.SortFields.Add(_cells.GetCell(3, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+                    tableSheetItems.Sort.SortFields.Add(_cells.GetCell(4, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+                    tableSheetItems.Sort.SortFields.Add(_cells.GetCell(6, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+                    tableSheetItems.Sort.SortFields.Add(_cells.GetCell(9, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+                    tableSheetItems.Sort.SortFields.Add(_cells.GetCell(9, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+                    tableSheetItems.Sort.SortFields.Add(_cells.GetCell(10, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+                    tableSheetItems.Sort.SortFields.Add(_cells.GetCell(11, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+                    tableSheetItems.Sort.Apply();
 
-                    var currentRow = TittleRow + 1;
+                    var currentRow = TitleRow01 + 1;
 
                     while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
                     {
@@ -328,7 +454,7 @@ namespace EllipseBulkMaterialExcelAddIn
                         if (replySheet.errors.Length > 0)
                         {
                             foreach (var t in replySheet.errors)
-                                _cells.GetCell(ResultColumn, currentRow).Value += " - " + t.messageText;
+                                _cells.GetCell(ResultColumn01, currentRow).Value += " - " + t.messageText;
 
                             _cells.GetRange(1, currentHeader, 6, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                             _cells.GetRange(1, currentHeader, 6, currentRow).Select();
@@ -393,8 +519,8 @@ namespace EllipseBulkMaterialExcelAddIn
                                             {
                                                 requestItemList.Remove(item);
                                                 _cells.GetRange(8, currentHeader + currentItem, 13, currentHeader + currentItem).Style = _cells.GetStyle(StyleConstants.Error);
-                                                _cells.GetCell(ResultColumn, currentHeader + currentItem).Value += errorMessage;
-                                                _cells.GetCell(ResultColumn, currentHeader + currentItem).Select();
+                                                _cells.GetCell(ResultColumn01, currentHeader + currentItem).Value += errorMessage;
+                                                _cells.GetCell(ResultColumn01, currentHeader + currentItem).Select();
                                             }
                                             currentItem++;
                                         }
@@ -433,7 +559,7 @@ namespace EllipseBulkMaterialExcelAddIn
                                 }
                                 else
                                 {
-                                    _cells.GetCell(ResultColumn, currentRow - 1).Value += "No hay Items para Aplicar en esta hoja!";
+                                    _cells.GetCell(ResultColumn01, currentRow - 1).Value += "No hay Items para Aplicar en esta hoja!";
                                     DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
                                 }
                             }
@@ -464,14 +590,14 @@ namespace EllipseBulkMaterialExcelAddIn
                 {
                     foreach (var t in replySheet.errors)
                     {
-                        _cells.GetCell(ResultColumn, currentRow).Value += " - " + t.messageText;
+                        _cells.GetCell(ResultColumn01, currentRow).Value += " - " + t.messageText;
                     }
-                    _cells.GetRange(1, currentHeader, ResultColumn - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                    _cells.GetRange(1, currentHeader, ResultColumn01 - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                     DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow);
                 }
                 else
                 {
-                    _cells.GetRange(1, currentHeader, ResultColumn - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Success);                    _cells.GetRange(1, currentHeader, 6, currentRow).Select();
+                    _cells.GetRange(1, currentHeader, ResultColumn01 - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Success);                    _cells.GetRange(1, currentHeader, 6, currentRow).Select();
                 }
             }
             catch (Exception)
@@ -513,7 +639,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 if (requestItem.bulkMaterialTypeId == profile.FuelType && requestItem.quantity > profile.capacity)
                 {
-                    _cells.GetCell(ResultColumn, currentRow).Value = "Este valor supera la capacidad del Equipo!";
+                    _cells.GetCell(ResultColumn01, currentRow).Value = "Este valor supera la capacidad del Equipo!";
                     _cells.GetRange(8, currentRow, 13, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                 }
                 else
@@ -526,7 +652,7 @@ namespace EllipseBulkMaterialExcelAddIn
             }
             catch (Exception error)
             {
-                _cells.GetCell(ResultColumn, currentRow).Value = error.Message;
+                _cells.GetCell(ResultColumn01, currentRow).Value = error.Message;
                 _cells.GetCell(13, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                 _cells.GetCell(13, currentRow).Select();
             }
@@ -542,18 +668,18 @@ namespace EllipseBulkMaterialExcelAddIn
                 {
                     foreach (var t in replySheet.errors)
                     {
-                        _cells.GetCell(ResultColumn, (currentHeader + t.fieldIndex)).Value += " - " + t.messageText;
+                        _cells.GetCell(ResultColumn01, (currentHeader + t.fieldIndex)).Value += " - " + t.messageText;
                     }
                 }
                 else
                 {
-                    _cells.GetCell(ResultColumn, currentRow).Value += " - Hoja " + replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId + " Borrada";
-                    _cells.GetRange(1, currentHeader, ResultColumn - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                    _cells.GetCell(ResultColumn01, currentRow).Value += " - Hoja " + replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId + " Borrada";
+                    _cells.GetRange(1, currentHeader, ResultColumn01 - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                 }
             }
             catch (Exception err)
             {
-                _cells.GetCell(ResultColumn, currentRow).Value += err.Message;
+                _cells.GetCell(ResultColumn01, currentRow).Value += err.Message;
             }
         }
 
@@ -565,7 +691,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var sqlQuery = Queries.GetBulkAccountCode(equipNo, _eFunctions.dbReference, _eFunctions.dbLink);
 
-                _eFunctions.SetDBSettings(drpBulkMaterialEnv.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
                 var drEquipCapacity = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -602,7 +728,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var sqlQuery = Queries.GetFuelCapacity(equipNo, _eFunctions.dbReference, _eFunctions.dbLink);
 
-                _eFunctions.SetDBSettings(drpBulkMaterialEnv.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
                 var drEquipCapacity = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -635,6 +761,28 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void btnUnApplyDelete_Click(object sender, RibbonControlEventArgs e)
         {
+            try
+            {
+                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(Unapply);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:Unapply()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void Unapply()
+        {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             var excelBook = _excelApp.ActiveWorkbook;
@@ -645,9 +793,9 @@ namespace EllipseBulkMaterialExcelAddIn
             var opSheet = new BMUSheet.OperationContext();
 
 
-            if (drpBulkMaterialEnv.Label == null || drpBulkMaterialEnv.Label.Equals("")) return;
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpBulkMaterialEnv.SelectedItem.Label) + "/BulkMaterialUsageSheet";
-            _frmAuth.SelectedEnviroment = drpBulkMaterialEnv.SelectedItem.Label;
+            if (drpEnviroment.Label == null || drpEnviroment.Label.Equals("")) return;
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/BulkMaterialUsageSheet";
+            _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
             _frmAuth.StartPosition = FormStartPosition.CenterScreen;
 
             if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -659,7 +807,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            var currentRow = TittleRow + 1;
+            var currentRow = TitleRow01 + 1;
 
             while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value)) != null)
             {
@@ -674,7 +822,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                     if (replySheet.errors.Length > 0)
                     {
-                        foreach (var t in replySheet.errors) { _cells.GetCell(ResultColumn, currentRow).Value += " - " + t.messageText; }
+                        foreach (var t in replySheet.errors) { _cells.GetCell(ResultColumn01, currentRow).Value += " - " + t.messageText; }
 
                         _cells.GetRange(1, currentRow, 6, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                         _cells.GetRange(1, currentRow, 6, currentRow).Select();
@@ -690,16 +838,32 @@ namespace EllipseBulkMaterialExcelAddIn
                 catch (Exception error)
                 {
                     _cells.GetRange(1, currentRow, 6, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                    _cells.GetCell(ResultColumn, currentRow).Value = error.Message;
-                    _cells.GetCell(ResultColumn, currentRow).Select();
+                    _cells.GetCell(ResultColumn01, currentRow).Value = error.Message;
+                    _cells.GetCell(ResultColumn01, currentRow).Select();
                 }
                 finally { currentRow++; }
             }
         }
-
         private void btnValidateStats_Click(object sender, RibbonControlEventArgs e)
         {
-            ValidateStats();
+            try
+            {
+                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ValidateStats);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ValidateStats()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private Stats GetLastStatistic(string equipNo, string statType, string statDate)
@@ -712,7 +876,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var sqlQuery = Queries.GetLastStatistic(equipNo, statType, statDate, _eFunctions.dbReference, _eFunctions.dbLink);
 
-                _eFunctions.SetDBSettings(drpBulkMaterialEnv.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
                 var drLastStat = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -742,9 +906,9 @@ namespace EllipseBulkMaterialExcelAddIn
 
             if (excelSheet.Name != SheetName01) return;
 
-            if (drpBulkMaterialEnv.Label == null || drpBulkMaterialEnv.Label.Equals("")) return;
+            if (drpEnviroment.Label == null || drpEnviroment.Label.Equals("")) return;
 
-            var currentRow = TittleRow + 1;
+            var currentRow = TitleRow01 + 1;
             while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
             {
                 var statType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value);
@@ -760,6 +924,24 @@ namespace EllipseBulkMaterialExcelAddIn
                 }
                 currentRow++;
             }
+        }
+
+        private List<string> GetListIdList(string listType)
+        {
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var sqlQuery = Queries.GetListIdList(_eFunctions.dbReference, _eFunctions.dbLink, listType);
+            var drItem = _eFunctions.GetQueryResult(sqlQuery);
+
+            var list = new List<string>();
+
+            if (drItem == null || drItem.IsClosed || !drItem.HasRows) return list;
+
+            while (drItem.Read())
+            {
+                list.Add("" + drItem["LIST_ID"].ToString().Trim());
+            }
+
+            return list;
         }
 
         private static class Queries
@@ -930,6 +1112,17 @@ namespace EllipseBulkMaterialExcelAddIn
                 
                 return query;
             }
+
+            public static string GetListIdList(string dbReference, string dbLink, string listType)
+            {
+                var query = "" +
+                            "SELECT EQL.LIST_TYP, EQL.LIST_ID FROM " + dbReference + ".MSF606" + dbLink + " EQL " +
+                            "WHERE EQL.LIST_TYP = '" + listType + "'";
+
+                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+
+                return query;
+            }
         }
 
         private class BulkMaterial
@@ -975,6 +1168,387 @@ namespace EllipseBulkMaterialExcelAddIn
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();
+        }
+
+        private void btnReviewEquipList_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReviewListEquipmentsList);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ReviewListEquipmentsList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void ReviewListEquipmentsList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _cells.ClearTableRange(TableName02);
+
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+            //Obtengo los valores de las opciones de búsqueda
+            var searchCriteriaKey1 = EquipListSearchFieldCriteria.ListType.Key;
+            var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            var searchCriteriaKey2 = EquipListSearchFieldCriteria.ListId.Key;
+            var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
+            var previousEquipment = new Equipment {EquipmentNo = ""};
+
+            var listeq = ListActions.FetchListEquipmentsList(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, null);
+            var i = TitleRow02 + 1;
+            foreach (var eql in listeq)
+            {
+                try
+                {
+                    //Para resetear el estilo
+                    _cells.GetRange(1, i, ResultColumn02, i).Style = StyleConstants.Normal;
+                    _cells.GetCell(1, i).Value = "'" + eql.EquipNo;                    
+                    _cells.GetCell(5, i).Value = "'" + eql.ListType;
+                    _cells.GetCell(6, i).Value = "'" + eql.ListId;
+
+                    var eq = eql.EquipNo.Trim().Equals(previousEquipment.EquipmentNo.Trim()) ? previousEquipment : EquipmentActions.FetchEquipmentData(_eFunctions, eql.EquipNo);
+
+                    _cells.GetCell(2, i).Value = "'" + eq.EquipmentNoDescription1;
+                    _cells.GetCell(3, i).Value = "'" + eq.EquipmentNoDescription2;
+                    _cells.GetCell(4, i).Value = "'" + eq.EquipmentStatus;
+                    _cells.GetCell(7, i).Value = "'" + eq.EquipmentClass;
+                    _cells.GetCell(8, i).Value = "'" + eq.EquipmentType;
+                    _cells.GetCell(9, i).Value = "'" + eq.EquipmentGrpId;
+                    _cells.GetCell(10, i).Value = "'" + eq.SerialNumber;
+                    _cells.GetCell(11, i).Value = "'" + eq.OperatorId + "/" + eq.OperatorPosition;
+                    _cells.GetCell(12, i).Value = "'" + eq.InputBy;
+                    _cells.GetCell(13, i).Value = "'" + eq.AccountCode;
+                    _cells.GetCell(14, i).Value = "'" + eq.CompCode;
+                    _cells.GetCell(15, i).Value = "'" + eq.Mnemonic;
+                    _cells.GetCell(16, i).Value = "'" + eq.StockCode;
+                    _cells.GetCell(17, i).Value = "'" + eq.PartNo;
+                    _cells.GetCell(18, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
+                    _cells.GetCell(19, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
+
+                    previousEquipment = eq;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReviewListEquipmentsList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                    _eFunctions.CloseConnection();
+                }
+            }
+            ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+
+        }
+
+        private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_thread != null && _thread.IsAlive)
+                    _thread.Abort();
+                if (_cells != null) _cells.SetCursorDefault();
+            }
+            catch (ThreadAbortException ex)
+            {
+                MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
+            }
+        }
+
+        private void btnReviewFromBulkSheet_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01 || ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReviewFromEquipmentList);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ReviewListEquipmentsList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+        private void ReviewFromEquipmentList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+            var celleq = new ExcelStyleCells(_excelApp, SheetName01);
+            var cellli = new ExcelStyleCells(_excelApp, SheetName02);
+            _cells.SetCursorWait();
+            cellli.ClearTableRange(TableName02);
+
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+
+            var k = TitleRow01 + 1;
+            var i = TitleRow02 + 1;
+            while (!string.IsNullOrEmpty("" + celleq.GetCell(8, k).Value))
+            {
+                var equipmentNo = _cells.GetEmptyIfNull(celleq.GetCell(8, k).Value);
+                try
+                {
+                    var eq = EquipmentActions.FetchEquipmentData(_eFunctions, equipmentNo);
+                    var listeq = ListActions.FetchListEquipmentsList(_eFunctions, equipmentNo);
+
+                    if (listeq != null && listeq.Count > 0)
+                    {
+                        foreach (var eql in listeq)
+                        {
+                            try
+                            {
+                                //Para resetear el estilo
+                                cellli.GetRange(1, i, ResultColumn02, i).Style = StyleConstants.Normal;
+                                cellli.GetCell(1, i).Value = "'" + eq.EquipmentNo;
+                                cellli.GetCell(2, i).Value = "'" + eq.EquipmentNoDescription1;
+                                cellli.GetCell(3, i).Value = "'" + eq.EquipmentNoDescription2;
+                                cellli.GetCell(4, i).Value = "'" + eq.EquipmentStatus;
+                                cellli.GetCell(5, i).Value = "'" + eql.ListType;
+                                cellli.GetCell(6, i).Value = "'" + eql.ListId;
+                                cellli.GetCell(7, i).Value = "'" + eq.EquipmentClass;
+                                cellli.GetCell(8, i).Value = "'" + eq.EquipmentType;
+                                cellli.GetCell(9, i).Value = "'" + eq.EquipmentGrpId;
+                                cellli.GetCell(10, i).Value = "'" + eq.SerialNumber;
+                                cellli.GetCell(11, i).Value = "'" + eq.OperatorId + "/" + eq.OperatorPosition;
+                                cellli.GetCell(12, i).Value = "'" + eq.InputBy;
+                                cellli.GetCell(13, i).Value = "'" + eq.AccountCode;
+                                cellli.GetCell(14, i).Value = "'" + eq.CompCode;
+                                cellli.GetCell(15, i).Value = "'" + eq.Mnemonic;
+                                cellli.GetCell(16, i).Value = "'" + eq.StockCode;
+                                cellli.GetCell(17, i).Value = "'" + eq.PartNo;
+                                cellli.GetCell(18, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
+                                cellli.GetCell(19, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
+                            }
+                            catch (Exception ex)
+                            {
+                                cellli.GetCell(1, i).Style = StyleConstants.Error;
+                                cellli.GetCell(ResultColumn02, i).Value = "ERRORLIST: " + ex.Message;
+                                Debugger.LogError("RibbonEllipse.cs:ReviewFromEquipmentList()", ex.Message);
+                            }
+                            finally
+                            {
+                                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+                                    cellli.GetCell(2, i).Select();
+                                i++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //Para resetear el estilo
+                        cellli.GetRange(1, i, ResultColumn02, i).Style = StyleConstants.Normal;
+                        cellli.GetCell(1, i).Value = "'" + eq.EquipmentNo;
+                        cellli.GetCell(1, i).Style = StyleConstants.Warning;
+                        cellli.GetCell(2, i).Value = "'" + eq.EquipmentNoDescription1;
+                        cellli.GetCell(3, i).Value = "'" + eq.EquipmentNoDescription2;
+                        cellli.GetCell(4, i).Value = "'" + eq.EquipmentStatus;
+                        cellli.GetCell(5, i).Value = "'" + "-";
+                        cellli.GetCell(6, i).Value = "'" + "-";
+                        cellli.GetCell(7, i).Value = "'" + eq.EquipmentClass;
+                        cellli.GetCell(8, i).Value = "'" + eq.EquipmentType;
+                        cellli.GetCell(9, i).Value = "'" + eq.EquipmentGrpId;
+                        cellli.GetCell(10, i).Value = "'" + eq.SerialNumber;
+                        cellli.GetCell(11, i).Value = "'" + eq.OperatorId + "/" + eq.OperatorPosition;
+                        cellli.GetCell(12, i).Value = "'" + eq.InputBy;
+                        cellli.GetCell(13, i).Value = "'" + eq.AccountCode;
+                        cellli.GetCell(14, i).Value = "'" + eq.CompCode;
+                        cellli.GetCell(15, i).Value = "'" + eq.Mnemonic;
+                        cellli.GetCell(16, i).Value = "'" + eq.StockCode;
+                        cellli.GetCell(17, i).Value = "'" + eq.PartNo;
+                        cellli.GetCell(18, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
+                        cellli.GetCell(19, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
+                        cellli.GetCell(ResultColumn02, i).Value = "Equipo no existe en ninguna lista ";
+                        cellli.GetCell(ResultColumn02, i).Style = StyleConstants.Warning;
+
+                        if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+                            cellli.GetCell(2, i).Select();
+                        i++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, k).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01, k).Value = "ERRORLIST: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReviewFromEquipmentList()", ex.Message);
+                }
+                finally
+                {
+                    if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+                        celleq.GetCell(1, k).Select();
+                    k++;
+                }
+            }
+
+            ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+
+        }
+
+        private void btnAddToList_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(AddListEquipmentsList);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+        private void AddListEquipmentsList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+            var i = TitleRow02 + 1;
+
+            var opSheet = new ListService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                returnWarnings = Debugger.DebugWarnings
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var equiplist = new EquipListItem()
+                    {
+                        EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
+                        ListType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
+                        ListId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)
+                    };
+
+                    ListActions.AddEquipmentToList(opSheet, urlService, equiplist);
+
+                    _cells.GetCell(ResultColumn02, i).Value = "AGREGADO A LA LISTA";
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn02, i).Select();
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn02, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:AddListEquipmentsList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn02, i).Select();
+                    i++;
+                }
+            }
+            ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void btnRemoveFromList_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(DeleteListEquipmentsList);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+        private void DeleteListEquipmentsList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+            var i = TitleRow02 + 1;
+
+            var opSheet = new ListService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                returnWarnings = Debugger.DebugWarnings
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var equiplist = new EquipListItem()
+                    {
+                        EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
+                        ListType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
+                        ListId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)
+                    };
+
+                    ListActions.DeleteEquipmentFromList(opSheet, urlService, equiplist);
+
+                    _cells.GetCell(ResultColumn02, i).Value = "ELIMINADO DE LISTA";
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn02, i).Select();
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn02, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:DeleteListEquipmentsList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn02, i).Select();
+                    i++;
+                }
+            }
+            ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
         }
     }
 }

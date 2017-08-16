@@ -8,5 +8,8 @@
     <Setting Name="EllipseEquipmentClassLibrary_EquipTraceService_EquipTraceService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipTraceService</Value>
     </Setting>
+    <Setting Name="EllipseEquipmentClassLibrary_EquipmentListService_EquipmentListService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipmentListService</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -15,7 +15,7 @@ namespace EllipseCommonsClassLibrary
         private Worksheet _excelSheet;
 
         private bool _alwaysActiveSheet;
-
+        private CultureInfo _oldCultureInfo;
         /// <summary>
         /// Constructor de la clase. Si alwaysActiveSheet es true La clase estará sujeta a la hoja activa con la que se esté trabajando, si es false, estará sujeta exclusivamente a la hoja activa desde la que se invoca este constructor
         /// </summary>
@@ -27,8 +27,11 @@ namespace EllipseCommonsClassLibrary
             _alwaysActiveSheet = alwaysActiveSheet;
             try
             {
-                _excelSheet = (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
-                //si se produce un error en la sentencia anterior (Ej. No hay libro activo como Office 2013+) no procederá a la siguiente instrucción
+                //Si hay un libro activo (Ej. Office 2013+ inicia sin libro activo)
+                if (_excelApp.ActiveWorkbook == null) return;
+                if (Debugger.ForceRegionalization)
+                    SetEllipseDefaultCulture();//Se adiciona instrucción para evitar conflictos de símbolos por diferencias de lenguaje
+                _excelSheet = (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet;
                 CreateStyles();
             }
             catch(Exception ex)
@@ -48,8 +51,11 @@ namespace EllipseCommonsClassLibrary
             _alwaysActiveSheet = false;
             try
             {
+                //Si hay un libro activo (Ej. Office 2013+ inicia sin libro activo)
+                if (_excelApp.ActiveWorkbook == null) return;
+                if (Debugger.ForceRegionalization)
+                    SetEllipseDefaultCulture();
                 _excelSheet = (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
-                //si se produce un error en la sentencia anterior (Ej. No hay libro activo como Office 2013+) no procederá a la siguiente instrucción
                 foreach (Worksheet sheet in _excelApp.ActiveWorkbook.Sheets)
                 {
                     if (sheet.Name != sheetName) continue;
@@ -843,7 +849,7 @@ namespace EllipseCommonsClassLibrary
             rangeColumn.Delete(Type.Missing);
             foreach(var value in validationValues)
             {
-                validCells.GetCell(validationColumnIndex, i).Value = "" + value;
+                validCells.GetCell(validationColumnIndex, i).Value = "'" + value;
                 i++;
             }
 
@@ -1114,6 +1120,17 @@ namespace EllipseCommonsClassLibrary
             excelApp.Cursor = XlMousePointer.xlDefault;
         }
 
+        public void SetEllipseDefaultCulture()
+        {
+            _oldCultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
+
+        public void ResetCurrentCulture()
+        {
+            if (_oldCultureInfo != null)
+                System.Threading.Thread.CurrentThread.CurrentCulture = _oldCultureInfo;
+        }
     }
 
     /// <summary>
@@ -1190,4 +1207,5 @@ namespace EllipseCommonsClassLibrary
         public static string DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
     }
+
 }

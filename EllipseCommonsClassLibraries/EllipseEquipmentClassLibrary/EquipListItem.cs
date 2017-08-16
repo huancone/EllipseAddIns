@@ -12,6 +12,7 @@ namespace EllipseEquipmentClassLibrary
         public string EquipDescription;
         public string ListType;
         public string ListId;
+        public string Status;
         public string ListNumber;
         public string ListDescription;
         public string ListReference;

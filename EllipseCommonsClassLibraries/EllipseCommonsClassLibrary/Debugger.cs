@@ -13,6 +13,7 @@ namespace EllipseCommonsClassLibrary
         public static bool DebugErrors = false;
         public static bool DebugWarnings = false;
         public static bool DebugQueries = false;
+        public static bool ForceRegionalization = false;
 
         private static DebugError _lastError;
         private static DebugError _lastWarning;

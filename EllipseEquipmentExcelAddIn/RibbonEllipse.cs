@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Web.Services.Ellipse;
 using EllipseEquipmentClassLibrary;
 using EquipmentService = EllipseEquipmentClassLibrary.EquipmentService;
+using ListService = EllipseEquipmentClassLibrary.EquipmentListService;
 using EquipTraceService = EllipseEquipmentClassLibrary.EquipTraceService;
 using System.Threading;
 
@@ -33,7 +34,7 @@ namespace EllipseEquipmentExcelAddIn
         private const int TitleRow03 = 8;
         private const int ResultColumn01 = 73;
         private const int ResultColumn02 = 10;
-        private const int ResultColumn03 = 10;
+        private const int ResultColumn03 = 11;
         private const string TableName01 = "EquipmentTable";
         private const string TableName02 = "FitmentDefitmentTable";
         private const string TableName03 = "ListEquipsTable";
@@ -509,20 +510,27 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("A3"), listSearchCriteriaList, ValidationSheetName, 23);
                 _cells.GetCell("A4").Value = EquipListSearchFieldCriteria.ListId.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), ValidationSheetName, 23);
-                _cells.GetRange("A3", "A4").Style = _cells.GetStyle(StyleConstants.Option);
-                _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
+                _cells.GetCell("A5").Value = "STATUS";
+                _cells.SetValidationList(_cells.GetCell("B5"), ValidationSheetName, 4);
+
+                _cells.GetRange("A3", "A5").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("B3", "B5").Style = _cells.GetStyle(StyleConstants.Select);
 
                 _cells.GetRange(1, TitleRow03, ResultColumn03 - 1, TitleRow03).Style = StyleConstants.TitleInformation;
 
                 _cells.GetCell(1, TitleRow03).Value = "Equipment No";
+                _cells.GetCell(1, TitleRow03).Style = StyleConstants.TitleRequired;
                 _cells.GetCell(2, TitleRow03).Value = "Equipment Desc.";
                 _cells.GetCell(3, TitleRow03).Value = "List Type";
+                _cells.GetCell(3, TitleRow03).Style = StyleConstants.TitleRequired;
                 _cells.GetCell(4, TitleRow03).Value = "List Id";
-                _cells.GetCell(5, TitleRow03).Value = "List Number";
-                _cells.GetCell(6, TitleRow03).Value = "List Description";
-                _cells.GetCell(7, TitleRow03).Value = "List Reference";
-                _cells.GetCell(8, TitleRow03).Value = "List Owner";
-                _cells.GetCell(9, TitleRow03).Value = "List Owner Position";
+                _cells.GetCell(4, TitleRow03).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(5, TitleRow03).Value = "Eq. Status";
+                _cells.GetCell(6, TitleRow03).Value = "List Number";
+                _cells.GetCell(7, TitleRow03).Value = "List Description";
+                _cells.GetCell(8, TitleRow03).Value = "List Reference";
+                _cells.GetCell(9, TitleRow03).Value = "List Owner";
+                _cells.GetCell(10, TitleRow03).Value = "List Owner Position";
 
                 _cells.GetCell(ResultColumn03, TitleRow03).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn03, TitleRow03).Style = _cells.GetStyle(StyleConstants.TitleResult);
@@ -573,83 +581,83 @@ namespace EllipseEquipmentExcelAddIn
                     //Para resetear el estilo
                     _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
                     //GENERAL
-                    _cells.GetCell(1, i).Value = "" + eq.EquipmentNo;
-                    _cells.GetCell(2, i).Value = "" + eq.EquipmentStatus;
-                    _cells.GetCell(3, i).Value = "" + eq.EquipmentNoDescription1;
-                    _cells.GetCell(4, i).Value = "" + eq.EquipmentNoDescription2;
-                    _cells.GetCell(5, i).Value = "" + eq.EquipmentClass;
-                    _cells.GetCell(6, i).Value = "" + eq.EquipmentType;
-                    _cells.GetCell(7, i).Value = "" + eq.PlantNo;
-                    _cells.GetCell(8, i).Value = "" + eq.EquipmentGrpId;
-                    _cells.GetCell(9, i).Value = "" + eq.EquipmentLocation;
-                    _cells.GetCell(10, i).Value = "" + eq.ParentEquipment;
-                    _cells.GetCell(11, i).Value = "" + eq.Custodian;
-                    _cells.GetCell(12, i).Value = "" + eq.CustodianPosition;
-                    _cells.GetCell(13, i).Value = "" + eq.OperatorId;
-                    _cells.GetCell(14, i).Value = "" + eq.OperatorPosition;
-                    _cells.GetCell(15, i).Value = "" + eq.InputBy;
-                    _cells.GetCell(16, i).Value = "" + eq.CustomerNumber;
-                    _cells.GetCell(17, i).Value = "" + eq.ShutdownEquipment;
-                    _cells.GetCell(18, i).Value = "" + eq.WarrStatType;
-                    _cells.GetCell(19, i).Value = "" + eq.WarrStatVal;
-                    _cells.GetCell(20, i).Value = "" + eq.WarrantyDate;
-                    _cells.GetCell(21, i).Value = "" + eq.ItemNameCode;
-                    _cells.GetCell(22, i).Value = "" + eq.DistrictCode;
-                    _cells.GetCell(23, i).Value = "" + eq.ActiveFlag;
+                    _cells.GetCell(1, i).Value = "'" + eq.EquipmentNo;
+                    _cells.GetCell(2, i).Value = "'" + eq.EquipmentStatus;
+                    _cells.GetCell(3, i).Value = "'" + eq.EquipmentNoDescription1;
+                    _cells.GetCell(4, i).Value = "'" + eq.EquipmentNoDescription2;
+                    _cells.GetCell(5, i).Value = "'" + eq.EquipmentClass;
+                    _cells.GetCell(6, i).Value = "'" + eq.EquipmentType;
+                    _cells.GetCell(7, i).Value = "'" + eq.PlantNo;
+                    _cells.GetCell(8, i).Value = "'" + eq.EquipmentGrpId;
+                    _cells.GetCell(9, i).Value = "'" + eq.EquipmentLocation;
+                    _cells.GetCell(10, i).Value = "'" + eq.ParentEquipment;
+                    _cells.GetCell(11, i).Value = "'" + eq.Custodian;
+                    _cells.GetCell(12, i).Value = "'" + eq.CustodianPosition;
+                    _cells.GetCell(13, i).Value = "'" + eq.OperatorId;
+                    _cells.GetCell(14, i).Value = "'" + eq.OperatorPosition;
+                    _cells.GetCell(15, i).Value = "'" + eq.InputBy;
+                    _cells.GetCell(16, i).Value = "'" + eq.CustomerNumber;
+                    _cells.GetCell(17, i).Value = "'" + eq.ShutdownEquipment;
+                    _cells.GetCell(18, i).Value = "'" + eq.WarrStatType;
+                    _cells.GetCell(19, i).Value = "'" + eq.WarrStatVal;
+                    _cells.GetCell(20, i).Value = "'" + eq.WarrantyDate;
+                    _cells.GetCell(21, i).Value = "'" + eq.ItemNameCode;
+                    _cells.GetCell(22, i).Value = "'" + eq.DistrictCode;
+                    _cells.GetCell(23, i).Value = "'" + eq.ActiveFlag;
                     //COSTING
-                    _cells.GetCell(24, i).Value = "" + eq.AccountCode;
-                    _cells.GetCell(25, i).Value = "" + eq.ExpElement;
-                    _cells.GetCell(26, i).Value = "" + eq.CostingFlag;
-                    _cells.GetCell(27, i).Value = "" + eq.TaxCode;
-                    _cells.GetCell(27, i).Value = "" + eq.CtaxCode;
-                    _cells.GetCell(29, i).Value = "" + eq.PoNo;
-                    _cells.GetCell(30, i).Value = "" + eq.PurchaseDate;
-                    _cells.GetCell(31, i).Value = "" + eq.PurchasePrice;
-                    _cells.GetCell(32, i).Value = "" + eq.ReplaceValue;
-                    _cells.GetCell(33, i).Value = "" + eq.ValuationDate;
+                    _cells.GetCell(24, i).Value = "'" + eq.AccountCode;
+                    _cells.GetCell(25, i).Value = "'" + eq.ExpElement;
+                    _cells.GetCell(26, i).Value = "'" + eq.CostingFlag;
+                    _cells.GetCell(27, i).Value = "'" + eq.TaxCode;
+                    _cells.GetCell(27, i).Value = "'" + eq.CtaxCode;
+                    _cells.GetCell(29, i).Value = "'" + eq.PoNo;
+                    _cells.GetCell(30, i).Value = "'" + eq.PurchaseDate;
+                    _cells.GetCell(31, i).Value = "'" + eq.PurchasePrice;
+                    _cells.GetCell(32, i).Value = "'" + eq.ReplaceValue;
+                    _cells.GetCell(33, i).Value = "'" + eq.ValuationDate;
                     //TRACING
-                    _cells.GetCell(34, i).Value = "" + eq.CompCode;
-                    _cells.GetCell(35, i).Value = "" + eq.Mnemonic;
-                    _cells.GetCell(36, i).Value = "" + eq.StockCode;
-                    _cells.GetCell(37, i).Value = "" + eq.SerialNumber;
-                    _cells.GetCell(38, i).Value = "" + eq.PartNo;
-                    _cells.GetCell(39, i).Value = "" + eq.DrawingNo;
-                    _cells.GetCell(40, i).Value = "" + eq.OriginalDoc;
-                    _cells.GetCell(41, i).Value = "" + eq.TraceableFlg;
+                    _cells.GetCell(34, i).Value = "'" + eq.CompCode;
+                    _cells.GetCell(35, i).Value = "'" + eq.Mnemonic;
+                    _cells.GetCell(36, i).Value = "'" + eq.StockCode;
+                    _cells.GetCell(37, i).Value = "'" + eq.SerialNumber;
+                    _cells.GetCell(38, i).Value = "'" + eq.PartNo;
+                    _cells.GetCell(39, i).Value = "'" + eq.DrawingNo;
+                    _cells.GetCell(40, i).Value = "'" + eq.OriginalDoc;
+                    _cells.GetCell(41, i).Value = "'" + eq.TraceableFlg;
                     //CONDITION
-                    _cells.GetCell(42, i).Value = "" + eq.EquipmentCriticality;
-                    _cells.GetCell(43, i).Value = "" + eq.PrimaryFunction;
-                    _cells.GetCell(44, i).Value = "" + eq.OperatingStandard;
-                    _cells.GetCell(45, i).Value = "" + eq.ConditionStandard;
-                    _cells.GetCell(46, i).Value = "" + eq.ConditionRating;
-                    _cells.GetCell(47, i).Value = "" + eq.LatestConditionDate;
-                    _cells.GetCell(48, i).Value = "" + eq.MsssFlag;
+                    _cells.GetCell(42, i).Value = "'" + eq.EquipmentCriticality;
+                    _cells.GetCell(43, i).Value = "'" + eq.PrimaryFunction;
+                    _cells.GetCell(44, i).Value = "'" + eq.OperatingStandard;
+                    _cells.GetCell(45, i).Value = "'" + eq.ConditionStandard;
+                    _cells.GetCell(46, i).Value = "'" + eq.ConditionRating;
+                    _cells.GetCell(47, i).Value = "'" + eq.LatestConditionDate;
+                    _cells.GetCell(48, i).Value = "'" + eq.MsssFlag;
                     //LINKONE
-                    _cells.GetCell(49, i).Value = "" + eq.LinkOne.Publisher;
-                    _cells.GetCell(50, i).Value = "" + eq.LinkOne.Book;
-                    _cells.GetCell(51, i).Value = "" + eq.LinkOne.PageReference;
-                    _cells.GetCell(52, i).Value = "" + eq.LinkOne.ItemId;
+                    _cells.GetCell(49, i).Value = "'" + eq.LinkOne.Publisher;
+                    _cells.GetCell(50, i).Value = "'" + eq.LinkOne.Book;
+                    _cells.GetCell(51, i).Value = "'" + eq.LinkOne.PageReference;
+                    _cells.GetCell(52, i).Value = "'" + eq.LinkOne.ItemId;
                     //CLASSIFICATION CODES
-                    _cells.GetCell(53, i).Value = "" + eq.ClassCodes.EquipmentClassif0;
-                    _cells.GetCell(54, i).Value = "" + eq.ClassCodes.EquipmentClassif1;
-                    _cells.GetCell(55, i).Value = "" + eq.ClassCodes.EquipmentClassif2;
-                    _cells.GetCell(56, i).Value = "" + eq.ClassCodes.EquipmentClassif3;
-                    _cells.GetCell(57, i).Value = "" + eq.ClassCodes.EquipmentClassif4;
-                    _cells.GetCell(58, i).Value = "" + eq.ClassCodes.EquipmentClassif5;
-                    _cells.GetCell(59, i).Value = "" + eq.ClassCodes.EquipmentClassif6;
-                    _cells.GetCell(60, i).Value = "" + eq.ClassCodes.EquipmentClassif7;
-                    _cells.GetCell(61, i).Value = "" + eq.ClassCodes.EquipmentClassif8;
-                    _cells.GetCell(62, i).Value = "" + eq.ClassCodes.EquipmentClassif9;
-                    _cells.GetCell(63, i).Value = "" + eq.ClassCodes.EquipmentClassif10;
-                    _cells.GetCell(64, i).Value = "" + eq.ClassCodes.EquipmentClassif11;
-                    _cells.GetCell(65, i).Value = "" + eq.ClassCodes.EquipmentClassif12;
-                    _cells.GetCell(66, i).Value = "" + eq.ClassCodes.EquipmentClassif13;
-                    _cells.GetCell(67, i).Value = "" + eq.ClassCodes.EquipmentClassif14;
-                    _cells.GetCell(68, i).Value = "" + eq.ClassCodes.EquipmentClassif15;
-                    _cells.GetCell(69, i).Value = "" + eq.ClassCodes.EquipmentClassif16;
-                    _cells.GetCell(70, i).Value = "" + eq.ClassCodes.EquipmentClassif17;
-                    _cells.GetCell(71, i).Value = "" + eq.ClassCodes.EquipmentClassif18;
-                    _cells.GetCell(72, i).Value = "" + eq.ClassCodes.EquipmentClassif19;
+                    _cells.GetCell(53, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
+                    _cells.GetCell(54, i).Value = "'" + eq.ClassCodes.EquipmentClassif1;
+                    _cells.GetCell(55, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
+                    _cells.GetCell(56, i).Value = "'" + eq.ClassCodes.EquipmentClassif3;
+                    _cells.GetCell(57, i).Value = "'" + eq.ClassCodes.EquipmentClassif4;
+                    _cells.GetCell(58, i).Value = "'" + eq.ClassCodes.EquipmentClassif5;
+                    _cells.GetCell(59, i).Value = "'" + eq.ClassCodes.EquipmentClassif6;
+                    _cells.GetCell(60, i).Value = "'" + eq.ClassCodes.EquipmentClassif7;
+                    _cells.GetCell(61, i).Value = "'" + eq.ClassCodes.EquipmentClassif8;
+                    _cells.GetCell(62, i).Value = "'" + eq.ClassCodes.EquipmentClassif9;
+                    _cells.GetCell(63, i).Value = "'" + eq.ClassCodes.EquipmentClassif10;
+                    _cells.GetCell(64, i).Value = "'" + eq.ClassCodes.EquipmentClassif11;
+                    _cells.GetCell(65, i).Value = "'" + eq.ClassCodes.EquipmentClassif12;
+                    _cells.GetCell(66, i).Value = "'" + eq.ClassCodes.EquipmentClassif13;
+                    _cells.GetCell(67, i).Value = "'" + eq.ClassCodes.EquipmentClassif14;
+                    _cells.GetCell(68, i).Value = "'" + eq.ClassCodes.EquipmentClassif15;
+                    _cells.GetCell(69, i).Value = "'" + eq.ClassCodes.EquipmentClassif16;
+                    _cells.GetCell(70, i).Value = "'" + eq.ClassCodes.EquipmentClassif17;
+                    _cells.GetCell(71, i).Value = "'" + eq.ClassCodes.EquipmentClassif18;
+                    _cells.GetCell(72, i).Value = "'" + eq.ClassCodes.EquipmentClassif19;
                 }
                 catch (Exception ex)
                 {
@@ -687,83 +695,83 @@ namespace EllipseEquipmentExcelAddIn
                     //Para resetear el estilo
                     _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
                     //GENERAL
-                    _cells.GetCell(1, i).Value = "" + eq.EquipmentNo;
-                    _cells.GetCell(2, i).Value = "" + eq.EquipmentStatus;
-                    _cells.GetCell(3, i).Value = "" + eq.EquipmentNoDescription1;
-                    _cells.GetCell(4, i).Value = "" + eq.EquipmentNoDescription2;
-                    _cells.GetCell(5, i).Value = "" + eq.EquipmentClass;
-                    _cells.GetCell(6, i).Value = "" + eq.EquipmentType;
-                    _cells.GetCell(7, i).Value = "" + eq.PlantNo;
-                    _cells.GetCell(8, i).Value = "" + eq.EquipmentGrpId;
-                    _cells.GetCell(9, i).Value = "" + eq.EquipmentLocation;
-                    _cells.GetCell(10, i).Value = "" + eq.ParentEquipment;
-                    _cells.GetCell(11, i).Value = "" + eq.Custodian;
-                    _cells.GetCell(12, i).Value = "" + eq.CustodianPosition;
-                    _cells.GetCell(13, i).Value = "" + eq.OperatorId;
-                    _cells.GetCell(14, i).Value = "" + eq.OperatorPosition;
-                    _cells.GetCell(15, i).Value = "" + eq.InputBy;
-                    _cells.GetCell(16, i).Value = "" + eq.CustomerNumber;
-                    _cells.GetCell(17, i).Value = "" + eq.ShutdownEquipment;
-                    _cells.GetCell(18, i).Value = "" + eq.WarrStatType;
-                    _cells.GetCell(19, i).Value = "" + eq.WarrStatVal;
-                    _cells.GetCell(20, i).Value = "" + eq.WarrantyDate;
-                    _cells.GetCell(21, i).Value = "" + eq.ItemNameCode;
-                    _cells.GetCell(22, i).Value = "" + eq.DistrictCode;
-                    _cells.GetCell(23, i).Value = "" + eq.ActiveFlag;
+                    _cells.GetCell(1, i).Value = "'" + eq.EquipmentNo;
+                    _cells.GetCell(2, i).Value = "'" + eq.EquipmentStatus;
+                    _cells.GetCell(3, i).Value = "'" + eq.EquipmentNoDescription1;
+                    _cells.GetCell(4, i).Value = "'" + eq.EquipmentNoDescription2;
+                    _cells.GetCell(5, i).Value = "'" + eq.EquipmentClass;
+                    _cells.GetCell(6, i).Value = "'" + eq.EquipmentType;
+                    _cells.GetCell(7, i).Value = "'" + eq.PlantNo;
+                    _cells.GetCell(8, i).Value = "'" + eq.EquipmentGrpId;
+                    _cells.GetCell(9, i).Value = "'" + eq.EquipmentLocation;
+                    _cells.GetCell(10, i).Value = "'" + eq.ParentEquipment;
+                    _cells.GetCell(11, i).Value = "'" + eq.Custodian;
+                    _cells.GetCell(12, i).Value = "'" + eq.CustodianPosition;
+                    _cells.GetCell(13, i).Value = "'" + eq.OperatorId;
+                    _cells.GetCell(14, i).Value = "'" + eq.OperatorPosition;
+                    _cells.GetCell(15, i).Value = "'" + eq.InputBy;
+                    _cells.GetCell(16, i).Value = "'" + eq.CustomerNumber;
+                    _cells.GetCell(17, i).Value = "'" + eq.ShutdownEquipment;
+                    _cells.GetCell(18, i).Value = "'" + eq.WarrStatType;
+                    _cells.GetCell(19, i).Value = "'" + eq.WarrStatVal;
+                    _cells.GetCell(20, i).Value = "'" + eq.WarrantyDate;
+                    _cells.GetCell(21, i).Value = "'" + eq.ItemNameCode;
+                    _cells.GetCell(22, i).Value = "'" + eq.DistrictCode;
+                    _cells.GetCell(23, i).Value = "'" + eq.ActiveFlag;
                     //COSTING
-                    _cells.GetCell(24, i).Value = "" + eq.AccountCode;
-                    _cells.GetCell(25, i).Value = "" + eq.ExpElement;
-                    _cells.GetCell(26, i).Value = "" + eq.CostingFlag;
-                    _cells.GetCell(27, i).Value = "" + eq.TaxCode;
-                    _cells.GetCell(27, i).Value = "" + eq.CtaxCode;
-                    _cells.GetCell(29, i).Value = "" + eq.PoNo;
-                    _cells.GetCell(30, i).Value = "" + eq.PurchaseDate;
-                    _cells.GetCell(31, i).Value = "" + eq.PurchasePrice;
-                    _cells.GetCell(32, i).Value = "" + eq.ReplaceValue;
-                    _cells.GetCell(33, i).Value = "" + eq.ValuationDate;
+                    _cells.GetCell(24, i).Value = "'" + eq.AccountCode;
+                    _cells.GetCell(25, i).Value = "'" + eq.ExpElement;
+                    _cells.GetCell(26, i).Value = "'" + eq.CostingFlag;
+                    _cells.GetCell(27, i).Value = "'" + eq.TaxCode;
+                    _cells.GetCell(27, i).Value = "'" + eq.CtaxCode;
+                    _cells.GetCell(29, i).Value = "'" + eq.PoNo;
+                    _cells.GetCell(30, i).Value = "'" + eq.PurchaseDate;
+                    _cells.GetCell(31, i).Value = "'" + eq.PurchasePrice;
+                    _cells.GetCell(32, i).Value = "'" + eq.ReplaceValue;
+                    _cells.GetCell(33, i).Value = "'" + eq.ValuationDate;
                     //TRACING
-                    _cells.GetCell(34, i).Value = "" + eq.CompCode;
-                    _cells.GetCell(35, i).Value = "" + eq.Mnemonic;
-                    _cells.GetCell(36, i).Value = "" + eq.StockCode;
-                    _cells.GetCell(37, i).Value = "" + eq.SerialNumber;
-                    _cells.GetCell(38, i).Value = "" + eq.PartNo;
-                    _cells.GetCell(39, i).Value = "" + eq.DrawingNo;
-                    _cells.GetCell(40, i).Value = "" + eq.OriginalDoc;
-                    _cells.GetCell(41, i).Value = "" + eq.TraceableFlg;
+                    _cells.GetCell(34, i).Value = "'" + eq.CompCode;
+                    _cells.GetCell(35, i).Value = "'" + eq.Mnemonic;
+                    _cells.GetCell(36, i).Value = "'" + eq.StockCode;
+                    _cells.GetCell(37, i).Value = "'" + eq.SerialNumber;
+                    _cells.GetCell(38, i).Value = "'" + eq.PartNo;
+                    _cells.GetCell(39, i).Value = "'" + eq.DrawingNo;
+                    _cells.GetCell(40, i).Value = "'" + eq.OriginalDoc;
+                    _cells.GetCell(41, i).Value = "'" + eq.TraceableFlg;
                     //CONDITION
-                    _cells.GetCell(42, i).Value = "" + eq.EquipmentCriticality;
-                    _cells.GetCell(43, i).Value = "" + eq.PrimaryFunction;
-                    _cells.GetCell(44, i).Value = "" + eq.OperatingStandard;
-                    _cells.GetCell(45, i).Value = "" + eq.ConditionStandard;
-                    _cells.GetCell(46, i).Value = "" + eq.ConditionRating;
-                    _cells.GetCell(47, i).Value = "" + eq.LatestConditionDate;
-                    _cells.GetCell(48, i).Value = "" + eq.MsssFlag;
+                    _cells.GetCell(42, i).Value = "'" + eq.EquipmentCriticality;
+                    _cells.GetCell(43, i).Value = "'" + eq.PrimaryFunction;
+                    _cells.GetCell(44, i).Value = "'" + eq.OperatingStandard;
+                    _cells.GetCell(45, i).Value = "'" + eq.ConditionStandard;
+                    _cells.GetCell(46, i).Value = "'" + eq.ConditionRating;
+                    _cells.GetCell(47, i).Value = "'" + eq.LatestConditionDate;
+                    _cells.GetCell(48, i).Value = "'" + eq.MsssFlag;
                     //LINKONE
-                    _cells.GetCell(49, i).Value = "" + eq.LinkOne.Publisher;
-                    _cells.GetCell(50, i).Value = "" + eq.LinkOne.Book;
-                    _cells.GetCell(51, i).Value = "" + eq.LinkOne.PageReference;
-                    _cells.GetCell(52, i).Value = "" + eq.LinkOne.ItemId;
+                    _cells.GetCell(49, i).Value = "'" + eq.LinkOne.Publisher;
+                    _cells.GetCell(50, i).Value = "'" + eq.LinkOne.Book;
+                    _cells.GetCell(51, i).Value = "'" + eq.LinkOne.PageReference;
+                    _cells.GetCell(52, i).Value = "'" + eq.LinkOne.ItemId;
                     //CLASSIFICATION CODES
-                    _cells.GetCell(53, i).Value = "" + eq.ClassCodes.EquipmentClassif0;
-                    _cells.GetCell(54, i).Value = "" + eq.ClassCodes.EquipmentClassif1;
-                    _cells.GetCell(55, i).Value = "" + eq.ClassCodes.EquipmentClassif2;
-                    _cells.GetCell(56, i).Value = "" + eq.ClassCodes.EquipmentClassif3;
-                    _cells.GetCell(57, i).Value = "" + eq.ClassCodes.EquipmentClassif4;
-                    _cells.GetCell(58, i).Value = "" + eq.ClassCodes.EquipmentClassif5;
-                    _cells.GetCell(59, i).Value = "" + eq.ClassCodes.EquipmentClassif6;
-                    _cells.GetCell(60, i).Value = "" + eq.ClassCodes.EquipmentClassif7;
-                    _cells.GetCell(61, i).Value = "" + eq.ClassCodes.EquipmentClassif8;
-                    _cells.GetCell(62, i).Value = "" + eq.ClassCodes.EquipmentClassif9;
-                    _cells.GetCell(63, i).Value = "" + eq.ClassCodes.EquipmentClassif10;
-                    _cells.GetCell(64, i).Value = "" + eq.ClassCodes.EquipmentClassif11;
-                    _cells.GetCell(65, i).Value = "" + eq.ClassCodes.EquipmentClassif12;
-                    _cells.GetCell(66, i).Value = "" + eq.ClassCodes.EquipmentClassif13;
-                    _cells.GetCell(67, i).Value = "" + eq.ClassCodes.EquipmentClassif14;
-                    _cells.GetCell(68, i).Value = "" + eq.ClassCodes.EquipmentClassif15;
-                    _cells.GetCell(69, i).Value = "" + eq.ClassCodes.EquipmentClassif16;
-                    _cells.GetCell(70, i).Value = "" + eq.ClassCodes.EquipmentClassif17;
-                    _cells.GetCell(71, i).Value = "" + eq.ClassCodes.EquipmentClassif18;
-                    _cells.GetCell(72, i).Value = "" + eq.ClassCodes.EquipmentClassif19;
+                    _cells.GetCell(53, i).Value = "'" + eq.ClassCodes.EquipmentClassif0;
+                    _cells.GetCell(54, i).Value = "'" + eq.ClassCodes.EquipmentClassif1;
+                    _cells.GetCell(55, i).Value = "'" + eq.ClassCodes.EquipmentClassif2;
+                    _cells.GetCell(56, i).Value = "'" + eq.ClassCodes.EquipmentClassif3;
+                    _cells.GetCell(57, i).Value = "'" + eq.ClassCodes.EquipmentClassif4;
+                    _cells.GetCell(58, i).Value = "'" + eq.ClassCodes.EquipmentClassif5;
+                    _cells.GetCell(59, i).Value = "'" + eq.ClassCodes.EquipmentClassif6;
+                    _cells.GetCell(60, i).Value = "'" + eq.ClassCodes.EquipmentClassif7;
+                    _cells.GetCell(61, i).Value = "'" + eq.ClassCodes.EquipmentClassif8;
+                    _cells.GetCell(62, i).Value = "'" + eq.ClassCodes.EquipmentClassif9;
+                    _cells.GetCell(63, i).Value = "'" + eq.ClassCodes.EquipmentClassif10;
+                    _cells.GetCell(64, i).Value = "'" + eq.ClassCodes.EquipmentClassif11;
+                    _cells.GetCell(65, i).Value = "'" + eq.ClassCodes.EquipmentClassif12;
+                    _cells.GetCell(66, i).Value = "'" + eq.ClassCodes.EquipmentClassif13;
+                    _cells.GetCell(67, i).Value = "'" + eq.ClassCodes.EquipmentClassif14;
+                    _cells.GetCell(68, i).Value = "'" + eq.ClassCodes.EquipmentClassif15;
+                    _cells.GetCell(69, i).Value = "'" + eq.ClassCodes.EquipmentClassif16;
+                    _cells.GetCell(70, i).Value = "'" + eq.ClassCodes.EquipmentClassif17;
+                    _cells.GetCell(71, i).Value = "'" + eq.ClassCodes.EquipmentClassif18;
+                    _cells.GetCell(72, i).Value = "'" + eq.ClassCodes.EquipmentClassif19;
                 }
                 catch (Exception ex)
                 {
@@ -1073,7 +1081,7 @@ namespace EllipseEquipmentExcelAddIn
                     
                     var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
-                    List<string> equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, equipmentRef);
+                    var equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, equipmentRef);
                     var equipment = new Equipment
                     {
                         EquipmentNo = equipmentList.Any() ? equipmentList.First() : equipmentRef,
@@ -1350,12 +1358,12 @@ namespace EllipseEquipmentExcelAddIn
             var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
             var searchCriteriaKey2Text = _cells.GetEmptyIfNull(_cells.GetCell("A4").Value);
             var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
-
+            var statusValue = _cells.GetEmptyIfNull(_cells.GetCell("B5").Value);
             //Convierto los nombres de las opciones a llaves
             var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
             var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
 
-            var listeq = EquipmentListActions.FetchListEquipmentsList(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2);
+            var listeq = ListActions.FetchListEquipmentsList(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, statusValue);
             var i = TitleRow03 + 1;
             foreach (var eq in listeq)
             {
@@ -1364,15 +1372,16 @@ namespace EllipseEquipmentExcelAddIn
                     //Para resetear el estilo
                     _cells.GetRange(1, i, ResultColumn03, i).Style = StyleConstants.Normal;
                     //GENERAL
-                    _cells.GetCell(1, i).Value = "" + eq.EquipNo;
-                    _cells.GetCell(2, i).Value = "" + eq.EquipDescription;
-                    _cells.GetCell(3, i).Value = "" + eq.ListType;
-                    _cells.GetCell(4, i).Value = "" + eq.ListId;
-                    _cells.GetCell(5, i).Value = "" + eq.ListNumber;
-                    _cells.GetCell(6, i).Value = "" + eq.ListDescription;
-                    _cells.GetCell(7, i).Value = "" + eq.ListReference;
-                    _cells.GetCell(8, i).Value = "" + eq.ListOwner;
-                    _cells.GetCell(9, i).Value = "" + eq.ListOwnerPosition;
+                    _cells.GetCell(1, i).Value = "'" + eq.EquipNo;
+                    _cells.GetCell(2, i).Value = "'" + eq.EquipDescription;
+                    _cells.GetCell(3, i).Value = "'" + eq.ListType;
+                    _cells.GetCell(4, i).Value = "'" + eq.ListId;
+                    _cells.GetCell(5, i).Value = "'" + eq.Status;
+                    _cells.GetCell(6, i).Value = "'" + eq.ListNumber;
+                    _cells.GetCell(7, i).Value = "'" + eq.ListDescription;
+                    _cells.GetCell(8, i).Value = "'" + eq.ListReference;
+                    _cells.GetCell(9, i).Value = "'" + eq.ListOwner;
+                    _cells.GetCell(10, i).Value = "'" + eq.ListOwnerPosition;
                 }
                 catch (Exception ex)
                 {
@@ -1389,6 +1398,261 @@ namespace EllipseEquipmentExcelAddIn
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
 
+        }
+
+        private void btnReviewFromEquipmentList_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01 || ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReviewFromEquipmentList);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ReviewListEquipmentsList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+            
+        }
+
+        private void ReviewFromEquipmentList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+            var celleq = new ExcelStyleCells(_excelApp, SheetName01);
+            var cellli = new ExcelStyleCells(_excelApp, SheetName03);
+            _cells.SetCursorWait();
+            cellli.ClearTableRange(TableName03);
+
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+
+            var k = TitleRow01 + 1;
+            var i = TitleRow03 + 1;
+            while (!string.IsNullOrEmpty("" + celleq.GetCell(1, k).Value))
+            {
+                try
+                {
+                    var equipmentNo = _cells.GetEmptyIfNull(celleq.GetCell(1, k).Value);
+
+                    var listeq = ListActions.FetchListEquipmentsList(_eFunctions, equipmentNo);
+
+                    if (listeq != null && listeq.Count > 0)
+                    {
+                        foreach (var eq in listeq)
+                        {
+                            try
+                            {
+                                //Para resetear el estilo
+                                cellli.GetRange(1, i, ResultColumn03, i).Style = StyleConstants.Normal;
+                                //GENERAL
+                                cellli.GetCell(1, i).Value = "'" + eq.EquipNo;
+                                cellli.GetCell(2, i).Value = "'" + eq.EquipDescription;
+                                cellli.GetCell(3, i).Value = "'" + eq.ListType;
+                                cellli.GetCell(4, i).Value = "'" + eq.ListId;
+                                cellli.GetCell(5, i).Value = "'" + eq.Status;
+                                cellli.GetCell(6, i).Value = "'" + eq.ListNumber;
+                                cellli.GetCell(7, i).Value = "'" + eq.ListDescription;
+                                cellli.GetCell(8, i).Value = "'" + eq.ListReference;
+                                cellli.GetCell(9, i).Value = "'" + eq.ListOwner;
+                                cellli.GetCell(10, i).Value = "'" + eq.ListOwnerPosition;
+                            }
+                            catch (Exception ex)
+                            {
+                                cellli.GetCell(1, i).Style = StyleConstants.Error;
+                                cellli.GetCell(ResultColumn03, i).Value = "ERRORLIST: " + ex.Message;
+                                Debugger.LogError("RibbonEllipse.cs:ReviewFromEquipmentList()", ex.Message);
+                            }
+                            finally
+                            {
+                                if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
+                                    cellli.GetCell(2, i).Select();
+                                i++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //Para resetear el estilo
+                        cellli.GetRange(1, i, ResultColumn03, i).Style = StyleConstants.Normal;
+                        //GENERAL
+                        cellli.GetCell(1, i).Value = "'" + equipmentNo;
+                        cellli.GetCell(1, i).Style = StyleConstants.Warning;
+                        cellli.GetCell(ResultColumn03, i).Value = "Equipo no existe en ninguna lista ";
+                        
+                        if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
+                            cellli.GetCell(2, i).Select();
+                        i++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, k).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01, k).Value = "ERRORLIST: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReviewFromEquipmentList()", ex.Message);
+                }
+                finally
+                {
+                    if(((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+                        celleq.GetCell(1, k).Select();
+                    k++;
+                }
+            }
+
+            ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if(_cells != null) _cells.SetCursorDefault();
+
+        }
+
+       
+        
+
+        private void btnAddEquipToList_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(AddListEquipmentsList);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+        private void AddListEquipmentsList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+            var i = TitleRow03 + 1;
+
+            var opSheet = new ListService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                returnWarnings = Debugger.DebugWarnings
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var equiplist = new EquipListItem()
+                    {
+                        EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
+                        ListType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value),
+                        ListId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value)
+                    };
+
+                    ListActions.AddEquipmentToList(opSheet, urlService, equiplist);
+
+                    _cells.GetCell(ResultColumn03, i).Value = "AGREGADO A LA LISTA";
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn03, i).Select();
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn03, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:AddListEquipmentsList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn03, i).Select();
+                    i++;
+                }
+            }
+            ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+        private void btnDeleteEquipFromList_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(DeleteListEquipmentsList);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+        private void DeleteListEquipmentsList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+            var i = TitleRow03 + 1;
+
+            var opSheet = new ListService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                returnWarnings = Debugger.DebugWarnings
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var equiplist = new EquipListItem()
+                    {
+                        EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
+                        ListType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value),
+                        ListId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value)
+                    };
+
+                    ListActions.DeleteEquipmentFromList(opSheet, urlService, equiplist);
+
+                    _cells.GetCell(ResultColumn03, i).Value = "ELIMINADO DE LISTA";
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn03, i).Select();
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn03, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:DeleteListEquipmentsList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn03, i).Select();
+                    i++;
+                }
+            }
+            ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
         }
     }
 }
