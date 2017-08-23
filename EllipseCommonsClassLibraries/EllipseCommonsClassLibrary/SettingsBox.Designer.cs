@@ -43,6 +43,7 @@
             this.btnGenerateFromNetwork = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tbServiceFileNetworkUrl = new System.Windows.Forms.TextBox();
+            this.cbForceRegionConfig = new System.Windows.Forms.CheckBox();
             this.gbDebugging.SuspendLayout();
             this.gbGlobalSettings.SuspendLayout();
             this.gbEllipseSettings.SuspendLayout();
@@ -64,7 +65,7 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(229, 335);
+            this.okButton.Location = new System.Drawing.Point(229, 380);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 26);
             this.okButton.TabIndex = 30;
@@ -146,6 +147,7 @@
             // 
             // gbEllipseSettings
             // 
+            this.gbEllipseSettings.Controls.Add(this.cbForceRegionConfig);
             this.gbEllipseSettings.Controls.Add(this.label2);
             this.gbEllipseSettings.Controls.Add(this.btnDeleteLocalEllipseSettings);
             this.gbEllipseSettings.Controls.Add(this.btnGenerateDefault);
@@ -154,7 +156,7 @@
             this.gbEllipseSettings.Controls.Add(this.tbServiceFileNetworkUrl);
             this.gbEllipseSettings.Location = new System.Drawing.Point(12, 205);
             this.gbEllipseSettings.Name = "gbEllipseSettings";
-            this.gbEllipseSettings.Size = new System.Drawing.Size(296, 124);
+            this.gbEllipseSettings.Size = new System.Drawing.Size(296, 142);
             this.gbEllipseSettings.TabIndex = 39;
             this.gbEllipseSettings.TabStop = false;
             this.gbEllipseSettings.Text = "Configuración Ellipse:";
@@ -214,11 +216,22 @@
             this.tbServiceFileNetworkUrl.Size = new System.Drawing.Size(266, 20);
             this.tbServiceFileNetworkUrl.TabIndex = 0;
             // 
+            // cbForceRegionConfig
+            // 
+            this.cbForceRegionConfig.AutoSize = true;
+            this.cbForceRegionConfig.Location = new System.Drawing.Point(9, 114);
+            this.cbForceRegionConfig.Name = "cbForceRegionConfig";
+            this.cbForceRegionConfig.Size = new System.Drawing.Size(166, 17);
+            this.cbForceRegionConfig.TabIndex = 6;
+            this.cbForceRegionConfig.Text = "Forzar &Regionalización en-US";
+            this.cbForceRegionConfig.UseVisualStyleBackColor = true;
+            this.cbForceRegionConfig.CheckedChanged += new System.EventHandler(this.cbForceRegionConfig_CheckedChanged);
+            // 
             // SettingsBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(316, 373);
+            this.ClientSize = new System.Drawing.Size(316, 418);
             this.Controls.Add(this.gbEllipseSettings);
             this.Controls.Add(this.gbGlobalSettings);
             this.Controls.Add(this.gbDebugging);
@@ -262,6 +275,7 @@
         private System.Windows.Forms.Button btnGenerateFromNetwork;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbServiceFileNetworkUrl;
+        private System.Windows.Forms.CheckBox cbForceRegionConfig;
 
     }
 }
