@@ -36,14 +36,17 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpEqOperStatistics = this.Factory.CreateRibbonGroup();
-            this.btnFormatSheet = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
-            this.btnLoadStatistics = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
+            this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
+            this.btnLoadStatistics = this.Factory.CreateRibbonButton();
+            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.menuActions = this.Factory.CreateRibbonMenu();
+            this.btnDelete = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpEqOperStatistics.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -55,27 +58,10 @@
             // grpEqOperStatistics
             // 
             this.grpEqOperStatistics.Items.Add(this.box1);
-            this.grpEqOperStatistics.Items.Add(this.btnLoadStatistics);
             this.grpEqOperStatistics.Items.Add(this.drpEnviroment);
+            this.grpEqOperStatistics.Items.Add(this.menuActions);
             this.grpEqOperStatistics.Label = "Oper. Statistics";
             this.grpEqOperStatistics.Name = "grpEqOperStatistics";
-            // 
-            // btnFormatSheet
-            // 
-            this.btnFormatSheet.Label = "Formatear Hoja";
-            this.btnFormatSheet.Name = "btnFormatSheet";
-            this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
-            // 
-            // drpEnviroment
-            // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
-            // 
-            // btnLoadStatistics
-            // 
-            this.btnLoadStatistics.Label = "Cargar Estadísticas";
-            this.btnLoadStatistics.Name = "btnLoadStatistics";
-            this.btnLoadStatistics.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadStatistics_Click);
             // 
             // box1
             // 
@@ -83,11 +69,43 @@
             this.box1.Items.Add(this.btnAbout);
             this.box1.Name = "box1";
             // 
+            // btnFormatSheet
+            // 
+            this.btnFormatSheet.Label = "Formatear Hoja";
+            this.btnFormatSheet.Name = "btnFormatSheet";
+            this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
+            // 
             // btnAbout
             // 
             this.btnAbout.Label = "?";
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
+            // btnLoadStatistics
+            // 
+            this.btnLoadStatistics.Label = "Cargar Estadísticas";
+            this.btnLoadStatistics.Name = "btnLoadStatistics";
+            this.btnLoadStatistics.ShowImage = true;
+            this.btnLoadStatistics.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadStatistics_Click);
+            // 
+            // drpEnviroment
+            // 
+            this.drpEnviroment.Label = "Env.";
+            this.drpEnviroment.Name = "drpEnviroment";
+            // 
+            // menuActions
+            // 
+            this.menuActions.Items.Add(this.btnLoadStatistics);
+            this.menuActions.Items.Add(this.btnDelete);
+            this.menuActions.Label = "Acciones";
+            this.menuActions.Name = "menuActions";
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Label = "Eliminar Estadisticas";
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.ShowImage = true;
+            this.btnDelete.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDelete_Click);
             // 
             // RibbonEllipse
             // 
@@ -101,6 +119,7 @@
             this.grpEqOperStatistics.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
@@ -113,6 +132,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadStatistics;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDelete;
     }
 
     partial class ThisRibbonCollection

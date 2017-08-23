@@ -298,7 +298,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
             var query = "SELECT EQ.* FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE TRIM(EQ.EQUIP_NO) = '" + equipNo + "'";
 
             query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             var drEquipments = _eFunctions.GetQueryResult(query);
 
             if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
@@ -332,7 +332,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             "       STAT_DATE," +
                             "       MAX(STAT_DATE) OVER(PARTITION BY EQUIP_NO) MAX_FECHA" +
                             "     FROM" +
-                            "       " + dbReference + ".MSF400" + dbLink + 
+                            "       " + dbReference + ".MSF400" + dbLink +
                             "     WHERE" +
                             "       STAT_TYPE = '" + statType + "'" +
                             "     AND KEY_400_TYPE = 'E'" +
@@ -340,9 +340,9 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             "   )" +
                             " WHERE" +
                             "   STAT_DATE = MAX_FECHA";
-            
+
             query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             var drEquipments = _eFunctions.GetQueryResult(query);
 
             if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
@@ -371,7 +371,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             "       STAT_DATE," +
                             "       MAX(STAT_DATE) OVER(PARTITION BY EQUIP_NO) MAX_FECHA" +
                             "     FROM" +
-                            "       " + dbReference + ".MSF400" + dbLink + 
+                            "       " + dbReference + ".MSF400" + dbLink +
                             "     WHERE" +
                             "       STAT_TYPE = '" + statType + "'" +
                             "     AND KEY_400_TYPE = 'E'" +
@@ -381,7 +381,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             "   STAT_DATE = MAX_FECHA";
 
             query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             var drEquipments = _eFunctions.GetQueryResult(query);
 
             if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
@@ -396,6 +396,120 @@ namespace EllipseEqOperStatisticsExcelAddIn
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();
+        }
+
+        private void btnDelete_Click(object sender, RibbonControlEventArgs e)
+        {
+            DeleteStatistics();
+        }
+
+        private void DeleteStatistics()
+        {
+            try
+            {
+                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                {
+                    if (_cells == null)
+                        _cells = new ExcelStyleCells(_excelApp);
+                    _cells.SetCursorWait();
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    var i = TitleRow01 + 1;
+                    while ("" + _cells.GetCell(1, i).Value != "")
+                    {
+                        try
+                        {
+                            var opContext = new Screen.OperationContext
+                            {
+                                district = _frmAuth.EllipseDsct,
+                                position = _frmAuth.EllipsePost,
+                                maxInstances = 100,
+                                maxInstancesSpecified = true,
+                                returnWarnings = Debugger.DebugWarnings,
+                                returnWarningsSpecified = true
+                            };
+
+                            var proxySheet = new Screen.ScreenService();
+
+                            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+                            _eFunctions.RevertOperation(opContext, proxySheet);
+                            //ejecutamos el programa
+                            Screen.ScreenDTO reply = proxySheet.executeScreen(opContext, "MSO400");
+                            //Validamos el ingreso
+                            if (reply.mapName != "MSM400A") continue;
+
+                            var statisticDate = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+                            var equipmentNumber = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
+                            var operationStatisticType = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
+
+                            var arrayFields = new ArrayScreenNameValue();
+                            arrayFields.Add("OPTION1I", "3");
+                            arrayFields.Add("STAT_DATE1I", statisticDate);
+                            arrayFields.Add("STAT_TYPE1I", operationStatisticType);
+                            arrayFields.Add("PLANT_NO1I", equipmentNumber);
+
+
+                            var request = new Screen.ScreenSubmitRequestDTO
+                            {
+                                screenFields = arrayFields.ToArray(),
+                                screenKey = "1"
+                            };
+                            reply = proxySheet.submit(opContext, request);
+
+                            if (reply != null && !_eFunctions.CheckReplyError(reply) && !_eFunctions.CheckReplyWarning(reply))
+                            {
+                                arrayFields = new ArrayScreenNameValue();
+                                arrayFields.Add("DELETE3I", "Y");
+
+                                request = new Screen.ScreenSubmitRequestDTO
+                                {
+                                    screenFields = arrayFields.ToArray(),
+                                    screenKey = "1"
+                                };
+
+                                reply = proxySheet.submit(opContext, request);
+
+                                if (reply != null && (_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM400A"))
+                                    throw new ArgumentException(reply.message);
+
+                                _cells.GetCell(ResultColumn01, i).Value = "ELIMINADO";
+                                _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
+                            }
+                            else if (reply != null) throw new Exception(reply.message);
+                            else throw new Exception(@"No se ha podido obtener respuesta del servidor");
+                        }
+                        catch (Exception ex)
+                        {
+                            _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
+                            _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
+                        }
+                        finally
+                        {
+                            i++;
+                        }
+                    } //--while de registros
+                } //---if no se está en un ambiente válido
+                else
+                {
+                    MessageBox.Show(@"\nSeleccione un ambiente válido", @"Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                Debugger.LogError("RibbonEllipse:LoadStatistics()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+            }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
+            }
         }
     }
 }
