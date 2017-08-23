@@ -41,7 +41,7 @@
     <PublishUrl>D:\Projects\Release\EllipseWorkRequestExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.1.6</ApplicationVersion>
+    <ApplicationVersion>1.1.1.8</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -290,7 +290,7 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
   <PropertyGroup>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D9480331CB68E087E4863373E47D8FFE798CC634</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>615C994C2265071BAD85EC4C2EF7A6BCCAB22F3F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>EllipseWorkRequestExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>

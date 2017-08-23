@@ -268,7 +268,12 @@ namespace EllipseWorkRequestExcelAddIn
                             ? todayDate
                             : _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
                         requiredByDate = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
-                        closedDate = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)
+                        closedDate = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value),
+                        ServiceLevelAgreement =
+                        {
+                            ServiceLevel = Utils.GetCodeKey("1Y"),
+                            StartDate = todayDate
+                        }
                     };
 
                     if (string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.ServiceLevel) ||
@@ -2457,8 +2462,13 @@ namespace EllipseWorkRequestExcelAddIn
                         sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
                         raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))? todayDate: _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
                         requiredByDate = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
-                        closedDate = _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value)
-                };
+                        closedDate = _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value),
+                        ServiceLevelAgreement =
+                        {
+                            ServiceLevel = Utils.GetCodeKey("1Y"),
+                            StartDate = todayDate
+                        }
+                    };
 
                     WorkRequestActions.ModifyWorkRequest(urlService, opSheet, wr);
                     _cells.GetCell(2, i).Style = StyleConstants.Success;
@@ -3356,9 +3366,6 @@ namespace EllipseWorkRequestExcelAddIn
 
                 var priorityList = new List<string> {"P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA"};
                 _cells.SetValidationList(_cells.GetCell(04, TitleRowPfc01 + 1), priorityList, ValidationSheetName, 5,false);
-
-                var agreementList = new List<string> {"1D - UN DÍA", "7D - 7 DÍAS", "14 - 14 DÍAS", "1Y - 1 AÑO"};
-                _cells.SetValidationList(_cells.GetCell(08, TitleRowPfc01 + 1), agreementList, ValidationSheetName, 6,false);
 
                 var referenceList = new List<string>
                 {
