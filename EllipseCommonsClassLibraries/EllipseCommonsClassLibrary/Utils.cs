@@ -207,6 +207,12 @@ namespace EllipseCommonsClassLibrary
             var newstring = Regex.Replace(text, @"\s+", " ");
             return newstring.Replace(oldValue, newValue);
         }
+
+        public static string CombineUrls(string baseUrl, string relativeUrl)
+        {
+            var baseUri = new Uri(baseUrl);
+            return new Uri(baseUri, relativeUrl).AbsoluteUri;
+        }
     }
 
     public static class TimeOperations

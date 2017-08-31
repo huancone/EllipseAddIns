@@ -876,21 +876,19 @@ namespace EllipseStandardJobsExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatSheet()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
 
         private void ReviewStandardJobs()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             _cells.ClearTableRange(TableName01);
-
-            var urlService = _eFunctions.GetServicesUrl(_eFunctions.CurrentEnviroment);
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
             var stOpContext = StdText.GetStdTextOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var districtCode = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value2);
@@ -964,6 +962,7 @@ namespace EllipseStandardJobsExcelAddIn
                     var stdTextId = "SJ" + stdJob.DistrictCode + stdJob.StandardJobNo;
                     var extendedDescription = StdText.GetText(urlService, stOpContext, stdTextId);
                     _cells.GetCell(39, i).Value = extendedDescription;
+                    _cells.GetCell(39, i).WrapText = false;
                 }
                 catch (Exception ex)
                 {
@@ -985,13 +984,12 @@ namespace EllipseStandardJobsExcelAddIn
 
         private void ReReviewStandardJobs()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
-
-            var urlService = _eFunctions.GetServicesUrl(_eFunctions.CurrentEnviroment);
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
             var stOpContext = StdText.GetStdTextOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var i = TitleRow01 + 1;
@@ -1064,6 +1062,7 @@ namespace EllipseStandardJobsExcelAddIn
                         var stdTextId = "SJ" + stdJob.DistrictCode + stdJob.StandardJobNo;
                         var extendedDescription = StdText.GetText(urlService, stOpContext, stdTextId);
                         _cells.GetCell(39, i).Value = extendedDescription;
+                        _cells.GetCell(39, i).WrapText = false;
                     }
                     else
                     {
@@ -1091,13 +1090,12 @@ namespace EllipseStandardJobsExcelAddIn
 
         private void ReviewStandardJobTasks()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             _cells.ClearTableRange(TableName02);
-
-            var urlService = _eFunctions.GetServicesUrl(_eFunctions.CurrentEnviroment);
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
             var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var stdCells = new ExcelStyleCells(_excelApp, SheetName01);
@@ -1159,7 +1157,7 @@ namespace EllipseStandardJobsExcelAddIn
 
                         var stdTextId = "JI" + task.DistrictCode + task.StandardJob + task.SjTaskNo;
                         _cells.GetCell(25, i).Value = StdText.GetText(urlService, stOpContext, stdTextId);
-
+                        _cells.GetCell(25, i).WrapText = false;
                         _cells.GetCell(3, i).Select();
                         i++;//aumenta tarea
                     }
@@ -1172,7 +1170,7 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(3, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(3, j).Value2);
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn02, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewStandardJobs()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewStandardJobTasks()", ex.Message);
                     i++;
                 }
                 finally
@@ -1247,7 +1245,7 @@ namespace EllipseStandardJobsExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewStandardJobs()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:QualityReviewStandardJobs()", ex.Message);
                 }
                 finally
                 {
@@ -1520,7 +1518,7 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnQualRev, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnQualRev, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateQualityReviewList()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateQualityStandardList()", ex.Message);
                 }
                 finally
                 {
@@ -1574,7 +1572,7 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateQualityReviewList()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateStandardJobStatus()", ex.Message);
                 }
                 finally
                 {
@@ -1639,15 +1637,15 @@ namespace EllipseStandardJobsExcelAddIn
                     if (action.Equals("M"))
                     {
                         //StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask, true);
-                        var opC = new StandardJobTaskService.OperationContext()
-                        {
-                            district = _frmAuth.EllipseDsct,
-                            position = _frmAuth.EllipsePost,
-                            maxInstances = 100,
-                            maxInstancesSpecified = true,
-                            returnWarnings = Debugger.DebugWarnings,
-                            returnWarningsSpecified = true
-                        };
+                        //var opC = new StandardJobTaskService.OperationContext()
+                        //{
+                        //    district = _frmAuth.EllipseDsct,
+                        //    position = _frmAuth.EllipsePost,
+                        //    maxInstances = 100,
+                        //    maxInstancesSpecified = true,
+                        //    returnWarnings = Debugger.DebugWarnings,
+                        //    returnWarningsSpecified = true
+                        //};
                         StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask);
                         StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
@@ -1668,7 +1666,7 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateQualityReviewList()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ExecuteTaskActionsPost()", ex.Message);
                 }
                 finally
                 {
@@ -1763,7 +1761,7 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateQualityReviewList()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ExecuteTaskActions()", ex.Message);
                 }
                 finally
                 {
@@ -1828,7 +1826,7 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(4, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(6, j).Value2);
                     _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn03, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewStandardJobs()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewRequirements()", ex.Message);
                     i++;
                 }
                 finally
@@ -1945,7 +1943,7 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:UpdateQualityReviewList()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ExecuteRequirementActions()", ex.Message);
                 }
                 finally
                 {
@@ -2029,7 +2027,7 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(4, i).Value = taskNo;
                     _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn03, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewStandardJobs()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:GetAplTaskRequirements()", ex.Message);
                     i++;
                 }
                 finally
@@ -2131,7 +2129,7 @@ namespace EllipseStandardJobsExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("EllipseStandardJobsExcelAddIn:RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                Debugger.LogError("EllipseStandardJobsExcelAddIn:RibbonEllipse.cs:ReviewStandardReferenceCodes()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -2251,7 +2249,7 @@ namespace EllipseStandardJobsExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse.cs:UpdateStandardReferenceCodes()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }

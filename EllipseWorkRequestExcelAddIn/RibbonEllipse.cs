@@ -92,6 +92,9 @@ namespace EllipseWorkRequestExcelAddIn
                 }
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameM01)
                 {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(ReviewWorkRequestMnttoList);
@@ -130,6 +133,9 @@ namespace EllipseWorkRequestExcelAddIn
                 }
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameM01)
                 {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(ReReviewWorkRequestMnttoList);
@@ -252,7 +258,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     var wr = new WorkRequest
                     {
-                        requestId = null,
+                        requestId = _cells.GetNullOrTrimmedValue(_cells.GetCell(1, i).Value),
                         workGroup = "PLANFC",
                         requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
                         equipmentNo = "FERROCARRIL",
@@ -269,20 +275,11 @@ namespace EllipseWorkRequestExcelAddIn
                             : _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
                         requiredByDate = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
                         closedDate = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value),
-                        ServiceLevelAgreement =
-                        {
-                            ServiceLevel = Utils.GetCodeKey("1Y"),
-                            StartDate = todayDate
-                        }
                     };
 
-                    if (string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.ServiceLevel) ||
-                        string.IsNullOrWhiteSpace(wr.ServiceLevelAgreement.StartDate))
-                        throw new Exception("No se puede crear Work Request. Falta la información del Service Level");
                     var replySheet = WorkRequestActions.CreateWorkRequest(urlService, opSheet, wr);
                     var requestId = replySheet.requestId;
 
-                    WorkRequestActions.SetWorkRequestSla(urlService, opSheet, requestId, wr.ServiceLevelAgreement);
                     _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Success;
                     _cells.GetCell(01, i).Value = requestId;
                 }
@@ -1832,7 +1829,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnPfc01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequesPfctList()", ex.Message);
                 }
                 finally
                 {
@@ -1933,7 +1930,7 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     _cells.GetCell(2, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumnM01, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestList()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ReReviewWorkRequestMnttoList()", ex.Message);
                 }
                 finally
                 {
@@ -3353,6 +3350,7 @@ namespace EllipseWorkRequestExcelAddIn
                     StyleConstants.TitleRequired;
                 //GENERAL
                 _cells.GetCell(01, TitleRowPfc01).Value = "REQUEST ID";
+                _cells.GetCell(01, TitleRowPfc01).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(02, TitleRowPfc01).Value = "DESCRIPCIÓN 1";
                 _cells.GetCell(03, TitleRowPfc01).Value = "SOLICITADO POR";
                 _cells.GetCell(03, TitleRowPfc01).AddComment("Si no se digita usará el usuario de autenticación de Ellipse");
@@ -3361,7 +3359,9 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(05, TitleRowPfc01).Value = "SEGUIMIENTO";
                 _cells.GetCell(06, TitleRowPfc01).Value = "REFERENCIA";
                 _cells.GetCell(07, TitleRowPfc01).Value = "FECHA";
+                _cells.GetCell(07, TitleRowPfc01).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(08, TitleRowPfc01).Value = "FECHA DE REQUERIDO";
+                _cells.GetCell(08, TitleRowPfc01).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(09, TitleRowPfc01).Value = "FECHA DE CIERRE";
 
                 var priorityList = new List<string> {"P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA"};

@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Web.Services.Ellipse.Post;
-using System.Windows.Forms;
 using Oracle.ManagedDataAccess.Client;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
-using System.Xml.Linq;
-using System.Xml.XPath;
+
 using System.Threading;
 
 namespace EllipseCommonsClassLibrary
@@ -38,7 +35,7 @@ namespace EllipseCommonsClassLibrary
         private bool _poolingDataBase = true;//default ODP true
         public PostService PostServiceProxy;
         private int _queryAttempt;
-
+        private string _defaultDbReferenceName = "ELLIPSE";
         /// <summary>
         /// Constructor de la clase. Inicia la clase con el nombre de ambientes disponibles (Ej. Productivo, Test, etc) y sus respectivas direcciones web de conexión a los web services
         /// </summary>
@@ -79,7 +76,7 @@ namespace EllipseCommonsClassLibrary
                 _dbuser = "SIGCON";
                 _dbpass = "ventyx";
                 dbLink = "";
-                dbReference = "ELLIPSE";
+                dbReference = _defaultDbReferenceName;
             }
             else if(enviroment == EnviromentConstants.EllipseTest)
             {
@@ -87,7 +84,7 @@ namespace EllipseCommonsClassLibrary
                 _dbuser = "SIGCON";
                 _dbpass = "ventyx";
                 dbLink = "";
-                dbReference = "ELLIPSE";
+                dbReference = _defaultDbReferenceName;
             }
             else if (enviroment == EnviromentConstants.EllipseDesarrollo)
             {
@@ -95,7 +92,7 @@ namespace EllipseCommonsClassLibrary
                 _dbuser = "SIGCON";
                 _dbpass = "ventyx";
                 dbLink = "";
-                dbReference = "ELLIPSE";
+                dbReference = _defaultDbReferenceName;
             }
             else if(enviroment == EnviromentConstants.EllipseContingencia)
             {
@@ -103,7 +100,7 @@ namespace EllipseCommonsClassLibrary
                 _dbuser = "SIGCON";
                 _dbpass = "ventyx";
                 dbLink = "";
-                dbReference = "ELLIPSE";
+                dbReference = _defaultDbReferenceName;
             }
             else if (enviroment == EnviromentConstants.SigcorProductivo)
             {
@@ -111,7 +108,7 @@ namespace EllipseCommonsClassLibrary
                 _dbuser = "CONSULBO";
                 _dbpass = "consulbo";
                 dbLink = "@DBLELLIPSE8";
-                dbReference = "ELLIPSE";
+                dbReference = _defaultDbReferenceName;
             }
             else if (enviroment == EnviromentConstants.ScadaRdb)
             {
@@ -197,7 +194,7 @@ namespace EllipseCommonsClassLibrary
             _dbcatalog = dbcatalog;
             _dbpass = dbpass;
             dbLink = "";
-            dbReference = "ELLIPSE";
+            dbReference = _defaultDbReferenceName;
             SetCurrentEnviroment(EnviromentConstants.CustomDatabase);
             return true;
         }
@@ -209,80 +206,7 @@ namespace EllipseCommonsClassLibrary
         /// <returns>string: URL de la conexión</returns>
         public string GetServicesUrl(string enviroment, string serviceType = null)
         {
-            if (serviceType == null)
-                serviceType = EnviromentConstants.ServiceType.EwsService;
-
-            if (serviceType.Equals(EnviromentConstants.ServiceType.EwsService))
-            {
-                try
-                {
-                    //Primeramente intenta conseguir la URL del archivo local o de red
-                    var localFile = Debugger.LocalDataPath + EnviromentConstants.ConfigXmlFileName;
-                    var networkFile = EnviromentConstants.UrlServiceFileLocation + EnviromentConstants.ConfigXmlFileName;
-                    var doc = File.Exists(localFile) ? XDocument.Load(localFile) : XDocument.Load(networkFile);
-
-                    var urlServer = "";
-
-                    if (enviroment == EnviromentConstants.EllipseProductivo)
-                        urlServer = EnviromentConstants.EllipseVarNameServiceProductivo;
-                    if (enviroment == EnviromentConstants.EllipseContingencia)
-                        urlServer = EnviromentConstants.EllipseVarNameServiceContingencia;
-                    if (enviroment == EnviromentConstants.EllipseTest)
-                        urlServer = EnviromentConstants.EllipseVarNameServiceTest;
-                    if (enviroment == EnviromentConstants.EllipseDesarrollo)
-                        urlServer = EnviromentConstants.EllipseVarNameServiceDesarrollo;
-
-                    return doc.XPathSelectElement(urlServer + "[1]").Value;
-                }
-                catch (Exception)
-                {
-                    //Si no encuentra el archivo de red por alguna causa utiliza el valor predeterminado
-                    if (enviroment == EnviromentConstants.EllipseProductivo)
-                        return EnviromentConstants.EllipseUrlServicesProductivo;
-                    if (enviroment == EnviromentConstants.EllipseContingencia)
-                        return EnviromentConstants.EllipseUrlServicesContingencia;
-                    if (enviroment == EnviromentConstants.EllipseTest)
-                        return EnviromentConstants.EllipseUrlServicesTest;
-                    if (enviroment == EnviromentConstants.EllipseDesarrollo)
-                        return EnviromentConstants.EllipseUrlServicesDesarrollo;
-                }
-                
-            }
-            else if (serviceType.Equals(EnviromentConstants.ServiceType.PostService))
-            {
-                try
-                {
-                    //Primeramente intenta conseguir la URL del archivo local o de red
-                    var localFile = Debugger.LocalDataPath + EnviromentConstants.ConfigXmlFileName;
-                    var networkFile = EnviromentConstants.UrlServiceFileLocation + EnviromentConstants.ConfigXmlFileName;
-                    var doc = File.Exists(localFile) ? XDocument.Load(localFile) : XDocument.Load(networkFile);
-
-                    var urlServer = "";
-
-                    if (enviroment == EnviromentConstants.EllipseProductivo)
-                        urlServer = EnviromentConstants.EllipseVarNamePostProductivo;
-                    if (enviroment == EnviromentConstants.EllipseContingencia)
-                        urlServer = EnviromentConstants.EllipseVarNamePostContingencia;
-                    if (enviroment == EnviromentConstants.EllipseTest)
-                        urlServer = EnviromentConstants.EllipseVarNamePostTest;
-                    if (enviroment == EnviromentConstants.EllipseDesarrollo)
-                        urlServer = EnviromentConstants.EllipseVarNamePostDesarrollo;
-
-                    return doc.XPathSelectElement(urlServer + "[1]").Value;
-                }
-                catch (Exception)
-                {
-                    if (enviroment == EnviromentConstants.EllipseProductivo)
-                        return EnviromentConstants.EllipseUrlPostServicesProductivo;
-                    if (enviroment == EnviromentConstants.EllipseContingencia)
-                        return EnviromentConstants.EllipseUrlPostServicesContingencia;
-                    if (enviroment == EnviromentConstants.EllipseTest)
-                        return EnviromentConstants.EllipseUrlPostServicesTest;
-                    if (enviroment == EnviromentConstants.EllipseDesarrollo)
-                        return EnviromentConstants.EllipseUrlPostServicesDesarrollo;
-                }
-            }
-            throw new NullReferenceException("No se ha encontrado el servidor seleccionado");
+            return EnviromentConstants.GetServiceUrl(enviroment, serviceType);
         }
 
         /// <summary>
@@ -683,426 +607,8 @@ namespace EllipseCommonsClassLibrary
             return PostServiceProxy.ExecutePostRequest(xmlRequest);
         }
     }
-    public static class EnviromentConstants
-    {
-        public static class ServiceType
-        {
-            public static string PostService = "POST";
-            public static string EwsService = "EWS";
-        }
+    
 
-        public static string ConfigXmlFileName = @"EllipseConfiguration.xml";
-        public static string EllipseProductivo = "Productivo";
-        public static string EllipseTest = "Test";
-        public static string EllipseContingencia = "Contingencia";
-        public static string EllipseDesarrollo = "Desarrollo";
-        public static string SigcorProductivo = "SIGCOPROD";
-        public static string ScadaRdb = "SCADARDB";
-        public static string CustomDatabase = "Personalizada";
-        public static string UrlServiceFileLocation = @"\\lmnoas02\SideLine\EllipsePopups\Ellipse8\";
-        //public static string SigcorTest = "SIGCOTEST";
-
-        public static string EllipseVarNameServiceProductivo = @"/ellipse/webservice/ellprod";//XPath
-        public static string EllipseVarNameServiceContingencia = @"/ellipse/webservice/ellcont";//XPath
-        public static string EllipseVarNameServiceDesarrollo = @"/ellipse/webservice/elldesa";//XPath
-        public static string EllipseVarNameServiceTest = @"/ellipse/webservice/elltest";//XPath
-
-        public static string EllipseUrlServicesProductivo = "http://ews-el8prod.lmnerp01.cerrejon.com/ews/services";
-        public static string EllipseUrlServicesContingencia = "http://ews-el8prod.lmnerp02.cerrejon.com/ews/services";
-        public static string EllipseUrlServicesDesarrollo = "http://ews-el8desa.lmnerp03.cerrejon.com/ews/services";
-        public static string EllipseUrlServicesTest = "http://ews-el8test.lmnerp03.cerrejon.com/ews/services";
-
-        public static string EllipseVarNamePostProductivo = @"/ellipse/url/ellprod";//XPath
-        public static string EllipseVarNamePostContingencia = @"/ellipse/url/ellcont";//XPath
-        public static string EllipseVarNamePostDesarrollo = @"/ellipse/url/elldesa";//XPath
-        public static string EllipseVarNamePostTest = @"/ellipse/url/elltest";//XPath
-
-        public static string EllipseUrlPostServicesProductivo = "http://ellipse-el8prod.lmnerp01.cerrejon.com/ria-Ellipse-8.4.31_112/bind?app=";
-        public static string EllipseUrlPostServicesContingencia = "http://ellipse-el8prod.lmnerp02.cerrejon.com/ria-Ellipse-8.4.31_112/bind?app=";
-        public static string EllipseUrlPostServicesDesarrollo = "http://ellipse-el8desa.lmnerp03.cerrejon.com/ria-Ellipse-8.4.29_31/bind?app=";
-        public static string EllipseUrlPostServicesTest = "http://ellipse-el8test.lmnerp03.cerrejon.com/ria-Ellipse-8.4.31_112/bind?app=";
-
-
-        public static List<string> GetEnviromentList() {
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            var enviromentList = new List<string>();
-            enviromentList.Add(EllipseProductivo);
-            enviromentList.Add(EllipseTest);
-            enviromentList.Add(EllipseDesarrollo);
-            enviromentList.Add(EllipseContingencia);
-
-            return enviromentList;
-        }
-
-        public static void GenerateEllipseConfigurationXmlFile()
-        {
-            var xmlFile = "";
-
-            xmlFile += @"<?xml version=""1.0"" encoding=""UTF-8""?>";
-            xmlFile += @"<ellipse>";
-            xmlFile += @"  <env>test</env>";
-            xmlFile += @"  <url>";
-            xmlFile += @"    <ellprod>" + EllipseUrlPostServicesProductivo + "</ellprod>";
-            xmlFile += @"    <ellcont>" + EllipseUrlPostServicesContingencia + "</ellcont>";
-            xmlFile += @"    <elldesa>" + EllipseUrlPostServicesDesarrollo + "</elldesa>";
-            xmlFile += @"    <elltest>" + EllipseUrlPostServicesTest + "</elltest>";
-            xmlFile += @"  </url>";
-            xmlFile += @"  <webservice>";
-            xmlFile += @"    <ellprod>" + EllipseUrlServicesProductivo + "</ellprod>";
-            xmlFile += @"    <ellcont>" + EllipseUrlServicesContingencia + "</ellcont>";
-            xmlFile += @"    <elldesa>" + EllipseUrlServicesDesarrollo + "</elldesa>";
-            xmlFile += @"    <elltest>" + EllipseUrlServicesTest + "</elltest>";
-            xmlFile += @"  </webservice>";
-            xmlFile += @"</ellipse>";
-
-            try
-            {
-                var configFilePath = Debugger.LocalDataPath;
-                var configFileName = ConfigXmlFileName;
-
-                FileWriter.CreateDirectory(configFilePath);
-                FileWriter.WriteTextToFile(xmlFile, configFileName, configFilePath);
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("GenerateEllipseConfigurationXmlFile", "No se puede crear el archivo de configuración\n" + ex.Message);
-                throw;
-            }
-        }
-
-        public static void GenerateEllipseConfigurationXmlFile(string networkUrl)
-        {
-            try
-            {
-                var configFilePath = Debugger.LocalDataPath;
-                var configFileName = ConfigXmlFileName;
-
-                FileWriter.CreateDirectory(configFilePath);
-                FileWriter.CopyFileToDirectory(configFileName, networkUrl, configFilePath);
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("GenerateEllipseConfigurationXmlFile", "No se puede crear el archivo de configuración\n" + ex.Message);
-                throw;
-            }
-        }
-
-        public static void DeleteEllipseConfigurationXmlFile()
-        {
-            try
-            {
-                FileWriter.DeleteFile(Debugger.LocalDataPath, ConfigXmlFileName);
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("No se puede eliminar el archivo de configuración",  ex.Message);
-                throw;
-            }
-        }
-    }
-
-    public static class DistrictConstants
-    {
-        public static string DistrictIcor = "ICOR";
-        public static string DistrictInstalations = "INST";
-        public static string DefaultDistrict = "ICOR";
-
-        public static List<string> GetDistrictList()
-        {
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            var districtList = new List<string>();
-            districtList.Add(DistrictIcor);
-            districtList.Add(DistrictInstalations);
-
-            return districtList;
-        }
-    }
-    public static class WoTypeMtType
-    {
-        /// <summary>
-        /// Obtiene listado de objeto de Tipo de Orden vs Tipo de mantenimiento (MT Type, MT Desc, OT Type, OT Desc)
-        /// </summary>
-        /// <returns></returns>
-        public static List<WoTypeMtTypeCode> GetWoTypeMtTypeList()
-        {
-            var typeList = new List<WoTypeMtTypeCode>
-                {
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "CA", "CALIBRACION"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "CO", "CAMBIO DE COMPONENTE MAYOR"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "EV", "EVENTO DE BASEMAN"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "IP", "SERVICIOS E INSPECCIONES (SEIS)"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "IS", "INSPECCIONES"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "LA", "LAVADO"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "LU", "LUBRICACION"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "OH", "OVERHAUL"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "PB", "PRECIO BASE"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "RM", "REPARACION/CAMBIO DE COMPONENTE MENOR"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "RP", "REPARACIONES PROGRAMADAS"),
-                    new WoTypeMtTypeCode("PE", "PREVENTIVO", "SN", "SERVICIO NO CONFORME"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "AA", "ANALISIS DE ACEITES"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "AC", "ANALISIS DE COMBUSTIBLE"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "AV", "ANALISIS DE VIBRACIONES"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "BC", "BASADA EN CONDICION"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "BK", "PRUEBA BAKER"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "DU", "DETECCION ULTRASONICA"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "ET", "CORRIENTES DE EDDY"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "EV", "EVENTO DE BASEMAN"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "IE", "INSPECCION ESTRUCTURAL"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "IR", "INSPECCION TERMOGRAFICA"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "ME", "MEDICIONES"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "MT", "PARTICULAS MAGNETICAS"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "P0", "ANÁLISIS REFRIGERANTE"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "PT", "TINTAS PENETRANTES"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "UT", "ULTRASONIDO"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "VI", "VIDEO"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "VT", "INSPECCION VISUAL"),
-                    new WoTypeMtTypeCode("PD", "PREDICTIVO", "WR", "WINDROCK"),
-                    new WoTypeMtTypeCode("CO", "A LA FALLA - CORRECTIVO", "RE", "REPARACION"),
-                    new WoTypeMtTypeCode("CO", "A LA FALLA - CORRECTIVO", "A", "ACCIDENTE"),
-                    new WoTypeMtTypeCode("CO", "A LA FALLA - CORRECTIVO", "AT", "ATENTADO"),
-                    new WoTypeMtTypeCode("CO", "A LA FALLA - CORRECTIVO", "CO", "CAMBIO DE COMPONENTE MAYOR"),
-                    new WoTypeMtTypeCode("CO", "A LA FALLA - CORRECTIVO", "DO", "DAÑO OPERACIONAL"),
-                    new WoTypeMtTypeCode("CO", "A LA FALLA - CORRECTIVO", "EV", "EVENTO DE BASEMAN"),
-                    new WoTypeMtTypeCode("CO", "A LA FALLA - CORRECTIVO", "G", "GARANTIA"),
-                    new WoTypeMtTypeCode("CO", "A LA FALLA - CORRECTIVO", "SE", "SERVICIO IMIS"),
-                    new WoTypeMtTypeCode("PT", "PROACTIVO", "ET", "ESTUDIO TECNICO"),
-                    new WoTypeMtTypeCode("PT", "PROACTIVO", "FA", "FABRICACION"),
-                    new WoTypeMtTypeCode("PT", "PROACTIVO", "MC", "CAMBIO DE EQUIPO"),
-                    new WoTypeMtTypeCode("PT", "PROACTIVO", "MN", "MONTAJE NUEVO"),
-                    new WoTypeMtTypeCode("PT", "PROACTIVO", "RD", "REDISEÑO O MODIFICACIONES"),
-                    new WoTypeMtTypeCode("NM", "NO MANTENIMIENTO", "AF", "ANALISIS DE FALLAS"),
-                    new WoTypeMtTypeCode("NM", "NO MANTENIMIENTO", "AR", "ANALISIS DE RESULTADOS"),
-                    new WoTypeMtTypeCode("NM", "NO MANTENIMIENTO", "AS", "ACTIVIDADES  DE SIO & MEDIO AMBIENTE"),
-                    new WoTypeMtTypeCode("NM", "NO MANTENIMIENTO", "FA", "FABRICACION"),
-                    new WoTypeMtTypeCode("NM", "NO MANTENIMIENTO", "MP", "MOVILIZACIÓN DE COMPONENTES"),
-                    new WoTypeMtTypeCode("NM", "NO MANTENIMIENTO", "OP", "OPERACION DE EQUIPOS"),
-                    new WoTypeMtTypeCode("NM", "NO MANTENIMIENTO", "SL", "SIN LABOR"),
-                    new WoTypeMtTypeCode("NM", "NO MANTENIMIENTO", "SM", "SOPORTE AL MANTENIMIENTO")
-
-                };
-            return typeList;
-        }
-
-        public static Dictionary<string, string> GetPriorityCodeList()
-        {
-            var dictionaryList = new Dictionary<string, string>
-            {
-                {"P0", "CRÍTICA - Detener equipo inmediatamente"},
-                {"P1", "URGENTE - Programar en ventana en curso"},
-                {"P2", "PRIORITARIA - Programar más tardar en ventana siguiente"},
-                {"P3", "RUTINA - Programar en el próximo PM"},
-                {"P4", "RUTINA - Programar según oportunidad"},
-                {"BE", "INST/IMIS - EMERGENCIA - Atención 1h Cierre 7 días"},
-                {"B1", "INST/IMIS - ALTA - Atención 48h Cierre 7 días"},
-                {"B2", "INST/IMIS - NORMAL - Atención 6 días Cierre 15 días"},
-                {"B3", "INST/IMIS - BAJA - Atención 9 días cierre 30 días"},
-            };
-
-            return dictionaryList;
-        }
-        /// <summary>
-        /// Obtiene arreglo Dictionary{key, value} con listado de los códigos de Tipo de Orden admitidos {codigo, descripcion}
-        /// </summary>
-        /// <returns></returns>
-        public static Dictionary<string, string> GetWoTypeList()
-        {
-            var listType = GetWoTypeMtTypeList();
-
-            var woTypeList = new Dictionary<string, string>();
-            foreach (var type in listType.Where(type => !woTypeList.ContainsKey(type.WoTypeCode)))
-            {
-                woTypeList.Add(type.WoTypeCode, type.WoTypeDesc);
-            }
-            return woTypeList;
-        }
-
-
-        /// <summary>
-        /// Obtiene arreglo Dictionary{key, value} con listado de los códigos de Tipo de Mantenimiento admitidos {codigo, descripcion}
-        /// </summary>
-        /// <returns></returns>
-        public static Dictionary<string, string> GetMtTypeList()
-        {
-            var listType = GetWoTypeMtTypeList();
-
-            var mtTypeList = new Dictionary<string, string>();
-            foreach (var type in listType.Where(type => !mtTypeList.ContainsKey(type.MtTypeCode)))
-            {
-                mtTypeList.Add(type.MtTypeCode, type.MtTypeDesc);
-            }
-            return mtTypeList;
-        }
-        /// <summary>
-        /// Valida la prioridad de una orden/std establecida para MDC
-        /// </summary>
-        /// <param name="priority">string: código de prioridad</param>
-        /// <param name="district">string: distrito al que pertenece la orden-std</param>
-        /// <param name="workGroup">string: grupo de trabajo</param>
-        /// <returns>true si la prioridad es válida, false si no es válida</returns>
-        public static bool ValidatePriority(string priority, string district = null, string workGroup = null)
-        {
-            if (priority == null)
-                return false;
-
-            priority = priority.Trim();
-
-            if (district == null || district.Trim().Equals("ICOR"))
-            {
-                if (priority.Equals("P0") || priority.Equals("P1") || priority.Equals("P2") || priority.Equals("P3") || priority.Equals("P4"))
-                    return true;
-            }
-            else if (district.Trim().Equals("INST"))
-            {
-                if (workGroup != null && (workGroup.Trim().Equals("AAPREV") && (priority.Equals("P0") || priority.Equals("P1") || priority.Equals("P2") || priority.Equals("P3") || priority.Equals("P4"))))
-                    return true;
-                if (priority.Equals("B1") || priority.Equals("B2") || priority.Equals("B3"))
-                    return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Valida la relación de Tipo de Orden vs Tipo de Mantenimiento de una orden/std establecida para MDC
-        /// </summary>
-        /// <param name="woType">string: Tipo de Orden</param>
-        /// <param name="mtType">string: Tipo de Mantenimiento</param>
-        /// <returns>true si la relación es válida, false si no es válida</returns>
-        public static bool ValidateWoMtTypeCode(string woType, string mtType)
-        {
-            if (woType == null || mtType == null)
-                return false;
-
-            woType = woType.Trim();
-            mtType = mtType.Trim();
-
-            var typeList = GetWoTypeMtTypeList();
-
-            return typeList.Any(type => woType == type.WoTypeCode && mtType == type.MtTypeCode);
-        }
-
-        public class WoTypeMtTypeCode
-        {
-            public string MtTypeCode;
-            public string MtTypeDesc;
-            public string WoTypeCode;
-            public string WoTypeDesc;
-
-            public WoTypeMtTypeCode(string mtTypeCode, string mtTypeDesc, string woTypeCode, string woTypeDesc)
-            {
-                MtTypeCode = mtTypeCode;
-                MtTypeDesc = mtTypeDesc;
-                WoTypeCode = woTypeCode;
-                WoTypeDesc = woTypeDesc;
-            }
-        }
-
-
-    }
-    public static class GroupConstants
-    {
-        public static List<WorkGroup> GetWorkGroupList()
-        {
-            var groupList = new List<WorkGroup>
-            {
-                new WorkGroup("AAPREV", "Mantenimiento Aire Acondicionado", "INST", "MINA", "INST"),
-                new WorkGroup("BASE9", "OPERACION Y ATENCION BASE 9", ManagementArea.SoporteOperacion.Key, "ENERGIA", "ICOR"),
-                new WorkGroup("CALLCEN", "Call Center", "INST", "IMIS", "INST"),
-                new WorkGroup("CARGUE2", "Cargue 2", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("CAT2401", "U.A.S. CAMIONES CAT240", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("CAT789C", "Camion 190 ton cat789C", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("CTC", "INSPECCIONES VIAS Y MANTTO. DEL CTC", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.Ferrocarril.Key, "ICOR"),
-                new WorkGroup("EH320", "U.A.S. CAMIONES DE 320 MINA NORTE", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("ELIVIA1", "GRUPO DE TRABAJO DE LIVIANOS", ManagementArea.SoporteOperacion.Key, "LIVIANOS", "ICOR"),
-                new WorkGroup("EMEDIA1", "GRUPO DE TRABAJO MEDIANOS", ManagementArea.SoporteOperacion.Key, "MEDIANOS", "ICOR"),
-                new WorkGroup("EQAUXV", "MTTO.EQUIPO VIAS FFCC", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.Ferrocarril.Key, "ICOR"),
-                new WorkGroup("GI&T", "Grupo de Inspección y Tecnología", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("GRUAS", "UAS GRUAS Y MANEJADORES DE LLANTA", ManagementArea.SoporteOperacion.Key, "GRUAS", "ICOR"),
-                new WorkGroup("IALIAL1", "GRUPO DE SEIS Transformadores y Distrib.", ManagementArea.SoporteOperacion.Key, "ENERGIA", "ICOR"),
-                new WorkGroup("IAPTAL1", "GRUPO SEIS Taller & soporte SER", ManagementArea.SoporteOperacion.Key, "ENERGIA", "ICOR"),
-                new WorkGroup("IBOMBA1", "SEIS DE BOMBAS Super. de Servicio", ManagementArea.SoporteOperacion.Key, "ENERGIA", "ICOR"),
-                new WorkGroup("ICARROS", "MTTO.VAGONES", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.Ferrocarril.Key, "ICOR"),
-                new WorkGroup("LLANTAS", "TALLER DE LLANTAS", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("LUBRICA", "LABORES TALLER DE LUBRICACION", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("L1350", "CARGADORES LETORNEAU L1350", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("MCARGA", "UAS MANEJO DE CARGA - OPERADORES", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("MTIL17", "MANTENIMIENTO INDUSTRIAL&PLANTA-AGUA", "INST", "MINA", "ICOR"),
-                new WorkGroup("MTOLOC", "MTTO. LOCOMOTORAS", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.Ferrocarril.Key, "ICOR"),
-                new WorkGroup("MTTOSOP", "UAS EQUIPO DE SOPORTE", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("ORUGAS", "TRACTORES DE ORUGAS D9L Y D11N", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("PCSERVI", "PLANTA DE CARBON", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PlantasDeCarbon.Key, "ICOR"),
-                new WorkGroup("PHIDCAS", "PALAS HIDRAULICAS MINA", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("PHS", "UAS PALAS ELECTRICAS", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("PPELCOP", "TALLER ELECTRICO/ELECTRONICO", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("PTOAA", "MANTENIMIENTO DE AIRES PBV", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "INST"),
-                new WorkGroup("PTOBAND", "MANTTO.BANDAS TRANSPORTADORAS CARBON", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("PTOCAR", "MANTTO MECANICO EQUIPOS DE MANCARB", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("PTOCE", "CARGA Y ESTIBA PUERTO BOLIVAR", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("PTOCP8", "GRUPO SEIS CONTRATO REDES Y MONTAJES", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("PTOINS", "GRUPO DE INSPECCIONES ESTRUCTURALES PBV", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("PTOMET", "CONTRATISTA METALISTERIA Y PINTURA PBV", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("PTOMIN", "MANTENIMIENTO INSTALACIONES PBV", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "INST"),
-                new WorkGroup("PTOOM1", "GRUPO DE MANTENIMIENTO MOTORES DIESEL", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("PTOPRED", "GRUPO PREDICTIVOS PUERTO BOLIVAR", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("PTOSEG", "GRUPO CONTROLES CRITICOS", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("PTOTM", "TALLER MECANICO/PLANTA AGUA -PBV", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("RDCAMPO", "GRUPO DE MANTENIMIENTO MOTORES EN CAMPO", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("RDCOMPO", "REPARACIÓN DE COMPONENTES MENORES DE MOT", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("RDIESEL", "RECONSTRUCCION DE MOTORES", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("RECHID", "GRUPO REC.HIDRAULICA DE PRONOSTICOS", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("RHMENOR", "RECONSTRUIR COMP.MENORES HIDRAULICOS", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("RELECII", "GRUPO PARA REPARACION DE COMPO. PROGRAMA", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("REMAQ", "MAQUINAS HERRAMIENTAS RECONSTRUCCION", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("RERODA", "RECONSTRUCCION TREN DE RODAJE", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("RESOLD", "RECONSTRUCCION SOLDADURA", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("T&A", "TALLER MANTTO.ROLDAN -TRAFICO & ADUANA", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.PuertoBolivar.Key, "ICOR"),
-                new WorkGroup("TANQ777", "UAS DE TANQUEROS Y TRAILLAS", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("TRACLLA", "UAS DE TRACTORES DE LLANTAS", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("VIAS", "UAS DE MOTONIVELADORAS", ManagementArea.Mantenimiento.Key, "MINA", "ICOR"),
-                new WorkGroup("VIASM", "MANTENIMIENTO VIAS MINA", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.Ferrocarril.Key, "ICOR"),
-                new WorkGroup("VIASP", "MANTENIMIENTO DE VIAS PUERTO", ManagementArea.ManejoDeCarbon.Key, QuarterMasters.Ferrocarril.Key, "ICOR")
-            };
-            return groupList;
-        }
-
-       
-        public class WorkGroup
-        {
-            public string Name;
-            public string Description;
-            public string Area;
-            public string Details;
-            public string DistrictCode;
-
-            public WorkGroup(string name, string description, string area, string details, string districtCode)
-            {
-                Name = name;
-                Description = description;
-                Area = area;
-                Details = details;
-                DistrictCode = districtCode;
-            }
-        }
-        
-        
-    }
-    public class QuarterMasters
-    {
-        public static KeyValuePair<string, string> PuertoBolivar = new KeyValuePair<string, string>("PBV", "PUERTO BOLIVAR");
-        public static KeyValuePair<string, string> PlantasDeCarbon = new KeyValuePair<string, string>("PTAS", "PLANTAS DE CARBON");
-        public static KeyValuePair<string, string> Ferrocarril = new KeyValuePair<string, string>("FFCC", "FERROCARRIL");
-    }
-
-    public class ManagementArea
-    {
-        public static KeyValuePair<string, string> ManejoDeCarbon = new KeyValuePair<string, string>("MDC", "MANEJO DE CARBON");
-        public static KeyValuePair<string, string> Mantenimiento = new KeyValuePair<string, string>("MNTTO", "MANTENIMIENTO");
-        public static KeyValuePair<string, string> SoporteOperacion = new KeyValuePair<string, string>("SOP", "SOPORTE A LA OPERACIÓN");
-    }
-    public class ReplyMessage
-    {
-        public string[] Errors;
-        public string[] Warnings;
-        public string Message;
-    }
+    
+    
 }
