@@ -273,13 +273,15 @@ namespace EllipseEqOperStatisticsExcelAddIn
                         _cells.GetCell(target.Column + 1, target.Row).Columns.AutoFit();
 
                     }
-                    catch (NullReferenceException)
+                    catch (NullReferenceException ex)
                     {
-                        _cells.GetCell(target.Column, target.Row + 1).Value = "No fue Posible Obtener Informacion!";
+                        Debugger.LogError("RibbonEllipse:GetTableChangedValue()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                        _cells.GetCell(target.Column + 1, target.Row).Value = "No fue Posible Obtener Informacion!";
                     }
-                    catch (Exception error)
+                    catch (Exception ex)
                     {
-                        MessageBox.Show(error.Message);
+                        Debugger.LogError("RibbonEllipse:GetTableChangedValue()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                        _cells.GetCell(target.Column + 1, target.Row).Value = "No fue Posible Obtener Informacion!";
                     }
                     break;
                 case 5:
@@ -292,13 +294,15 @@ namespace EllipseEqOperStatisticsExcelAddIn
                         _cells.GetCell(8, target.Row).Value = !string.IsNullOrWhiteSpace(description[1]) ? description[1].Trim() : "";
                         _cells.GetCell(8, target.Row).Columns.AutoFit();
                     }
-                    catch (NullReferenceException)
+                    catch (NullReferenceException ex)
                     {
-                        _cells.GetCell(target.Column, target.Row + 1).Value = "";
+                        Debugger.LogError("RibbonEllipse:GetTableChangedValue()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                        _cells.GetCell(7, target.Row).Value = "";
                     }
-                    catch (Exception error)
+                    catch (Exception ex)
                     {
-                        MessageBox.Show(error.Message);
+                        Debugger.LogError("RibbonEllipse:GetTableChangedValue()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                        _cells.GetCell(7, target.Row).Value = "Se ha producido un error";
                     }
                     break;
             }
