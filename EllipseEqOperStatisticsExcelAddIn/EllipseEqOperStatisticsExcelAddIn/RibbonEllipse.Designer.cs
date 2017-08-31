@@ -39,14 +39,14 @@
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.btnLoadStatistics = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
+            this.btnLoadStatistics = this.Factory.CreateRibbonButton();
             this.btnDelete = this.Factory.CreateRibbonButton();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpEqOperStatistics.SuspendLayout();
             this.box1.SuspendLayout();
-            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -81,13 +81,6 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // btnLoadStatistics
-            // 
-            this.btnLoadStatistics.Label = "Cargar Estadísticas";
-            this.btnLoadStatistics.Name = "btnLoadStatistics";
-            this.btnLoadStatistics.ShowImage = true;
-            this.btnLoadStatistics.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadStatistics_Click);
-            // 
             // drpEnviroment
             // 
             this.drpEnviroment.Label = "Env.";
@@ -97,8 +90,16 @@
             // 
             this.menuActions.Items.Add(this.btnLoadStatistics);
             this.menuActions.Items.Add(this.btnDelete);
+            this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
+            // 
+            // btnLoadStatistics
+            // 
+            this.btnLoadStatistics.Label = "Cargar Estadísticas";
+            this.btnLoadStatistics.Name = "btnLoadStatistics";
+            this.btnLoadStatistics.ShowImage = true;
+            this.btnLoadStatistics.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadStatistics_Click);
             // 
             // btnDelete
             // 
@@ -106,6 +107,13 @@
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.ShowImage = true;
             this.btnDelete.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDelete_Click);
+            // 
+            // btnStopThread
+            // 
+            this.btnStopThread.Label = "&Detener Proceso";
+            this.btnStopThread.Name = "btnStopThread";
+            this.btnStopThread.ShowImage = true;
+            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
             // RibbonEllipse
             // 
@@ -119,7 +127,6 @@
             this.grpEqOperStatistics.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
-            this.ResumeLayout(false);
 
         }
 
@@ -134,6 +141,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDelete;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
     }
 
     partial class ThisRibbonCollection

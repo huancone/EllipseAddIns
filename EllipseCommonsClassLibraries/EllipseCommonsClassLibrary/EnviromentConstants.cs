@@ -20,6 +20,7 @@ namespace EllipseCommonsClassLibrary
         public static string EllipseContingencia = "Contingencia";
         public static string EllipseDesarrollo = "Desarrollo";
         public static string EllipseTest = "Test";
+        public static string EllipseTest84 = "Test84";
         public static string SigcorProductivo = "SIGCOPROD";
         public static string ScadaRdb = "SCADARDB";
         public static string CustomDatabase = "Personalizada";
@@ -30,21 +31,25 @@ namespace EllipseCommonsClassLibrary
         public static string EllipseVarNameServiceContingencia = @"/ellipse/webservice/ellcont";//XPath
         public static string EllipseVarNameServiceDesarrollo = @"/ellipse/webservice/elldesa";//XPath
         public static string EllipseVarNameServiceTest = @"/ellipse/webservice/elltest";//XPath
+        public static string EllipseVarNameServiceTest84 = @"/ellipse/webservice/ell84test";//XPath
 
         public static string EllipseUrlServicesProductivo = "http://ews-el8prod.lmnerp01.cerrejon.com/ews/services";
         public static string EllipseUrlServicesContingencia = "http://ews-el8prod.lmnerp02.cerrejon.com/ews/services";
         public static string EllipseUrlServicesDesarrollo = "http://ews-el8desa.lmnerp03.cerrejon.com/ews/services";
         public static string EllipseUrlServicesTest = "http://ews-el8test.lmnerp03.cerrejon.com/ews/services";
+        public static string EllipseUrlServicesTest84 = "http://ews-el84test.bogdrp03.cerrejon.com/ews/services";
 
         public static string EllipseVarNamePostProductivo = @"/ellipse/url/ellprod";//XPath
         public static string EllipseVarNamePostContingencia = @"/ellipse/url/ellcont";//XPath
         public static string EllipseVarNamePostDesarrollo = @"/ellipse/url/elldesa";//XPath
         public static string EllipseVarNamePostTest = @"/ellipse/url/elltest";//XPath
+        public static string EllipseVarNamePostTest84 = @"/ellipse/url/ell84test";//XPath
 
         public static string EllipseUrlPostServicesProductivo = "http://ellipse-el8prod.lmnerp01.cerrejon.com/ria-Ellipse-8.4.31_112/bind?app=";
         public static string EllipseUrlPostServicesContingencia = "http://ellipse-el8prod.lmnerp02.cerrejon.com/ria-Ellipse-8.4.31_112/bind?app=";
         public static string EllipseUrlPostServicesDesarrollo = "http://ellipse-el8desa.lmnerp03.cerrejon.com/ria-Ellipse-8.4.29_31/bind?app=";
         public static string EllipseUrlPostServicesTest = "http://ellipse-el8test.lmnerp03.cerrejon.com/ria-Ellipse-8.9.1_226/bind?app=";
+        public static string EllipseUrlPostServicesTest84 = "http://ellipse-el84test.bogdrp03.cerrejon.com/ria-Ellipse-8.4.32_191/bind?app=";
 
         public static string GetServiceUrl(string enviroment, string serviceType = null)
         {
@@ -75,10 +80,12 @@ namespace EllipseCommonsClassLibrary
                         urlServer = EllipseVarNameServiceProductivo;
                     if (enviroment == EllipseContingencia)
                         urlServer = EllipseVarNameServiceContingencia;
-                    if (enviroment == EllipseTest)
-                        urlServer = EllipseVarNameServiceTest;
                     if (enviroment == EllipseDesarrollo)
                         urlServer = EllipseVarNameServiceDesarrollo;
+                    if (enviroment == EllipseTest)
+                        urlServer = EllipseVarNameServiceTest;
+                    if (enviroment == EllipseTest84)
+                        urlServer = EllipseVarNameServiceTest84;
 
                     return doc.XPathSelectElement(urlServer + "[1]").Value;
                 }
@@ -89,10 +96,12 @@ namespace EllipseCommonsClassLibrary
                         return EllipseUrlServicesProductivo;
                     if (enviroment == EllipseContingencia)
                         return EllipseUrlServicesContingencia;
-                    if (enviroment == EllipseTest)
-                        return EllipseUrlServicesTest;
                     if (enviroment == EllipseDesarrollo)
                         return EllipseUrlServicesDesarrollo;
+                    if (enviroment == EllipseTest)
+                        return EllipseUrlServicesTest;
+                    if (enviroment == EllipseTest84)
+                        return EllipseUrlServicesTest84;
                 }
 
             }
@@ -111,10 +120,12 @@ namespace EllipseCommonsClassLibrary
                         urlServer = EllipseVarNamePostProductivo;
                     if (enviroment == EllipseContingencia)
                         urlServer = EllipseVarNamePostContingencia;
-                    if (enviroment == EllipseTest)
-                        urlServer = EllipseVarNamePostTest;
                     if (enviroment == EllipseDesarrollo)
                         urlServer = EllipseVarNamePostDesarrollo;
+                    if (enviroment == EllipseTest)
+                        urlServer = EllipseVarNamePostTest;
+                    if (enviroment == EllipseTest84)
+                        urlServer = EllipseVarNamePostTest84;
 
                     return doc.XPathSelectElement(urlServer + "[1]").Value;
                 }
@@ -124,10 +135,12 @@ namespace EllipseCommonsClassLibrary
                         return EllipseUrlPostServicesProductivo;
                     if (enviroment == EllipseContingencia)
                         return EllipseUrlPostServicesContingencia;
-                    if (enviroment == EllipseTest)
-                        return EllipseUrlPostServicesTest;
                     if (enviroment == EllipseDesarrollo)
                         return EllipseUrlPostServicesDesarrollo;
+                    if (enviroment == EllipseTest)
+                        return EllipseUrlPostServicesTest;
+                    if (enviroment == EllipseTest84)
+                        return EllipseUrlPostServicesTest84;
                 }
             }
             throw new NullReferenceException("No se ha encontrado el servidor seleccionado");
@@ -140,6 +153,7 @@ namespace EllipseCommonsClassLibrary
             enviromentList.Add(EllipseTest);
             enviromentList.Add(EllipseDesarrollo);
             enviromentList.Add(EllipseContingencia);
+            enviromentList.Add(EllipseTest84);
 
             return enviromentList;
         }
@@ -156,12 +170,14 @@ namespace EllipseCommonsClassLibrary
             xmlFile += @"    <ellcont>" + EllipseUrlPostServicesContingencia + "</ellcont>";
             xmlFile += @"    <elldesa>" + EllipseUrlPostServicesDesarrollo + "</elldesa>";
             xmlFile += @"    <elltest>" + EllipseUrlPostServicesTest + "</elltest>";
+            xmlFile += @"    <ell84test>" + EllipseUrlPostServicesTest84 + "</ell84test>";
             xmlFile += @"  </url>";
             xmlFile += @"  <webservice>";
             xmlFile += @"    <ellprod>" + EllipseUrlServicesProductivo + "</ellprod>";
             xmlFile += @"    <ellcont>" + EllipseUrlServicesContingencia + "</ellcont>";
             xmlFile += @"    <elldesa>" + EllipseUrlServicesDesarrollo + "</elldesa>";
             xmlFile += @"    <elltest>" + EllipseUrlServicesTest + "</elltest>";
+            xmlFile += @"    <ell84test>" + EllipseUrlServicesTest84 + "</ell84test>";
             xmlFile += @"  </webservice>";
             xmlFile += @"</ellipse>";
 

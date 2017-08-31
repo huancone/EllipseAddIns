@@ -78,14 +78,6 @@ namespace EllipseCommonsClassLibrary
                 dbLink = "";
                 dbReference = _defaultDbReferenceName;
             }
-            else if(enviroment == EnviromentConstants.EllipseTest)
-            {
-                _dbname = "EL8TEST";
-                _dbuser = "SIGCON";
-                _dbpass = "ventyx";
-                dbLink = "";
-                dbReference = _defaultDbReferenceName;
-            }
             else if (enviroment == EnviromentConstants.EllipseDesarrollo)
             {
                 _dbname = "EL8DESA";
@@ -97,6 +89,22 @@ namespace EllipseCommonsClassLibrary
             else if(enviroment == EnviromentConstants.EllipseContingencia)
             {
                 _dbname = "EL8PROD";
+                _dbuser = "SIGCON";
+                _dbpass = "ventyx";
+                dbLink = "";
+                dbReference = _defaultDbReferenceName;
+            }
+            else if (enviroment == EnviromentConstants.EllipseTest)
+            {
+                _dbname = "EL8TEST";
+                _dbuser = "SIGCON";
+                _dbpass = "ventyx";
+                dbLink = "";
+                dbReference = _defaultDbReferenceName;
+            }
+            else if (enviroment == EnviromentConstants.EllipseTest)
+            {
+                _dbname = "EL84TST";
                 _dbuser = "SIGCON";
                 _dbpass = "ventyx";
                 dbLink = "";

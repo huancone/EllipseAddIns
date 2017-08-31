@@ -9,6 +9,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using EllipseEqOperStatisticsExcelAddIn.EquipmentOperatingStatisticsService;
 using Microsoft.Office.Tools.Excel;
+using System.Threading;
 
 namespace EllipseEqOperStatisticsExcelAddIn
 {
@@ -26,6 +27,8 @@ namespace EllipseEqOperStatisticsExcelAddIn
         private const int TitleRow01 = 4;
         private const int ResultColumn01 = 10;
         private const string TableName01 = "OperationStatisticsTable";
+
+        private Thread _thread;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
@@ -49,12 +52,28 @@ namespace EllipseEqOperStatisticsExcelAddIn
         }
         private void btnLoadStatistics_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName01))
+            try
             {
-                LoadStatistics();
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+                {
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(LoadStatistics);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
             }
-            else
-                MessageBox.Show(@"La hoja de Excel no tiene el formato válido para el cargue de estadísticas");
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:LoadStatistics()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -211,6 +230,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                         }
                         finally
                         {
+                            _cells.GetCell(ResultColumn01, i).Select();
                             i++;
                         }
                     } //--while de registros
@@ -400,7 +420,29 @@ namespace EllipseEqOperStatisticsExcelAddIn
 
         private void btnDelete_Click(object sender, RibbonControlEventArgs e)
         {
-            DeleteStatistics();
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+                {
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(DeleteStatistics);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:DeleteStatistics()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+            
         }
 
         private void DeleteStatistics()
@@ -444,15 +486,17 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             if (reply.mapName != "MSM400A") continue;
 
                             var statisticDate = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+                            var shift = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                             var equipmentNumber = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
                             var operationStatisticType = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
+                            
 
                             var arrayFields = new ArrayScreenNameValue();
                             arrayFields.Add("OPTION1I", "3");
                             arrayFields.Add("STAT_DATE1I", statisticDate);
                             arrayFields.Add("STAT_TYPE1I", operationStatisticType);
                             arrayFields.Add("PLANT_NO1I", equipmentNumber);
-
+                            arrayFields.Add("SHIFT1I", shift);
 
                             var request = new Screen.ScreenSubmitRequestDTO
                             {
@@ -490,6 +534,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                         }
                         finally
                         {
+                            _cells.GetCell(ResultColumn01, i).Select();
                             i++;
                         }
                     } //--while de registros
@@ -503,12 +548,26 @@ namespace EllipseEqOperStatisticsExcelAddIn
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                Debugger.LogError("RibbonEllipse:LoadStatistics()",
+                Debugger.LogError("RibbonEllipse:DeleteStatistics()",
                     "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
                 if (_cells != null) _cells.SetCursorDefault();
+            }
+        }
+
+        private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_thread != null && _thread.IsAlive)
+                    _thread.Abort();
+                if (_cells != null) _cells.SetCursorDefault();
+            }
+            catch (ThreadAbortException ex)
+            {
+                MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
             }
         }
     }
