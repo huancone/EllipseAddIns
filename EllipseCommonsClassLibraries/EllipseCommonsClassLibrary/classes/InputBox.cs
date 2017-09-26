@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace EllipseCommonsClassLibrary
+namespace EllipseCommonsClassLibrary.Classes
 {
     public static class InputBox
     {

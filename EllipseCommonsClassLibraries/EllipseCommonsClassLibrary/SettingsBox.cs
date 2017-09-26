@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
-
+using EllipseCommonsClassLibrary.Connections;
 namespace EllipseCommonsClassLibrary
 {
     partial class SettingsBox : Form
@@ -98,8 +98,8 @@ namespace EllipseCommonsClassLibrary
             cbDebugErrors.Checked = Debugger.DebugErrors;
             cbDebugWarnings.Checked = Debugger.DebugWarnings;
             cbDebugQueries.Checked = Debugger.DebugQueries;
-            tbLocalDataPath.Text = Debugger.LocalDataPath;
-            tbServiceFileNetworkUrl.Text = EnviromentConstants.UrlServiceFileLocation;
+            tbLocalDataPath.Text = Configuration.LocalDataPath;
+            tbServiceFileNetworkUrl.Text = Configuration.UrlServiceFileLocation;
         }
 
         private void cbDebugErrors_CheckedChanged(object sender, EventArgs e)
@@ -119,7 +119,7 @@ namespace EllipseCommonsClassLibrary
 
         private void tbLocalDataPath_TextChanged(object sender, EventArgs e)
         {
-            Debugger.LocalDataPath = tbLocalDataPath.Text;
+            Configuration.LocalDataPath = tbLocalDataPath.Text;
         }
 
         private void okButton_Click(object sender, EventArgs e)
@@ -131,8 +131,8 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                EnviromentConstants.GenerateEllipseConfigurationXmlFile(tbServiceFileNetworkUrl.Text);
-                MessageBox.Show("Se ha generado el archivo local de configuración de Ellipse a partir del archivo de red " + EnviromentConstants.UrlServiceFileLocation + EnviromentConstants.ConfigXmlFileName, "Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Configuration.GenerateEllipseConfigurationXmlFile(tbServiceFileNetworkUrl.Text);
+                MessageBox.Show("Se ha generado el archivo local de configuración de Ellipse a partir del archivo de red " + Configuration.UrlServiceFileLocation + Configuration.ConfigXmlFileName, "Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -144,7 +144,7 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                EnviromentConstants.GenerateEllipseConfigurationXmlFile();
+                Configuration.GenerateEllipseConfigurationXmlFile();
                 MessageBox.Show("Se ha generado el archivo local de configuración de Ellipse de forma predeterminada", "Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -157,7 +157,7 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                EnviromentConstants.DeleteEllipseConfigurationXmlFile();
+                Configuration.DeleteEllipseConfigurationXmlFile();
                 MessageBox.Show("Se ha eliminado el archivo local de configuración de Ellipse", "Delete Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)

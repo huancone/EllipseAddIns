@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 
-namespace EllipseCommonsClassLibrary
+namespace EllipseCommonsClassLibrary.Classes
 {
     [SuppressMessage("ReSharper", "LoopCanBeConvertedToQuery")]
     public class ArrayScreenNameValue

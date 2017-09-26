@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EllipseCommonsClassLibrary
+namespace EllipseCommonsClassLibrary.Constants
 {
-    public static class DistrictConstants
+    public static class Districts
     {
         public static string DistrictIcor = "ICOR";
         public static string DistrictInstalations = "INST";

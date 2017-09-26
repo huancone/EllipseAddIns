@@ -590,7 +590,7 @@ namespace EllipseEquipmentClassLibrary
                 string districtParam;
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(districtCode))
-                    districtParam = " IN (" + Utils.GetListInSeparator(DistrictConstants.GetDistrictList(), ",", "'") + ")";
+                    districtParam = " IN (" + Utils.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtParam = " = '" + districtCode + "'";
 
@@ -655,7 +655,7 @@ namespace EllipseEquipmentClassLibrary
                 //establecemos los parámetrode de distrito
                 string districtParam;
                 if (string.IsNullOrEmpty(districtCode))
-                    districtParam = " AND EQ.DSTRCT_CODE IN (" + Utils.GetListInSeparator(DistrictConstants.GetDistrictList(), ",", "'") + ")";
+                    districtParam = " AND EQ.DSTRCT_CODE IN (" + Utils.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtParam = " AND EQ.DSTRCT_CODE = '" + districtCode + "'";
 

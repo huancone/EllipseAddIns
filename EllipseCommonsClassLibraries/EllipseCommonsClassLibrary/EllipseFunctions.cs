@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web.Services.Ellipse.Post;
 using Oracle.ManagedDataAccess.Client;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
-
+using EllipseCommonsClassLibrary.Classes;
 using System.Threading;
 
 namespace EllipseCommonsClassLibrary
@@ -41,7 +41,7 @@ namespace EllipseCommonsClassLibrary
         /// </summary>
         public EllipseFunctions()
         {
-            SetDBSettings(EnviromentConstants.EllipseProductivo);
+            SetDBSettings(Connections.Environments.EllipseProductivo);
         }
 
         public EllipseFunctions(EllipseFunctions ellipseFunctions)
@@ -70,7 +70,7 @@ namespace EllipseCommonsClassLibrary
         public bool SetDBSettings(string enviroment)
         {
             CleanDbSettings();
-            if(enviroment == EnviromentConstants.EllipseProductivo)
+            if(enviroment == Connections.Environments.EllipseProductivo)
             {
                 _dbname = "EL8PROD";
                 _dbuser = "SIGCON";
@@ -78,7 +78,7 @@ namespace EllipseCommonsClassLibrary
                 dbLink = "";
                 dbReference = _defaultDbReferenceName;
             }
-            else if (enviroment == EnviromentConstants.EllipseDesarrollo)
+            else if (enviroment == Connections.Environments.EllipseDesarrollo)
             {
                 _dbname = "EL8DESA";
                 _dbuser = "SIGCON";
@@ -86,7 +86,7 @@ namespace EllipseCommonsClassLibrary
                 dbLink = "";
                 dbReference = _defaultDbReferenceName;
             }
-            else if(enviroment == EnviromentConstants.EllipseContingencia)
+            else if (enviroment == Connections.Environments.EllipseContingencia)
             {
                 _dbname = "EL8PROD";
                 _dbuser = "SIGCON";
@@ -94,7 +94,7 @@ namespace EllipseCommonsClassLibrary
                 dbLink = "";
                 dbReference = _defaultDbReferenceName;
             }
-            else if (enviroment == EnviromentConstants.EllipseTest)
+            else if (enviroment == Connections.Environments.EllipseTest)
             {
                 _dbname = "EL8TEST";
                 _dbuser = "SIGCON";
@@ -102,7 +102,7 @@ namespace EllipseCommonsClassLibrary
                 dbLink = "";
                 dbReference = _defaultDbReferenceName;
             }
-            else if (enviroment == EnviromentConstants.EllipseTest)
+            else if (enviroment == Connections.Environments.EllipseTest)
             {
                 _dbname = "EL84TST";
                 _dbuser = "SIGCON";
@@ -110,7 +110,7 @@ namespace EllipseCommonsClassLibrary
                 dbLink = "";
                 dbReference = _defaultDbReferenceName;
             }
-            else if (enviroment == EnviromentConstants.SigcorProductivo)
+            else if (enviroment == Connections.Environments.SigcorProductivo)
             {
                 _dbname = "SIGCOPRD";
                 _dbuser = "CONSULBO";
@@ -118,7 +118,7 @@ namespace EllipseCommonsClassLibrary
                 dbLink = "@DBLELLIPSE8";
                 dbReference = _defaultDbReferenceName;
             }
-            else if (enviroment == EnviromentConstants.ScadaRdb)
+            else if (enviroment == Connections.Environments.ScadaRdb)
             {
                 _dbname = "PBVFWL01";
                 _dbcatalog = "SCADARDB";
@@ -181,7 +181,7 @@ namespace EllipseCommonsClassLibrary
             _dbpass = dbpass;
             dbLink = dblink;
             dbReference = dbreference;
-            SetCurrentEnviroment(EnviromentConstants.CustomDatabase);
+            SetCurrentEnviroment(Connections.Environments.CustomDatabase);
             return true;
         }
 
@@ -203,18 +203,18 @@ namespace EllipseCommonsClassLibrary
             _dbpass = dbpass;
             dbLink = "";
             dbReference = _defaultDbReferenceName;
-            SetCurrentEnviroment(EnviromentConstants.CustomDatabase);
+            SetCurrentEnviroment(Connections.Environments.CustomDatabase);
             return true;
         }
         /// <summary>
         /// Obtiene la URL de conexión al servicio web de Ellipse
         /// </summary>
-        /// <param name="enviroment">Nombre del ambiente al que se va a conectar (EnviromentConstants.Ambiente)</param>
+        /// <param name="enviroment">Nombre del ambiente al que se va a conectar (EnvironmentConstants.Ambiente)</param>
         /// <param name="serviceType">Tipo de conexión a realizar EWS/POST. Localizada en EnviromentConstans.ServiceType</param>
         /// <returns>string: URL de la conexión</returns>
         public string GetServicesUrl(string enviroment, string serviceType = null)
         {
-            return EnviromentConstants.GetServiceUrl(enviroment, serviceType);
+            return Connections.Environments.GetServiceUrl(enviroment, serviceType);
         }
 
         /// <summary>

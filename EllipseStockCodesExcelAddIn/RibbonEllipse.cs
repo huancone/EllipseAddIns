@@ -118,7 +118,7 @@ namespace EllipseStockCodesExcelAddIn
                 _cells.GetRange("D3", "D5").Style = _cells.GetStyle(StyleConstants.Select);
 
                 //adicionamos las listas de validación
-                _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList(), ValidationSheetName, 1);
+                _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName, 1);
                 _cells.SetValidationList(_cells.GetCell("B4"), issueCriteriaList, ValidationSheetName, 2);
                 _cells.SetValidationList(_cells.GetCell("B5"), typeCriteriaList, ValidationSheetName, 3);
                 _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 4);

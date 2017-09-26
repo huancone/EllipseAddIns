@@ -1191,14 +1191,14 @@ namespace EllipseStandardJobsClassLibrary
             {
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(districtCode))
-                    districtCode = " AND STD.DSTRCT_CODE IN (" + Utils.GetListInSeparator(DistrictConstants.GetDistrictList(), ",", "'") + ")";
+                    districtCode = " AND STD.DSTRCT_CODE IN (" + Utils.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtCode = " AND STD.DSTRCT_CODE = '" + districtCode + "'";
 
 
                 //establecemos los parámetrode de grupo
                 if (string.IsNullOrEmpty(workGroup))
-                    workGroup = " AND STD.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
+                    workGroup = " AND STD.WORK_GROUP IN (" + Utils.GetListInSeparator(Groups.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
                 else
                     workGroup = " AND STD.WORK_GROUP = '" + workGroup + "'";
 
@@ -1230,14 +1230,14 @@ namespace EllipseStandardJobsClassLibrary
             {
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(districtCode))
-                    districtCode = " IN (" + Utils.GetListInSeparator(DistrictConstants.GetDistrictList(), ",", "'") + ")";
+                    districtCode = " IN (" + Utils.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtCode = " IN ('" + districtCode + "')";
 
 
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(workGroup))
-                    workGroup = " IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
+                    workGroup = " IN (" + Utils.GetListInSeparator(Groups.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
                 else
                     workGroup = " IN ('" + workGroup + "')";
 

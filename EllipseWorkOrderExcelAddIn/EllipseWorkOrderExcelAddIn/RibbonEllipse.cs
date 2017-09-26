@@ -6,6 +6,10 @@ using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Constants;
+
 using EllipseWorkOrdersClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Tools.Ribbon;
@@ -74,7 +78,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -837,14 +841,14 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("K5").Value = "REQUERIDO ADICIONAL";
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
-                var districtList = DistrictConstants.GetDistrictList();
+                var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WoStatusList.GetStatusNames(true);
                 var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("A4").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
@@ -1230,14 +1234,14 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("K5").Value = "REQUERIDO ADICIONAL";
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
-                var districtList = DistrictConstants.GetDistrictList();
+                var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WoStatusList.GetStatusNames(true);
                 var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("A4").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
@@ -2074,14 +2078,14 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("K5").Value = "REQUERIDO ADICIONAL";
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
-                var districtList = DistrictConstants.GetDistrictList();
+                var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WoStatusList.GetStatusNames(true);
                 var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.GetCell("A4").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
                     "INST: IMIS, MINA\n" +
                     "MDC: FFCC, PBV, PTAS\n" +
@@ -3901,6 +3905,11 @@ namespace EllipseWorkOrderExcelAddIn
             }
 
             
+        }
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            Environment.SetEnvironmentVariable("ellipseLoadersHome", @"c:\ellipse", EnvironmentVariableTarget.User);
         }
     }
 

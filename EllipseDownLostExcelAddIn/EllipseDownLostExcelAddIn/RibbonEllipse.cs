@@ -228,7 +228,7 @@ namespace EllipseDownLostExcelAddIn
 
 
                 _cells.GetCell("A3").Value = "DISTRICT";
-                _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList(), ValidationSheetName, 1);
+                _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName, 1);
                 _cells.GetCell("B3").Value = "ICOR";
 
                 var equipTypeList = new List<string> {"EQUIPMENT", "EGI", "LIST TYPE", "PROD.UNIT"};
@@ -492,7 +492,7 @@ namespace EllipseDownLostExcelAddIn
 
                 _cells.GetCell("A3").Value = "DISTRICT";
 
-                _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList(), ValidationSheetName, 1);
+                _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName, 1);
                 _cells.GetCell("B3").Value = "ICOR";
 
                 var equipTypeList = new List<string> {"EQUIPMENT", "EGI", "LIST TYPE", "PROD.UNIT"};

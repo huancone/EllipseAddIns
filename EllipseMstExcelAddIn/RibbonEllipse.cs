@@ -194,10 +194,10 @@ namespace EllipseMstExcelAddIn
                 _cells.GetRange("B3", "B5").Style = _cells.GetStyle(StyleConstants.Select);
 
                 //validaciones de encabezado
-                _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList(), ValidationSheetName,
+                _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName,
                     1);
                 _cells.SetValidationList(_cells.GetCell("B4"),
-                    GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ValidationSheetName, 2, false);
+                    Groups.GetWorkGroupList().Select(g => g.Name).ToList(), ValidationSheetName, 2, false);
                 var listIndicator = MstIndicatorList.GetIndicatorsList();
                 listIndicator.Add(" A - " + MstIndicatorList.Active);
                 _cells.SetValidationList(_cells.GetCell("B5"), listIndicator, ValidationSheetName, 3);

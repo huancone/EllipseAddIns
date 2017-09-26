@@ -468,7 +468,7 @@ namespace EllipseLabourCostingExcelAddIn
 
                 _cells.GetRange(ElecsaTitleColumn, ElecsaTitleRow - 2, ElecsaResultColumn - 1, ElecsaTitleRow - 1).Style = StyleConstants.Select;
                 //validaciones de campo
-                _cells.SetValidationList(_cells.GetCell(2, ElecsaTitleRow - 3), DistrictConstants.GetDistrictList(), ValidationSheetName, 1);
+                _cells.SetValidationList(_cells.GetCell(2, ElecsaTitleRow - 3), Districts.GetDistrictList(), ValidationSheetName, 1);
                 _cells.SetValidationList(_cells.GetCell(4, ElecsaTitleRow - 3), loadTypeList, ValidationSheetName, 2);
 
                 _cells.SetValidationList(_cells.GetRange(ElecsaTitleColumn, ElecsaTitleRow - 1, ElecsaResultColumn - 1, ElecsaTitleRow - 1), laborClassList, ValidationSheetName, 3);

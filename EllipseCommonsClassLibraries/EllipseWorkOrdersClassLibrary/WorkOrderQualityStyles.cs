@@ -1,5 +1,6 @@
-﻿
-using EllipseCommonsClassLibrary;
+﻿using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Constants;
 
 namespace EllipseWorkOrdersClassLibrary
 {

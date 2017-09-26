@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace EllipseCommonsClassLibrary
+namespace EllipseCommonsClassLibrary.Classes
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class EllipseCodeItem

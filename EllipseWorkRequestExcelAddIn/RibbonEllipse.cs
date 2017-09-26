@@ -809,7 +809,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
                 var searchCriteriaList = WorkRequestActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WrStatusList.GetStatusNames();
                 statusList.Add(WrStatusList.Uncompleted);
 
@@ -1147,7 +1147,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
                 var searchCriteriaList = WorkRequestActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WrStatusList.GetStatusNames();
                 statusList.Add(WrStatusList.Uncompleted);
 
@@ -3294,7 +3294,7 @@ namespace EllipseWorkRequestExcelAddIn
 
 
                 var searchCriteriaList = WorkRequestActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WrStatusList.GetStatusNames();
                 statusList.Add(WrStatusList.Uncompleted);
 

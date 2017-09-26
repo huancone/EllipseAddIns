@@ -389,9 +389,9 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
 
                 //Adicionar validaciones
-                _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList(), false);
+                _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), false);
                 _cells.SetValidationList(_cells.GetCell("B4"),
-                    GroupConstants.GetWorkGroupList().Select(wg => wg.Name).ToList());
+                    Groups.GetWorkGroupList().Select(wg => wg.Name).ToList());
 
                 _cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01).Style = StyleConstants.TitleRequired;
                 _cells.GetCell(5, TitleRow01 - 1)
@@ -711,9 +711,9 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetRange("B3", "B4").Style = StyleConstants.Select;
 
                     //Adicionar validaciones
-                    _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList());
+                    _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList());
                     _cells.SetValidationList(_cells.GetCell("B4"),
-                        GroupConstants.GetWorkGroupList().Select(wg => wg.Name).ToList());
+                        Groups.GetWorkGroupList().Select(wg => wg.Name).ToList());
 
                     _cells.GetRange(1, TitleRowQualRev, ResultColumnQualRev, TitleRowQualRev).Style =
                         StyleConstants.TitleRequired;

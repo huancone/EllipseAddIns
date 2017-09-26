@@ -136,13 +136,13 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 _cells.GetCell("K5").Value = "REQUERIDO ADICIONAL";
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
-                var districtList = DistrictConstants.GetDistrictList();
+                var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = WorkOrderActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var dateCriteriaList = WorkOrderActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = WorkOrderActions.SearchFieldCriteriaType.Area.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);

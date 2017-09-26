@@ -297,7 +297,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("H3").Style = _cells.GetStyle(StyleConstants.Select);
 
                 //adicionamos las listas de validación
-                _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList(), ValidationSheetName01, 1);
+                _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName01, 1);
 
                 var reqStatusList = Requisition.RequisitionStatus.GetRequisitionStatusList().Select(status => status.Value).ToList();
                 reqStatusList.Add("UNCOMPLETED");
@@ -428,7 +428,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 //_cells.GetCell("F4").Style = _cells.GetStyle(StyleConstants.Select);
 
                 //adicionamos las listas de validación
-                _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList(), ValidationSheetName02, 1);
+                _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName02, 1);
                 var searchType = new List<string> { "PURCHASE ORDER", "STOCK CODE", "CONSULTAR TODO"};
                 _cells.SetValidationList(_cells.GetCell("B4"), searchType, ValidationSheetName02, 2);
                 //listas de validación
@@ -597,7 +597,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 //_cells.GetCell("F4").Style = _cells.GetStyle(StyleConstants.Select);
 
                 //adicionamos las listas de validación
-                _cells.SetValidationList(_cells.GetCell("B3"), DistrictConstants.GetDistrictList(), ValidationSheetName03, 1);
+                _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName03, 1);
                 var searchType = new List<string> { "PURCHASE ORDER", "STOCK CODE", "CONSULTAR TODO" };
                 _cells.SetValidationList(_cells.GetCell("B4"), searchType, ValidationSheetName03, 2);
                 //listas de validación

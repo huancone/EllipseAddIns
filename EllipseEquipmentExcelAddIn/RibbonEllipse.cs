@@ -217,13 +217,13 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell("K3").Value = "INFORMATIVO";
                 _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
 
-                var districtList = DistrictConstants.GetDistrictList();
+                var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = SearchFieldCriteria.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var eqStatusList = EquipmentActions.GetEquipmentStatusCodeList(_eFunctions).Select(g => g.code + " - " + g.description).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = SearchFieldCriteria.ProductiveUnit.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
@@ -440,7 +440,7 @@ namespace EllipseEquipmentExcelAddIn
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("A3").Style = _cells.GetStyle(StyleConstants.Option);
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
 
                 _cells.GetCell(1, TitleRow02).Value = "EQUIPMENT REFERENCE";

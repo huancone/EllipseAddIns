@@ -7,7 +7,7 @@ using Application = Microsoft.Office.Interop.Excel.Application;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
-namespace EllipseCommonsClassLibrary
+namespace EllipseCommonsClassLibrary.Classes
 {
     public class ExcelStyleCells
     {

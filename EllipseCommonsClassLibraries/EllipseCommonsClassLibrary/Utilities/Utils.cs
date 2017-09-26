@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -7,8 +6,10 @@ using System.Linq;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using System.Text.RegularExpressions;
 
+using EllipseCommonsClassLibrary.Classes;
 
-namespace EllipseCommonsClassLibrary
+
+namespace EllipseCommonsClassLibrary.Utilities
 {
     public class Utils
     {
@@ -677,9 +678,12 @@ namespace EllipseCommonsClassLibrary
 
             if (urlPath == null)
                 urlPath = "";
+
             using (var file = new StreamWriter(Path.Combine(urlPath, filename), true))
             {
                 file.WriteLine(text);
+                file.Flush();
+                file.Close();
             }
         }
 
