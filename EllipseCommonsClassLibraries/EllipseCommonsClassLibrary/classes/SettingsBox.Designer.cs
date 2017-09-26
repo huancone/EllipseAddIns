@@ -37,13 +37,13 @@
             this.lblLocalDataPath = new System.Windows.Forms.Label();
             this.gbGlobalSettings = new System.Windows.Forms.GroupBox();
             this.gbEllipseSettings = new System.Windows.Forms.GroupBox();
+            this.cbForceRegionConfig = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnDeleteLocalEllipseSettings = new System.Windows.Forms.Button();
             this.btnGenerateDefault = new System.Windows.Forms.Button();
             this.btnGenerateFromNetwork = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tbServiceFileNetworkUrl = new System.Windows.Forms.TextBox();
-            this.cbForceRegionConfig = new System.Windows.Forms.CheckBox();
             this.gbDebugging.SuspendLayout();
             this.gbGlobalSettings.SuspendLayout();
             this.gbEllipseSettings.SuspendLayout();
@@ -65,7 +65,7 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(229, 380);
+            this.okButton.Location = new System.Drawing.Point(229, 478);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 26);
             this.okButton.TabIndex = 30;
@@ -161,6 +161,17 @@
             this.gbEllipseSettings.TabStop = false;
             this.gbEllipseSettings.Text = "Configuración Ellipse:";
             // 
+            // cbForceRegionConfig
+            // 
+            this.cbForceRegionConfig.AutoSize = true;
+            this.cbForceRegionConfig.Location = new System.Drawing.Point(9, 114);
+            this.cbForceRegionConfig.Name = "cbForceRegionConfig";
+            this.cbForceRegionConfig.Size = new System.Drawing.Size(166, 17);
+            this.cbForceRegionConfig.TabIndex = 6;
+            this.cbForceRegionConfig.Text = "Forzar &Regionalización en-US";
+            this.cbForceRegionConfig.UseVisualStyleBackColor = true;
+            this.cbForceRegionConfig.CheckedChanged += new System.EventHandler(this.cbForceRegionConfig_CheckedChanged);
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -216,22 +227,11 @@
             this.tbServiceFileNetworkUrl.Size = new System.Drawing.Size(266, 20);
             this.tbServiceFileNetworkUrl.TabIndex = 0;
             // 
-            // cbForceRegionConfig
-            // 
-            this.cbForceRegionConfig.AutoSize = true;
-            this.cbForceRegionConfig.Location = new System.Drawing.Point(9, 114);
-            this.cbForceRegionConfig.Name = "cbForceRegionConfig";
-            this.cbForceRegionConfig.Size = new System.Drawing.Size(166, 17);
-            this.cbForceRegionConfig.TabIndex = 6;
-            this.cbForceRegionConfig.Text = "Forzar &Regionalización en-US";
-            this.cbForceRegionConfig.UseVisualStyleBackColor = true;
-            this.cbForceRegionConfig.CheckedChanged += new System.EventHandler(this.cbForceRegionConfig_CheckedChanged);
-            // 
             // SettingsBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(316, 418);
+            this.ClientSize = new System.Drawing.Size(316, 516);
             this.Controls.Add(this.gbEllipseSettings);
             this.Controls.Add(this.gbGlobalSettings);
             this.Controls.Add(this.gbDebugging);
