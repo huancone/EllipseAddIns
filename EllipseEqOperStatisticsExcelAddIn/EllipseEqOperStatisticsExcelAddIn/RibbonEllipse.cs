@@ -226,7 +226,6 @@ namespace EllipseEqOperStatisticsExcelAddIn
                         {
                             _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
                             _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
-                            throw;
                         }
                         finally
                         {
