@@ -49,10 +49,15 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse">
+    <Reference Include="System.Web.Services.Ellipse, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Web References\System.Web.Services.Ellipse.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
+    <Reference Include="System.Web.Services.Ellipse.Authenticator">
+      <HintPath>Web References\System.Web.Services.Ellipse.Authenticator.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute, Version=1.0.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
@@ -102,7 +107,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Web References\ScreenService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -154,14 +158,16 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Web References\AuthenticatorService\AuthenticatorService.wsdl" />
-    <None Include="Web References\AuthenticatorService\NameValuePair1.datasource">
+    <None Include="Web References\AuthenticatorService\NameValuePair.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\AuthenticatorService\Reference.map">

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:tns="http://connectivity.service.ews.mincom.com" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" targetNamespace="http://connectivity.service.ews.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:tns="http://connectivity.service.ews.mincom.com" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" targetNamespace="http://connectivity.service.ews.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
       <xsd:complexType name="OperationContext">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
           <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
           <xsd:element minOccurs="0" name="position" type="xsd:string" />
           <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="runAs" type="tns:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
           <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
         </xsd:sequence>
@@ -81,29 +84,29 @@
       </xsd:element>
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="getPositionsResponse">
-    <wsdl:part name="parameters" element="tns:getPositionsResponse" />
-  </wsdl:message>
-  <wsdl:message name="authenticateResponse">
-    <wsdl:part name="parameters" element="tns:authenticateResponse" />
-  </wsdl:message>
-  <wsdl:message name="getDistrictsResponse">
-    <wsdl:part name="parameters" element="tns:getDistrictsResponse" />
-  </wsdl:message>
   <wsdl:message name="authenticateRequest">
     <wsdl:part name="parameters" element="tns:authenticate" />
   </wsdl:message>
   <wsdl:message name="flushResponse">
     <wsdl:part name="parameters" element="tns:flushResponse" />
   </wsdl:message>
+  <wsdl:message name="getPositionsRequest">
+    <wsdl:part name="parameters" element="tns:getPositions" />
+  </wsdl:message>
   <wsdl:message name="flushRequest">
     <wsdl:part name="parameters" element="tns:flush" />
+  </wsdl:message>
+  <wsdl:message name="authenticateResponse">
+    <wsdl:part name="parameters" element="tns:authenticateResponse" />
+  </wsdl:message>
+  <wsdl:message name="getPositionsResponse">
+    <wsdl:part name="parameters" element="tns:getPositionsResponse" />
   </wsdl:message>
   <wsdl:message name="getDistrictsRequest">
     <wsdl:part name="parameters" element="tns:getDistricts" />
   </wsdl:message>
-  <wsdl:message name="getPositionsRequest">
-    <wsdl:part name="parameters" element="tns:getPositions" />
+  <wsdl:message name="getDistrictsResponse">
+    <wsdl:part name="parameters" element="tns:getDistrictsResponse" />
   </wsdl:message>
   <wsdl:portType name="Authenticator">
     <wsdl:operation name="authenticate">

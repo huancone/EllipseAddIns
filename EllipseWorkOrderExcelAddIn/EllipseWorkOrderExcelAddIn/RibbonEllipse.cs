@@ -10,6 +10,7 @@ using EllipseWorkOrdersClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
+using FormAuthenticate = EllipseCommonsClassLibrary.FormAuthenticate;
 
 namespace EllipseWorkOrderExcelAddIn
 {

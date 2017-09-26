@@ -102,9 +102,9 @@ namespace EllipseCommonsClassLibrary
                 dbLink = "";
                 dbReference = _defaultDbReferenceName;
             }
-            else if (enviroment == EnviromentConstants.EllipseTest)
+            else if (enviroment == EnviromentConstants.EllipseTest89)
             {
-                _dbname = "EL84TST";
+                _dbname = "EL89TST";
                 _dbuser = "SIGCON";
                 _dbpass = "ventyx";
                 dbLink = "";
