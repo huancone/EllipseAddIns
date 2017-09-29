@@ -32,79 +32,41 @@ namespace EllipseCommonsClassLibrary.Connections
 
         private static string SelectServiceUrl(string enviroment, string serviceType = null)
         {
-
             if (serviceType == null)
                 serviceType = ServiceType.EwsService;
 
+            var serviceFile = Configuration.ServiceFilePath + Configuration.ConfigXmlFileName;
+            if (!File.Exists(serviceFile))
+                throw new Exception("No se puede leer el archivo de configuración de servicios de Ellipse. Asegúrese de que el archivo exista o cree un archivo local.");
+
+            var doc = XDocument.Load(serviceFile);
+            var urlServer = "";
             if (serviceType.Equals(ServiceType.EwsService))
             {
-                try
-                {
-                    //Primeramente intenta conseguir la URL del archivo local o de red
-                    var localFile = Configuration.LocalDataPath + Configuration.ConfigXmlFileName;
-                    var networkFile = Configuration.UrlServiceFileLocation + Configuration.ConfigXmlFileName;
-                    var doc = File.Exists(localFile) ? XDocument.Load(localFile) : XDocument.Load(networkFile);
 
-                    var urlServer = "";
+                if (enviroment == EllipseProductivo)
+                    urlServer = WebService.Productivo;
+                if (enviroment == EllipseContingencia)
+                    urlServer = WebService.Contingencia;
+                if (enviroment == EllipseDesarrollo)
+                    urlServer = WebService.Desarrollo;
+                if (enviroment == EllipseTest)
+                    urlServer = WebService.Test;
 
-                    if (enviroment == EllipseProductivo)
-                        urlServer = WebService.Productivo;
-                    if (enviroment == EllipseContingencia)
-                        urlServer = WebService.Contingencia;
-                    if (enviroment == EllipseDesarrollo)
-                        urlServer = WebService.Desarrollo;
-                    if (enviroment == EllipseTest)
-                        urlServer = WebService.Test;
-
-                    return doc.XPathSelectElement(urlServer + "[1]").Value;
-                }
-                catch (Exception)
-                {
-                    //Si no encuentra el archivo de red por alguna causa utiliza el valor predeterminado
-                    if (enviroment == EllipseProductivo)
-                        return WebService.UrlProductivo;
-                    if (enviroment == EllipseContingencia)
-                        return WebService.UrlContingencia;
-                    if (enviroment == EllipseDesarrollo)
-                        return WebService.UrlDesarrollo;
-                    if (enviroment == EllipseTest)
-                        return WebService.UrlTest;
-                }
-
+                return doc.XPathSelectElement(urlServer + "[1]").Value;
             }
-            else if (serviceType.Equals(ServiceType.PostService))
+            if (serviceType.Equals(ServiceType.PostService))
             {
-                try
-                {
-                    //Primeramente intenta conseguir la URL del archivo local o de red
-                    var localFile = Configuration.LocalDataPath + Configuration.ConfigXmlFileName;
-                    var networkFile = Configuration.UrlServiceFileLocation + Configuration.ConfigXmlFileName;
-                    var doc = File.Exists(localFile) ? XDocument.Load(localFile) : XDocument.Load(networkFile);
+                if (enviroment == EllipseProductivo)
+                    urlServer = UrlPost.Productivo;
+                if (enviroment == EllipseContingencia)
+                    urlServer = UrlPost.Contingencia;
+                if (enviroment == EllipseDesarrollo)
+                    urlServer = UrlPost.Desarrollo;
+                if (enviroment == EllipseTest)
+                    urlServer = UrlPost.Test;
 
-                    var urlServer = "";
-
-                    if (enviroment == EllipseProductivo)
-                        urlServer = UrlPost.Productivo;
-                    if (enviroment == EllipseContingencia)
-                        urlServer = UrlPost.Contingencia;
-                    if (enviroment == EllipseDesarrollo)
-                        urlServer = UrlPost.Desarrollo;
-                    if (enviroment == EllipseTest)
-                        urlServer = UrlPost.Test;
-
-                    return doc.XPathSelectElement(urlServer + "[1]").Value;
-                }
-                catch (Exception)
-                {
-                    if (enviroment == EllipseProductivo)
-                        return UrlPost.UrlProductivo;
-                    if (enviroment == EllipseContingencia)
-                        return UrlPost.Contingencia;
-                    if (enviroment == EllipseDesarrollo)
-                        return UrlPost.Desarrollo;
-                    if (enviroment == EllipseTest)
-                        return UrlPost.Test;
-                }
+                return doc.XPathSelectElement(urlServer + "[1]").Value;
             }
             throw new NullReferenceException("No se ha encontrado el servidor seleccionado");
         }

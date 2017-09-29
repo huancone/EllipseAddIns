@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Utilities;
 
 namespace EllipseStdTextClassLibrary
 {
@@ -108,7 +109,7 @@ namespace EllipseStdTextClassLibrary
 
                 //se cargan los parámetros de la solicitud
                 requestSt.stdTextId = stdTextId;
-                var splittedText = Utils.SplitText(text, _lineLength);
+                var splittedText = MyUtilities.SplitText(text, _lineLength);
                 requestSt.textLine = splittedText;
                 //se envía la acción
                 proxySt.setText(opContext, requestSt);
@@ -136,7 +137,7 @@ namespace EllipseStdTextClassLibrary
                 var proxySt = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustom"};
 
                 //text = SpliceText(text, _lineLength);
-                var arrayText = Utils.SplitText(text, _lineLength);
+                var arrayText = MyUtilities.SplitText(text, _lineLength);
                 //se envía la acción
 
                 //proxySt.setExtendedText(opContext, stdTextId, text);

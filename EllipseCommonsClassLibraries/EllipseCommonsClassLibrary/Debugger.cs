@@ -2,6 +2,8 @@
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Utilities.MyDateTime;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 
 namespace EllipseCommonsClassLibrary
@@ -32,7 +34,7 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 var errorFilePath = Configuration.LocalDataPath + @"logs\";
-                var errorFileName = @"error" + TimeOperations.FormatDateToString(DateTime.Today, TimeOperations.DateTimeFormats.DateYYYYMMDD) + ".txt";
+                var errorFileName = @"error" + Utilities.MyDateTime.Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
 
                 var lastError = new DebugError
                 {
@@ -64,7 +66,7 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 var warningFilePath = Configuration.LocalDataPath + @"logs\";
-                var warningFileName = @"warning" + TimeOperations.FormatDateToString(DateTime.Today, TimeOperations.DateTimeFormats.DateYYYYMMDD) + ".txt";
+                var warningFileName = @"warning" + Utilities.MyDateTime.Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
 
                 var lastWarning = new DebugError
                 {
@@ -99,7 +101,7 @@ namespace EllipseCommonsClassLibrary
                     return;
 
                 var queryFilePath = Configuration.LocalDataPath + @"queries\";
-                var queryFileName = @"queries" + TimeOperations.FormatDateToString(DateTime.Today, TimeOperations.DateTimeFormats.DateYYYYMMDD) + ".txt";
+                var queryFileName = @"queries" + Utilities.MyDateTime.Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
 
                 var dateTime = "" + DateTime.Now;
 

@@ -7,6 +7,8 @@ using System.Web.Services.Ellipse.Post;
 using Oracle.ManagedDataAccess.Client;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Utilities;
+
 using System.Threading;
 
 namespace EllipseCommonsClassLibrary
@@ -97,14 +99,6 @@ namespace EllipseCommonsClassLibrary
             else if (enviroment == Connections.Environments.EllipseTest)
             {
                 _dbname = "EL8TEST";
-                _dbuser = "SIGCON";
-                _dbpass = "ventyx";
-                dbLink = "";
-                dbReference = _defaultDbReferenceName;
-            }
-            else if (enviroment == Connections.Environments.EllipseTest)
-            {
-                _dbname = "EL84TST";
                 _dbuser = "SIGCON";
                 _dbpass = "ventyx";
                 dbLink = "";
@@ -557,12 +551,12 @@ namespace EllipseCommonsClassLibrary
                            " FROM EPROFILES JOIN ELLIPSE.MSF02A PACCESS ON EPROFILES.PROFILE = PACCESS.ENTITY" +
                            " WHERE PACCESS.APPLICATION_NAME = '" + codeProgram + "' AND ACCESS_LEVEL = '" + accessType + "'";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             var dReader = GetQueryResult(query);
 
             var result = !(dReader == null || dReader.IsClosed || !dReader.HasRows || !dReader.Read());
-
+            
             CloseConnection();
             return result;
         }
@@ -578,7 +572,7 @@ namespace EllipseCommonsClassLibrary
         {
             var listItems = new List<EllipseCodeItem>();
             var query = "SELECT * FROM " + dbReference + ".MSF010" + dbLink + " WHERE TABLE_TYPE = '" + tableType + "' AND ACTIVE_FLAG = 'Y'";
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             var drItemCodes = GetQueryResult(query);
 

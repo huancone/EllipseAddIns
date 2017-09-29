@@ -77,11 +77,11 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReviewQuality = this.Factory.CreateRibbonButton();
             this.btnReReviewQuality = this.Factory.CreateRibbonButton();
             this.btnCleanQualitySheet = this.Factory.CreateRibbonButton();
-            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.menuCriticalControls = this.Factory.CreateRibbonMenu();
             this.btnReviewCriticalControls = this.Factory.CreateRibbonButton();
             this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
             this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
@@ -388,13 +388,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnCleanQualitySheet.ShowImage = true;
             this.btnCleanQualitySheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanQualitySheet_Click);
             // 
-            // btnStopThread
-            // 
-            this.btnStopThread.Label = "Detener &Proceso";
-            this.btnStopThread.Name = "btnStopThread";
-            this.btnStopThread.ShowImage = true;
-            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
             // menuCriticalControls
             // 
             this.menuCriticalControls.Items.Add(this.btnReviewCriticalControls);
@@ -424,6 +417,13 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnExportCriticalControls.Name = "btnExportCriticalControls";
             this.btnExportCriticalControls.ShowImage = true;
             this.btnExportCriticalControls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExportCriticalControls_Click);
+            // 
+            // btnStopThread
+            // 
+            this.btnStopThread.Label = "Detener &Proceso";
+            this.btnStopThread.Name = "btnStopThread";
+            this.btnStopThread.ShowImage = true;
+            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
             // button1
             // 

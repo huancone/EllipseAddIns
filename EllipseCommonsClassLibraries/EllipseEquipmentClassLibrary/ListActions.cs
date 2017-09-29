@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Utilities;
 using EllipseEquipmentClassLibrary.EquipmentListService;
 
 namespace EllipseEquipmentClassLibrary
@@ -131,7 +132,7 @@ namespace EllipseEquipmentClassLibrary
                 if (string.IsNullOrEmpty(eqStatus))
                     statusRequirement = "";
                 else
-                    statusRequirement = " AND EQ.EQUIP_STATUS = '" + Utils.GetCodeKey(eqStatus) + "'";
+                    statusRequirement = " AND EQ.EQUIP_STATUS = '" + MyUtilities.GetCodeKey(eqStatus) + "'";
 
                 var query = " SELECT" +
                             "   ELI.MEM_EQUIP_GRP EQUIP_NO, " +
@@ -156,7 +157,7 @@ namespace EllipseEquipmentClassLibrary
                             " " + queryCriteria1 +
                             " " + queryCriteria2 +
                             " " + statusRequirement;
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }

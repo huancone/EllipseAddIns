@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary.Connections;
@@ -99,57 +100,44 @@ namespace EllipseCommonsClassLibrary
             cbDebugWarnings.Checked = Debugger.DebugWarnings;
             cbDebugQueries.Checked = Debugger.DebugQueries;
             tbLocalDataPath.Text = Configuration.LocalDataPath;
-            tbServiceFileNetworkUrl.Text = Configuration.UrlServiceFileLocation;
-        }
-
-        private void cbDebugErrors_CheckedChanged(object sender, EventArgs e)
-        {
-            Debugger.DebugErrors = cbDebugErrors.Checked;
-        }
-
-        private void cbDebugWarnings_CheckedChanged(object sender, EventArgs e)
-        {
-            Debugger.DebugWarnings = cbDebugWarnings.Checked;
-        }
-
-        private void cbDebugQueries_CheckedChanged(object sender, EventArgs e)
-        {
-            Debugger.DebugQueries = cbDebugQueries.Checked;
-        }
-
-        private void tbLocalDataPath_TextChanged(object sender, EventArgs e)
-        {
-            Configuration.LocalDataPath = tbLocalDataPath.Text;
+            tbServiceFileNetworkUrl.Text = Configuration.ServiceFilePath;
+            tbTnsNameUrl.Text = Configuration.TnsnamesFilePath;
+            cbForceRegionConfig.Checked = Debugger.ForceRegionalization;
         }
 
         private void okButton_Click(object sender, EventArgs e)
         {
-
+            Configuration.LocalDataPath = tbLocalDataPath.Text;
+            Debugger.DebugErrors = cbDebugErrors.Checked;
+            Debugger.DebugWarnings = cbDebugWarnings.Checked;
+            Debugger.DebugQueries = cbDebugQueries.Checked;
+            Configuration.ServiceFilePath = tbServiceFileNetworkUrl.Text;
+            Debugger.DebugErrors = cbDebugErrors.Checked;
+            Debugger.ForceRegionalization = cbForceRegionConfig.Checked;
         }
 
-        private void btnGenerateFromNetwork_Click(object sender, EventArgs e)
+        private void btnGenerateFromUrl_Click(object sender, EventArgs e)
         {
             try
             {
-                Configuration.GenerateEllipseConfigurationXmlFile(tbServiceFileNetworkUrl.Text);
-                MessageBox.Show("Se ha generado el archivo local de configuración de Ellipse a partir del archivo de red " + Configuration.UrlServiceFileLocation + Configuration.ConfigXmlFileName, "Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Configuration.GenerateEllipseConfigurationXmlFile(Configuration.DefaultServiceFilePath, tbServiceFileNetworkUrl.Text);
+                MessageBox.Show("Se ha generado el archivo local de configuración de Ellipse a partir del archivo de red " + Configuration.DefaultServiceFilePath + Configuration.ConfigXmlFileName + " al directorio especificado", "Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Generate Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void btnGenerateDefault_Click(object sender, EventArgs e)
         {
             try
             {
-                Configuration.GenerateEllipseConfigurationXmlFile();
+                Configuration.GenerateEllipseConfigurationXmlFile(tbServiceFileNetworkUrl.Text);
                 MessageBox.Show("Se ha generado el archivo local de configuración de Ellipse de forma predeterminada", "Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, ex.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Generate Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -166,9 +154,43 @@ namespace EllipseCommonsClassLibrary
             }
         }
 
-        private void cbForceRegionConfig_CheckedChanged(object sender, EventArgs e)
+
+        private void btnRestoreServicePath_Click(object sender, EventArgs e)
         {
-            Debugger.DebugErrors = cbDebugErrors.Checked;
+            tbServiceFileNetworkUrl.Text = Configuration.DefaultServiceFilePath;
+        }
+
+        private void btnRestoreLocalPath_Click(object sender, EventArgs e)
+        {
+            tbLocalDataPath.Text = Configuration.DefaultLocalDataPath;
+        }
+
+        private void btnOpenTnsnamesPath_Click(object sender, EventArgs e)
+        {
+            Process.Start(Configuration.DefaultTnsnamesFilePath);
+        }
+
+        private void btnOpenLocalPath_Click(object sender, EventArgs e)
+        {
+            Process.Start(Configuration.LocalDataPath);
+        }
+
+        private void btnOpenServicesPath_Click(object sender, EventArgs e)
+        {
+            Process.Start(Configuration.ServiceFilePath);
+        }
+
+        private void btnGenerateTnsnamesFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Configuration.GenerateEllipseTnsnamesFile(Configuration.TnsnamesFilePath);
+                MessageBox.Show("Se ha generado el archivo local de TNSNAMES de forma predeterminada", "Generate Local Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Generate Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

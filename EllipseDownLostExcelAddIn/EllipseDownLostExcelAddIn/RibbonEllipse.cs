@@ -5,6 +5,12 @@ using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Constants;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Utilities.MyDateTime;
+using EllipseCommonsClassLibrary.Utilities.Shifts;
 using EllipseEquipmentClassLibrary;
 using EllipseStdTextClassLibrary;
 using EllipseWorkOrdersClassLibrary;
@@ -46,7 +52,7 @@ namespace EllipseDownLostExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -281,7 +287,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell(08, TitleRow01).Value = "ELAPSED";
                 _cells.GetCell(08, TitleRow01).Style = StyleConstants.TitleInformation;
                 _cells.GetCell(09, TitleRow01).Value = "COLLECTION";
-                _cells.GetCell(09, TitleRow01).AddComment(ShiftConstants.ShiftCodes.HourToHourCode + ": Hora a Hora\n" + ShiftConstants.ShiftCodes.DayNightCode + ": Dia 06-18 y Noche 18-06 \n" + ShiftConstants.ShiftCodes.DailyZeroCode + ": Dia 00-24\n" + ShiftConstants.ShiftCodes.DailyMorningCode + ": Dia 06-06");
+                _cells.GetCell(09, TitleRow01).AddComment(ShiftCodes.HourToHourCode + ": Hora a Hora\n" + ShiftCodes.DayNightCode + ": Dia 06-18 y Noche 18-06 \n" + ShiftCodes.DailyZeroCode + ": Dia 00-24\n" + ShiftCodes.DailyMorningCode + ": Dia 06-06");
                 _cells.GetCell(09, TitleRow01).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(10, TitleRow01).Value = "SHIFT";
                 _cells.GetCell(10, TitleRow01).AddComment("Este campo será ignorado si usa alguna colección");
@@ -299,10 +305,10 @@ namespace EllipseDownLostExcelAddIn
                 //Adición de validaciones de campo
                 var collectionList = new List<string>
                 {
-                    ShiftConstants.ShiftCodes.HourToHourCode,
-                    ShiftConstants.ShiftCodes.DailyZeroCode,
-                    ShiftConstants.ShiftCodes.DailyMorningCode,
-                    ShiftConstants.ShiftCodes.DayNightCode
+                    ShiftCodes.HourToHourCode,
+                    ShiftCodes.DailyZeroCode,
+                    ShiftCodes.DailyMorningCode,
+                    ShiftCodes.DayNightCode
                 };
                 _cells.SetValidationList(_cells.GetRange(09, TitleRow01 + 1, 09, TitleRow01 + 101), collectionList, ValidationSheetName, 4);
 
@@ -428,7 +434,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell(08, TitleRow01).Value = "ELAPSED";
                 _cells.GetCell(08, TitleRow01).Style = StyleConstants.TitleInformation;
                 _cells.GetCell(09, TitleRow01).Value = "COLLECTION";
-                _cells.GetCell(09, TitleRow01).AddComment(ShiftConstants.ShiftCodes.HourToHourCode + ": Hora a Hora\n" + ShiftConstants.ShiftCodes.DayNightCode + ": Dia 06-18 y Noche 18-06 \n" + ShiftConstants.ShiftCodes.DailyZeroCode + ": Dia 00-24\n" + ShiftConstants.ShiftCodes.DailyMorningCode + ": Dia 06-06");
+                _cells.GetCell(09, TitleRow01).AddComment(ShiftCodes.HourToHourCode + ": Hora a Hora\n" + ShiftCodes.DayNightCode + ": Dia 06-18 y Noche 18-06 \n" + ShiftCodes.DailyZeroCode + ": Dia 00-24\n" + ShiftCodes.DailyMorningCode + ": Dia 06-06");
                 _cells.GetCell(09, TitleRow01).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(10, TitleRow01).Value = "SHIFT";
                 _cells.GetCell(10, TitleRow01).AddComment("Este campo será ignorado si usa alguna colección");
@@ -545,7 +551,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell(08, TitleRow01).Value = "ELAPSED";
                 _cells.GetCell(08, TitleRow01).Style = StyleConstants.TitleInformation;
                 _cells.GetCell(09, TitleRow01).Value = "COLLECTION";
-                _cells.GetCell(09, TitleRow01).AddComment(ShiftConstants.ShiftCodes.HourToHourCode + ": Hora a Hora\n" + ShiftConstants.ShiftCodes.DayNightCode + ": Dia 06-18 y Noche 18-06 \n" + ShiftConstants.ShiftCodes.DailyZeroCode + ": Dia 00-24\n" + ShiftConstants.ShiftCodes.DailyMorningCode + ": Dia 06-06");
+                _cells.GetCell(09, TitleRow01).AddComment(ShiftCodes.HourToHourCode + ": Hora a Hora\n" + ShiftCodes.DayNightCode + ": Dia 06-18 y Noche 18-06 \n" + ShiftCodes.DailyZeroCode + ": Dia 00-24\n" + ShiftCodes.DailyMorningCode + ": Dia 06-06");
                 _cells.GetCell(09, TitleRow01).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(10, TitleRow01).Value = "SHIFT";
                 _cells.GetCell(10, TitleRow01).AddComment("Este campo será ignorado si usa alguna colección");
@@ -571,10 +577,10 @@ namespace EllipseDownLostExcelAddIn
                 //Adición de validaciones de campo
                 var collectionList = new List<string>
                 {
-                    ShiftConstants.ShiftCodes.HourToHourCode,
-                    ShiftConstants.ShiftCodes.DailyZeroCode,
-                    ShiftConstants.ShiftCodes.DailyMorningCode,
-                    ShiftConstants.ShiftCodes.DayNightCode
+                    ShiftCodes.HourToHourCode,
+                    ShiftCodes.DailyZeroCode,
+                    ShiftCodes.DailyMorningCode,
+                    ShiftCodes.DayNightCode
                 };
                 _cells.SetValidationList(_cells.GetRange(09, TitleRow01 + 1, 09, TitleRow01 + 101), collectionList, ValidationSheetName, 4);
 
@@ -700,7 +706,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell(08, TitleRow01).Value = "ELAPSED";
                 _cells.GetCell(08, TitleRow01).Style = StyleConstants.TitleInformation;
                 _cells.GetCell(09, TitleRow01).Value = "COLLECTION";
-                _cells.GetCell(09, TitleRow01).AddComment(ShiftConstants.ShiftCodes.HourToHourCode + ": Hora a Hora\n" + ShiftConstants.ShiftCodes.DayNightCode + ": Dia 06-18 y Noche 18-06 \n" + ShiftConstants.ShiftCodes.DailyZeroCode + ": Dia 00-24\n" + ShiftConstants.ShiftCodes.DailyMorningCode + ": Dia 06-06");
+                _cells.GetCell(09, TitleRow01).AddComment(ShiftCodes.HourToHourCode + ": Hora a Hora\n" + ShiftCodes.DayNightCode + ": Dia 06-18 y Noche 18-06 \n" + ShiftCodes.DailyZeroCode + ": Dia 00-24\n" + ShiftCodes.DailyMorningCode + ": Dia 06-06");
                 _cells.GetCell(09, TitleRow01).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(10, TitleRow01).Value = "SHIFT";
                 _cells.GetCell(10, TitleRow01).AddComment("Este campo será ignorado si usa alguna colección");
@@ -747,7 +753,7 @@ namespace EllipseDownLostExcelAddIn
                 var startDate = _cells.GetNullIfTrimmedEmpty(cells.GetCell("D3").Value);
                 var endDate = _cells.GetNullIfTrimmedEmpty(cells.GetCell("D4").Value);
 
-                _eFunctions.SetDBSettings(EnviromentConstants.ScadaRdb);
+                _eFunctions.SetDBSettings(Environments.ScadaRdb);
                 var sqlQuery = Queries.GetDownLostPbv(startDate, endDate);
 
                 var reader = _eFunctions.GetSqlQueryResult(sqlQuery);
@@ -1003,11 +1009,11 @@ namespace EllipseDownLostExcelAddIn
                             finishTime = string.IsNullOrWhiteSpace(finishTime) ? finishTime : finishTime.PadLeft(4, '0');
 
                             LostDownObject[] ldObject;
-                            if (collection == ShiftConstants.ShiftCodes.HourToHourCode ||
+                            if (collection == ShiftCodes.HourToHourCode ||
                                 //hora a hora (Ej. 00-01, 01-02, ..., 22-23, 23-24
-                                collection == ShiftConstants.ShiftCodes.DailyZeroCode || //diaria de 00-24
-                                collection == ShiftConstants.ShiftCodes.DailyMorningCode || //diaria de 06-06
-                                collection == ShiftConstants.ShiftCodes.DayNightCode) //dia 06-18 y noche de 18-06
+                                collection == ShiftCodes.DailyZeroCode || //diaria de 00-24
+                                collection == ShiftCodes.DailyMorningCode || //diaria de 06-06
+                                collection == ShiftCodes.DayNightCode) //dia 06-18 y noche de 18-06
                             {
                                 //si es generado por colecction
                                 var startEvent = new DateTime(
@@ -1025,21 +1031,21 @@ namespace EllipseDownLostExcelAddIn
                                     Convert.ToInt32(Convert.ToInt32(finishTime).ToString("0000").Substring(2, 2)),
                                     00);
                                 var shiftArray =
-                                    TimeOperations.GetSlots(GetTurnShifts(collection), startEvent, endEvent).ToArray();
+                                    Operations.GetSlots(GetTurnShifts(collection), startEvent, endEvent).ToArray();
 
                                 ldObject = new LostDownObject[shiftArray.Length];
 
                                 for (var j = 0; j < shiftArray.Length; j++)
                                 {
 
-                                    var dateString = TimeOperations.FormatDateToString(shiftArray[j].GetDate(),
-                                        TimeOperations.DateTimeFormats.DateYYYYMMDD);
+                                    var dateString = Operations.FormatDateToString(shiftArray[j].GetDate(),
+                                        Formats.DateYYYYMMDD);
                                     var startTimeString =
-                                        TimeOperations.FormatTimeToString(shiftArray[j].GetStartDateTime().TimeOfDay,
-                                            TimeOperations.DateTimeFormats.TimeHHMM, "");
+                                        Operations.FormatTimeToString(shiftArray[j].GetStartDateTime().TimeOfDay,
+                                            Formats.TimeHHMM, "");
                                     var endTimeString =
-                                        TimeOperations.FormatTimeToString(shiftArray[j].GetEndDateTime().TimeOfDay,
-                                            TimeOperations.DateTimeFormats.TimeHHMM, "");
+                                        Operations.FormatTimeToString(shiftArray[j].GetEndDateTime().TimeOfDay,
+                                            Formats.TimeHHMM, "");
 
                                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
                                         ldObject[j] = new LostDownObject(equipNo, compCode, compModCode, dateString,
@@ -1173,11 +1179,11 @@ namespace EllipseDownLostExcelAddIn
                             }
 
 
-                            if (collection == ShiftConstants.ShiftCodes.HourToHourCode ||
+                            if (collection == ShiftCodes.HourToHourCode ||
                                 //hora a hora (Ej. 00-01, 01-02, ..., 22-23, 23-24
-                                collection == ShiftConstants.ShiftCodes.DailyZeroCode || //diaria de 00-24
-                                collection == ShiftConstants.ShiftCodes.DailyMorningCode || //diaria de 06-06
-                                collection == ShiftConstants.ShiftCodes.DayNightCode) //dia 06-18 y noche de 18-06
+                                collection == ShiftCodes.DailyZeroCode || //diaria de 00-24
+                                collection == ShiftCodes.DailyMorningCode || //diaria de 06-06
+                                collection == ShiftCodes.DayNightCode) //dia 06-18 y noche de 18-06
                             {
                                 //si es generado por colecction
                                 var startEvent = new DateTime(
@@ -1195,21 +1201,21 @@ namespace EllipseDownLostExcelAddIn
                                     Convert.ToInt32(Convert.ToInt32(finishTime).ToString("0000").Substring(2, 2)),
                                     00);
                                 var shiftArray =
-                                    TimeOperations.GetSlots(GetTurnShifts(collection), startEvent, endEvent).ToArray();
+                                    Operations.GetSlots(GetTurnShifts(collection), startEvent, endEvent).ToArray();
 
                                 var ldObject = new LostDownObject[shiftArray.Length];
 
                                 for (var j = 0; j < shiftArray.Length; j++)
                                 {
 
-                                    var dateString = TimeOperations.FormatDateToString(shiftArray[j].GetDate(),
-                                        TimeOperations.DateTimeFormats.DateYYYYMMDD);
+                                    var dateString = Operations.FormatDateToString(shiftArray[j].GetDate(),
+                                        Formats.DateYYYYMMDD);
                                     var startTimeString =
-                                        TimeOperations.FormatTimeToString(shiftArray[j].GetStartDateTime().TimeOfDay,
-                                            TimeOperations.DateTimeFormats.TimeHHMM, "");
+                                        Operations.FormatTimeToString(shiftArray[j].GetStartDateTime().TimeOfDay,
+                                            Formats.TimeHHMM, "");
                                     var endTimeString =
-                                        TimeOperations.FormatTimeToString(shiftArray[j].GetEndDateTime().TimeOfDay,
-                                            TimeOperations.DateTimeFormats.TimeHHMM, "");
+                                        Operations.FormatTimeToString(shiftArray[j].GetEndDateTime().TimeOfDay,
+                                            Formats.TimeHHMM, "");
 
                                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
                                         ldObject[j] = new LostDownObject(equipNo, compCode, compModCode, dateString,
@@ -1826,17 +1832,17 @@ namespace EllipseDownLostExcelAddIn
         /// </summary>
         /// <param name="shiftPeriodCode">Código de colección del Turno</param>
         /// <returns></returns>
-        private static ShiftSlot[] GetTurnShifts(string shiftPeriodCode)
+        private static Slot[] GetTurnShifts(string shiftPeriodCode)
         {
-            if (shiftPeriodCode.Equals(ShiftConstants.ShiftCodes.HourToHourCode))
-                return ShiftConstants.ShiftPeriods.GetHourToHourShiftSlots();
-            if (shiftPeriodCode.Equals(ShiftConstants.ShiftCodes.DailyMorningCode))
-                return ShiftConstants.ShiftPeriods.GetDailyMorningSlots();
-            if (shiftPeriodCode.Equals(ShiftConstants.ShiftCodes.DailyZeroCode))
-                return ShiftConstants.ShiftPeriods.GetDailyZeroSlots();
+            if (shiftPeriodCode.Equals(ShiftCodes.HourToHourCode))
+                return ShiftPeriods.GetHourToHourSlots();
+            if (shiftPeriodCode.Equals(ShiftCodes.DailyMorningCode))
+                return ShiftPeriods.GetDailyMorningSlots();
+            if (shiftPeriodCode.Equals(ShiftCodes.DailyZeroCode))
+                return ShiftPeriods.GetDailyZeroSlots();
             // ReSharper disable once ConvertIfStatementToReturnStatement
-            if (shiftPeriodCode.Equals(ShiftConstants.ShiftCodes.DayNightCode))
-                return ShiftConstants.ShiftPeriods.GetDailyNightShiftSlots();
+            if (shiftPeriodCode.Equals(ShiftCodes.DayNightCode))
+                return ShiftPeriods.GetDailyNightSlots();
             return null;
         }
 
@@ -1980,7 +1986,7 @@ namespace EllipseDownLostExcelAddIn
                 "     AND COD.TABLE_TYPE = 'DT'" +
                 "   ORDER BY EQUIP_NO, COMP_CODE, COMP_MOD_CODE, START_DATE, START_TIME";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }
@@ -2016,7 +2022,7 @@ namespace EllipseDownLostExcelAddIn
                 "     AND COD.TABLE_TYPE = 'LP'" +
                 "   ORDER BY EQUIP_NO, COMP_CODE, COMP_MOD_CODE, START_DATE, START_TIME";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }
@@ -2037,7 +2043,7 @@ namespace EllipseDownLostExcelAddIn
             " WHERE TABLE_TYPE = 'DT'" +
             " ORDER BY TABLE_TYPE, TABLE_CODE, TABLE_DESC";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }
@@ -2058,7 +2064,7 @@ namespace EllipseDownLostExcelAddIn
             " WHERE TABLE_TYPE = 'LP'" +
             " ORDER BY TABLE_TYPE, TABLE_CODE, TABLE_DESC";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }
@@ -2082,7 +2088,7 @@ namespace EllipseDownLostExcelAddIn
                 "     AND DW.STOP_TIME = LPAD('" + startTime + "', 4, '0')" +
                 "     AND DW.START_TIME = LPAD('" + endTime + "', 4, '0')";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }
@@ -2112,7 +2118,7 @@ namespace EllipseDownLostExcelAddIn
                 "     AND LS.STOP_TIME = LPAD('" + startTime + "', 4, '0')" +
                 "     AND LS.START_TIME = LPAD('" + endTime + "', 4, '0')";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }
@@ -2295,7 +2301,7 @@ namespace EllipseDownLostExcelAddIn
                            "FROM " +
                            "  PU_EVENT ";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }
