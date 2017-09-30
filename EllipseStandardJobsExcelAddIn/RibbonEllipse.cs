@@ -5,6 +5,10 @@ using System.Linq;
 using System.Threading;
 using Microsoft.Office.Tools.Ribbon;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Constants;
 using EllipseStandardJobsClassLibrary;
 using StandardJobService = EllipseStandardJobsClassLibrary.StandardJobService;
 using StandardJobTaskService = EllipseStandardJobsClassLibrary.StandardJobTaskService;
@@ -56,7 +60,7 @@ namespace EllipseStandardJobsExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -1291,41 +1295,41 @@ namespace EllipseStandardJobsExcelAddIn
                     stdJob.WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     stdJob.StandardJobNo = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
                     stdJob.Status = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value);
-                    stdJob.StandardJobDescription = Utils.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null;
+                    stdJob.StandardJobDescription = MyUtilities.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null;
                     //USO_OTS	        
                     //USO_MSTS	        
                     //ULTIMO_USO	    
                     //NO_OF_TASKS	    
-                    stdJob.OriginatorId = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
-                    stdJob.AssignPerson = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
-                    stdJob.OrigPriority = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
-                    stdJob.WorkOrderType = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
-                    stdJob.MaintenanceType = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
-                    stdJob.CompCode = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
-                    stdJob.CompModCode = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
-                    stdJob.UnitOfWork = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
-                    stdJob.UnitsRequired = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
-                    stdJob.CalculatedDurationsHrsFlg = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? "" + Utils.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(19, i).Value)) : null;
-                    stdJob.EstimatedDurationsHrs = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
-                    stdJob.AccountCode = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
-                    stdJob.ReallocAccCode = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
-                    stdJob.ProjectNo = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
-                    stdJob.EstimatedOtherCost = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
+                    stdJob.OriginatorId = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
+                    stdJob.AssignPerson = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
+                    stdJob.OrigPriority = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
+                    stdJob.WorkOrderType = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
+                    stdJob.MaintenanceType = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
+                    stdJob.CompCode = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
+                    stdJob.CompModCode = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
+                    stdJob.UnitOfWork = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
+                    stdJob.UnitsRequired = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
+                    stdJob.CalculatedDurationsHrsFlg = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? "" + MyUtilities.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(19, i).Value)) : null;
+                    stdJob.EstimatedDurationsHrs = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
+                    stdJob.AccountCode = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
+                    stdJob.ReallocAccCode = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
+                    stdJob.ProjectNo = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
+                    stdJob.EstimatedOtherCost = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
                     //CALC_LAB_HRS	    
                     //CALC_LAB_COST	    
                     //CALC_MAT_COST	    
                     //CALC_EQUIP_COST	
-                    stdJob.JobCode1 = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
-                    stdJob.JobCode2 = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
-                    stdJob.JobCode3 = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
-                    stdJob.JobCode4 = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;
-                    stdJob.JobCode5 = Utils.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null;
-                    stdJob.JobCode6 = Utils.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null;
-                    stdJob.JobCode7 = Utils.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null;
-                    stdJob.JobCode8 = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null;
-                    stdJob.JobCode9 = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
-                    stdJob.JobCode10 = Utils.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
-                    stdJob.ExtText = Utils.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
+                    stdJob.JobCode1 = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
+                    stdJob.JobCode2 = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
+                    stdJob.JobCode3 = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
+                    stdJob.JobCode4 = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;
+                    stdJob.JobCode5 = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null;
+                    stdJob.JobCode6 = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null;
+                    stdJob.JobCode7 = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null;
+                    stdJob.JobCode8 = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null;
+                    stdJob.JobCode9 = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
+                    stdJob.JobCode10 = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
+                    stdJob.ExtText = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
                     StandardJobActions.CreateStandardJob(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, stdJob);
                     if(!string.IsNullOrWhiteSpace(stdJob.ExtText))
                         StandardJobActions.SetStandardJobText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
@@ -1383,43 +1387,43 @@ namespace EllipseStandardJobsExcelAddIn
                     stdJob.WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     stdJob.StandardJobNo = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
                     stdJob.Status = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value);
-                    stdJob.StandardJobDescription = Utils.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null;
+                    stdJob.StandardJobDescription = MyUtilities.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null;
                     //USO_OTS	        
                     //USO_MSTS	        
                     //ULTIMO_USO	    
                     //NO_OF_TASKS	    
-                    stdJob.OriginatorId = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
-                    stdJob.AssignPerson = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
-                    stdJob.OrigPriority = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
-                    stdJob.WorkOrderType = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
-                    stdJob.MaintenanceType = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
-                    stdJob.CompCode = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
-                    stdJob.CompModCode = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
-                    stdJob.UnitOfWork = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
-                    stdJob.UnitsRequired = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
-                    stdJob.CalculatedDurationsHrsFlg = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? "" + Utils.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(19, i).Value)) : null;
-                    stdJob.EstimatedDurationsHrs = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
-                    stdJob.AccountCode = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
-                    stdJob.ReallocAccCode = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
-                    stdJob.ProjectNo = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
-                    stdJob.EstimatedOtherCost = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
+                    stdJob.OriginatorId = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
+                    stdJob.AssignPerson = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
+                    stdJob.OrigPriority = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
+                    stdJob.WorkOrderType = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
+                    stdJob.MaintenanceType = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
+                    stdJob.CompCode = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
+                    stdJob.CompModCode = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
+                    stdJob.UnitOfWork = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
+                    stdJob.UnitsRequired = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
+                    stdJob.CalculatedDurationsHrsFlg = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? "" + MyUtilities.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(19, i).Value)) : null;
+                    stdJob.EstimatedDurationsHrs = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
+                    stdJob.AccountCode = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
+                    stdJob.ReallocAccCode = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
+                    stdJob.ProjectNo = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
+                    stdJob.EstimatedOtherCost = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
                     //CALC_LAB_HRS	    
                     //CALC_LAB_COST	    
                     //CALC_MAT_COST	    
                     //CALC_EQUIP_COST	
-                    stdJob.JobCode1 = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
-                    stdJob.JobCode2 = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
-                    stdJob.JobCode3 = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
-                    stdJob.JobCode4 = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;
-                    stdJob.JobCode5 = Utils.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null;
-                    stdJob.JobCode6 = Utils.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null;
-                    stdJob.JobCode7 = Utils.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null;
-                    stdJob.JobCode8 = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null;
-                    stdJob.JobCode9 = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
-                    stdJob.JobCode10 = Utils.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
+                    stdJob.JobCode1 = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
+                    stdJob.JobCode2 = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
+                    stdJob.JobCode3 = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
+                    stdJob.JobCode4 = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;
+                    stdJob.JobCode5 = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null;
+                    stdJob.JobCode6 = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null;
+                    stdJob.JobCode7 = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null;
+                    stdJob.JobCode8 = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null;
+                    stdJob.JobCode9 = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
+                    stdJob.JobCode10 = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
 
                     //Texto Extendido
-                    stdJob.ExtText = Utils.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null;
+                    stdJob.ExtText = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null;
 
                     //
                     //stdJob.CalculatedDurationsHrsFlg = "true";
@@ -1484,25 +1488,25 @@ namespace EllipseStandardJobsExcelAddIn
                         WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
                         StandardJobNo = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                         Status = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
-                        OrigPriority = Utils.IsTrue(_cells.GetCell(6, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null,
-                        WorkOrderType = Utils.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null,
-                        MaintenanceType = Utils.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null,
-                        UnitOfWork = Utils.IsTrue(_cells.GetCell(9, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null,
-                        UnitsRequired = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null,
-                        CalculatedDurationsHrsFlg = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? "" + Utils.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)) : null,
-                        ResUpdateFlag = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? "" + Utils.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)) : null,
-                        MatUpdateFlag = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? "" + Utils.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(13, i).Value)) : null,
-                        EquipmentUpdateFlag = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? "" + Utils.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(14, i).Value)) : null,
-                        JobCode1 = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
-                        JobCode2 = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
-                        JobCode3 = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
-                        JobCode4 = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
-                        JobCode5 = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
-                        JobCode6 = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
-                        JobCode7 = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
-                        JobCode8 = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null,
-                        JobCode9 = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null,
-                        JobCode10 = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
+                        OrigPriority = MyUtilities.IsTrue(_cells.GetCell(6, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null,
+                        WorkOrderType = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null,
+                        MaintenanceType = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null,
+                        UnitOfWork = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null,
+                        UnitsRequired = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null,
+                        CalculatedDurationsHrsFlg = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? "" + MyUtilities.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)) : null,
+                        ResUpdateFlag = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? "" + MyUtilities.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)) : null,
+                        MatUpdateFlag = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? "" + MyUtilities.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(13, i).Value)) : null,
+                        EquipmentUpdateFlag = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? "" + MyUtilities.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(14, i).Value)) : null,
+                        JobCode1 = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
+                        JobCode2 = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
+                        JobCode3 = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
+                        JobCode4 = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
+                        JobCode5 = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
+                        JobCode6 = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
+                        JobCode7 = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
+                        JobCode8 = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null,
+                        JobCode9 = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null,
+                        JobCode10 = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
                         ExtText = _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value)
                     };
 
@@ -1592,7 +1596,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
             var i = TitleRow02 + 1;
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, EnviromentConstants.ServiceType.PostService);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, ServiceType.PostService);
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlService);
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -2289,65 +2293,65 @@ namespace EllipseStandardJobsExcelAddIn
                     var standardJob = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value);
                     var sjRefCodes = new StandardJobReferenceCodes()
                     {
-                        WorkRequest = Utils.IsTrue(_cells.GetCell(5, validationRow).Value)
+                        WorkRequest = MyUtilities.IsTrue(_cells.GetCell(5, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null,
-                        ComentariosDuraciones = Utils.IsTrue(_cells.GetCell(6, validationRow).Value)
+                        ComentariosDuraciones = MyUtilities.IsTrue(_cells.GetCell(6, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null,
-                        ComentariosDuracionesText = Utils.IsTrue(_cells.GetCell(7, validationRow).Value)
+                        ComentariosDuracionesText = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null,
-                        EmpleadoId = Utils.IsTrue(_cells.GetCell(8, validationRow).Value)
+                        EmpleadoId = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null,
-                        NroComponente = Utils.IsTrue(_cells.GetCell(9, validationRow).Value)
+                        NroComponente = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null,
-                        P1EqLivMed = Utils.IsTrue(_cells.GetCell(10, validationRow).Value)
+                        P1EqLivMed = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null,
-                        P2EqMovilMinero = Utils.IsTrue(_cells.GetCell(11, validationRow).Value)
+                        P2EqMovilMinero = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null,
-                        P3ManejoSustPeligrosa = Utils.IsTrue(_cells.GetCell(12, validationRow).Value)
+                        P3ManejoSustPeligrosa = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null,
-                        P4GuardasEquipo = Utils.IsTrue(_cells.GetCell(13, validationRow).Value)
+                        P4GuardasEquipo = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null,
-                        P5Aislamiento = Utils.IsTrue(_cells.GetCell(14, validationRow).Value)
+                        P5Aislamiento = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null,
-                        P6TrabajosAltura = Utils.IsTrue(_cells.GetCell(15, validationRow).Value)
+                        P6TrabajosAltura = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
-                        P7ManejoCargas = Utils.IsTrue(_cells.GetCell(16, validationRow).Value)
+                        P7ManejoCargas = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
-                        ProyectoIcn = Utils.IsTrue(_cells.GetCell(17, validationRow).Value)
+                        ProyectoIcn = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
-                        Reembolsable = Utils.IsTrue(_cells.GetCell(18, validationRow).Value)
+                        Reembolsable = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
-                        FechaNoConforme = Utils.IsTrue(_cells.GetCell(19, validationRow).Value)
+                        FechaNoConforme = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
-                        FechaNoConformeText = Utils.IsTrue(_cells.GetCell(20, validationRow).Value)
+                        FechaNoConformeText = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
-                        NoConforme = Utils.IsTrue(_cells.GetCell(21, validationRow).Value)
+                        NoConforme = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
-                        FechaEjecucion = Utils.IsTrue(_cells.GetCell(22, validationRow).Value)
+                        FechaEjecucion = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null,
-                        HoraIngreso = Utils.IsTrue(_cells.GetCell(23, validationRow).Value)
+                        HoraIngreso = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null,
-                        HoraSalida = Utils.IsTrue(_cells.GetCell(24, validationRow).Value)
+                        HoraSalida = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
-                        NombreBuque = Utils.IsTrue(_cells.GetCell(25, validationRow).Value)
+                        NombreBuque = MyUtilities.IsTrue(_cells.GetCell(25, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null,
-                        CalificacionEncuesta = Utils.IsTrue(_cells.GetCell(26, validationRow).Value)
+                        CalificacionEncuesta = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null,
-                        TareaCritica = Utils.IsTrue(_cells.GetCell(27, validationRow).Value)
+                        TareaCritica = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null,
-                        Garantia = Utils.IsTrue(_cells.GetCell(28, validationRow).Value)
+                        Garantia = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
-                        GarantiaText = Utils.IsTrue(_cells.GetCell(29, validationRow).Value)
+                        GarantiaText = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null,
-                        CodigoCertificacion = Utils.IsTrue(_cells.GetCell(30, validationRow).Value)
+                        CodigoCertificacion = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
-                        FechaEntrega = Utils.IsTrue(_cells.GetCell(31, validationRow).Value)
+                        FechaEntrega = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
-                        RelacionarEv = Utils.IsTrue(_cells.GetCell(32, validationRow).Value)
+                        RelacionarEv = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
-                        Departamento = Utils.IsTrue(_cells.GetCell(33, validationRow).Value)
+                        Departamento = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
-                        Localizacion = Utils.IsTrue(_cells.GetCell(34, validationRow).Value)
+                        Localizacion = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value)
                                 ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null
                     };
 

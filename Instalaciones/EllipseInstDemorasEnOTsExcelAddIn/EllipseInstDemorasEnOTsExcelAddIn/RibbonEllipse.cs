@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
 using EllipseWorkOrdersClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Interop.Excel;
@@ -41,7 +44,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -131,7 +134,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 _cells.GetCell(8, TitleRow01).Style = StyleConstants.TitleResult;
 
 
-                _cells.SetValidationList(_cells.GetCell(5, TitleRow01 + 1), Utils.GetCodeList(GetCompleteCodeList()), ValidationSheetName, 1);
+                _cells.SetValidationList(_cells.GetCell(5, TitleRow01 + 1), MyUtilities.GetCodeList(GetCompleteCodeList()), ValidationSheetName, 1);
 
                 Worksheet vstoSheet = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
 
@@ -440,7 +443,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                     {
                         if (!string.IsNullOrWhiteSpace("" + _cells.GetCell(12, i).Value))
                         {
-                            WorkOrderDTO wo = WorkOrderActions.GetNewWorkOrderDto(_cells.GetCell(1, i).Value);
+                            WorkOrderDTO wo = WorkOrderActions.GetNewWorkOrderDto("" + _cells.GetCell(1, i).Value);
                             var durationStart = new WorkOrderDuration();
                             string durationCode = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
                             durationCode = durationCode.Substring(0, 3); //para obtener solo el código

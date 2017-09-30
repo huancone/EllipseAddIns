@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using Microsoft.Office.Tools.Ribbon;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using System.Threading;
@@ -31,7 +33,7 @@ namespace EllipseQueryLoaderExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();

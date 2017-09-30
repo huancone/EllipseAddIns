@@ -5,6 +5,8 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Services.Ellipse.Post;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Constants;
+using EllipseCommonsClassLibrary.Utilities;
 using EllipseReferenceCodesClassLibrary;
 using EllipseStdTextClassLibrary;
 using EllipseStandardJobsClassLibrary.StandardJobService;
@@ -788,10 +790,10 @@ namespace EllipseStandardJobsClassLibrary
             requestXml = requestXml + "                 <standardJob>" + stdTask.StandardJob + "</standardJob>";
             requestXml = requestXml + "                 <districtCode>" + stdTask.DistrictCode + "</districtCode>";
             requestXml = requestXml + "                 <safetyInstr>" + stdTask.SafetyInstr + "</safetyInstr>";
-            if (Utils.IsTrue(stdTask.UnitsRequiredSpecified))
+            if (MyUtilities.IsTrue(stdTask.UnitsRequiredSpecified))
                 requestXml = requestXml + "                 <unitsRequired>" + stdTask.UnitsRequired + "</unitsRequired>";
             requestXml = requestXml + "                 <unitOfWork>" + stdTask.UnitOfWork + "</unitOfWork>";
-            if (Utils.IsTrue(stdTask.EstimatedMachHrsSpecified))
+            if (MyUtilities.IsTrue(stdTask.EstimatedMachHrsSpecified))
                 requestXml = requestXml + "                 <estimatedMachHrs>" + stdTask.EstimatedMachHrs + "</estimatedMachHrs>";
             requestXml = requestXml + "                 <sJTaskNo>" + stdTask.SjTaskNo + "</sJTaskNo>";
             requestXml = requestXml + "                 <sJTaskDesc>" + stdTask.SjTaskDesc + "</sJTaskDesc>";
@@ -800,9 +802,9 @@ namespace EllipseStandardJobsClassLibrary
             requestXml = requestXml + "                 <workGroup>" + stdTask.WorkGroup + "</workGroup>";
             requestXml = requestXml + "                 <assignPerson>" + stdTask.AssignPerson + "</assignPerson>";
             requestXml = requestXml + "                 <completeInstr>" + stdTask.CompleteInstr + "</completeInstr>";
-            if (Utils.IsTrue(stdTask.EstimatedDurationsHrsSpecified))
+            if (MyUtilities.IsTrue(stdTask.EstimatedDurationsHrsSpecified))
                 requestXml = requestXml + "                 <estimatedDurationsHrs>" + stdTask.EstimatedDurationsHrs + "</estimatedDurationsHrs>";
-            if(Utils.IsTrue(stdTask.UnitsPerDaySpecified))
+            if(MyUtilities.IsTrue(stdTask.UnitsPerDaySpecified))
                 requestXml = requestXml + "                 <unitsPerDay>" + stdTask.UnitsPerDay + "</unitsPerDay>";
             requestXml = requestXml + "				</dto>";
             requestXml = requestXml + "			</data>";
@@ -845,7 +847,7 @@ namespace EllipseStandardJobsClassLibrary
             requestXml = requestXml + "                 <districtCode>" + stdTask.DistrictCode + "</districtCode>";
             requestXml = requestXml + "                 <safetyInstr>" + stdTask.SafetyInstr + "</safetyInstr>";
             requestXml = requestXml + "                 <unitOfWork>" + stdTask.UnitOfWork + "</unitOfWork>";
-            if (Utils.IsTrue(stdTask.EstimatedMachHrsSpecified))
+            if (MyUtilities.IsTrue(stdTask.EstimatedMachHrsSpecified))
                 requestXml = requestXml + "                 <estimatedMachHrs>" + stdTask.EstimatedMachHrs + "</estimatedMachHrs>";
             requestXml = requestXml + "                 <sJTaskNo>" + stdTask.SjTaskNo + "</sJTaskNo>";
             requestXml = requestXml + "                 <sJTaskDesc>" + stdTask.SjTaskDesc + "</sJTaskDesc>";
@@ -854,11 +856,11 @@ namespace EllipseStandardJobsClassLibrary
             requestXml = requestXml + "                 <workGroup>" + stdTask.WorkGroup + "</workGroup>";
             requestXml = requestXml + "                 <assignPerson>" + stdTask.AssignPerson + "</assignPerson>";
             requestXml = requestXml + "                 <completeInstr>" + stdTask.CompleteInstr + "</completeInstr>";
-            if (Utils.IsTrue(stdTask.EstimatedDurationsHrsSpecified))
+            if (MyUtilities.IsTrue(stdTask.EstimatedDurationsHrsSpecified))
                 requestXml = requestXml + "                 <estimatedDurationsHrs>" + stdTask.EstimatedDurationsHrs + "</estimatedDurationsHrs>";
-            if (Utils.IsTrue(stdTask.UnitsRequiredSpecified))
+            if (MyUtilities.IsTrue(stdTask.UnitsRequiredSpecified))
                 requestXml = requestXml + "                 <unitsRequired>" + stdTask.UnitsRequired + "</unitsRequired>";
-            if (Utils.IsTrue(stdTask.UnitsPerDaySpecified))
+            if (MyUtilities.IsTrue(stdTask.UnitsPerDaySpecified))
                 requestXml = requestXml + "                 <unitsPerDay>" + stdTask.UnitsPerDay + "</unitsPerDay>";
             requestXml = requestXml + "				</dto>";
             requestXml = requestXml + "			</data>";
@@ -1191,14 +1193,14 @@ namespace EllipseStandardJobsClassLibrary
             {
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(districtCode))
-                    districtCode = " AND STD.DSTRCT_CODE IN (" + Utils.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
+                    districtCode = " AND STD.DSTRCT_CODE IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtCode = " AND STD.DSTRCT_CODE = '" + districtCode + "'";
 
 
                 //establecemos los parámetrode de grupo
                 if (string.IsNullOrEmpty(workGroup))
-                    workGroup = " AND STD.WORK_GROUP IN (" + Utils.GetListInSeparator(Groups.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
+                    workGroup = " AND STD.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
                 else
                     workGroup = " AND STD.WORK_GROUP = '" + workGroup + "'";
 
@@ -1221,7 +1223,7 @@ namespace EllipseStandardJobsClassLibrary
                     "" + districtCode +
                     " ORDER BY STD.WORK_GROUP, STD.STD_JOB_NO";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
@@ -1230,14 +1232,14 @@ namespace EllipseStandardJobsClassLibrary
             {
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(districtCode))
-                    districtCode = " IN (" + Utils.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
+                    districtCode = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtCode = " IN ('" + districtCode + "')";
 
 
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(workGroup))
-                    workGroup = " IN (" + Utils.GetListInSeparator(Groups.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
+                    workGroup = " IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
                 else
                     workGroup = " IN ('" + workGroup + "')";
 
@@ -1263,7 +1265,7 @@ namespace EllipseStandardJobsClassLibrary
                                " STD.WORK_GROUP " + workGroup +
                                " AND  STD.DSTRCT_CODE " + districtCode +
                                " ORDER BY STD.WORK_GROUP, STD.STD_JOB_NO)";
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
@@ -1291,7 +1293,7 @@ namespace EllipseStandardJobsClassLibrary
                                " AND STD.DSTRCT_CODE = '" + districtCode + "'" +
                                " AND STD.STD_JOB_NO = '" + standardJob + "'" +
                                " ORDER BY STD.WORK_GROUP, STD.STD_JOB_NO)";
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
@@ -1309,7 +1311,7 @@ namespace EllipseStandardJobsClassLibrary
                     "    " + dbReference + ".MSF690" + dbLink + " A JOIN " + dbReference + ".MSF693" + dbLink + " B ON A.STD_JOB_NO = B.STD_JOB_NO" +
                     " WHERE A.WORK_GROUP = '" + workGroup + " ' AND A.STD_JOB_NO = '" + standardJob + "'";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
@@ -1370,7 +1372,7 @@ namespace EllipseStandardJobsClassLibrary
                                " AND TSK.STD_JOB_TASK = '" + taskNo + "'" +
                                " AND TABLE_TYPE = 'ET' ";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
 
@@ -1530,3 +1532,4 @@ namespace EllipseStandardJobsClassLibrary
         }
     }
 }
+

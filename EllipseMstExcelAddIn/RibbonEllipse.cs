@@ -5,6 +5,10 @@ using System.Linq;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
 using EllipseMaintSchedTaskClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Constants;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using System.Web.Services.Ellipse;
@@ -40,7 +44,7 @@ namespace EllipseMstExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
             
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -434,7 +438,7 @@ namespace EllipseMstExcelAddIn
                         {
                             string shortDoW = Enum.GetName(typeof(DayOfWeek), Convert.ToInt32(mst.DayOfWeek) % 7);
                             shortDoW = !string.IsNullOrWhiteSpace(shortDoW) ? shortDoW.Substring(0, 3) : "";
-                            freqDescription = MathUtil.ToOrdinal(Convert.ToInt16(mst.OccurrenceType)) + " " + shortDoW +"/" +
+                            freqDescription = MyMath.ToOrdinal(Convert.ToInt16(mst.OccurrenceType)) + " " + shortDoW +"/" +
                                                 mst.SchedFreq1 + "Months";
                         }
                         else if (mst.SchedInd.Equals("9")) //Inactive
@@ -538,7 +542,7 @@ namespace EllipseMstExcelAddIn
                         {
                             string shortDoW = Enum.GetName(typeof(DayOfWeek), Convert.ToInt32(mst.DayOfWeek) % 7);
                             shortDoW = !string.IsNullOrWhiteSpace(shortDoW) ? shortDoW.Substring(0, 3) : "";
-                            freqDescription = MathUtil.ToOrdinal(Convert.ToInt16(mst.OccurrenceType)) + " " + shortDoW + "/" +
+                            freqDescription = MyMath.ToOrdinal(Convert.ToInt16(mst.OccurrenceType)) + " " + shortDoW + "/" +
                                                 mst.SchedFreq1 + "Months";
                         }
                         else if (mst.SchedInd.Equals("9")) //Inactive
@@ -695,34 +699,34 @@ namespace EllipseMstExcelAddIn
                     mst.CompModCode = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value2);
                     mst.MaintenanceSchTask = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value2);
 
-                    mst.SchedDescription1 = Utils.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
-                    mst.SchedDescription2 = Utils.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null;
+                    mst.SchedDescription1 = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
+                    mst.SchedDescription2 = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null;
 
                     mst.ConAstSegFr = null;
                     mst.ConAstSegTo = null;
 
-                    mst.StdJobNo = Utils.IsTrue(_cells.GetCell(9, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null;
+                    mst.StdJobNo = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null;
 
-                    mst.JobDescCode = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
-                    mst.AssignPerson = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
-                    mst.SchedInd = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
+                    mst.JobDescCode = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
+                    mst.AssignPerson = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
+                    mst.SchedInd = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
 
                     mst.AutoRequisitionInd = "N";
                     mst.MsHistFlag = "Y";
 
-                    mst.SchedFreq1 = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
-                    mst.StatType1 = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
+                    mst.SchedFreq1 = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
+                    mst.StatType1 = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
 
-                    mst.LastSchedStat1 = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
-                    mst.LastPerfStat1 = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
+                    mst.LastSchedStat1 = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
+                    mst.LastPerfStat1 = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
                     //Solo se trabaja con una estadística. Cuando se considere trabajar con dos, hay que reevaluar esta sección
                     mst.StatType2 = null;
                     mst.LastSchedStat2 = null;
                     mst.SchedFreq2 = null;
                     mst.LastPerfStat2 = null;
 
-                    mst.LastSchedDate = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
-                    mst.LastPerfDate = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
+                    mst.LastSchedDate = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
+                    mst.LastPerfDate = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
 
                     mst.StatutoryFlg = "N";
 
@@ -1061,9 +1065,9 @@ namespace EllipseMstExcelAddIn
                 jobDescCode = mst.JobDescCode,
                 stdJobNo = mst.StdJobNo,
                 districtCode = mst.DistrictCode,
-                autoRequisitionInd = Utils.IsTrue(mst.AutoRequisitionInd),
+                autoRequisitionInd = MyUtilities.IsTrue(mst.AutoRequisitionInd),
                 autoRequisitionIndSpecified = mst.AutoRequisitionInd != null,
-                MSHistFlag = Utils.IsTrue(mst.MsHistFlag),
+                MSHistFlag = MyUtilities.IsTrue(mst.MsHistFlag),
                 MSHistFlagSpecified = mst.MsHistFlag != null,
                 schedInd = mst.SchedInd,
                 statType1 = mst.StatType1,
@@ -1094,7 +1098,7 @@ namespace EllipseMstExcelAddIn
                 lastPerfStat2Specified = mst.LastPerfStat2 != null,
                 lastSchedDate = mst.LastSchedDate,
                 lastPerfDate = mst.LastPerfDate,
-                statutoryFlg = Utils.IsTrue(mst.StatutoryFlg),
+                statutoryFlg = MyUtilities.IsTrue(mst.StatutoryFlg),
                 statutoryFlgSpecified = mst.StatutoryFlg != null,
                 occurenceType = mst.OccurrenceType,
                 dayOfWeek= mst.DayOfWeek,
@@ -1126,9 +1130,9 @@ namespace EllipseMstExcelAddIn
                 jobDescCode = mst.JobDescCode,
                 stdJobNo = mst.StdJobNo,
                 districtCode = mst.DistrictCode,
-                autoRequisitionInd = Utils.IsTrue(mst.AutoRequisitionInd),
+                autoRequisitionInd = MyUtilities.IsTrue(mst.AutoRequisitionInd),
                 autoRequisitionIndSpecified = mst.AutoRequisitionInd != null,
-                MSHistFlag = Utils.IsTrue(mst.MsHistFlag),
+                MSHistFlag = MyUtilities.IsTrue(mst.MsHistFlag),
                 MSHistFlagSpecified = mst.MsHistFlag != null,
                 schedInd = mst.SchedInd,
                 statType1 = mst.StatType1,
@@ -1159,7 +1163,7 @@ namespace EllipseMstExcelAddIn
                 lastPerfStat2Specified = mst.LastPerfStat2 != null,
                 lastSchedDate = mst.LastSchedDate,
                 lastPerfDate = mst.LastPerfDate,
-                statutoryFlg = Utils.IsTrue(mst.StatutoryFlg),
+                statutoryFlg = MyUtilities.IsTrue(mst.StatutoryFlg),
                 statutoryFlgSpecified = mst.StatutoryFlg != null,
                 occurenceType = mst.OccurrenceType,
                 dayOfWeek= mst.DayOfWeek,
@@ -1246,12 +1250,12 @@ namespace EllipseMstExcelAddIn
                     taskNo = " AND MST.MAINT_SCH_TASK = '" + taskNo + "'";
 
                 //establecemos los parámetros de estado de orden
-                schedIndicator = Utils.GetCodeValue(schedIndicator);
+                schedIndicator = MyUtilities.GetCodeValue(schedIndicator);
                 string statusIndicator;
                 if (string.IsNullOrEmpty(schedIndicator))
                     statusIndicator = "";
                 else if (schedIndicator == MstIndicatorList.Active)
-                    statusIndicator = " AND MST.SCHED_IND_700 IN (" + Utils.GetListInSeparator(MstIndicatorList.GetActiveIndicatorCodes(), ",", "'") + ")";
+                    statusIndicator = " AND MST.SCHED_IND_700 IN (" + MyUtilities.GetListInSeparator(MstIndicatorList.GetActiveIndicatorCodes(), ",", "'") + ")";
                 else if (MstIndicatorList.GetIndicatorNames().Contains(schedIndicator))
                     statusIndicator = " AND MST.SCHED_IND_700 = '" + MstIndicatorList.GetIndicatorCode(schedIndicator) + "'";
                 else
@@ -1277,7 +1281,7 @@ namespace EllipseMstExcelAddIn
                                taskNo +
                                statusIndicator +
                                " ORDER BY MST.MAINT_SCH_TASK DESC";
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
                 
                 return query;
             }

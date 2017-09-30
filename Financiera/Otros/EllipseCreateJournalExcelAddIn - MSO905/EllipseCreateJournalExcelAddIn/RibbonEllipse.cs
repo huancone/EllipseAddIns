@@ -256,13 +256,13 @@ namespace EllipseCreateJournalExcelAddIn
                     }
 
                     var currentRow = dataRow;
-                    string periodo = Utils.formatearCeldaACadena(Convert.ToString(excelSheet.Range["B3"].Value));
-                    string descPer = Utils.formatearCeldaACadena(Convert.ToString(excelSheet.Range["E5"].Value));
+                    string periodo = MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.Range["B3"].Value));
+                    string descPer = MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.Range["E5"].Value));
                     string journalAsig =
-                        Utils.formatearCeldaACadena(Convert.ToString(excelSheet.Range["E3"].Value));
+                        MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.Range["E3"].Value));
 
                     string campoRequerido =
-                        Utils.formatearCeldaACadena(
+                        MyUtilities.formatearCeldaACadena(
                             Convert.ToString(excelSheet.Range[beginColumn + currentRow].Value));
 
                     if (campoRequerido.Equals("") || periodo.Equals(""))
@@ -314,11 +314,11 @@ namespace EllipseCreateJournalExcelAddIn
                                 //Procesa en caso de no presentar error                                
                                 // GRILLA DE DATOS
                                 string journalDescVal =
-                                    Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E5").Value));
+                                    MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E5").Value));
                                 string journalTypeVal =
-                                    Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E4").Value));
+                                    MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E4").Value));
                                 string reversAutoVal =
-                                    Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E6").Value));
+                                    MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E6").Value));
 
                                 if (screen.IsScreenNameCorrect("MSM907A"))
                                 {
@@ -333,20 +333,20 @@ namespace EllipseCreateJournalExcelAddIn
 
                                     var i = 1;
                                     var fin = true;
-                                    string messageEnd = Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range(endColumn + currentRow).Value));
+                                    string messageEnd = MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range(endColumn + currentRow).Value));
 
-                                    while (!Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 1))).Equals(""))
+                                    while (!MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 1))).Equals(""))
                                     {
                                         fin = false;
                                         //Primer lote de registros                                            
                                         excelSheet.Range[endColumn + currentRow].Select();
                                         excelSheet.Range[endColumn + currentRow].Value = "Read";
-                                        screen.SetMSOFieldValue("ACCOUNT_CODE1I" + i,Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 1))));
-                                        screen.SetMSOFieldValue("WORK_PROJ1I" + i,Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 2))).Length >= 8 ? Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 2))).Substring(0, 8).Trim(): Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 2))));
-                                        screen.SetMSOFieldValue("WORK_PROJ_IND1I" + i,Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 3))).Length >= 1? Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 3))).Substring(0, 1).Trim(): Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 3))));
-                                        screen.SetMSOFieldValue("JNL_DESC1I" + i,Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 4))).Length >= 40? Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 4))).Substring(0, 40).Trim(): Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 4))));
-                                        screen.SetMSOFieldValue("TRAN_AMOUNT1I" + i,Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 8))));screen.SetMSOFieldValue("DOCUMENT_REF1I" + i,Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 6))).Length >= 8? Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 6))).Substring(0, 8).Trim(): Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 6))));
-                                        screen.SetMSOFieldValue("FOREIGN_CURR1I" + i,Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 7))));screen.SetMSOFieldValue("MEMO_AMOUNT1I" + i,Utils.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 5))));
+                                        screen.SetMSOFieldValue("ACCOUNT_CODE1I" + i,MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 1))));
+                                        screen.SetMSOFieldValue("WORK_PROJ1I" + i,MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 2))).Length >= 8 ? MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 2))).Substring(0, 8).Trim(): MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 2))));
+                                        screen.SetMSOFieldValue("WORK_PROJ_IND1I" + i,MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 3))).Length >= 1? MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 3))).Substring(0, 1).Trim(): MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 3))));
+                                        screen.SetMSOFieldValue("JNL_DESC1I" + i,MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 4))).Length >= 40? MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 4))).Substring(0, 40).Trim(): MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 4))));
+                                        screen.SetMSOFieldValue("TRAN_AMOUNT1I" + i,MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 8))));screen.SetMSOFieldValue("DOCUMENT_REF1I" + i,MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 6))).Length >= 8? MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 6))).Substring(0, 8).Trim(): MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 6))));
+                                        screen.SetMSOFieldValue("FOREIGN_CURR1I" + i,MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 7))));screen.SetMSOFieldValue("MEMO_AMOUNT1I" + i,MyUtilities.formatearCeldaACadena(Convert.ToString(MyValuesGrilla.GetValue(1, 5))));
 
                                         if (i == 3)
                                         {
@@ -481,7 +481,7 @@ namespace EllipseCreateJournalExcelAddIn
                             screen.ExecuteMSO(Ellipse.F3_KEY, false);
                             currentRow++;
                             campoRequerido =
-                                Utils.formatearCeldaACadena(
+                                MyUtilities.formatearCeldaACadena(
                                     Convert.ToString(excelSheet.get_Range(beginColumn + currentRow).Value));
                         }
 
@@ -608,21 +608,21 @@ namespace EllipseCreateJournalExcelAddIn
                 double dolar, pesos, tasa;
                 var currentRow = dataRow;
 
-                x = Utils.formatearCeldaACadena(excelSheet.get_Range(beginColumn + currentRow).Value);
-                tasa = Utils.formatearCeldaADouble(excelSheet.get_Range("G6").Value);
+                x = MyUtilities.formatearCeldaACadena(excelSheet.get_Range(beginColumn + currentRow).Value);
+                tasa = MyUtilities.formatearCeldaADouble(excelSheet.get_Range("G6").Value);
                 while (!"".Equals(x))
                 {
                     if (
                         "".Equals(
-                            Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("H" + currentRow).Value))))
+                            MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("H" + currentRow).Value))))
                     {
                         dolar =
-                            Utils.formatearCeldaADouble(Convert.ToString(excelSheet.get_Range("E" + currentRow).Value));
+                            MyUtilities.formatearCeldaADouble(Convert.ToString(excelSheet.get_Range("E" + currentRow).Value));
                         pesos = Math.Round(dolar / tasa, 2);
                         excelSheet.get_Range("H" + currentRow).Value = pesos;
                     }
                     currentRow++;
-                    x = Utils.formatearCeldaACadena(excelSheet.get_Range(beginColumn + currentRow).Value);
+                    x = MyUtilities.formatearCeldaACadena(excelSheet.get_Range(beginColumn + currentRow).Value);
                 }
             }
             catch (Exception error)
@@ -648,21 +648,21 @@ namespace EllipseCreateJournalExcelAddIn
                 double dolar, pesos, tasa;
                 var currentRow = dataRow;
 
-                x = Utils.formatearCeldaACadena(excelSheet.get_Range(beginColumn + currentRow).Value);
-                tasa = Utils.formatearCeldaADouble(excelSheet.get_Range("G6").Value);
+                x = MyUtilities.formatearCeldaACadena(excelSheet.get_Range(beginColumn + currentRow).Value);
+                tasa = MyUtilities.formatearCeldaADouble(excelSheet.get_Range("G6").Value);
                 while (!"".Equals(x))
                 {
                     if (
                         "".Equals(
-                            Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E" + currentRow).Value))))
+                            MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E" + currentRow).Value))))
                     {
                         dolar =
-                            Utils.formatearCeldaADouble(Convert.ToString(excelSheet.get_Range("H" + currentRow).Value));
+                            MyUtilities.formatearCeldaADouble(Convert.ToString(excelSheet.get_Range("H" + currentRow).Value));
                         pesos = Math.Round(dolar * tasa, 2);
                         excelSheet.get_Range("E" + currentRow).Value = pesos;
                     }
                     currentRow++;
-                    x = Utils.formatearCeldaACadena(excelSheet.get_Range(beginColumn + currentRow).Value);
+                    x = MyUtilities.formatearCeldaACadena(excelSheet.get_Range(beginColumn + currentRow).Value);
                 }
             }
             catch (Exception error)
@@ -756,7 +756,7 @@ namespace EllipseCreateJournalExcelAddIn
 
                 var currentRow = dataRow;
                 string descripcion =
-                    Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("D" + currentRow).Value));
+                    MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("D" + currentRow).Value));
                 var nit = "";
                 var expresion = @"(#)(\d+\-\d{1}|\d+)(\W|_)";
 
@@ -800,7 +800,7 @@ namespace EllipseCreateJournalExcelAddIn
 
                     currentRow++;
                     descripcion =
-                        Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("D" + currentRow).Value));
+                        MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("D" + currentRow).Value));
                 }
 
                 if (reader != null)

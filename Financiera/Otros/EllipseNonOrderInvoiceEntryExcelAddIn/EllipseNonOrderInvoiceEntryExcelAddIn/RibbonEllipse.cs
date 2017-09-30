@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
 using EllipseNonOrderInvoiceEntryExcelAddIn.Properties;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
@@ -27,11 +30,11 @@ namespace EllipseNonOrderInvoiceEntryExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            _eFunctions.DebugErrors = false;
-            _eFunctions.DebugQueries = false;
-            _eFunctions.DebugWarnings = false;
+            Debugger.DebugErrors = false;
+            Debugger.DebugQueries = false;
+            Debugger.DebugWarnings = false;
 
-            var enviromentList = EnviromentConstants.GetEnviromentList();
+            var enviromentList = Environments.GetEnviromentList();
             foreach (var item in enviromentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();

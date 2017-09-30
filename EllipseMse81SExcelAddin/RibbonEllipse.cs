@@ -6,6 +6,10 @@ using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
+
 using EllipseMse81SExcelAddin.EmployeeService;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -32,7 +36,7 @@ namespace EllipseMse81SExcelAddin
         {
             _excelApp = Globals.ThisAddIn.Application;
             
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -464,7 +468,7 @@ namespace EllipseMse81SExcelAddin
                     var workFaxNumber = _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value);
                     var workEmail = _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value);
                     var messagePreference = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value);
-                    var notifyEdiMsgReceived = Utils.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(19, i).Value));
+                    var notifyEdiMsgReceived = MyUtilities.IsTrue(_cells.GetEmptyIfNull(_cells.GetCell(19, i).Value));
                     //WORK DETAILS
                     var physicalLocation = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value);
                     var hireDate = _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value);
@@ -483,7 +487,7 @@ namespace EllipseMse81SExcelAddin
                     
 
                     requestEmp.employee = employee;
-                    requestEmp.personType = Utils.GetCodeKey(employeeType);
+                    requestEmp.personType = MyUtilities.GetCodeKey(employeeType);
 
                     requestEmp.preferredName = preferredName;
                     requestEmp.lastName = lastName;
@@ -494,7 +498,7 @@ namespace EllipseMse81SExcelAddin
                     requestEmp.previousFirstName = previousFirstName;
                     requestEmp.previousSecondName = previousSecondName;
                     requestEmp.previousThirdName = previousThirdName;
-                    requestEmp.gender = Utils.GetCodeKey(gender);
+                    requestEmp.gender = MyUtilities.GetCodeKey(gender);
 
                     requestEmp.workTelephoneNumber = workPhoneNumber;
                     requestEmp.workTelephoneExtension = workExtension;
@@ -514,13 +518,13 @@ namespace EllipseMse81SExcelAddin
                     requestEmp.printerName1 = printerName1;
 
                     requestEmp.position = position;
-                    requestEmp.positionReason = Utils.GetCodeKey(positionReason);
+                    requestEmp.positionReason = MyUtilities.GetCodeKey(positionReason);
                     requestEmp.positionStartDate = positionStartDate;
-                    requestEmp.actualFTEPercent = actualFtePercent;
+                    requestEmp.actualFTEPercent = !string.IsNullOrWhiteSpace(actualFtePercent) ? Convert.ToDecimal(actualFtePercent) : default(decimal);
                     requestEmp.actualFTEPercentSpecified = true;
-                    requestEmp.authorityPercent = authorityPercent;
+                    requestEmp.authorityPercent = !string.IsNullOrWhiteSpace(authorityPercent) ? Convert.ToDecimal(authorityPercent) : default(decimal);
                     requestEmp.authorityPercentSpecified = true;
-                    requestEmp.personnelStatus = Utils.GetCodeKey(personnelStatus);
+                    requestEmp.personnelStatus = MyUtilities.GetCodeKey(personnelStatus);
 
                     
 
@@ -577,44 +581,44 @@ namespace EllipseMse81SExcelAddin
                     var requestEmp = new EmployeeServiceModifyRequestDTO();
 
                     var employee = _cells.GetEmptyIfNull(_cells.GetCell(01, i).Value);
-                    var employeeType = Utils.IsTrue(_cells.GetCell(02, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(02, i).Value) : null;//CORE, PERS
+                    var employeeType = MyUtilities.IsTrue(_cells.GetCell(02, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(02, i).Value) : null;//CORE, PERS
                     //NAME
-                    var preferredName = Utils.IsTrue(_cells.GetCell(03, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(03, i).Value) : null;
-                    var lastName = Utils.IsTrue(_cells.GetCell(04, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(04, i).Value) : null;
-                    var firstName = Utils.IsTrue(_cells.GetCell(05, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(05, i).Value) : null;
-                    var secondName = Utils.IsTrue(_cells.GetCell(06, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(06, i).Value) : null;
-                    var thirdName = Utils.IsTrue(_cells.GetCell(07, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(07, i).Value) : null;
-                    var prevLastName = Utils.IsTrue(_cells.GetCell(08, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(08, i).Value) : null;
-                    var previousFirstName = Utils.IsTrue(_cells.GetCell(09, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(09, i).Value) : null;
-                    var previousSecondName = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
-                    var previousThirdName = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
-                    var gender = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;//Female, Male, Unknown
+                    var preferredName = MyUtilities.IsTrue(_cells.GetCell(03, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(03, i).Value) : null;
+                    var lastName = MyUtilities.IsTrue(_cells.GetCell(04, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(04, i).Value) : null;
+                    var firstName = MyUtilities.IsTrue(_cells.GetCell(05, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(05, i).Value) : null;
+                    var secondName = MyUtilities.IsTrue(_cells.GetCell(06, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(06, i).Value) : null;
+                    var thirdName = MyUtilities.IsTrue(_cells.GetCell(07, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(07, i).Value) : null;
+                    var prevLastName = MyUtilities.IsTrue(_cells.GetCell(08, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(08, i).Value) : null;
+                    var previousFirstName = MyUtilities.IsTrue(_cells.GetCell(09, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(09, i).Value) : null;
+                    var previousSecondName = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
+                    var previousThirdName = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
+                    var gender = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;//Female, Male, Unknown
                     //CONTACTS
-                    var workPhoneNumber = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
-                    var workExtension = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
-                    var workMobileNumber = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
-                    var workFaxNumber = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
-                    var workEmail = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
-                    var messagePreference = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
-                    var notifyEdiMsgReceived = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ?Utils.IsTrue(_cells.GetCell(19, i).Value) : null;
-                    var notifyEdiMsgReceivedSpecified = Utils.IsTrue(_cells.GetCell(19, validationRow).Value);
+                    var workPhoneNumber = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
+                    var workExtension = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
+                    var workMobileNumber = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
+                    var workFaxNumber = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
+                    var workEmail = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
+                    var messagePreference = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
+                    var notifyEdiMsgReceived = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? (_cells.GetCell(19, i).Value) : null;
+                    var notifyEdiMsgReceivedSpecified = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value);
                     //WORK DETAILS
-                    var physicalLocation = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
-                    var hireDate = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
-                    var unionCode = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
-                    var workOrderPrefix = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
-                    var resourceType = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
-                    var resourceCode = Utils.IsTrue(_cells.GetCell(25, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null;
-                    var printerName1 = Utils.IsTrue(_cells.GetCell(26, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null;
+                    var physicalLocation = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
+                    var hireDate = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
+                    var unionCode = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
+                    var workOrderPrefix = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
+                    var resourceType = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
+                    var resourceCode = MyUtilities.IsTrue(_cells.GetCell(25, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null;
+                    var printerName1 = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null;
                     //POSITION DETAILS
-                    var position = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null;
-                    var positionReason = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;//TFRR
-                    var positionStartDate = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
-                    var actualFtePercent = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
-                    var actualFtePercentSpecified = Utils.IsTrue(_cells.GetCell(30, validationRow).Value);
-                    var authorityPercent = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
-                    var authorityPercentSpecified = Utils.IsTrue(_cells.GetCell(31, validationRow).Value);
-                    var personnelStatus = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;//EPST
+                    var position = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null;
+                    var positionReason = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;//TFRR
+                    var positionStartDate = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
+                    var actualFtePercent = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
+                    var actualFtePercentSpecified = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value);
+                    var authorityPercent = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
+                    var authorityPercentSpecified = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value);
+                    var personnelStatus = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ?_cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;//EPST
 
 
                     requestEmp.employee = employee;
@@ -629,7 +633,7 @@ namespace EllipseMse81SExcelAddin
                     requestEmp.previousFirstName = previousFirstName;
                     requestEmp.previousSecondName = previousSecondName;
                     requestEmp.previousThirdName = previousThirdName;
-                    requestEmp.gender = Utils.GetCodeKey(gender);
+                    requestEmp.gender = MyUtilities.GetCodeKey(gender);
 
                     requestEmp.workTelephoneNumber = workPhoneNumber;
                     requestEmp.workTelephoneExtension = workExtension;
@@ -638,7 +642,7 @@ namespace EllipseMse81SExcelAddin
                     requestEmp.emailAddress = workEmail;
                     requestEmp.messagePreference = messagePreference;
                     requestEmp.notifyEDIMsgRecievedSpecified = notifyEdiMsgReceivedSpecified;
-                    requestEmp.notifyEDIMsgRecieved = notifyEdiMsgReceivedSpecified ?? notifyEdiMsgReceived;
+                    requestEmp.notifyEDIMsgRecieved = MyUtilities.IsTrue(notifyEdiMsgReceived);
 
                     requestEmp.physicalLocation = physicalLocation;
                     requestEmp.hireDate = hireDate;
@@ -649,13 +653,13 @@ namespace EllipseMse81SExcelAddin
                     requestEmp.printerName1 = printerName1;
 
                     requestEmp.position = position;
-                    requestEmp.positionReason = Utils.GetCodeKey(positionReason);
+                    requestEmp.positionReason = MyUtilities.GetCodeKey(positionReason);
                     requestEmp.positionStartDate = positionStartDate;
                     requestEmp.actualFTEPercentSpecified = actualFtePercentSpecified;
                     requestEmp.actualFTEPercent = actualFtePercentSpecified ? Convert.ToDecimal(actualFtePercent) : 0;
                     requestEmp.authorityPercentSpecified = authorityPercentSpecified;
                     requestEmp.authorityPercent = authorityPercentSpecified ? Convert.ToDecimal(authorityPercent) : 0;
-                    requestEmp.personnelStatus = Utils.GetCodeKey(personnelStatus);
+                    requestEmp.personnelStatus = MyUtilities.GetCodeKey(personnelStatus);
 
                     proxyEmp.modify(opSheet, requestEmp);
 

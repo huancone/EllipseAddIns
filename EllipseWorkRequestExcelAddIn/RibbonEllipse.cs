@@ -5,6 +5,10 @@ using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Constants;
+using EllipseCommonsClassLibrary.Utilities;
 using EllipseWorkRequestClassLibrary;
 using EllipseWorkRequestClassLibrary.WorkRequestService;
 using Microsoft.Office.Tools.Ribbon;
@@ -59,7 +63,7 @@ namespace EllipseWorkRequestExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -267,7 +271,7 @@ namespace EllipseWorkRequestExcelAddIn
                             : _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                         classification = "SS",
                         requestType = "ES",
-                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value)),
+                        priorityCode = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value)),
                         requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
                         sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
                         raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))
@@ -668,28 +672,28 @@ namespace EllipseWorkRequestExcelAddIn
                     {
                         var requestId = _cells.GetEmptyIfNull(_cells.GetCell(02, i).Value);
                         var wr = new WorkRequest();
-                        var header = Utils.IsTrue(_cells.GetCell(04, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(04, i).Value) : null;
-                        var body = Utils.IsTrue(_cells.GetCell(05, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(05, i).Value) : null;
+                        var header = MyUtilities.IsTrue(_cells.GetCell(04, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(04, i).Value) : null;
+                        var body = MyUtilities.IsTrue(_cells.GetCell(05, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(05, i).Value) : null;
                         wr.SetExtendedDescription(header, body);
                         var wrRefCodes = new WorkRequestReferenceCodes
                         {
-                            WorkOrderOrigen = Utils.IsTrue(_cells.GetCell(06, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(06, i).Value) : null,
-                            StockCode1 = Utils.IsTrue(_cells.GetCell(07, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(07, i).Value) : null,
-                            StockCode1Qty = Utils.IsTrue(_cells.GetCell(08, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(08, i).Value) : null,
-                            StockCode2 = Utils.IsTrue(_cells.GetCell(09, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value) : null,
-                            StockCode2Qty = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null,
-                            StockCode3 = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null,
-                            StockCode3Qty = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null,
-                            StockCode4 = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null,
-                            StockCode4Qty = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null,
-                            StockCode5 = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
-                            StockCode5Qty = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
-                            HorasHombre = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
-                            HorasQty = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
-                            DuracionTarea = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
-                            EquipoDetenido = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
-                            RaisedReprogramada = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
-                            CambioHora = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null
+                            WorkOrderOrigen = MyUtilities.IsTrue(_cells.GetCell(06, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(06, i).Value) : null,
+                            StockCode1 = MyUtilities.IsTrue(_cells.GetCell(07, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(07, i).Value) : null,
+                            StockCode1Qty = MyUtilities.IsTrue(_cells.GetCell(08, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(08, i).Value) : null,
+                            StockCode2 = MyUtilities.IsTrue(_cells.GetCell(09, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value) : null,
+                            StockCode2Qty = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null,
+                            StockCode3 = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null,
+                            StockCode3Qty = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null,
+                            StockCode4 = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null,
+                            StockCode4Qty = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null,
+                            StockCode5 = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
+                            StockCode5Qty = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
+                            HorasHombre = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
+                            HorasQty = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
+                            DuracionTarea = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
+                            EquipoDetenido = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
+                            RaisedReprogramada = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
+                            CambioHora = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null
                         };
 
                         var errorList = "";
@@ -723,8 +727,8 @@ namespace EllipseWorkRequestExcelAddIn
                     catch (Exception ex)
                     {
                         _cells.GetCell(2, i).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumnM01, i).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumnM01, i).Value = "ERROR: " + ex.Message;
+                        _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
                         Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestMnttoList()", ex.Message);
                     }
                     finally
@@ -887,13 +891,13 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.SetValidationList(_cells.GetCell(08, TitleRow01 + 1), classificationList, ValidationSheetName, 5, false);
 
                 var reqTypeItemCodeList = WoTypeMtType.GetWoTypeList();
-                var requestTypeList = Utils.GetCodeList(reqTypeItemCodeList);
+                var requestTypeList = MyUtilities.GetCodeList(reqTypeItemCodeList);
                 _cells.SetValidationList(_cells.GetCell(09, TitleRow01 + 1), requestTypeList, ValidationSheetName, 6, false);
 
                 var usTypeCodeList = _eFunctions.GetItemCodes("WS").Select(item => item.code + " - " + item.description).ToList();
                 _cells.SetValidationList(_cells.GetCell(10, TitleRow01 + 1), usTypeCodeList, ValidationSheetName, 7, false);
 
-                var priorityList = Utils.GetCodeList(WoTypeMtType.GetPriorityCodeList());
+                var priorityList = MyUtilities.GetCodeList(WoTypeMtType.GetPriorityCodeList());
                 _cells.SetValidationList(_cells.GetCell(11, TitleRow01 + 1), priorityList, ValidationSheetName, 8, false);
 
                 var regionList = _eFunctions.GetItemCodes("REGN").Select(item => item.code + " - " + item.description).ToList();
@@ -911,7 +915,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(15, TitleRow01).Style = StyleConstants.TitleOptional;
 
                 var reqSourceItemCodeList = _eFunctions.GetItemCodes("RQSC");
-                var requestSourceList = Utils.GetCodeList(reqSourceItemCodeList);
+                var requestSourceList = MyUtilities.GetCodeList(reqSourceItemCodeList);
                 _cells.SetValidationList(_cells.GetCell(14, TitleRow01 + 1), requestSourceList, ValidationSheetName, 10, false);
 
                 //DATES
@@ -1225,13 +1229,13 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.SetValidationList(_cells.GetCell(08, TitleRow01 + 1), classificationList, ValidationSheetName, 5, false);
 
                 var reqTypeItemCodeList = WoTypeMtType.GetWoTypeList();
-                var requestTypeList = Utils.GetCodeList(reqTypeItemCodeList);
+                var requestTypeList = MyUtilities.GetCodeList(reqTypeItemCodeList);
                 _cells.SetValidationList(_cells.GetCell(09, TitleRow01 + 1), requestTypeList, ValidationSheetName, 6, false);
 
                 var usTypeCodeList = _eFunctions.GetItemCodes("WS").Select(item => item.code + " - " + item.description).ToList();
                 _cells.SetValidationList(_cells.GetCell(10, TitleRow01 + 1), usTypeCodeList, ValidationSheetName, 7, false);
 
-                var priorityList = Utils.GetCodeList(WoTypeMtType.GetPriorityCodeList());
+                var priorityList = MyUtilities.GetCodeList(WoTypeMtType.GetPriorityCodeList());
                 _cells.SetValidationList(_cells.GetCell(11, TitleRow01 + 1), priorityList, ValidationSheetName, 8, false);
 
                 var regionList = _eFunctions.GetItemCodes("REGN").Select(item => item.code + " - " + item.description).ToList();
@@ -1249,7 +1253,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(15, TitleRow01).Style = StyleConstants.TitleOptional;
 
                 var reqSourceItemCodeList = _eFunctions.GetItemCodes("RQSC");
-                var requestSourceList = Utils.GetCodeList(reqSourceItemCodeList);
+                var requestSourceList = MyUtilities.GetCodeList(reqSourceItemCodeList);
                 _cells.SetValidationList(_cells.GetCell(14, TitleRow01 + 1), requestSourceList, ValidationSheetName, 10, false);
 
                 //DATES
@@ -2142,11 +2146,11 @@ namespace EllipseWorkRequestExcelAddIn
                         requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
                         equipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
                         employee = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
-                        classification = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
-                        requestType = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
-                        userStatus = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)),
-                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)),
-                        region = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)),
+                        classification = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
+                        requestType = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
+                        userStatus = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)),
+                        priorityCode = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)),
+                        region = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)),
                         contactId = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value),
                         source = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value),
                         sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value),
@@ -2165,7 +2169,7 @@ namespace EllipseWorkRequestExcelAddIn
                         ServiceLevelAgreement =
                         {
                             ServiceLevel = _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value),
-                            FailureCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)),
+                            FailureCode = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)),
                             StartDate = _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value),
                             StartTime = _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value),
                             DueDate = _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value),
@@ -2235,11 +2239,11 @@ namespace EllipseWorkRequestExcelAddIn
                         requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
                         equipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
                         employee = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
-                        classification = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
-                        requestType = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
-                        userStatus = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)),
-                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)),
-                        region = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)),
+                        classification = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
+                        requestType = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)),
+                        userStatus = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)),
+                        priorityCode = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)),
+                        region = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)),
                         contactId = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value),
                         source = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value),
                         sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value),
@@ -2355,44 +2359,44 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     var wr = new WorkRequest
                     {
-                        workGroup = Utils.IsTrue(_cells.GetCell(1, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value) : null,
+                        workGroup = MyUtilities.IsTrue(_cells.GetCell(1, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value) : null,
                         requestId = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
-                        requestIdDescription1 = Utils.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value) : null,
-                        requestIdDescription2 = Utils.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null,
-                        equipmentNo = Utils.IsTrue(_cells.GetCell(6, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null,
-                        employee = Utils.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null,
-                        classification = Utils.IsTrue(_cells.GetCell(8, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)) : null,
-                        requestType = Utils.IsTrue(_cells.GetCell(9, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) : null,
-                        userStatus = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)) : null,
-                        priorityCode = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)) : null,
-                        region = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)) : null,
-                        contactId = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null,
-                        source = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null,
-                        sourceReference = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
-                        requiredByDate = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
-                        requiredByTime = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
-                        raisedUser = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
-                        raisedDate = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
-                        raisedTime = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
-                        closedBy = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
-                        closedDate = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null,
-                        assignPerson = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null,
-                        ownerId = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
-                        estimateNo = Utils.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null,
-                        standardJob = Utils.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null,
-                        standardJobDistrict = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null,
+                        requestIdDescription1 = MyUtilities.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value) : null,
+                        requestIdDescription2 = MyUtilities.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null,
+                        equipmentNo = MyUtilities.IsTrue(_cells.GetCell(6, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null,
+                        employee = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null,
+                        classification = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)) : null,
+                        requestType = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) : null,
+                        userStatus = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)) : null,
+                        priorityCode = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)) : null,
+                        region = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)) : null,
+                        contactId = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null,
+                        source = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null,
+                        sourceReference = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
+                        requiredByDate = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
+                        requiredByTime = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
+                        raisedUser = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
+                        raisedDate = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
+                        raisedTime = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
+                        closedBy = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
+                        closedDate = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null,
+                        assignPerson = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null,
+                        ownerId = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
+                        estimateNo = MyUtilities.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null,
+                        standardJob = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null,
+                        standardJobDistrict = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null,
                         ServiceLevelAgreement =
                         {
-                            ServiceLevel = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
-                            FailureCode = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)) : null,
-                            StartDate = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
-                            StartTime = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
-                            DueDate = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
-                            DueTime = Utils.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
-                            DueDays = Utils.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null,
-                            WarnDate = Utils.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
-                            WarnTime = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
-                            WarnDays = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null
+                            ServiceLevel = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
+                            FailureCode = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)) : null,
+                            StartDate = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
+                            StartTime = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
+                            DueDate = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
+                            DueTime = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
+                            DueDays = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null,
+                            WarnDate = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
+                            WarnTime = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
+                            WarnDays = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null
                         }
                     };
 
@@ -2454,7 +2458,7 @@ namespace EllipseWorkRequestExcelAddIn
                         employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(3, i).Value))? employee: _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                         classification = "SS",
                         requestType = "ES",
-                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value)),
+                        priorityCode = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value)),
                         requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
                         sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
                         raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))? todayDate: _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
@@ -2462,7 +2466,7 @@ namespace EllipseWorkRequestExcelAddIn
                         closedDate = _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value),
                         ServiceLevelAgreement =
                         {
-                            ServiceLevel = Utils.GetCodeKey("1Y"),
+                            ServiceLevel = MyUtilities.GetCodeKey("1Y"),
                             StartDate = todayDate
                         }
                     };
@@ -2517,55 +2521,55 @@ namespace EllipseWorkRequestExcelAddIn
                 {
                     var wr = new WorkRequest
                     {
-                        workGroup = Utils.IsTrue(_cells.GetCell(1, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value) : null,
-                        requestId = Utils.IsTrue(_cells.GetCell(2, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value) : null,
-                        requestIdDescription1 = Utils.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value) : null,
-                        requestIdDescription2 = Utils.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null,
-                        equipmentNo = Utils.IsTrue(_cells.GetCell(6, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null,
-                        employee = Utils.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null,
-                        classification = Utils.IsTrue(_cells.GetCell(8, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)) : null,
-                        requestType = Utils.IsTrue(_cells.GetCell(9, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) : null,
-                        userStatus = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)) : null,
-                        priorityCode = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)) : null,
-                        region = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)) : null,
-                        contactId = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null,
-                        source = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null,
-                        sourceReference = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
-                        requiredByDate = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
-                        requiredByTime = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
-                        raisedUser = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
-                        raisedDate = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
-                        raisedTime = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
-                        closedBy = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
-                        closedDate = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null,
-                        assignPerson = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null,
-                        ownerId = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
-                        estimateNo = Utils.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null,
-                        standardJob = Utils.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null,
-                        standardJobDistrict = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null
+                        workGroup = MyUtilities.IsTrue(_cells.GetCell(1, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value) : null,
+                        requestId = MyUtilities.IsTrue(_cells.GetCell(2, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value) : null,
+                        requestIdDescription1 = MyUtilities.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value) : null,
+                        requestIdDescription2 = MyUtilities.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null,
+                        equipmentNo = MyUtilities.IsTrue(_cells.GetCell(6, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null,
+                        employee = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null,
+                        classification = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)) : null,
+                        requestType = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) : null,
+                        userStatus = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)) : null,
+                        priorityCode = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)) : null,
+                        region = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)) : null,
+                        contactId = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null,
+                        source = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null,
+                        sourceReference = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
+                        requiredByDate = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
+                        requiredByTime = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
+                        raisedUser = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
+                        raisedDate = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
+                        raisedTime = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
+                        closedBy = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
+                        closedDate = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null,
+                        assignPerson = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null,
+                        ownerId = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
+                        estimateNo = MyUtilities.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null,
+                        standardJob = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null,
+                        standardJobDistrict = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null
                     };
 
-                    var header = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;
-                    var body = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
+                    var header = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;
+                    var body = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
                     wr.SetExtendedDescription(header, body);
                     var wrRefCodes = new WorkRequestReferenceCodes
                     {
-                        WorkOrderOrigen = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
-                        StockCode1 = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
-                        StockCode1Qty = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
-                        StockCode2 = Utils.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
-                        StockCode2Qty = Utils.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null,
-                        StockCode3 = Utils.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
-                        StockCode3Qty = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
-                        StockCode4 = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null,
-                        StockCode4Qty = Utils.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null,
-                        StockCode5 = Utils.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null,
-                        StockCode5Qty = Utils.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null,
-                        HorasHombre = Utils.IsTrue(_cells.GetCell(41, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(41, i).Value) : null,
-                        DuracionTarea = Utils.IsTrue(_cells.GetCell(42, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(42, i).Value) : null,
-                        EquipoDetenido = Utils.IsTrue(_cells.GetCell(43, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(43, i).Value) : null,
-                        RaisedReprogramada = Utils.IsTrue(_cells.GetCell(44, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(44, i).Value) : null,
-                        CambioHora = Utils.IsTrue(_cells.GetCell(45, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(45, i).Value) : null
+                        WorkOrderOrigen = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
+                        StockCode1 = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
+                        StockCode1Qty = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
+                        StockCode2 = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
+                        StockCode2Qty = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null,
+                        StockCode3 = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
+                        StockCode3Qty = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
+                        StockCode4 = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null,
+                        StockCode4Qty = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null,
+                        StockCode5 = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null,
+                        StockCode5Qty = MyUtilities.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null,
+                        HorasHombre = MyUtilities.IsTrue(_cells.GetCell(41, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(41, i).Value) : null,
+                        DuracionTarea = MyUtilities.IsTrue(_cells.GetCell(42, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(42, i).Value) : null,
+                        EquipoDetenido = MyUtilities.IsTrue(_cells.GetCell(43, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(43, i).Value) : null,
+                        RaisedReprogramada = MyUtilities.IsTrue(_cells.GetCell(44, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(44, i).Value) : null,
+                        CambioHora = MyUtilities.IsTrue(_cells.GetCell(45, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(45, i).Value) : null
                     };
 
                     var replySheet = WorkRequestActions.ModifyWorkRequest(urlService, opContext, wr);
@@ -2981,16 +2985,16 @@ namespace EllipseWorkRequestExcelAddIn
                     var requestId = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     var serviceLevelAgreement = new ServiceLevelAgreement
                     {
-                        ServiceLevel = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
-                        FailureCode = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)) : null,
-                        StartDate = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
-                        StartTime = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
-                        DueDate = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
-                        DueTime = Utils.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
-                        DueDays = Utils.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null,
-                        WarnDate = Utils.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
-                        WarnTime = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
-                        WarnDays = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null
+                        ServiceLevel = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
+                        FailureCode = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)) : null,
+                        StartDate = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
+                        StartTime = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
+                        DueDate = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
+                        DueTime = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
+                        DueDays = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null,
+                        WarnDate = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
+                        WarnTime = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
+                        WarnDays = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null
                     };
 
                     WorkRequestActions.SetWorkRequestSla(urlService, opSheet, requestId, serviceLevelAgreement);
@@ -3041,16 +3045,16 @@ namespace EllipseWorkRequestExcelAddIn
                     var requestId = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     var serviceLevelAgreement = new ServiceLevelAgreement
                     {
-                        ServiceLevel = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
-                        FailureCode = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)) : null,
-                        StartDate = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
-                        StartTime = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
-                        DueDate = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
-                        DueTime = Utils.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
-                        DueDays = Utils.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null,
-                        WarnDate = Utils.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
-                        WarnTime = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
-                        WarnDays = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null
+                        ServiceLevel = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
+                        FailureCode = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)) : null,
+                        StartDate = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
+                        StartTime = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
+                        DueDate = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
+                        DueTime = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
+                        DueDays = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null,
+                        WarnDate = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
+                        WarnTime = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
+                        WarnDays = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null
                     };
 
                     WorkRequestActions.ResetWorkRequestSla(urlService, opSheet, requestId, serviceLevelAgreement);
@@ -3232,13 +3236,13 @@ namespace EllipseWorkRequestExcelAddIn
                         requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
                         equipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                         employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value)) ? employee : _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
-                        classification = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)),
-                        priorityCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(6, i).Value)),
+                        classification = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)),
+                        priorityCode = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(6, i).Value)),
                         assignPerson = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)) ? assignPerson : _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value),
                         ServiceLevelAgreement =
                         {
-                            ServiceLevel = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value)),
-                            FailureCode = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
+                            ServiceLevel = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value)),
+                            FailureCode = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)),
                             StartDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) ? todayDate : _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)
                         }
                     };

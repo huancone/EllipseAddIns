@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Constants;
+using EllipseCommonsClassLibrary.Utilities;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using Screen = EllipseCommonsClassLibrary.ScreenService; 
@@ -35,7 +38,7 @@ namespace EllipseStockCodesExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -466,7 +469,7 @@ namespace EllipseStockCodesExcelAddIn
                            ")" +
                            "SELECT * FROM SCINV" +
                            " " + paramPreferedOnly;
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
             return query;
         }
@@ -522,7 +525,7 @@ namespace EllipseStockCodesExcelAddIn
                            ")" +
                            "SELECT * FROM REQSC" +
                            " " + paramPreferedOnly;
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
             return query;
         }
@@ -588,7 +591,7 @@ namespace EllipseStockCodesExcelAddIn
                            "  STAT.INVT_CONTROLLR AS ADI FROM ELLIPSE.MSF100 SC LEFT JOIN ELLIPSE.MSF170 STAT ON SC.STOCK_CODE = STAT.STOCK_CODE)" +
                            "  SELECT * FROM POITEMS LEFT JOIN SCSTAT ON POITEMS.PREQ_STK_CODE = SCSTAT.STOCK_CODE AND SCSTAT.DSTRCT_CODE = 'ICOR'" +
                            " " + paramPreferedOnly;
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
             return query;
         }

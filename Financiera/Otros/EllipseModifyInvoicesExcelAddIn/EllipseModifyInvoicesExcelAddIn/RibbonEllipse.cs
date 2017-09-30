@@ -207,7 +207,7 @@ namespace EllipseModifyInvoicesExcelAddIn
                         string error;
                         int currentRow = dataRow;
                         
-                        String campoRequerido = Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value));
+                        String campoRequerido = MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value));
 
                         if (campoRequerido.Equals(""))
                         {
@@ -244,9 +244,9 @@ namespace EllipseModifyInvoicesExcelAddIn
                                     {
                                         screen.InitScreenFields();
                                         screen.SetMSOFieldValue("OPTION1I", "1");
-                                        screen.SetMSOFieldValue("DSTRCT_CODE1I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("A" + currentRow).Value)));
-                                        screen.SetMSOFieldValue("SUPPLIER_NO1I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value)));
-                                        screen.SetMSOFieldValue("INV_NO1I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("C" + currentRow).Value)));
+                                        screen.SetMSOFieldValue("DSTRCT_CODE1I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("A" + currentRow).Value)));
+                                        screen.SetMSOFieldValue("SUPPLIER_NO1I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value)));
+                                        screen.SetMSOFieldValue("INV_NO1I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("C" + currentRow).Value)));
                                         screen.ExecuteMSO(Ellipse.TRANSMIT, true);
                                         if (screen.IsMSOMessage())
                                         {
@@ -259,26 +259,26 @@ namespace EllipseModifyInvoicesExcelAddIn
                                     if (screen.MSO.MapName.Equals("MSM261B"))
                                     {
                                         screen.InitScreenFields();
-                                        if (!"".Equals(Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("D" + currentRow).Value))))
-                                            screen.SetMSOFieldValue("PMT_STATUS2I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("D" + currentRow).Value)));
+                                        if (!"".Equals(MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("D" + currentRow).Value))))
+                                            screen.SetMSOFieldValue("PMT_STATUS2I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("D" + currentRow).Value)));
                                         
-                                        if (!"".Equals(Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E" + currentRow).Value))))
-                                            screen.SetMSOFieldValue("DUE_DATE2I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E" + currentRow).Value)));
+                                        if (!"".Equals(MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E" + currentRow).Value))))
+                                            screen.SetMSOFieldValue("DUE_DATE2I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("E" + currentRow).Value)));
 
-                                        if (!"".Equals(Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("F" + currentRow).Value))))
-                                            screen.SetMSOFieldValue("BRANCH_CODE2I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("F" + currentRow).Value)));
+                                        if (!"".Equals(MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("F" + currentRow).Value))))
+                                            screen.SetMSOFieldValue("BRANCH_CODE2I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("F" + currentRow).Value)));
 
-                                        if (!"".Equals(Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("G" + currentRow).Value))))
-                                            screen.SetMSOFieldValue("BANK_ACCT_NO2I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("G" + currentRow).Value)));
+                                        if (!"".Equals(MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("G" + currentRow).Value))))
+                                            screen.SetMSOFieldValue("BANK_ACCT_NO2I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("G" + currentRow).Value)));
 
-                                        if (!"".Equals(Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("H" + currentRow).Value))))
-                                            screen.SetMSOFieldValue("HANDLE_CDE2I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("H" + currentRow).Value)));
+                                        if (!"".Equals(MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("H" + currentRow).Value))))
+                                            screen.SetMSOFieldValue("HANDLE_CDE2I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("H" + currentRow).Value)));
 
-                                        if (!"".Equals(Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("I" + currentRow).Value))))
-                                            screen.SetMSOFieldValue("SD_AMOUNT2I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("I" + currentRow).Value)));
+                                        if (!"".Equals(MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("I" + currentRow).Value))))
+                                            screen.SetMSOFieldValue("SD_AMOUNT2I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("I" + currentRow).Value)));
 
-                                        if (!"".Equals(Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("J" + currentRow).Value))))
-                                            screen.SetMSOFieldValue("SD_DATE2I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("J" + currentRow).Value)));
+                                        if (!"".Equals(MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("J" + currentRow).Value))))
+                                            screen.SetMSOFieldValue("SD_DATE2I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("J" + currentRow).Value)));
 
                                         screen.ExecuteMSO(Ellipse.TRANSMIT, true); //Confirma
                                         screen.ExecuteMSO(Ellipse.TRANSMIT, true); //Ejecuta
@@ -308,7 +308,7 @@ namespace EllipseModifyInvoicesExcelAddIn
                                 finally
                                 {
                                     currentRow++;
-                                    campoRequerido = Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value));
+                                    campoRequerido = MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value));
                                     screen.ExecuteMSO(Ellipse.F3_KEY, true);
                                 }                        
                             }
@@ -388,7 +388,7 @@ namespace EllipseModifyInvoicesExcelAddIn
                         string error;
                         int currentRow = dataRow;
                         
-                        String campoRequerido = Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value));
+                        String campoRequerido = MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value));
 
                         if (campoRequerido.Equals(""))
                         {
@@ -424,9 +424,9 @@ namespace EllipseModifyInvoicesExcelAddIn
                                     {
                                         screen.InitScreenFields();
                                         screen.SetMSOFieldValue("OPTION1I", "1");
-                                        screen.SetMSOFieldValue("DSTRCT_CODE1I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("A" + currentRow).Value)));
-                                        screen.SetMSOFieldValue("SUPPLIER_NO1I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value)));
-                                        screen.SetMSOFieldValue("INV_NO1I", Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("C" + currentRow).Value)));
+                                        screen.SetMSOFieldValue("DSTRCT_CODE1I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("A" + currentRow).Value)));
+                                        screen.SetMSOFieldValue("SUPPLIER_NO1I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value)));
+                                        screen.SetMSOFieldValue("INV_NO1I", MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("C" + currentRow).Value)));
 
                                         screen.ExecuteMSO(Ellipse.TRANSMIT, true);
                                         if (screen.IsMSOMessage())
@@ -467,7 +467,7 @@ namespace EllipseModifyInvoicesExcelAddIn
                                 finally
                                 {
                                     currentRow++;
-                                    campoRequerido = Utils.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value));
+                                    campoRequerido = MyUtilities.formatearCeldaACadena(Convert.ToString(excelSheet.get_Range("B" + currentRow).Value));
                                     screen.ExecuteMSO(Ellipse.F3_KEY, true);
                                 }
                             }

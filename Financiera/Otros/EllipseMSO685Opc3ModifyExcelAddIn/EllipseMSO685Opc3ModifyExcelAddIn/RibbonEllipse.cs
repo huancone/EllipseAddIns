@@ -250,7 +250,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                         var currentRow = DataRow;
 
                         string campoRequerido =
-                            Utils.FormatearCeldaACadena(
+                            MyUtilities.FormatearCeldaACadena(
                                 Convert.ToString(_excelSheet.Range[BeginColumn + currentRow].Value));
 
                         if (campoRequerido.Equals(""))
@@ -289,13 +289,13 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.InitScreenFields();
                                         screen.SetMSOFieldValue("OPTION1I", "3");
                                         screen.SetMSOFieldValue("ASSET_REF1I",
-                                            Utils.FormatearCeldaACadena(
+                                            MyUtilities.FormatearCeldaACadena(
                                                 Convert.ToString(_excelSheet.Range["A" + currentRow].Value)));
                                         screen.SetMSOFieldValue("SUB_ASSET_NO1I",
-                                            Utils.FormatearCeldaACadena(
+                                            MyUtilities.FormatearCeldaACadena(
                                                 Convert.ToString(_excelSheet.Range["B" + currentRow].Value)));
                                         screen.SetMSOFieldValue("BOOK_OR_TAX1I",
-                                            Utils.FormatearCeldaACadena(
+                                            MyUtilities.FormatearCeldaACadena(
                                                 Convert.ToString(_excelSheet.Range["C" + currentRow].Value)));
                                         screen.ExecuteMSO(Ellipse.TRANSMIT, true);
                                         if (screen.IsMSOMessage())
@@ -310,7 +310,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                     screen.InitScreenFields();
                                     //Depreciation Details
                                     string deprMethod =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["D" + currentRow].Value));
                                     if (!"".Equals(deprMethod) && !"##".Equals(deprMethod))
                                         screen.SetMSOFieldValue("DEPR_METHOD3I", deprMethod);
@@ -318,7 +318,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("DEPR_METHOD3I", "");
 
                                     string deprRate =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["E" + currentRow].Value));
                                     if (!"".Equals(deprRate) && !"##".Equals(deprRate))
                                         screen.SetMSOFieldValue("DEPR_RATE3I", deprRate);
@@ -326,7 +326,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("DEPR_RATE3I", "");
 
                                     string manPer =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["F" + currentRow].Value));
                                     if (!"".Equals(manPer) && !"##".Equals(manPer))
                                         screen.SetMSOFieldValue("MAN_PER_DEPR3I", manPer);
@@ -334,7 +334,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("MAN_PER_DEPR3I", "");
 
                                     string finMan =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["G" + currentRow].Value));
                                     if (!"".Equals(finMan) && !"##".Equals(finMan))
                                         screen.SetMSOFieldValue("FIN_MAN_PER3I", finMan);
@@ -342,7 +342,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("FIN_MAN_PER3I", "");
 
                                     string accelDepr =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["H" + currentRow].Value));
                                     if (!"".Equals(accelDepr) && !"##".Equals(accelDepr))
                                         screen.SetMSOFieldValue("ACCEL_DEPR_RT3I", accelDepr);
@@ -350,7 +350,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("ACCEL_DEPR_RT3I", "");
 
                                     string finAccel =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["I" + currentRow].Value));
                                     if (!"".Equals(finAccel) && !"##".Equals(finAccel))
                                         screen.SetMSOFieldValue("FIN_ACCEL_PER3I", finAccel);
@@ -358,14 +358,14 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("FIN_ACCEL_PER3I", "");
 
                                     string rateTable =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["J" + currentRow].Value));
                                     if (!"".Equals(rateTable) && !"##".Equals(rateTable))
                                         screen.SetMSOFieldValue("RATE_TABLE3I", rateTable);
                                     else if ("##".Equals(rateTable))
                                         screen.SetMSOFieldValue("RATE_TABLE3I", "");
 
-                                    Utils.FormatearCeldaACadena(
+                                    MyUtilities.FormatearCeldaACadena(
                                         Convert.ToString(_excelSheet.Range["K" + currentRow].Value));
                                     if (!"".Equals(rateTable) && !"##".Equals(rateTable))
                                         screen.SetMSOFieldValue("RECOV_PERIOD3I", rateTable);
@@ -373,7 +373,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("RECOV_PERIOD3I", "");
 
                                     string dividendStat =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["L" + currentRow].Value));
                                     if (!"".Equals(dividendStat) && !"##".Equals(dividendStat))
                                         screen.SetMSOFieldValue("DIVIDEND_STAT3I", dividendStat);
@@ -381,7 +381,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("DIVIDEND_STAT3I", "");
 
                                     string divisorStat =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["M" + currentRow].Value));
                                     if (!"".Equals(divisorStat) && !"##".Equals(divisorStat))
                                         screen.SetMSOFieldValue("DIVISOR_STAT3I", divisorStat);
@@ -389,7 +389,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("DIVISOR_STAT3I", "");
 
                                     string estMn =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["N" + currentRow].Value));
                                     if (!"".Equals(estMn) && !"##".Equals(estMn))
                                         screen.SetMSOFieldValue("EST_MM_LIFE3I", estMn);
@@ -397,7 +397,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("EST_MM_LIFE3I", "");
 
                                     string lifeGrp =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["O" + currentRow].Value));
                                     if (!"".Equals(lifeGrp) && !"##".Equals(lifeGrp))
                                         screen.SetMSOFieldValue("LIFE_GRP_CODE3I", lifeGrp);
@@ -405,7 +405,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("LIFE_GRP_CODE3I", "");
 
                                     string estDispos =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["P" + currentRow].Value));
                                     if (!"".Equals(estDispos) && !"##".Equals(estDispos))
                                         screen.SetMSOFieldValue("EST_DISPOS_VAL3I", estDispos);
@@ -414,7 +414,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
 
                                     //Sub Asset Movement Summary
                                     string forCurr =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["Q" + currentRow].Value));
                                     if (!"".Equals(forCurr) && !"##".Equals(forCurr))
                                         screen.SetMSOFieldValue("FOR_CURR_AMT3I", forCurr);
@@ -422,7 +422,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                         screen.SetMSOFieldValue("FOR_CURR_AMT3I", "");
 
                                     string foreignCurr =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range["R" + currentRow].Value));
                                     if (!"".Equals(foreignCurr) && !"##".Equals(foreignCurr))
                                         screen.SetMSOFieldValue("FOREIGN_CURR3I", foreignCurr);
@@ -466,7 +466,7 @@ namespace EllipseMSO685Opc3ModifyExcelAddIn
                                 {
                                     currentRow++;
                                     campoRequerido =
-                                        Utils.FormatearCeldaACadena(
+                                        MyUtilities.FormatearCeldaACadena(
                                             Convert.ToString(_excelSheet.Range[BeginColumn + currentRow].Value));
                                 }
                             }

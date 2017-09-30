@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
 using EllipseCreateStockInstExcelAddIn.Properties;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
@@ -34,7 +36,7 @@ namespace EllipseCreateStockInstExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviromentList = EnviromentConstants.GetEnviromentList();
+            var enviromentList = Environments.GetEnviromentList();
             foreach (var item in enviromentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
