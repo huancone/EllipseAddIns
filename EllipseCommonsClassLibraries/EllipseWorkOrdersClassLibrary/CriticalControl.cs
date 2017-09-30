@@ -1,8 +1,4 @@
-﻿using System;
-using EllipseCommonsClassLibrary;
-using System.Collections.Generic;
-
-namespace EllipseWorkOrdersClassLibrary
+﻿namespace EllipseWorkOrdersClassLibrary
 {
     public class CriticalControl
     {

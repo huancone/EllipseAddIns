@@ -3,6 +3,8 @@ using System.Globalization;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
 using EllipseMSO261ProntoPagoExcelAddIn.Properties;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
@@ -30,7 +32,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
             
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();

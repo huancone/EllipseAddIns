@@ -4,6 +4,8 @@ using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCatalogueStockInstExcelAddIn.Properties;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Oracle.ManagedDataAccess.Client;
@@ -33,7 +35,7 @@ namespace EllipseCatalogueStockInstExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviromentList = EnviromentConstants.GetEnviromentList();
+            var enviromentList = Environments.GetEnviromentList();
             foreach (var item in enviromentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();

@@ -74,35 +74,48 @@
     <Compile Include="AboutBoxExcelAddIn.Designer.cs">
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
     </Compile>
-    <Compile Include="ArrayScreenNameValue.cs" />
+    <Compile Include="Classes\ArrayScreenNameValue.cs" />
     <Compile Include="Debugger.cs" />
-    <Compile Include="DistrictConstants.cs" />
-    <Compile Include="EllipseCodeItem.cs" />
+    <Compile Include="Connections\Connections.cs" />
+    <Compile Include="Constants\Districts.cs" />
+    <Compile Include="Classes\EllipseCodeItem.cs" />
+    <Compile Include="Connections\Configuration.cs" />
     <Compile Include="EllipseFunctions.cs" />
-    <Compile Include="EnviromentConstants.cs" />
-    <Compile Include="ExcelStyleCells.cs" />
+    <Compile Include="Classes\ExcelStyleCells.cs" />
     <Compile Include="FormAuthenticate.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormAuthenticate.Designer.cs" />
-    <Compile Include="GroupConstants.cs" />
-    <Compile Include="InputBox.cs" />
-    <Compile Include="ManagementArea.cs" />
+    <Compile Include="Constants\Groups.cs" />
+    <Compile Include="Classes\InputBox.cs" />
+    <Compile Include="Constants\ManagementArea.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="QuarterMasters.cs" />
-    <Compile Include="ReplyMessage.cs" />
+    <Compile Include="Constants\QuarterMasters.cs" />
+    <Compile Include="Classes\ReplyMessage.cs" />
     <Compile Include="SettingsBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SettingsBox.Designer.cs">
       <DependentUpon>SettingsBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils.cs" />
+    <Compile Include="Utilities\MyDateTime\Formats.cs" />
+    <Compile Include="Utilities\MyDateTime\Operations.cs" />
+    <Compile Include="Utilities\FileWriter.cs" />
+    <Compile Include="Utilities\MyMath.cs" />
+    <Compile Include="Utilities\Shifts\ShiftCodes.cs" />
+    <Compile Include="Utilities\Shifts\ShiftPeriods.cs" />
+    <Compile Include="Utilities\Shifts\Slot.cs" />
+    <Compile Include="Utilities\MyUtilities.cs" />
     <Compile Include="Web References\AuthenticatorService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -112,9 +125,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WoTypeMtType.cs" />
+    <Compile Include="Constants\WoTypeMtType.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AboutBoxExcelAddIn.resx">
@@ -122,6 +134,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAuthenticate.resx">
       <DependentUpon>FormAuthenticate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsBox.resx">
       <DependentUpon>SettingsBox.cs</DependentUpon>
@@ -185,6 +201,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\cerrejon_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\tnsnames.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

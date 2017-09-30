@@ -12,7 +12,7 @@ using System.Security;
 [assembly: AssemblyCompany("Hambings SAS / Cerrejon Ltda")]
 [assembly: AssemblyProduct("EllipseStdTextExcelAddIn")]
 [assembly: AssemblyCopyright("Copyright ©  2015-2017")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("Hambings SAS")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -33,6 +33,6 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.1.0")]
-[assembly: AssemblyFileVersion("1.0.1.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 

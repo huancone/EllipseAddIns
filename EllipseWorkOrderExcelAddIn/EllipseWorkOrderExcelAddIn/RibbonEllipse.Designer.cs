@@ -77,11 +77,12 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReviewQuality = this.Factory.CreateRibbonButton();
             this.btnReReviewQuality = this.Factory.CreateRibbonButton();
             this.btnCleanQualitySheet = this.Factory.CreateRibbonButton();
-            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.menuCriticalControls = this.Factory.CreateRibbonMenu();
             this.btnReviewCriticalControls = this.Factory.CreateRibbonButton();
             this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
             this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.button1 = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
@@ -163,8 +164,9 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuActions.Items.Add(this.menuWorkProgress);
             this.menuActions.Items.Add(this.menuReferenceCodes);
             this.menuActions.Items.Add(this.menuQuality);
-            this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Items.Add(this.menuCriticalControls);
+            this.menuActions.Items.Add(this.btnStopThread);
+            this.menuActions.Items.Add(this.button1);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
             // 
@@ -386,13 +388,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnCleanQualitySheet.ShowImage = true;
             this.btnCleanQualitySheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanQualitySheet_Click);
             // 
-            // btnStopThread
-            // 
-            this.btnStopThread.Label = "Detener &Proceso";
-            this.btnStopThread.Name = "btnStopThread";
-            this.btnStopThread.ShowImage = true;
-            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
             // menuCriticalControls
             // 
             this.menuCriticalControls.Items.Add(this.btnReviewCriticalControls);
@@ -422,6 +417,20 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnExportCriticalControls.Name = "btnExportCriticalControls";
             this.btnExportCriticalControls.ShowImage = true;
             this.btnExportCriticalControls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExportCriticalControls_Click);
+            // 
+            // btnStopThread
+            // 
+            this.btnStopThread.Label = "Detener &Proceso";
+            this.btnStopThread.Name = "btnStopThread";
+            this.btnStopThread.ShowImage = true;
+            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
+            // 
+            // button1
+            // 
+            this.button1.Label = "button1";
+            this.button1.Name = "button1";
+            this.button1.ShowImage = true;
+            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
             // RibbonEllipse
             // 
@@ -485,6 +494,7 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnReviewCriticalControls;
         internal RibbonButton btnReReviewCritialControls;
         internal RibbonButton btnExportCriticalControls;
+        internal RibbonButton button1;
     }
 
     partial class ThisRibbonCollection

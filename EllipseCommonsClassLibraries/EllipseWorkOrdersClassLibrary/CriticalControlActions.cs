@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Constants;
 using EllipseStdTextClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using System.Text;
+using System.Linq;
+using EllipseCommonsClassLibrary.Utilities;
 
 namespace EllipseWorkOrdersClassLibrary
 {
@@ -165,7 +167,7 @@ namespace EllipseWorkOrdersClassLibrary
         {
             //establecemos los parámetrode de distrito
             if (string.IsNullOrEmpty(districtCode))
-                districtCode = " IN (" + Utils.GetListInSeparator(DistrictConstants.GetDistrictList(), ",", "'") + ")";
+                districtCode = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
             else
                 districtCode = " = '" + districtCode + "'";
 
@@ -219,9 +221,9 @@ namespace EllipseWorkOrdersClassLibrary
             else if (searchCriteriaKey2 == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
                 queryCriteria2 = "AND EQ.EQUIP_CLASS = '" + searchCriteriaValue2 + "'";
             else if (searchCriteriaKey2 == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                queryCriteria2 = "AND WO.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteriaValue2).Select(g => g.Name).ToList(), ",", "'") + ")";
+                queryCriteria2 = "AND WO.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Details == searchCriteriaValue2).Select(g => g.Name).ToList(), ",", "'") + ")";
             else if (searchCriteriaKey2 == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                queryCriteria2 = "AND WO.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteriaValue2).Select(g => g.Name).ToList(), ",", "'") + ")";
+                queryCriteria2 = "AND WO.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Area == searchCriteriaValue2).Select(g => g.Name).ToList(), ",", "'") + ")";
             //
 
             //establecemos los parámetros de estado de orden
@@ -312,7 +314,7 @@ namespace EllipseWorkOrdersClassLibrary
                     " "  + dateParameters +
                     " ORDER BY ASSIGN_PERSON, PLAN_STR_DATE ASC";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
             return query;
         }
@@ -320,7 +322,7 @@ namespace EllipseWorkOrdersClassLibrary
         {
             //establecemos los parámetrode de distrito
             if (string.IsNullOrEmpty(districtCode))
-                districtCode = " IN (" + Utils.GetListInSeparator(DistrictConstants.GetDistrictList(), ",", "'") + ")";
+                districtCode = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
             else
                 districtCode = " = '" + districtCode + "'";
 
@@ -371,7 +373,7 @@ namespace EllipseWorkOrdersClassLibrary
                     " AND WO.DSTRCT_CODE " + districtCode +
                     " ORDER BY ASSIGN_PERSON, PLAN_STR_DATE ASC";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
             return query;
         }

@@ -5,6 +5,9 @@ using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Constants;
 using EllipseWorkOrdersClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Tools.Ribbon;
@@ -32,7 +35,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -136,25 +139,25 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 _cells.GetCell("K5").Value = "REQUERIDO ADICIONAL";
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
-                var districtList = DistrictConstants.GetDistrictList();
-                var searchCriteriaList = WorkOrderActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
-                var dateCriteriaList = WorkOrderActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
+                var districtList = Districts.GetDistrictList();
+                var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
+                var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
-                _cells.GetCell("A4").Value = WorkOrderActions.SearchFieldCriteriaType.Area.Value;
+                _cells.GetCell("A4").Value = SearchFieldCriteriaType.Area.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
                 _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 3, false);
                 _cells.GetCell("B4").Value = "MDC";
-                _cells.GetCell("A5").Value = WorkOrderActions.SearchFieldCriteriaType.WorkGroup.Value;
+                _cells.GetCell("A5").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);
                 _cells.GetRange("A3", "A5").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B5").Style = _cells.GetStyle(StyleConstants.Select);
 
                 _cells.GetCell("C3").Value = "FECHA";
-                _cells.GetCell("D3").Value = WorkOrderActions.SearchDateCriteriaType.NotFinalized.Value;
+                _cells.GetCell("D3").Value = SearchDateCriteriaType.NotFinalized.Value;
                 _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 5);
                 _cells.GetCell("C4").Value = "DESDE";
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
@@ -220,8 +223,8 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             
             _cells.ClearTableRange(TableName01);
 
-            var searchCriteriaList = WorkOrderActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
-            var dateCriteriaList = WorkOrderActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes();
+            var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
+            var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes();
             //Obtengo los valores de las opciones de búsqueda
             var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
             var searchCriteriaKey1Text = _cells.GetEmptyIfNull(_cells.GetCell("A4").Value);

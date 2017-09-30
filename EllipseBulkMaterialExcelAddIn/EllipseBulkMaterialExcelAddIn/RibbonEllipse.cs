@@ -6,6 +6,9 @@ using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseBulkMaterialExcelAddIn.Properties;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Connections;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
@@ -42,7 +45,7 @@ namespace EllipseBulkMaterialExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviromentList = EnviromentConstants.GetEnviromentList();
+            var enviromentList = Environments.GetEnviromentList();
             foreach (var item in enviromentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
@@ -978,7 +981,7 @@ namespace EllipseBulkMaterialExcelAddIn
                     "  FECHA = MAX_FECHA " +
                     "AND EQUIP_NO = '" + equipNo + "'";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
                 
                 return query;
             }
@@ -1066,7 +1069,7 @@ namespace EllipseBulkMaterialExcelAddIn
                     "ORDER BY   " +
                     "  PROFILES.PESO   ";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
                 
                 return query;
             }
@@ -1108,7 +1111,7 @@ namespace EllipseBulkMaterialExcelAddIn
                     "  STAT.MAX_DATE = STAT.STAT_DATE " +
                     "OR STAT.STAT_DATE IS NULL ";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
                 
                 return query;
             }
@@ -1119,7 +1122,7 @@ namespace EllipseBulkMaterialExcelAddIn
                             "SELECT EQL.LIST_TYP, EQL.LIST_ID FROM " + dbReference + ".MSF606" + dbLink + " EQL " +
                             "WHERE EQL.LIST_TYP = '" + listType + "'";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }

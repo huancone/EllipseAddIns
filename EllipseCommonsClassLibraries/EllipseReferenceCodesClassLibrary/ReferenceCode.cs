@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EllipseCommonsClassLibrary;
 using EllipseStdTextClassLibrary;
+using EllipseCommonsClassLibrary.Utilities;
 
 namespace EllipseReferenceCodesClassLibrary
 {
@@ -28,7 +29,7 @@ namespace EllipseReferenceCodesClassLibrary
                     ShortName = drReference["SHORT_NAMES"].ToString().Trim(),
                     ScreenLiteral = drReference["SCREEN_LITERAL"].ToString().Trim(),
                     Length = Convert.ToInt16(drReference["LENGTH"].ToString().Trim()),
-                    StdTextFlag = Utils.IsTrue(drReference["STD_TEXT_FLAG"].ToString().Trim())
+                    StdTextFlag = MyUtilities.IsTrue(drReference["STD_TEXT_FLAG"].ToString().Trim())
                 };
 
                 entityList.Add(request);
@@ -56,7 +57,7 @@ namespace EllipseReferenceCodesClassLibrary
                     ShortName = drReference["SHORT_NAMES"].ToString().Trim(),
                     ScreenLiteral = drReference["SCREEN_LITERAL"].ToString().Trim(),
                     StdtxtId = drReference["STD_TXT_KEY"].ToString().Trim(),
-                    StdTextFlag = Utils.IsTrue(drReference["STD_TEXT_FLAG"].ToString().Trim())
+                    StdTextFlag = MyUtilities.IsTrue(drReference["STD_TEXT_FLAG"].ToString().Trim())
                 };
                 if (item.StdTextFlag && !string.IsNullOrWhiteSpace(item.StdtxtId))
                     item.StdText = StdText.GetText(urlService, StdText.GetStdTextOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings), "RC" + item.StdtxtId);
@@ -83,7 +84,7 @@ namespace EllipseReferenceCodesClassLibrary
                 ShortName = drReference["SHORT_NAMES"].ToString().Trim(),
                 ScreenLiteral = drReference["SCREEN_LITERAL"].ToString().Trim(),
                 StdtxtId = drReference["STD_TXT_KEY"].ToString().Trim(),
-                StdTextFlag = Utils.IsTrue(drReference["STD_TEXT_FLAG"].ToString().Trim())
+                StdTextFlag = MyUtilities.IsTrue(drReference["STD_TEXT_FLAG"].ToString().Trim())
             };
 
             try
@@ -187,7 +188,7 @@ namespace EllipseReferenceCodesClassLibrary
                         " FROM" +
                         "   " + dbReference + ".MSF070" + dbLink + " RCE" +
                         " WHERE RCE.ENTITY_TYPE = '" + entityType + "'";
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }
@@ -216,7 +217,7 @@ namespace EllipseReferenceCodesClassLibrary
                         " AND RC.ENTITY_VALUE = '" + entityValue + "' " +
                         " " + refNo +
                         " " + seqNum;
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }

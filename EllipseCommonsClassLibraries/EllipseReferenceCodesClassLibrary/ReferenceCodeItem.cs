@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Utilities.MyDateTime;
 
 namespace EllipseReferenceCodesClassLibrary
 {
@@ -174,7 +175,7 @@ namespace EllipseReferenceCodesClassLibrary
             }
             private void UpdateRefCode()
             {
-                RefCode = TimeOperations.FormatDateToString(_date, TimeOperations.DateTimeFormats.DateYYYYMMDD);
+                RefCode = Operations.FormatDateToString(_date, Formats.DateYYYYMMDD);
             }
 
             public string GetRefCode()
@@ -292,7 +293,7 @@ namespace EllipseReferenceCodesClassLibrary
             }
             private void UpdateRefCode()
             {
-                RefCode = TimeOperations.FormatTimeToString(_time, TimeOperations.DateTimeFormats.TimeHHMM, ":");
+                RefCode = Operations.FormatTimeToString(_time, Formats.TimeHHMM, ":");
             }
             public string GetRefCode()
             {
@@ -376,12 +377,12 @@ namespace EllipseReferenceCodesClassLibrary
 
             public void SetValue(object value)
             {
-                RefCode = Utils.IsTrue(value) ? "Y" : "N";
+                RefCode = MyUtilities.IsTrue(value) ? "Y" : "N";
             }
 
             public bool GetValue()
             {
-                return Utils.IsTrue(RefCode);
+                return MyUtilities.IsTrue(RefCode);
             }
 
             public string GetRefCode()

@@ -1,5 +1,6 @@
-﻿
-using EllipseCommonsClassLibrary;
+﻿using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Constants;
 
 namespace EllipseWorkOrdersClassLibrary
 {
@@ -58,29 +59,29 @@ namespace EllipseWorkOrdersClassLibrary
             ActualMatCost = StyleConstants.Normal;
             ActualOtherCost = StyleConstants.Normal;
             //durationHrs
-            if (!MathUtil.InThreshold(estimateDurHrs, wo.actualDurationsHrs, 1f))
+            if (!MyMath.InThreshold(estimateDurHrs, wo.actualDurationsHrs, 1f))
                 ActualDurationHrs = StyleConstants.Error;
-            else if (!MathUtil.InThreshold(estimateDurHrs, wo.actualDurationsHrs, .2f))
+            else if (!MyMath.InThreshold(estimateDurHrs, wo.actualDurationsHrs, .2f))
                 ActualDurationHrs = warningStyle;
             //lab hrs
-            if (!MathUtil.InThreshold(estimateLabHrs, wo.actualLabHrs, 1f))
+            if (!MyMath.InThreshold(estimateLabHrs, wo.actualLabHrs, 1f))
                 ActualLabHrs = StyleConstants.Error;
-            else if (!MathUtil.InThreshold(estimateLabHrs, wo.actualLabHrs, .2f))
+            else if (!MyMath.InThreshold(estimateLabHrs, wo.actualLabHrs, .2f))
                 ActualLabHrs = warningStyle;
             //lab cost
-            if (!MathUtil.InThreshold(estimateLabCost, wo.actualLabCost, 1f))
+            if (!MyMath.InThreshold(estimateLabCost, wo.actualLabCost, 1f))
                 ActualLabCost = StyleConstants.Error;
-            else if (!MathUtil.InThreshold(estimateLabCost, wo.actualLabCost, .2f))
+            else if (!MyMath.InThreshold(estimateLabCost, wo.actualLabCost, .2f))
                 ActualLabCost = warningStyle;
             //mat cost
-            if (!MathUtil.InThreshold(estimateMatCost, wo.actualMatCost, 1f))
+            if (!MyMath.InThreshold(estimateMatCost, wo.actualMatCost, 1f))
                 ActualMatCost = StyleConstants.Error;
-            else if (!MathUtil.InThreshold(estimateMatCost, wo.actualMatCost, .2f))
+            else if (!MyMath.InThreshold(estimateMatCost, wo.actualMatCost, .2f))
                 ActualMatCost = warningStyle;
             //other cost
-            if (!MathUtil.InThreshold(wo.estimatedOtherCost, wo.actualOtherCost, 1f))
+            if (!MyMath.InThreshold(wo.estimatedOtherCost, wo.actualOtherCost, 1f))
                 ActualOtherCost = StyleConstants.Error;
-            else if (!MathUtil.InThreshold(wo.estimatedOtherCost, wo.actualOtherCost, .2f))
+            else if (!MyMath.InThreshold(wo.estimatedOtherCost, wo.actualOtherCost, .2f))
                 ActualOtherCost = warningStyle;
 
 
