@@ -104,19 +104,7 @@ namespace EllipseCommonsClassLibrary
                 dbLink = "";
                 dbReference = _defaultDbReferenceName;
             }
-<<<<<<< HEAD
             else if (enviroment == Connections.Environments.SigcorProductivo)
-=======
-            else if (enviroment == EnviromentConstants.EllipseTest89)
-            {
-                _dbname = "EL89TST";
-                _dbuser = "SIGCON";
-                _dbpass = "ventyx";
-                dbLink = "";
-                dbReference = _defaultDbReferenceName;
-            }
-            else if (enviroment == EnviromentConstants.SigcorProductivo)
->>>>>>> master
             {
                 _dbname = "SIGCOPRD";
                 _dbuser = "CONSULBO";
