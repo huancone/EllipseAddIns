@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Constants;
+using EllipseCommonsClassLibrary.Utilities;
 using System.Diagnostics.CodeAnalysis;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using EllipseReferenceCodesClassLibrary;
@@ -337,15 +340,15 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.location = wo.location ?? requestWo.location;
             requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
 
-            requestWo.calculatedDurationsFlag = Utils.IsTrue(wo.calculatedDurationsFlag, true);
+            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, true);
             requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
-            requestWo.calculatedLabFlag = Utils.IsTrue(wo.calculatedLabFlag, true);
+            requestWo.calculatedLabFlag = MyUtilities.IsTrue(wo.calculatedLabFlag, true);
             requestWo.calculatedLabFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedLabFlag);
-            requestWo.calculatedMatFlag = Utils.IsTrue(wo.calculatedMatFlag, true);
+            requestWo.calculatedMatFlag = MyUtilities.IsTrue(wo.calculatedMatFlag, true);
             requestWo.calculatedMatFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedMatFlag);
-            requestWo.calculatedEquipmentFlag = Utils.IsTrue(wo.calculatedEquipmentFlag, true);
+            requestWo.calculatedEquipmentFlag = MyUtilities.IsTrue(wo.calculatedEquipmentFlag, true);
             requestWo.calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag);
-            requestWo.calculatedOtherFlag = Utils.IsTrue(wo.calculatedOtherFlag, true);
+            requestWo.calculatedOtherFlag = MyUtilities.IsTrue(wo.calculatedOtherFlag, true);
             requestWo.calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag);
             //se envía la acción
             return proxyWo.create(opContext, requestWo);
@@ -1057,7 +1060,7 @@ namespace EllipseWorkOrdersClassLibrary
             {
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(districtCode))
-                    districtCode = " IN (" + Utils.GetListInSeparator(DistrictConstants.GetDistrictList(), ",", "'") + ")";
+                    districtCode = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtCode = " = '" + districtCode + "'";
 
@@ -1098,11 +1101,11 @@ namespace EllipseWorkOrdersClassLibrary
                 else if (searchCriteriaKey1 == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
                     queryCriteria1 = "AND EQ.EQUIP_CLASS = '" + searchCriteriaValue1 + "'";
                 else if (searchCriteriaKey1 == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
-                    queryCriteria1 = "AND WO.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteriaValue1).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    queryCriteria1 = "AND WO.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Details == searchCriteriaValue1).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else if (searchCriteriaKey1 == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
-                    queryCriteria1 = "AND WO.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteriaValue1).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    queryCriteria1 = "AND WO.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Area == searchCriteriaValue1).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else
-                    queryCriteria1 = "AND WO.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
+                    queryCriteria1 = "AND WO.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
                 //
 
                 var queryCriteria2 = "";
@@ -1142,9 +1145,9 @@ namespace EllipseWorkOrdersClassLibrary
                 else if (searchCriteriaKey2 == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
                     queryCriteria2 = "AND EQ.EQUIP_CLASS = '" + searchCriteriaValue2 + "'";
                 else if (searchCriteriaKey2 == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                    queryCriteria2 = "AND WO.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteriaValue2).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    queryCriteria2 = "AND WO.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Details == searchCriteriaValue2).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else if (searchCriteriaKey2 == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                    queryCriteria2 = "AND WO.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteriaValue2).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    queryCriteria2 = "AND WO.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Area == searchCriteriaValue2).Select(g => g.Name).ToList(), ",", "'") + ")";
                 //
 
                 //establecemos los parámetros de estado de orden
@@ -1152,7 +1155,7 @@ namespace EllipseWorkOrdersClassLibrary
                 if (string.IsNullOrEmpty(woStatus))
                     statusRequirement = "";
                 else if (woStatus == WoStatusList.Uncompleted)
-                    statusRequirement = " AND WO.WO_STATUS_M IN (" + Utils.GetListInSeparator(WoStatusList.GetUncompletedStatusCodes(), ",", "'") + ")";
+                    statusRequirement = " AND WO.WO_STATUS_M IN (" + MyUtilities.GetListInSeparator(WoStatusList.GetUncompletedStatusCodes(), ",", "'") + ")";
                 else if (WoStatusList.GetStatusNames().Contains(woStatus))
                     statusRequirement = " AND WO.WO_STATUS_M = '" + WoStatusList.GetStatusCode(woStatus) + "'";
                 else
@@ -1215,7 +1218,7 @@ namespace EllipseWorkOrdersClassLibrary
                             " AND WO.DSTRCT_CODE " + districtCode +
                             dateParameters;
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
@@ -1232,7 +1235,7 @@ namespace EllipseWorkOrdersClassLibrary
             {
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(districtCode))
-                    districtCode = " IN (" + Utils.GetListInSeparator(DistrictConstants.GetDistrictList(), ",", "'") + ")";
+                    districtCode = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtCode = " = '" + districtCode + "'";
 
@@ -1263,7 +1266,7 @@ namespace EllipseWorkOrdersClassLibrary
                             " WO.WORK_ORDER = '" + workOrder + "'" +
                             " AND WO.DSTRCT_CODE " + districtCode;
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }

@@ -5,6 +5,9 @@ using System.Linq;
 using Microsoft.Office.Tools.Ribbon;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
 using System.Web.Services.Ellipse;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
@@ -27,7 +30,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -783,7 +786,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     "       ME.MODEL_SEQ_NO," +
                     "       ME.ENTRY_GRP";
             
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }
@@ -840,7 +843,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     "   )" +
                     " SELECT * FROM HEADER_DEFAULT_VALUES HDV";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }

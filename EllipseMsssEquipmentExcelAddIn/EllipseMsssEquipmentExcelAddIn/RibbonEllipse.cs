@@ -5,6 +5,9 @@ using System.Web.Services.Ellipse;
 using Microsoft.Office.Tools.Ribbon;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using EllipseMsssEquipmentExcelAddIn.Properties;
@@ -28,7 +31,7 @@ namespace EllipseMsssEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            var enviromentList = EnviromentConstants.GetEnviromentList();
+            var enviromentList = Environments.GetEnviromentList();
             foreach (var item in enviromentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
@@ -544,7 +547,7 @@ namespace EllipseMsssEquipmentExcelAddIn
                            "AND FNCL.TABLE_TYPE = 'FNCL' " +
                            "WHERE " +
                            "  MSSS.EQUIP_GRP_ID = '" + equipmentGrpId + "'";
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             return query;
         }

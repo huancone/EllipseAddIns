@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using Screen = EllipseCommonsClassLibrary.ScreenService; //si es screen service
@@ -30,7 +33,7 @@ namespace EllipseMSO010ExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -451,7 +454,7 @@ namespace EllipseMSO010ExcelAddIn
                                " " + statusCriteria + 
                                " ORDER BY CO.TABLE_CODE ASC";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
                 
                 return query;
             }

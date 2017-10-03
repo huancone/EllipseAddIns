@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -31,7 +30,7 @@ namespace EllipseMSO17EExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -111,54 +110,54 @@ namespace EllipseMSO17EExcelAddIn
             }
         }
 
-        class StockCode
-        {
-            public StockCode(string stockCode, string districtCode)
-            {
-                try
-                {
-                    if (string.IsNullOrEmpty(districtCode))
-                    {
-                        Error = "Transaccion Invalida";
-                        return;
-                    }
-                    var sqlQuery = Queries.GetStockInfo(stockCode, districtCode, EFunctions.dbReference, EFunctions.dbLink);
+        //class StockCode
+        //{
+        //    public StockCode(string stockCode, string districtCode)
+        //    {
+        //        try
+        //        {
+        //            if (string.IsNullOrEmpty(districtCode))
+        //            {
+        //                Error = "Transaccion Invalida";
+        //                return;
+        //            }
+        //            var sqlQuery = Queries.GetStockInfo(stockCode, districtCode, EFunctions.dbReference, EFunctions.dbLink);
 
-                    var drStockInfo = EFunctions.GetQueryResult(sqlQuery);
+        //            var drStockInfo = EFunctions.GetQueryResult(sqlQuery);
 
-                    if (drStockInfo != null && !drStockInfo.IsClosed && drStockInfo.HasRows)
-                    {
-                        while (drStockInfo.Read())
-                        {
-                            stockCode = drStockInfo["STOCK_CODE"].ToString();
-                            stockDesc = drStockInfo["STK_DESC"].ToString();
-                            unitOfIssue = drStockInfo["PROJECT_NO"].ToString();
-                            stockOnHand = drStockInfo["IND"].ToString();
-                            currentInventoryPrice1 = drStockInfo["TRAN_AMOUNT"].ToString();
-                            currentInventoryPrice2 = drStockInfo["TRAN_AMOUNT_S"].ToString();
-                            error = drStockInfo["TRAN_AMOUNT_S"].ToString();
+        //            if (drStockInfo != null && !drStockInfo.IsClosed && drStockInfo.HasRows)
+        //            {
+        //                while (drStockInfo.Read())
+        //                {
+        //                    stockCode = drStockInfo["STOCK_CODE"].ToString();
+        //                    stockDesc = drStockInfo["STK_DESC"].ToString();
+        //                    unitOfIssue = drStockInfo["PROJECT_NO"].ToString();
+        //                    stockOnHand = drStockInfo["IND"].ToString();
+        //                    currentInventoryPrice1 = drStockInfo["TRAN_AMOUNT"].ToString();
+        //                    currentInventoryPrice2 = drStockInfo["TRAN_AMOUNT_S"].ToString();
+        //                    error = drStockInfo["TRAN_AMOUNT_S"].ToString();
 
-                        }
-                    }
-                    else
-                    {
-                        Error = "La Transaccion no Existe";
-                    }
-                }
-                catch (Exception error)
-                {
-                    Error = error.Message;
-                }
-            }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                Error = "La Transaccion no Existe";
+        //            }
+        //        }
+        //        catch (Exception error)
+        //        {
+        //            Error = error.Message;
+        //        }
+        //    }
 
-            public string stockCode                 { get; set; }
-            public string stockDesc                 { get; set; }
-            public string unitOfIssue               { get; set; }
-            public string stockOnHand               { get; set; }
-            public string currentInventoryPrice1 { get; set; }
-            public string currentInventoryPrice2 { get; set; }
-            public string error                     { get; set; }
-        }
+        //    public string stockCode                 { get; set; }
+        //    public string stockDesc                 { get; set; }
+        //    public string unitOfIssue               { get; set; }
+        //    public string stockOnHand               { get; set; }
+        //    public string currentInventoryPrice1 { get; set; }
+        //    public string currentInventoryPrice2 { get; set; }
+        //    public string error                     { get; set; }
+        //}
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
@@ -168,31 +167,31 @@ namespace EllipseMSO17EExcelAddIn
 
     
 
-    public static class Queries
-    {
-        public static string GetStockInfo(string stockCode, string districtCode,  string dbReference, string dbLink)
-        {
-            var query = " " +
-                           "SELECT DISTINCT " +
-                           "  EMP.FIRST_NAME || ' ' || EMP.SURNAME NOMBRE " +
-                           "FROM " +
-                           "  " + dbReference + ".MSF870" + dbLink + " POS " +
-                           "INNER JOIN " + dbReference + ".MSF878" + dbLink + " EMPOS " +
-                           "ON" +
-                           "  EMPOS.POSITION_ID = POS.POSITION_ID " +
-                           "AND " +
-                           "  (" +
-                           "    EMPOS.POS_STOP_DATE > TO_CHAR ( SYSDATE, 'YYYYMMDD' ) " +
-                           "  OR EMPOS.POS_STOP_DATE = '00000000' " +
-                           "  ) " +
-                           "INNER JOIN " + dbReference + ".MSF810" + dbLink + " EMP " +
-                           "ON " +
-                           "  EMPOS.EMPLOYEE_ID = EMP.EMPLOYEE_ID " +
-                           "WHERE " +
-                           "EMPOS.EMPLOYEE_ID = '" + employeeId + "' ";
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+    //public static class Queries
+    //{
+    //    public static string GetStockInfo(string stockCode, string districtCode,  string dbReference, string dbLink)
+    //    {
+    //        var query = " " +
+    //                       "SELECT DISTINCT " +
+    //                       "  EMP.FIRST_NAME || ' ' || EMP.SURNAME NOMBRE " +
+    //                       "FROM " +
+    //                       "  " + dbReference + ".MSF870" + dbLink + " POS " +
+    //                       "INNER JOIN " + dbReference + ".MSF878" + dbLink + " EMPOS " +
+    //                       "ON" +
+    //                       "  EMPOS.POSITION_ID = POS.POSITION_ID " +
+    //                       "AND " +
+    //                       "  (" +
+    //                       "    EMPOS.POS_STOP_DATE > TO_CHAR ( SYSDATE, 'YYYYMMDD' ) " +
+    //                       "  OR EMPOS.POS_STOP_DATE = '00000000' " +
+    //                       "  ) " +
+    //                       "INNER JOIN " + dbReference + ".MSF810" + dbLink + " EMP " +
+    //                       "ON " +
+    //                       "  EMPOS.EMPLOYEE_ID = EMP.EMPLOYEE_ID " +
+    //                       "WHERE " +
+    //                       "EMPOS.EMPLOYEE_ID = '" + employeeId + "' ";
+    //        query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
-            return query;
-        }
-    }
+    //        return query;
+    //    }
+    //}
 }

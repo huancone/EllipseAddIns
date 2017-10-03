@@ -2,7 +2,6 @@
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using Authenticator = EllipseCommonsClassLibrary.AuthenticatorService;
-
 namespace EllipseCommonsClassLibrary
 {
     public partial class FormAuthenticate : Form
@@ -31,7 +30,11 @@ namespace EllipseCommonsClassLibrary
             EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
             EllipsePswd = txtPassword.Text;
             EllipseUser = txtUsername.Text.ToUpper();
-     
+            ////FrAth frm = new FrAth(EllipseUser, EllipseDsct, EllipsePost);
+            ////frm.StartPosition = FormStartPosition.CenterScreen;
+            ////frm.ShowDialog();
+            ////if (frm.Auth.Authenticated)
+            ////    MessageBox.Show("Autenticado");
             var authSer = new Authenticator.AuthenticatorService();
             var opAuth = new Authenticator.OperationContext
             {
@@ -43,7 +46,7 @@ namespace EllipseCommonsClassLibrary
             //control de selección de entorno en programación
             if(SelectedEnviroment == null)
             {
-                MessageBox.Show("ERROR INTERNO: No se ha definido un entorno para autenticación");
+                MessageBox.Show("Debe seleccionar un entorno de la lista para poder realizar la acción");
                 return;
             }
 

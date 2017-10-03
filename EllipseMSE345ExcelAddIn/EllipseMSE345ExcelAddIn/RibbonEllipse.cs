@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using Microsoft.Office.Tools.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
 using EllipseStdTextClassLibrary;
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 
@@ -593,7 +595,7 @@ namespace EllipseMSE345ExcelAddIn
 
         public List<string> GetFlotas()
         {
-            _eFunctions.SetDBSettings(EnviromentConstants.SigcorProductivo);
+            _eFunctions.SetDBSettings(Environments.SigcorProductivo);
 
             const string sqlQuery = "SELECT DISTINCT TRIM(FLOTA_ELLIPSE) AS FLOTA FROM EQMTLIST WHERE FLOTA_ELLIPSE IS NOT NULL AND ACTIVE_FLG = 'Y' ORDER BY 1";
 
@@ -962,7 +964,7 @@ namespace EllipseMSE345ExcelAddIn
         {
             try
             {
-                _eFunctions.SetDBSettings(EnviromentConstants.SigcorProductivo);
+                _eFunctions.SetDBSettings(Environments.SigcorProductivo);
 
                 string sqlQuery = "SELECT EQU FROM EQMTLIST WHERE FLOTA_ELLIPSE = '" + target.Value + "'" + " AND ACTIVE_FLG = 'Y' ORDER BY 1 ";                    
 

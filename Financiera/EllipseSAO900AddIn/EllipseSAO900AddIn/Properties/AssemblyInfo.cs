@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // asociada con un ensamblado.
 
 [assembly: AssemblyTitle("EllipseSAO900AddIn")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("EllipseSAO900")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Hambings SAS / Cerrejon Ltda")]
 [assembly: AssemblyProduct("EllipseSAO900AddIn")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright ©  2015-2017")]
+[assembly: AssemblyTrademark("Hambings")]
 [assembly: AssemblyCulture("")]
 
 // Si establece ComVisible en false, los tipos de este ensamblado no estarán visibles 
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // mediante el carácter '*', como se muestra a continuación:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.7")]
-[assembly: AssemblyFileVersion("1.0.0.7")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]

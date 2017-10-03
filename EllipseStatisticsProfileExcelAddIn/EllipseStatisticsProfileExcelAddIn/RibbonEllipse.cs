@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
@@ -24,7 +26,7 @@ namespace EllipseStatisticsProfileExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            var enviromentList = EnviromentConstants.GetEnviromentList();
+            var enviromentList = Environments.GetEnviromentList();
             foreach (var item in enviromentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();

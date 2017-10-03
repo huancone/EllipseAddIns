@@ -6,10 +6,15 @@ using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Constants;
+using EllipseCommonsClassLibrary.Utilities;
 using EllipseWorkOrdersClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
+using FormAuthenticate = EllipseCommonsClassLibrary.FormAuthenticate;
 
 namespace EllipseWorkOrderExcelAddIn
 {
@@ -74,7 +79,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -837,14 +842,14 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("K5").Value = "REQUERIDO ADICIONAL";
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
-                var districtList = DistrictConstants.GetDistrictList();
+                var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WoStatusList.GetStatusNames(true);
                 var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("A4").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
@@ -899,10 +904,10 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(6, TitleRow01).Value = "COMP_CODE";
                 _cells.GetCell(7, TitleRow01).Value = "MOD_CODE";
 
-                var priorityCodes = Utils.GetCodeList(WoTypeMtType.GetPriorityCodeList());
-                var woTypeCodes = Utils.GetCodeList(WoTypeMtType.GetWoTypeList());
-                var mtTypeCodes = Utils.GetCodeList(WoTypeMtType.GetMtTypeList());
-                var usTypeCodes = Utils.GetCodeList(WorkOrderActions.GetUserStatusCodeList(_eFunctions).ToList());
+                var priorityCodes = MyUtilities.GetCodeList(WoTypeMtType.GetPriorityCodeList());
+                var woTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetWoTypeList());
+                var mtTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetMtTypeList());
+                var usTypeCodes = MyUtilities.GetCodeList(WorkOrderActions.GetUserStatusCodeList(_eFunctions).ToList());
 
                 
                 _cells.GetCell(8, TitleRow01).Value = "WO_TYPE";
@@ -1230,14 +1235,14 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("K5").Value = "REQUERIDO ADICIONAL";
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
-                var districtList = DistrictConstants.GetDistrictList();
+                var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WoStatusList.GetStatusNames(true);
                 var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("A4").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
@@ -1298,10 +1303,10 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(6, TitleRowD01).Value = "COMP_CODE";
                 _cells.GetCell(7, TitleRowD01).Value = "MOD_CODE";
 
-                var priorityCodes = Utils.GetCodeList(WoTypeMtType.GetPriorityCodeList());
-                var woTypeCodes = Utils.GetCodeList(WoTypeMtType.GetWoTypeList());
-                var mtTypeCodes = Utils.GetCodeList(WoTypeMtType.GetMtTypeList());
-                var usTypeCodes = Utils.GetCodeList(WorkOrderActions.GetUserStatusCodeList(_eFunctions).ToList());
+                var priorityCodes = MyUtilities.GetCodeList(WoTypeMtType.GetPriorityCodeList());
+                var woTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetWoTypeList());
+                var mtTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetMtTypeList());
+                var usTypeCodes = MyUtilities.GetCodeList(WorkOrderActions.GetUserStatusCodeList(_eFunctions).ToList());
 
 
                 _cells.GetCell(8, TitleRowD01).Value = "WO_TYPE";
@@ -1795,14 +1800,14 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.equipmentNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
                     wo.compCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
                     wo.compModCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value);
-                    wo.workOrderType = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
-                    wo.maintenanceType = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value));
+                    wo.workOrderType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
+                    wo.maintenanceType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value));
                     wo.workOrderStatusU = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, i).Value);
                     //DETAILS
                     wo.raisedDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, i).Value);
                     wo.raisedTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value);
                     wo.originatorId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value);
-                    wo.origPriority = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, i).Value));
+                    wo.origPriority = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, i).Value));
                     wo.origDocType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, i).Value);
                     wo.origDocNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, i).Value);
                     string relatedWo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, i).Value);
@@ -1813,7 +1818,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //PLANNING
                     wo.autoRequisitionInd = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(21, i).Value);
                     wo.assignPerson = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(22, i).Value);
-                    wo.planPriority = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(23, i).Value));
+                    wo.planPriority = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(23, i).Value));
                     wo.requisitionStartDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(24, i).Value);
                     wo.requisitionStartTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(25, i).Value);
                     wo.requiredByDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(26, i).Value);
@@ -1937,39 +1942,39 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.workGroup = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
                     wo.SetWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value));
                     wo.workOrderStatusM = WoStatusList.GetStatusCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value));
-                    wo.workOrderDesc = Utils.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value) : null;
-                    wo.equipmentNo = Utils.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null;
-                    wo.compCode = Utils.IsTrue(_cells.GetCell(6, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null;
-                    wo.compModCode = Utils.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
-                    wo.workOrderType = Utils.IsTrue(_cells.GetCell(8, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)) : null;
-                    wo.maintenanceType = Utils.IsTrue(_cells.GetCell(9, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) : null;
-                    wo.workOrderStatusU = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)) : null;
+                    wo.workOrderDesc = MyUtilities.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value) : null;
+                    wo.equipmentNo = MyUtilities.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null;
+                    wo.compCode = MyUtilities.IsTrue(_cells.GetCell(6, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null;
+                    wo.compModCode = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
+                    wo.workOrderType = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)) : null;
+                    wo.maintenanceType = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) : null;
+                    wo.workOrderStatusU = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)) : null;
                     //DETAILS
-                    wo.raisedDate = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
-                    wo.raisedTime = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
-                    wo.originatorId = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
-                    wo.origPriority = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(14, i).Value)) : null;
-                    wo.origDocType = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
-                    wo.origDocNo = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
-                    if (Utils.IsTrue(_cells.GetCell(17, validationRow).Value))
+                    wo.raisedDate = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
+                    wo.raisedTime = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
+                    wo.originatorId = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
+                    wo.origPriority = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(14, i).Value)) : null;
+                    wo.origDocType = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
+                    wo.origDocNo = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
+                    if (MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value))
                         wo.SetRelatedWoDto(_cells.GetEmptyIfNull(_cells.GetCell(17, i).Value));
-                    wo.requestId = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
-                    wo.stdJobNo = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null;
-                    wo.maintSchTask = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
+                    wo.requestId = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
+                    wo.stdJobNo = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null;
+                    wo.maintSchTask = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
                     //PLANNING
-                    wo.autoRequisitionInd = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
-                    wo.assignPerson = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
-                    wo.planPriority = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(23, i).Value)) : null;
-                    wo.requisitionStartDate = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
-                    wo.requisitionStartTime = Utils.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null;
-                    wo.requiredByDate = Utils.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null;
-                    wo.requiredByTime = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null;
-                    wo.planStrDate = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;
-                    wo.planStrTime = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
-                    wo.planFinDate = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
-                    wo.planFinTime = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
-                    wo.unitOfWork = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;
-                    wo.unitsRequired = Utils.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null;
+                    wo.autoRequisitionInd = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
+                    wo.assignPerson = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
+                    wo.planPriority = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(23, i).Value)) : null;
+                    wo.requisitionStartDate = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
+                    wo.requisitionStartTime = MyUtilities.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null;
+                    wo.requiredByDate = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null;
+                    wo.requiredByTime = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null;
+                    wo.planStrDate = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;
+                    wo.planStrTime = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
+                    wo.planFinDate = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
+                    wo.planFinTime = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
+                    wo.unitOfWork = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;
+                    wo.unitsRequired = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null;
                     //pcComp/ucComp
 
                     //Elemento de control para planning
@@ -1983,30 +1988,30 @@ namespace EllipseWorkOrderExcelAddIn
                     //
 
                     //COST
-                    wo.accountCode = Utils.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null;
-                    wo.projectNo = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null;
-                    wo.parentWo = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
+                    wo.accountCode = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null;
+                    wo.projectNo = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null;
+                    wo.parentWo = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
                     //JOB_CODES
-                    wo.jobCode1 = Utils.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
-                    wo.jobCode2 = Utils.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null;
-                    wo.jobCode3 = Utils.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null;
-                    wo.jobCode4 = Utils.IsTrue(_cells.GetCell(41, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(41, i).Value) : null;
-                    wo.jobCode5 = Utils.IsTrue(_cells.GetCell(42, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(42, i).Value) : null;
-                    wo.jobCode6 = Utils.IsTrue(_cells.GetCell(43, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(43, i).Value) : null;
-                    wo.jobCode7 = Utils.IsTrue(_cells.GetCell(44, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(44, i).Value) : null;
-                    wo.jobCode8 = Utils.IsTrue(_cells.GetCell(45, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(45, i).Value) : null;
-                    wo.jobCode9 = Utils.IsTrue(_cells.GetCell(46, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(46, i).Value) : null;
-                    wo.jobCode10 = Utils.IsTrue(_cells.GetCell(47, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(47, i).Value) : null;
-                    wo.locationFr = Utils.IsTrue(_cells.GetCell(48, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(48, i).Value) : null;
-                    wo.failurePart = Utils.IsTrue(_cells.GetCell(49, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(49, i).Value) : null;
+                    wo.jobCode1 = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
+                    wo.jobCode2 = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null;
+                    wo.jobCode3 = MyUtilities.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null;
+                    wo.jobCode4 = MyUtilities.IsTrue(_cells.GetCell(41, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(41, i).Value) : null;
+                    wo.jobCode5 = MyUtilities.IsTrue(_cells.GetCell(42, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(42, i).Value) : null;
+                    wo.jobCode6 = MyUtilities.IsTrue(_cells.GetCell(43, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(43, i).Value) : null;
+                    wo.jobCode7 = MyUtilities.IsTrue(_cells.GetCell(44, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(44, i).Value) : null;
+                    wo.jobCode8 = MyUtilities.IsTrue(_cells.GetCell(45, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(45, i).Value) : null;
+                    wo.jobCode9 = MyUtilities.IsTrue(_cells.GetCell(46, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(46, i).Value) : null;
+                    wo.jobCode10 = MyUtilities.IsTrue(_cells.GetCell(47, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(47, i).Value) : null;
+                    wo.locationFr = MyUtilities.IsTrue(_cells.GetCell(48, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(48, i).Value) : null;
+                    wo.failurePart = MyUtilities.IsTrue(_cells.GetCell(49, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(49, i).Value) : null;
 
                     //wo.calculatedEquipmentFlag = "true";
                     //wo.calculatedMatFlag = "true";
                     //wo.calculatedOtherFlag = "true";
                     //wo.calculatedLabFlag = "true";
                     //wo.calculatedDurationsFlag = "true";
-                    var extendedHeader = Utils.IsTrue(_cells.GetCell(54, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(54, i).Value) : null;
-                    var extendedBody = Utils.IsTrue(_cells.GetCell(55, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(55, i).Value) : null;
+                    var extendedHeader = MyUtilities.IsTrue(_cells.GetCell(54, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(54, i).Value) : null;
+                    var extendedBody = MyUtilities.IsTrue(_cells.GetCell(55, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(55, i).Value) : null;
                     wo.SetExtendedDescription(extendedHeader, extendedBody);
 
                     WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
@@ -2074,14 +2079,14 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("K5").Value = "REQUERIDO ADICIONAL";
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
-                var districtList = DistrictConstants.GetDistrictList();
+                var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var statusList = WoStatusList.GetStatusNames(true);
                 var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.GetCell("A4").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
                     "INST: IMIS, MINA\n" +
                     "MDC: FFCC, PBV, PTAS\n" +
@@ -2646,14 +2651,14 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.equipmentNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
                     wo.compCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
                     wo.compModCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value);
-                    wo.workOrderType = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
-                    wo.maintenanceType = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value));
+                    wo.workOrderType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
+                    wo.maintenanceType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value));
                     wo.workOrderStatusU = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, i).Value);
                     //DETAILS
                     wo.raisedDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, i).Value);
                     wo.raisedTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value);
                     wo.originatorId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value);
-                    wo.origPriority = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, i).Value));
+                    wo.origPriority = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, i).Value));
                     wo.origDocType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, i).Value);
                     wo.origDocNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, i).Value);
                     string relatedWo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, i).Value);
@@ -2664,7 +2669,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //PLANNING
                     wo.autoRequisitionInd = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(21, i).Value);
                     wo.assignPerson = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(22, i).Value);
-                    wo.planPriority = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(23, i).Value));
+                    wo.planPriority = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(23, i).Value));
                     wo.requisitionStartDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(24, i).Value);
                     wo.requisitionStartTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(25, i).Value);
                     wo.requiredByDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(26, i).Value);
@@ -2776,39 +2781,39 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.workGroup = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
                     wo.SetWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value));
                     wo.workOrderStatusM = WoStatusList.GetStatusCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value));
-                    wo.workOrderDesc = Utils.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value) : null;
-                    wo.equipmentNo = Utils.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null;
-                    wo.compCode = Utils.IsTrue(_cells.GetCell(6, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null;
-                    wo.compModCode = Utils.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
-                    wo.workOrderType = Utils.IsTrue(_cells.GetCell(8, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)) : null;
-                    wo.maintenanceType = Utils.IsTrue(_cells.GetCell(9, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) : null;
-                    wo.workOrderStatusU = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)) : null;
+                    wo.workOrderDesc = MyUtilities.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value) : null;
+                    wo.equipmentNo = MyUtilities.IsTrue(_cells.GetCell(5, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value) : null;
+                    wo.compCode = MyUtilities.IsTrue(_cells.GetCell(6, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) : null;
+                    wo.compModCode = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
+                    wo.workOrderType = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(8, i).Value)) : null;
+                    wo.maintenanceType = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) : null;
+                    wo.workOrderStatusU = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)) : null;
                     //DETAILS
-                    wo.raisedDate = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
-                    wo.raisedTime = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
-                    wo.originatorId = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
-                    wo.origPriority = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(14, i).Value)) : null;
-                    wo.origDocType = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
-                    wo.origDocNo = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
-                    if (Utils.IsTrue(_cells.GetCell(17, validationRow).Value))
+                    wo.raisedDate = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
+                    wo.raisedTime = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
+                    wo.originatorId = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
+                    wo.origPriority = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(14, i).Value)) : null;
+                    wo.origDocType = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
+                    wo.origDocNo = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
+                    if (MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value))
                         wo.SetRelatedWoDto(_cells.GetEmptyIfNull(_cells.GetCell(17, i).Value));
-                    wo.requestId = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
-                    wo.stdJobNo = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null;
-                    wo.maintSchTask = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
+                    wo.requestId = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
+                    wo.stdJobNo = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null;
+                    wo.maintSchTask = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null;
                     //PLANNING
-                    wo.autoRequisitionInd = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
-                    wo.assignPerson = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
-                    wo.planPriority = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(23, i).Value)) : null;
-                    wo.requisitionStartDate = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
-                    wo.requisitionStartTime = Utils.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null;
-                    wo.requiredByDate = Utils.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null;
-                    wo.requiredByTime = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null;
-                    wo.planStrDate = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;
-                    wo.planStrTime = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
-                    wo.planFinDate = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
-                    wo.planFinTime = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
-                    wo.unitOfWork = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;
-                    wo.unitsRequired = Utils.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null;
+                    wo.autoRequisitionInd = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null;
+                    wo.assignPerson = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
+                    wo.planPriority = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(23, i).Value)) : null;
+                    wo.requisitionStartDate = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
+                    wo.requisitionStartTime = MyUtilities.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null;
+                    wo.requiredByDate = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null;
+                    wo.requiredByTime = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null;
+                    wo.planStrDate = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;
+                    wo.planStrTime = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
+                    wo.planFinDate = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
+                    wo.planFinTime = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
+                    wo.unitOfWork = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;
+                    wo.unitsRequired = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null;
                     //pcComp/ucComp
 
                     //Elemento de control para planning
@@ -2822,22 +2827,22 @@ namespace EllipseWorkOrderExcelAddIn
                     //
 
                     //COST
-                    wo.accountCode = Utils.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null;
-                    wo.projectNo = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null;
-                    wo.parentWo = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
+                    wo.accountCode = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null;
+                    wo.projectNo = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null;
+                    wo.parentWo = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
                     //JOB_CODES
-                    wo.jobCode1 = Utils.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
-                    wo.jobCode2 = Utils.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null;
-                    wo.jobCode3 = Utils.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null;
-                    wo.jobCode4 = Utils.IsTrue(_cells.GetCell(41, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(41, i).Value) : null;
-                    wo.jobCode5 = Utils.IsTrue(_cells.GetCell(42, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(42, i).Value) : null;
-                    wo.jobCode6 = Utils.IsTrue(_cells.GetCell(43, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(43, i).Value) : null;
-                    wo.jobCode7 = Utils.IsTrue(_cells.GetCell(44, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(44, i).Value) : null;
-                    wo.jobCode8 = Utils.IsTrue(_cells.GetCell(45, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(45, i).Value) : null;
-                    wo.jobCode9 = Utils.IsTrue(_cells.GetCell(46, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(46, i).Value) : null;
-                    wo.jobCode10 = Utils.IsTrue(_cells.GetCell(47, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(47, i).Value) : null;
-                    wo.locationFr = Utils.IsTrue(_cells.GetCell(48, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(48, i).Value) : null;
-                    wo.failurePart = Utils.IsTrue(_cells.GetCell(49, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(49, i).Value) : null;
+                    wo.jobCode1 = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
+                    wo.jobCode2 = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null;
+                    wo.jobCode3 = MyUtilities.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null;
+                    wo.jobCode4 = MyUtilities.IsTrue(_cells.GetCell(41, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(41, i).Value) : null;
+                    wo.jobCode5 = MyUtilities.IsTrue(_cells.GetCell(42, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(42, i).Value) : null;
+                    wo.jobCode6 = MyUtilities.IsTrue(_cells.GetCell(43, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(43, i).Value) : null;
+                    wo.jobCode7 = MyUtilities.IsTrue(_cells.GetCell(44, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(44, i).Value) : null;
+                    wo.jobCode8 = MyUtilities.IsTrue(_cells.GetCell(45, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(45, i).Value) : null;
+                    wo.jobCode9 = MyUtilities.IsTrue(_cells.GetCell(46, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(46, i).Value) : null;
+                    wo.jobCode10 = MyUtilities.IsTrue(_cells.GetCell(47, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(47, i).Value) : null;
+                    wo.locationFr = MyUtilities.IsTrue(_cells.GetCell(48, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(48, i).Value) : null;
+                    wo.failurePart = MyUtilities.IsTrue(_cells.GetCell(49, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(49, i).Value) : null;
 
                     //wo.calculatedEquipmentFlag = "true";
                     //wo.calculatedMatFlag = "true";
@@ -2902,7 +2907,7 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.closedDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
                     wo.closedTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value);
                     wo.completedBy = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value);
-                    wo.completedCode = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value));
+                    wo.completedCode = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value));
                     wo.outServDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
                     wo.completeCommentToAppend = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value);
                     if (!ignoreClosedStatus)
@@ -3203,7 +3208,7 @@ namespace EllipseWorkOrderExcelAddIn
                     var duration = new WorkOrderDuration
                     {
                         jobDurationsDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value),
-                        jobDurationsCode = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value)),
+                        jobDurationsCode = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value)),
                         jobDurationsStart = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
                         jobDurationsFinish = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)
                     };
@@ -3367,36 +3372,36 @@ namespace EllipseWorkOrderExcelAddIn
                     var workOrder = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
                     var woRefCodes = new WorkOrderReferenceCodes
                     {
-                        WorkRequest = Utils.IsTrue(_cells.GetCell(03, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(03, i).Value) : null,
-                        ComentariosDuraciones = Utils.IsTrue(_cells.GetCell(04, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(04, i).Value) : null,
-                        ComentariosDuracionesText = Utils.IsTrue(_cells.GetCell(05, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(05, i).Value) : null,
-                        EmpleadoId = Utils.IsTrue(_cells.GetCell(06, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(06, i).Value) : null,
-                        NroComponente = Utils.IsTrue(_cells.GetCell(07, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(07, i).Value) : null,
-                        P1EqLivMed = Utils.IsTrue(_cells.GetCell(08, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(08, i).Value) : null,
-                        P2EqMovilMinero = Utils.IsTrue(_cells.GetCell(09, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value) : null,
-                        P3ManejoSustPeligrosa = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null,
-                        P4GuardasEquipo = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null,
-                        P5Aislamiento = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null,
-                        P6TrabajosAltura = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null,
-                        P7ManejoCargas = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null,
-                        ProyectoIcn = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
-                        Reembolsable = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
-                        FechaNoConforme = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
-                        FechaNoConformeText = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
-                        NoConforme = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
-                        FechaEjecucion = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
-                        HoraIngreso = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
-                        HoraSalida = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null,
-                        NombreBuque = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null,
-                        CalificacionEncuesta = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
-                        TareaCritica = Utils.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null,
-                        Garantia = Utils.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null,
-                        GarantiaText = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null,
-                        CodigoCertificacion = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
-                        FechaEntrega = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null,
-                        RelacionarEv = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
-                        Departamento = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
-                        Localizacion = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null
+                        WorkRequest = MyUtilities.IsTrue(_cells.GetCell(03, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(03, i).Value) : null,
+                        ComentariosDuraciones = MyUtilities.IsTrue(_cells.GetCell(04, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(04, i).Value) : null,
+                        ComentariosDuracionesText = MyUtilities.IsTrue(_cells.GetCell(05, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(05, i).Value) : null,
+                        EmpleadoId = MyUtilities.IsTrue(_cells.GetCell(06, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(06, i).Value) : null,
+                        NroComponente = MyUtilities.IsTrue(_cells.GetCell(07, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(07, i).Value) : null,
+                        P1EqLivMed = MyUtilities.IsTrue(_cells.GetCell(08, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(08, i).Value) : null,
+                        P2EqMovilMinero = MyUtilities.IsTrue(_cells.GetCell(09, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value) : null,
+                        P3ManejoSustPeligrosa = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null,
+                        P4GuardasEquipo = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null,
+                        P5Aislamiento = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null,
+                        P6TrabajosAltura = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null,
+                        P7ManejoCargas = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null,
+                        ProyectoIcn = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null,
+                        Reembolsable = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
+                        FechaNoConforme = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
+                        FechaNoConformeText = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null,
+                        NoConforme = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
+                        FechaEjecucion = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
+                        HoraIngreso = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value) : null,
+                        HoraSalida = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null,
+                        NombreBuque = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null,
+                        CalificacionEncuesta = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
+                        TareaCritica = MyUtilities.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null,
+                        Garantia = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null,
+                        GarantiaText = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null,
+                        CodigoCertificacion = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null,
+                        FechaEntrega = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null,
+                        RelacionarEv = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
+                        Departamento = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
+                        Localizacion = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null
                     };
 
 
@@ -3900,6 +3905,11 @@ namespace EllipseWorkOrderExcelAddIn
                 if (_cells != null) _cells.SetCursorDefault();
             }
 
+            
+        }
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
             
         }
     }

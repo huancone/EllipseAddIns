@@ -5,6 +5,10 @@ using System.Linq;
 using Microsoft.Office.Tools.Ribbon;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Constants;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using System.Web.Services.Ellipse;
@@ -44,7 +48,7 @@ namespace EllipseEquipmentExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -217,13 +221,13 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell("K3").Value = "INFORMATIVO";
                 _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
 
-                var districtList = DistrictConstants.GetDistrictList();
+                var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = SearchFieldCriteria.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-                var workGroupList = GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var eqStatusList = EquipmentActions.GetEquipmentStatusCodeList(_eFunctions).Select(g => g.code + " - " + g.description).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = SearchFieldCriteria.ProductiveUnit.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
@@ -440,7 +444,7 @@ namespace EllipseEquipmentExcelAddIn
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("A3").Style = _cells.GetStyle(StyleConstants.Option);
-                _cells.GetCell("B3").Value = DistrictConstants.DefaultDistrict;
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
 
                 _cells.GetCell(1, TitleRow02).Value = "EQUIPMENT REFERENCE";
@@ -814,82 +818,82 @@ namespace EllipseEquipmentExcelAddIn
                     var equipment = new Equipment
                     {
                         EquipmentNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
-                        EquipmentStatus = Utils.IsTrue(_cells.GetCell(2, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value)) : null,
-                        EquipmentNoDescription1 = Utils.IsTrue(_cells.GetCell(3, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value) : null,
-                        EquipmentNoDescription2 = Utils.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value) : null,
-                        EquipmentClass = Utils.IsTrue(_cells.GetCell(5, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value)) : null,
-                        EquipmentType = Utils.IsTrue(_cells.GetCell(6, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)) : null,
-                        PlantNo = Utils.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value) : null,
-                        EquipmentGrpId = Utils.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value) : null,
-                        EquipmentLocation = Utils.IsTrue(_cells.GetCell(9, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value)) : null,
-                        ParentEquipmentRef = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, i).Value) : null,
-                        Custodian = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, i).Value)) : null,
-                        CustodianPosition = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value)) : null,
-                        OperatorId = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value)) : null,
-                        OperatorPosition = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, i).Value)) : null,
-                        InputBy = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, i).Value)) : null,
-                        CustomerNumber = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, i).Value) : null,
-                        ShutdownEquipment = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, i).Value) : null,
-                        WarrStatType = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(18, i).Value)) : null,
-                        WarrStatVal = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(19, i).Value) : null,
-                        WarrantyDate = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(20, i).Value) : null,
-                        ItemNameCode = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(21, i).Value)) : null,
-                        DistrictCode = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(22, i).Value)) : null,
-                        ActiveFlag = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(23, i).Value)) : null,
-                        AccountCode = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(24, i).Value) : null,
-                        ExpElement = Utils.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(25, i).Value) : null,
-                        CostingFlag = Utils.IsTrue(_cells.GetCell(26, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(26, i).Value)) : null,
-                        TaxCode = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(27, i).Value)) : null,
-                        CtaxCode = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(28, i).Value)) : null,
-                        PoNo = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(29, i).Value)) : null,
-                        PurchaseDate = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(30, i).Value) : null,
-                        PurchasePrice = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(31, i).Value) : null,
-                        ReplaceValue = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(32, i).Value) : null,
-                        ValuationDate = Utils.IsTrue(_cells.GetCell(33, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(33, i).Value)) : null,
-                        CompCode = Utils.IsTrue(_cells.GetCell(34, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(34, i).Value)) : null,
-                        Mnemonic = Utils.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(35, i).Value) : null,
-                        StockCode = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(36, i).Value) : null,
-                        SerialNumber = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(37, i).Value) : null,
-                        PartNo = Utils.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(38, i).Value) : null,
-                        DrawingNo = Utils.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(39, i).Value) : null,
-                        OriginalDoc = Utils.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(40, i).Value) : null,
-                        TraceableFlg = Utils.IsTrue(_cells.GetCell(41, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(41, i).Value)) : null,
-                        EquipmentCriticality = Utils.IsTrue(_cells.GetCell(42, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(42, i).Value)) : null,
-                        PrimaryFunction = Utils.IsTrue(_cells.GetCell(43, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(43, i).Value)) : null,
-                        OperatingStandard = Utils.IsTrue(_cells.GetCell(44, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(44, i).Value)) : null,
-                        ConditionStandard = Utils.IsTrue(_cells.GetCell(45, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(45, i).Value)) : null,
-                        ConditionRating = Utils.IsTrue(_cells.GetCell(46, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(46, i).Value)) : null,
-                        LatestConditionDate = Utils.IsTrue(_cells.GetCell(47, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(47, i).Value)) : null,
-                        MsssFlag = Utils.IsTrue(_cells.GetCell(48, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(48, i).Value)) : null,
+                        EquipmentStatus = MyUtilities.IsTrue(_cells.GetCell(2, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value)) : null,
+                        EquipmentNoDescription1 = MyUtilities.IsTrue(_cells.GetCell(3, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value) : null,
+                        EquipmentNoDescription2 = MyUtilities.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value) : null,
+                        EquipmentClass = MyUtilities.IsTrue(_cells.GetCell(5, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value)) : null,
+                        EquipmentType = MyUtilities.IsTrue(_cells.GetCell(6, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)) : null,
+                        PlantNo = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value) : null,
+                        EquipmentGrpId = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value) : null,
+                        EquipmentLocation = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value)) : null,
+                        ParentEquipmentRef = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, i).Value) : null,
+                        Custodian = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, i).Value)) : null,
+                        CustodianPosition = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value)) : null,
+                        OperatorId = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value)) : null,
+                        OperatorPosition = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, i).Value)) : null,
+                        InputBy = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, i).Value)) : null,
+                        CustomerNumber = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, i).Value) : null,
+                        ShutdownEquipment = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, i).Value) : null,
+                        WarrStatType = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(18, i).Value)) : null,
+                        WarrStatVal = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(19, i).Value) : null,
+                        WarrantyDate = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(20, i).Value) : null,
+                        ItemNameCode = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(21, i).Value)) : null,
+                        DistrictCode = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(22, i).Value)) : null,
+                        ActiveFlag = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(23, i).Value)) : null,
+                        AccountCode = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(24, i).Value) : null,
+                        ExpElement = MyUtilities.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(25, i).Value) : null,
+                        CostingFlag = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(26, i).Value)) : null,
+                        TaxCode = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(27, i).Value)) : null,
+                        CtaxCode = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(28, i).Value)) : null,
+                        PoNo = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(29, i).Value)) : null,
+                        PurchaseDate = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(30, i).Value) : null,
+                        PurchasePrice = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(31, i).Value) : null,
+                        ReplaceValue = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(32, i).Value) : null,
+                        ValuationDate = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(33, i).Value)) : null,
+                        CompCode = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(34, i).Value)) : null,
+                        Mnemonic = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(35, i).Value) : null,
+                        StockCode = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(36, i).Value) : null,
+                        SerialNumber = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(37, i).Value) : null,
+                        PartNo = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(38, i).Value) : null,
+                        DrawingNo = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(39, i).Value) : null,
+                        OriginalDoc = MyUtilities.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(40, i).Value) : null,
+                        TraceableFlg = MyUtilities.IsTrue(_cells.GetCell(41, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(41, i).Value)) : null,
+                        EquipmentCriticality = MyUtilities.IsTrue(_cells.GetCell(42, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(42, i).Value)) : null,
+                        PrimaryFunction = MyUtilities.IsTrue(_cells.GetCell(43, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(43, i).Value)) : null,
+                        OperatingStandard = MyUtilities.IsTrue(_cells.GetCell(44, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(44, i).Value)) : null,
+                        ConditionStandard = MyUtilities.IsTrue(_cells.GetCell(45, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(45, i).Value)) : null,
+                        ConditionRating = MyUtilities.IsTrue(_cells.GetCell(46, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(46, i).Value)) : null,
+                        LatestConditionDate = MyUtilities.IsTrue(_cells.GetCell(47, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(47, i).Value)) : null,
+                        MsssFlag = MyUtilities.IsTrue(_cells.GetCell(48, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(48, i).Value)) : null,
                         LinkOne = new Equipment.LinkOneBook
                         {
-                            Publisher = Utils.IsTrue(_cells.GetCell(49, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(49, i).Value) : null,
-                            Book = Utils.IsTrue(_cells.GetCell(50, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(50, i).Value) : null,
-                            PageReference = Utils.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(51, i).Value) : null,
-                            ItemId = Utils.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(52, i).Value) : null
+                            Publisher = MyUtilities.IsTrue(_cells.GetCell(49, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(49, i).Value) : null,
+                            Book = MyUtilities.IsTrue(_cells.GetCell(50, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(50, i).Value) : null,
+                            PageReference = MyUtilities.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(51, i).Value) : null,
+                            ItemId = MyUtilities.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(52, i).Value) : null
                         },
                         ClassCodes = new Equipment.ClassificationCodes()
                         {
-                            EquipmentClassif0 = Utils.IsTrue(_cells.GetCell(53, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(53, i).Value)) : null,
-                            EquipmentClassif1 = Utils.IsTrue(_cells.GetCell(54, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(54, i).Value)) : null,
-                            EquipmentClassif2 = Utils.IsTrue(_cells.GetCell(55, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value)) : null,
-                            EquipmentClassif3 = Utils.IsTrue(_cells.GetCell(56, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(56, i).Value)) : null,
-                            EquipmentClassif4 = Utils.IsTrue(_cells.GetCell(57, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(57, i).Value)) : null,
-                            EquipmentClassif5 = Utils.IsTrue(_cells.GetCell(58, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(58, i).Value)) : null,
-                            EquipmentClassif6 = Utils.IsTrue(_cells.GetCell(59, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(59, i).Value)) : null,
-                            EquipmentClassif7 = Utils.IsTrue(_cells.GetCell(60, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(60, i).Value)) : null,
-                            EquipmentClassif8 = Utils.IsTrue(_cells.GetCell(61, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(61, i).Value)) : null,
-                            EquipmentClassif9 = Utils.IsTrue(_cells.GetCell(62, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(62, i).Value)) : null,
-                            EquipmentClassif10 = Utils.IsTrue(_cells.GetCell(63, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(63, i).Value)) : null,
-                            EquipmentClassif11 = Utils.IsTrue(_cells.GetCell(64, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(64, i).Value)) : null,
-                            EquipmentClassif12 = Utils.IsTrue(_cells.GetCell(65, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(65, i).Value)) : null,
-                            EquipmentClassif13 = Utils.IsTrue(_cells.GetCell(66, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(66, i).Value)) : null,
-                            EquipmentClassif14 = Utils.IsTrue(_cells.GetCell(67, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(67, i).Value)) : null,
-                            EquipmentClassif15 = Utils.IsTrue(_cells.GetCell(68, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(68, i).Value)) : null,
-                            EquipmentClassif16 = Utils.IsTrue(_cells.GetCell(69, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(69, i).Value)) : null,
-                            EquipmentClassif17 = Utils.IsTrue(_cells.GetCell(70, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(70, i).Value)) : null,
-                            EquipmentClassif18 = Utils.IsTrue(_cells.GetCell(71, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(71, i).Value)) : null,
-                            EquipmentClassif19 = Utils.IsTrue(_cells.GetCell(72, validationRow).Value) ? Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(72, i).Value)) : null
+                            EquipmentClassif0 = MyUtilities.IsTrue(_cells.GetCell(53, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(53, i).Value)) : null,
+                            EquipmentClassif1 = MyUtilities.IsTrue(_cells.GetCell(54, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(54, i).Value)) : null,
+                            EquipmentClassif2 = MyUtilities.IsTrue(_cells.GetCell(55, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value)) : null,
+                            EquipmentClassif3 = MyUtilities.IsTrue(_cells.GetCell(56, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(56, i).Value)) : null,
+                            EquipmentClassif4 = MyUtilities.IsTrue(_cells.GetCell(57, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(57, i).Value)) : null,
+                            EquipmentClassif5 = MyUtilities.IsTrue(_cells.GetCell(58, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(58, i).Value)) : null,
+                            EquipmentClassif6 = MyUtilities.IsTrue(_cells.GetCell(59, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(59, i).Value)) : null,
+                            EquipmentClassif7 = MyUtilities.IsTrue(_cells.GetCell(60, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(60, i).Value)) : null,
+                            EquipmentClassif8 = MyUtilities.IsTrue(_cells.GetCell(61, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(61, i).Value)) : null,
+                            EquipmentClassif9 = MyUtilities.IsTrue(_cells.GetCell(62, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(62, i).Value)) : null,
+                            EquipmentClassif10 = MyUtilities.IsTrue(_cells.GetCell(63, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(63, i).Value)) : null,
+                            EquipmentClassif11 = MyUtilities.IsTrue(_cells.GetCell(64, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(64, i).Value)) : null,
+                            EquipmentClassif12 = MyUtilities.IsTrue(_cells.GetCell(65, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(65, i).Value)) : null,
+                            EquipmentClassif13 = MyUtilities.IsTrue(_cells.GetCell(66, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(66, i).Value)) : null,
+                            EquipmentClassif14 = MyUtilities.IsTrue(_cells.GetCell(67, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(67, i).Value)) : null,
+                            EquipmentClassif15 = MyUtilities.IsTrue(_cells.GetCell(68, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(68, i).Value)) : null,
+                            EquipmentClassif16 = MyUtilities.IsTrue(_cells.GetCell(69, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(69, i).Value)) : null,
+                            EquipmentClassif17 = MyUtilities.IsTrue(_cells.GetCell(70, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(70, i).Value)) : null,
+                            EquipmentClassif18 = MyUtilities.IsTrue(_cells.GetCell(71, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(71, i).Value)) : null,
+                            EquipmentClassif19 = MyUtilities.IsTrue(_cells.GetCell(72, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(72, i).Value)) : null
                         }
                     };
 
@@ -950,82 +954,82 @@ namespace EllipseEquipmentExcelAddIn
                     var equipment = new Equipment
                     {
                         EquipmentNo = equipmentList.Any() ? equipmentList.First() : equipmentRef,
-                        EquipmentStatus = Utils.IsTrue(_cells.GetCell(2, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value)) : null,
-                        EquipmentNoDescription1 = Utils.IsTrue(_cells.GetCell(3, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value) : null,
-                        EquipmentNoDescription2 = Utils.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value) : null,
-                        EquipmentClass = Utils.IsTrue(_cells.GetCell(5, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)) : null,
-                        EquipmentType = Utils.IsTrue(_cells.GetCell(6, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(6, i).Value)) : null,
-                        PlantNo = Utils.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null,
-                        EquipmentGrpId = Utils.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null,
-                        EquipmentLocation = Utils.IsTrue(_cells.GetCell(9, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) : null,
-                        ParentEquipmentRef = Utils.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null,
-                        Custodian = Utils.IsTrue(_cells.GetCell(11, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)) : null,
-                        CustodianPosition = Utils.IsTrue(_cells.GetCell(12, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)) : null,
-                        OperatorId = Utils.IsTrue(_cells.GetCell(13, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(13, i).Value)) : null,
-                        OperatorPosition = Utils.IsTrue(_cells.GetCell(14, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(14, i).Value)) : null,
-                        InputBy = Utils.IsTrue(_cells.GetCell(15, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(15, i).Value)) : null,
-                        CustomerNumber = Utils.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
-                        ShutdownEquipment = Utils.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
-                        WarrStatType = Utils.IsTrue(_cells.GetCell(18, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(18, i).Value)) : null,
-                        WarrStatVal = Utils.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
-                        WarrantyDate = Utils.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
-                        ItemNameCode = Utils.IsTrue(_cells.GetCell(21, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(21, i).Value)) : null,
-                        DistrictCode = Utils.IsTrue(_cells.GetCell(22, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(22, i).Value)) : null,
-                        ActiveFlag = Utils.IsTrue(_cells.GetCell(23, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(23, i).Value)) : null,
-                        AccountCode = Utils.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
-                        ExpElement = Utils.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null,
-                        CostingFlag = Utils.IsTrue(_cells.GetCell(26, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(26, i).Value)) : null,
-                        TaxCode = Utils.IsTrue(_cells.GetCell(27, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(27, i).Value)) : null,
-                        CtaxCode = Utils.IsTrue(_cells.GetCell(28, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(28, i).Value)) : null,
-                        PoNo = Utils.IsTrue(_cells.GetCell(29, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)) : null,
-                        PurchaseDate = Utils.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
-                        PurchasePrice = Utils.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
-                        ReplaceValue = Utils.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
-                        ValuationDate = Utils.IsTrue(_cells.GetCell(33, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(33, i).Value)) : null,
-                        CompCode = Utils.IsTrue(_cells.GetCell(34, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(34, i).Value)) : null,
-                        Mnemonic = Utils.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
-                        StockCode = Utils.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
-                        SerialNumber = Utils.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null,
-                        PartNo = Utils.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null,
-                        DrawingNo = Utils.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null,
-                        OriginalDoc = Utils.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null,
-                        TraceableFlg = Utils.IsTrue(_cells.GetCell(41, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(41, i).Value)) : null,
-                        EquipmentCriticality = Utils.IsTrue(_cells.GetCell(42, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(42, i).Value)) : null,
-                        PrimaryFunction = Utils.IsTrue(_cells.GetCell(43, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(43, i).Value)) : null,
-                        OperatingStandard = Utils.IsTrue(_cells.GetCell(44, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(44, i).Value)) : null,
-                        ConditionStandard = Utils.IsTrue(_cells.GetCell(45, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(45, i).Value)) : null,
-                        ConditionRating = Utils.IsTrue(_cells.GetCell(46, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(46, i).Value)) : null,
-                        LatestConditionDate = Utils.IsTrue(_cells.GetCell(47, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(47, i).Value)) : null,
-                        MsssFlag = Utils.IsTrue(_cells.GetCell(48, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(48, i).Value)) : null,
+                        EquipmentStatus = MyUtilities.IsTrue(_cells.GetCell(2, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value)) : null,
+                        EquipmentNoDescription1 = MyUtilities.IsTrue(_cells.GetCell(3, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value) : null,
+                        EquipmentNoDescription2 = MyUtilities.IsTrue(_cells.GetCell(4, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value) : null,
+                        EquipmentClass = MyUtilities.IsTrue(_cells.GetCell(5, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, i).Value)) : null,
+                        EquipmentType = MyUtilities.IsTrue(_cells.GetCell(6, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(6, i).Value)) : null,
+                        PlantNo = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null,
+                        EquipmentGrpId = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null,
+                        EquipmentLocation = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(9, i).Value)) : null,
+                        ParentEquipmentRef = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null,
+                        Custodian = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(11, i).Value)) : null,
+                        CustodianPosition = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(12, i).Value)) : null,
+                        OperatorId = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(13, i).Value)) : null,
+                        OperatorPosition = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(14, i).Value)) : null,
+                        InputBy = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(15, i).Value)) : null,
+                        CustomerNumber = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null,
+                        ShutdownEquipment = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null,
+                        WarrStatType = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(18, i).Value)) : null,
+                        WarrStatVal = MyUtilities.IsTrue(_cells.GetCell(19, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value) : null,
+                        WarrantyDate = MyUtilities.IsTrue(_cells.GetCell(20, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value) : null,
+                        ItemNameCode = MyUtilities.IsTrue(_cells.GetCell(21, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(21, i).Value)) : null,
+                        DistrictCode = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(22, i).Value)) : null,
+                        ActiveFlag = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(23, i).Value)) : null,
+                        AccountCode = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null,
+                        ExpElement = MyUtilities.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null,
+                        CostingFlag = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(26, i).Value)) : null,
+                        TaxCode = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(27, i).Value)) : null,
+                        CtaxCode = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(28, i).Value)) : null,
+                        PoNo = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(29, i).Value)) : null,
+                        PurchaseDate = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
+                        PurchasePrice = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
+                        ReplaceValue = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
+                        ValuationDate = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(33, i).Value)) : null,
+                        CompCode = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(34, i).Value)) : null,
+                        Mnemonic = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
+                        StockCode = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
+                        SerialNumber = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null,
+                        PartNo = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null,
+                        DrawingNo = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null,
+                        OriginalDoc = MyUtilities.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null,
+                        TraceableFlg = MyUtilities.IsTrue(_cells.GetCell(41, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(41, i).Value)) : null,
+                        EquipmentCriticality = MyUtilities.IsTrue(_cells.GetCell(42, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(42, i).Value)) : null,
+                        PrimaryFunction = MyUtilities.IsTrue(_cells.GetCell(43, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(43, i).Value)) : null,
+                        OperatingStandard = MyUtilities.IsTrue(_cells.GetCell(44, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(44, i).Value)) : null,
+                        ConditionStandard = MyUtilities.IsTrue(_cells.GetCell(45, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(45, i).Value)) : null,
+                        ConditionRating = MyUtilities.IsTrue(_cells.GetCell(46, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(46, i).Value)) : null,
+                        LatestConditionDate = MyUtilities.IsTrue(_cells.GetCell(47, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(47, i).Value)) : null,
+                        MsssFlag = MyUtilities.IsTrue(_cells.GetCell(48, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(48, i).Value)) : null,
                         LinkOne = new Equipment.LinkOneBook
                         {
-                            Publisher = Utils.IsTrue(_cells.GetCell(49, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(49, i).Value) : null,
-                            Book = Utils.IsTrue(_cells.GetCell(50, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(50, i).Value) : null,
-                            PageReference = Utils.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(51, i).Value) : null,
-                            ItemId = Utils.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(52, i).Value) : null
+                            Publisher = MyUtilities.IsTrue(_cells.GetCell(49, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(49, i).Value) : null,
+                            Book = MyUtilities.IsTrue(_cells.GetCell(50, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(50, i).Value) : null,
+                            PageReference = MyUtilities.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(51, i).Value) : null,
+                            ItemId = MyUtilities.IsTrue(_cells.GetCell(51, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(52, i).Value) : null
                         },
                         ClassCodes = new Equipment.ClassificationCodes()
                         {
-                            EquipmentClassif0 = Utils.IsTrue(_cells.GetCell(53, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(53, i).Value)) : null,
-                            EquipmentClassif1 = Utils.IsTrue(_cells.GetCell(54, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(54, i).Value)) : null,
-                            EquipmentClassif2 = Utils.IsTrue(_cells.GetCell(55, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(55, i).Value)) : null,
-                            EquipmentClassif3 = Utils.IsTrue(_cells.GetCell(56, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(56, i).Value)) : null,
-                            EquipmentClassif4 = Utils.IsTrue(_cells.GetCell(57, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(57, i).Value)) : null,
-                            EquipmentClassif5 = Utils.IsTrue(_cells.GetCell(58, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(58, i).Value)) : null,
-                            EquipmentClassif6 = Utils.IsTrue(_cells.GetCell(59, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(59, i).Value)) : null,
-                            EquipmentClassif7 = Utils.IsTrue(_cells.GetCell(60, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(60, i).Value)) : null,
-                            EquipmentClassif8 = Utils.IsTrue(_cells.GetCell(61, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(61, i).Value)) : null,
-                            EquipmentClassif9 = Utils.IsTrue(_cells.GetCell(62, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(62, i).Value)) : null,
-                            EquipmentClassif10 = Utils.IsTrue(_cells.GetCell(63, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(63, i).Value)) : null,
-                            EquipmentClassif11 = Utils.IsTrue(_cells.GetCell(64, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(64, i).Value)) : null,
-                            EquipmentClassif12 = Utils.IsTrue(_cells.GetCell(65, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(65, i).Value)) : null,
-                            EquipmentClassif13 = Utils.IsTrue(_cells.GetCell(66, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(66, i).Value)) : null,
-                            EquipmentClassif14 = Utils.IsTrue(_cells.GetCell(67, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(67, i).Value)) : null,
-                            EquipmentClassif15 = Utils.IsTrue(_cells.GetCell(68, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(68, i).Value)) : null,
-                            EquipmentClassif16 = Utils.IsTrue(_cells.GetCell(69, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(69, i).Value)) : null,
-                            EquipmentClassif17 = Utils.IsTrue(_cells.GetCell(70, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(70, i).Value)) : null,
-                            EquipmentClassif18 = Utils.IsTrue(_cells.GetCell(71, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(71, i).Value)) : null,
-                            EquipmentClassif19 = Utils.IsTrue(_cells.GetCell(72, validationRow).Value) ? Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(72, i).Value)) : null
+                            EquipmentClassif0 = MyUtilities.IsTrue(_cells.GetCell(53, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(53, i).Value)) : null,
+                            EquipmentClassif1 = MyUtilities.IsTrue(_cells.GetCell(54, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(54, i).Value)) : null,
+                            EquipmentClassif2 = MyUtilities.IsTrue(_cells.GetCell(55, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(55, i).Value)) : null,
+                            EquipmentClassif3 = MyUtilities.IsTrue(_cells.GetCell(56, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(56, i).Value)) : null,
+                            EquipmentClassif4 = MyUtilities.IsTrue(_cells.GetCell(57, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(57, i).Value)) : null,
+                            EquipmentClassif5 = MyUtilities.IsTrue(_cells.GetCell(58, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(58, i).Value)) : null,
+                            EquipmentClassif6 = MyUtilities.IsTrue(_cells.GetCell(59, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(59, i).Value)) : null,
+                            EquipmentClassif7 = MyUtilities.IsTrue(_cells.GetCell(60, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(60, i).Value)) : null,
+                            EquipmentClassif8 = MyUtilities.IsTrue(_cells.GetCell(61, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(61, i).Value)) : null,
+                            EquipmentClassif9 = MyUtilities.IsTrue(_cells.GetCell(62, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(62, i).Value)) : null,
+                            EquipmentClassif10 = MyUtilities.IsTrue(_cells.GetCell(63, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(63, i).Value)) : null,
+                            EquipmentClassif11 = MyUtilities.IsTrue(_cells.GetCell(64, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(64, i).Value)) : null,
+                            EquipmentClassif12 = MyUtilities.IsTrue(_cells.GetCell(65, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(65, i).Value)) : null,
+                            EquipmentClassif13 = MyUtilities.IsTrue(_cells.GetCell(66, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(66, i).Value)) : null,
+                            EquipmentClassif14 = MyUtilities.IsTrue(_cells.GetCell(67, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(67, i).Value)) : null,
+                            EquipmentClassif15 = MyUtilities.IsTrue(_cells.GetCell(68, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(68, i).Value)) : null,
+                            EquipmentClassif16 = MyUtilities.IsTrue(_cells.GetCell(69, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(69, i).Value)) : null,
+                            EquipmentClassif17 = MyUtilities.IsTrue(_cells.GetCell(70, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(70, i).Value)) : null,
+                            EquipmentClassif18 = MyUtilities.IsTrue(_cells.GetCell(71, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(71, i).Value)) : null,
+                            EquipmentClassif19 = MyUtilities.IsTrue(_cells.GetCell(72, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(72, i).Value)) : null
                         }
                     };
 
@@ -1085,7 +1089,7 @@ namespace EllipseEquipmentExcelAddIn
                     var equipment = new Equipment
                     {
                         EquipmentNo = equipmentList.Any() ? equipmentList.First() : equipmentRef,
-                        EquipmentStatus = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value))
+                        EquipmentStatus = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value))
                     };
                     var newStatus = EquipmentActions.UpdateEquipmentStatus(opSheet, urlService, equipment.EquipmentNo, equipment.EquipmentStatus);
 
@@ -1146,7 +1150,7 @@ namespace EllipseEquipmentExcelAddIn
                     //var equipment = new Equipment
                     //{
                     //    EquipmentNo = equipmentList.Any() ? equipmentList.First() : equipmentRef,
-                    //    EquipmentStatus = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value))
+                    //    EquipmentStatus = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value))
                     //};
 
                     //_cells.GetCell(ResultColumn01, i).Value = "ELIMINADO";
@@ -1200,7 +1204,7 @@ namespace EllipseEquipmentExcelAddIn
                     var instEquipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
                     var compCode = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     var compModCode = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
-                    var action = Utils.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value));
+                    var action = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value));
                     var fitEquipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
                     var fitDate = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);
                     var refType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);

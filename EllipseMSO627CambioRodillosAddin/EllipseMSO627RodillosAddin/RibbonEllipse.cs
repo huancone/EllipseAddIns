@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
@@ -33,7 +36,7 @@ namespace EllipseMSO627RodillosAddin
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -484,18 +487,18 @@ namespace EllipseMSO627RodillosAddin
                         var montaje = new MontajeRodillo
                         {
                             Grupo = grupo,
-                            Tipo = Utils.GetCodeKey(tipo),
+                            Tipo = MyUtilities.GetCodeKey(tipo),
                             Fecha = fecha,
                             HoraInicial = string.IsNullOrWhiteSpace(horainicial) ? "00:00" : horainicial,
                             HoraFinal = string.IsNullOrWhiteSpace(horafinal) ? "00:00" : horafinal,
-                            Desmontado = Utils.GetCodeKey(desmontado),
-                            Cambio = Utils.GetCodeKey(cambio),
+                            Desmontado = MyUtilities.GetCodeKey(desmontado),
+                            Cambio = MyUtilities.GetCodeKey(cambio),
                             Usuario = usuario,
-                            Equipo = Utils.GetCodeKey(equipo),
-                            Estacion = Utils.GetCodeKey(estacion),
-                            Posicion = Utils.GetCodeKey(posicion),
-                            Razon = Utils.GetCodeKey(razon),
-                            Montado = Utils.GetCodeKey(montado)
+                            Equipo = MyUtilities.GetCodeKey(equipo),
+                            Estacion = MyUtilities.GetCodeKey(estacion),
+                            Posicion = MyUtilities.GetCodeKey(posicion),
+                            Razon = MyUtilities.GetCodeKey(razon),
+                            Montado = MyUtilities.GetCodeKey(montado)
                         };
 
                         CreateMontaje(opSheet, montaje);

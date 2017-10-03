@@ -2,14 +2,16 @@
 using System.Globalization;
 using System.Linq;
 using System.Web.Services.Ellipse;
-using System.Web.Services.Ellipse.Post;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using screen = EllipseCommonsClassLibrary.ScreenService;
+using Util = System.Web.Services.Ellipse.Post.Util;
 
 namespace EllipseMSO265ExcelAddIn
 {
@@ -28,7 +30,7 @@ namespace EllipseMSO265ExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();

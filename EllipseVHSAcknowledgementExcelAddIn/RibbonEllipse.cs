@@ -2,6 +2,8 @@
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
 using EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessService;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -24,7 +26,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            var enviroments = EnviromentConstants.GetEnviromentList();
+            var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments) { 
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env; drpEnviroment.Items.Add(item); 

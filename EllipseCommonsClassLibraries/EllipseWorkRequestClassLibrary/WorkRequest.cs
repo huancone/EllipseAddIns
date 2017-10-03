@@ -4,6 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using EllipseWorkRequestClassLibrary.WorkRequestService;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Constants;
 using EllipseReferenceCodesClassLibrary;
 using EllipseStdTextClassLibrary;
 
@@ -682,11 +685,11 @@ namespace EllipseWorkRequestClassLibrary
                 else if (searchCriteria1Key == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
                     paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteria1Value + "')";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = " AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteria1Value).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    paramCriteria1 = " AND WR.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Details == searchCriteria1Value).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = " AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteria1Value).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    paramCriteria1 = " AND WR.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Area == searchCriteria1Value).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else
-                    paramCriteria1 = " AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
+                    paramCriteria1 = " AND WR.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Select(g => g.Name).ToList(), ",", "'") + ")";
                 //
 
                 var paramCriteria2 = "";
@@ -724,9 +727,9 @@ namespace EllipseWorkRequestClassLibrary
                 else if (searchCriteria2Key == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                     paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteria2Value + "')";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = " AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Details == searchCriteria2Value).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    paramCriteria2 = " AND WR.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Details == searchCriteria2Value).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = " AND WR.WORK_GROUP IN (" + Utils.GetListInSeparator(GroupConstants.GetWorkGroupList().Where(g => g.Area == searchCriteria2Value).Select(g => g.Name).ToList(), ",", "'") + ")";
+                    paramCriteria2 = " AND WR.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Area == searchCriteria2Value).Select(g => g.Name).ToList(), ",", "'") + ")";
                 //
                 
 
@@ -738,7 +741,7 @@ namespace EllipseWorkRequestClassLibrary
                 if (string.IsNullOrEmpty(wrStatus))
                     statusRequirement = "";
                 else if (wrStatus == WrStatusList.Uncompleted)
-                    statusRequirement = " AND WR.REQUEST_STAT IN (" + Utils.GetListInSeparator(WrStatusList.GetUncompletedStatusCodes(), ",", "'") + ")";
+                    statusRequirement = " AND WR.REQUEST_STAT IN (" + MyUtilities.GetListInSeparator(WrStatusList.GetUncompletedStatusCodes(), ",", "'") + ")";
                 else if (WrStatusList.GetStatusNames().Contains(wrStatus))
                     statusRequirement = " AND WR.REQUEST_STAT = '" + WrStatusList.GetStatusCode(wrStatus) + "'";
                 else
@@ -835,7 +838,7 @@ namespace EllipseWorkRequestClassLibrary
                             "" + statusRequirement +
                             "" + paramDate;
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
                 
                 return query;
             }
@@ -911,7 +914,7 @@ namespace EllipseWorkRequestClassLibrary
                             " WHERE" +
                             "   WR.REQUEST_ID = '" + requestId + "'";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
                 
                 return query;
             }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Utilities.MyDateTime;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 
 namespace EllipseCommonsClassLibrary
@@ -17,17 +20,12 @@ namespace EllipseCommonsClassLibrary
 
         private static DebugError _lastError;
         private static DebugError _lastWarning;
-        private static string _localDataPath = @"c:\ellipse\";
-        public static string LocalDataPath
-        {
-            get { return _localDataPath; }
-            set { _localDataPath = value; }
-        }
+
         public static void DebugScreen(Screen.ScreenSubmitRequestDTO request, Screen.ScreenDTO reply, string filename)
         {
             var requestJson = new JavaScriptSerializer().Serialize(request.screenFields);
             var replyJson = new JavaScriptSerializer().Serialize(reply.screenFields);
-            var filePath = LocalDataPath + @"debugger\";
+            var filePath = Configuration.LocalDataPath + @"debugger\";
             FileWriter.AppendTextToFile(requestJson, "ScreenRequest.txt", filePath);
             FileWriter.AppendTextToFile(replyJson, "ScreenReply.txt", filePath);
         }
@@ -35,8 +33,8 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                var errorFilePath = LocalDataPath + @"logs\";
-                var errorFileName = @"error" + TimeOperations.FormatDateToString(DateTime.Today, TimeOperations.DateTimeFormats.DateYYYYMMDD) + ".txt";
+                var errorFilePath = Configuration.LocalDataPath + @"logs\";
+                var errorFileName = @"error" + Utilities.MyDateTime.Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
 
                 var lastError = new DebugError
                 {
@@ -67,8 +65,8 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                var warningFilePath = LocalDataPath + @"logs\";
-                var warningFileName = @"warning" + TimeOperations.FormatDateToString(DateTime.Today, TimeOperations.DateTimeFormats.DateYYYYMMDD) + ".txt";
+                var warningFilePath = Configuration.LocalDataPath + @"logs\";
+                var warningFileName = @"warning" + Utilities.MyDateTime.Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
 
                 var lastWarning = new DebugError
                 {
@@ -101,12 +99,11 @@ namespace EllipseCommonsClassLibrary
             {
                 if (!DebugQueries)
                     return;
-                
-                var queryFilePath = LocalDataPath + @"queries\";
-                var queryFileName = @"queries" + TimeOperations.FormatDateToString(DateTime.Today, TimeOperations.DateTimeFormats.DateYYYYMMDD) + ".txt";
+
+                var queryFilePath = Configuration.LocalDataPath + @"queries\";
+                var queryFileName = @"queries" + Utilities.MyDateTime.Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
 
                 var dateTime = "" + DateTime.Now;
-                var urlLocation = queryFilePath + queryFileName;
 
                 var stringQuery = dateTime + "  : " + query;
 

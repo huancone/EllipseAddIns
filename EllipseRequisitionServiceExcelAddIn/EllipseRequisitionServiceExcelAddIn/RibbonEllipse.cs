@@ -4,6 +4,9 @@ using System.Globalization;
 using System.Threading;
 using Microsoft.Office.Tools.Ribbon;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
 using System.Web.Services.Ellipse;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
@@ -38,7 +41,7 @@ namespace EllipseRequisitionServiceExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviromentList = EnviromentConstants.GetEnviromentList();
+            var enviromentList = Environments.GetEnviromentList();
             foreach (var item in enviromentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
@@ -166,7 +169,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.GetCell(9, TitleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
 
                 var itemList = _eFunctions.GetItemCodes("PI");
-                var optionPriorList = Utils.GetCodeList(itemList);
+                var optionPriorList = MyUtilities.GetCodeList(itemList);
                 _cells.SetValidationList(_cells.GetCell(9, TitleRow + 1), optionPriorList, ValidationSheet, 3, false);
 
                 _cells.GetCell(10, TitleRow).Value = "Reference Type";
@@ -326,13 +329,13 @@ namespace EllipseRequisitionServiceExcelAddIn
                                 : _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value),
                             IndSerie = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value),
                             IreqType =
-                                Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value)),
+                                MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value)),
                             IssTranType =
-                                Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value)),
+                                MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value)),
                             RequiredByDate = _cells.GetNullOrTrimmedValue(_cells.GetCell(7, currentRow).Value),
                             OrigWhouseId = _cells.GetNullOrTrimmedValue(_cells.GetCell(8, currentRow).Value),
                             PriorityCode =
-                                Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value)),
+                                MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value)),
                             PartIssue = true,
                             ProtectedInd = false
                         };
@@ -484,7 +487,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                             ItemType = "S",
                             PartIssueSpecified = true,
                             PartIssue =
-                                Utils.IsTrue(Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value)), true),
+                                MyUtilities.IsTrue(MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value)), true),
                             StockCode = _cells.GetNullOrTrimmedValue(_cells.GetCell(16, currentRow).Value)
                         };
                         curItem.StockCode = (curItem.StockCode != null && curItem.StockCode.Length < 9)
@@ -511,7 +514,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                         //si es item de orden directa o no
                         sqlQuery = Queries.GetItemDirectOrder(curItem.StockCode);
                         odr = _eFunctions.GetQueryResult(sqlQuery);
-                        if (odr.Read() && Utils.IsTrue(odr["DIRECT_ORDER_IND"]))
+                        if (odr.Read() && MyUtilities.IsTrue(odr["DIRECT_ORDER_IND"]))
                         {
                             abortRequisition = true;
                             
@@ -719,11 +722,11 @@ namespace EllipseRequisitionServiceExcelAddIn
                             RequestedBy = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) == null ? _frmAuth.EllipseUser : _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value),
                             RequiredByPos = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) == null ? _frmAuth.EllipsePost : _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value),
                             IndSerie = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value),
-                            IreqType = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value)),
-                            IssTranType = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value)),
+                            IreqType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value)),
+                            IssTranType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value)),
                             RequiredByDate = _cells.GetNullOrTrimmedValue(_cells.GetCell(7, currentRow).Value),
                             OrigWhouseId = _cells.GetNullOrTrimmedValue(_cells.GetCell(8, currentRow).Value),
-                            PriorityCode = Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value)),
+                            PriorityCode = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value)),
                             PartIssue = true
                         };
 
@@ -995,7 +998,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                             ItemType = "S",
                             PartIssueSpecified = true,
                             PartIssue =
-                                Utils.IsTrue(Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value)), true),
+                                MyUtilities.IsTrue(MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value)), true),
                             StockCode = _cells.GetNullOrTrimmedValue(_cells.GetCell(16, currentRow).Value)
                         };
                         curItem.StockCode = (curItem.StockCode != null && curItem.StockCode.Length < 9)
@@ -1790,7 +1793,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                 ? _frmAuth.EllipseUser
                                 : _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
                         headerCreateReturnReply.transactionType =
-                            Utils.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value));
+                            MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value));
                         headerCreateReturnReply.requisitionNumber =
                             _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value);
                         headerCreateReturnReply.processedDate =
@@ -1862,7 +1865,7 @@ namespace EllipseRequisitionServiceExcelAddIn
         {
             var query = "SELECT UNIT_OF_ISSUE FROM ELLIPSE.MSF100 SC WHERE SC.STOCK_CODE = '" + stockCode + "' ";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
             return query;
         }
@@ -1871,7 +1874,7 @@ namespace EllipseRequisitionServiceExcelAddIn
         {
             var query = "SELECT SCI.DIRECT_ORDER_IND FROM ELLIPSE.MSF170 SCI WHERE STOCK_CODE = '" + stockCode + "' ";
 
-            query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
             return query;
         }

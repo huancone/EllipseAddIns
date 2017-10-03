@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Constants;
+using EllipseCommonsClassLibrary.Utilities;
 using EllipseEquipmentClassLibrary.EquipmentService;
 
 namespace EllipseEquipmentClassLibrary
@@ -323,9 +326,9 @@ namespace EllipseEquipmentClassLibrary
             var request = new EquipmentServiceCreateRequestDTO
             {
                 accountCode = equipment.AccountCode,
-                activeFlag = Utils.IsTrue(equipment.ActiveFlag),
+                activeFlag = MyUtilities.IsTrue(equipment.ActiveFlag),
                 activeFlagSpecified = equipment.ActiveFlag != null,
-                assocEquipmentItemSwitch = Utils.IsTrue(equipment.AssocEquipmentItemSwitch),
+                assocEquipmentItemSwitch = MyUtilities.IsTrue(equipment.AssocEquipmentItemSwitch),
                 assocEquipmentItemSwitchSpecified = equipment.AssocEquipmentItemSwitch != null,
                 compCode = equipment.CompCode,
                 conAstSegEn = !string.IsNullOrWhiteSpace(equipment.ConAstSegEn) ? Convert.ToDecimal(equipment.ConAstSegEn) : default(decimal),
@@ -336,7 +339,7 @@ namespace EllipseEquipmentClassLibrary
                 conditionRatingSpecified = equipment.ConditionRating != null,
                 conditionStandard = equipment.ConditionStandard,
                 copyEquipment = equipment.CopyEquipment,
-                copyNameplateValues = Utils.IsTrue(equipment.CopyNameplateValues),
+                copyNameplateValues = MyUtilities.IsTrue(equipment.CopyNameplateValues),
                 copyNameplateValuesSpecified = equipment.CopyNameplateValues != null,
                 costSegLgth = !string.IsNullOrWhiteSpace(equipment.CostSegLgth) ? Convert.ToDecimal(equipment.CostSegLgth) : default(decimal),
                 costSegLgthSpecified = equipment.CostSegLgth != null,
@@ -360,7 +363,7 @@ namespace EllipseEquipmentClassLibrary
                 equipmentType = equipment.EquipmentType,
                 equipmentTypeDescription = equipment.EquipmentTypeDescription,
                 expElement = equipment.ExpElement,
-                iaaAssetInd = Utils.IsTrue(equipment.IaaAssetInd),
+                iaaAssetInd = MyUtilities.IsTrue(equipment.IaaAssetInd),
                 iaaAssetIndSpecified = equipment.IaaAssetInd != null,
                 inputBy = equipment.InputBy,
                 itemNameCode = equipment.ItemNameCode,
@@ -374,7 +377,7 @@ namespace EllipseEquipmentClassLibrary
                 parentEquipment = equipment.ParentEquipment,
                 parentEquipmentRef = equipment.ParentEquipmentRef,
                 partNo = equipment.PartNo,
-                permitReqdSw = Utils.IsTrue(equipment.PermitReqdSw),
+                permitReqdSw = MyUtilities.IsTrue(equipment.PermitReqdSw),
                 permitReqdSwSpecified = equipment.PermitReqdSw != null,
                 //plantCode0 = equipment.PlantCode0,
                 //plantCode1 = equipment.PlantCode1,
@@ -391,7 +394,7 @@ namespace EllipseEquipmentClassLibrary
                 purchaseDate = equipment.PurchaseDate,
                 purchasePrice = !string.IsNullOrWhiteSpace(equipment.PurchasePrice) ? Convert.ToDecimal(equipment.PurchasePrice) : default(decimal),
                 purchasePriceSpecified = equipment.PurchasePrice != null,
-                rcmAnalysisSw = Utils.IsTrue(equipment.RcmAnalysisSw),
+                rcmAnalysisSw = MyUtilities.IsTrue(equipment.RcmAnalysisSw),
                 rcmAnalysisSwSpecified = equipment.RcmAnalysisSw != null,
                 replaceValue = !string.IsNullOrWhiteSpace(equipment.ReplaceValue) ? Convert.ToDecimal(equipment.ReplaceValue) : default(decimal),
                 replaceValueSpecified = equipment.ReplaceValue != null,
@@ -400,7 +403,7 @@ namespace EllipseEquipmentClassLibrary
                 shutdownEquipment = equipment.ShutdownEquipment,
                 stockCode = equipment.StockCode,
                 taxCode = equipment.TaxCode,
-                traceableFlg = Utils.IsTrue(equipment.TraceableFlg),
+                traceableFlg = MyUtilities.IsTrue(equipment.TraceableFlg),
                 traceableFlgSpecified = equipment.TraceableFlg != null,
                 valuationDate = equipment.ValuationDate,
                 warrStatType = equipment.WarrStatType,
@@ -449,9 +452,9 @@ namespace EllipseEquipmentClassLibrary
             var request = new EquipmentServiceModifyRequestDTO
             {
                 accountCode = equipment.AccountCode,
-                activeFlag = Utils.IsTrue(equipment.ActiveFlag),
+                activeFlag = MyUtilities.IsTrue(equipment.ActiveFlag),
                 activeFlagSpecified = equipment.ActiveFlag != null,
-                assocEquipmentItemSwitch = Utils.IsTrue(equipment.AssocEquipmentItemSwitch),
+                assocEquipmentItemSwitch = MyUtilities.IsTrue(equipment.AssocEquipmentItemSwitch),
                 assocEquipmentItemSwitchSpecified = equipment.AssocEquipmentItemSwitch != null,
                 compCode = equipment.CompCode,
                 conAstSegEn = !string.IsNullOrWhiteSpace(equipment.ConAstSegEn) ? Convert.ToDecimal(equipment.ConAstSegEn) : default(decimal),
@@ -462,7 +465,7 @@ namespace EllipseEquipmentClassLibrary
                 conditionRatingSpecified = equipment.ConditionRating != null,
                 conditionStandard = equipment.ConditionStandard,
                 //copyEquipment = equipment.CopyEquipment,
-                //copyNameplateValues = Utils.IsTrue(equipment.CopyNameplateValues),
+                //copyNameplateValues = MyUtilities.IsTrue(equipment.CopyNameplateValues),
                 //copyNameplateValuesSpecified = equipment.CopyNameplateValues != null,
                 costSegLgth = !string.IsNullOrWhiteSpace(equipment.CostSegLgth) ? Convert.ToDecimal(equipment.CostSegLgth) : default(decimal),
                 costSegLgthSpecified = equipment.CostSegLgth != null,
@@ -486,7 +489,7 @@ namespace EllipseEquipmentClassLibrary
                 equipmentType = equipment.EquipmentType,
                 equipmentTypeDescription = equipment.EquipmentTypeDescription,
                 expElement = equipment.ExpElement,
-                iaaAssetInd = Utils.IsTrue(equipment.IaaAssetInd),
+                iaaAssetInd = MyUtilities.IsTrue(equipment.IaaAssetInd),
                 iaaAssetIndSpecified = equipment.IaaAssetInd != null,
                 inputBy = equipment.InputBy,
                 itemNameCode = equipment.ItemNameCode,
@@ -500,7 +503,7 @@ namespace EllipseEquipmentClassLibrary
                 parentEquipment = equipment.ParentEquipment,
                 parentEquipmentRef = equipment.ParentEquipmentRef,
                 partNo = equipment.PartNo,
-                permitReqdSw = Utils.IsTrue(equipment.PermitReqdSw),
+                permitReqdSw = MyUtilities.IsTrue(equipment.PermitReqdSw),
                 permitReqdSwSpecified = equipment.PermitReqdSw != null,
                 //plantCode0 = equipment.PlantCode0,
                 //plantCode1 = equipment.PlantCode1,
@@ -517,7 +520,7 @@ namespace EllipseEquipmentClassLibrary
                 purchaseDate = equipment.PurchaseDate,
                 purchasePrice = !string.IsNullOrWhiteSpace(equipment.PurchasePrice) ? Convert.ToDecimal(equipment.PurchasePrice) : default(decimal),
                 purchasePriceSpecified = equipment.PurchasePrice != null,
-                rcmAnalysisSw = Utils.IsTrue(equipment.RcmAnalysisSw),
+                rcmAnalysisSw = MyUtilities.IsTrue(equipment.RcmAnalysisSw),
                 rcmAnalysisSwSpecified = equipment.RcmAnalysisSw != null,
                 replaceValue = !string.IsNullOrWhiteSpace(equipment.ReplaceValue) ? Convert.ToDecimal(equipment.ReplaceValue) : default(decimal),
                 replaceValueSpecified = equipment.ReplaceValue != null,
@@ -526,7 +529,7 @@ namespace EllipseEquipmentClassLibrary
                 shutdownEquipment = equipment.ShutdownEquipment,
                 stockCode = equipment.StockCode,
                 taxCode = equipment.TaxCode,
-                traceableFlg = Utils.IsTrue(equipment.TraceableFlg),
+                traceableFlg = MyUtilities.IsTrue(equipment.TraceableFlg),
                 traceableFlgSpecified = equipment.TraceableFlg != null,
                 valuationDate = equipment.ValuationDate,
                 warrStatType = equipment.WarrStatType,
@@ -590,7 +593,7 @@ namespace EllipseEquipmentClassLibrary
                 string districtParam;
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(districtCode))
-                    districtParam = " IN (" + Utils.GetListInSeparator(DistrictConstants.GetDistrictList(), ",", "'") + ")";
+                    districtParam = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtParam = " = '" + districtCode + "'";
 
@@ -610,7 +613,7 @@ namespace EllipseEquipmentClassLibrary
                     "     WHERE REQ.DSTRCT_CODE " + districtParam + " AND TRIM(RAL.ALTERNATE_REF) = '" + equipmentRef + "'" +
                     " )";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
@@ -619,7 +622,7 @@ namespace EllipseEquipmentClassLibrary
                 var query = "" +
                     "SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE TRIM(EQ.EQUIP_GRP_ID) = '" + egi + "'";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
@@ -628,7 +631,7 @@ namespace EllipseEquipmentClassLibrary
                 var query = "" +
                     "SELECT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + listType + "' AND TRIM(LI.LIST_ID) = '" + listId + "'";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
@@ -640,7 +643,7 @@ namespace EllipseEquipmentClassLibrary
                     "   START WITH EQ.EQUIP_NO       = '" + productiveUnit + "'" +
                     "   CONNECT BY PRIOR EQ.EQUIP_NO = EQ.PARENT_EQUIP";
 
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
@@ -655,7 +658,7 @@ namespace EllipseEquipmentClassLibrary
                 //establecemos los parámetrode de distrito
                 string districtParam;
                 if (string.IsNullOrEmpty(districtCode))
-                    districtParam = " AND EQ.DSTRCT_CODE IN (" + Utils.GetListInSeparator(DistrictConstants.GetDistrictList(), ",", "'") + ")";
+                    districtParam = " AND EQ.DSTRCT_CODE IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtParam = " AND EQ.DSTRCT_CODE = '" + districtCode + "'";
 
@@ -664,7 +667,7 @@ namespace EllipseEquipmentClassLibrary
                 if (string.IsNullOrEmpty(eqStatus))
                     statusRequirement = "";
                 else
-                    statusRequirement = " AND EQ.EQUIP_STATUS = '" + Utils.GetCodeKey(eqStatus) + "'";
+                    statusRequirement = " AND EQ.EQUIP_STATUS = '" + MyUtilities.GetCodeKey(eqStatus) + "'";
 
                 var queryCriteria1 = "";
                 //establecemos los parámetros del criterio 1
@@ -780,7 +783,7 @@ namespace EllipseEquipmentClassLibrary
                     " " + queryCriteria2 +
                     " " + statusRequirement +
                     "";
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
@@ -826,7 +829,7 @@ namespace EllipseEquipmentClassLibrary
                     "  MOV " +
                     "WHERE " +
                     "  FECHA = MAX_FECHA";
-                query = Utils.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
