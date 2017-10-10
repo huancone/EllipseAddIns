@@ -582,6 +582,7 @@ namespace EllipseMstExcelAddIn
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
 
@@ -613,8 +614,8 @@ namespace EllipseMstExcelAddIn
                     mst.SchedDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value2);
                     mst.SchedDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value2);
 
-                    mst.ConAstSegFr = null;
-                    mst.ConAstSegTo = null;
+                    mst.ConAstSegFr = "0";
+                    mst.ConAstSegTo = "0";
 
                     mst.StdJobNo = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value2);
 
@@ -670,6 +671,7 @@ namespace EllipseMstExcelAddIn
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
             const int validationRow = TitleRow01 - 1;
@@ -702,8 +704,8 @@ namespace EllipseMstExcelAddIn
                     mst.SchedDescription1 = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
                     mst.SchedDescription2 = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null;
 
-                    mst.ConAstSegFr = null;
-                    mst.ConAstSegTo = null;
+                    mst.ConAstSegFr = "0";
+                    mst.ConAstSegTo = "0";
 
                     mst.StdJobNo = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null;
 
@@ -759,6 +761,7 @@ namespace EllipseMstExcelAddIn
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
             var i = TitleRow02 + 1;
             var opSheet = new OperationContext
@@ -1104,7 +1107,12 @@ namespace EllipseMstExcelAddIn
                 dayOfWeek= mst.DayOfWeek,
                 dayOfMonth= mst.DayOfMonth,
                 startMonth= mst.StartMonth,
-                startYear= mst.StartYear
+                startYear= mst.StartYear,
+                conAstSegFrSpecified = true,
+                conAstSegFr = 0,
+                conAstSegToSpecified = true,
+                conAstSegTo = 0
+                
             };
 
             proxyEquip.Url = urlService + "/MaintSchedTskService";
@@ -1118,8 +1126,9 @@ namespace EllipseMstExcelAddIn
             var proxyEquip = new MaintSchedTskService.MaintSchedTskService();
             var request = new MaintSchedTskServiceModifyRequestDTO
             {
+                
                 equipmentGrpId = mst.EquipmentGrpId,
-                equipmentRef = mst.EquipmentNo,
+                equipmentNo = mst.EquipmentNo,
                 compCode = mst.CompCode,
                 compModCode = mst.CompModCode,
                 maintenanceSchTask = mst.MaintenanceSchTask,
@@ -1169,7 +1178,11 @@ namespace EllipseMstExcelAddIn
                 dayOfWeek= mst.DayOfWeek,
                 dayOfMonth= mst.DayOfMonth,
                 startMonth= mst.StartMonth,
-                startYear= mst.StartYear
+                startYear = mst.StartYear,
+                conAstSegFrSpecified = true,
+                conAstSegFr = 0,
+                conAstSegToSpecified = true,
+                conAstSegTo = 0
             };
 
             proxyEquip.Url = urlService + "/MaintSchedTskService";

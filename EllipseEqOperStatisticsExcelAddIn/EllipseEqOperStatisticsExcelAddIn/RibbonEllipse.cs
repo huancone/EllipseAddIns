@@ -160,10 +160,6 @@ namespace EllipseEqOperStatisticsExcelAddIn
                     if (_cells == null)
                         _cells = new ExcelStyleCells(_excelApp);
                     _cells.SetCursorWait();
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
 
                     var proxySheet = new EquipmentOperatingStatisticsService.EquipmentOperatingStatisticsService();
                     proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) +
