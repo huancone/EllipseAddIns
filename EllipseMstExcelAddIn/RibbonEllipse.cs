@@ -918,14 +918,6 @@ namespace EllipseMstExcelAddIn
         {
             new AboutBoxExcelAddIn().ShowDialog();
         }
-
-     
-
-
-        
-
-        
-
     }
 
     public static class MstActions

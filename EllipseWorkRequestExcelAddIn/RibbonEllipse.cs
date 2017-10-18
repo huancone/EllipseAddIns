@@ -41,7 +41,7 @@ namespace EllipseWorkRequestExcelAddIn
         //private const int ResultColumnM03 = 14;
         private const int TitleRowV01 = 5;
         private const int ResultColumnV01 = 11;
-        private const int ResultColumnPfc01 = 10;
+        private const int ResultColumnPfc01 = 11;
         private const string TableName01 = "WorkRequestTable";
         private const string TableName02 = "WorkRequestCloseTable";
         private const string TableName03 = "WorkRequestsReferencesTable";
@@ -279,6 +279,7 @@ namespace EllipseWorkRequestExcelAddIn
                             : _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
                         requiredByDate = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
                         closedDate = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value),
+                        assignPerson = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value)
                     };
 
                     var replySheet = WorkRequestActions.CreateWorkRequest(urlService, opSheet, wr);
@@ -1587,6 +1588,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(07, i).Value = "'" + wr.raisedDate;
                     _cells.GetCell(08, i).Value = "'" + wr.requiredByDate;
                     _cells.GetCell(09, i).Value = "'" + wr.closedDate;
+                    _cells.GetCell(10, i).Value = "'" + wr.assignPerson;
                 }
                 catch (Exception ex)
                 {
@@ -1828,6 +1830,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(07, i).Value = "'" + wr.raisedDate;
                     _cells.GetCell(08, i).Value = "'" + wr.requiredByDate;
                     _cells.GetCell(09, i).Value = "'" + wr.closedDate;
+                    _cells.GetCell(10, i).Value = "'" + wr.assignPerson;
                 }
                 catch (Exception ex)
                 {
@@ -2464,6 +2467,7 @@ namespace EllipseWorkRequestExcelAddIn
                         raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))? todayDate: _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
                         requiredByDate = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
                         closedDate = _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value),
+                        assignPerson = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value),
                         ServiceLevelAgreement =
                         {
                             ServiceLevel = MyUtilities.GetCodeKey("1Y"),
@@ -3367,6 +3371,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(08, TitleRowPfc01).Value = "FECHA DE REQUERIDO";
                 _cells.GetCell(08, TitleRowPfc01).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(09, TitleRowPfc01).Value = "FECHA DE CIERRE";
+                _cells.GetCell(10, TitleRowPfc01).Value = "ASIGNADO A";
 
                 var priorityList = new List<string> {"P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA"};
                 _cells.SetValidationList(_cells.GetCell(04, TitleRowPfc01 + 1), priorityList, ValidationSheetName, 5,false);
@@ -3377,6 +3382,7 @@ namespace EllipseWorkRequestExcelAddIn
                     "CONTRATACION DELEGADA",
                     "IMIS",
                     "VPP",
+                    "CAPEX MAYOR",
                     "CAPEX",
                     "OTRO"
                 };

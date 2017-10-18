@@ -3363,7 +3363,7 @@ namespace EllipseWorkOrderExcelAddIn
             
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
                 try
                 {
