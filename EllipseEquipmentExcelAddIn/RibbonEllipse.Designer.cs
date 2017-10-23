@@ -63,6 +63,7 @@
             this.grpEllipse.SuspendLayout();
             this.box1.SuspendLayout();
             this.box5.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -259,6 +260,7 @@
             this.box1.PerformLayout();
             this.box5.ResumeLayout(false);
             this.box5.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

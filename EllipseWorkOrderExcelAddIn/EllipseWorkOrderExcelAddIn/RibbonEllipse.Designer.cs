@@ -86,6 +86,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -444,6 +445,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.grpWorkOrder.PerformLayout();
             this.box2.ResumeLayout(false);
             this.box2.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

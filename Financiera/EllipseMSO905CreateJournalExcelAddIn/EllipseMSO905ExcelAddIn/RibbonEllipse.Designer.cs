@@ -36,16 +36,18 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpMSO905 = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.mnActions = this.Factory.CreateRibbonMenu();
             this.btnValidate = this.Factory.CreateRibbonButton();
             this.btnLoad = this.Factory.CreateRibbonButton();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.btnAbout = this.Factory.CreateRibbonButton();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO905.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -62,11 +64,23 @@
             this.grpMSO905.Label = "MSO905";
             this.grpMSO905.Name = "grpMSO905";
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormatSheet);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
             // btnFormatSheet
             // 
-            this.btnFormatSheet.Label = "Format Sheet";
+            this.btnFormatSheet.Label = "Dar Formato";
             this.btnFormatSheet.Name = "btnFormatSheet";
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnviroment
             // 
@@ -77,34 +91,30 @@
             // 
             this.mnActions.Items.Add(this.btnValidate);
             this.mnActions.Items.Add(this.btnLoad);
-            this.mnActions.Label = "Actions";
+            this.mnActions.Items.Add(this.btnStopThread);
+            this.mnActions.Label = "Acciones";
             this.mnActions.Name = "mnActions";
             // 
             // btnValidate
             // 
-            this.btnValidate.Label = "Validate";
+            this.btnValidate.Label = "Validar";
             this.btnValidate.Name = "btnValidate";
             this.btnValidate.ShowImage = true;
             this.btnValidate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnValidate_Click);
             // 
             // btnLoad
             // 
-            this.btnLoad.Label = "Load Sheet";
+            this.btnLoad.Label = "Cargar Hoja";
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.ShowImage = true;
             this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
             // 
-            // box1
+            // btnStopThread
             // 
-            this.box1.Items.Add(this.btnFormatSheet);
-            this.box1.Items.Add(this.btnAbout);
-            this.box1.Name = "box1";
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            this.btnStopThread.Label = "Detener Proceso";
+            this.btnStopThread.Name = "btnStopThread";
+            this.btnStopThread.ShowImage = true;
+            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
             // RibbonEllipse
             // 
@@ -118,6 +128,7 @@
             this.grpMSO905.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
@@ -132,6 +143,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoad;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
     }
 
     partial class ThisRibbonCollection

@@ -202,7 +202,7 @@ namespace EllipseDownLostExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                
+
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
@@ -237,7 +237,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName, 1);
                 _cells.GetCell("B3").Value = "ICOR";
 
-                var equipTypeList = new List<string> {"EQUIPMENT", "EGI", "LIST TYPE", "PROD.UNIT"};
+                var equipTypeList = new List<string> { "EQUIPMENT", "EGI", "LIST TYPE", "PROD.UNIT" };
 
                 _cells.SetValidationList(_cells.GetCell("A4"), equipTypeList, ValidationSheetName, 2);
                 _cells.GetCell("A4").Value = "EQUIPMENT";
@@ -256,7 +256,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell("D4").AddComment("yyyyMMdd");
 
                 _cells.GetCell("C5").Value = "TYPE";
-                var dataTypeList = new List<string> {"DOWN", "LOST", "DOWN & LOST"};
+                var dataTypeList = new List<string> { "DOWN", "LOST", "DOWN & LOST" };
 
                 _cells.SetValidationList(_cells.GetCell("D5"), dataTypeList, ValidationSheetName, 3);
                 _cells.GetCell("D5").Value = "DOWN & LOST";
@@ -312,7 +312,7 @@ namespace EllipseDownLostExcelAddIn
                 };
                 _cells.SetValidationList(_cells.GetRange(09, TitleRow01 + 1, 09, TitleRow01 + 101), collectionList, ValidationSheetName, 4);
 
-                var typeEvent = new List<string> {"DOWN", "LOST"};
+                var typeEvent = new List<string> { "DOWN", "LOST" };
                 _cells.SetValidationList(_cells.GetRange(11, TitleRow01 + 1, 11, TitleRow01 + 101), typeEvent, ValidationSheetName, 5);
 
 
@@ -448,8 +448,8 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell(14, TitleRow01).AddComment("WorkOrder para Down, Comentario para Lost");
 
 
-                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01-1, TitleRow01 + 1).NumberFormat = NumberFormatConstants.Text;
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01-1, TitleRow01 + 1), TableName04);
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01 - 1, TitleRow01 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01 - 1, TitleRow01 + 1), TableName04);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
 
@@ -466,7 +466,7 @@ namespace EllipseDownLostExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                
+
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
@@ -501,7 +501,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName, 1);
                 _cells.GetCell("B3").Value = "ICOR";
 
-                var equipTypeList = new List<string> {"EQUIPMENT", "EGI", "LIST TYPE", "PROD.UNIT"};
+                var equipTypeList = new List<string> { "EQUIPMENT", "EGI", "LIST TYPE", "PROD.UNIT" };
 
                 _cells.SetValidationList(_cells.GetCell("A4"), equipTypeList, ValidationSheetName, 2);
                 _cells.GetCell("A4").Value = "EQUIPMENT";
@@ -520,7 +520,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetCell("D4").AddComment("yyyyMMdd");
 
                 _cells.GetCell("C5").Value = "TYPE";
-                var dataTypeList = new List<string> {"DOWN", "LOST", "DOWN & LOST"};
+                var dataTypeList = new List<string> { "DOWN", "LOST", "DOWN & LOST" };
 
                 _cells.SetValidationList(_cells.GetCell("D5"), dataTypeList, ValidationSheetName, 3);
                 _cells.GetCell("D5").Value = "DOWN & LOST";
@@ -584,7 +584,7 @@ namespace EllipseDownLostExcelAddIn
                 };
                 _cells.SetValidationList(_cells.GetRange(09, TitleRow01 + 1, 09, TitleRow01 + 101), collectionList, ValidationSheetName, 4);
 
-                var typeEvent = new List<string> {"DOWN", "LOST"};
+                var typeEvent = new List<string> { "DOWN", "LOST" };
                 _cells.SetValidationList(_cells.GetRange(11, TitleRow01 + 1, 11, TitleRow01 + 101), typeEvent, ValidationSheetName, 5);
 
 
@@ -749,7 +749,7 @@ namespace EllipseDownLostExcelAddIn
                 var cells = new ExcelStyleCells(_excelApp, false);
                 _cells.SetCursorWait();
                 cells.ClearTableRange(TableName01);
-                
+
                 var startDate = _cells.GetNullIfTrimmedEmpty(cells.GetCell("D3").Value);
                 var endDate = _cells.GetNullIfTrimmedEmpty(cells.GetCell("D4").Value);
 
@@ -790,7 +790,7 @@ namespace EllipseDownLostExcelAddIn
                         cells.GetCell(13, currentRow).Style = StyleConstants.Warning;
                     if (string.IsNullOrWhiteSpace("" + reader[13]))
                         cells.GetCell(14, currentRow).Style = StyleConstants.Warning;
-                    currentRow ++;
+                    currentRow++;
                 }
                 _eFunctions.CloseConnection();
             }
@@ -818,7 +818,7 @@ namespace EllipseDownLostExcelAddIn
                 var cells = new ExcelStyleCells(_excelApp, false);
                 _cells.SetCursorWait();
                 cells.ClearTableRange(TableName01);
-                
+
 
 
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -939,7 +939,7 @@ namespace EllipseDownLostExcelAddIn
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
-                
+
                 if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
                 {
                     if (_cells == null)
@@ -1129,7 +1129,7 @@ namespace EllipseDownLostExcelAddIn
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
-                
+
                 if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
                 {
                     if (_cells == null)
@@ -1162,7 +1162,7 @@ namespace EllipseDownLostExcelAddIn
                             var eventType = cells.GetEmptyIfNull(cells.GetCell(11, i).Value);
                             var eventCode = cells.GetEmptyIfNull(cells.GetCell(12, i).Value);
                             var eventDescription = cells.GetEmptyIfNull(cells.GetCell(13, i).Value);
-                                //solo para consulta
+                            //solo para consulta
                             var woComment = cells.GetEmptyIfNull(cells.GetCell(14, i).Value);
 
                             string woEvent = null;
@@ -1342,11 +1342,11 @@ namespace EllipseDownLostExcelAddIn
                             if (k <= 10) continue;
                             k = 1;
                             //envíe a la siguiente pantalla
-                            request = new Screen.ScreenSubmitRequestDTO {screenKey = "1"};
+                            request = new Screen.ScreenSubmitRequestDTO { screenKey = "1" };
                             proxySheet.submit(opContext, request);
                             replyFields = new ArrayScreenNameValue(reply.screenFields);
                         }
-                        
+
                         if (down.WoEvent != null && WorkOrderActions.FetchWorkOrder(_eFunctions, "", down.WoEvent) == null)
                         {
                             var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
@@ -1494,7 +1494,7 @@ namespace EllipseDownLostExcelAddIn
                             if (k <= 10) continue;
                             k = 1;
                             //envíe a la siguiente pantalla
-                            request = new Screen.ScreenSubmitRequestDTO {screenKey = "1"};
+                            request = new Screen.ScreenSubmitRequestDTO { screenKey = "1" };
                             reply = proxySheet.submit(opContext, request);
                             replyFields = new ArrayScreenNameValue(reply.screenFields);
                         }
@@ -1532,7 +1532,7 @@ namespace EllipseDownLostExcelAddIn
                         if (string.IsNullOrWhiteSpace(lost.WoComment)) continue;
                         var arrayValues = new ArrayScreenNameValue(reply.screenFields);
                         lost.EquipNo = arrayValues.GetField("EQUIP_NO1I").value;
-                        var dr = _eFunctions.GetQueryResult(Queries.GetSingleLostQuery(_eFunctions.dbReference,_eFunctions.dbLink, lost.EquipNo, lost.EventCode, lost.Date, lost.ShiftCode,lost.StartTime, lost.FinishTime));
+                        var dr = _eFunctions.GetQueryResult(Queries.GetSingleLostQuery(_eFunctions.dbReference, _eFunctions.dbLink, lost.EquipNo, lost.EventCode, lost.Date, lost.ShiftCode, lost.StartTime, lost.FinishTime));
                         var stdTextId = "";
                         if (dr != null && dr.HasRows)
                             while (dr.Read())
@@ -1575,7 +1575,7 @@ namespace EllipseDownLostExcelAddIn
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
-                
+
                 _cells.SetCursorWait();
                 if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
                 {
@@ -1987,7 +1987,7 @@ namespace EllipseDownLostExcelAddIn
                 "   ORDER BY EQUIP_NO, COMP_CODE, COMP_MOD_CODE, START_DATE, START_TIME";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             return query;
         }
 
@@ -2023,7 +2023,7 @@ namespace EllipseDownLostExcelAddIn
                 "   ORDER BY EQUIP_NO, COMP_CODE, COMP_MOD_CODE, START_DATE, START_TIME";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             return query;
         }
         /// <summary>
@@ -2044,7 +2044,7 @@ namespace EllipseDownLostExcelAddIn
             " ORDER BY TABLE_TYPE, TABLE_CODE, TABLE_DESC";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             return query;
         }
         /// <summary>
@@ -2065,7 +2065,7 @@ namespace EllipseDownLostExcelAddIn
             " ORDER BY TABLE_TYPE, TABLE_CODE, TABLE_DESC";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             return query;
         }
         [Obsolete("Utilizado para los métodos que utilizan los servicios de Down directamente. Se marca obsoleto porque el sistema no establece comunicación con el servicio")]
@@ -2089,7 +2089,7 @@ namespace EllipseDownLostExcelAddIn
                 "     AND DW.START_TIME = LPAD('" + endTime + "', 4, '0')";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             return query;
         }
         public static string GetSingleLostQuery(string dbreference, string dblink, string equipmentNo, string lostCode, string startDate, string shiftCode, string startTime, string endTime)
@@ -2119,7 +2119,7 @@ namespace EllipseDownLostExcelAddIn
                 "     AND LS.START_TIME = LPAD('" + endTime + "', 4, '0')";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             return query;
         }
 
@@ -2131,178 +2131,178 @@ namespace EllipseDownLostExcelAddIn
         /// <returns></returns>
         public static string GetDownLostPbv(string startDate, string endDate)
         {
-            var query = "" +                          
-                           "WITH " +
-                           "  SHIFT AS " +
-                           "  ( " +
-                           "    SELECT " +
-                           "      CONVERT( DATETIME, '" + startDate + " 06:00:00', 20 ) STARTTIME, " +
-                           "      CONVERT( DATETIME, '" + endDate + " 06:00:00', 20 ) ENDTIME " +
-                           "  ) " +
-                           "  , " +
-                           "  PUSH AS " +
-                           "  ( " +
-                           "    SELECT " +
-                           "      ROW_NUMBER( ) OVER( PARTITION BY PU.ASSETID ORDER BY PUSH.TIMESTAMP ASC ) ROWNUMBER, " +
-                           "      PUSH.TIMESTAMP, " +
-                           "      PU.ASSETID, " +
-                           "      PUSH.PRODUCTIVEUNITSTATUSTAGVALUE PUS, " +
-                           "      EVENTSEQUENCEID " +
-                           "    FROM " +
-                           "      PRODUCTIVEUNITSSTATUSHISTORY PUSH " +
-                           "    INNER JOIN PRODUCTIVEUNITS PU " +
-                           "    ON " +
-                           "      PU.PRODUCTIVEUNITSID = PUSH.PRODUCTIVEUNITID " +
-                           "    INNER JOIN PRODUCTIVEUNITSFUNCTIONSLIST PUFL " +
-                           "    ON " +
-                           "      PUFL.PRODUCTIVEUNITSID = PUSH.PRODUCTIVEUNITID " +
-                           "    INNER JOIN DBO.IFIXSTATUSCODESHISTORY SCH " +
-                           "    ON " +
-                           "      PUFL.STATUSCODE_TAGNAME = SCH.FUNCTIONSTATUSTAGNAME " +
-                           "    AND PUSH.TIMESTAMP        = SCH.TIMESTAMP " +
-                           "  ) " +
-                           "  , " +
-                           "  PU_SEL AS " +
-                           "  ( " +
-                           "    SELECT " +
-                           "      PUSH.TIMESTAMP   AS STARTTIME, " +
-                           "      PUSH_1.TIMESTAMP AS ENDTIME, " +
-                           "      PUSH.ASSETID     AS PUASSETID, " +
-                           "      PUSH.EVENTSEQUENCEID " +
-                           "    FROM " +
-                           "      PUSH " +
-                           "    INNER JOIN PUSH PUSH_1 " +
-                           "    ON " +
-                           "      PUSH.ASSETID         = PUSH_1.ASSETID " +
-                           "    AND PUSH.ROWNUMBER + 1 = PUSH_1.ROWNUMBER " +
-                           "    WHERE " +
-                           "      PUSH.PUS                = 60000 " +
-                           "    OR( PUSH.EVENTSEQUENCEID IS NOT NULL " +
-                           "    AND PUSH.PUS              = 30000 ) " +
-                           "  ) " +
-                           "  , " +
-                           "  SC AS " +
-                           "  ( " +
-                           "    SELECT " +
-                           "      CASE SCC.ID " +
-                           "        WHEN 13 " +
-                           "        THEN 'LOST' " +
-                           "        WHEN 15 " +
-                           "        THEN 'LOST' " +
-                           "        WHEN 14 " +
-                           "        THEN 'DOWN' " +
-                           "        WHEN 23 " +
-                           "        THEN 'DOWN' " +
-                           "        ELSE 'DOWN' " +
-                           "      END TIPO, " +
-                           "      SCC.ID, " +
-                           "      SCC.DESCRIPTION " +
-                           "    FROM " +
-                           "      SCADARDB.DBO.STATUSCHANGECAUSE SCC " +
-                           "    WHERE " +
-                           "      SCC.PARENTID IS NULL " +
-                           "    UNION ALL " +
-                           "    SELECT " +
-                           "      SC.TIPO, " +
-                           "      SCC.ID, " +
-                           "      SCC.DESCRIPTION " +
-                           "    FROM " +
-                           "      SC " +
-                           "    INNER JOIN SCADARDB.DBO.STATUSCHANGECAUSE SCC " +
-                           "    ON " +
-                           "      SC.ID = SCC.PARENTID " +
-                           "  ) " +
-                           "  , " +
-                           "  PU_EVENT AS " +
-                           "  ( " +
-                           "    SELECT " +
-                           "      PUASSET.ASSETDESC EQUIPMENT, " +
-                           "      REPLICATE( '0', 4 - LEN( ISNULL( CONVERT( VARCHAR, FAILUREASSET.ASSETTYPEID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, FAILUREASSET.ASSETTYPEID ), '0' ) COMPONENT, " +
-                           "      CASE " +
-                           "        WHEN PU_SEL.STARTTIME < SHIFT.STARTTIME " +
-                           "        THEN SHIFT.STARTTIME " +
-                           "        ELSE PU_SEL.STARTTIME " +
-                           "      END STARTTIME, " +
-                           "      CASE " +
-                           "        WHEN PU_SEL.ENDTIME > SHIFT.ENDTIME " +
-                           "        THEN SHIFT.ENDTIME " +
-                           "        ELSE PU_SEL.ENDTIME " +
-                           "      END ENDTIME, " +
-                           "      CASE SC.TIPO " +
-                           "        WHEN 'DOWN' " +
-                           "        THEN 'F' + REPLICATE( '0', 3 - LEN( ISNULL( CONVERT( VARCHAR, SC.ID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, SC.ID ), '    ' ) " +
-                           "        WHEN 'LOST' " +
-                           "        THEN 'L' + REPLICATE( '0', 3 - LEN( ISNULL( CONVERT( VARCHAR, SC.ID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, SC.ID ), '    ' ) " +
-                           "        ELSE 'DW' " +
-                           "      END FAILURE, " +
-                           "      CASE " +
-                           "        WHEN SYMPTOMS.SYMPTOMID IS NULL " +
-                           "        THEN NULL " +
-                           "        ELSE 'S' + REPLICATE( '0', 4 - LEN( ISNULL( CONVERT( VARCHAR, SYMPTOMS.SYMPTOMID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, SYMPTOMS.SYMPTOMID ), '0' ) " +
-                           "      END SYMPTOMID, " +
-                           "      CASE " +
-                           "        WHEN FAILUREASSET.ASSETTYPEID IS NULL " +
-                           "        THEN NULL " +
-                           "        ELSE 'P' + REPLICATE( '0', 4 - LEN( ISNULL( CONVERT( VARCHAR, FAILUREASSET.ASSETTYPEID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, FAILUREASSET.ASSETTYPEID ), '0' ) " +
-                           "      END ASSETTYPEID, " +
-                           "      CASE " +
-                           "        WHEN SC.ID IS NULL " +
-                           "        THEN NULL " +
-                           "        ELSE 'C' + REPLICATE( '0', 4 - LEN( ISNULL( CONVERT( VARCHAR, SC.ID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, SC.ID ), '0' ) " +
-                           "      END STATUSCHANGEID, " +
-                           "      CASE WHEN SC.TIPO = 'DOWN' " +
-                           "        THEN 'EP' + REPLICATE( '0', 6 - LEN( ISNULL( CONVERT( VARCHAR, EH.EVENTSEQUENCEID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, EH.EVENTSEQUENCEID ), '0' ) " +
-                           "        ELSE NULL " +
-                           "      END EVENT, " +
-                           "      SC.TIPO, " +
-                           "      SC.DESCRIPTION, " +
-                           "      EH.COMMENT " +
-                           "    FROM " +
-                           "      PU_SEL " +
-                           "    INNER JOIN SCADARDB.DBO.ASSETS PUASSET " +
-                           "    ON " +
-                           "      PU_SEL.PUASSETID = PUASSET.ASSETID " +
-                           "    LEFT JOIN SCADARDB.DBO.EVENTSHISTORY EH " +
-                           "    ON " +
-                           "      PU_SEL.EVENTSEQUENCEID = EH.EVENTSEQUENCEID " +
-                           "    LEFT JOIN SCADARDB.DBO.ASSETS FAILUREASSET " +
-                           "    ON " +
-                           "      EH.FAILEDASSETID = FAILUREASSET.ASSETID " +
-                           "    LEFT JOIN SC " +
-                           "    ON " +
-                           "      EH.FAILEDASSETFAILUREMODEID = SC.ID " +
-                           "    LEFT JOIN SYMPTOMS " +
-                           "    ON " +
-                           "      EH.SYMPTOMID = SYMPTOMS.SYMPTOMID " +
-                           "    INNER JOIN SHIFT " +
-                           "    ON " +
-                           "      SHIFT.STARTTIME <= PU_SEL.ENDTIME " +
-                           "    AND SHIFT.ENDTIME >= PU_SEL.STARTTIME " +
-                           "  ) " +
-                           "SELECT " +
-                           "  PU_EVENT.EQUIPMENT, " +
-                           "  PU_EVENT.COMPONENT, " +
-                           "  '' COMP_MOD_CODE, " +
-                           "  CONVERT( VARCHAR, PU_EVENT.STARTTIME, 112 ) STAR_DATE, " +
-                           "  REPLACE( CONVERT( VARCHAR( 5 ), PU_EVENT.STARTTIME, 108 ), ':', '' ) STAR_TIME, " +
-                           "  CONVERT( VARCHAR, PU_EVENT.ENDTIME, 112 ) FINISH_DATE, " +
-                           "  REPLACE( CONVERT( VARCHAR( 5 ), PU_EVENT.ENDTIME, 108 ), ':', '' ) FINISH_TIME, " +
-                           "  '' ELAPSED, " +
-                           "  '' COLLECTION, " +
-                           "  'A' SHIFT, " +
-                           "  PU_EVENT.TIPO EVENT_TYPE, " +
-                           "  PU_EVENT.FAILURE EVENT_CODE, " +
-                           "  PU_EVENT.DESCRIPTION EVENT_DESC, " +
-                           "  PU_EVENT.COMMENT, " +
-                           "  PU_EVENT.EVENT, " +
-                           "  PU_EVENT.SYMPTOMID, " +
-                           "  PU_EVENT.ASSETTYPEID, " +
-                           "  PU_EVENT.STATUSCHANGEID " +
-                           "FROM " +
-                           "  PU_EVENT ";
+            var query = "" +
+            "WITH " +
+            " SHIFT AS " +
+            " ( " +
+            "   SELECT " +
+            "     CONVERT( DATETIME, '" + startDate + " 06:00:00', 20 ) STARTTIME, " +
+            "     CONVERT( DATETIME, '" + endDate + " 06:00:00', 20 ) ENDTIME " +
+            " ) " +
+            " , " +
+            " SC AS " +
+            " ( " +
+            "   SELECT " +
+            "     CASE SCC.ID " +
+            "       WHEN 13 " +
+            "       THEN 'LOST' " +
+            "       WHEN 15 " +
+            "       THEN 'LOST' " +
+            "       WHEN 14 " +
+            "       THEN 'DOWN' " +
+            "       WHEN 23 " +
+            "       THEN 'DOWN' " +
+            "       ELSE 'DOWN' " +
+            "     END TIPO, " +
+            "     SCC.ID, " +
+            "     SCC.DESCRIPTION " +
+            "   FROM " +
+            "     SCADARDB.DBO.STATUSCHANGECAUSE SCC " +
+            "   WHERE " +
+            "     SCC.PARENTID IS NULL " +
+            "   UNION ALL " +
+            "   SELECT " +
+            "     SC.TIPO, " +
+            "     SCC.ID, " +
+            "     SCC.DESCRIPTION " +
+            "   FROM " +
+            "     SC " +
+            "   INNER JOIN SCADARDB.DBO.STATUSCHANGECAUSE SCC " +
+            "   ON " +
+            "     SC.ID = SCC.PARENTID " +
+            " )" +
+            " , " +
+            " PUSH AS " +
+            " ( " +
+            "   SELECT " +
+            "     ROW_NUMBER( ) OVER( PARTITION BY PU.ASSETID ORDER BY PUSH.TIMESTAMP ASC ) ROWNUMBER, " +
+            "     PUSH.TIMESTAMP, " +
+            "     PU.ASSETID, " +
+            "     PUSH.PRODUCTIVEUNITSTATUSTAGVALUE PUS, " +
+            "     EVENTSEQUENCEID " +
+            "   FROM " +
+            "     PRODUCTIVEUNITSSTATUSHISTORY PUSH " +
+            "   INNER JOIN PRODUCTIVEUNITS PU " +
+            "   ON " +
+            "     PU.PRODUCTIVEUNITSID = PUSH.PRODUCTIVEUNITID " +
+            "   INNER JOIN PRODUCTIVEUNITSFUNCTIONSLIST PUFL " +
+            "   ON " +
+            "     PUFL.PRODUCTIVEUNITSID = PUSH.PRODUCTIVEUNITID " +
+            "   INNER JOIN DBO.IFIXSTATUSCODESHISTORY SCH " +
+            "   ON " +
+            "     PUFL.STATUSCODE_TAGNAME = SCH.FUNCTIONSTATUSTAGNAME " +
+            "   AND PUSH.TIMESTAMP        = SCH.TIMESTAMP" +
+            " )" +
+            " , " +
+            " PU_SEL AS " +
+            " ( " +
+            "   SELECT " +
+            "     PUSH.TIMESTAMP   STARTTIME, " +
+            "     CASE WHEN PUSH_1.TIMESTAMP IS NULL THEN GETDATE()  ELSE PUSH_1.TIMESTAMP END ENDTIME, " +
+            "     PUSH.ASSETID     PUASSETID, " +
+            "     PUSH.EVENTSEQUENCEID " +
+            "   FROM " +
+            "     PUSH " +
+            "   LEFT JOIN PUSH PUSH_1 " +
+            "   ON " +
+            "     PUSH.ASSETID         = PUSH_1.ASSETID " +
+            "   AND PUSH.ROWNUMBER + 1 = PUSH_1.ROWNUMBER" +
+            "   WHERE " +
+            "     PUSH.PUS                = 60000 " +
+            "   OR( PUSH.EVENTSEQUENCEID IS NOT NULL " +
+            "   AND PUSH.PUS              = 30000 )" +
+            " )" +
+            " , " +
+            " PU_EVENT AS " +
+            " ( " +
+            "   SELECT " +
+            "     PUASSET.ASSETDESC EQUIPMENT, " +
+            "     REPLICATE( '0', 4 - LEN( ISNULL( CONVERT( VARCHAR, FAILUREASSET.ASSETTYPEID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, FAILUREASSET.ASSETTYPEID ), '0' ) COMPONENT, " +
+            "     CASE " +
+            "       WHEN PU_SEL.STARTTIME < SHIFT.STARTTIME " +
+            "       THEN SHIFT.STARTTIME " +
+            "       ELSE PU_SEL.STARTTIME " +
+            "     END STARTTIME, " +
+            "     CASE " +
+            "       WHEN PU_SEL.ENDTIME > SHIFT.ENDTIME " +
+            "       THEN SHIFT.ENDTIME " +
+            "       ELSE PU_SEL.ENDTIME " +
+            "     END ENDTIME, " +
+            "     CASE SC.TIPO " +
+            "       WHEN 'DOWN' " +
+            "       THEN 'F' + REPLICATE( '0', 3 - LEN( ISNULL( CONVERT( VARCHAR, SC.ID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, SC.ID ), '    ' ) " +
+            "       WHEN 'LOST' " +
+            "       THEN 'L' + REPLICATE( '0', 3 - LEN( ISNULL( CONVERT( VARCHAR, SC.ID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, SC.ID ), '    ' ) " +
+            "       ELSE 'DW' " +
+            "     END FAILURE, " +
+            "     CASE " +
+            "       WHEN SYMPTOMS.SYMPTOMID IS NULL " +
+            "       THEN NULL " +
+            "       ELSE 'S' + REPLICATE( '0', 4 - LEN( ISNULL( CONVERT( VARCHAR, SYMPTOMS.SYMPTOMID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, SYMPTOMS.SYMPTOMID ), '0' ) " +
+            "     END SYMPTOMID, " +
+            "     CASE " +
+            "       WHEN FAILUREASSET.ASSETTYPEID IS NULL " +
+            "       THEN NULL " +
+            "       ELSE 'P' + REPLICATE( '0', 4 - LEN( ISNULL( CONVERT( VARCHAR, FAILUREASSET.ASSETTYPEID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, FAILUREASSET.ASSETTYPEID ), '0' ) " +
+            "     END ASSETTYPEID, " +
+            "     CASE " +
+            "       WHEN SC.ID IS NULL " +
+            "       THEN NULL " +
+            "       ELSE 'C' + REPLICATE( '0', 4 - LEN( ISNULL( CONVERT( VARCHAR, SC.ID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, SC.ID ), '0' ) " +
+            "     END STATUSCHANGEID, " +
+            "     CASE WHEN SC.TIPO = 'DOWN' " +
+            "       THEN 'EP' + REPLICATE( '0', 6 - LEN( ISNULL( CONVERT( VARCHAR, EH.EVENTSEQUENCEID ), '0' ) ) ) + ISNULL( CONVERT( VARCHAR, EH.EVENTSEQUENCEID ), '0' ) " +
+            "       ELSE NULL " +
+            "     END EVENT, " +
+            "     SC.TIPO, " +
+            "     SC.DESCRIPTION, " +
+            "     EH.COMMENT " +
+            "   FROM " +
+            "     PU_SEL " +
+            "   INNER JOIN SCADARDB.DBO.ASSETS PUASSET " +
+            "   ON " +
+            "     PU_SEL.PUASSETID = PUASSET.ASSETID " +
+            "   LEFT JOIN SCADARDB.DBO.EVENTSHISTORY EH " +
+            "   ON " +
+            "     PU_SEL.EVENTSEQUENCEID = EH.EVENTSEQUENCEID " +
+            "   LEFT JOIN SCADARDB.DBO.ASSETS FAILUREASSET " +
+            "   ON " +
+            "     EH.FAILEDASSETID = FAILUREASSET.ASSETID " +
+            "   LEFT JOIN SC " +
+            "   ON " +
+            "     EH.FAILEDASSETFAILUREMODEID = SC.ID " +
+            "   LEFT JOIN SYMPTOMS " +
+            "   ON " +
+            "     EH.SYMPTOMID = SYMPTOMS.SYMPTOMID" +
+            "   INNER JOIN SHIFT " +
+            "   ON " +
+            "     SHIFT.STARTTIME <= PU_SEL.ENDTIME " +
+            "   AND SHIFT.ENDTIME >= PU_SEL.STARTTIME  " +
+            " )" +
+            "SELECT " +
+            " PU_EVENT.EQUIPMENT, " +
+            " PU_EVENT.COMPONENT, " +
+            " '' COMP_MOD_CODE, " +
+            " CONVERT( VARCHAR, PU_EVENT.STARTTIME, 112 ) STAR_DATE, " +
+            " REPLACE( CONVERT( VARCHAR( 5 ), PU_EVENT.STARTTIME, 108 ), ':', '' ) STAR_TIME, " +
+            " CONVERT( VARCHAR, PU_EVENT.ENDTIME, 112 ) FINISH_DATE, " +
+            " REPLACE( CONVERT( VARCHAR( 5 ), PU_EVENT.ENDTIME, 108 ), ':', '' ) FINISH_TIME, " +
+            " '' ELAPSED, " +
+            " '' COLLECTION, " +
+            " 'A' SHIFT, " +
+            " PU_EVENT.TIPO EVENT_TYPE, " +
+            " PU_EVENT.FAILURE EVENT_CODE, " +
+            " PU_EVENT.DESCRIPTION EVENT_DESC, " +
+            " PU_EVENT.COMMENT, " +
+            " PU_EVENT.EVENT, " +
+            " PU_EVENT.SYMPTOMID, " +
+            " PU_EVENT.ASSETTYPEID, " +
+            " PU_EVENT.STATUSCHANGEID " +
+            "FROM " +
+            " PU_EVENT";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             return query;
         }
     }

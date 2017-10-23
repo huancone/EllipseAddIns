@@ -8,7 +8,7 @@ EL8DESA =
       (ADDRESS = (PROTOCOL = TCP)(HOST = lmndbs05)(PORT = 1521))
     )
     (CONNECT_DATA =
-      (SID = el8desa)
+      (SID = el89tst)
     )
     (HS = OK)
   )

@@ -166,8 +166,9 @@
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Oracle.ManagedDataAccess">
-      <HintPath>..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -226,7 +227,6 @@
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
-    <None Include="EllipseStandardJobsExcelAddIn_1_TemporaryKey.pfx" />
     <None Include="EllipseStandardJobsExcelAddIn_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -287,10 +287,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>EllipseStandardJobsExcelAddIn_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>EllipseStandardJobsExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>09AE21768682DB113689F8523E3148A3DDF9A9AC</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>06B220E75FA6731FF5806ECB49882F147A229B8A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
