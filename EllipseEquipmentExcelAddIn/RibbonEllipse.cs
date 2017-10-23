@@ -47,13 +47,21 @@ namespace EllipseEquipmentExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
-            _excelApp = Globals.ThisAddIn.Application;
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            try
             {
-                var item = Factory.CreateRibbonDropDownItem();
-                item.Label = env;
-                drpEnviroment.Items.Add(item);
+                _excelApp = Globals.ThisAddIn.Application;
+                var enviroments = Environments.GetEnviromentList();
+                foreach (var env in enviroments)
+                {
+                    var item = Factory.CreateRibbonDropDownItem();
+                    item.Label = env;
+                    drpEnviroment.Items.Add(item);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:Load()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
         }
         private void btnFormatFull_Click(object sender, RibbonControlEventArgs e)
@@ -476,7 +484,7 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetRange(4, TitleRow02, 8, TitleRow02).Style = StyleConstants.TitleRequired;
 
                 _cells.GetCell(9, TitleRow02).Value = "ACTUAL COMPONENT";
-                _cells.GetRange(4, TitleRow02, 8, TitleRow02).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(4, TitleRow02).Style = StyleConstants.TitleInformation;
 
                 _cells.GetCell(ResultColumn02, TitleRow02).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn02, TitleRow02).Style = _cells.GetStyle(StyleConstants.TitleResult);
@@ -1177,6 +1185,7 @@ namespace EllipseEquipmentExcelAddIn
             //if (_cells != null) _cells.SetCursorDefault();
         }
 
+        [SuppressMessage("ReSharper", "SuggestVarOrType_Elsewhere")]
         public void ExecuteTraceAction()
         {
             if (_cells == null)
@@ -1210,8 +1219,8 @@ namespace EllipseEquipmentExcelAddIn
                     var refType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
                     var refNumber = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
                     
-                    var instEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, instEquipmentRef);
-                    var fitEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, fitEquipmentRef);
+                    List<string> instEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, instEquipmentRef);
+                    List<string> fitEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, fitEquipmentRef);
                     
                     var instEquipmentNo = instEquipmentList.Any() ? instEquipmentList.First() : instEquipmentRef;
                     var fitEquipmentNo = fitEquipmentList.Any() ? fitEquipmentList.First() : fitEquipmentRef;

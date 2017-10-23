@@ -48,8 +48,6 @@ namespace EllipseRequisitionServiceExcelAddIn
                 drpItem.Label = item;
                 drpEnviroment.Items.Add(drpItem);
             }
-
-            drpEnviroment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_Productivo;
         }
 
         private void btnFormatNewSheet_Click(object sender, RibbonControlEventArgs e)
