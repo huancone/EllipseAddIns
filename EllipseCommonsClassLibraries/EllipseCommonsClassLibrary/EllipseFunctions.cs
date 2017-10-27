@@ -4,10 +4,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Services.Ellipse.Post;
-using Oracle.ManagedDataAccess.Client;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Utilities;
+using Oracle.ManagedDataAccess.Client;
 
 using System.Threading;
 

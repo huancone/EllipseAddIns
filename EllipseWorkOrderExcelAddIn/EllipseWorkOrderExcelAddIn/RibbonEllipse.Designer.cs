@@ -82,11 +82,9 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
             this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.button1 = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
-            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -167,7 +165,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuActions.Items.Add(this.menuQuality);
             this.menuActions.Items.Add(this.menuCriticalControls);
             this.menuActions.Items.Add(this.btnStopThread);
-            this.menuActions.Items.Add(this.button1);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
             // 
@@ -426,13 +423,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
-            // button1
-            // 
-            this.button1.Label = "button1";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
-            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -445,7 +435,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.grpWorkOrder.PerformLayout();
             this.box2.ResumeLayout(false);
             this.box2.PerformLayout();
-            this.ResumeLayout(false);
 
         }
 
@@ -496,7 +485,6 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnReviewCriticalControls;
         internal RibbonButton btnReReviewCritialControls;
         internal RibbonButton btnExportCriticalControls;
-        internal RibbonButton button1;
     }
 
     partial class ThisRibbonCollection
