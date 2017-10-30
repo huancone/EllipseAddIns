@@ -3357,11 +3357,14 @@ namespace EllipseWorkRequestExcelAddIn
                                                 "MNTTO: MINA\n" +
                                                 "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
-                _cells.GetCell("A3").Value = WorkRequestActions.SearchFieldCriteriaType.Originator.Value;
-                _cells.SetValidationList(_cells.GetCell("A3"), searchCriteriaList, ValidationSheetName, 1, false);
-                _cells.GetCell("A4").Value = WorkRequestActions.SearchFieldCriteriaType.AssignedTo.Value;
-                _cells.SetValidationList(_cells.GetCell("A4"), ValidationSheetName, 1, false);
+                _cells.GetCell("A3").Value = WorkRequestActions.SearchFieldCriteriaType.WorkGroup.Value;
+                _cells.GetCell("B3").Value = "PLANFC";
+                var workGroupList = new List<string> {"PLANFC" };
+                _cells.SetValidationList(_cells.GetCell("B3"), workGroupList, ValidationSheetName, 1);
+                _cells.GetCell("A4").Value = WorkRequestActions.SearchFieldCriteriaType.Originator.Value;
+                _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2, false);
                 _cells.GetCell("A5").Value = "STATUS";
+                _cells.GetCell("B5").Value = WrStatusList.Uncompleted;
                 _cells.SetValidationList(_cells.GetCell("B5"), statusList, ValidationSheetName, 3, false);
                 _cells.GetRange("A3", "A5").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B5").Style = _cells.GetStyle(StyleConstants.Select);
