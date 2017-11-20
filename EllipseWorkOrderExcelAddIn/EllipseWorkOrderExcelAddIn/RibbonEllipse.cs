@@ -3693,7 +3693,8 @@ namespace EllipseWorkOrderExcelAddIn
                 try
                 {
                     var workOrder = "" + _cells.GetCell(1, i).Value;
-                    var cc = CriticalControlActions.FetchCriticalControl(_eFunctions, urlService, opSheet, district, workOrder);
+                    var woTask = "" + _cells.GetCell(2, i).Value;
+                    var cc = CriticalControlActions.FetchCriticalControl(_eFunctions, urlService, opSheet, district, workOrder, woTask);
                     //GENERAL
                     //Para resetear el estilo
                     _cells.GetRange(1, i, ResultColumnCc01, i).Style = StyleConstants.Normal;

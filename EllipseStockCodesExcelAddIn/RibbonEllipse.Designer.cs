@@ -53,6 +53,7 @@
             this.grpStockCodeTrans.SuspendLayout();
             this.box1.SuspendLayout();
             this.box2.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -162,6 +163,7 @@
             this.box1.PerformLayout();
             this.box2.ResumeLayout(false);
             this.box2.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
