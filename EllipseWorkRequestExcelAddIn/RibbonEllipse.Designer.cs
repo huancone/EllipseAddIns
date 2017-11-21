@@ -126,7 +126,7 @@
             // 
             // btnPlanFc
             // 
-            this.btnPlanFc.Label = "Registro Solicitudes FC";
+            this.btnPlanFc.Label = "Registro Fc Solicitudes";
             this.btnPlanFc.Name = "btnPlanFc";
             this.btnPlanFc.ShowImage = true;
             this.btnPlanFc.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnPlanFc_Click);

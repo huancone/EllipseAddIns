@@ -37,8 +37,10 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpRequisitionService = this.Factory.CreateRibbonGroup();
             this.box1 = this.Factory.CreateRibbonBox();
-            this.btnFormatNewSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
+            this.menuFormat = this.Factory.CreateRibbonMenu();
+            this.btnFormatNewSheet = this.Factory.CreateRibbonButton();
+            this.btnFormatExtended = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuAction = this.Factory.CreateRibbonMenu();
             this.btnExcecuteRequisitionService = this.Factory.CreateRibbonButton();
@@ -51,7 +53,6 @@
             this.tabEllipse.SuspendLayout();
             this.grpRequisitionService.SuspendLayout();
             this.box1.SuspendLayout();
-            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -70,21 +71,36 @@
             // 
             // box1
             // 
-            this.box1.Items.Add(this.btnFormatNewSheet);
             this.box1.Items.Add(this.btnAbout);
+            this.box1.Items.Add(this.menuFormat);
             this.box1.Name = "box1";
-            // 
-            // btnFormatNewSheet
-            // 
-            this.btnFormatNewSheet.Label = "&Formatear Hoja";
-            this.btnFormatNewSheet.Name = "btnFormatNewSheet";
-            this.btnFormatNewSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatNewSheet_Click);
             // 
             // btnAbout
             // 
             this.btnAbout.Label = "?";
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
+            // menuFormat
+            // 
+            this.menuFormat.Items.Add(this.btnFormatNewSheet);
+            this.menuFormat.Items.Add(this.btnFormatExtended);
+            this.menuFormat.Label = "&Formatear";
+            this.menuFormat.Name = "menuFormat";
+            // 
+            // btnFormatNewSheet
+            // 
+            this.btnFormatNewSheet.Label = "&Formato Base";
+            this.btnFormatNewSheet.Name = "btnFormatNewSheet";
+            this.btnFormatNewSheet.ShowImage = true;
+            this.btnFormatNewSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatNewSheet_Click);
+            // 
+            // btnFormatExtended
+            // 
+            this.btnFormatExtended.Label = "Formato E&xtendido";
+            this.btnFormatExtended.Name = "btnFormatExtended";
+            this.btnFormatExtended.ShowImage = true;
+            this.btnFormatExtended.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatExtended_Click);
             // 
             // drpEnviroment
             // 
@@ -162,7 +178,6 @@
             this.grpRequisitionService.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
-            this.ResumeLayout(false);
 
         }
 
@@ -182,6 +197,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbMaxItems;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatExtended;
     }
 
     partial class ThisRibbonCollection
