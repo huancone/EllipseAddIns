@@ -149,7 +149,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameD01)
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameD01)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
