@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using Microsoft.Office.Tools.Ribbon;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary;
@@ -21,6 +22,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
         ExcelStyleCells _cells;
         EllipseFunctions _eFunctions = new EllipseFunctions();
         FormAuthenticate _frmAuth = new FormAuthenticate();
+        private Thread _thread;
 
         Excel.Application _excelApp;
 
@@ -44,17 +46,56 @@ namespace EllipseLogSheetStatisticsExcelAddIn
         }
         private void btnLoadModel_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
-                FormatModelData();
-            else
-                MessageBox.Show(@"La hoja de Excel no tiene el formato válido para cargar el modelo");
+            try
+            {
+
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    
+                    _thread = new Thread(FormatModelData);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:FormatModelData()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
         private void btnCreateLogSheetStatistics_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
-                StartCreateLogSheet();
-            else
-                MessageBox.Show(@"La hoja de Excel no tiene el formato válido para crear la hoja de estadísticas");
+            try
+            {
+
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(StartCreateLogSheet);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:FormatModelData()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+
+
         }
 
         public void FormatSheetHeaderData()
@@ -118,10 +159,8 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                string modelCode = "" + _cells.GetCell("B4").Value;
+
+                var modelCode = "" + _cells.GetCell("B4").Value;
                 var globalStartIndex = 7;
                 var globalEndIndex = globalStartIndex;
                 for (var i = globalStartIndex; _cells.GetCell(1, i).Value != null; i++)
@@ -131,7 +170,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
 
                 //cargo los encabezados de fila y los equipos aceptados para el modelo
                 var modelEquipments = GetModelEquipments(modelCode);
-                    //vienen ordenados en el vector según el número de secuencia respectivo
+                //vienen ordenados en el vector según el número de secuencia respectivo
                 var modelHeaders = GetModelHeaders();
 
                 if (modelEquipments != null && modelHeaders != null && modelHeaders.Any())
@@ -142,20 +181,20 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     //ordeno los valores de la hoja para turno
                     var unorderRange = _cells.GetRange(1, globalStartIndex, modelHeaders.Count(), globalEndIndex);
                     unorderRange.Sort(unorderRange.Columns[1, Type.Missing], Excel.XlSortOrder.xlAscending,
-                        unorderRange[2, Type.Missing], Type.Missing, Excel.XlSortOrder.xlAscending);
+                        unorderRange[2, Type.Missing], Type.Missing);
 
 
                     var logStartIndex = globalStartIndex;
-                        //para propósitos de resaltar en la hoja errores y warnings en bloques
+                    //para propósitos de resaltar en la hoja errores y warnings en bloques
 
-                    string previousDate = "" + _cells.GetCell(1, globalStartIndex).Value;
-                    string previousShift = "" + _cells.GetCell(2, globalStartIndex).Value;
+                    var previousDate = "" + _cells.GetCell(1, globalStartIndex).Value;
+                    var previousShift = "" + _cells.GetCell(2, globalStartIndex).Value;
 
 
                     var matrixValues = new List<string[]>();
-                        //almacenará los valores de forma como estén en la hoja de excel, excluyendo los que no pertenezcan al modelo
+                    //almacenará los valores de forma como estén en la hoja de excel, excluyendo los que no pertenezcan al modelo
                     var finalValues = new List<string[]>();
-                        //almacenará los valores de forma ordenada que será la que se enviará finalmente
+                    //almacenará los valores de forma ordenada que será la que se enviará finalmente
 
                     for (var i = globalStartIndex; i <= globalEndIndex + 1; i++)
                     {
@@ -223,9 +262,9 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                             _cells.GetCell(modelHeaders.Count() + 1, i - 1).Value = logResult;
                             //reinicie los objetos del screen
                             matrixValues = new List<string[]>();
-                                //almacenará los valores de forma como estén en la hoja de excel, excluyendo los que no pertenezcan al modelo
+                            //almacenará los valores de forma como estén en la hoja de excel, excluyendo los que no pertenezcan al modelo
                             finalValues = new List<string[]>();
-                                //almacenará los valores de forma ordenada que será la que se enviará finalmente
+                            //almacenará los valores de forma ordenada que será la que se enviará finalmente
                             logStartIndex = i;
                         }
 
@@ -234,7 +273,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                         //si sigue en la misma fecha-turno siga
                         //valido que el registro de la fila exista en el modelo
                         if (modelEquipments.Contains(("" + _cells.GetCell(3, i).Value).Trim()))
-                            //si existe se añade a la lista a ser agregado
+                        //si existe se añade a la lista a ser agregado
                         {
                             var rowValues = new string[modelHeaders.Count() + 1];
                             rowValues[0] = ""; //para ACTION
@@ -247,7 +286,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                             matrixValues.Add(rowValues);
                         }
                         else
-                        //si no existe se resalta el error y se continúa el proceso ignorando el registro (no será cargado)
+                            //si no existe se resalta el error y se continúa el proceso ignorando el registro (no será cargado)
                             _cells.GetCell(3, i).Style = StyleConstants.Error;
 
                     }
@@ -304,7 +343,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
 
             _eFunctions.CheckReplyWarning(replySheet);//si hay debug activo muestra el warning de lo contrario depende del proceso del OP
 
-                
+
 
             if (replySheet != null && !_eFunctions.CheckReplyError(replySheet) && replySheet.mapName == "MSM435B")
             {
@@ -330,7 +369,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                         //
                         if (replySheet != null && replySheet.mapName != "MSM435B")
                             break;
-                        screenIndex = 1;                            
+                        screenIndex = 1;
                     }
 
                     //eS(screenIndex) = fv
@@ -370,20 +409,20 @@ namespace EllipseLogSheetStatisticsExcelAddIn
 
                 replySheet = proxySheet.submit(opSheet, requestSheet);
                 _eFunctions.CheckReplyWarning(replySheet);//si hay debug activo muestra el warning de lo contrario depende del proceso del OP
-                    
+
                 if (replySheet != null && !_eFunctions.CheckReplyError(replySheet) && replySheet.mapName == "MSM435A")
                     return "SUCCESS:" + "Se han cargado exitosamente los datos";
                 if (replySheet != null && _eFunctions.CheckReplyError(replySheet))
                     return "ERROR:" + replySheet.message;
                 return "ERROR:" + "Se produjo un error al intentar cargar los datos";
             }
-            
+
             if (replySheet == null)
                 return "ERROR:" + "No se puede establecer conexión con el programa MSM435B";
             if (replySheet.mapName != "MSM435B" || replySheet.message.Substring(0, 2) == "X2")
                 return "ERROR:" + replySheet.message;
             return "ERROR:" + replySheet.message;
-            
+
 
             //---fin proceso del screen
         }
@@ -395,12 +434,12 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
                 _cells.ClearRange("A6", "AZ65536");
-                string modelCode = "" + _cells.GetCell("B4").Value;
+                var modelCode = "" + _cells.GetCell("B4").Value;
                 //encabezados
                 var sqlQuery1 = Queries.GetDefaultHeaderData(modelCode, _eFunctions.dbReference, _eFunctions.dbLink);
                 //equipos
                 var sqlQuery2 = Queries.GetQueryDefaultModelData(modelCode, _eFunctions.dbReference, _eFunctions.dbLink);
-                    //Igual que el query de getModelEquipment
+                //Igual que el query de getModelEquipment
 
                 if (Debugger.DebugQueries)
                 {
@@ -456,28 +495,48 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                         while (drEquipments.Read())
                         {
 
-                            var rv = new ModelRowValue();
-                            rv.Code = ("" + drEquipments["ENTRY_GRP"]);
-                            rv.EquipReference = ("" + drEquipments["EQ_REFERENCE"]);
+                            var rv = new ModelRowValue
+                            {
+                                Code = ("" + drEquipments["ENTRY_GRP"]),
+                                EquipReference = ("" + drEquipments["EQ_REFERENCE"]),
+                                Operator =
+                                {
+                                    Flag = ("" + drEquipments["OPERATOR_FLG"]).Equals("O") ||
+                                           ("" + drEquipments["OPERATOR_FLG"]).Equals("M"),
+                                    Value = ("" + drEquipments["OPERATOR_ID"])
+                                },
+                                Account =
+                                {
+                                    Flag = ("" + drEquipments["ACCOUNT_FLG"]).Equals("O") ||
+                                           ("" + drEquipments["ACCOUNT_FLG"]).Equals("M"),
+                                    Value = ("" + drEquipments["ACCOUNT_CODE"])
+                                },
+                                WorkOrder =
+                                {
+                                    Flag = ("" + drEquipments["WORK_ORDER_FLG"]).Equals("O") ||
+                                           ("" + drEquipments["WORK_ORDER_FLG"]).Equals("M"),
+                                    Value = ("" + drEquipments["WORK_ORDER"])
+                                },
+                                Source =
+                                {
+                                    Flag = ("" + drEquipments["SOURCE_LOC_FLG"]).Equals("O") ||
+                                           ("" + drEquipments["SOURCE_LOC_FLG"]).Equals("M"),
+                                    Value = ("" + drEquipments["SOURCE_LOC"])
+                                },
+                                Destination =
+                                {
+                                    Flag = ("" + drEquipments["DEST_LOC_FLG"]).Equals("O") ||
+                                           ("" + drEquipments["DEST_LOC_FLG"]).Equals("M"),
+                                    Value = ("" + drEquipments["DEST_LOC"])
+                                },
+                                Material =
+                                {
+                                    Flag = ("" + drEquipments["MATERIAL_FLG"]).Equals("O") ||
+                                           ("" + drEquipments["MATERIAL_FLG"]).Equals("M"),
+                                    Value = ("" + drEquipments["MATERIAL_CODE"])
+                                }
+                            };
                             //Flags de esta sección O: Optional, M: Mandatory, N: Not Required
-                            rv.Operator.Flag = ("" + drEquipments["OPERATOR_FLG"]).Equals("O") ||
-                                               ("" + drEquipments["OPERATOR_FLG"]).Equals("M");
-                            rv.Operator.Value = ("" + drEquipments["OPERATOR_ID"]);
-                            rv.Account.Flag = ("" + drEquipments["ACCOUNT_FLG"]).Equals("O") ||
-                                              ("" + drEquipments["ACCOUNT_FLG"]).Equals("M");
-                            rv.Account.Value = ("" + drEquipments["ACCOUNT_CODE"]);
-                            rv.WorkOrder.Flag = ("" + drEquipments["WORK_ORDER_FLG"]).Equals("O") ||
-                                                ("" + drEquipments["WORK_ORDER_FLG"]).Equals("M");
-                            rv.WorkOrder.Value = ("" + drEquipments["WORK_ORDER"]);
-                            rv.Source.Flag = ("" + drEquipments["SOURCE_LOC_FLG"]).Equals("O") ||
-                                             ("" + drEquipments["SOURCE_LOC_FLG"]).Equals("M");
-                            rv.Source.Value = ("" + drEquipments["SOURCE_LOC"]);
-                            rv.Destination.Flag = ("" + drEquipments["DEST_LOC_FLG"]).Equals("O") ||
-                                                  ("" + drEquipments["DEST_LOC_FLG"]).Equals("M");
-                            rv.Destination.Value = ("" + drEquipments["DEST_LOC"]);
-                            rv.Material.Flag = ("" + drEquipments["MATERIAL_FLG"]).Equals("O") ||
-                                               ("" + drEquipments["MATERIAL_FLG"]).Equals("M");
-                            rv.Material.Value = ("" + drEquipments["MATERIAL_CODE"]);
                             //Flags de esta sección I: Input, O: Output, B: Both
                             for (var k = 0; k < 10; k++)
                             {
@@ -785,9 +844,9 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     "       ME.MODEL_CODE," +
                     "       ME.MODEL_SEQ_NO," +
                     "       ME.ENTRY_GRP";
-            
+
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             return query;
         }
         public static string GetDefaultHeaderData(string modelCode, string dbReference, string dbLink)
@@ -844,7 +903,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     " SELECT * FROM HEADER_DEFAULT_VALUES HDV";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             return query;
         }
     }

@@ -36,16 +36,17 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpLogSheetStatistics = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatLogSheet = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoadModel = this.Factory.CreateRibbonButton();
             this.btnCreateLogSheetStatistics = this.Factory.CreateRibbonButton();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpLogSheetStatistics.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -62,11 +63,23 @@
             this.grpLogSheetStatistics.Label = "LogSheetStatistics";
             this.grpLogSheetStatistics.Name = "grpLogSheetStatistics";
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormatLogSheet);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
             // btnFormatLogSheet
             // 
             this.btnFormatLogSheet.Label = "Formatear Hoja";
             this.btnFormatLogSheet.Name = "btnFormatLogSheet";
             this.btnFormatLogSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatLogSheet_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnviroment
             // 
@@ -94,18 +107,6 @@
             this.btnCreateLogSheetStatistics.ShowImage = true;
             this.btnCreateLogSheetStatistics.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreateLogSheetStatistics_Click);
             // 
-            // box1
-            // 
-            this.box1.Items.Add(this.btnFormatLogSheet);
-            this.box1.Items.Add(this.btnAbout);
-            this.box1.Name = "box1";
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
-            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -118,6 +119,7 @@
             this.grpLogSheetStatistics.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

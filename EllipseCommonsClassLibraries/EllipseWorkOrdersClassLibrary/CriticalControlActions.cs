@@ -55,9 +55,9 @@ namespace EllipseWorkOrdersClassLibrary
 
             return list;
         }
-        public static CriticalControl FetchCriticalControl(EllipseFunctions ef, string urlService, OperationContext opContext, string district, string workOrder)
+        public static CriticalControl FetchCriticalControl(EllipseFunctions ef, string urlService, OperationContext opContext, string district, string workOrder, string woTask)
         {
-            var sqlQuery = Queries.GetFetchCriticalControlsQuery(ef.dbReference, ef.dbLink, district, workOrder);
+            var sqlQuery = Queries.GetFetchCriticalControlsQuery(ef.dbReference, ef.dbLink, district, workOrder, woTask);
             var drCriticalControl = ef.GetQueryResult(sqlQuery);
             CriticalControl control = new CriticalControl();
 
@@ -318,7 +318,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             return query;
         }
-        public static string GetFetchCriticalControlsQuery(string dbReference, string dbLink, string districtCode, string workOrder)
+        public static string GetFetchCriticalControlsQuery(string dbReference, string dbLink, string districtCode, string workOrder, string woTask)
         {
             //establecemos los parámetrode de distrito
             if (string.IsNullOrEmpty(districtCode))
@@ -370,6 +370,7 @@ namespace EllipseWorkOrdersClassLibrary
                     " ON WO.STD_JOB_NO = MST.STD_JOB_NO" +
                     " WHERE" +
                     " " + "WO.WORK_ORDER = '" + workOrder + "'" +
+                    " AND WOT.WO_TASK_NO = '" + woTask + "'" +
                     " AND WO.DSTRCT_CODE " + districtCode +
                     " ORDER BY ASSIGN_PERSON, PLAN_STR_DATE ASC";
 

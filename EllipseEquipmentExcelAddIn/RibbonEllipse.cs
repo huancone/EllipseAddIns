@@ -621,7 +621,6 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(25, i).Value = "'" + eq.ExpElement;
                     _cells.GetCell(26, i).Value = "'" + eq.CostingFlag;
                     _cells.GetCell(27, i).Value = "'" + eq.TaxCode;
-                    _cells.GetCell(27, i).Value = "'" + eq.CtaxCode;
                     _cells.GetCell(29, i).Value = "'" + eq.PoNo;
                     _cells.GetCell(30, i).Value = "'" + eq.PurchaseDate;
                     _cells.GetCell(31, i).Value = "'" + eq.PurchasePrice;
@@ -735,7 +734,6 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(25, i).Value = "'" + eq.ExpElement;
                     _cells.GetCell(26, i).Value = "'" + eq.CostingFlag;
                     _cells.GetCell(27, i).Value = "'" + eq.TaxCode;
-                    _cells.GetCell(27, i).Value = "'" + eq.CtaxCode;
                     _cells.GetCell(29, i).Value = "'" + eq.PoNo;
                     _cells.GetCell(30, i).Value = "'" + eq.PurchaseDate;
                     _cells.GetCell(31, i).Value = "'" + eq.PurchasePrice;
