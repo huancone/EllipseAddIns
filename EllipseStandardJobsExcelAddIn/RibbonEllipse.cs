@@ -1270,7 +1270,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableNameQualRev, ResultColumnQualRev);
             var i = TitleRowQualRev + 1;
-            const int validationRow = TitleRowQualRev - 1;
+            const int validationRow = TitleRow01 - 1;
 
             var opSheet = new StandardJobService.OperationContext
             {
