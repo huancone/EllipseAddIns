@@ -15,6 +15,7 @@ using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using FormAuthenticate = EllipseCommonsClassLibrary.FormAuthenticate;
+using EllipseStdTextClassLibrary;
 
 namespace EllipseWorkOrderExcelAddIn
 {
@@ -27,10 +28,13 @@ namespace EllipseWorkOrderExcelAddIn
         Application _excelApp;
 
         private const string SheetName01 = "WorkOrders";
-        private const string SheetName02 = "CloseWorkOrders";
-        private const string SheetName03 = "CloseCommentsWorkOrders";
-        private const string SheetName04 = "DurationWorkOrders";
-        private const string SheetName05 = "ProgressWorkOrders";
+        private const string SheetName02 = "Tasks";
+        private const string SheetName03 = "Requirement";
+        private const string SheetName04 = "CloseWorkOrders";
+        private const string SheetName05 = "CloseCommentsWorkOrders";
+        private const string SheetName06 = "DurationWorkOrders";
+        private const string SheetName07 = "ProgressWorkOrders";
+        
         private const string SheetNameD01 = "WorkOrdersDetailed";
         private const string SheetNameD02 = "WOTasks";
         private const string SheetNameD03 = "WORequirements";
@@ -39,21 +43,28 @@ namespace EllipseWorkOrderExcelAddIn
         private const string SheetNameCc01 = "Critical Controls";
 
         private const int TitleRow01 = 9;
-        private const int TitleRow02 = 6;
-        private const int TitleRow03 = 6;
+        private const int TitleRow02 = 9;
+        private const int TitleRow03 = 9;
         private const int TitleRow04 = 6;
         private const int TitleRow05 = 6;
+        private const int TitleRow06 = 6;
+        private const int TitleRow07 = 6;
+
         private const int TitleRowD01 = 9;
         private const int TitleRowD02 = 6;
         private const int TitleRowD03 = 6;
         private const int TitleRowD04 = 6;
         private const int TitleRowQ01 = 7;
         private const int TitleRowCc01 = 6;
+        
         private const int ResultColumn01 = 54;
-        private const int ResultColumn02 = 8;
-        private const int ResultColumn03 = 3;
+        private const int ResultColumn02 = 54;
+        private const int ResultColumn03 = 54;
         private const int ResultColumn04 = 8;
-        private const int ResultColumn05 = 6;
+        private const int ResultColumn05 = 3;
+        private const int ResultColumn06 = 8;
+        private const int ResultColumn07 = 6;
+
         private const int ResultColumnD01 = 56;
         private const int ResultColumnD02 = 8;
         private const int ResultColumnD03 = 3;
@@ -62,10 +73,13 @@ namespace EllipseWorkOrderExcelAddIn
         private const int ResultColumnCc01 = 20;
 
         private const string TableName01 = "WorkOrderTable";
-        private const string TableName02 = "WorkOrderCloseTable";
-        private const string TableName03 = "WorkOrderCompleteTextTable";
-        private const string TableName04 = "WorkOrderDurationTable";
-        private const string TableName05 = "WorkOrderProgressTable";
+        private const string TableName02 = "TaskTable";
+        private const string TableName03 = "RequirementTable";
+        private const string TableName04 = "WorkOrderCloseTable";
+        private const string TableName05 = "WorkOrderCompleteTextTable";
+        private const string TableName06 = "WorkOrderDurationTable";
+        private const string TableName07 = "WorkOrderProgressTable";
+
         private const string TableNameD01 = "WorkOrderTable";
         private const string TableNameD02 = "WorkOrderTasksTable";
         private const string TableNameD03 = "WorkOrderRequirmentsTable";
@@ -149,7 +163,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameD01)
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameD01)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -251,7 +265,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -276,7 +290,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -301,7 +315,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName05)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -327,7 +341,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName05)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -352,7 +366,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName06)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -378,7 +392,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName06)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -403,7 +417,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName05)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName07)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -426,7 +440,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName05)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName07)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -454,7 +468,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName05)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName07)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -481,7 +495,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName05)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName07)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -809,8 +823,8 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 _excelApp = Globals.ThisAddIn.Application;
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-                
-                //CONSTRUYO LA HOJA 1
+
+                #region CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
                     _excelApp.ActiveWorkbook.Worksheets.Add();
@@ -820,6 +834,9 @@ namespace EllipseWorkOrderExcelAddIn
 				_cells.SetCursorWait();
                 _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 4
                 _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 5
+                _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 6
+                _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 7
+
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
                 _cells.CreateNewWorksheet(ValidationSheetName);//hoja de validación
 
@@ -1012,9 +1029,179 @@ namespace EllipseWorkOrderExcelAddIn
 				_cells.GetRange(1, TitleRow01 + 1, ResultColumn01, TitleRow01 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01+1), TableName01);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-                //CONSTRUYO LA HOJA 2 - CLOSE WO
-                _excelApp.ActiveWorkbook.Sheets[2].Select(Type.Missing);
+                #endregion
+
+                #region CONSTRUYO LA HOJA 2
+                // ReSharper disable once UseIndexedProperty
+                _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName02;
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
+                _cells.MergeCells("A1", "B2");
+
+                _cells.GetCell("C1").Value = "WO TASKS - ELLIPSE 8";
+                _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
+                _cells.MergeCells("C1", "J2");
+
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = StyleConstants.TitleRequired;
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = StyleConstants.TitleOptional;
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = StyleConstants.TitleInformation;
+                _cells.GetCell("K4").Value = "ACCIÓN A REALIZAR";
+                _cells.GetCell("K4").Style = StyleConstants.TitleAction;
+
+                _cells.GetRange(1, TitleRow02, ResultColumn02 - 1, TitleRow02).Style = StyleConstants.TitleRequired;
+
+                //STANDARD
+                _cells.GetCell(1, TitleRow02 - 1).Value = "WORK ORDER";
+                _cells.GetRange(1, TitleRow02 - 1, 5, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(1, TitleRow02 - 1, 5, TitleRow02 - 1).Merge();
+
+                _cells.GetCell(1, TitleRow02).Value = "DISTRICT";
+                _cells.GetCell(2, TitleRow02).Value = "WORK_GROUP";
+                _cells.GetCell(3, TitleRow02).Value = "WO_NO";
+                _cells.GetCell(4, TitleRow02).Value = "WO_DESC";
+                _cells.GetCell(4, TitleRow02).Style = StyleConstants.TitleInformation;
+                //ACTION
+                _cells.GetCell(5, TitleRow02).Value = "ACTION";
+                _cells.GetCell(5, TitleRow02).Style = StyleConstants.TitleAction;
+                _cells.GetCell(5, TitleRow02).AddComment("C: Crear \nM: Modificar \nD: Eliminar");
+                _cells.SetValidationList(_cells.GetCell(5, TitleRow02 + 1), new List<string> { "C", "M", "D" });
+                //GENERAL
+                _cells.GetCell(6, TitleRow02 - 1).Value = "GENERAL";
+                _cells.GetRange(6, TitleRow02 - 1, 11, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(6, TitleRow02 - 1, 11, TitleRow02 - 1).Merge();
+
+                _cells.GetCell(6, TitleRow02).Value = "TASK_NO";
+                _cells.GetCell(7, TitleRow02).Value = "WO_TASK_DESC";
+                _cells.GetCell(8, TitleRow02).Value = "JOB_DESC_CODE";
+                _cells.GetCell(9, TitleRow02).Value = "SAFETY_INST";
+                _cells.GetCell(10, TitleRow02).Value = "COMPL_INST";
+                _cells.GetCell(11, TitleRow02).Value = "COMPL_TEXT_CODE";
+
+                //PLANNING
+                _cells.GetCell(12, TitleRow02 - 1).Value = "PLANNING";
+                _cells.GetRange(12, TitleRow02 - 1, 16, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(12, TitleRow02 - 1, 16, TitleRow02 - 1).Merge();
+
+                _cells.GetCell(12, TitleRow02).Value = "ASSIGN_PERSON";
+                _cells.GetCell(13, TitleRow02).Value = "EST_MACH_HRS";
+                _cells.GetCell(14, TitleRow02).Value = "UNIT_OF_WORK";
+                _cells.GetCell(15, TitleRow02).Value = "UNITS_REQUIRED";
+                _cells.GetCell(16, TitleRow02).Value = "UNITS_PER_DAY";
+                _cells.GetRange(12, TitleRow02, 16, TitleRow02).Style = StyleConstants.TitleOptional;
+
+                //RECURSOS
+                _cells.GetCell(17, TitleRow02 - 1).Value = "RECURSOS";
+                _cells.GetRange(17, TitleRow02 - 1, 19, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(17, TitleRow02 - 1, 19, TitleRow02 - 1).Merge();
+
+                _cells.GetCell(17, TitleRow02).Value = "EST_DUR_HRS";
+                _cells.GetCell(17, TitleRow02).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(18, TitleRow02).Value = "LABOR";
+                _cells.GetCell(19, TitleRow02).Value = "MATERIAL";
+                _cells.GetRange(18, TitleRow02, 19, TitleRow02).Style = StyleConstants.TitleInformation;
+
+                //APL
+                _cells.GetCell(20, TitleRow02 - 1).Value = "APL";
+                _cells.GetRange(20, TitleRow02 - 1, 24, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(20, TitleRow02 - 1, 24, TitleRow02 - 1).Merge();
+
+                _cells.GetCell(20, TitleRow02).Value = "EQUIP_GRP_ID";
+                _cells.GetCell(21, TitleRow02).Value = "APL_TYPE";
+                _cells.GetCell(22, TitleRow02).Value = "COMP_CODE";
+                _cells.GetCell(23, TitleRow02).Value = "COMP_MOD_CODE";
+                _cells.GetCell(24, TitleRow02).Value = "APL_SEQ_NO";
+
+                _cells.GetRange(20, TitleRow02, 24, TitleRow02).Style = StyleConstants.TitleOptional;
+
+
+                _cells.GetCell(25, TitleRow02).Value = "DESCRIPCION EXTENDIDA";
+                _cells.GetCell(25, TitleRow02).Style = StyleConstants.TitleOptional;
+                //RESULTADO
+                _cells.GetCell(ResultColumn02, TitleRow02).Value = "RESULTADO";
+                _cells.GetCell(ResultColumn02, TitleRow02).Style = StyleConstants.TitleResult;
+
+                _cells.GetRange(1, TitleRow02 + 1, ResultColumn02, TitleRow02 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                #endregion
+
+                #region CONSTRUYO LA HOJA 3
+                // ReSharper disable once UseIndexedProperty
+                _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName03;
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
+                _cells.MergeCells("A1", "B2");
+
+                _cells.GetCell("C1").Value = "WO TASK REQUIREMENTS - ELLIPSE 8";
+                _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
+                _cells.MergeCells("C1", "J2");
+
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = StyleConstants.TitleRequired;
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = StyleConstants.TitleOptional;
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = StyleConstants.TitleInformation;
+                _cells.GetCell("K4").Value = "ACCIÓN A REALIZAR";
+                _cells.GetCell("K4").Style = StyleConstants.TitleAction;
+
+                _cells.GetRange(1, TitleRow03, ResultColumn03 - 1, TitleRow03).Style = StyleConstants.TitleRequired;
+
+                //STANDARD
+                _cells.GetCell(1, TitleRow03 - 1).Value = "WO / TASK";
+                _cells.GetRange(1, TitleRow03 - 1, 6, TitleRow03 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(1, TitleRow03 - 1, 6, TitleRow03 - 1).Merge();
+
+                _cells.GetCell(1, TitleRow03).Value = "DISTRICT";
+                _cells.GetCell(2, TitleRow03).Value = "WORK_GROUP";
+                _cells.GetCell(3, TitleRow03).Value = "WO_NO";
+                _cells.GetCell(4, TitleRow03).Value = "TASK_NO";
+                _cells.GetCell(5, TitleRow03).Value = "WO_TASK_DESC";
+
+                //ACTION
+                _cells.GetCell(6, TitleRow03).Value = "ACTION";
+                _cells.GetCell(6, TitleRow03).Style = StyleConstants.TitleAction;
+                _cells.GetCell(6, TitleRow03).AddComment("C: Crear Requerimiento \nM: Modificar Requerimiento \nD: Eliminar Requerimiento");
+                _cells.SetValidationList(_cells.GetCell(6, TitleRow03 + 1), new List<string> { "C", "M", "D" });
+                //GENERAL
+                _cells.GetCell(7, TitleRow03 - 1).Value = "GENERAL";
+                _cells.GetRange(7, TitleRow03 - 1, 13, TitleRow03 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(7, TitleRow03 - 1, 13, TitleRow03 - 1).Merge();
+
+                _cells.GetCell(7, TitleRow03).Value = "REQ_TYPE";
+                _cells.GetCell(7, TitleRow03).AddComment("LAB: LABOR\nMAT: MATERIAL");
+                _cells.SetValidationList(_cells.GetCell(7, TitleRow03 + 1), new List<string> { "LAB", "MAT" });
+                _cells.GetCell(8, TitleRow03).Value = "SEQ_NO";
+                _cells.GetCell(8, TitleRow03).AddComment("Aplica solo para Creación y Modificación de Requerimientos");
+                _cells.GetCell(9, TitleRow03).Value = "REQ_CODE";
+                _cells.GetCell(9, TitleRow03).AddComment("Recurso: Class+Code (Ver hoja de recursos) \nMaterial: StockCode");
+                _cells.GetCell(10, TitleRow03).Value = "DESCRIPTION";
+                _cells.GetCell(11, TitleRow03).Value = "QTY REQ";
+                _cells.GetCell(12, TitleRow03).Value = "HRS_REQ";
+                _cells.GetCell(12, TitleRow03).AddComment("Horas requeridas del recurso. (Solo aplica para labor)");
+                _cells.GetCell(13, TitleRow03).Value = "UOM";
+                _cells.GetCell(13, TitleRow03).AddComment("Unidad de Medida del Recurso. (Solo aplica para Equipos)");
+
+
+                //RESULTADO
+                _cells.GetCell(ResultColumn03, TitleRow03).Value = "RESULTADO";
+                _cells.GetCell(ResultColumn03, TitleRow03).Style = StyleConstants.TitleResult;
+
+                _cells.GetRange(1, TitleRow03 + 1, ResultColumn03 - 2, TitleRow03 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow03, ResultColumn03, TitleRow03 + 1), TableName03);
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                #endregion
+
+                #region CONSTRUYO LA HOJA 4 - CLOSE WO
+                _excelApp.ActiveWorkbook.Sheets[4].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName04;
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -1043,31 +1230,33 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B3"), ValidationSheetName, 1);
 
                 //GENERAL
-                _cells.GetRange(1, TitleRow02, ResultColumn02 - 1, TitleRow02).Style = StyleConstants.TitleRequired;
-                _cells.GetCell(1, TitleRow02).Value = "WORK_ORDER";
-                _cells.GetCell(2, TitleRow02).Value = "CLOSED_DATE";
-                _cells.GetCell(2, TitleRow02).AddComment("yyyyMMdd");
-                _cells.GetCell(3, TitleRow02).Value = "CLOSED_TIME";
-                _cells.GetCell(3, TitleRow02).AddComment("hhmmss");
-                _cells.GetCell(3, TitleRow02).Style = StyleConstants.TitleOptional;
-                _cells.GetCell(4, TitleRow02).Value = "COMPLETED_BY";
-                _cells.GetCell(5, TitleRow02).Value = "COMPLETED_CODE";
+                _cells.GetRange(1, TitleRow04, ResultColumn04 - 1, TitleRow04).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(1, TitleRow04).Value = "WORK_ORDER";
+                _cells.GetCell(2, TitleRow04).Value = "CLOSED_DATE";
+                _cells.GetCell(2, TitleRow04).AddComment("yyyyMMdd");
+                _cells.GetCell(3, TitleRow04).Value = "CLOSED_TIME";
+                _cells.GetCell(3, TitleRow04).AddComment("hhmmss");
+                _cells.GetCell(3, TitleRow04).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(4, TitleRow04).Value = "COMPLETED_BY";
+                _cells.GetCell(5, TitleRow04).Value = "COMPLETED_CODE";
                 var completeCodeList = _eFunctions.GetItemCodes("SC").Select(item => item.code + " - " + item.description).ToList();
-                _cells.SetValidationList(_cells.GetCell(5, TitleRow02 + 1), completeCodeList, ValidationSheetName, 10, false);
-                _cells.GetCell(6, TitleRow02).Value = "OUT_SERV_DATE";
-                _cells.GetCell(6, TitleRow02).Style = StyleConstants.TitleOptional;
-                _cells.GetCell(7, TitleRow02).Value = "COMENTARIO";
-                _cells.GetCell(7, TitleRow02).Style = StyleConstants.TitleOptional;
-                _cells.GetCell(7, TitleRow02).AddComment("Adiciona el siguiente texto al campo de comentario (no elimina el comentario existente)");
+                _cells.SetValidationList(_cells.GetCell(5, TitleRow04 + 1), completeCodeList, ValidationSheetName, 10, false);
+                _cells.GetCell(6, TitleRow04).Value = "OUT_SERV_DATE";
+                _cells.GetCell(6, TitleRow04).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(7, TitleRow04).Value = "COMENTARIO";
+                _cells.GetCell(7, TitleRow04).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(7, TitleRow04).AddComment("Adiciona el siguiente texto al campo de comentario (no elimina el comentario existente)");
 
-                _cells.GetCell(ResultColumn02, TitleRow02).Value = "RESULTADO";
-                _cells.GetCell(ResultColumn02, TitleRow02).Style = StyleConstants.TitleResult;
-				_cells.GetRange(1, TitleRow02 + 1, ResultColumn02, TitleRow02 + 1).NumberFormat = NumberFormatConstants.Text;
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
+                _cells.GetCell(ResultColumn04, TitleRow04).Value = "RESULTADO";
+                _cells.GetCell(ResultColumn04, TitleRow04).Style = StyleConstants.TitleResult;
+				_cells.GetRange(1, TitleRow04 + 1, ResultColumn04, TitleRow04 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow04, ResultColumn04, TitleRow04 + 1), TableName04);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-                //CONSTRUYO LA HOJA 3 - CLOSE COMMENTS
-                _excelApp.ActiveWorkbook.Sheets[3].Select(Type.Missing);
-                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName03;
+                #endregion
+
+                #region CONSTRUYO LA HOJA 5 - CLOSE COMMENTS
+                _excelApp.ActiveWorkbook.Sheets[5].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName05;
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -1095,20 +1284,21 @@ namespace EllipseWorkOrderExcelAddIn
                 //Adicionar validaciones
                 _cells.SetValidationList(_cells.GetCell("B3"), ValidationSheetName, 1);
 
-                _cells.GetRange(1, TitleRow03, ResultColumn03 - 1, TitleRow03).Style = StyleConstants.TitleRequired;
-                _cells.GetCell(1, TitleRow03).Value = "WORK_ORDER";
-                _cells.GetCell(2, TitleRow03).Value = "COMENTARIO";
-                _cells.GetCell(2, TitleRow03).Style = StyleConstants.TitleOptional;
+                _cells.GetRange(1, TitleRow05, ResultColumn05 - 1, TitleRow05).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(1, TitleRow05).Value = "WORK_ORDER";
+                _cells.GetCell(2, TitleRow05).Value = "COMENTARIO";
+                _cells.GetCell(2, TitleRow05).Style = StyleConstants.TitleOptional;
 
-                _cells.GetCell(ResultColumn03, TitleRow03).Value = "RESULTADO";
-                _cells.GetCell(ResultColumn03, TitleRow03).Style = StyleConstants.TitleResult;
-				_cells.GetRange(1, TitleRow03 + 1, ResultColumn03, TitleRow03 + 1).NumberFormat = NumberFormatConstants.Text;
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow03, ResultColumn03, TitleRow03 + 1), TableName03);
+                _cells.GetCell(ResultColumn05, TitleRow05).Value = "RESULTADO";
+                _cells.GetCell(ResultColumn05, TitleRow05).Style = StyleConstants.TitleResult;
+				_cells.GetRange(1, TitleRow05 + 1, ResultColumn05, TitleRow05 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow05, ResultColumn05, TitleRow05 + 1), TableName05);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                #endregion
 
-                //CONSTRUYO LA HOJA 4 - DURATION
-                _excelApp.ActiveWorkbook.Sheets[4].Select(Type.Missing);
-                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName04;
+                #region CONSTRUYO LA HOJA 6 - DURATION
+                _excelApp.ActiveWorkbook.Sheets[6].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName06;
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -1118,32 +1308,34 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.MergeCells("C1", "J2");
 
                 //GENERAL
-                _cells.GetRange(1, TitleRow04, ResultColumn02 - 1, TitleRow04).Style = StyleConstants.TitleRequired;
-                _cells.GetCell(1, TitleRow04).Value = "DISTRICT_CODE";
-                _cells.GetCell(2, TitleRow04).Value = "WORK_ORDER";
-                _cells.GetCell(3, TitleRow04).Value = "DURATION_DATE";
-                _cells.GetCell(3, TitleRow04).AddComment("yyyyMMdd");
-                _cells.GetCell(4, TitleRow04).Value = "DURATION_CODE";
+                _cells.GetRange(1, TitleRow06, ResultColumn04 - 1, TitleRow06).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(1, TitleRow06).Value = "DISTRICT_CODE";
+                _cells.GetCell(2, TitleRow06).Value = "WORK_ORDER";
+                _cells.GetCell(3, TitleRow06).Value = "DURATION_DATE";
+                _cells.GetCell(3, TitleRow06).AddComment("yyyyMMdd");
+                _cells.GetCell(4, TitleRow06).Value = "DURATION_CODE";
                 var durationCodeList = _eFunctions.GetItemCodes("JI").Select(item => item.code + " - " + item.description).ToList();
-                _cells.SetValidationList(_cells.GetCell(4, TitleRow04 + 1), durationCodeList, ValidationSheetName, 11, false);
-                _cells.GetCell(5, TitleRow04).Value = "START_HOUR";
-                _cells.GetCell(5, TitleRow04).AddComment("hhmmss");
-                _cells.GetCell(6, TitleRow04).Value = "FINAL_HOUR";
-                _cells.GetCell(6, TitleRow04).AddComment("hhmmss");
-                _cells.GetCell(7, TitleRow04).Value = "ACTION";
-                _cells.GetCell(7, TitleRow04).Style = StyleConstants.TitleAction;
-                _cells.GetCell(7, TitleRow04).AddComment("Crear, Eliminar");
+                _cells.SetValidationList(_cells.GetCell(4, TitleRow06 + 1), durationCodeList, ValidationSheetName, 11, false);
+                _cells.GetCell(5, TitleRow06).Value = "START_HOUR";
+                _cells.GetCell(5, TitleRow06).AddComment("hhmmss");
+                _cells.GetCell(6, TitleRow06).Value = "FINAL_HOUR";
+                _cells.GetCell(6, TitleRow06).AddComment("hhmmss");
+                _cells.GetCell(7, TitleRow06).Value = "ACTION";
+                _cells.GetCell(7, TitleRow06).Style = StyleConstants.TitleAction;
+                _cells.GetCell(7, TitleRow06).AddComment("Crear, Eliminar");
                 var actionsList = new List<string> {"Crear", "Eliminar"};
-                _cells.SetValidationList(_cells.GetCell(7, TitleRow04 + 1), actionsList, ValidationSheetName, 12, false);
+                _cells.SetValidationList(_cells.GetCell(7, TitleRow06 + 1), actionsList, ValidationSheetName, 12, false);
 
-                _cells.GetCell(ResultColumn04, TitleRow04).Value = "RESULTADO";
-                _cells.GetCell(ResultColumn04, TitleRow04).Style = StyleConstants.TitleResult;
-				_cells.GetRange(1, TitleRow04 + 1, ResultColumn04, TitleRow04 + 1).NumberFormat = NumberFormatConstants.Text;
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow04, ResultColumn04, TitleRow04 + 1), TableName04);
+                _cells.GetCell(ResultColumn06, TitleRow06).Value = "RESULTADO";
+                _cells.GetCell(ResultColumn06, TitleRow06).Style = StyleConstants.TitleResult;
+				_cells.GetRange(1, TitleRow06 + 1, ResultColumn06, TitleRow06 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow06, ResultColumn06, TitleRow06 + 1), TableName06);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-                //CONSTRUYO LA HOJA 5 - PROGRESS WO
-                _excelApp.ActiveWorkbook.Sheets[5].Select(Type.Missing);
-                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName05;
+                #endregion
+
+                #region CONSTRUYO LA HOJA 7 - PROGRESS WO
+                _excelApp.ActiveWorkbook.Sheets[7].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName07;
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -1172,19 +1364,20 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B3"), ValidationSheetName, 1);
 
                 //GENERAL
-                _cells.GetRange(1, TitleRow05, ResultColumn05 - 1, TitleRow05).Style = StyleConstants.TitleOptional;
-                _cells.GetCell(1, TitleRow05).Value = "WORK_ORDER";
-                _cells.GetCell(2, TitleRow05).Value = "UNITS OF WORK";
-                _cells.GetCell(3, TitleRow05).Value = "UNITS REQUIRED";
-                _cells.GetCell(4, TitleRow05).Value = "PERCENT COMPLETED";
-                _cells.GetCell(5, TitleRow05).Value = "UNITS COMPLETED";
+                _cells.GetRange(1, TitleRow07, ResultColumn07 - 1, TitleRow07).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(1, TitleRow07).Value = "WORK_ORDER";
+                _cells.GetCell(2, TitleRow07).Value = "UNITS OF WORK";
+                _cells.GetCell(3, TitleRow07).Value = "UNITS REQUIRED";
+                _cells.GetCell(4, TitleRow07).Value = "PERCENT COMPLETED";
+                _cells.GetCell(5, TitleRow07).Value = "UNITS COMPLETED";
 
-                _cells.GetCell(ResultColumn05, TitleRow05).Value = "RESULTADO";
-                _cells.GetCell(ResultColumn05, TitleRow05).Style = StyleConstants.TitleResult;
-                _cells.GetRange(1, TitleRow05 + 1, ResultColumn05, TitleRow05 + 1).NumberFormat = NumberFormatConstants.Text;
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow05, ResultColumn05, TitleRow05 + 1), TableName05);
+                _cells.GetCell(ResultColumn07, TitleRow07).Value = "RESULTADO";
+                _cells.GetCell(ResultColumn07, TitleRow07).Style = StyleConstants.TitleResult;
+                _cells.GetRange(1, TitleRow07 + 1, ResultColumn07, TitleRow07 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow07, ResultColumn07, TitleRow07 + 1), TableName07);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-                //
+                #endregion
+
                 _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
             }
             catch (Exception ex)
@@ -1197,6 +1390,7 @@ namespace EllipseWorkOrderExcelAddIn
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }
+
         private void FormatDetailed()
         {
             try
@@ -3905,13 +4099,117 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_cells != null) _cells.SetCursorDefault();
             }
-
-            
         }
 
-        private void button1_Click(object sender, RibbonControlEventArgs e)
+        private void btnReviewTasks_Click(object sender, RibbonControlEventArgs e)
         {
-            
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                _thread = new Thread(ReviewWoJobTasks);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+        private void ReviewWoJobTasks()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _cells.ClearTableRange(TableName02);
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
+
+            var woCells = new ExcelStyleCells(_excelApp, SheetName01);
+            woCells.SetAlwaysActiveSheet(false);
+
+            var j = TitleRow01 + 1;//itera según cada estándar
+            var i = TitleRow02 + 1;//itera la celda para cada tarea
+
+            while (!string.IsNullOrEmpty("" + woCells.GetCell(3, j).Value))
+            {
+                try
+                {
+                    var districtCode = _cells.GetEmptyIfNull(woCells.GetCell(1, j).Value2);
+                    var workGroup = _cells.GetEmptyIfNull(woCells.GetCell(2, j).Value2);
+                    var workOrder = _cells.GetEmptyIfNull(woCells.GetCell(3, j).Value2);
+
+                    var taskList = WorkOrderActions.FetchWorkOrderTask(_eFunctions, districtCode, workGroup, workOrder);
+
+
+                    foreach (var task in taskList)
+                    {
+                        //Para resetear el estilo
+                        _cells.GetRange(1, i, ResultColumn02, i).Style = StyleConstants.Normal;
+                        //GENERAL
+                        _cells.GetCell(1, i).Value = "" + task.DistrictCode;
+                        _cells.GetCell(2, i).Value = "" + task.WorkGroup;
+                        _cells.GetCell(3, i).Value = "'" + task.WorkOrder;
+                        _cells.GetCell(4, i).Value = "" + task.WorkOrderDescription;
+                        //ACTION
+                        _cells.GetCell(5, i).Value = "M";
+                        //GENERAL
+                        _cells.GetCell(6, i).Value = "'" + task.WoTaskNo;
+                        _cells.GetCell(7, i).Value = "" + task.WoTaskDesc;
+                        _cells.GetCell(8, i).Value = "'" + task.JobDescCode;
+                        _cells.GetCell(9, i).Value = "'" + task.SafetyInstr;
+                        _cells.GetCell(10, i).Value = "'" + task.CompleteInstr;
+                        _cells.GetCell(11, i).Value = "'" + task.ComplTextCode;
+                        //PLANNING
+                        _cells.GetCell(12, i).Value = "" + task.AssignPerson;
+                        _cells.GetCell(13, i).Value = "'" + task.EstimatedMachHrs;
+
+                        //RECURSOS
+                        _cells.GetCell(14, i).Value = "" + task.EstimatedDurationsHrs;
+                        _cells.GetCell(15, i).Value = "" + task.NoLabor;
+                        _cells.GetCell(16, i).Value = "" + task.NoMaterial;
+                        //APL
+                        _cells.GetCell(17, i).Value = "'" + task.AplEquipmentGrpId;
+                        _cells.GetCell(18, i).Value = "'" + task.AplType;
+                        _cells.GetCell(19, i).Value = "'" + task.AplCompCode;
+                        _cells.GetCell(20, i).Value = "'" + task.AplCompModCode;
+                        _cells.GetCell(21, i).Value = "'" + task.AplSeqNo;
+                        _cells.GetRange(17, i, 21, i).Style = !string.IsNullOrWhiteSpace(task.AplType)
+                            ? StyleConstants.Error : StyleConstants.Normal;
+
+                        var stdTextId = "WT" + task.DistrictCode + task.WorkOrder + task.WoTaskNo;
+                        _cells.GetCell(22, i).Value = StdText.GetText(urlService, stOpContext, stdTextId);
+                        _cells.GetCell(22, i).WrapText = false;
+                        _cells.GetCell(3, i).Select();
+                        i++;//aumenta tarea
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(1, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(1, j).Value2);
+                    _cells.GetCell(2, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(2, j).Value2);
+                    _cells.GetCell(3, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(3, j).Value2);
+                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn02, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:ReviewWoTasks()", ex.Message);
+                    i++;
+                }
+                finally
+                {
+                    j++;//aumenta wo
+                    _eFunctions.CloseConnection();
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            _cells.SetCursorDefault();
         }
     }
 

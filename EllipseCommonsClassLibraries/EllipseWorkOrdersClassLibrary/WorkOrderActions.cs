@@ -16,6 +16,20 @@ namespace EllipseWorkOrdersClassLibrary
     [SuppressMessage("ReSharper", "ForCanBeConvertedToForeach")]
     public static class WorkOrderActions
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ef"></param>
+        /// <param name="district"></param>
+        /// <param name="primakeryKey"></param>
+        /// <param name="primaryValue"></param>
+        /// <param name="secondarykey"></param>
+        /// <param name="secondaryValue"></param>
+        /// <param name="dateKey"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="woStatus"></param>
+        /// <returns></returns>
         public static List<WorkOrder> FetchWorkOrder(EllipseFunctions ef, string district, int primakeryKey, string primaryValue, int secondarykey, string secondaryValue, int dateKey, string startDate, string endDate, string woStatus)
         {
             var sqlQuery = Queries.GetFetchWoQuery(ef.dbReference, ef.dbLink, district, primakeryKey, primaryValue, secondarykey, secondaryValue, dateKey, startDate, endDate, woStatus);
@@ -112,11 +126,26 @@ namespace EllipseWorkOrdersClassLibrary
 
             return list;
         }
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ef"></param>
+        /// <param name="district"></param>
+        /// <param name="workOrder"></param>
+        /// <returns></returns>
         public static WorkOrder FetchWorkOrder(EllipseFunctions ef, string district, WorkOrderDTO workOrder)
         {
             return FetchWorkOrder(ef, district, workOrder.prefix + workOrder.no);
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ef"></param>
+        /// <param name="district"></param>
+        /// <param name="workOrder"></param>
+        /// <returns></returns>
         public static WorkOrder FetchWorkOrder(EllipseFunctions ef, string district, string workOrder)
         {
             long number1;
@@ -212,6 +241,15 @@ namespace EllipseWorkOrdersClassLibrary
             order.SetRelatedWoDto(drWorkOrder["RELATED_WO"].ToString().Trim());
             return order;
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="urlService"></param>
+        /// <param name="opContext"></param>
+        /// <param name="district"></param>
+        /// <param name="workOrder"></param>
+        /// <returns></returns>
         public static ExtendedDescription GetWOrkOrderExtendedDescription(string urlService, OperationContext opContext, string district, string workOrder)
         {
             var description = new ExtendedDescription();
@@ -223,12 +261,31 @@ namespace EllipseWorkOrdersClassLibrary
             description.Body = StdText.GetText(urlService, stdTextOpContext, stdTextId);
             return description;
         }
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="urlService"></param>
+        /// <param name="opContext"></param>
+        /// <param name="district"></param>
+        /// <param name="workOrder"></param>
+        /// <param name="description"></param>
+        /// <returns></returns>
         public static ReplyMessage UpdateWorkOrderExtendedDescription(string urlService, OperationContext opContext, string district, string workOrder, ExtendedDescription description)
         {
             return UpdateWorkOrderExtendedDescription(urlService, opContext, district, workOrder, description.Header, description.Body);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="urlService"></param>
+        /// <param name="opContext"></param>
+        /// <param name="district"></param>
+        /// <param name="workOrder"></param>
+        /// <param name="headerText"></param>
+        /// <param name="bodyText"></param>
+        /// <returns></returns>
         public static ReplyMessage UpdateWorkOrderExtendedDescription(string urlService, OperationContext opContext, string district, string workOrder, string headerText, string bodyText)
         {
             var reply = new ReplyMessage();
@@ -500,7 +557,15 @@ namespace EllipseWorkOrdersClassLibrary
             //
             return replyWo;
         }
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="urlService"></param>
+        /// <param name="opContext"></param>
+        /// <param name="district"></param>
+        /// <param name="workOrder"></param>
+        /// <param name="textToAppend"></param>
         public static void AppendTextToCloseComment(string urlService, OperationContext opContext, string district, string workOrder, string textToAppend)
         {
             var stdTextId = "CW" + district + workOrder;
@@ -510,6 +575,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             StdText.SetText(urlService, stdTextCopc, stdTextId, woCompleteComment + "\n" + textToAppend);
         }
+        
         /// <summary>
         /// 
         /// </summary>
@@ -560,6 +626,15 @@ namespace EllipseWorkOrdersClassLibrary
             return replyWo;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="urlService"></param>
+        /// <param name="districtCode"></param>
+        /// <param name="position"></param>
+        /// <param name="returnWarnings"></param>
+        /// <param name="wo"></param>
+        /// <returns></returns>
         public static string GetWorkOrderCloseText(string urlService, string districtCode, string position, bool returnWarnings, WorkOrderDTO wo)
         {
             //comentario
@@ -577,6 +652,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             StdText.SetText(urlService, stdTextCopc, stdTextId, woCloseText);
         }
+        
         /// <summary>
         /// Crea un nuevo registro de duración para una orden de trabajo especificada
         /// </summary>
@@ -785,6 +861,15 @@ namespace EllipseWorkOrdersClassLibrary
             return durationList.ToArray();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ef"></param>
+        /// <param name="urlService"></param>
+        /// <param name="opContext"></param>
+        /// <param name="district"></param>
+        /// <param name="workOrder"></param>
+        /// <returns></returns>
         public static WorkOrderReferenceCodes GetWorkOrderReferenceCodes(EllipseFunctions ef, string urlService, OperationContext opContext, string district, string workOrder)
         {
 
@@ -869,6 +954,16 @@ namespace EllipseWorkOrdersClassLibrary
             return woRefCodes;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="eFunctions"></param>
+        /// <param name="urlService"></param>
+        /// <param name="opContext"></param>
+        /// <param name="district"></param>
+        /// <param name="workOrder"></param>
+        /// <param name="woRefCodes"></param>
+        /// <returns></returns>
         public static ReplyMessage UpdateWorkOrderReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string district, string workOrder, WorkOrderReferenceCodes woRefCodes)
         {
             var reply = new ReplyMessage();
@@ -956,7 +1051,18 @@ namespace EllipseWorkOrdersClassLibrary
             reply.Errors = error.ToArray();
             return reply;
         }
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="urlService"></param>
+        /// <param name="opContext"></param>
+        /// <param name="districtCode"></param>
+        /// <param name="workOrder"></param>
+        /// <param name="percentComplete"></param>
+        /// <param name="unitsComplete"></param>
+        /// <param name="unitsRequired"></param>
+        /// <returns></returns>
         public static WorkOrderServiceRecordWorkProgressReplyDTO RecordWorkProgress(string urlService, OperationContext opContext, string districtCode, WorkOrderDTO workOrder, string percentComplete, string unitsComplete, string unitsRequired = null)
         {
             var proxyWo = new WorkOrderService.WorkOrderService();//ejecuta las acciones del servicio
@@ -979,6 +1085,15 @@ namespace EllipseWorkOrdersClassLibrary
             //
             return replyWo;
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="urlService"></param>
+        /// <param name="opContext"></param>
+        /// <param name="districtCode"></param>
+        /// <param name="workOrder"></param>
+        /// <returns></returns>
         public static WorkOrderServiceRecordWorkProgressReplyDTO CompleteWorkProgress(string urlService, OperationContext opContext, string districtCode, WorkOrderDTO workOrder)
         {
             return RecordWorkProgress(urlService, opContext, districtCode, workOrder, "100", null);
@@ -1001,6 +1116,7 @@ namespace EllipseWorkOrdersClassLibrary
             workOrderDto.no = no.Substring(2, no.Length - 2);
             return workOrderDto;
         }
+        
         /// <summary>
         /// Obtiene un nuevo objeto de tipo WorkOrderDTO a partir del número de la orden
         /// </summary>
@@ -1039,7 +1155,60 @@ namespace EllipseWorkOrdersClassLibrary
         {
             return ef.GetItemCodes("WS");
         }
-        public class Queries
+
+        public static List<WorkOrderTask> FetchWorkOrderTask(EllipseFunctions ef, string districtCode, string workGroup, string workOrder)
+        {
+            var stdDataReader =
+                ef.GetQueryResult(Queries.GetFetchWorkOrderTasksQuery(ef.dbReference, ef.dbLink, districtCode, workOrder));
+
+            var list = new List<WorkOrderTask>();
+
+            if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows)
+            {
+                ef.CloseConnection();
+                return list;
+            }
+            while (stdDataReader.Read())
+            {
+
+                // ReSharper disable once UseObjectOrCollectionInitializer
+                var task = new WorkOrderTask();
+
+                task.DistrictCode = "" + stdDataReader["DSTRCT_CODE"].ToString().Trim();
+                task.WorkGroup = "" + stdDataReader["WORK_GROUP"].ToString().Trim();
+                task.WorkOrder = "" + stdDataReader["WORK_ORDER"].ToString().Trim();
+                task.WorkOrderDescription = "" + stdDataReader["WO_DESC"].ToString().Trim();
+
+                task.WoTaskNo = "" + stdDataReader["WO_TASK_NO"].ToString().Trim();
+                task.WoTaskDesc = "" + stdDataReader["WO_TASK_DESC"].ToString().Trim();
+                task.JobDescCode = "" + stdDataReader["JOB_DESC_CODE"].ToString().Trim();
+                task.SafetyInstr = "" + stdDataReader["SAFETY_INSTR"].ToString().Trim();
+                task.CompleteInstr = "" + stdDataReader["COMPLETE_INSTR"].ToString().Trim();
+                task.ComplTextCode = "" + stdDataReader["COMPL_TEXT_CDE"].ToString().Trim();
+
+                task.AssignPerson = "" + stdDataReader["ASSIGN_PERSON"].ToString().Trim();
+                task.EstimatedMachHrs = "" + stdDataReader["EST_MACH_HRS"].ToString().Trim();
+
+                task.EstimatedDurationsHrs = "" + stdDataReader["EST_DUR_HRS"].ToString().Trim();
+                task.NoLabor = "" + stdDataReader["NO_REC_LABOR"].ToString().Trim();
+                task.NoMaterial = "" + stdDataReader["NO_REC_MATERIAL"].ToString().Trim();
+
+                task.AplEquipmentGrpId = "" + stdDataReader["EQUIP_GRP_ID"].ToString().Trim();
+                task.AplType = "" + stdDataReader["APL_TYPE"].ToString().Trim();
+                task.AplCompCode = "" + stdDataReader["COMP_CODE"].ToString().Trim();
+                task.AplCompModCode = "" + stdDataReader["COMP_MOD_CODE"].ToString().Trim();
+                task.AplSeqNo = "" + stdDataReader["APL_SEQ_NO"].ToString().Trim();
+
+                list.Add(task);
+            }
+            ef.CloseConnection();
+            return list;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static class Queries
         {
             /// <summary>
             /// Obtiene el Query para la consulta de una o más órdenes de trabajo
@@ -1271,7 +1440,63 @@ namespace EllipseWorkOrdersClassLibrary
                 return query;
             }
 
+            public static string GetFetchWorkOrderTasksQuery(string dbReference, string dbLink, string districtCode, string workOrder)
+            {
+                var query = "" +
+                            "SELECT " +
+                            "	WO.DSTRCT_CODE, " +
+                            "	WO.WORK_GROUP, " +
+                            "	WO.WORK_ORDER, " +
+                            "	WO.WO_DESC, " +
+                            "	WT.WO_TASK_NO, " +
+                            "	WT.WO_TASK_DESC, " +
+                            "	WT.JOB_DESC_CODE, " +
+                            "	WT.SAFETY_INSTR, " +
+                            "	WT.COMPLETE_INSTR, " +
+                            "	WT.COMPL_TEXT_CDE, " +
+                            "	WT.ASSIGN_PERSON, " +
+                            "	WT.EST_MACH_HRS, " +
+                            "	WT.EQUIP_GRP_ID, " +
+                            "	WT.APL_TYPE, " +
+                            "	WT.COMP_CODE, " +
+                            "	WT.COMP_MOD_CODE, " +
+                            "	WT.APL_SEQ_NO, " +
+                            "	( " +
+                            "		SELECT " +
+                            "			COUNT(*) LABOR " +
+                            "		FROM " +
+                            "			ELLIPSE.MSF623 TSK " +
+                            "			INNER JOIN ELLIPSE.MSF735 RS " +
+                            "			ON RS.KEY_735_ID     = TSK.DSTRCT_CODE || TSK.WORK_ORDER || TSK.WO_TASK_NO " +
+                            "			   AND RS.REC_735_TYPE   = 'WT' " +
+                            "		WHERE " +
+                            "			TSK.WORK_ORDER = WO.WORK_ORDER " +
+                            "			AND   TSK.WO_TASK_NO = WT.WO_TASK_NO " +
+                            "	)NO_REC_LABOR, " +
+                            "	( " +
+                            "		SELECT " +
+                            "			COUNT(*) MATER " +
+                            "		FROM " +
+                            "			ELLIPSE.MSF623 TSK " +
+                            "			INNER JOIN ELLIPSE.MSF734 RS " +
+                            "			ON RS.CLASS_KEY    = TSK.DSTRCT_CODE || TSK.WORK_ORDER || TSK.WO_TASK_NO " +
+                            "			   AND RS.CLASS_TYPE   = 'WT' " +
+                            "		WHERE " +
+                            "			TSK.WORK_ORDER = WO.WORK_ORDER " +
+                            "			AND   TSK.WO_TASK_NO = WT.WO_TASK_NO " +
+                            "	)NO_REC_MATERIAL " +
+                            "FROM " +
+                            "	" + dbReference + ".MSF620" + dbLink + " WO " +
+                            "	INNER JOIN " + dbReference + ".MSF623" + dbLink + " WT " +
+                            "	ON WO.WORK_ORDER    = WT.WORK_ORDER " +
+                            "	   AND WO.DSTRCT_CODE   = WT.DSTRCT_CODE " +
+                            "	   AND WO.WORK_ORDER    = '" + workOrder + "'" +
+                            "	   AND WO.DSTRCT_CODE   = '" + districtCode + "'";
 
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+
+                return query;
+            }
         }
     }
 }

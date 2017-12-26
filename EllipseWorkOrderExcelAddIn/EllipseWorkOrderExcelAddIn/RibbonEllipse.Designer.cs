@@ -54,6 +54,10 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnCreate = this.Factory.CreateRibbonButton();
             this.btnUpdate = this.Factory.CreateRibbonButton();
             this.btnCleanWorkOrderSheet = this.Factory.CreateRibbonButton();
+            this.menuTasks = this.Factory.CreateRibbonMenu();
+            this.btnReviewTasks = this.Factory.CreateRibbonButton();
+            this.btnExecuteTaskActions = this.Factory.CreateRibbonButton();
+            this.btnCleanTasksTable = this.Factory.CreateRibbonButton();
             this.menuComplete = this.Factory.CreateRibbonMenu();
             this.btnClose = this.Factory.CreateRibbonButton();
             this.btnReOpen = this.Factory.CreateRibbonButton();
@@ -85,6 +89,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -158,6 +163,7 @@ namespace EllipseWorkOrderExcelAddIn
             // menuActions
             // 
             this.menuActions.Items.Add(this.menuGeneral);
+            this.menuActions.Items.Add(this.menuTasks);
             this.menuActions.Items.Add(this.menuComplete);
             this.menuActions.Items.Add(this.menuDurations);
             this.menuActions.Items.Add(this.menuWorkProgress);
@@ -213,6 +219,34 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnCleanWorkOrderSheet.Name = "btnCleanWorkOrderSheet";
             this.btnCleanWorkOrderSheet.ShowImage = true;
             this.btnCleanWorkOrderSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanWorkOrderSheet_Click);
+            // 
+            // menuTasks
+            // 
+            this.menuTasks.Items.Add(this.btnReviewTasks);
+            this.menuTasks.Items.Add(this.btnExecuteTaskActions);
+            this.menuTasks.Items.Add(this.btnCleanTasksTable);
+            this.menuTasks.Label = "&Tareas";
+            this.menuTasks.Name = "menuTasks";
+            this.menuTasks.ShowImage = true;
+            // 
+            // btnReviewTasks
+            // 
+            this.btnReviewTasks.Label = "&Consultar Tareas";
+            this.btnReviewTasks.Name = "btnReviewTasks";
+            this.btnReviewTasks.ShowImage = true;
+            this.btnReviewTasks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewTasks_Click);
+            // 
+            // btnExecuteTaskActions
+            // 
+            this.btnExecuteTaskActions.Label = "&Ejecutar Acciones de Tareas";
+            this.btnExecuteTaskActions.Name = "btnExecuteTaskActions";
+            this.btnExecuteTaskActions.ShowImage = true;
+            // 
+            // btnCleanTasksTable
+            // 
+            this.btnCleanTasksTable.Label = "&Limpiar Tabla de Tareas";
+            this.btnCleanTasksTable.Name = "btnCleanTasksTable";
+            this.btnCleanTasksTable.ShowImage = true;
             // 
             // menuComplete
             // 
@@ -435,6 +469,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.grpWorkOrder.PerformLayout();
             this.box2.ResumeLayout(false);
             this.box2.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
@@ -485,6 +520,10 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnReviewCriticalControls;
         internal RibbonButton btnReReviewCritialControls;
         internal RibbonButton btnExportCriticalControls;
+        internal RibbonMenu menuTasks;
+        internal RibbonButton btnReviewTasks;
+        internal RibbonButton btnExecuteTaskActions;
+        internal RibbonButton btnCleanTasksTable;
     }
 
     partial class ThisRibbonCollection

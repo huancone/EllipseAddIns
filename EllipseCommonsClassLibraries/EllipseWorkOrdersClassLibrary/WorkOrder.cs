@@ -19,7 +19,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string compModCode;
         public string workOrderType;
         public string maintenanceType;
-        
+
         public string workOrderStatusU;
         public string raisedDate;
         public string raisedTime;
@@ -61,7 +61,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string jobCode8;
         public string jobCode9;
         public string jobCode10;
-        public string jobCodeFlag;//informativo propio de la clase para indicar si tiene o no tiene al menos un jobCode
+        public string jobCodeFlag; //informativo propio de la clase para indicar si tiene o no tiene al menos un jobCode
         public string completedCode;
         public string completedBy;
         public string completeTextFlag;
@@ -69,7 +69,7 @@ namespace EllipseWorkOrdersClassLibrary
         //Location
         public string location;
         public string locationFr;
-        public string noticeLocn;  
+        public string noticeLocn;
         //Valores Calculados, Estimados y Actual
         //Se entiende calculado CALC como un valor estimado calculado. Se entiende estimado EST como un valor estimado manual. Se entiende actual ACT como el valor actual real
         //El valor CALC y EST para Horas de Duración es el mismo campo EST y es independiente del flag
@@ -103,6 +103,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string finalCosts;
 
         private ExtendedDescription _extendedDescription;
+
         /// <summary>
         /// Obtiene los campos de WorkOrderDTO para las acciones requeridas por el servicio
         /// </summary>
@@ -117,16 +118,19 @@ namespace EllipseWorkOrdersClassLibrary
             workOrderDTO = WorkOrderActions.GetNewWorkOrderDto(prefix, no);
             return workOrderDTO;
         }
+
         public WorkOrderDTO SetWorkOrderDto(string no)
         {
             workOrderDTO = WorkOrderActions.GetNewWorkOrderDto(no);
             return workOrderDTO;
         }
+
         public WorkOrderDTO SetWorkOrderDto(WorkOrderDTO wo)
         {
             workOrderDTO = wo;
             return workOrderDTO;
         }
+
         public WorkOrderDTO GetRelatedWoDto()
         {
             return relatedWoDTO ?? (relatedWoDTO = new WorkOrderDTO());
@@ -137,6 +141,7 @@ namespace EllipseWorkOrdersClassLibrary
             relatedWoDTO = WorkOrderActions.GetNewWorkOrderDto(no);
             return relatedWoDTO;
         }
+
         public WorkOrderDTO SetRelatedWoDto(string prefix, string no)
         {
             relatedWoDTO = WorkOrderActions.GetNewWorkOrderDto(prefix, no);
@@ -145,7 +150,7 @@ namespace EllipseWorkOrdersClassLibrary
 
         public void SetStatus(string statusName)
         {
-            if(!string.IsNullOrEmpty(WoStatusList.GetStatusCode(statusName)))
+            if (!string.IsNullOrEmpty(WoStatusList.GetStatusCode(statusName)))
                 workOrderStatusM = WoStatusList.GetStatusCode(statusName);
         }
 
@@ -153,7 +158,8 @@ namespace EllipseWorkOrdersClassLibrary
         {
             if (_extendedDescription != null) return _extendedDescription;
 
-            _extendedDescription = WorkOrderActions.GetWOrkOrderExtendedDescription(urlService, opContext, districtCode, GetWorkOrderDto().prefix + GetWorkOrderDto().no);
+            _extendedDescription = WorkOrderActions.GetWOrkOrderExtendedDescription(urlService, opContext, districtCode,
+                GetWorkOrderDto().prefix + GetWorkOrderDto().no);
 
             return _extendedDescription;
         }
@@ -166,6 +172,7 @@ namespace EllipseWorkOrdersClassLibrary
             _extendedDescription.Body = body;
         }
     }
+
     public class ExtendedDescription
     {
         public string Header;
@@ -220,6 +227,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             return duration;
         }
+
         public void SetDurationFromDto(DurationsDTO duration)
         {
             jobDurationsCode = duration.jobDurationsCode;
@@ -286,28 +294,57 @@ namespace EllipseWorkOrdersClassLibrary
 
         public static List<string> GetStatusNames(bool uncompletedCustom = false)
         {
-            // ReSharper disable once ConvertIfStatementToReturnStatement
-            if(uncompletedCustom)
-                return new List<string> { Open, Authorized, Closed, Cancelled, InWork, Estimated, Uncompleted};
+            if (uncompletedCustom)
+                return new List<string> {Open, Authorized, Closed, Cancelled, InWork, Estimated, Uncompleted};
             return new List<string> {Open, Authorized, Closed, Cancelled, InWork, Estimated};
         }
+
         public static List<string> GetStatusCodes()
         {
             var list = new List<string> {OpenCode, AuthorizedCode, ClosedCode, CancelledCode, InWorkCode, EstimatedCode};
             return list;
         }
+
         public static List<string> GetUncompletedStatusNames()
         {
             var list = new List<string> {Open, Authorized, InWork, Estimated};
             return list;
         }
+
         public static List<string> GetUncompletedStatusCodes()
         {
             var list = new List<string> {OpenCode, AuthorizedCode, InWorkCode, EstimatedCode};
             return list;
         }
 
-        
+
     }
-    
+
+    public class WorkOrderTask
+    {
+        public string DistrictCode;
+        public string WorkGroup;
+        public string WorkOrder;
+        public string WoTaskNo;
+        public string WoTaskDesc;
+        public string JobDescCode;
+        public string SafetyInstr;
+        public string CompleteInstr;
+        public string ComplTextCode;
+        public string AssignPerson;
+        public string EstMachHrs;
+        public string EquipGrpId;
+        public string AplType;
+        public string CompCode;
+        public string CompModCode;
+        public string AplSeqNo;
+        public string WorkOrderDescription;
+        public string EstimatedMachHrs;
+        public string EstimatedDurationsHrs;
+        public string NoLabor;
+        public string NoMaterial;
+        public string AplEquipmentGrpId;
+        public string AplCompCode;
+        public string AplCompModCode;
+    }
 }

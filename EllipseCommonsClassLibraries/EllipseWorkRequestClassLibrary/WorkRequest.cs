@@ -134,8 +134,14 @@ namespace EllipseWorkRequestClassLibrary
         public string DuracionTarea;//007_001
         public string EquipoDetenido;//008_001
         public string WorkOrderOrigen;//009_001
+        public string WorkOrderReparacion;//017_001
         public string RaisedReprogramada;//010_001
         public string CambioHora;//011_001
+        public string FechaPlanInicial;//012_001
+        public string FechaPlanFinal;//013_001
+        public string FechaEjecucionInicial;//014_001
+        public string FechaEjecucionFinal;//015_001
+        public string CalificacionEncuesta;//016_001
     }
 
     public static class WorkRequestActions
@@ -968,207 +974,7 @@ namespace EllipseWorkRequestClassLibrary
             //Corresponde a la misma acción de modificar, excepto que se garantiza que todos los RefCodes sean actualizados con la nueva información
             return ModifyReferenceCodes(eFunctions, urlService, opContext, requestId, wrRefCodes);
         }
-        //public static ReplyMessage ModifyReferenceCodes2(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId, WorkRequestReferenceCodes wrRefCodes)
-        //{
-        //    long defaultLong;
-        //    if (long.TryParse(requestId, out defaultLong))
-        //        requestId = requestId.PadLeft(12, '0');
-
-        //    var refCodeOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
-        //    var stdTextOpContext = StdText.GetCustomOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
-        //    var reply = new ReplyMessage();
-        //    var error = new List<string>();
-        //    if (wrRefCodes.StockCode1 != null)
-        //    {
-        //        try
-        //        {
-        //            var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9001", wrRefCodes.StockCode1);
-        //            var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
-        //                refItem);
-        //            var stdTextId = replyRefCode.stdTxtKey;
-        //            if (!string.IsNullOrWhiteSpace(stdTextId))
-        //                StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.StockCode1Qty);
-        //            else
-        //                throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar SC1 " + ex.Message);
-        //        }
-        //    }
-        //    if (wrRefCodes.StockCode2 != null)
-        //    {
-        //        try
-        //        {
-        //            var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9002", wrRefCodes.StockCode2);
-        //            var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
-        //                refItem);
-        //            var stdTextId = replyRefCode.stdTxtKey;
-        //            if (!string.IsNullOrWhiteSpace(stdTextId))
-        //                StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.StockCode2Qty);
-        //            else
-        //                throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar SC2 " + ex.Message);
-        //        }
-        //    }
-        //    if (wrRefCodes.StockCode3 != null)
-        //    {
-        //        try
-        //        {
-        //            var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9003", wrRefCodes.StockCode3);
-        //            var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
-        //                refItem);
-        //            var stdTextId = replyRefCode.stdTxtKey;
-        //            if (!string.IsNullOrWhiteSpace(stdTextId))
-        //                StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.StockCode3Qty);
-        //            else
-        //                throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar SC3 " + ex.Message);
-        //        }
-        //    }
-        //    if (wrRefCodes.StockCode4 != null)
-        //    {
-        //        try
-        //        { 
-        //        var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9004", wrRefCodes.StockCode4);
-        //        var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext, refItem);
-        //        var stdTextId = replyRefCode.stdTxtKey;
-        //        if (!string.IsNullOrWhiteSpace(stdTextId))
-        //            StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.StockCode4Qty);
-        //        else
-        //            throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar SC4 " + ex.Message);
-        //        }
-        //    }
-        //    if (wrRefCodes.StockCode5 != null)
-        //    {
-        //        try
-        //        { 
-        //        var refItem = new ReferenceCodeItem("WRQ", requestId, "001", "9005", wrRefCodes.StockCode5);
-        //        var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext, refItem);
-        //        var stdTextId = replyRefCode.stdTxtKey;
-        //        if (!string.IsNullOrWhiteSpace(stdTextId))
-        //            StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.StockCode5Qty);
-        //        else
-        //            throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar SC5 " + ex.Message);
-        //        }
-        //    }
-
-        //    if (wrRefCodes.HorasHombre != null)
-        //    {
-        //        try
-        //        { 
-        //        var refItem = new ReferenceCodeItem("WRQ", requestId, "006", "001", wrRefCodes.HorasHombre);
-        //        var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext, refItem);
-        //        var stdTextId = replyRefCode.stdTxtKey;
-        //        if (!string.IsNullOrWhiteSpace(stdTextId))
-        //            StdText.SetText(urlService, stdTextOpContext, stdTextId, wrRefCodes.HorasQty);
-        //        else
-        //            throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar HH " + ex.Message);
-        //        }
-        //    }
-
-        //    if (wrRefCodes.DuracionTarea != null)
-        //    {
-        //        try
-        //        {
-        //            var refItem = new ReferenceCodeItem("WRQ", requestId, "007", "001", wrRefCodes.DuracionTarea);
-        //            var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
-        //                refItem);
-        //            var stdTextId = replyRefCode.stdTxtKey;
-        //            if (string.IsNullOrWhiteSpace(stdTextId))
-        //                throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar Duración Tarea " + ex.Message);
-        //        }
-        //    }
-        //    if (wrRefCodes.EquipoDetenido != null)
-        //    {
-        //        try
-        //        {
-        //            var refItem = new ReferenceCodeItem("WRQ", requestId, "008", "001", wrRefCodes.EquipoDetenido);
-        //            var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
-        //                refItem);
-        //            var stdTextId = replyRefCode.stdTxtKey;
-        //            if (string.IsNullOrWhiteSpace(stdTextId))
-        //                throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar Equipo Detenido " + ex.Message);
-        //        }
-        //    }
-        //    if (wrRefCodes.WorkOrderOrigen != null)
-        //    {
-        //        try
-        //        {
-        //            var refItem = new ReferenceCodeItem("WRQ", requestId, "009", "001", wrRefCodes.WorkOrderOrigen);
-        //            var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
-        //                refItem);
-        //            var stdTextId = replyRefCode.stdTxtKey;
-        //            if (string.IsNullOrWhiteSpace(stdTextId))
-        //                throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar OT Origen " + ex.Message);
-        //        }
-        //    }
-        //    if (wrRefCodes.RaisedReprogramada != null)
-        //    {
-        //        try
-        //        {
-        //            var refItem = new ReferenceCodeItem("WRQ", requestId, "010", "001", wrRefCodes.RaisedReprogramada);
-        //            var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
-        //                refItem);
-        //            var stdTextId = replyRefCode.stdTxtKey;
-        //            if (string.IsNullOrWhiteSpace(stdTextId))
-        //                throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar Raised Reprogramada " + ex.Message);
-        //        }
-        //    }
-        //    if (wrRefCodes.CambioHora != null)
-        //    {
-        //        try
-        //        {
-        //            var refItem = new ReferenceCodeItem("WRQ", requestId, "011", "001", wrRefCodes.CambioHora);
-        //            var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext,
-        //                refItem);
-        //            var stdTextId = replyRefCode.stdTxtKey;
-        //            if (string.IsNullOrWhiteSpace(stdTextId))
-        //                throw new Exception(": No se recibió respuesta");
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error.Add("Error al actualizar Cambio Hora " + ex.Message);
-        //        }
-        //    }
-
-        //    reply.Errors = error.ToArray();
-        //    return reply;
-        //}
+        
         public static ReplyMessage ModifyReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId, WorkRequestReferenceCodes wrRefCodes)
         {
             long defaultLong;
@@ -1202,15 +1008,27 @@ namespace EllipseWorkRequestClassLibrary
 
             var riDuracionTarea = new ReferenceCodeItem(entityType, entityValue, "007", "001", wrRefCodes.DuracionTarea) { ShortName = "Duracion Tarea"};
             var riEquipoDetenido = new ReferenceCodeItem(entityType, entityValue, "008", "001", wrRefCodes.EquipoDetenido) { ShortName = "Equipo Detenido"};
-            var riWorkOrderOrigen = new ReferenceCodeItem(entityType, entityValue, "009", "001", wrRefCodes.WorkOrderOrigen) { ShortName = "OT Origen"};
+            var riWorkOrderOrigen = new ReferenceCodeItem(entityType, entityValue, "009", "001", wrRefCodes.WorkOrderOrigen) { ShortName = "OT de Inspección"};
             var riRaisedReprogramada = new ReferenceCodeItem(entityType, entityValue, "010", "001", wrRefCodes.RaisedReprogramada) { ShortName = "Raised Reprogramada"};
             var riCambioHora = new ReferenceCodeItem(entityType, entityValue, "011", "001", wrRefCodes.CambioHora) { ShortName = "Cambio Hora"};
-            
+            var riFechaPlanInicial = new ReferenceCodeItem(entityType, entityValue, "012", "001", wrRefCodes.FechaPlanInicial) { ShortName = "Fecha Plan Inicial" };
+            var riFechaPlanFinal = new ReferenceCodeItem(entityType, entityValue, "013", "001", wrRefCodes.FechaPlanFinal) { ShortName = "Fecha Plan Final" };
+            var riFechaEjecucionInicial = new ReferenceCodeItem(entityType, entityValue, "014", "001", wrRefCodes.FechaEjecucionInicial) { ShortName = "Fecha Ejecución Inicial" };
+            var riFechaEjecucionFinal = new ReferenceCodeItem(entityType, entityValue, "015", "001", wrRefCodes.FechaEjecucionFinal) { ShortName = "Fecha Ejecución Final" };
+            var riCalificacionEncuesta = new ReferenceCodeItem(entityType, entityValue, "016", "001", wrRefCodes.CalificacionEncuesta) { ShortName = "Calificación Encuesta" };
+            var riWorkOrderReparacion = new ReferenceCodeItem(entityType, entityValue, "017", "001", wrRefCodes.WorkOrderReparacion) { ShortName = "OT de Reparación" };
+
             refItemList.Add(riDuracionTarea);
             refItemList.Add(riEquipoDetenido);
             refItemList.Add(riWorkOrderOrigen);
             refItemList.Add(riRaisedReprogramada);
             refItemList.Add(riCambioHora);
+            refItemList.Add(riFechaPlanInicial);
+            refItemList.Add(riFechaPlanFinal);
+            refItemList.Add(riFechaEjecucionInicial);
+            refItemList.Add(riFechaEjecucionFinal);
+            refItemList.Add(riCalificacionEncuesta);
+            refItemList.Add(riWorkOrderReparacion);
 
             foreach (var item in refItemList)
             {
@@ -1268,6 +1086,14 @@ namespace EllipseWorkRequestClassLibrary
             var item010 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "010", "001");
             var item011 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "011", "001");
 
+            var item012 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "012", "001");
+            var item013 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "013", "001");
+            var item014 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "014", "001");
+            var item015 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "015", "001");
+            
+            var item016 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "016", "001");
+            var item017 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "017", "001");
+
             wrRefCodes.StockCode1 = item001_01.RefCode;
             wrRefCodes.StockCode1Qty = item001_01.StdText;
             wrRefCodes.StockCode2 = item001_02.RefCode;
@@ -1285,6 +1111,13 @@ namespace EllipseWorkRequestClassLibrary
             wrRefCodes.WorkOrderOrigen = item009.StdText;
             wrRefCodes.RaisedReprogramada = item010.StdText;
             wrRefCodes.CambioHora = item011.StdText;
+
+            wrRefCodes.FechaPlanInicial = item012.StdText;
+            wrRefCodes.FechaPlanFinal = item013.StdText;
+            wrRefCodes.FechaEjecucionInicial = item014.StdText;
+            wrRefCodes.FechaEjecucionFinal = item015.StdText;
+            wrRefCodes.CalificacionEncuesta = item016.StdText;
+            wrRefCodes.WorkOrderReparacion = item017.StdText;
 
             newef.CloseConnection();
             return wrRefCodes;

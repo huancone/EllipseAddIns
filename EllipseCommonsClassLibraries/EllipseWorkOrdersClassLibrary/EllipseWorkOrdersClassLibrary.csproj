@@ -31,12 +31,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\..\EllipseDownLostExcelAddIn\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <HintPath>..\..\EllipseWorkOrderExcelAddIn\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.Services.Ellipse.Post.PostExecute, Version=1.0.5.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,6 +58,11 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WorkOrderTaskService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Web References\WorkOrderService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -108,6 +115,124 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceAutoAllocationReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceAutoAllocationReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceCalcDurReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceCalcDurReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceCancelReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceCancelReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceCompleteReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceCompleteReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceCreateReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceCreateReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceCreateResourceEstimatesReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceCreateResourceEstimatesReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceDeferReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceDeferReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceDeleteReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceDeleteReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceDeleteResourceEstimatesReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceDeleteResourceEstimatesReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceMatchReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceMatchReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceModifyReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceModifyReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceModifyResourceEstimatesReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceModifyResourceEstimatesReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServicePrintDailyShiftSchedReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServicePrintDailyShiftSchedReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceReadReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceReadReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceRecordWorkProgressReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceRecordWorkProgressReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceReopenReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceReopenReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceRetrieveAssignedTasksReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceRetrieveContrCostsReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceRetrieveReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceRetrieveResourceEstimatesReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceRetrieveWTUStatusHistoryReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceScheduleReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\EllipseWorkOrdersClassLibrary.WorkOrderTaskService.WorkOrderTaskServiceScheduleReplyDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WorkOrderTaskService\WorkOrderTaskService.wsdl" />
     <None Include="Web References\WorkOrderService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -304,6 +429,21 @@
     </None>
     <None Include="Web References\WorkOrderService\WorkOrderServiceUpdateUserStatusReplyDTO.datasource">
       <DependentUpon>Reference.map</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\WorkOrderTaskService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WorkOrderTaskService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WorkOrderTaskService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WorkOrderTaskService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
