@@ -42,14 +42,15 @@ namespace EllipseMSO010ExcelAddIn
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
             this.btnCreate = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.tabEllipse.SuspendLayout();
             this.grpMSO010.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -61,8 +62,8 @@ namespace EllipseMSO010ExcelAddIn
             // grpMSO010
             // 
             this.grpMSO010.Items.Add(this.box1);
-            this.grpMSO010.Items.Add(this.menuActions);
             this.grpMSO010.Items.Add(this.drpEnviroment);
+            this.grpMSO010.Items.Add(this.menuActions);
             this.grpMSO010.Label = "MSO010 Codes";
             this.grpMSO010.Name = "grpMSO010";
             // 
@@ -84,11 +85,6 @@ namespace EllipseMSO010ExcelAddIn
             this.btnAbout.Label = "?";
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
-            // 
-            // drpEnviroment
-            // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
             // 
             // menuActions
             // 
@@ -119,6 +115,11 @@ namespace EllipseMSO010ExcelAddIn
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // drpEnviroment
+            // 
+            this.drpEnviroment.Label = "Env.";
+            this.drpEnviroment.Name = "drpEnviroment";
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -131,6 +132,7 @@ namespace EllipseMSO010ExcelAddIn
             this.grpMSO010.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

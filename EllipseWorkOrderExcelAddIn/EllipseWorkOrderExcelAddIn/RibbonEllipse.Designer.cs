@@ -86,6 +86,11 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
             this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.menuRequirements = this.Factory.CreateRibbonMenu();
+            this.btnReviewRequirements = this.Factory.CreateRibbonButton();
+            this.btnExecuteRequirements = this.Factory.CreateRibbonButton();
+            this.btnGetAplRequirements = this.Factory.CreateRibbonButton();
+            this.btnCleanRequirementTable = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
@@ -164,6 +169,7 @@ namespace EllipseWorkOrderExcelAddIn
             // 
             this.menuActions.Items.Add(this.menuGeneral);
             this.menuActions.Items.Add(this.menuTasks);
+            this.menuActions.Items.Add(this.menuRequirements);
             this.menuActions.Items.Add(this.menuComplete);
             this.menuActions.Items.Add(this.menuDurations);
             this.menuActions.Items.Add(this.menuWorkProgress);
@@ -241,6 +247,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnExecuteTaskActions.Label = "&Ejecutar Acciones de Tareas";
             this.btnExecuteTaskActions.Name = "btnExecuteTaskActions";
             this.btnExecuteTaskActions.ShowImage = true;
+            this.btnExecuteTaskActions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExecuteTaskActions_Click);
             // 
             // btnCleanTasksTable
             // 
@@ -457,6 +464,41 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // menuRequirements
+            // 
+            this.menuRequirements.Items.Add(this.btnReviewRequirements);
+            this.menuRequirements.Items.Add(this.btnExecuteRequirements);
+            this.menuRequirements.Items.Add(this.btnGetAplRequirements);
+            this.menuRequirements.Items.Add(this.btnCleanRequirementTable);
+            this.menuRequirements.Label = "&Requerimientos";
+            this.menuRequirements.Name = "menuRequirements";
+            this.menuRequirements.ShowImage = true;
+            // 
+            // btnReviewRequirements
+            // 
+            this.btnReviewRequirements.Label = "Consultar Requerimientos";
+            this.btnReviewRequirements.Name = "btnReviewRequirements";
+            this.btnReviewRequirements.ShowImage = true;
+            this.btnReviewRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewRequirements_Click);
+            // 
+            // btnExecuteRequirements
+            // 
+            this.btnExecuteRequirements.Label = "Ejecutar Acciones";
+            this.btnExecuteRequirements.Name = "btnExecuteRequirements";
+            this.btnExecuteRequirements.ShowImage = true;
+            // 
+            // btnGetAplRequirements
+            // 
+            this.btnGetAplRequirements.Label = "Traer Recursos de APLs";
+            this.btnGetAplRequirements.Name = "btnGetAplRequirements";
+            this.btnGetAplRequirements.ShowImage = true;
+            // 
+            // btnCleanRequirementTable
+            // 
+            this.btnCleanRequirementTable.Label = "Limpiar Tabla Requerimientos";
+            this.btnCleanRequirementTable.Name = "btnCleanRequirementTable";
+            this.btnCleanRequirementTable.ShowImage = true;
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -524,6 +566,11 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnReviewTasks;
         internal RibbonButton btnExecuteTaskActions;
         internal RibbonButton btnCleanTasksTable;
+        internal RibbonMenu menuRequirements;
+        internal RibbonButton btnReviewRequirements;
+        internal RibbonButton btnExecuteRequirements;
+        internal RibbonButton btnGetAplRequirements;
+        internal RibbonButton btnCleanRequirementTable;
     }
 
     partial class ThisRibbonCollection

@@ -10,6 +10,9 @@ using System.Diagnostics.CodeAnalysis;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using EllipseReferenceCodesClassLibrary;
 using EllipseStdTextClassLibrary;
+using EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
+using OperationContext = EllipseWorkOrdersClassLibrary.WorkOrderService.OperationContext;
+using WorkOrderDTO = EllipseWorkOrdersClassLibrary.WorkOrderService.WorkOrderDTO;
 
 namespace EllipseWorkOrdersClassLibrary
 {
@@ -126,7 +129,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             return list;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -138,7 +141,7 @@ namespace EllipseWorkOrdersClassLibrary
         {
             return FetchWorkOrder(ef, district, workOrder.prefix + workOrder.no);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -241,7 +244,36 @@ namespace EllipseWorkOrdersClassLibrary
             order.SetRelatedWoDto(drWorkOrder["RELATED_WO"].ToString().Trim());
             return order;
         }
-        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="no"></param>
+        /// <returns></returns>
+        internal static WorkOrderTaskService.WorkOrderDTO GetNewWorkOrderTaskDto(string no)
+        {
+            var workOrderDto = new WorkOrderTaskService.WorkOrderDTO();
+            if (string.IsNullOrWhiteSpace(no)) return workOrderDto;
+
+            no = no.Trim();
+            if (no.Length < 3)
+                throw new Exception(@"El número de orden no corresponde a una orden válida");
+            workOrderDto.prefix = no.Substring(0, 2);
+            workOrderDto.no = no.Substring(2, no.Length - 2);
+            return workOrderDto;
+        }
+
+        public static WorkOrderTaskService.WorkOrderDTO GetNewWorkOrderTaskDto(string prefix, string no)
+        {
+            var workOrderDto = new WorkOrderTaskService.WorkOrderDTO
+            {
+                prefix = prefix,
+                no = no
+            };
+
+            return workOrderDto;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -250,7 +282,7 @@ namespace EllipseWorkOrdersClassLibrary
         /// <param name="district"></param>
         /// <param name="workOrder"></param>
         /// <returns></returns>
-        public static ExtendedDescription GetWOrkOrderExtendedDescription(string urlService, OperationContext opContext, string district, string workOrder)
+        public static ExtendedDescription GetWorkOrderExtendedDescription(string urlService, OperationContext opContext, string district, string workOrder)
         {
             var description = new ExtendedDescription();
             var stdTextOpContext = StdText.GetStdTextOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
@@ -261,7 +293,7 @@ namespace EllipseWorkOrdersClassLibrary
             description.Body = StdText.GetText(urlService, stdTextOpContext, stdTextId);
             return description;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -557,7 +589,7 @@ namespace EllipseWorkOrdersClassLibrary
             //
             return replyWo;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -575,7 +607,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             StdText.SetText(urlService, stdTextCopc, stdTextId, woCompleteComment + "\n" + textToAppend);
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -652,7 +684,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             StdText.SetText(urlService, stdTextCopc, stdTextId, woCloseText);
         }
-        
+
         /// <summary>
         /// Crea un nuevo registro de duración para una orden de trabajo especificada
         /// </summary>
@@ -1051,7 +1083,7 @@ namespace EllipseWorkOrdersClassLibrary
             reply.Errors = error.ToArray();
             return reply;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -1085,7 +1117,7 @@ namespace EllipseWorkOrdersClassLibrary
             //
             return replyWo;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -1116,7 +1148,7 @@ namespace EllipseWorkOrdersClassLibrary
             workOrderDto.no = no.Substring(2, no.Length - 2);
             return workOrderDto;
         }
-        
+
         /// <summary>
         /// Obtiene un nuevo objeto de tipo WorkOrderDTO a partir del número de la orden
         /// </summary>
@@ -1156,7 +1188,7 @@ namespace EllipseWorkOrdersClassLibrary
             return ef.GetItemCodes("WS");
         }
 
-        public static List<WorkOrderTask> FetchWorkOrderTask(EllipseFunctions ef, string districtCode, string workGroup, string workOrder)
+        public static List<WorkOrderTask> FetchWorkOrderTask(EllipseFunctions ef, string districtCode, string workOrder)
         {
             var stdDataReader =
                 ef.GetQueryResult(Queries.GetFetchWorkOrderTasksQuery(ef.dbReference, ef.dbLink, districtCode, workOrder));
@@ -1189,7 +1221,7 @@ namespace EllipseWorkOrdersClassLibrary
                 task.AssignPerson = "" + stdDataReader["ASSIGN_PERSON"].ToString().Trim();
                 task.EstimatedMachHrs = "" + stdDataReader["EST_MACH_HRS"].ToString().Trim();
 
-                task.EstimatedDurationsHrs = "" + stdDataReader["EST_DUR_HRS"].ToString().Trim();
+                //task.EstimatedDurationsHrs = "" + stdDataReader["EST_DUR_HRS"].ToString().Trim();
                 task.NoLabor = "" + stdDataReader["NO_REC_LABOR"].ToString().Trim();
                 task.NoMaterial = "" + stdDataReader["NO_REC_MATERIAL"].ToString().Trim();
 
@@ -1203,6 +1235,130 @@ namespace EllipseWorkOrdersClassLibrary
             }
             ef.CloseConnection();
             return list;
+        }
+
+        public static List<TaskRequirement> FetchTaskRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string taskNo)
+        {
+            var sqlQuery = Queries.GetFetchWoTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, stdJob, taskNo.PadLeft(3, '0'));
+            var woTaskDataReader =
+                ef.GetQueryResult(sqlQuery);
+
+            var list = new List<TaskRequirement>();
+
+            if (woTaskDataReader == null || woTaskDataReader.IsClosed || !woTaskDataReader.HasRows)
+            {
+                ef.CloseConnection();
+                return list;
+            }
+            while (woTaskDataReader.Read())
+            {
+
+                // ReSharper disable once UseObjectOrCollectionInitializer
+                var taskReq = new TaskRequirement();
+
+                taskReq.DistrictCode = "" + woTaskDataReader["DSTRCT_CODE"].ToString().Trim();
+                taskReq.WorkGroup = "" + woTaskDataReader["WORK_GROUP"].ToString().Trim();
+                taskReq.WorkOrder = "" + woTaskDataReader["WORK_ORDER"].ToString().Trim();
+
+                taskReq.WoTaskNo = "" + woTaskDataReader["WO_TASK_NO"].ToString().Trim();
+                taskReq.WoTaskDesc = "" + woTaskDataReader["WO_TASK_DESC"].ToString().Trim();
+                taskReq.ReqType = "" + woTaskDataReader["REQ_TYPE"].ToString().Trim();
+                taskReq.SeqNo = "" + woTaskDataReader["SEQ_NO"].ToString().Trim();
+                taskReq.ReqCode = "" + woTaskDataReader["RES_CODE"].ToString().Trim();
+                taskReq.ReqDesc = "" + woTaskDataReader["RES_DESC"].ToString().Trim();
+                taskReq.QtyReq = "" + woTaskDataReader["QTY_REQ"].ToString().Trim();
+                taskReq.HrsReq = "" + woTaskDataReader["HRS_QTY"].ToString().Trim();
+
+                list.Add(taskReq);
+            }
+            ef.CloseConnection();
+            return list;
+        }
+
+        public static void ModifyWorkOrderTaskPost(EllipseFunctions eFunctions, WorkOrderTask woTask)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void CreateWorkOrderTaskPost(EllipseFunctions eFunctions, WorkOrderTask woTask)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void ModifyWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask, bool b)
+        {
+            var proxyWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
+            var requestWoTask = new WorkOrderTaskServiceModifyRequestDTO();
+
+            //se cargan los parámetros de la orden
+            proxyWoTask.Url = urlService + "/WorkOrderTaskService";
+
+            //se cargan los parámetros de la orden
+            requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
+            requestWoTask.workGroup = woTask.WorkGroup ?? requestWoTask.workGroup;
+            requestWoTask.workOrder = woTask.WorkOrderDto ?? requestWoTask.workOrder;
+            requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
+            requestWoTask.WOTaskDesc = woTask.WoTaskDesc ?? requestWoTask.WOTaskDesc;
+            requestWoTask.jobDescCode = woTask.JobDescCode ?? requestWoTask.jobDescCode;
+            requestWoTask.safetyInstr = woTask.SafetyInstr ?? requestWoTask.safetyInstr;
+            requestWoTask.completeInstr = woTask.CompleteInstr ?? requestWoTask.completeInstr;
+            requestWoTask.complTextCode = woTask.ComplTextCode ?? requestWoTask.complTextCode;
+            requestWoTask.assignPerson = woTask.AssignPerson ?? requestWoTask.assignPerson;
+            requestWoTask.estimatedMachHrs = !string.IsNullOrEmpty(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
+            requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrEmpty(woTask.EstimatedMachHrs);
+            requestWoTask.tskDurationsHrs = !string.IsNullOrEmpty(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
+            requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrEmpty(woTask.EstimatedDurationsHrs);
+            requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
+            requestWoTask.APLType = woTask.AplType ?? requestWoTask.APLType;
+            requestWoTask.APLCompCode = woTask.AplCompCode ?? requestWoTask.APLCompCode;
+            requestWoTask.APLCompModCode = woTask.AplCompModCode ?? requestWoTask.APLCompModCode;
+            requestWoTask.APLSeqNo = woTask.AplSeqNo ?? requestWoTask.APLSeqNo;
+
+            proxyWoTask.modify(opContext, requestWoTask);
+        }
+
+        public static void CreateWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask, bool b)
+        {
+            var proxywoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
+            var requestWoTask = new WorkOrderTaskServiceCreateRequestDTO();
+
+            //se cargan los parámetros de la orden
+            proxywoTask.Url = urlService + "/WorkOrderTaskService";
+
+            //se cargan los parámetros de la orden
+            requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
+            requestWoTask.workGroup = woTask.WorkGroup ?? requestWoTask.workGroup;
+            requestWoTask.workOrder = woTask.WorkOrderDto ?? requestWoTask.workOrder;
+
+            requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
+            requestWoTask.WOTaskDesc = woTask.WoTaskDesc ?? requestWoTask.WOTaskDesc;
+            requestWoTask.jobDescCode = woTask.JobDescCode ?? requestWoTask.jobDescCode;
+            requestWoTask.safetyInstr = woTask.SafetyInstr ?? requestWoTask.safetyInstr;
+            requestWoTask.completeInstr = woTask.CompleteInstr ?? requestWoTask.completeInstr;
+            requestWoTask.complTextCode = woTask.ComplTextCode ?? requestWoTask.complTextCode;
+            requestWoTask.assignPerson = woTask.AssignPerson ?? requestWoTask.assignPerson;
+            requestWoTask.estimatedMachHrs = woTask.EstimatedMachHrs != null ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
+            requestWoTask.estimatedMachHrsSpecified = woTask.EstimatedMachHrs != null;
+            requestWoTask.tskDurationsHrs = woTask.EstimatedDurationsHrs != null ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
+            requestWoTask.tskDurationsHrsSpecified = woTask.EstimatedDurationsHrs != null;
+            requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
+            requestWoTask.APLType = woTask.AplType ?? requestWoTask.APLType;
+            requestWoTask.APLCompCode = woTask.AplCompCode ?? requestWoTask.APLCompCode;
+            requestWoTask.APLCompModCode = woTask.AplCompModCode ?? requestWoTask.APLCompModCode;
+            requestWoTask.APLSeqNo = woTask.AplSeqNo ?? requestWoTask.APLSeqNo;
+
+            proxywoTask.create(opContext, requestWoTask);
+        }
+
+        public static void SetWorkOrderTaskText(string urlService, string districtCode, string position, bool returnWarnings, WorkOrderTask woTask)
+        {
+            if (!string.IsNullOrWhiteSpace(woTask.WoTaskNo))
+                woTask.WoTaskNo = woTask.WoTaskNo.PadLeft(3, '0');//comentario
+            var stdTextId = "WA" + districtCode + woTask.WorkOrder + woTask.WoTaskNo;
+
+            var stdTextCopc = StdText.GetCustomOpContext(districtCode, position, 100, returnWarnings);
+
+            StdText.SetText(urlService, stdTextCopc, stdTextId, woTask.ExtTaskText);
         }
 
         /// <summary>
@@ -1496,6 +1652,94 @@ namespace EllipseWorkOrdersClassLibrary
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
+            }
+
+            public static string GetFetchWoTaskRequirementsQuery(string dbReference, string dbLink, string districtCode, string workOrder, string taskNo)
+            {
+                var query = "" +
+                            "SELECT " +
+                            "	'LAB' REQ_TYPE, " +
+                            "	TSK.DSTRCT_CODE, " +
+                            "	TSK.WORK_GROUP, " +
+                            "	TSK.WORK_ORDER, " +
+                            "	TSK.WO_TASK_NO, " +
+                            "	TSK.WO_TASK_DESC, " +
+                            "	'N/A' SEQ_NO, " +
+                            "	RS.RESOURCE_TYPE RES_CODE, " +
+                            "	TO_NUMBER( " +
+                            "		RS.CREW_SIZE " +
+                            "	) QTY_REQ, " +
+                            "	RS.EST_RESRCE_HRS HRS_QTY, " +
+                            "	TT.TABLE_DESC RES_DESC, " +
+                            "	'' UNITS " +
+                            "FROM " +
+                            "	" + dbReference + ".MSF623" + dbLink + " TSK " +
+                            "	INNER JOIN " + dbReference + ".MSF735" + dbLink + " RS " +
+                            "	ON RS.KEY_735_ID     = TSK.DSTRCT_CODE || TSK.WORK_ORDER || TSK.WO_TASK_NO " +
+                            "	   AND RS.REC_735_TYPE   = 'WT' " +
+                            "	INNER JOIN " + dbReference + ".MSF010" + dbLink + " TT " +
+                            "	ON TT.TABLE_CODE   = RS.RESOURCE_TYPE " +
+                            "	   AND TT.TABLE_TYPE   = 'TT' " +
+                            "WHERE " +
+                            "	TSK.DSTRCT_CODE = '" + districtCode + "' " +
+                            "	AND   TSK.WORK_ORDER = '" + workOrder + "' " +
+                            "	AND   TSK.WO_TASK_NO = '" + taskNo + "' " +
+                            "UNION ALL " +
+                            "SELECT " +
+                            "	'MAT' REQ_TYPE, " +
+                            "	TSK.DSTRCT_CODE, " +
+                            "	TSK.WORK_GROUP, " +
+                            "	TSK.WORK_ORDER, " +
+                            "	TSK.WO_TASK_NO, " +
+                            "	TSK.WO_TASK_DESC, " +
+                            "	RS.SEQNCE_NO SEQ_NO, " +
+                            "	RS.STOCK_CODE RES_CODE, " +
+                            "	RS.UNIT_QTY_REQD QTY_REQ, " +
+                            "	0 HRS_QTY, " +
+                            "	SCT.DESC_LINEX1 || SCT.ITEM_NAME RES_DESC, " +
+                            "	'' UNITS " +
+                            "FROM " +
+                            "	" + dbReference + ".MSF623" + dbLink + " TSK " +
+                            "	INNER JOIN " + dbReference + ".MSF734" + dbLink + " RS " +
+                            "	ON RS.CLASS_KEY    = TSK.DSTRCT_CODE || TSK.WORK_ORDER || TSK.WO_TASK_NO " +
+                            "	LEFT JOIN " + dbReference + ".MSF100" + dbLink + " SCT " +
+                            "	ON RS.STOCK_CODE   = SCT.STOCK_CODE " +
+                            "	    AND RS.CLASS_TYPE   = 'WT' " +
+                            "WHERE " +
+                            "	TSK.DSTRCT_CODE = '" + districtCode + "' " +
+                            "	AND   TSK.WORK_ORDER = '" + workOrder + "' " +
+                            "	AND   TSK.WO_TASK_NO = '" + taskNo + "' " +
+                            "UNION ALL " +
+                            "SELECT " +
+                            "	'EQU' REQ_TYPE, " +
+                            "	TSK.DSTRCT_CODE, " +
+                            "	TSK.WORK_GROUP, " +
+                            "	TSK.WORK_ORDER, " +
+                            "	TSK.WO_TASK_NO, " +
+                            "	TSK.WO_TASK_DESC, " +
+                            "	RS.SEQNCE_NO SEQ_NO, " +
+                            "	RS.EQPT_TYPE RES_CODE, " +
+                            "	RS.QTY_REQ, " +
+                            "	RS.UNIT_QTY_REQD HRS_QTY, " +
+                            "	ET.TABLE_DESC RES_DESC, " +
+                            "	RS.UOM UNITS " +
+                            "FROM " +
+                            "	" + dbReference + ".MSF623" + dbLink + " TSK " +
+                            "	INNER JOIN " + dbReference + ".MSF733" + dbLink + " RS " +
+                            "	ON RS.CLASS_KEY    = TSK.DSTRCT_CODE || TSK.WORK_ORDER || TSK.WO_TASK_NO " +
+                            "	   AND RS.CLASS_TYPE   = 'WT' " +
+                            "	INNER JOIN " + dbReference + ".MSF010" + dbLink + " ET " +
+                            "	ON RS.EQPT_TYPE   = ET.TABLE_CODE " +
+                            "	   AND TABLE_TYPE     = 'ET' " +
+                            "WHERE " +
+                            "	TSK.DSTRCT_CODE = '" + districtCode + "' " +
+                            "	AND   TSK.WORK_ORDER = '" + workOrder + "' " +
+                            "	AND   TSK.WO_TASK_NO = '" + taskNo + "'";
+
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+
+                return query;
+
             }
         }
     }

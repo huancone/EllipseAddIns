@@ -24,7 +24,7 @@ namespace EllipseMSO010ExcelAddIn
 
         private const string SheetName01 = "MSO010 Codes";
         private const int TitleRow01 = 9;
-        private const int ResultColumn01 = 6;
+        private const int ResultColumn01 = 7;
         private const string TableName01 = "CodesTable";
         private const string ValidationSheetName = "ValidationSheet";
         private Thread _thread;
@@ -160,6 +160,7 @@ namespace EllipseMSO010ExcelAddIn
                 _cells.GetCell(03, TitleRow01).Value = "CODE";
                 _cells.GetCell(04, TitleRow01).Value = "STATUS";
                 _cells.GetCell(05, TitleRow01).Value = "DESCRIPTION";
+                _cells.GetCell(06, TitleRow01).Value = "ASSOC_REC";
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = StyleConstants.TitleResult;
 
@@ -272,6 +273,7 @@ namespace EllipseMSO010ExcelAddIn
                     item.Code = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value).ToUpper();
                     item.ActiveStatus = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value);
                     item.Description = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
+                    item.AssocRec = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
 
                     item.ActiveStatus = string.IsNullOrWhiteSpace(item.ActiveStatus) ? "Y" : item.ActiveStatus;
 
@@ -335,6 +337,7 @@ namespace EllipseMSO010ExcelAddIn
 
             arrayFields = new ArrayScreenNameValue();
             arrayFields.Add("TABLE_DESC2I1", item.Description);
+            arrayFields.Add("ASSOC_REC2I1", item.AssocRec);
 
             request = new Screen.ScreenSubmitRequestDTO
             {
@@ -343,6 +346,7 @@ namespace EllipseMSO010ExcelAddIn
             };
             reply = proxySheet.submit(opContext, request);
             var attemp = 0;
+
             while (reply != null && reply.mapName == "MSM010B")
             {
                 if(_eFunctions.CheckReplyError(reply))
@@ -379,7 +383,8 @@ namespace EllipseMSO010ExcelAddIn
                     TypeDescription = drItem["TYPE_DESC"].ToString().Trim(),
                     Code = drItem["TABLE_CODE"].ToString().Trim(),
                     Description = drItem["TABLE_DESC"].ToString().Trim(),
-                    ActiveStatus = drItem["ACTIVE_FLAG"].ToString().Trim()
+                    ActiveStatus = drItem["ACTIVE_FLAG"].ToString().Trim(),
+                    AssocRec = drItem["ASSOC_REC"].ToString().Trim()
                 };
                 list.Add(order);
             }
@@ -443,7 +448,8 @@ namespace EllipseMSO010ExcelAddIn
                                "   CO.TABLE_CODE," +
                                "   CO.TABLE_DESC," +
                                "   CO.ACTIVE_FLAG," +
-                               "   TY.TABLE_DESC TYPE_DESC" +
+                               "   TY.TABLE_DESC TYPE_DESC," +
+                               "   CO.ASSOC_REC" +
                                " FROM ELLIPSE.MSF010 CO" +
                                " LEFT JOIN ELLIPSE.MSF010 TY" +
                                " ON CO.TABLE_TYPE  = TY.TABLE_CODE" +
@@ -510,6 +516,7 @@ namespace EllipseMSO010ExcelAddIn
             public string Code;
             public string ActiveStatus;
             public string Description;
+            public string AssocRec;
         }
 
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)

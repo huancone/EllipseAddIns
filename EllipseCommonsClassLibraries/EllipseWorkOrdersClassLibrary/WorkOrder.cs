@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using EllipseWorkOrdersClassLibrary.WorkOrderService;
-using OperationContext = EllipseWorkOrdersClassLibrary.WorkOrderService.OperationContext;
+using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
+using WorkOrderTaskService = EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 
 namespace EllipseWorkOrdersClassLibrary
 {
@@ -10,7 +10,7 @@ namespace EllipseWorkOrdersClassLibrary
     {
         public string districtCode;
         public string workGroup;
-        private WorkOrderDTO workOrderDTO;
+        private WorkOrderService.WorkOrderDTO workOrderDTO;
         public string workOrderDesc;
         public string workOrderStatusM;
         public string equipmentNo;
@@ -45,7 +45,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string unitsRequired;
         public string pcComplete;
         public string unitsComplete;
-        private WorkOrderDTO relatedWoDTO;
+        private WorkOrderService.WorkOrderDTO relatedWoDTO;
         public string accountCode;
         public string projectNo;
         public string parentWo;
@@ -108,41 +108,41 @@ namespace EllipseWorkOrdersClassLibrary
         /// Obtiene los campos de WorkOrderDTO para las acciones requeridas por el servicio
         /// </summary>
         /// <returns>WorkOrderService.WorkOrderDTO: arreglo(no, prefix)</returns>
-        public WorkOrderDTO GetWorkOrderDto()
+        public WorkOrderService.WorkOrderDTO GetWorkOrderDto()
         {
-            return workOrderDTO ?? (workOrderDTO = new WorkOrderDTO());
+            return workOrderDTO ?? (workOrderDTO = new WorkOrderService.WorkOrderDTO());
         }
 
-        public WorkOrderDTO SetWorkOrderDto(string prefix, string no)
+        public WorkOrderService.WorkOrderDTO SetWorkOrderDto(string prefix, string no)
         {
             workOrderDTO = WorkOrderActions.GetNewWorkOrderDto(prefix, no);
             return workOrderDTO;
         }
 
-        public WorkOrderDTO SetWorkOrderDto(string no)
+        public WorkOrderService.WorkOrderDTO SetWorkOrderDto(string no)
         {
             workOrderDTO = WorkOrderActions.GetNewWorkOrderDto(no);
             return workOrderDTO;
         }
 
-        public WorkOrderDTO SetWorkOrderDto(WorkOrderDTO wo)
+        public WorkOrderService.WorkOrderDTO SetWorkOrderDto(WorkOrderService.WorkOrderDTO wo)
         {
             workOrderDTO = wo;
             return workOrderDTO;
         }
 
-        public WorkOrderDTO GetRelatedWoDto()
+        public WorkOrderService.WorkOrderDTO GetRelatedWoDto()
         {
-            return relatedWoDTO ?? (relatedWoDTO = new WorkOrderDTO());
+            return relatedWoDTO ?? (relatedWoDTO = new WorkOrderService.WorkOrderDTO());
         }
 
-        public WorkOrderDTO SetRelatedWoDto(string no)
+        public WorkOrderService.WorkOrderDTO SetRelatedWoDto(string no)
         {
             relatedWoDTO = WorkOrderActions.GetNewWorkOrderDto(no);
             return relatedWoDTO;
         }
 
-        public WorkOrderDTO SetRelatedWoDto(string prefix, string no)
+        public WorkOrderService.WorkOrderDTO SetRelatedWoDto(string prefix, string no)
         {
             relatedWoDTO = WorkOrderActions.GetNewWorkOrderDto(prefix, no);
             return relatedWoDTO;
@@ -154,11 +154,11 @@ namespace EllipseWorkOrdersClassLibrary
                 workOrderStatusM = WoStatusList.GetStatusCode(statusName);
         }
 
-        public ExtendedDescription GetExtendedDescription(string urlService, OperationContext opContext)
+        public ExtendedDescription GetExtendedDescription(string urlService, WorkOrderService.OperationContext opContext)
         {
             if (_extendedDescription != null) return _extendedDescription;
 
-            _extendedDescription = WorkOrderActions.GetWOrkOrderExtendedDescription(urlService, opContext, districtCode,
+            _extendedDescription = WorkOrderActions.GetWorkOrderExtendedDescription(urlService, opContext, districtCode,
                 GetWorkOrderDto().prefix + GetWorkOrderDto().no);
 
             return _extendedDescription;
@@ -183,7 +183,7 @@ namespace EllipseWorkOrdersClassLibrary
     public class WorkOrderCompleteAtributes
     {
         public string districtCode;
-        public WorkOrderDTO workOrder;
+        public WorkOrderService.WorkOrderDTO workOrder;
         public string completedBy;
         public string completedCode;
         public string closedDate;
@@ -211,9 +211,9 @@ namespace EllipseWorkOrdersClassLibrary
         public decimal jobDurationsHours;
         public bool jobDurationsHoursSpecified;
 
-        public DurationsDTO GetDurationDto()
+        public WorkOrderService.DurationsDTO GetDurationDto()
         {
-            var duration = new DurationsDTO
+            var duration = new WorkOrderService.DurationsDTO
             {
                 jobDurationsCode = jobDurationsCode,
                 jobDurationsDate = jobDurationsDate,
@@ -228,7 +228,7 @@ namespace EllipseWorkOrdersClassLibrary
             return duration;
         }
 
-        public void SetDurationFromDto(DurationsDTO duration)
+        public void SetDurationFromDto(WorkOrderService.DurationsDTO duration)
         {
             jobDurationsCode = duration.jobDurationsCode;
             jobDurationsDate = duration.jobDurationsDate;
@@ -346,5 +346,49 @@ namespace EllipseWorkOrdersClassLibrary
         public string AplEquipmentGrpId;
         public string AplCompCode;
         public string AplCompModCode;
+        public string EstimatedMachHrsSpecified;
+        public string EstimatedDurationsHrsSpecified;
+        public string ExtTaskText;
+
+        public WorkOrderTaskService.WorkOrderDTO WorkOrderDto { get; private set; }
+
+        public WorkOrderTaskService.WorkOrderDTO GetWorkOrderDto()
+        {
+            return WorkOrderDto ?? (WorkOrderDto = new WorkOrderTaskService.WorkOrderDTO());
+        }
+
+        public WorkOrderTaskService.WorkOrderDTO SetWorkOrderDto(string prefix, string no)
+        {
+            WorkOrderDto = WorkOrderActions.GetNewWorkOrderTaskDto(prefix, no);
+            return WorkOrderDto;
+        }
+
+        public WorkOrderTaskService.WorkOrderDTO SetWorkOrderDto(string no)
+        {
+            WorkOrderDto = WorkOrderActions.GetNewWorkOrderTaskDto(no);
+            return WorkOrderDto;
+        }
+
+        public WorkOrderTaskService.WorkOrderDTO SetWorkOrderTaskDto(WorkOrderTaskService.WorkOrderDTO wo)
+        {
+            WorkOrderDto = wo;
+            return WorkOrderDto;
+        }
+    }
+
+    public class TaskRequirement
+    {
+        public string WorkOrder;
+        public string DistrictCode;
+        public string WorkGroup;
+        public string WoTaskDesc;
+        public string WoTaskNo;
+        public string ReqType;
+        public string SeqNo;
+        public string ReqCode;
+        public string ReqDesc;
+        public string QtyReq;
+        public string HrsReq;
+        public string UoM;
     }
 }

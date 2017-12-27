@@ -5,5 +5,8 @@
     <Setting Name="EllipseWorkOrdersClassLibrary_WorkOrderService_WorkOrderService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkOrderService</Value>
     </Setting>
+    <Setting Name="EllipseWorkOrdersClassLibrary_WorkOrderTaskService_WorkOrderTaskService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkOrderTaskService</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
