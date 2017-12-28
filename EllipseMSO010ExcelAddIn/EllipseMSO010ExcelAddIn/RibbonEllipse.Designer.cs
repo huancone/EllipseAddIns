@@ -42,11 +42,12 @@ namespace EllipseMSO010ExcelAddIn
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
+            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
             this.btnCreate = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.btnModify = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO010.SuspendLayout();
             this.box1.SuspendLayout();
@@ -86,10 +87,16 @@ namespace EllipseMSO010ExcelAddIn
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
+            // drpEnviroment
+            // 
+            this.drpEnviroment.Label = "Env.";
+            this.drpEnviroment.Name = "drpEnviroment";
+            // 
             // menuActions
             // 
             this.menuActions.Items.Add(this.btnReview);
             this.menuActions.Items.Add(this.btnCreate);
+            this.menuActions.Items.Add(this.btnModify);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
@@ -115,10 +122,12 @@ namespace EllipseMSO010ExcelAddIn
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
-            // drpEnviroment
+            // btnModify
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.btnModify.Label = "Modificar Registro";
+            this.btnModify.Name = "btnModify";
+            this.btnModify.ShowImage = true;
+            this.btnModify.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnModify_Click);
             // 
             // RibbonEllipse
             // 
@@ -148,6 +157,7 @@ namespace EllipseMSO010ExcelAddIn
         internal RibbonButton btnStopThread;
         internal RibbonBox box1;
         internal RibbonButton btnAbout;
+        internal RibbonButton btnModify;
     }
 
     partial class ThisRibbonCollection
