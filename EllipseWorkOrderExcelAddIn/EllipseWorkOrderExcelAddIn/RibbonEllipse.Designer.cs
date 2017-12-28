@@ -277,6 +277,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnExecuteRequirements.Label = "Ejecutar Acciones";
             this.btnExecuteRequirements.Name = "btnExecuteRequirements";
             this.btnExecuteRequirements.ShowImage = true;
+            this.btnExecuteRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExecuteRequirements_Click);
             // 
             // btnGetAplRequirements
             // 

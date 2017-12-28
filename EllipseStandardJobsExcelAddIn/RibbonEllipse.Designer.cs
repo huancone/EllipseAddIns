@@ -70,6 +70,7 @@
             this.tabEllipse.SuspendLayout();
             this.grpStandardJobs.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -333,6 +334,7 @@
             this.grpStandardJobs.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

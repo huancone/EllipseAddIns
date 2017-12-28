@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
-using System.Diagnostics.CodeAnalysis;
-using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using EllipseReferenceCodesClassLibrary;
 using EllipseStdTextClassLibrary;
+using EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
+using EllipseWorkOrdersClassLibrary.MaterialReqmntsService;
+using EllipseWorkOrdersClassLibrary.ResourceReqmntsService;
+using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 using OperationContext = EllipseWorkOrdersClassLibrary.WorkOrderService.OperationContext;
 using WorkOrderDTO = EllipseWorkOrdersClassLibrary.WorkOrderService.WorkOrderDTO;
@@ -538,7 +541,7 @@ namespace EllipseWorkOrdersClassLibrary
                 calculatedEquipmentFlag = Convert.ToBoolean(wo.calculatedEquipmentFlag),
                 calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag),
                 calculatedOtherFlag = Convert.ToBoolean(wo.calculatedOtherFlag),
-                calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag),
+                calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag)
             };
 
             proxyWo.updateEstimates(opContext, requestEstimates);
@@ -1174,7 +1177,7 @@ namespace EllipseWorkOrdersClassLibrary
         /// <returns></returns>
         public static bool ValidateUserStatus(string raisedDate, int daysAllowed)
         {
-            var date = DateTime.ParseExact(raisedDate, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+            var date = DateTime.ParseExact(raisedDate, "yyyyMMdd", CultureInfo.InvariantCulture);
             return DateTime.Today.Subtract(date).TotalDays <= daysAllowed;
         }
 
@@ -1374,6 +1377,289 @@ namespace EllipseWorkOrdersClassLibrary
         /// <summary>
         /// 
         /// </summary>
+       
+        public static void CreateTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        {
+            var proxyTaskReq = new ResourceReqmntsService.ResourceReqmntsService();//ejecuta las acciones del servicio
+
+            //se cargan los parámetros de la orden
+            proxyTaskReq.Url = urlService + "/ResourceReqmntsService";
+
+            //se cargan los parámetros de la orden
+
+            if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
+                taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+
+            var requestTaskReq = new ResourceReqmntsServiceCreateRequestDTO();
+            requestTaskReq.districtCode = taskReq.DistrictCode ?? requestTaskReq.districtCode;
+            requestTaskReq.workOrder = taskReq.ResourceWorkOrderDto ?? requestTaskReq.workOrder;
+            requestTaskReq.workOrderTask = taskReq.WoTaskNo ?? requestTaskReq.workOrderTask;
+            requestTaskReq.resourceClass = taskReq.ReqCode.Substring(0, 1);
+            requestTaskReq.resourceCode = taskReq.ReqCode.Substring(1);
+            requestTaskReq.quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal);
+            requestTaskReq.quantityRequiredSpecified = true;
+            requestTaskReq.hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal);
+            requestTaskReq.hrsReqdSpecified = true;
+            requestTaskReq.classType = "WT";
+            requestTaskReq.enteredInd = "S";
+
+            proxyTaskReq.create(opContext, requestTaskReq);
+        }
+
+        public static void CreateTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        {
+            var proxyTaskReq = new MaterialReqmntsService.MaterialReqmntsService();//ejecuta las acciones del servicio
+            var requestTaskReq = new MaterialReqmntsServiceCreateRequestDTO();
+
+            //se cargan los parámetros de la orden
+            proxyTaskReq.Url = urlService + "/MaterialReqmntsService";
+
+            //se cargan los parámetros de la orden
+
+            if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
+                taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+
+            requestTaskReq.districtCode = taskReq.DistrictCode ?? requestTaskReq.districtCode;
+            requestTaskReq.workOrder = taskReq.MaterialWorkOrderDto ?? requestTaskReq.workOrder;
+            requestTaskReq.workOrderTask = taskReq.WoTaskNo ?? requestTaskReq.workOrderTask;
+            requestTaskReq.seqNo = taskReq.SeqNo ?? requestTaskReq.seqNo;
+            requestTaskReq.stockCode = taskReq.ReqCode.Substring(1).PadLeft(9, '0');
+            requestTaskReq.unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal);
+            requestTaskReq.unitQuantityReqdSpecified = true;
+            requestTaskReq.catalogueFlag = true;
+            requestTaskReq.catalogueFlagSpecified = true;
+            requestTaskReq.classType = "WT";
+            requestTaskReq.contestibleFlag = false;
+            requestTaskReq.contestibleFlagSpecified = true;
+            requestTaskReq.enteredInd = "S";
+            requestTaskReq.totalOnlyFlg = true;
+            requestTaskReq.CUItemNoSpecified = false;
+            requestTaskReq.JEItemNoSpecified = false;
+            requestTaskReq.fixedAmountSpecified = false;
+            requestTaskReq.rateAmountSpecified = false;
+
+
+            proxyTaskReq.create(opContext, requestTaskReq);
+        }
+
+        public static void CreateTaskEquipment(string urlService, EquipmentReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        {
+            var proxyTaskReq = new EquipmentReqmntsService.EquipmentReqmntsService
+            {
+                Url = urlService + "/EquipmentReqmntsService"
+            };
+
+            var requestTaskReqList = new List<EquipmentReqmntsServiceCreateRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.WorkOrder))
+                taskReq.WorkOrder = taskReq.WorkOrder.PadLeft(3, '0');
+
+            var requestTaskReq = new EquipmentReqmntsServiceCreateRequestDTO
+            {
+                districtCode = taskReq.DistrictCode,
+                workOrder = taskReq.EquipmentResourceWorkOrderDto,
+                workOrderTask = !string.IsNullOrWhiteSpace(taskReq.WorkOrder) ? taskReq.WorkOrder : null,
+                seqNo = taskReq.SeqNo,
+                eqptType = taskReq.ReqCode.Substring(1),
+                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                unitQuantityReqdSpecified = true,
+                UOM = taskReq.UoM,
+                contestibleFlg = false,
+                contestibleFlgSpecified = true,
+                classType = "WT",
+                enteredInd = "S",
+                totalOnlyFlg = true,
+                CUItemNoSpecified = false,
+                JEItemNoSpecified = false,
+                fixedAmountSpecified = false,
+                rateAmountSpecified = false
+            };
+
+            requestTaskReqList.Add(requestTaskReq);
+            proxyTaskReq.multipleCreate(opContext, requestTaskReqList.ToArray());
+        }
+
+        public static void ModifyTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        {
+            var proxyTaskReq = new ResourceReqmntsService.ResourceReqmntsService
+            {
+                Url = urlService + "/ResourceReqmntsService"
+            };
+
+            var requestTaskReqList = new List<ResourceReqmntsServiceModifyRequestDTO>();
+
+            if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
+                taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+            var requestTaskReq = new ResourceReqmntsServiceModifyRequestDTO
+            {
+                districtCode = taskReq.DistrictCode,
+                workOrder = taskReq.ResourceWorkOrderDto,
+                workOrderTask = !string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? taskReq.WoTaskNo : null,
+                resourceClass = taskReq.ReqCode.Substring(0, 1),
+                resourceCode = taskReq.ReqCode.Substring(1),
+                quantityRequired = taskReq.QtyReq != null
+                    ? Convert.ToDecimal(taskReq.QtyReq)
+                    : default(decimal),
+                quantityRequiredSpecified = true,
+                hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal),
+                hrsReqdSpecified = true,
+                classType = "WT",
+                enteredInd = "S"
+            };
+
+            requestTaskReqList.Add(requestTaskReq);
+
+            proxyTaskReq.multipleModify(opContext, requestTaskReqList.ToArray());
+        }
+
+        public static void ModifyTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        {
+            var proxyTaskReq = new MaterialReqmntsService.MaterialReqmntsService
+            {
+                Url = urlService + "/MaterialReqmntsService"
+            };
+
+            var requestTaskReqList = new List<MaterialReqmntsServiceModifyRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
+                taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+            var requestTaskReq = new MaterialReqmntsServiceModifyRequestDTO
+            {
+                districtCode = taskReq.DistrictCode,
+                workOrder = taskReq.MaterialWorkOrderDto,
+                workOrderTask = !string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? taskReq.WoTaskNo : null,
+                seqNo = taskReq.SeqNo,
+                stockCode = taskReq.ReqCode.Substring(1).PadLeft(9, '0'),
+                unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.QtyReq) ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                unitQuantityReqdSpecified = true,
+                catalogueFlag = true,
+                catalogueFlagSpecified = true,
+                classType = "WT",
+                contestibleFlag = false,
+                contestibleFlagSpecified = true,
+                enteredInd = "S",
+                totalOnlyFlg = true,
+                CUItemNoSpecified = false,
+                JEItemNoSpecified = false,
+                fixedAmountSpecified = false,
+                rateAmountSpecified = false
+            };
+
+            requestTaskReqList.Add(requestTaskReq);
+            proxyTaskReq.multipleModify(opContext, requestTaskReqList.ToArray());
+        }
+
+        public static void ModifyTaskEquipment(string urlService, EquipmentReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        {
+            var proxyTaskReq = new EquipmentReqmntsService.EquipmentReqmntsService
+            {
+                Url = urlService + "/EquipmentReqmntsService"
+            };
+
+            var requestTaskReqList = new List<EquipmentReqmntsServiceModifyRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
+                taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+            var requestTaskReq = new EquipmentReqmntsServiceModifyRequestDTO
+            {
+                districtCode = taskReq.DistrictCode,
+                workOrder = taskReq.EquipmentResourceWorkOrderDto,
+                workOrderTask = !string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? taskReq.WoTaskNo : null,
+                seqNo = taskReq.SeqNo,
+                eqptType = taskReq.ReqCode.Substring(1),
+                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                unitQuantityReqdSpecified = true,
+                UOM = taskReq.UoM,
+                contestibleFlg = false,
+                contestibleFlgSpecified = true,
+                classType = "WT",
+                enteredInd = "S",
+                totalOnlyFlg = true,
+                CUItemNoSpecified = false,
+                JEItemNoSpecified = false,
+                fixedAmountSpecified = false,
+                rateAmountSpecified = false
+            };
+
+            requestTaskReqList.Add(requestTaskReq);
+            proxyTaskReq.multipleModify(opContext, requestTaskReqList.ToArray());
+        }
+
+        public static void DeleteTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        {
+            var proxyTaskReq = new ResourceReqmntsService.ResourceReqmntsService
+            {
+                Url = urlService + "/ResourceReqmntsService"
+            };
+
+            var requestTaskReqList = new List<ResourceReqmntsServiceDeleteRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
+                taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+            var requestTaskReq = new ResourceReqmntsServiceDeleteRequestDTO
+            {
+                districtCode = taskReq.DistrictCode,
+                workOrder = taskReq.ResourceWorkOrderDto,
+                workOrderTask = Convert.ToString(Convert.ToDecimal(taskReq.WoTaskNo), CultureInfo.InvariantCulture),
+                resourceClass = taskReq.ReqCode.Substring(0, 1),
+                resourceCode = taskReq.ReqCode.Substring(1),
+                classType = "WT",
+                enteredInd = "S"
+            };
+            requestTaskReqList.Add(requestTaskReq);
+
+            proxyTaskReq.multipleDelete(opContext, requestTaskReqList.ToArray());
+        }
+
+        public static void DeleteTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        {
+            var proxyTaskReq = new MaterialReqmntsService.MaterialReqmntsService
+            {
+                Url = urlService + "/MaterialReqmntsService"
+            };
+
+            var requestTaskReqList = new List<MaterialReqmntsServiceDeleteRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
+                taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+            var requestTaskReq = new MaterialReqmntsServiceDeleteRequestDTO
+            {
+                districtCode = taskReq.DistrictCode,
+                workOrder = taskReq.MaterialWorkOrderDto,
+                workOrderTask = Convert.ToString(Convert.ToDecimal(taskReq.WoTaskNo), CultureInfo.InvariantCulture),
+                seqNo = taskReq.SeqNo,
+                classType = "ST",
+                enteredInd = "S",
+                CUItemNoSpecified = false,
+                JEItemNoSpecified = false
+            };
+
+            requestTaskReqList.Add(requestTaskReq);
+            proxyTaskReq.multipleDelete(opContext, requestTaskReqList.ToArray());
+        }
+
+        public static void DeleteTaskEquipment(string urlService, EquipmentReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        {
+            var proxyTaskReq = new EquipmentReqmntsService.EquipmentReqmntsService
+            {
+                Url = urlService + "/EquipmentReqmntsService"
+            };
+
+            var requestTaskReqList = new List<EquipmentReqmntsServiceDeleteRequestDTO>();
+            if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
+                taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+            var requestTaskReq = new EquipmentReqmntsServiceDeleteRequestDTO
+            {
+                districtCode = taskReq.DistrictCode,
+                workOrder = taskReq.EquipmentResourceWorkOrderDto,
+                workOrderTask = Convert.ToString(Convert.ToDecimal(taskReq.WoTaskNo), CultureInfo.InvariantCulture),
+                seqNo = taskReq.SeqNo,
+                operationTypeEQP = taskReq.ReqCode,
+                classType = "ST",
+                enteredInd = "S",
+                CUItemNoSpecified = false,
+                JEItemNoSpecified = false
+            };
+
+            requestTaskReqList.Add(requestTaskReq);
+            proxyTaskReq.multipleDelete(opContext, requestTaskReqList.ToArray());
+        }
+
         public static class Queries
         {
             /// <summary>
@@ -1752,6 +2038,5 @@ namespace EllipseWorkOrdersClassLibrary
 
             }
         }
-
     }
 }

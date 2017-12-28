@@ -17,6 +17,9 @@ using FormAuthenticate = EllipseCommonsClassLibrary.FormAuthenticate;
 using EllipseStdTextClassLibrary;
 using WorkOrderTaskService = EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
+using ResourceReqmntsService = EllipseWorkOrdersClassLibrary.ResourceReqmntsService;
+using MaterialReqmntsService=EllipseWorkOrdersClassLibrary.MaterialReqmntsService;
+using EquipmentReqmntsService=EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
 
 namespace EllipseWorkOrderExcelAddIn
 {
@@ -4399,6 +4402,143 @@ namespace EllipseWorkOrderExcelAddIn
                 finally
                 {
                     _cells.GetCell(ResultColumn02, i).Select();
+                    i++;
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void btnExecuteRequirements_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            {
+
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                _thread = new Thread(ExecuteRequirementActions);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+        private void ExecuteRequirementActions()
+        {
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _cells.ClearTableRangeColumn(TableName03, ResultColumn03);
+            var i = TitleRow03 + 1;
+
+            var opSheetResource = new ResourceReqmntsService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true,
+                maxInstancesSpecified = true
+            };
+            var opSheetMaterial = new MaterialReqmntsService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true,
+                maxInstancesSpecified = true
+            };
+            var opSheetEquipment = new EquipmentReqmntsService.OperationContext()
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true,
+                maxInstancesSpecified = true
+            };
+
+
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(3, i).Value) && !string.IsNullOrEmpty("" + _cells.GetCell(4, i).Value))
+            {
+                try
+                {
+                    // ReSharper disable once UseObjectOrCollectionInitializer
+                    var taskReq = new TaskRequirement();
+                    //GENERAL
+
+                    taskReq.DistrictCode = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+                    taskReq.WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
+                    taskReq.WorkOrder = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
+                    //STD_JOB_DESC	
+                    taskReq.WoTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value);
+                    taskReq.WoTaskNo = string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? "001" : taskReq.WoTaskNo;
+                    taskReq.WoTaskDesc = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
+                    string action = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);
+                    taskReq.ReqType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
+                    taskReq.SeqNo = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
+                    taskReq.ReqCode = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value);
+                    taskReq.ReqDesc = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value);
+                    taskReq.QtyReq = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value);
+                    taskReq.HrsReq = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value);
+                    taskReq.UoM = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value);
+
+                    if (string.IsNullOrWhiteSpace(action))
+                        continue;
+                    else if (action.Equals("C"))
+                    {
+                        if (taskReq.ReqType.Equals("LAB"))
+                            WorkOrderActions.CreateTaskResource(urlService, opSheetResource, taskReq);
+                        else if (taskReq.ReqType.Equals("MAT"))
+                            WorkOrderActions.CreateTaskMaterial(urlService, opSheetMaterial, taskReq);
+                        else if (taskReq.ReqType.Equals("EQU"))
+                            WorkOrderActions.CreateTaskEquipment(urlService, opSheetEquipment, taskReq);
+                    }
+                    else if (action.Equals("M"))
+                    {
+                        if (taskReq.ReqType.Equals("LAB"))
+                            WorkOrderActions.ModifyTaskResource(urlService, opSheetResource, taskReq);
+                        else if (taskReq.ReqType.Equals("MAT"))
+                            WorkOrderActions.ModifyTaskMaterial(urlService, opSheetMaterial, taskReq);
+                        else if (taskReq.ReqType.Equals("EQU"))
+                            WorkOrderActions.ModifyTaskEquipment(urlService, opSheetEquipment, taskReq);
+                    }
+                    else if (action.Equals("D"))
+                    {
+                        if (taskReq.ReqType.Equals("LAB"))
+                            WorkOrderActions.DeleteTaskResource(urlService, opSheetResource, taskReq);
+                        else if (taskReq.ReqType.Equals("MAT"))
+                            WorkOrderActions.DeleteTaskMaterial(urlService, opSheetMaterial, taskReq);
+                        else if (taskReq.ReqType.Equals("EQU"))
+                            WorkOrderActions.DeleteTaskEquipment(urlService, opSheetEquipment, taskReq);
+                    }
+
+
+                    _cells.GetCell(ResultColumn03, i).Value = "OK";
+                    _cells.GetCell(1, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ExecuteRequirementActions()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn03, i).Select();
                     i++;
                 }
             }

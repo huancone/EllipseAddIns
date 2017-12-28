@@ -390,5 +390,10 @@ namespace EllipseWorkOrdersClassLibrary
         public string QtyReq;
         public string HrsReq;
         public string UoM;
+
+        public ResourceReqmntsService.WorkOrderDTO ResourceWorkOrderDto;
+        public MaterialReqmntsService.WorkOrderDTO MaterialWorkOrderDto;
+        public EquipmentReqmntsService.WorkOrderDTO EquipmentResourceWorkOrderDto;
+
     }
 }

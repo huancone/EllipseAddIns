@@ -42,5 +42,35 @@ namespace EllipseWorkOrdersClassLibrary.Properties {
                 return ((string)(this["EllipseWorkOrdersClassLibrary_WorkOrderTaskService_WorkOrderTaskService"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/ResourceReqmntsService")]
+        public string EllipseWorkOrdersClassLibrary_ResourceReqmntsService_ResourceReqmntsService {
+            get {
+                return ((string)(this["EllipseWorkOrdersClassLibrary_ResourceReqmntsService_ResourceReqmntsService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/EquipmentReqmntsService")]
+        public string EllipseWorkOrdersClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService {
+            get {
+                return ((string)(this["EllipseWorkOrdersClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/MaterialReqmntsService")]
+        public string EllipseWorkOrdersClassLibrary_MaterialReqmntsService_MaterialReqmntsService {
+            get {
+                return ((string)(this["EllipseWorkOrdersClassLibrary_MaterialReqmntsService_MaterialReqmntsService"]));
+            }
+        }
     }
 }
