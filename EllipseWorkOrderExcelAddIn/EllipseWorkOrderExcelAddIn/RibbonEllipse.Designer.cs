@@ -58,6 +58,11 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReviewTasks = this.Factory.CreateRibbonButton();
             this.btnExecuteTaskActions = this.Factory.CreateRibbonButton();
             this.btnCleanTasksTable = this.Factory.CreateRibbonButton();
+            this.menuRequirements = this.Factory.CreateRibbonMenu();
+            this.btnReviewRequirements = this.Factory.CreateRibbonButton();
+            this.btnExecuteRequirements = this.Factory.CreateRibbonButton();
+            this.btnGetAplRequirements = this.Factory.CreateRibbonButton();
+            this.btnCleanRequirementTable = this.Factory.CreateRibbonButton();
             this.menuComplete = this.Factory.CreateRibbonMenu();
             this.btnClose = this.Factory.CreateRibbonButton();
             this.btnReOpen = this.Factory.CreateRibbonButton();
@@ -86,11 +91,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
             this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.menuRequirements = this.Factory.CreateRibbonMenu();
-            this.btnReviewRequirements = this.Factory.CreateRibbonButton();
-            this.btnExecuteRequirements = this.Factory.CreateRibbonButton();
-            this.btnGetAplRequirements = this.Factory.CreateRibbonButton();
-            this.btnCleanRequirementTable = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
@@ -254,6 +254,41 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnCleanTasksTable.Label = "&Limpiar Tabla de Tareas";
             this.btnCleanTasksTable.Name = "btnCleanTasksTable";
             this.btnCleanTasksTable.ShowImage = true;
+            // 
+            // menuRequirements
+            // 
+            this.menuRequirements.Items.Add(this.btnReviewRequirements);
+            this.menuRequirements.Items.Add(this.btnExecuteRequirements);
+            this.menuRequirements.Items.Add(this.btnGetAplRequirements);
+            this.menuRequirements.Items.Add(this.btnCleanRequirementTable);
+            this.menuRequirements.Label = "&Requerimientos";
+            this.menuRequirements.Name = "menuRequirements";
+            this.menuRequirements.ShowImage = true;
+            // 
+            // btnReviewRequirements
+            // 
+            this.btnReviewRequirements.Label = "Consultar Requerimientos";
+            this.btnReviewRequirements.Name = "btnReviewRequirements";
+            this.btnReviewRequirements.ShowImage = true;
+            this.btnReviewRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewRequirements_Click);
+            // 
+            // btnExecuteRequirements
+            // 
+            this.btnExecuteRequirements.Label = "Ejecutar Acciones";
+            this.btnExecuteRequirements.Name = "btnExecuteRequirements";
+            this.btnExecuteRequirements.ShowImage = true;
+            // 
+            // btnGetAplRequirements
+            // 
+            this.btnGetAplRequirements.Label = "Traer Recursos de APLs";
+            this.btnGetAplRequirements.Name = "btnGetAplRequirements";
+            this.btnGetAplRequirements.ShowImage = true;
+            // 
+            // btnCleanRequirementTable
+            // 
+            this.btnCleanRequirementTable.Label = "Limpiar Tabla Requerimientos";
+            this.btnCleanRequirementTable.Name = "btnCleanRequirementTable";
+            this.btnCleanRequirementTable.ShowImage = true;
             // 
             // menuComplete
             // 
@@ -463,41 +498,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
-            // menuRequirements
-            // 
-            this.menuRequirements.Items.Add(this.btnReviewRequirements);
-            this.menuRequirements.Items.Add(this.btnExecuteRequirements);
-            this.menuRequirements.Items.Add(this.btnGetAplRequirements);
-            this.menuRequirements.Items.Add(this.btnCleanRequirementTable);
-            this.menuRequirements.Label = "&Requerimientos";
-            this.menuRequirements.Name = "menuRequirements";
-            this.menuRequirements.ShowImage = true;
-            // 
-            // btnReviewRequirements
-            // 
-            this.btnReviewRequirements.Label = "Consultar Requerimientos";
-            this.btnReviewRequirements.Name = "btnReviewRequirements";
-            this.btnReviewRequirements.ShowImage = true;
-            this.btnReviewRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewRequirements_Click);
-            // 
-            // btnExecuteRequirements
-            // 
-            this.btnExecuteRequirements.Label = "Ejecutar Acciones";
-            this.btnExecuteRequirements.Name = "btnExecuteRequirements";
-            this.btnExecuteRequirements.ShowImage = true;
-            // 
-            // btnGetAplRequirements
-            // 
-            this.btnGetAplRequirements.Label = "Traer Recursos de APLs";
-            this.btnGetAplRequirements.Name = "btnGetAplRequirements";
-            this.btnGetAplRequirements.ShowImage = true;
-            // 
-            // btnCleanRequirementTable
-            // 
-            this.btnCleanRequirementTable.Label = "Limpiar Tabla Requerimientos";
-            this.btnCleanRequirementTable.Name = "btnCleanRequirementTable";
-            this.btnCleanRequirementTable.ShowImage = true;
             // 
             // RibbonEllipse
             // 

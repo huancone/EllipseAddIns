@@ -1275,16 +1275,6 @@ namespace EllipseWorkOrdersClassLibrary
             return list;
         }
 
-        public static void ModifyWorkOrderTaskPost(EllipseFunctions eFunctions, WorkOrderTask woTask)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void CreateWorkOrderTaskPost(EllipseFunctions eFunctions, WorkOrderTask woTask)
-        {
-            throw new NotImplementedException();
-        }
-
         public static void ModifyWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask, bool b)
         {
             var proxyWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
@@ -1348,6 +1338,26 @@ namespace EllipseWorkOrdersClassLibrary
             requestWoTask.APLSeqNo = woTask.AplSeqNo ?? requestWoTask.APLSeqNo;
 
             proxywoTask.create(opContext, requestWoTask);
+        }
+
+
+        public static void DeleteWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask, bool b)
+        {
+            var proxywoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
+            var requestWoTask = new WorkOrderTaskServiceDeleteRequestDTO();
+            var requestWoTaskList = new List<WorkOrderTaskServiceDeleteRequestDTO>();
+
+            //se cargan los parámetros de la orden
+            proxywoTask.Url = urlService + "/WorkOrderTaskService";
+
+            //se cargan los parámetros de la orden
+            requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
+            requestWoTask.workOrder = woTask.WorkOrderDto ?? requestWoTask.workOrder;
+            requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
+
+            requestWoTaskList.Add(requestWoTask);
+
+            proxywoTask.multipleDelete(opContext, requestWoTaskList.ToArray());
         }
 
         public static void SetWorkOrderTaskText(string urlService, string districtCode, string position, bool returnWarnings, WorkOrderTask woTask)
@@ -1742,5 +1752,6 @@ namespace EllipseWorkOrdersClassLibrary
 
             }
         }
+
     }
 }

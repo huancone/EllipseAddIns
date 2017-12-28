@@ -1062,7 +1062,7 @@ namespace EllipseWorkOrderExcelAddIn
 
                 _cells.GetCell(1, TitleRow02).Value = "DISTRICT";
                 _cells.GetCell(2, TitleRow02).Value = "WORK_GROUP";
-                _cells.GetCell(3, TitleRow02).Value = "WO_NO";
+                _cells.GetCell(3, TitleRow02).Value = "WORK_ORDER";
                 _cells.GetCell(4, TitleRow02).Value = "WO_DESC";
                 _cells.GetCell(4, TitleRow02).Style = StyleConstants.TitleInformation;
                 //ACTION
@@ -4168,15 +4168,16 @@ namespace EllipseWorkOrderExcelAddIn
                         _cells.GetCell(13, i).Value = "'" + task.EstimatedMachHrs;
 
                         //RECURSOS
-                        _cells.GetCell(14, i).Value = "" + task.NoLabor;
-                        _cells.GetCell(15, i).Value = "" + task.NoMaterial;
+                        _cells.GetCell(14, i).Value = "" + task.EstimatedDurationsHrs;
+                        _cells.GetCell(15, i).Value = "" + task.NoLabor;
+                        _cells.GetCell(16, i).Value = "" + task.NoMaterial;
                         //APL
-                        _cells.GetCell(16, i).Value = "'" + task.AplEquipmentGrpId;
-                        _cells.GetCell(17, i).Value = "'" + task.AplType;
-                        _cells.GetCell(18, i).Value = "'" + task.AplCompCode;
-                        _cells.GetCell(19, i).Value = "'" + task.AplCompModCode;
-                        _cells.GetCell(20, i).Value = "'" + task.AplSeqNo;
-                        _cells.GetRange(16, i, 20, i).Style = !string.IsNullOrWhiteSpace(task.AplType)
+                        _cells.GetCell(17, i).Value = "'" + task.AplEquipmentGrpId;
+                        _cells.GetCell(18, i).Value = "'" + task.AplType;
+                        _cells.GetCell(19, i).Value = "'" + task.AplCompCode;
+                        _cells.GetCell(20, i).Value = "'" + task.AplCompModCode;
+                        _cells.GetCell(21, i).Value = "'" + task.AplSeqNo;
+                        _cells.GetRange(17, i, 21, i).Style = !string.IsNullOrWhiteSpace(task.AplType)
                             ? StyleConstants.Error : StyleConstants.Normal;
 
                         var stdTextId = "WA" + task.DistrictCode + task.WorkOrder + task.WoTaskNo;
@@ -4305,95 +4306,6 @@ namespace EllipseWorkOrderExcelAddIn
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
         }
 
-        private void ExecuteTaskActionsPost()
-        {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            _cells.SetCursorWait();
-            _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
-            var i = TitleRow02 + 1;
-
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, ServiceType.PostService);
-            _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlService);
-
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
-            {
-                try
-                {
-                    string action = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
-                    var woTask = new WorkOrderTask
-                    {
-                        DistrictCode = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value),
-                        WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
-                        WorkOrder = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
-                        WoTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
-                        WoTaskDesc = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
-                        JobDescCode = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
-                        SafetyInstr = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value),
-                        CompleteInstr = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value),
-                        ComplTextCode = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value),
-                        AssignPerson = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value),
-                        EstimatedMachHrs = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value),
-                        EstimatedMachHrsSpecified = "Y",
-                        EstimatedDurationsHrs = _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value),
-                        EstimatedDurationsHrsSpecified = "Y",
-                        NoLabor = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value),
-                        NoMaterial = _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value),
-                        AplEquipmentGrpId = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
-                        AplType = _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value),
-                        AplCompCode = _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value),
-                        AplCompModCode = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value),
-                        AplSeqNo = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value),
-                        ExtTaskText = _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value)
-                    };
-
-                    if (string.IsNullOrWhiteSpace(action))
-                        continue;
-
-                    if (action.Equals("M"))
-                    {
-                        //StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask, true);
-                        //var opC = new StandardJobTaskService.OperationContext()
-                        //{
-                        //    district = _frmAuth.EllipseDsct,
-                        //    position = _frmAuth.EllipsePost,
-                        //    maxInstances = 100,
-                        //    maxInstancesSpecified = true,
-                        //    returnWarnings = Debugger.DebugWarnings,
-                        //    returnWarningsSpecified = true
-                        //};
-                        //WorkOrderActions.ModifyWorkOrderTaskPost(_eFunctions, woTask);
-                        //WorkOrderActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
-                    }
-                    else if (action.Equals("C"))
-                    {
-                        //WorkOrderActions.CreateWorkOrderTaskPost(_eFunctions, woTask);
-                        //WorkOrderActions.SetWorkOrderText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
-                    }
-                    else
-                        continue;
-
-                    _cells.GetCell(ResultColumn02, i).Value = "OK";
-                    _cells.GetCell(1, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
-                }
-                catch (Exception ex)
-                {
-                    _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ExecuteTaskActionsPost()", ex.Message);
-                }
-                finally
-                {
-                    _cells.GetCell(ResultColumn02, i).Select();
-                    i++;
-                }
-            }
-            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
-        }
-
         /// <summary>
         /// Ejecuta las acciones de tarea mediante el servicio EWS
         /// </summary>
@@ -4463,6 +4375,11 @@ namespace EllipseWorkOrderExcelAddIn
                     else if (action.Equals("C"))
                     {
                         WorkOrderActions.CreateWorkOrderTask(urlService, opSheet, woTask, true);
+                        WorkOrderActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                    }
+                    else if (action.Equals("D"))
+                    {
+                        WorkOrderActions.DeleteWorkOrderTask(urlService, opSheet, woTask, true);
                         WorkOrderActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else
