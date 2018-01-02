@@ -1377,7 +1377,7 @@ namespace EllipseWorkOrdersClassLibrary
         /// <summary>
         /// 
         /// </summary>
-       
+
         public static void CreateTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
             var proxyTaskReq = new ResourceReqmntsService.ResourceReqmntsService();//ejecuta las acciones del servicio
@@ -1390,26 +1390,30 @@ namespace EllipseWorkOrdersClassLibrary
             if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
                 taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
 
-            var requestTaskReq = new ResourceReqmntsServiceCreateRequestDTO();
-            requestTaskReq.districtCode = taskReq.DistrictCode ?? requestTaskReq.districtCode;
-            requestTaskReq.workOrder = taskReq.ResourceWorkOrderDto ?? requestTaskReq.workOrder;
-            requestTaskReq.workOrderTask = taskReq.WoTaskNo ?? requestTaskReq.workOrderTask;
-            requestTaskReq.resourceClass = taskReq.ReqCode.Substring(0, 1);
-            requestTaskReq.resourceCode = taskReq.ReqCode.Substring(1);
-            requestTaskReq.quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal);
-            requestTaskReq.quantityRequiredSpecified = true;
-            requestTaskReq.hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal);
-            requestTaskReq.hrsReqdSpecified = true;
-            requestTaskReq.classType = "WT";
-            requestTaskReq.enteredInd = "S";
-
+            var requestTaskReq = new ResourceReqmntsServiceCreateRequestDTO
+            {
+                workOrder = new ResourceReqmntsService.WorkOrderDTO
+                {
+                    prefix = taskReq.WorkOrder.Substring(0, 2),
+                    no = taskReq.WorkOrder.Substring(2, taskReq.WorkOrder.Length - 2),
+                },
+                districtCode = taskReq.DistrictCode,
+                workOrderTask = taskReq.WoTaskNo,
+                resourceClass = taskReq.ReqCode.Substring(0, 1),
+                resourceCode = taskReq.ReqCode.Substring(1),
+                quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                quantityRequiredSpecified = true,
+                hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal),
+                hrsReqdSpecified = true,
+                classType = "WT",
+                enteredInd = "S"
+            };
             proxyTaskReq.create(opContext, requestTaskReq);
         }
 
         public static void CreateTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
             var proxyTaskReq = new MaterialReqmntsService.MaterialReqmntsService();//ejecuta las acciones del servicio
-            var requestTaskReq = new MaterialReqmntsServiceCreateRequestDTO();
 
             //se cargan los parámetros de la orden
             proxyTaskReq.Url = urlService + "/MaterialReqmntsService";
@@ -1419,26 +1423,31 @@ namespace EllipseWorkOrdersClassLibrary
             if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
                 taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
 
-            requestTaskReq.districtCode = taskReq.DistrictCode ?? requestTaskReq.districtCode;
-            requestTaskReq.workOrder = taskReq.MaterialWorkOrderDto ?? requestTaskReq.workOrder;
-            requestTaskReq.workOrderTask = taskReq.WoTaskNo ?? requestTaskReq.workOrderTask;
-            requestTaskReq.seqNo = taskReq.SeqNo ?? requestTaskReq.seqNo;
-            requestTaskReq.stockCode = taskReq.ReqCode.Substring(1).PadLeft(9, '0');
-            requestTaskReq.unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal);
-            requestTaskReq.unitQuantityReqdSpecified = true;
-            requestTaskReq.catalogueFlag = true;
-            requestTaskReq.catalogueFlagSpecified = true;
-            requestTaskReq.classType = "WT";
-            requestTaskReq.contestibleFlag = false;
-            requestTaskReq.contestibleFlagSpecified = true;
-            requestTaskReq.enteredInd = "S";
-            requestTaskReq.totalOnlyFlg = true;
-            requestTaskReq.CUItemNoSpecified = false;
-            requestTaskReq.JEItemNoSpecified = false;
-            requestTaskReq.fixedAmountSpecified = false;
-            requestTaskReq.rateAmountSpecified = false;
-
-
+            var requestTaskReq = new MaterialReqmntsServiceCreateRequestDTO
+            {
+                workOrder = new MaterialReqmntsService.WorkOrderDTO
+                {
+                    prefix = taskReq.WorkOrder.Substring(0, 2),
+                    no = taskReq.WorkOrder.Substring(2, taskReq.WorkOrder.Length - 2),
+                },
+                districtCode = taskReq.DistrictCode,
+                workOrderTask = taskReq.WoTaskNo,
+                seqNo = taskReq.SeqNo,
+                stockCode = taskReq.ReqCode.Substring(1).PadLeft(9, '0'),
+                unitQuantityReqdSpecified = true,
+                catalogueFlag = true,
+                catalogueFlagSpecified = true,
+                contestibleFlag = false,
+                contestibleFlagSpecified = true,
+                classType = "WT",
+                enteredInd = "S",
+                totalOnlyFlg = true,
+                CUItemNoSpecified = false,
+                JEItemNoSpecified = false,
+                fixedAmountSpecified = false,
+                rateAmountSpecified = false,
+                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+            };
             proxyTaskReq.create(opContext, requestTaskReq);
         }
 
@@ -1456,11 +1465,17 @@ namespace EllipseWorkOrdersClassLibrary
             var requestTaskReq = new EquipmentReqmntsServiceCreateRequestDTO
             {
                 districtCode = taskReq.DistrictCode,
-                workOrder = taskReq.EquipmentResourceWorkOrderDto,
-                workOrderTask = !string.IsNullOrWhiteSpace(taskReq.WorkOrder) ? taskReq.WorkOrder : null,
+                workOrder = new EquipmentReqmntsService.WorkOrderDTO
+                {
+                    prefix = taskReq.WorkOrder.Substring(0, 2),
+                    no = taskReq.WorkOrder.Substring(2, taskReq.WorkOrder.Length - 2),
+                },
+                workOrderTask = taskReq.WoTaskNo,
                 seqNo = taskReq.SeqNo,
                 eqptType = taskReq.ReqCode.Substring(1),
-                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                unitQuantityReqd = taskReq.QtyReq != null ?
+                Convert.ToDecimal(taskReq.QtyReq) :
+                default(decimal),
                 unitQuantityReqdSpecified = true,
                 UOM = taskReq.UoM,
                 contestibleFlg = false,
@@ -1489,10 +1504,15 @@ namespace EllipseWorkOrdersClassLibrary
 
             if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
                 taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+
             var requestTaskReq = new ResourceReqmntsServiceModifyRequestDTO
             {
                 districtCode = taskReq.DistrictCode,
-                workOrder = taskReq.ResourceWorkOrderDto,
+                workOrder = new ResourceReqmntsService.WorkOrderDTO
+                {
+                    prefix = taskReq.WorkOrder.Substring(0, 2),
+                    no = taskReq.WorkOrder.Substring(2, taskReq.WorkOrder.Length - 2),
+                },
                 workOrderTask = !string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? taskReq.WoTaskNo : null,
                 resourceClass = taskReq.ReqCode.Substring(0, 1),
                 resourceCode = taskReq.ReqCode.Substring(1),
@@ -1521,21 +1541,26 @@ namespace EllipseWorkOrdersClassLibrary
             var requestTaskReqList = new List<MaterialReqmntsServiceModifyRequestDTO>();
             if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
                 taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+
             var requestTaskReq = new MaterialReqmntsServiceModifyRequestDTO
             {
                 districtCode = taskReq.DistrictCode,
-                workOrder = taskReq.MaterialWorkOrderDto,
+                workOrder = new MaterialReqmntsService.WorkOrderDTO
+                {
+                    prefix = taskReq.WorkOrder.Substring(0, 2),
+                    no = taskReq.WorkOrder.Substring(2, taskReq.WorkOrder.Length - 2),
+                },
                 workOrderTask = !string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? taskReq.WoTaskNo : null,
                 seqNo = taskReq.SeqNo,
                 stockCode = taskReq.ReqCode.Substring(1).PadLeft(9, '0'),
                 unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.QtyReq) ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                classType = "WT",
+                enteredInd = "S",
                 unitQuantityReqdSpecified = true,
                 catalogueFlag = true,
                 catalogueFlagSpecified = true,
-                classType = "WT",
                 contestibleFlag = false,
                 contestibleFlagSpecified = true,
-                enteredInd = "S",
                 totalOnlyFlg = true,
                 CUItemNoSpecified = false,
                 JEItemNoSpecified = false,
@@ -1557,10 +1582,15 @@ namespace EllipseWorkOrdersClassLibrary
             var requestTaskReqList = new List<EquipmentReqmntsServiceModifyRequestDTO>();
             if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
                 taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+
             var requestTaskReq = new EquipmentReqmntsServiceModifyRequestDTO
             {
                 districtCode = taskReq.DistrictCode,
-                workOrder = taskReq.EquipmentResourceWorkOrderDto,
+                workOrder = new EquipmentReqmntsService.WorkOrderDTO
+                {
+                    prefix = taskReq.WorkOrder.Substring(0, 2),
+                    no = taskReq.WorkOrder.Substring(2, taskReq.WorkOrder.Length - 2),
+                },
                 workOrderTask = !string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? taskReq.WoTaskNo : null,
                 seqNo = taskReq.SeqNo,
                 eqptType = taskReq.ReqCode.Substring(1),
@@ -1592,10 +1622,15 @@ namespace EllipseWorkOrdersClassLibrary
             var requestTaskReqList = new List<ResourceReqmntsServiceDeleteRequestDTO>();
             if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
                 taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+
             var requestTaskReq = new ResourceReqmntsServiceDeleteRequestDTO
             {
                 districtCode = taskReq.DistrictCode,
-                workOrder = taskReq.ResourceWorkOrderDto,
+                workOrder = new ResourceReqmntsService.WorkOrderDTO
+                {
+                    prefix = taskReq.WorkOrder.Substring(0, 2),
+                    no = taskReq.WorkOrder.Substring(2, taskReq.WorkOrder.Length - 2),
+                },
                 workOrderTask = Convert.ToString(Convert.ToDecimal(taskReq.WoTaskNo), CultureInfo.InvariantCulture),
                 resourceClass = taskReq.ReqCode.Substring(0, 1),
                 resourceCode = taskReq.ReqCode.Substring(1),
@@ -1617,13 +1652,18 @@ namespace EllipseWorkOrdersClassLibrary
             var requestTaskReqList = new List<MaterialReqmntsServiceDeleteRequestDTO>();
             if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
                 taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+            
             var requestTaskReq = new MaterialReqmntsServiceDeleteRequestDTO
             {
                 districtCode = taskReq.DistrictCode,
-                workOrder = taskReq.MaterialWorkOrderDto,
+                workOrder = new MaterialReqmntsService.WorkOrderDTO
+                {
+                    prefix = taskReq.WorkOrder.Substring(0, 2),
+                    no = taskReq.WorkOrder.Substring(2, taskReq.WorkOrder.Length - 2),
+                },
                 workOrderTask = Convert.ToString(Convert.ToDecimal(taskReq.WoTaskNo), CultureInfo.InvariantCulture),
                 seqNo = taskReq.SeqNo,
-                classType = "ST",
+                classType = "WT",
                 enteredInd = "S",
                 CUItemNoSpecified = false,
                 JEItemNoSpecified = false
@@ -1643,14 +1683,19 @@ namespace EllipseWorkOrdersClassLibrary
             var requestTaskReqList = new List<EquipmentReqmntsServiceDeleteRequestDTO>();
             if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
                 taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
+
             var requestTaskReq = new EquipmentReqmntsServiceDeleteRequestDTO
             {
                 districtCode = taskReq.DistrictCode,
-                workOrder = taskReq.EquipmentResourceWorkOrderDto,
+                workOrder = new EquipmentReqmntsService.WorkOrderDTO
+                {
+                    prefix = taskReq.WorkOrder.Substring(0, 2),
+                    no = taskReq.WorkOrder.Substring(2, taskReq.WorkOrder.Length - 2),
+                },
                 workOrderTask = Convert.ToString(Convert.ToDecimal(taskReq.WoTaskNo), CultureInfo.InvariantCulture),
                 seqNo = taskReq.SeqNo,
                 operationTypeEQP = taskReq.ReqCode,
-                classType = "ST",
+                classType = "WT",
                 enteredInd = "S",
                 CUItemNoSpecified = false,
                 JEItemNoSpecified = false

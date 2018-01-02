@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using EllipseWorkOrdersClassLibrary.ResourceReqmntsService;
 using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
 using WorkOrderTaskService = EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 
@@ -390,10 +391,5 @@ namespace EllipseWorkOrdersClassLibrary
         public string QtyReq;
         public string HrsReq;
         public string UoM;
-
-        public ResourceReqmntsService.WorkOrderDTO ResourceWorkOrderDto;
-        public MaterialReqmntsService.WorkOrderDTO MaterialWorkOrderDto;
-        public EquipmentReqmntsService.WorkOrderDTO EquipmentResourceWorkOrderDto;
-
-    }
+        }
 }
