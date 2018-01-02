@@ -93,6 +93,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const string ValidationSheetName = "ValidationSheetWorkOrder";
         private Thread _thread;
         private bool _progressUpdate = true;
+
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
@@ -835,6 +836,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
 				
 				_cells.SetCursorWait();
+
                 _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 4
                 _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 5
                 _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 6
