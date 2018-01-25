@@ -529,9 +529,9 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            _cells.ClearTableRangeColumn(TableName05, ResultColumn05);
+            _cells.ClearTableRangeColumn(TableName07, ResultColumn07);
 
-            var i = TitleRow05 + 1;
+            var i = TitleRow07 + 1;
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
             {
@@ -546,16 +546,16 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(3, i).Value = wo.unitsRequired;
                     _cells.GetCell(4, i).Value = wo.pcComplete;
                     _cells.GetCell(5, i).Value = wo.unitsComplete;
-                    _cells.GetCell(ResultColumn05, i).Value = "CONSULTA";
+                    _cells.GetCell(ResultColumn07, i).Value = "CONSULTA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn07, i).Style = StyleConstants.Success;
                 }
                 catch (Exception ex)
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn05 - 1, i).Value = "";
-                    _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn05, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn07 - 1, i).Value = "";
+                    _cells.GetCell(ResultColumn07, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn07, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:ReviewWorkProgress()", ex.Message);
                 }
                 finally
@@ -587,8 +587,8 @@ namespace EllipseWorkOrderExcelAddIn
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            _cells.ClearTableRangeColumn(TableName05, ResultColumn05);
-            var i = TitleRow05 + 1;
+            _cells.ClearTableRangeColumn(TableName07, ResultColumn07);
+            var i = TitleRow07 + 1;
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
             {
@@ -612,27 +612,27 @@ namespace EllipseWorkOrderExcelAddIn
                     {
                         _cells.GetCell(4, i).Value = reply.pcComplete;
                         _cells.GetCell(5, i).Value = reply.unitsComplete;
-                        _cells.GetCell(ResultColumn05, i).Value = "COMPLETADA";
+                        _cells.GetCell(ResultColumn07, i).Value = "COMPLETADA";
                         _cells.GetCell(1, i).Style = StyleConstants.Success;
-                        _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Success;
+                        _cells.GetCell(ResultColumn07, i).Style = StyleConstants.Success;
                     }
                     else
                     {
-                        _cells.GetCell(ResultColumn05, i).Value = errorMessage;
+                        _cells.GetCell(ResultColumn07, i).Value = errorMessage;
                         _cells.GetCell(1, i).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn07, i).Style = StyleConstants.Error;
                     }
                 }
                 catch (Exception ex)
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn05, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn07, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn07, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:UpdateWorkProgress()", ex.Message);
                 }
                 finally
                 {
-                    _cells.GetCell(ResultColumn05, i).Select();
+                    _cells.GetCell(ResultColumn07, i).Select();
                     i++;
                 }
             }
@@ -666,8 +666,8 @@ namespace EllipseWorkOrderExcelAddIn
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            _cells.ClearTableRangeColumn(TableName05, ResultColumn05);
-            var i = TitleRow05 + 1;
+            _cells.ClearTableRangeColumn(TableName07, ResultColumn07);
+            var i = TitleRow07 + 1;
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
             {
@@ -684,20 +684,20 @@ namespace EllipseWorkOrderExcelAddIn
 
                     _cells.GetCell(4, i).Value = reply.pcComplete;
                     _cells.GetCell(5, i).Value = reply.unitsComplete;
-                    _cells.GetCell(ResultColumn05, i).Value = "COMPLETADA";
+                    _cells.GetCell(ResultColumn07, i).Value = "COMPLETADA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn07, i).Style = StyleConstants.Success;
                 }
                 catch (Exception ex)
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn05, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn07, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn07, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:UpdateWorkProgress()", ex.Message);
                 }
                 finally
                 {
-                    _cells.GetCell(ResultColumn05, i).Select();
+                    _cells.GetCell(ResultColumn07, i).Select();
                     i++;
                 }
             }
@@ -715,12 +715,12 @@ namespace EllipseWorkOrderExcelAddIn
 
         private void btnCleanCloseSheets_Click(object sender, RibbonControlEventArgs e)
         {
-            _cells.ClearTableRange(TableName02);
-            _cells.ClearTableRange(TableName03);
+            _cells.ClearTableRange(TableName04);
+            _cells.ClearTableRange(TableName05);
         }
         private void btnCleanDuration_Click(object sender, RibbonControlEventArgs e)
         {
-            _cells.ClearTableRange(TableName04);
+            _cells.ClearTableRange(TableName06);
         }
         private void btnReviewReferenceCodes_Click(object sender, RibbonControlEventArgs e)
         {
@@ -3082,9 +3082,9 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             
-            _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
+            _cells.ClearTableRangeColumn(TableName04, ResultColumn04);
 
-            var i = TitleRow02 + 1;
+            var i = TitleRow04 + 1;
 
             var opSheet = new WorkOrderService.OperationContext
             {
@@ -3123,31 +3123,31 @@ namespace EllipseWorkOrderExcelAddIn
                     var reply = WorkOrderActions.CompleteWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
                     if (reply.completedCode.Trim() == wo.completedCode.Trim() && reply.closedDate == wo.closedDate)
                     {
-                        _cells.GetCell(ResultColumn02, i).Value = "COMPLETADA";
+                        _cells.GetCell(ResultColumn04, i).Value = "COMPLETADA";
                         _cells.GetCell(1, i).Style = StyleConstants.Success;
-                        _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
+                        _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Success;
                         
                         if (!string.IsNullOrWhiteSpace(wo.completeCommentToAppend)) continue;
-                        _cells.GetCell(ResultColumn02, i).Value = "COMPLETADA / No se han ingresado comentarios";
-                        _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Warning;
+                        _cells.GetCell(ResultColumn04, i).Value = "COMPLETADA / No se han ingresado comentarios";
+                        _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Warning;
                     }
                     else
                     {
-                        _cells.GetCell(ResultColumn02, i).Value = "NO SE REALIZÓ ACCIÓN";
+                        _cells.GetCell(ResultColumn04, i).Value = "NO SE REALIZÓ ACCIÓN";
                         _cells.GetCell(1, i).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Error;
                     }
                 }
                 catch (Exception ex)
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn04, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:CompleteWOList()", ex.Message);
                 }
                 finally
                 {
-                    _cells.GetCell(ResultColumn02, i).Select();
+                    _cells.GetCell(ResultColumn04, i).Select();
                     i++;
                 }
             }
@@ -3161,9 +3161,9 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             
-            _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
+            _cells.ClearTableRangeColumn(TableName04, ResultColumn04);
 
-            var i = TitleRow02 + 1;
+            var i = TitleRow04 + 1;
 
             var opSheet = new WorkOrderService.OperationContext
             {
@@ -3194,20 +3194,20 @@ namespace EllipseWorkOrderExcelAddIn
                     }
                     WorkOrderActions.ReOpenWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
 
-                    _cells.GetCell(ResultColumn02, i).Value = "REABIERTA";
+                    _cells.GetCell(ResultColumn04, i).Value = "REABIERTA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Success;
                 }
                 catch (Exception ex)
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn04, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:ReOpenWOList()", ex.Message);
                 }
                 finally
                 {
-                    _cells.GetCell(ResultColumn02, i).Select();
+                    _cells.GetCell(ResultColumn04, i).Select();
                     i++;
                 }
             }
@@ -3222,9 +3222,9 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
            
-            _cells.ClearTableRangeColumn(TableName03, ResultColumn03);
+            _cells.ClearTableRangeColumn(TableName05, ResultColumn05);
 
-            var i = TitleRow03 + 1;
+            var i = TitleRow05 + 1;
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -3237,17 +3237,17 @@ namespace EllipseWorkOrderExcelAddIn
                     string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
                     var closeText = WorkOrderActions.GetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo);
 
-                    _cells.GetCell(ResultColumn03-1, i).Value = closeText;
-                    _cells.GetCell(ResultColumn03, i).Value = "CONSULTA";
+                    _cells.GetCell(ResultColumn05-1, i).Value = closeText;
+                    _cells.GetCell(ResultColumn05, i).Value = "CONSULTA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Success;
                 }
                 catch (Exception ex)
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn03 - 1, i).Value = "";
-                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn05 - 1, i).Value = "";
+                    _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn05, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:ReviewCloseText()", ex.Message);
                 }
                 finally
@@ -3267,9 +3267,9 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             
-            _cells.ClearTableRangeColumn(TableName03, ResultColumn03);
+            _cells.ClearTableRangeColumn(TableName05, ResultColumn05);
 
-            var i = TitleRow03 + 1;
+            var i = TitleRow05 + 1;
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -3284,20 +3284,20 @@ namespace EllipseWorkOrderExcelAddIn
                     var districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
                     WorkOrderActions.SetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo, closeText);
 
-                    _cells.GetCell(ResultColumn03, i).Value = "ACTUALIZADO";
+                    _cells.GetCell(ResultColumn05, i).Value = "ACTUALIZADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Success;
                 }
                 catch (Exception ex)
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn05, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:UpdateCloseText()", ex.Message);
                 }
                 finally
                 {
-                    _cells.GetCell(ResultColumn03, i).Select();
+                    _cells.GetCell(ResultColumn05, i).Select();
                     i++;
                 }
             }
@@ -3314,11 +3314,11 @@ namespace EllipseWorkOrderExcelAddIn
             
             var woCell = new ExcelStyleCells(_excelApp, SheetName01);
             string districtCode = woCell.GetEmptyIfNull(woCell.GetCell("B3").Value);
-            _cells.ClearTableRange(TableName04);
+            _cells.ClearTableRange(TableName06);
 
             if (_cells.GetNullIfTrimmedEmpty(districtCode) != null)
             {
-                _cells.ClearTableRange(TableName04);
+                _cells.ClearTableRange(TableName06);
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
                 var opSheet = new WorkOrderService.OperationContext
@@ -3333,7 +3333,7 @@ namespace EllipseWorkOrderExcelAddIn
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
                 var i = TitleRow01 + 1;
-                var k = TitleRow04 + 1;
+                var k = TitleRow06 + 1;
                 var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
 
                 while (!string.IsNullOrWhiteSpace(_cells.GetNullOrTrimmedValue(woCell.GetCell(2, i).Value)))
@@ -3360,7 +3360,7 @@ namespace EllipseWorkOrderExcelAddIn
                         _cells.GetCell(1, k).Value = districtCode;
                         _cells.GetCell(2, k).Value = "" + woCell.GetCell(2, i).Value;
                         _cells.GetCell(2, k).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumn04, k).Value = "ERROR: " + ex.Message;
+                        _cells.GetCell(ResultColumn06, k).Value = "ERROR: " + ex.Message;
                         Debugger.LogError("RibbonEllipse.cs:GetDurationWOList()", ex.Message);
                         k++;
                     }
@@ -3386,7 +3386,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             
-            _cells.ClearTableRangeColumn(TableName04, ResultColumn04);
+            _cells.ClearTableRangeColumn(TableName06, ResultColumn06);
 
             var opSheet = new WorkOrderService.OperationContext
             {
@@ -3399,7 +3399,7 @@ namespace EllipseWorkOrderExcelAddIn
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            var i = TitleRow04 + 1;
+            var i = TitleRow06 + 1;
             var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
 
             while (!string.IsNullOrWhiteSpace(_cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value)))
@@ -3421,32 +3421,32 @@ namespace EllipseWorkOrderExcelAddIn
                         case "CREAR":
                         {
                             WorkOrderActions.CreateWorkOrderDuration(urlService, opSheet, districtCode, wo, duration);
-                            _cells.GetCell(ResultColumn04, i).Value = "CREADO";
-                            _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Success;
+                            _cells.GetCell(ResultColumn06, i).Value = "CREADO";
+                            _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Success;
                             _cells.GetCell(7, i).Value = "";//Para evitar duplicados por repetición
                         }
                             break;
                         case "ELIMINAR":
                         {
                             WorkOrderActions.DeleteWorkOrderDuration(urlService, opSheet, districtCode, wo, duration);
-                            _cells.GetCell(ResultColumn04, i).Value = "ELIMINADO";
-                            _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Success;
+                            _cells.GetCell(ResultColumn06, i).Value = "ELIMINADO";
+                            _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Success;
                         }
                             break;
                         default:
-                            _cells.GetCell(ResultColumn04, i).Value = "---";
+                            _cells.GetCell(ResultColumn06, i).Value = "---";
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(ResultColumn04, i).Value = "ERROR: " + ex.Message;
-                    _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn06, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Error;
                     Debugger.LogError("RibbonEllipse.cs:ExecuteDurationWOList()", ex.Message);
                 }
                 finally
                 {
-                    _cells.GetCell(ResultColumn04, i).Select();
+                    _cells.GetCell(ResultColumn06, i).Select();
                     i++;
                 }
             }
