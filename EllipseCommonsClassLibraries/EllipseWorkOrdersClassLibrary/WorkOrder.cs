@@ -389,7 +389,9 @@ namespace EllipseWorkOrdersClassLibrary
         public string ReqCode;
         public string ReqDesc;
         public string QtyReq;
+        public string QtyIss;
         public string HrsReq;
+        public string HrsReal;
         public string UoM;
-        }
+    }
 }

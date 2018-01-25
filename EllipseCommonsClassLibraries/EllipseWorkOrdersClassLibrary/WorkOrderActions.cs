@@ -1242,7 +1242,7 @@ namespace EllipseWorkOrdersClassLibrary
 
         public static List<TaskRequirement> FetchTaskRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string taskNo)
         {
-            var sqlQuery = Queries.GetFetchWoTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, stdJob, taskNo.PadLeft(3, '0'));
+            var sqlQuery = Queries.GetFetchWoTaskRealRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, stdJob, taskNo.PadLeft(3, '0'));
             var woTaskDataReader =
                 ef.GetQueryResult(sqlQuery);
 
@@ -1255,23 +1255,23 @@ namespace EllipseWorkOrdersClassLibrary
             }
             while (woTaskDataReader.Read())
             {
-
-                // ReSharper disable once UseObjectOrCollectionInitializer
-                var taskReq = new TaskRequirement();
-
-                taskReq.DistrictCode = "" + woTaskDataReader["DSTRCT_CODE"].ToString().Trim();
-                taskReq.WorkGroup = "" + woTaskDataReader["WORK_GROUP"].ToString().Trim();
-                taskReq.WorkOrder = "" + woTaskDataReader["WORK_ORDER"].ToString().Trim();
-
-                taskReq.WoTaskNo = "" + woTaskDataReader["WO_TASK_NO"].ToString().Trim();
-                taskReq.WoTaskDesc = "" + woTaskDataReader["WO_TASK_DESC"].ToString().Trim();
-                taskReq.ReqType = "" + woTaskDataReader["REQ_TYPE"].ToString().Trim();
-                taskReq.SeqNo = "" + woTaskDataReader["SEQ_NO"].ToString().Trim();
-                taskReq.ReqCode = "" + woTaskDataReader["RES_CODE"].ToString().Trim();
-                taskReq.ReqDesc = "" + woTaskDataReader["RES_DESC"].ToString().Trim();
-                taskReq.QtyReq = "" + woTaskDataReader["QTY_REQ"].ToString().Trim();
-                taskReq.HrsReq = "" + woTaskDataReader["HRS_QTY"].ToString().Trim();
-
+                var taskReq = new TaskRequirement
+                {
+                    ReqType = "" + woTaskDataReader["REQ_TYPE"].ToString().Trim(),              //REQ_TYPE
+                    DistrictCode = "" + woTaskDataReader["DSTRCT_CODE"].ToString().Trim(),      //DSTRCT_CODE
+                    WorkGroup = "" + woTaskDataReader["WORK_GROUP"].ToString().Trim(),          //WORK_GROUP
+                    WorkOrder = "" + woTaskDataReader["WORK_ORDER"].ToString().Trim(),          //WORK_ORDER
+                    WoTaskNo = "" + woTaskDataReader["WO_TASK_NO"].ToString().Trim(),           //WO_TASK_NO
+                    WoTaskDesc = "" + woTaskDataReader["WO_TASK_DESC"].ToString().Trim(),       //WO_TASK_DESC
+                    SeqNo = "" + woTaskDataReader["SEQ_NO"].ToString().Trim(),                  //SEQ_NO
+                    ReqCode = "" + woTaskDataReader["RES_CODE"].ToString().Trim(),              //RES_CODE
+                    ReqDesc = "" + woTaskDataReader["RES_DESC"].ToString().Trim(),              //RES_DESC
+                    UoM = "" + woTaskDataReader["UNITS"].ToString().Trim(),                     //UNITS
+                    QtyReq = "" + woTaskDataReader["QTY_REQ"].ToString().Trim(),                //QTY_REQ
+                    QtyIss = "" + woTaskDataReader["QTY_ISS"].ToString().Trim(),                //QTY_ISS
+                    HrsReq = "" + woTaskDataReader["EST_RESRCE_HRS"].ToString().Trim(),         //EST_RESRCE_HRS
+                    HrsReal = "" + woTaskDataReader["ACT_RESRCE_HRS"].ToString().Trim()         //ACT_RESRCE_HRS
+                };
                 list.Add(taskReq);
             }
             ef.CloseConnection();
@@ -1380,10 +1380,12 @@ namespace EllipseWorkOrdersClassLibrary
 
         public static void CreateTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new ResourceReqmntsService.ResourceReqmntsService();//ejecuta las acciones del servicio
+            var proxyTaskReq = new ResourceReqmntsService.ResourceReqmntsService
+            {
+                Url = urlService + "/ResourceReqmntsService"
+            }; //ejecuta las acciones del servicio
 
             //se cargan los parámetros de la orden
-            proxyTaskReq.Url = urlService + "/ResourceReqmntsService";
 
             //se cargan los parámetros de la orden
 
@@ -1413,10 +1415,12 @@ namespace EllipseWorkOrdersClassLibrary
 
         public static void CreateTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new MaterialReqmntsService.MaterialReqmntsService();//ejecuta las acciones del servicio
+            var proxyTaskReq = new MaterialReqmntsService.MaterialReqmntsService
+            {
+                Url = urlService + "/MaterialReqmntsService"
+            }; //ejecuta las acciones del servicio
 
             //se cargan los parámetros de la orden
-            proxyTaskReq.Url = urlService + "/MaterialReqmntsService";
 
             //se cargan los parámetros de la orden
 
@@ -1652,7 +1656,7 @@ namespace EllipseWorkOrdersClassLibrary
             var requestTaskReqList = new List<MaterialReqmntsServiceDeleteRequestDTO>();
             if (!string.IsNullOrWhiteSpace(taskReq.WoTaskNo))
                 taskReq.WoTaskNo = taskReq.WoTaskNo.PadLeft(3, '0');
-            
+
             var requestTaskReq = new MaterialReqmntsServiceDeleteRequestDTO
             {
                 districtCode = taskReq.DistrictCode,
@@ -1830,9 +1834,9 @@ namespace EllipseWorkOrdersClassLibrary
                 //establecemos los parámetros para el rango de fechas
                 string dateParameters;
                 if (string.IsNullOrEmpty(startDate))
-                    startDate = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
+                    startDate = $"{DateTime.Now.Year:0000}" + "0101";
                 if (string.IsNullOrEmpty(endDate))
-                    endDate = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+                    endDate = $"{DateTime.Now.Year:0000}" + $"{DateTime.Now.Month:00}" + $"{DateTime.Now.Day:00}";
 
                 if (dateCriteriaKey == SearchDateCriteriaType.Raised.Key)
                     dateParameters = " AND WO.RAISED_DATE BETWEEN '" + startDate + "' AND '" + endDate + "'";
@@ -2007,9 +2011,7 @@ namespace EllipseWorkOrdersClassLibrary
                             "	TSK.WO_TASK_DESC, " +
                             "	'N/A' SEQ_NO, " +
                             "	RS.RESOURCE_TYPE RES_CODE, " +
-                            "	TO_NUMBER( " +
-                            "		RS.CREW_SIZE " +
-                            "	) QTY_REQ, " +
+                            "	TO_NUMBER(RS.CREW_SIZE) QTY_REQ, " +
                             "	RS.EST_RESRCE_HRS HRS_QTY, " +
                             "	TT.TABLE_DESC RES_DESC, " +
                             "	'' UNITS " +
@@ -2079,6 +2081,197 @@ namespace EllipseWorkOrdersClassLibrary
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
+                return query;
+
+            }
+
+            public static string GetFetchWoTaskRealRequirementsQuery(string dbReference, string dbLink, string districtCode, string workOrder, string taskNo)
+            {
+                var query = "WITH MAT_REAL AS ( " +
+                            "    SELECT " +
+                            "        TR.DSTRCT_CODE, " +
+                            "        WO.WORK_GROUP, " +
+                            "        TR.WORK_ORDER, " +
+                            "        TR.STOCK_CODE AS RES_CODE, " +
+                            "        SCT.DESC_LINEX1 || SCT.ITEM_NAME RES_DESC, " +
+                            "        SCT.UNIT_OF_ISSUE UNITS, " +
+                            "        SUM(TR.QUANTITY_ISS) QTY_ISS " +
+                            "    FROM " +
+                            "        " + dbReference + ".MSFX99" + dbLink + " TX " +
+                            "        INNER JOIN " + dbReference + ".MSF900" + dbLink + " TR " +
+                            "        ON TR.FULL_PERIOD = TX.FULL_PERIOD AND TR.WORK_ORDER = TX.WORK_ORDER AND TR.USERNO = TX.USERNO AND TR.TRANSACTION_NO = TX.TRANSACTION_NO AND TR.ACCOUNT_CODE = TX.ACCOUNT_CODE AND TR.REC900_TYPE = TX.REC900_TYPE AND TR.PROCESS_DATE = TX.PROCESS_DATE AND TR.DSTRCT_CODE = TX.DSTRCT_CODE " +
+                            "        LEFT JOIN " + dbReference + ".MSF100" + dbLink + " SCT " +
+                            "        ON TR.STOCK_CODE = SCT.STOCK_CODE " +
+                            "        INNER JOIN " + dbReference + ".MSF620" + dbLink + " WO " +
+                            "        ON WO.DSTRCT_CODE = TR.DSTRCT_CODE AND WO.WORK_ORDER = TR.WORK_ORDER " +
+                            "    WHERE " +
+                            "        TR.DSTRCT_CODE = '" + districtCode + "' AND   TR.WORK_ORDER = '" + workOrder + "' AND   TX.REC900_TYPE = 'S' " +
+                            "    GROUP BY " +
+                            "        TR.DSTRCT_CODE, " +
+                            "        WO.WORK_GROUP, " +
+                            "        TR.WORK_ORDER, " +
+                            "        TR.STOCK_CODE, " +
+                            "        SCT.DESC_LINEX1 || SCT.ITEM_NAME, " +
+                            "        SCT.UNIT_OF_ISSUE " +
+                            "),MAT_EST AS ( " +
+                            "    SELECT " +
+                            "        TSK.DSTRCT_CODE, " +
+                            "        TSK.WORK_GROUP, " +
+                            "        TSK.WORK_ORDER, " +
+                            "        TSK.WO_TASK_NO, " +
+                            "        TSK.WO_TASK_DESC, " +
+                            "        RS.SEQNCE_NO SEQ_NO, " +
+                            "        RS.STOCK_CODE RES_CODE, " +
+                            "        RS.UNIT_QTY_REQD QTY_REQ, " +
+                            "        SCT.DESC_LINEX1 || SCT.ITEM_NAME RES_DESC, " +
+                            "        SCT.UNIT_OF_ISSUE UNITS " +
+                            "    FROM " +
+                            "        " + dbReference + ".MSF623" + dbLink + " TSK " +
+                            "        INNER JOIN " + dbReference + ".MSF734" + dbLink + " RS " +
+                            "        ON RS.CLASS_KEY = TSK.DSTRCT_CODE || TSK.WORK_ORDER || TSK.WO_TASK_NO " +
+                            "        INNER JOIN " + dbReference + ".MSF100" + dbLink + " SCT " +
+                            "        ON RS.STOCK_CODE = SCT.STOCK_CODE AND RS.CLASS_TYPE = 'WT' " +
+                            "    WHERE " +
+                            "        TSK.DSTRCT_CODE = '" + districtCode + "' AND   TSK.WORK_ORDER = '" + workOrder + "' AND   TSK.WO_TASK_NO = '" + taskNo + "' " +
+                            "),TABLA_MAT AS ( " +
+                            "    SELECT " +
+                            "        DECODE(MAT_EST.DSTRCT_CODE,NULL,MAT_REAL.DSTRCT_CODE,MAT_EST.DSTRCT_CODE) DSTRCT_CODE, " +
+                            "        DECODE(MAT_EST.WORK_GROUP,NULL,MAT_REAL.WORK_GROUP,MAT_EST.WORK_GROUP) WORK_GROUP, " +
+                            "        DECODE(MAT_EST.WORK_ORDER,NULL,MAT_REAL.WORK_ORDER,MAT_EST.WORK_ORDER) WORK_ORDER, " +
+                            "        MAT_EST.WO_TASK_NO, " +
+                            "        MAT_EST.WO_TASK_DESC, " +
+                            "        MAT_EST.SEQ_NO, " +
+                            "        DECODE(MAT_EST.RES_CODE,NULL,MAT_REAL.RES_CODE,MAT_EST.RES_CODE) RES_CODE, " +
+                            "        DECODE(MAT_EST.RES_DESC,NULL,MAT_REAL.RES_DESC,MAT_EST.RES_DESC) RES_DESC, " +
+                            "        DECODE(MAT_EST.UNITS,NULL,MAT_REAL.UNITS,MAT_EST.UNITS) UNITS, " +
+                            "        MAT_EST.QTY_REQ, " +
+                            "        MAT_REAL.QTY_ISS " +
+                            "    FROM " +
+                            "        MAT_REAL " +
+                            "        FULL JOIN MAT_EST " +
+                            "        ON MAT_REAL.DSTRCT_CODE = MAT_EST.DSTRCT_CODE AND MAT_REAL.WORK_ORDER = MAT_EST.WORK_ORDER AND MAT_REAL.RES_CODE = MAT_EST.RES_CODE " +
+                            "),RES_REAL AS ( " +
+                            "    SELECT " +
+                            "        TR.DSTRCT_CODE, " +
+                            "        WT.WORK_GROUP, " +
+                            "        TR.WORK_ORDER, " +
+                            "        TR.WO_TASK_NO, " +
+                            "        WT.WO_TASK_DESC, " +
+                            "        TR.RESOURCE_TYPE RES_CODE, " +
+                            "        TT.TABLE_DESC RES_DESC, " +
+                            "        SUM(TR.NO_OF_HOURS) ACT_RESRCE_HRS " +
+                            "    FROM " +
+                            "        " + dbReference + ".MSFX99" + dbLink + " TX " +
+                            "        INNER JOIN " + dbReference + ".MSF900" + dbLink + " TR " +
+                            "        ON TR.FULL_PERIOD = TX.FULL_PERIOD AND TR.WORK_ORDER = TX.WORK_ORDER AND TR.USERNO = TX.USERNO AND TR.TRANSACTION_NO = TX.TRANSACTION_NO AND TR.ACCOUNT_CODE = TX.ACCOUNT_CODE AND TR.REC900_TYPE = TX.REC900_TYPE AND TR.PROCESS_DATE = TX.PROCESS_DATE AND TR.DSTRCT_CODE = TX.DSTRCT_CODE " +
+                            "        INNER JOIN " + dbReference + ".MSF010" + dbLink + " TT " +
+                            "        ON TT.TABLE_CODE = TR.RESOURCE_TYPE AND TT.TABLE_TYPE = 'TT' " +
+                            "        INNER JOIN " + dbReference + ".MSF623" + dbLink + " WT " +
+                            "        ON WT.DSTRCT_CODE = TR.DSTRCT_CODE AND WT.WORK_ORDER = TR.WORK_ORDER AND WT.WO_TASK_NO = TR.WO_TASK_NO " +
+                            "    WHERE " +
+                            "        TR.DSTRCT_CODE = '" + districtCode + "' AND   TR.WORK_ORDER = '" + workOrder + "' AND   TR.WO_TASK_NO = '" + taskNo + "' " +
+                            "    GROUP BY " +
+                            "        TR.DSTRCT_CODE, " +
+                            "        WT.WORK_GROUP, " +
+                            "        TR.WORK_ORDER, " +
+                            "        TR.WO_TASK_NO, " +
+                            "        WT.WO_TASK_DESC, " +
+                            "        TR.RESOURCE_TYPE, " +
+                            "        TT.TABLE_DESC " +
+                            "),RES_EST AS ( " +
+                            "    SELECT " +
+                            "        TSK.DSTRCT_CODE, " +
+                            "        TSK.WORK_GROUP, " +
+                            "        TSK.WORK_ORDER, " +
+                            "        TSK.WO_TASK_NO, " +
+                            "        TSK.WO_TASK_DESC, " +
+                            "        RS.RESOURCE_TYPE RES_CODE, " +
+                            "        TT.TABLE_DESC RES_DESC, " +
+                            "        TO_NUMBER(RS.CREW_SIZE) QTY_REQ, " +
+                            "        RS.EST_RESRCE_HRS " +
+                            "    FROM " +
+                            "        " + dbReference + ".MSF623" + dbLink + " TSK " +
+                            "        INNER JOIN " + dbReference + ".MSF735" + dbLink + " RS " +
+                            "        ON RS.KEY_735_ID = TSK.DSTRCT_CODE || TSK.WORK_ORDER || TSK.WO_TASK_NO AND RS.REC_735_TYPE = 'WT' " +
+                            "        INNER JOIN " + dbReference + ".MSF010" + dbLink + " TT " +
+                            "        ON TT.TABLE_CODE = RS.RESOURCE_TYPE AND TT.TABLE_TYPE = 'TT' " +
+                            "    WHERE " +
+                            "        TSK.DSTRCT_CODE = '" + districtCode + "' AND   TSK.WORK_ORDER = '" + workOrder + "' AND   TSK.WO_TASK_NO = '" + taskNo + "' " +
+                            "),TABLA_REC AS ( " +
+                            "    SELECT " +
+                            "        DECODE(RES_EST.DSTRCT_CODE,NULL,RES_REAL.DSTRCT_CODE,RES_EST.DSTRCT_CODE) DSTRCT_CODE, " +
+                            "        DECODE(RES_EST.WORK_GROUP,NULL,RES_REAL.WORK_GROUP,RES_EST.WORK_GROUP) WORK_GROUP, " +
+                            "        DECODE(RES_EST.WORK_ORDER,NULL,RES_REAL.WORK_ORDER,RES_EST.WORK_ORDER) WORK_ORDER, " +
+                            "        DECODE(RES_EST.WO_TASK_NO,NULL,RES_REAL.WO_TASK_NO,RES_EST.WO_TASK_NO) WO_TASK_NO, " +
+                            "        DECODE(RES_EST.WO_TASK_DESC,NULL,RES_REAL.WO_TASK_DESC,RES_EST.WO_TASK_DESC) WO_TASK_DESC, " +
+                            "        DECODE(RES_EST.RES_CODE,NULL,RES_REAL.RES_CODE,RES_EST.RES_CODE) RES_CODE, " +
+                            "        DECODE(RES_EST.RES_DESC,NULL,RES_REAL.RES_DESC,RES_EST.RES_DESC) RES_DESC, " +
+                            "        RES_EST.QTY_REQ, " +
+                            "        RES_REAL.ACT_RESRCE_HRS, " +
+                            "        RES_EST.EST_RESRCE_HRS " +
+                            "    FROM " +
+                            "        RES_REAL " +
+                            "        FULL JOIN RES_EST " +
+                            "        ON RES_REAL.DSTRCT_CODE = RES_EST.DSTRCT_CODE AND RES_REAL.WORK_ORDER = RES_EST.WORK_ORDER AND RES_REAL.WO_TASK_NO = RES_EST.WO_TASK_NO AND RES_REAL.RES_CODE = RES_EST.RES_CODE " +
+                            ") SELECT " +
+                            "    'MAT' REQ_TYPE, " +
+                            "    TABLA_MAT.DSTRCT_CODE, " +
+                            "    TABLA_MAT.WORK_GROUP, " +
+                            "    TABLA_MAT.WORK_ORDER, " +
+                            "    TABLA_MAT.WO_TASK_NO, " +
+                            "    TABLA_MAT.WO_TASK_DESC, " +
+                            "    TABLA_MAT.SEQ_NO, " +
+                            "    TABLA_MAT.RES_CODE, " +
+                            "    TABLA_MAT.RES_DESC, " +
+                            "    TABLA_MAT.UNITS, " +
+                            "    TABLA_MAT.QTY_REQ, " +
+                            "    TABLA_MAT.QTY_ISS, " +
+                            "    NULL EST_RESRCE_HRS, " +
+                            "    NULL ACT_RESRCE_HRS " +
+                            "  FROM " +
+                            "    TABLA_MAT " +
+                            "UNION ALL " +
+                            "SELECT " +
+                            "    'LAB' REQ_TYPE, " +
+                            "    TABLA_REC.DSTRCT_CODE, " +
+                            "    TABLA_REC.WORK_GROUP, " +
+                            "    TABLA_REC.WORK_ORDER, " +
+                            "    TABLA_REC.WO_TASK_NO, " +
+                            "    TABLA_REC.WO_TASK_DESC, " +
+                            "    NULL SEQ_NO, " +
+                            "    TABLA_REC.RES_CODE, " +
+                            "    TABLA_REC.RES_DESC, " +
+                            "    NULL UNITS, " +
+                            "    TABLA_REC.QTY_REQ, " +
+                            "    NULL QTY_ISS, " +
+                            "    TABLA_REC.EST_RESRCE_HRS, " +
+                            "    TABLA_REC.ACT_RESRCE_HRS " +
+                            "FROM " +
+                            "    TABLA_REC " +
+                            "UNION ALL " +
+                            "SELECT " +
+                            "    'EQU' REQ_TYPE, " +
+                            "    TSK.DSTRCT_CODE, " +
+                            "    TSK.WORK_GROUP, " +
+                            "    TSK.WORK_ORDER, " +
+                            "    TSK.WO_TASK_NO, " +
+                            "    TSK.WO_TASK_DESC, " +
+                            "    RS.SEQNCE_NO SEQ_NO, " +
+                            "    RS.EQPT_TYPE RES_CODE, " +
+                            "    ET.TABLE_DESC RES_DESC, " +
+                            "    RS.UOM UNITS, " +
+                            "    RS.QTY_REQ, " +
+                            "    NULL QTY_ISS, " +
+                            "    RS.UNIT_QTY_REQD EST_RESRCE_HRS, " +
+                            "    NULL ACT_RESRCE_HRS " +
+                            "FROM " +
+                            "    " + dbReference + ".MSF623" + dbLink + " TSK " +
+                            "    INNER JOIN " + dbReference + ".MSF733" + dbLink + " RS " +
+                            "    ON RS.CLASS_KEY = TSK.DSTRCT_CODE || TSK.WORK_ORDER || TSK.WO_TASK_NO AND RS.CLASS_TYPE = 'WT' " +
+                            "    INNER JOIN " + dbReference + ".MSF010" + dbLink + " ET " +
+                            "    ON RS.EQPT_TYPE = ET.TABLE_CODE AND TABLE_TYPE = 'ET' " +
+                            "WHERE " +
+                            "    TSK.DSTRCT_CODE = '" + districtCode + "' AND   TSK.WORK_ORDER = '" + workOrder + "'AND   TSK.WO_TASK_NO = '" + taskNo + "'";
                 return query;
 
             }
