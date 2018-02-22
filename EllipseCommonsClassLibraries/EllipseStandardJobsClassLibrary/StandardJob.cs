@@ -771,11 +771,11 @@ namespace EllipseStandardJobsClassLibrary
 
         public static void ModifyStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask)
         {
-
-
             ef.InitiatePostConnection();
+
             if(!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
                 stdTask.SjTaskNo = stdTask.SjTaskNo.PadLeft(3, '0');
+
             var requestXml = "";
             requestXml = requestXml + "<interaction>";
             requestXml = requestXml + "	<actions>";

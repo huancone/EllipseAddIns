@@ -595,7 +595,7 @@ namespace EllipseWorkOrderExcelAddIn
                 try
                 {
                     var wo = new WorkOrder {districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value)};
-                    //GENERAL
+
                     wo.SetWorkOrderDto(WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value)));
                     wo.pcComplete = percentUpdate ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value) : null;
                     wo.unitsComplete = unitsCompletedUpdate ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value) : null;

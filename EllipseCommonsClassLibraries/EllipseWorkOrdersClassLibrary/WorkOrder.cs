@@ -350,6 +350,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string EstimatedMachHrsSpecified;
         public string EstimatedDurationsHrsSpecified;
         public string ExtTaskText;
+        public string ClosedStatus;
 
         public WorkOrderTaskService.WorkOrderDTO WorkOrderDto { get; private set; }
 

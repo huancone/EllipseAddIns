@@ -1233,6 +1233,7 @@ namespace EllipseWorkOrdersClassLibrary
                 task.AplCompCode = "" + stdDataReader["COMP_CODE"].ToString().Trim();
                 task.AplCompModCode = "" + stdDataReader["COMP_MOD_CODE"].ToString().Trim();
                 task.AplSeqNo = "" + stdDataReader["APL_SEQ_NO"].ToString().Trim();
+                task.ClosedStatus = "" + stdDataReader["CLOSED_STATUS"].ToString().Trim();
 
                 list.Add(task);
             }
@@ -1257,20 +1258,20 @@ namespace EllipseWorkOrdersClassLibrary
             {
                 var taskReq = new TaskRequirement
                 {
-                    ReqType = "" + woTaskDataReader["REQ_TYPE"].ToString().Trim(),              //REQ_TYPE
-                    DistrictCode = "" + woTaskDataReader["DSTRCT_CODE"].ToString().Trim(),      //DSTRCT_CODE
-                    WorkGroup = "" + woTaskDataReader["WORK_GROUP"].ToString().Trim(),          //WORK_GROUP
-                    WorkOrder = "" + woTaskDataReader["WORK_ORDER"].ToString().Trim(),          //WORK_ORDER
-                    WoTaskNo = "" + woTaskDataReader["WO_TASK_NO"].ToString().Trim(),           //WO_TASK_NO
-                    WoTaskDesc = "" + woTaskDataReader["WO_TASK_DESC"].ToString().Trim(),       //WO_TASK_DESC
-                    SeqNo = "" + woTaskDataReader["SEQ_NO"].ToString().Trim(),                  //SEQ_NO
-                    ReqCode = "" + woTaskDataReader["RES_CODE"].ToString().Trim(),              //RES_CODE
-                    ReqDesc = "" + woTaskDataReader["RES_DESC"].ToString().Trim(),              //RES_DESC
-                    UoM = "" + woTaskDataReader["UNITS"].ToString().Trim(),                     //UNITS
-                    QtyReq = "" + woTaskDataReader["QTY_REQ"].ToString().Trim(),                //QTY_REQ
-                    QtyIss = "" + woTaskDataReader["QTY_ISS"].ToString().Trim(),                //QTY_ISS
-                    HrsReq = "" + woTaskDataReader["EST_RESRCE_HRS"].ToString().Trim(),         //EST_RESRCE_HRS
-                    HrsReal = "" + woTaskDataReader["ACT_RESRCE_HRS"].ToString().Trim()         //ACT_RESRCE_HRS
+                    ReqType = "" + woTaskDataReader["REQ_TYPE"].ToString().Trim(),                  //REQ_TYPE
+                    DistrictCode = "" + woTaskDataReader["DSTRCT_CODE"].ToString().Trim(),          //DSTRCT_CODE
+                    WorkGroup = "" + woTaskDataReader["WORK_GROUP"].ToString().Trim(),              //WORK_GROUP
+                    WorkOrder = "" + woTaskDataReader["WORK_ORDER"].ToString().Trim(),              //WORK_ORDER
+                    WoTaskNo = "" + woTaskDataReader["WO_TASK_NO"].ToString().Trim(),               //WO_TASK_NO
+                    WoTaskDesc = "" + woTaskDataReader["WO_TASK_DESC"].ToString().Trim(),           //WO_TASK_DESC
+                    SeqNo = "" + woTaskDataReader["SEQ_NO"].ToString().Trim(),                      //SEQ_NO
+                    ReqCode = "" + woTaskDataReader["RES_CODE"].ToString().Trim(),                  //RES_CODE
+                    ReqDesc = "" + woTaskDataReader["RES_DESC"].ToString().Trim(),                  //RES_DESC
+                    UoM = "" + woTaskDataReader["UNITS"].ToString().Trim(),                         //UNITS
+                    QtyReq = "" + woTaskDataReader["QTY_REQ"].ToString().Trim(),                    //QTY_REQ
+                    QtyIss = "" + woTaskDataReader["QTY_ISS"].ToString().Trim(),                    //QTY_ISS
+                    HrsReq = ""+ woTaskDataReader["EST_RESRCE_HRS"].ToString().Trim(), //EST_RESRCE_HRS
+                    HrsReal = "" + woTaskDataReader["ACT_RESRCE_HRS"].ToString().Trim()  //ACT_RESRCE_HRS
                 };
                 list.Add(taskReq);
             }
@@ -1962,6 +1963,7 @@ namespace EllipseWorkOrdersClassLibrary
                             "	WT.COMP_CODE, " +
                             "	WT.COMP_MOD_CODE, " +
                             "	WT.APL_SEQ_NO, " +
+                            "	WT.CLOSED_STATUS, " +
                             "	( " +
                             "		SELECT " +
                             "			COUNT(*) LABOR " +
@@ -2223,11 +2225,11 @@ namespace EllipseWorkOrdersClassLibrary
                             "    TABLA_MAT.SEQ_NO, " +
                             "    TABLA_MAT.RES_CODE, " +
                             "    TABLA_MAT.RES_DESC, " +
-                            "    TABLA_MAT.UNITS, " +
+                            "    DECODE(TABLA_MAT.UNITS, NULL, '', TABLA_MAT.UNITS) UNITS, " +
                             "    TABLA_MAT.QTY_REQ, " +
-                            "    TABLA_MAT.QTY_ISS, " +
-                            "    NULL EST_RESRCE_HRS, " +
-                            "    NULL ACT_RESRCE_HRS " +
+                            "    DECODE(TABLA_MAT.QTY_ISS, NULL, 0,TABLA_MAT.QTY_ISS) QTY_ISS, " +
+                            "    0 EST_RESRCE_HRS, " +
+                            "    0 ACT_RESRCE_HRS " +
                             "  FROM " +
                             "    TABLA_MAT " +
                             "UNION ALL " +
@@ -2238,14 +2240,14 @@ namespace EllipseWorkOrdersClassLibrary
                             "    TABLA_REC.WORK_ORDER, " +
                             "    TABLA_REC.WO_TASK_NO, " +
                             "    TABLA_REC.WO_TASK_DESC, " +
-                            "    NULL SEQ_NO, " +
+                            "    '' SEQ_NO, " +
                             "    TABLA_REC.RES_CODE, " +
                             "    TABLA_REC.RES_DESC, " +
-                            "    NULL UNITS, " +
+                            "    '' UNITS, " +
                             "    TABLA_REC.QTY_REQ, " +
                             "    NULL QTY_ISS, " +
-                            "    TABLA_REC.EST_RESRCE_HRS, " +
-                            "    TABLA_REC.ACT_RESRCE_HRS " +
+                            "    DECODE(TABLA_REC.EST_RESRCE_HRS, NULL, 0, TABLA_REC.EST_RESRCE_HRS) EST_RESRCE_HRS, " +
+                            "    DECODE(TABLA_REC.ACT_RESRCE_HRS, NULL, 0, TABLA_REC.ACT_RESRCE_HRS) ACT_RESRCE_HRS " +
                             "FROM " +
                             "    TABLA_REC " +
                             "UNION ALL " +
@@ -2261,9 +2263,9 @@ namespace EllipseWorkOrdersClassLibrary
                             "    ET.TABLE_DESC RES_DESC, " +
                             "    RS.UOM UNITS, " +
                             "    RS.QTY_REQ, " +
-                            "    NULL QTY_ISS, " +
-                            "    RS.UNIT_QTY_REQD EST_RESRCE_HRS, " +
-                            "    NULL ACT_RESRCE_HRS " +
+                            "    0 QTY_ISS, " +
+                            "    DECODE(RS.UNIT_QTY_REQD, NULL, 0, RS.UNIT_QTY_REQD) EST_RESRCE_HRS, " +
+                            "    0 ACT_RESRCE_HRS " +
                             "FROM " +
                             "    " + dbReference + ".MSF623" + dbLink + " TSK " +
                             "    INNER JOIN " + dbReference + ".MSF733" + dbLink + " RS " +

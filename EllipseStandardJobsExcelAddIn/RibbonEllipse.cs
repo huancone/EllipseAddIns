@@ -1805,18 +1805,18 @@ namespace EllipseStandardJobsExcelAddIn
                     foreach (var req in reqList)
                     {
                         //GENERAL
-                        _cells.GetCell(1, i).Value = "" + req.districtCode;
-                        _cells.GetCell(2, i).Value = "" + req.workGroup;
-                        _cells.GetCell(3, i).Value = "" + req.standardJob;
-                        _cells.GetCell(4, i).Value = "" + req.sJTaskNo;
-                        _cells.GetCell(5, i).Value = "" + req.sJTaskDesc;
+                        _cells.GetCell(1, i).Value = "" + req.DistrictCode;
+                        _cells.GetCell(2, i).Value = "" + req.WorkGroup;
+                        _cells.GetCell(3, i).Value = "" + req.StandardJob;
+                        _cells.GetCell(4, i).Value = "" + req.SJTaskNo;
+                        _cells.GetCell(5, i).Value = "" + req.SJTaskDesc;
                         _cells.GetCell(6, i).Value = "M";
-                        _cells.GetCell(7, i).Value = "" + req.reqType;
-                        _cells.GetCell(8, i).Value = "" + req.seqNo;
-                        _cells.GetCell(9, i).Value = "" + req.reqCode;
-                        _cells.GetCell(10, i).Value = "" + req.reqDesc;
-                        _cells.GetCell(11, i).Value = "" + req.qtyReq;
-                        _cells.GetCell(12, i).Value = "" + req.hrsReq;
+                        _cells.GetCell(7, i).Value = "" + req.ReqType;
+                        _cells.GetCell(8, i).Value = "" + req.SeqNo;
+                        _cells.GetCell(9, i).Value = "" + req.ReqCode;
+                        _cells.GetCell(10, i).Value = "" + req.ReqDesc;
+                        _cells.GetCell(11, i).Value = "" + req.QtyReq;
+                        _cells.GetCell(12, i).Value = "" + req.HrsReq;
                         _cells.GetCell(ResultColumn03, i).Select();
                         i++;//aumenta req
                     }

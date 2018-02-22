@@ -1,0 +1,3292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://service.ellipse.mincom.com" xmlns:tns="http://jobsmwp.m8mwp.service.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:ns3="http://instances.m8mwp.types.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.m8mwp.types.ellipse.mincom.com">
+      <xsd:import namespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com" />
+      <xsd:import namespace="http://service.ellipse.mincom.com" />
+      <xsd:simpleType name="unitsComplete">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="raisedTime">
+        <xsd:restriction base="xsd:time" />
+      </xsd:simpleType>
+      <xsd:simpleType name="woDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="90" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="actOtherCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="-9999999999999.99" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="actualStartDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="linkEntityType">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-9999999999" />
+          <xsd:maxInclusive value="9999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="noOfTasks">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="schSegFr">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="3" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999.999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isParent">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="aptwExistsSw">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="lastPerformedWorkOrder">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="actLabCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="-9999999999999.99" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="estDurHrs">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="restartParentWODstrctCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="jobType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="jobId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="prodUnitItem">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="dstrctCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ganttLinkId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="maintType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="reqStartTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastPerformedDstrctCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="crteInsitu">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="suburb">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="35" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isControl">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="matUpdateFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="taskAptwSw">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClass">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkDistrictCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="dateStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="schSegTo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="3" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999.999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkStatType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkedInd">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="parentLinkId">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:maxInclusive value="999999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numberOfMSTisRemaining">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-9999999999" />
+          <xsd:maxInclusive value="9999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkEntityId">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:maxInclusive value="999999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="actualStartTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="conAstSegTo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="compCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="townCity">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="35" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="restartParentWOWorkOrder">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="calcOthCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="restartMSTIMstReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stdJobNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="serialNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="reqByTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="targtFinDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="calcEquipCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="originalPlannedStartDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="projDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="partNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="planPriority">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workGroup">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="7" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="hasAssignTodo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="originalPlannedFinishDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="linkJobLinkListId">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:maxInclusive value="999999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="mnemonic">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="estMatCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="-9999999999999.99" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assocEquipSw">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="dstrctAcctCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="28" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="reqStartDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx8">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woTaskNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx7">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx9">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx4">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woStatusM">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx3">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx6">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx5">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="calcMatCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="originalPlannedStartTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="pcComplete">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipUpdateFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="reqByDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="woStatusU">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="planStrTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="recallTimeHrs">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="shutdownNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCodex9">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="restartParentWOPlanStrDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCodex8">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCodex7">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCodex6">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkStatValue">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkOffset">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="-999999999999.99" />
+          <xsd:maxInclusive value="999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resUpdateFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="planStatType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="streetName">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="35" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="calcLabHrs">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ganttStartDateTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ganttParentLinkId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="actualFinishTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="reference">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="source">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="planFinDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="restartChildWODstrctCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCodex4">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="statutoryFlg">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="streetNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCodex5">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="originalPlannedFinishTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCodex2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCodex3">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="parentEntityId">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:maxInclusive value="999999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCodex1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workRequestDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="250" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="prefTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="completedCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="prefDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="maintSchTask">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipGrpId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="closedTime">
+        <xsd:restriction base="xsd:time" />
+      </xsd:simpleType>
+      <xsd:simpleType name="linkErpTaskRef">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assignPerson">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="restartMSTIPlanStrDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="emailAddress">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="320" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="estOtherCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="-9999999999999.99" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="originatorId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="actMatCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="-9999999999999.99" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="compModCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="parentJobType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrder">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="origPriority">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="crew">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="fromLink">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="raisedDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="parentWo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="faxNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="16" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="jobParentId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="actEquipCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="requestId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="restartChildWOWorkOrder">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="parentEquip">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkLagOrLead">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="9" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="projectNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemName1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkId">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:maxInclusive value="999999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="schedDesc2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="45" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemName2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assumeFirstMSTI">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="sequenceNo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999.0" />
+          <xsd:maxInclusive value="999999.0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="restartChildWOPlanStrDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="estLabCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="-9999999999999.99" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="targtStrDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="location">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ganttFinishDateTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="calcLabCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="shortDesc2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="shortDesc1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="accountCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="24" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="data1732">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="noGanttMove">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="otherUpdateFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="locationFr">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="shutdownType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="zipCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCodex10">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="planStrDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="isMSTParent">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="actDurHrs">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="countyShire">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="planStatVal">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="actualFinishDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="planFinTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx20">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="restartMSTIFromLinkPlanStrDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="linkScale">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkSequenceNum">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999.0" />
+          <xsd:maxInclusive value="999999.0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="partialCacheKey">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="32" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="parentPlantNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx17">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx16">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx19">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx18">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="unitOfWork">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="suppressingMST">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="failurePart">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="estEquipCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="plantNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="state">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx11">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="multipleResourceRequirements">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8600" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx10">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx13">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx12">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx15">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipClassifx14">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkState">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="id">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:maxInclusive value="999999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="noGanttResize">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipLocation">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="conAstSegFr">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastPerformedDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="restartMSTIFromLinkMstReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="mstReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="printerName">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="14" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="estLabHrs">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkScaledOffset">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="-999999999999.99" />
+          <xsd:maxInclusive value="999999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkErpRef">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="unitsRequired">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="closedDt">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:complexType name="JobsMWPDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="accountCode" type="ns3:accountCode" />
+              <xsd:element minOccurs="0" name="actDurHrs" type="ns3:actDurHrs" />
+              <xsd:element minOccurs="0" name="actEquipCost" type="ns3:actEquipCost" />
+              <xsd:element minOccurs="0" name="actLabCost" type="ns3:actLabCost" />
+              <xsd:element minOccurs="0" name="actMatCost" type="ns3:actMatCost" />
+              <xsd:element minOccurs="0" name="actOtherCost" type="ns3:actOtherCost" />
+              <xsd:element minOccurs="0" name="actualFinishDate" type="ns3:actualFinishDate" />
+              <xsd:element minOccurs="0" name="actualFinishTime" type="ns3:actualFinishTime" />
+              <xsd:element minOccurs="0" name="actualStartDate" type="ns3:actualStartDate" />
+              <xsd:element minOccurs="0" name="actualStartTime" type="ns3:actualStartTime" />
+              <xsd:element minOccurs="0" name="aptwExistsSw" type="ns3:aptwExistsSw" />
+              <xsd:element minOccurs="0" name="assignPerson" type="ns3:assignPerson" />
+              <xsd:element minOccurs="0" name="assocEquipSw" type="ns3:assocEquipSw" />
+              <xsd:element minOccurs="0" name="assumeFirstMSTI" type="ns3:assumeFirstMSTI" />
+              <xsd:element minOccurs="0" name="autoGroupProjection" type="ns3:JobLinkDTO" />
+              <xsd:element minOccurs="0" name="calcEquipCost" type="ns3:calcEquipCost" />
+              <xsd:element minOccurs="0" name="calcLabCost" type="ns3:calcLabCost" />
+              <xsd:element minOccurs="0" name="calcLabHrs" type="ns3:calcLabHrs" />
+              <xsd:element minOccurs="0" name="calcMatCost" type="ns3:calcMatCost" />
+              <xsd:element minOccurs="0" name="calcOthCost" type="ns3:calcOthCost" />
+              <xsd:element minOccurs="0" name="childLinks" type="ns3:ArrayOfJobsJobLinkDTO" />
+              <xsd:element minOccurs="0" name="closedDt" type="ns3:closedDt" />
+              <xsd:element minOccurs="0" name="closedTime" type="ns3:closedTime" />
+              <xsd:element minOccurs="0" name="compCode" type="ns3:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="ns3:compModCode" />
+              <xsd:element minOccurs="0" name="completedCode" type="ns3:completedCode" />
+              <xsd:element minOccurs="0" name="conAstSegFr" type="ns3:conAstSegFr" />
+              <xsd:element minOccurs="0" name="conAstSegTo" type="ns3:conAstSegTo" />
+              <xsd:element minOccurs="0" name="countyShire" type="ns3:countyShire" />
+              <xsd:element minOccurs="0" name="crew" type="ns3:crew" />
+              <xsd:element minOccurs="0" name="crteInsitu" type="ns3:crteInsitu" />
+              <xsd:element minOccurs="0" name="data1732" type="ns3:data1732" />
+              <xsd:element minOccurs="0" name="dateStatus" type="ns3:dateStatus" />
+              <xsd:element minOccurs="0" name="dstrctAcctCode" type="ns3:dstrctAcctCode" />
+              <xsd:element minOccurs="0" name="dstrctCode" type="ns3:dstrctCode" />
+              <xsd:element minOccurs="0" name="emailAddress" type="ns3:emailAddress" />
+              <xsd:element minOccurs="0" name="equipClass" type="ns3:equipClass" />
+              <xsd:element minOccurs="0" name="equipClassifx1" type="ns3:equipClassifx1" />
+              <xsd:element minOccurs="0" name="equipClassifx10" type="ns3:equipClassifx10" />
+              <xsd:element minOccurs="0" name="equipClassifx11" type="ns3:equipClassifx11" />
+              <xsd:element minOccurs="0" name="equipClassifx12" type="ns3:equipClassifx12" />
+              <xsd:element minOccurs="0" name="equipClassifx13" type="ns3:equipClassifx13" />
+              <xsd:element minOccurs="0" name="equipClassifx14" type="ns3:equipClassifx14" />
+              <xsd:element minOccurs="0" name="equipClassifx15" type="ns3:equipClassifx15" />
+              <xsd:element minOccurs="0" name="equipClassifx16" type="ns3:equipClassifx16" />
+              <xsd:element minOccurs="0" name="equipClassifx17" type="ns3:equipClassifx17" />
+              <xsd:element minOccurs="0" name="equipClassifx18" type="ns3:equipClassifx18" />
+              <xsd:element minOccurs="0" name="equipClassifx19" type="ns3:equipClassifx19" />
+              <xsd:element minOccurs="0" name="equipClassifx2" type="ns3:equipClassifx2" />
+              <xsd:element minOccurs="0" name="equipClassifx20" type="ns3:equipClassifx20" />
+              <xsd:element minOccurs="0" name="equipClassifx3" type="ns3:equipClassifx3" />
+              <xsd:element minOccurs="0" name="equipClassifx4" type="ns3:equipClassifx4" />
+              <xsd:element minOccurs="0" name="equipClassifx5" type="ns3:equipClassifx5" />
+              <xsd:element minOccurs="0" name="equipClassifx6" type="ns3:equipClassifx6" />
+              <xsd:element minOccurs="0" name="equipClassifx7" type="ns3:equipClassifx7" />
+              <xsd:element minOccurs="0" name="equipClassifx8" type="ns3:equipClassifx8" />
+              <xsd:element minOccurs="0" name="equipClassifx9" type="ns3:equipClassifx9" />
+              <xsd:element minOccurs="0" name="equipGrpId" type="ns3:equipGrpId" />
+              <xsd:element minOccurs="0" name="equipLocation" type="ns3:equipLocation" />
+              <xsd:element minOccurs="0" name="equipNo" type="ns3:equipNo" />
+              <xsd:element minOccurs="0" name="equipStatus" type="ns3:equipStatus" />
+              <xsd:element minOccurs="0" name="equipUpdateFlag" type="ns3:equipUpdateFlag" />
+              <xsd:element minOccurs="0" name="estDurHrs" type="ns3:estDurHrs" />
+              <xsd:element minOccurs="0" name="estEquipCost" type="ns3:estEquipCost" />
+              <xsd:element minOccurs="0" name="estLabCost" type="ns3:estLabCost" />
+              <xsd:element minOccurs="0" name="estLabHrs" type="ns3:estLabHrs" />
+              <xsd:element minOccurs="0" name="estMatCost" type="ns3:estMatCost" />
+              <xsd:element minOccurs="0" name="estOtherCost" type="ns3:estOtherCost" />
+              <xsd:element minOccurs="0" name="failurePart" type="ns3:failurePart" />
+              <xsd:element minOccurs="0" name="faxNumber" type="ns3:faxNumber" />
+              <xsd:element minOccurs="0" name="fromLink" type="ns3:fromLink" />
+              <xsd:element minOccurs="0" name="ganttFinishDateTime" type="ns3:ganttFinishDateTime" />
+              <xsd:element minOccurs="0" name="ganttLinkId" type="ns3:ganttLinkId" />
+              <xsd:element minOccurs="0" name="ganttParentLinkId" type="ns3:ganttParentLinkId" />
+              <xsd:element minOccurs="0" name="ganttStartDateTime" type="ns3:ganttStartDateTime" />
+              <xsd:element minOccurs="0" name="hasAssignTodo" type="ns3:hasAssignTodo" />
+              <xsd:element minOccurs="0" name="id" type="ns3:id" />
+              <xsd:element minOccurs="0" name="isControl" type="ns3:isControl" />
+              <xsd:element minOccurs="0" name="isMSTParent" type="ns3:isMSTParent" />
+              <xsd:element minOccurs="0" name="isParent" type="ns3:isParent" />
+              <xsd:element minOccurs="0" name="itemName1" type="ns3:itemName1" />
+              <xsd:element minOccurs="0" name="itemName2" type="ns3:itemName2" />
+              <xsd:element minOccurs="0" name="jobId" type="ns3:jobId" />
+              <xsd:element minOccurs="0" name="jobParentId" type="ns3:jobParentId" />
+              <xsd:element minOccurs="0" name="jobType" type="ns3:jobType" />
+              <xsd:element minOccurs="0" name="lastPerformedDate" type="ns3:lastPerformedDate" />
+              <xsd:element minOccurs="0" name="lastPerformedDstrctCode" type="ns3:lastPerformedDstrctCode" />
+              <xsd:element minOccurs="0" name="lastPerformedWorkOrder" type="ns3:lastPerformedWorkOrder" />
+              <xsd:element minOccurs="0" name="linkDistrictCode" type="ns3:linkDistrictCode" />
+              <xsd:element minOccurs="0" name="linkEntityId" type="ns3:linkEntityId" />
+              <xsd:element minOccurs="0" name="linkEntityType" type="ns3:linkEntityType" />
+              <xsd:element minOccurs="0" name="linkErpRef" type="ns3:linkErpRef" />
+              <xsd:element minOccurs="0" name="linkErpTaskRef" type="ns3:linkErpTaskRef" />
+              <xsd:element minOccurs="0" name="linkId" type="ns3:linkId" />
+              <xsd:element minOccurs="0" name="linkJobLinkListId" type="ns3:linkJobLinkListId" />
+              <xsd:element minOccurs="0" name="linkLagOrLead" type="ns3:linkLagOrLead" />
+              <xsd:element minOccurs="0" name="linkOffset" type="ns3:linkOffset" />
+              <xsd:element minOccurs="0" name="linkScale" type="ns3:linkScale" />
+              <xsd:element minOccurs="0" name="linkScaledOffset" type="ns3:linkScaledOffset" />
+              <xsd:element minOccurs="0" name="linkSequenceNum" type="ns3:linkSequenceNum" />
+              <xsd:element minOccurs="0" name="linkStatType" type="ns3:linkStatType" />
+              <xsd:element minOccurs="0" name="linkStatValue" type="ns3:linkStatValue" />
+              <xsd:element minOccurs="0" name="linkState" type="ns3:linkState" />
+              <xsd:element minOccurs="0" name="linkType" type="ns3:linkType" />
+              <xsd:element minOccurs="0" name="linkedChildren" type="ns3:ArrayOfJobsMWPDTO" />
+              <xsd:element minOccurs="0" name="linkedInd" type="ns3:linkedInd" />
+              <xsd:element minOccurs="0" name="location" type="ns3:location" />
+              <xsd:element minOccurs="0" name="locationFr" type="ns3:locationFr" />
+              <xsd:element minOccurs="0" name="maintSchTask" type="ns3:maintSchTask" />
+              <xsd:element minOccurs="0" name="maintType" type="ns3:maintType" />
+              <xsd:element minOccurs="0" name="matUpdateFlag" type="ns3:matUpdateFlag" />
+              <xsd:element minOccurs="0" name="mnemonic" type="ns3:mnemonic" />
+              <xsd:element minOccurs="0" name="mstReference" type="ns3:mstReference" />
+              <xsd:element minOccurs="0" name="multipleResourceRequirements" type="ns3:multipleResourceRequirements" />
+              <xsd:element minOccurs="0" name="noGanttMove" type="ns3:noGanttMove" />
+              <xsd:element minOccurs="0" name="noGanttResize" type="ns3:noGanttResize" />
+              <xsd:element minOccurs="0" name="noOfTasks" type="ns3:noOfTasks" />
+              <xsd:element minOccurs="0" name="numberOfMSTisRemaining" type="ns3:numberOfMSTisRemaining" />
+              <xsd:element minOccurs="0" name="origPriority" type="ns3:origPriority" />
+              <xsd:element minOccurs="0" name="originalPlannedFinishDate" type="ns3:originalPlannedFinishDate" />
+              <xsd:element minOccurs="0" name="originalPlannedFinishTime" type="ns3:originalPlannedFinishTime" />
+              <xsd:element minOccurs="0" name="originalPlannedStartDate" type="ns3:originalPlannedStartDate" />
+              <xsd:element minOccurs="0" name="originalPlannedStartTime" type="ns3:originalPlannedStartTime" />
+              <xsd:element minOccurs="0" name="originatorId" type="ns3:originatorId" />
+              <xsd:element minOccurs="0" name="otherUpdateFlag" type="ns3:otherUpdateFlag" />
+              <xsd:element minOccurs="0" name="parentEntityId" type="ns3:parentEntityId" />
+              <xsd:element minOccurs="0" name="parentEquip" type="ns3:parentEquip" />
+              <xsd:element minOccurs="0" name="parentJobType" type="ns3:parentJobType" />
+              <xsd:element minOccurs="0" name="parentLinkId" type="ns3:parentLinkId" />
+              <xsd:element minOccurs="0" name="parentPlantNo" type="ns3:parentPlantNo" />
+              <xsd:element minOccurs="0" name="parentWo" type="ns3:parentWo" />
+              <xsd:element minOccurs="0" name="partNo" type="ns3:partNo" />
+              <xsd:element minOccurs="0" name="partialCacheKey" type="ns3:partialCacheKey" />
+              <xsd:element minOccurs="0" name="pcComplete" type="ns3:pcComplete" />
+              <xsd:element minOccurs="0" name="planFinDate" type="ns3:planFinDate" />
+              <xsd:element minOccurs="0" name="planFinTime" type="ns3:planFinTime" />
+              <xsd:element minOccurs="0" name="planPriority" type="ns3:planPriority" />
+              <xsd:element minOccurs="0" name="planStatType" type="ns3:planStatType" />
+              <xsd:element minOccurs="0" name="planStatVal" type="ns3:planStatVal" />
+              <xsd:element minOccurs="0" name="planStrDate" type="ns3:planStrDate" />
+              <xsd:element minOccurs="0" name="planStrTime" type="ns3:planStrTime" />
+              <xsd:element minOccurs="0" name="plantNo" type="ns3:plantNo" />
+              <xsd:element minOccurs="0" name="prefDate" type="ns3:prefDate" />
+              <xsd:element minOccurs="0" name="prefTime" type="ns3:prefTime" />
+              <xsd:element minOccurs="0" name="printerName" type="ns3:printerName" />
+              <xsd:element minOccurs="0" name="prodUnitItem" type="ns3:prodUnitItem" />
+              <xsd:element minOccurs="0" name="projDesc" type="ns3:projDesc" />
+              <xsd:element minOccurs="0" name="projectNo" type="ns3:projectNo" />
+              <xsd:element minOccurs="0" name="raisedDate" type="ns3:raisedDate" />
+              <xsd:element minOccurs="0" name="raisedTime" type="ns3:raisedTime" />
+              <xsd:element minOccurs="0" name="recallTimeHrs" type="ns3:recallTimeHrs" />
+              <xsd:element minOccurs="0" name="reference" type="ns3:reference" />
+              <xsd:element minOccurs="0" name="reqByDate" type="ns3:reqByDate" />
+              <xsd:element minOccurs="0" name="reqByTime" type="ns3:reqByTime" />
+              <xsd:element minOccurs="0" name="reqStartDate" type="ns3:reqStartDate" />
+              <xsd:element minOccurs="0" name="reqStartTime" type="ns3:reqStartTime" />
+              <xsd:element minOccurs="0" name="requestId" type="ns3:requestId" />
+              <xsd:element minOccurs="0" name="resUpdateFlag" type="ns3:resUpdateFlag" />
+              <xsd:element minOccurs="0" name="resourceRequirements" type="ns3:ArrayOfJobsResourceDTO" />
+              <xsd:element minOccurs="0" name="restartChildWODstrctCode" type="ns3:restartChildWODstrctCode" />
+              <xsd:element minOccurs="0" name="restartChildWOPlanStrDate" type="ns3:restartChildWOPlanStrDate" />
+              <xsd:element minOccurs="0" name="restartChildWOWorkOrder" type="ns3:restartChildWOWorkOrder" />
+              <xsd:element minOccurs="0" name="restartMSTIFromLinkMstReference" type="ns3:restartMSTIFromLinkMstReference" />
+              <xsd:element minOccurs="0" name="restartMSTIFromLinkPlanStrDate" type="ns3:restartMSTIFromLinkPlanStrDate" />
+              <xsd:element minOccurs="0" name="restartMSTIMstReference" type="ns3:restartMSTIMstReference" />
+              <xsd:element minOccurs="0" name="restartMSTIPlanStrDate" type="ns3:restartMSTIPlanStrDate" />
+              <xsd:element minOccurs="0" name="restartParentWODstrctCode" type="ns3:restartParentWODstrctCode" />
+              <xsd:element minOccurs="0" name="restartParentWOPlanStrDate" type="ns3:restartParentWOPlanStrDate" />
+              <xsd:element minOccurs="0" name="restartParentWOWorkOrder" type="ns3:restartParentWOWorkOrder" />
+              <xsd:element minOccurs="0" name="restartPrevLinks" type="ns3:ArrayOfTaskKeyDTO" />
+              <xsd:element minOccurs="0" name="schSegFr" type="ns3:schSegFr" />
+              <xsd:element minOccurs="0" name="schSegTo" type="ns3:schSegTo" />
+              <xsd:element minOccurs="0" name="schedDesc2" type="ns3:schedDesc2" />
+              <xsd:element minOccurs="0" name="sequenceNo" type="ns3:sequenceNo" />
+              <xsd:element minOccurs="0" name="serialNumber" type="ns3:serialNumber" />
+              <xsd:element minOccurs="0" name="shortDesc1" type="ns3:shortDesc1" />
+              <xsd:element minOccurs="0" name="shortDesc2" type="ns3:shortDesc2" />
+              <xsd:element minOccurs="0" name="shutdownNo" type="ns3:shutdownNo" />
+              <xsd:element minOccurs="0" name="shutdownType" type="ns3:shutdownType" />
+              <xsd:element minOccurs="0" name="source" type="ns3:source" />
+              <xsd:element minOccurs="0" name="state" type="ns3:state" />
+              <xsd:element minOccurs="0" name="statutoryFlg" type="ns3:statutoryFlg" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="ns3:stdJobNo" />
+              <xsd:element minOccurs="0" name="streetName" type="ns3:streetName" />
+              <xsd:element minOccurs="0" name="streetNo" type="ns3:streetNo" />
+              <xsd:element minOccurs="0" name="suburb" type="ns3:suburb" />
+              <xsd:element minOccurs="0" name="suppressingMST" type="ns3:suppressingMST" />
+              <xsd:element minOccurs="0" name="targtFinDate" type="ns3:targtFinDate" />
+              <xsd:element minOccurs="0" name="targtStrDate" type="ns3:targtStrDate" />
+              <xsd:element minOccurs="0" name="taskAptwSw" type="ns3:taskAptwSw" />
+              <xsd:element minOccurs="0" name="townCity" type="ns3:townCity" />
+              <xsd:element minOccurs="0" name="unitOfWork" type="ns3:unitOfWork" />
+              <xsd:element minOccurs="0" name="unitsComplete" type="ns3:unitsComplete" />
+              <xsd:element minOccurs="0" name="unitsRequired" type="ns3:unitsRequired" />
+              <xsd:element minOccurs="0" name="woDesc" type="ns3:woDesc" />
+              <xsd:element minOccurs="0" name="woJobCodex1" type="ns3:woJobCodex1" />
+              <xsd:element minOccurs="0" name="woJobCodex10" type="ns3:woJobCodex10" />
+              <xsd:element minOccurs="0" name="woJobCodex2" type="ns3:woJobCodex2" />
+              <xsd:element minOccurs="0" name="woJobCodex3" type="ns3:woJobCodex3" />
+              <xsd:element minOccurs="0" name="woJobCodex4" type="ns3:woJobCodex4" />
+              <xsd:element minOccurs="0" name="woJobCodex5" type="ns3:woJobCodex5" />
+              <xsd:element minOccurs="0" name="woJobCodex6" type="ns3:woJobCodex6" />
+              <xsd:element minOccurs="0" name="woJobCodex7" type="ns3:woJobCodex7" />
+              <xsd:element minOccurs="0" name="woJobCodex8" type="ns3:woJobCodex8" />
+              <xsd:element minOccurs="0" name="woJobCodex9" type="ns3:woJobCodex9" />
+              <xsd:element minOccurs="0" name="woStatusM" type="ns3:woStatusM" />
+              <xsd:element minOccurs="0" name="woStatusU" type="ns3:woStatusU" />
+              <xsd:element minOccurs="0" name="woTaskNo" type="ns3:woTaskNo" />
+              <xsd:element minOccurs="0" name="woType" type="ns3:woType" />
+              <xsd:element minOccurs="0" name="workGroup" type="ns3:workGroup" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:workOrder" />
+              <xsd:element minOccurs="0" name="workRequestDescription" type="ns3:workRequestDescription" />
+              <xsd:element minOccurs="0" name="zipCode" type="ns3:zipCode" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobsMWPDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsMWPDTO" nillable="true" type="ns3:JobsMWPDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobsJobLinkDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsJobLinkDTO" nillable="true" type="ns3:JobsJobLinkDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="linkParentEntityType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkParentEntityId">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:maxInclusive value="999999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="JobsJobLinkDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="linkDistrictCode" type="ns3:linkDistrictCode" />
+              <xsd:element minOccurs="0" name="linkEntityId" type="ns3:linkEntityId" />
+              <xsd:element minOccurs="0" name="linkEntityType" type="ns3:linkEntityType" />
+              <xsd:element minOccurs="0" name="linkErpRef" type="ns3:linkErpRef" />
+              <xsd:element minOccurs="0" name="linkErpTaskRef" type="ns3:linkErpTaskRef" />
+              <xsd:element minOccurs="0" name="linkJobLinkListId" type="ns3:linkJobLinkListId" />
+              <xsd:element minOccurs="0" name="linkLagOrLead" type="ns3:linkLagOrLead" />
+              <xsd:element minOccurs="0" name="linkOffset" type="ns3:linkOffset" />
+              <xsd:element minOccurs="0" name="linkParentEntityId" type="ns3:linkParentEntityId" />
+              <xsd:element minOccurs="0" name="linkParentEntityType" type="ns3:linkParentEntityType" />
+              <xsd:element minOccurs="0" name="linkScale" type="ns3:linkScale" />
+              <xsd:element minOccurs="0" name="linkScaledOffset" type="ns3:linkScaledOffset" />
+              <xsd:element minOccurs="0" name="linkSequenceNum" type="ns3:linkSequenceNum" />
+              <xsd:element minOccurs="0" name="linkStatType" type="ns3:linkStatType" />
+              <xsd:element minOccurs="0" name="linkStatValue" type="ns3:linkStatValue" />
+              <xsd:element minOccurs="0" name="linkType" type="ns3:linkType" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfTaskKeyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TaskKeyDTO" nillable="true" type="ns3:TaskKeyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="keyDistrictCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="jobLinkId">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:maxInclusive value="999999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="entityId">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:maxInclusive value="999999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="keyWorkOrder">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="keyTaskNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="keyPlanStrDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="keyMstReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="50" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="TaskKeyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:WorkOrderKeyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="keyMstReference" type="ns3:keyMstReference" />
+              <xsd:element minOccurs="0" name="keyPlanStrDate" type="ns3:keyPlanStrDate" />
+              <xsd:element minOccurs="0" name="keyTaskNumber" type="ns3:keyTaskNumber" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="WorkOrderKeyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="entityId" type="ns3:entityId" />
+              <xsd:element minOccurs="0" name="jobLinkId" type="ns3:jobLinkId" />
+              <xsd:element minOccurs="0" name="keyDistrictCode" type="ns3:keyDistrictCode" />
+              <xsd:element minOccurs="0" name="keyWorkOrder" type="ns3:keyWorkOrder" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="JobLinkDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="children" type="ns3:ArrayOfJobLinkChildDTO" />
+              <xsd:element minOccurs="0" name="parent" type="ns3:JobLinkItemDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobLinkChildDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobLinkChildDTO" nillable="true" type="ns3:JobLinkChildDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="offset">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="0" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="district">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="0" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="JobLinkChildDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="district" type="ns3:district" />
+              <xsd:element minOccurs="0" name="linkType" type="ns3:linkType" />
+              <xsd:element minOccurs="0" name="offset" type="ns3:offset" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:workOrder" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="JobLinkItemDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="district" type="ns3:district" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:workOrder" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobsResourceDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsResourceDTO" nillable="true" type="ns3:JobsResourceDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="resourceAllocated">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="-99999.99" />
+          <xsd:maxInclusive value="99999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceBacklogDate">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="JobsResourceDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="resourceAllocated" type="ns3:resourceAllocated" />
+              <xsd:element minOccurs="0" name="resourceBacklogDate" type="ns3:resourceBacklogDate" />
+              <xsd:element minOccurs="0" name="resourceCategoryObject" type="ns3:JobsResourceCategoryDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="resourceCategory">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="JobsResourceCategoryDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="crew" type="ns3:crew" />
+              <xsd:element minOccurs="0" name="resourceCategory" type="ns3:resourceCategory" />
+              <xsd:element minOccurs="0" name="workGroup" type="ns3:workGroup" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="JobsMWPServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="jobsMWPDTO" type="ns3:JobsMWPDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobsMWPServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsMWPServiceResult" nillable="true" type="ns3:JobsMWPServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobsCreateLinkMWPDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsCreateLinkMWPDTO" nillable="true" type="ns3:JobsCreateLinkMWPDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="scale">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkToParentDstrctCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="linkJobType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="leadOrLag">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="autoSetLink">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="linkToParentWorkOrder">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="JobsCreateLinkMWPDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="autoSetLink" type="ns3:autoSetLink" />
+              <xsd:element minOccurs="0" name="jobToLink" type="ns3:JobsMWPDTO" />
+              <xsd:element minOccurs="0" name="leadOrLag" type="ns3:leadOrLag" />
+              <xsd:element minOccurs="0" name="linkJobType" type="ns3:linkJobType" />
+              <xsd:element minOccurs="0" name="linkToParentDstrctCode" type="ns3:linkToParentDstrctCode" />
+              <xsd:element minOccurs="0" name="linkToParentWorkOrder" type="ns3:linkToParentWorkOrder" />
+              <xsd:element minOccurs="0" name="linkType" type="ns3:linkType" />
+              <xsd:element minOccurs="0" name="offset" type="ns3:offset" />
+              <xsd:element minOccurs="0" name="scale" type="ns3:scale" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobsCreateLinkMWPServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsCreateLinkMWPServiceResult" nillable="true" type="ns3:JobsCreateLinkMWPServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="JobsCreateLinkMWPServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="jobsCreateLinkMWPDTO" type="ns3:JobsCreateLinkMWPDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="bulkCrewUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkRecallTimeHrs">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkReqStartDateUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkSchSegFr">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="3" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999.999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkWorkGroupUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPcComplete">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanFinTimeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkShutdownTypeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkLocationUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkMaintTypeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanStrDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkLocation">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkReqByTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanPriorityUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanStatValUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkCompCodeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkActualStartDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkWoTypeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkStdJobNoUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkCompModCodeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanFinTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkWorkGroup">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="7" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkWoStatusM">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkLocationFrUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkWoStatusU">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanPriority">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkActualFinishDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanStatVal">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkCrew">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkActualFinishDateUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkReqByTimeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkLocationFr">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkUnitOfWork">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkCompCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkAssignPerson">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkWoDescUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkUnitsRequired">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkReqStartDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkWoStatusMUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkReqStartTimeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkUnitOfWorkUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkActualFinishTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkParentWoUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkParentWo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPcCompleteUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkWoDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="90" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkProjectNoUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkUnitsCompleteUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkActualStartDateUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkReqByDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkStdJobNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkSchSegFrUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkActualStartTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkWoStatusUUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkProjectNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkUnitsComplete">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999999.99" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkMaintType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkCompModCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanStrTimeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkRecallTimeHrsUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkReqByDateUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkActualStartTimeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkSchSegToUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanFinDateUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkUnitsRequiredUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkReqStartTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkShutdownType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanFinDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkSchSegTo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="3" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999.999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkAssignPersonUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanStrDateUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkWoType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkActualFinishTimeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkPlanStrTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="JobsBulkUpdateMWPDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="bulkActualFinishDate" type="ns3:bulkActualFinishDate" />
+              <xsd:element minOccurs="0" name="bulkActualFinishDateUnset" type="ns3:bulkActualFinishDateUnset" />
+              <xsd:element minOccurs="0" name="bulkActualFinishTime" type="ns3:bulkActualFinishTime" />
+              <xsd:element minOccurs="0" name="bulkActualFinishTimeUnset" type="ns3:bulkActualFinishTimeUnset" />
+              <xsd:element minOccurs="0" name="bulkActualStartDate" type="ns3:bulkActualStartDate" />
+              <xsd:element minOccurs="0" name="bulkActualStartDateUnset" type="ns3:bulkActualStartDateUnset" />
+              <xsd:element minOccurs="0" name="bulkActualStartTime" type="ns3:bulkActualStartTime" />
+              <xsd:element minOccurs="0" name="bulkActualStartTimeUnset" type="ns3:bulkActualStartTimeUnset" />
+              <xsd:element minOccurs="0" name="bulkAssignPerson" type="ns3:bulkAssignPerson" />
+              <xsd:element minOccurs="0" name="bulkAssignPersonUnset" type="ns3:bulkAssignPersonUnset" />
+              <xsd:element minOccurs="0" name="bulkCompCode" type="ns3:bulkCompCode" />
+              <xsd:element minOccurs="0" name="bulkCompCodeUnset" type="ns3:bulkCompCodeUnset" />
+              <xsd:element minOccurs="0" name="bulkCompModCode" type="ns3:bulkCompModCode" />
+              <xsd:element minOccurs="0" name="bulkCompModCodeUnset" type="ns3:bulkCompModCodeUnset" />
+              <xsd:element minOccurs="0" name="bulkCrew" type="ns3:bulkCrew" />
+              <xsd:element minOccurs="0" name="bulkCrewUnset" type="ns3:bulkCrewUnset" />
+              <xsd:element minOccurs="0" name="bulkLocation" type="ns3:bulkLocation" />
+              <xsd:element minOccurs="0" name="bulkLocationFr" type="ns3:bulkLocationFr" />
+              <xsd:element minOccurs="0" name="bulkLocationFrUnset" type="ns3:bulkLocationFrUnset" />
+              <xsd:element minOccurs="0" name="bulkLocationUnset" type="ns3:bulkLocationUnset" />
+              <xsd:element minOccurs="0" name="bulkMaintType" type="ns3:bulkMaintType" />
+              <xsd:element minOccurs="0" name="bulkMaintTypeUnset" type="ns3:bulkMaintTypeUnset" />
+              <xsd:element minOccurs="0" name="bulkParentWo" type="ns3:bulkParentWo" />
+              <xsd:element minOccurs="0" name="bulkParentWoUnset" type="ns3:bulkParentWoUnset" />
+              <xsd:element minOccurs="0" name="bulkPcComplete" type="ns3:bulkPcComplete" />
+              <xsd:element minOccurs="0" name="bulkPcCompleteUnset" type="ns3:bulkPcCompleteUnset" />
+              <xsd:element minOccurs="0" name="bulkPlanFinDate" type="ns3:bulkPlanFinDate" />
+              <xsd:element minOccurs="0" name="bulkPlanFinDateUnset" type="ns3:bulkPlanFinDateUnset" />
+              <xsd:element minOccurs="0" name="bulkPlanFinTime" type="ns3:bulkPlanFinTime" />
+              <xsd:element minOccurs="0" name="bulkPlanFinTimeUnset" type="ns3:bulkPlanFinTimeUnset" />
+              <xsd:element minOccurs="0" name="bulkPlanPriority" type="ns3:bulkPlanPriority" />
+              <xsd:element minOccurs="0" name="bulkPlanPriorityUnset" type="ns3:bulkPlanPriorityUnset" />
+              <xsd:element minOccurs="0" name="bulkPlanStatVal" type="ns3:bulkPlanStatVal" />
+              <xsd:element minOccurs="0" name="bulkPlanStatValUnset" type="ns3:bulkPlanStatValUnset" />
+              <xsd:element minOccurs="0" name="bulkPlanStrDate" type="ns3:bulkPlanStrDate" />
+              <xsd:element minOccurs="0" name="bulkPlanStrDateUnset" type="ns3:bulkPlanStrDateUnset" />
+              <xsd:element minOccurs="0" name="bulkPlanStrTime" type="ns3:bulkPlanStrTime" />
+              <xsd:element minOccurs="0" name="bulkPlanStrTimeUnset" type="ns3:bulkPlanStrTimeUnset" />
+              <xsd:element minOccurs="0" name="bulkProjectNo" type="ns3:bulkProjectNo" />
+              <xsd:element minOccurs="0" name="bulkProjectNoUnset" type="ns3:bulkProjectNoUnset" />
+              <xsd:element minOccurs="0" name="bulkRecallTimeHrs" type="ns3:bulkRecallTimeHrs" />
+              <xsd:element minOccurs="0" name="bulkRecallTimeHrsUnset" type="ns3:bulkRecallTimeHrsUnset" />
+              <xsd:element minOccurs="0" name="bulkReqByDate" type="ns3:bulkReqByDate" />
+              <xsd:element minOccurs="0" name="bulkReqByDateUnset" type="ns3:bulkReqByDateUnset" />
+              <xsd:element minOccurs="0" name="bulkReqByTime" type="ns3:bulkReqByTime" />
+              <xsd:element minOccurs="0" name="bulkReqByTimeUnset" type="ns3:bulkReqByTimeUnset" />
+              <xsd:element minOccurs="0" name="bulkReqStartDate" type="ns3:bulkReqStartDate" />
+              <xsd:element minOccurs="0" name="bulkReqStartDateUnset" type="ns3:bulkReqStartDateUnset" />
+              <xsd:element minOccurs="0" name="bulkReqStartTime" type="ns3:bulkReqStartTime" />
+              <xsd:element minOccurs="0" name="bulkReqStartTimeUnset" type="ns3:bulkReqStartTimeUnset" />
+              <xsd:element minOccurs="0" name="bulkSchSegFr" type="ns3:bulkSchSegFr" />
+              <xsd:element minOccurs="0" name="bulkSchSegFrUnset" type="ns3:bulkSchSegFrUnset" />
+              <xsd:element minOccurs="0" name="bulkSchSegTo" type="ns3:bulkSchSegTo" />
+              <xsd:element minOccurs="0" name="bulkSchSegToUnset" type="ns3:bulkSchSegToUnset" />
+              <xsd:element minOccurs="0" name="bulkShutdownType" type="ns3:bulkShutdownType" />
+              <xsd:element minOccurs="0" name="bulkShutdownTypeUnset" type="ns3:bulkShutdownTypeUnset" />
+              <xsd:element minOccurs="0" name="bulkStdJobNo" type="ns3:bulkStdJobNo" />
+              <xsd:element minOccurs="0" name="bulkStdJobNoUnset" type="ns3:bulkStdJobNoUnset" />
+              <xsd:element minOccurs="0" name="bulkUnitOfWork" type="ns3:bulkUnitOfWork" />
+              <xsd:element minOccurs="0" name="bulkUnitOfWorkUnset" type="ns3:bulkUnitOfWorkUnset" />
+              <xsd:element minOccurs="0" name="bulkUnitsComplete" type="ns3:bulkUnitsComplete" />
+              <xsd:element minOccurs="0" name="bulkUnitsCompleteUnset" type="ns3:bulkUnitsCompleteUnset" />
+              <xsd:element minOccurs="0" name="bulkUnitsRequired" type="ns3:bulkUnitsRequired" />
+              <xsd:element minOccurs="0" name="bulkUnitsRequiredUnset" type="ns3:bulkUnitsRequiredUnset" />
+              <xsd:element minOccurs="0" name="bulkWoDesc" type="ns3:bulkWoDesc" />
+              <xsd:element minOccurs="0" name="bulkWoDescUnset" type="ns3:bulkWoDescUnset" />
+              <xsd:element minOccurs="0" name="bulkWoStatusM" type="ns3:bulkWoStatusM" />
+              <xsd:element minOccurs="0" name="bulkWoStatusMUnset" type="ns3:bulkWoStatusMUnset" />
+              <xsd:element minOccurs="0" name="bulkWoStatusU" type="ns3:bulkWoStatusU" />
+              <xsd:element minOccurs="0" name="bulkWoStatusUUnset" type="ns3:bulkWoStatusUUnset" />
+              <xsd:element minOccurs="0" name="bulkWoType" type="ns3:bulkWoType" />
+              <xsd:element minOccurs="0" name="bulkWoTypeUnset" type="ns3:bulkWoTypeUnset" />
+              <xsd:element minOccurs="0" name="bulkWorkGroup" type="ns3:bulkWorkGroup" />
+              <xsd:element minOccurs="0" name="bulkWorkGroupUnset" type="ns3:bulkWorkGroupUnset" />
+              <xsd:element minOccurs="0" name="jobToUpdate" type="ns3:JobsMWPDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="equipmentNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipRef">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="EquipmentDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="equipRef" type="ns3:equipRef" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="ns3:equipmentNo" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="EquipmentServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="equipmentDTO" type="ns3:EquipmentDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfJobsBulkUpdateMWPDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="JobsBulkUpdateMWPDTO" nillable="true" type="ns3:JobsBulkUpdateMWPDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="woJobCode10">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="dstrctAcctCodeSegment">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="28" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="includeProjectHierarchy">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="overlappingDateSearch">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCode1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="outageId">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-999999999999" />
+          <xsd:maxInclusive value="999999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="searchEntity">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="includeEquipmentHierarchy">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="excludeWorkOrderType">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="enableSuppressedWithResourceBalancing">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="backlogToleranceDays">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="-1000000000000000000" />
+          <xsd:maxInclusive value="1000000000000000000" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="dateIncrementUnit">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceCrewTotalsOnly">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="listTyp">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="includePreferedEGI">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="retrieveResourceRequirements">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCode9">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCode8">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCode7">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCode6">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCode5">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCode4">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="dateIncrement">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="listId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCode3">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woJobCode2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="5" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="displayPrevious">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="datePreset">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="matchOnChildren">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="includeSubLists">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="attachedToOutage">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="graphicalView">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="showResources">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="reportId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woStatusMSearch">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="excludeMaintenanceType">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="useIncreasedForecastLimit">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="includeOnlyProjectWorkOrders">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="dateIncludes">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="seriesID">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="exportView">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="searchView">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceTotalsOnly">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceDisableAvailabilityCache">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="printerId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="exportComment">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="250" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceWorkGroupTotalsOnly">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="hierarchySearch">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="displaySuppressed">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="allDistricts">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:complexType name="JobsMWPSearchParam">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractSearchParam">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="accountCode" type="ns3:accountCode" />
+              <xsd:element minOccurs="0" name="allDistricts" type="ns3:allDistricts" />
+              <xsd:element minOccurs="0" name="assignPerson" type="ns3:assignPerson" />
+              <xsd:element minOccurs="0" name="attachedToOutage" type="ns3:attachedToOutage" />
+              <xsd:element minOccurs="0" name="backlogToleranceDays" type="ns3:backlogToleranceDays" />
+              <xsd:element minOccurs="0" name="compCode" type="ns3:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="ns3:compModCode" />
+              <xsd:element minOccurs="0" name="conAstSegFr" type="ns3:conAstSegFr" />
+              <xsd:element minOccurs="0" name="conAstSegTo" type="ns3:conAstSegTo" />
+              <xsd:element minOccurs="0" name="crews" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="data1732" type="ns3:data1732" />
+              <xsd:element minOccurs="0" name="dateIncludes" type="ns3:dateIncludes" />
+              <xsd:element minOccurs="0" name="dateIncrement" type="ns3:dateIncrement" />
+              <xsd:element minOccurs="0" name="dateIncrementUnit" type="ns3:dateIncrementUnit" />
+              <xsd:element minOccurs="0" name="datePreset" type="ns3:datePreset" />
+              <xsd:element minOccurs="0" name="displayPrevious" type="ns3:displayPrevious" />
+              <xsd:element minOccurs="0" name="displaySuppressed" type="ns3:displaySuppressed" />
+              <xsd:element minOccurs="0" name="dstrctAcctCode" type="ns3:dstrctAcctCode" />
+              <xsd:element minOccurs="0" name="dstrctAcctCodeSegment" type="ns3:dstrctAcctCodeSegment" />
+              <xsd:element minOccurs="0" name="dstrctCode" type="ns3:dstrctCode" />
+              <xsd:element minOccurs="0" name="enableSuppressedWithResourceBalancing" type="ns3:enableSuppressedWithResourceBalancing" />
+              <xsd:element minOccurs="0" name="equipClass" type="ns3:equipClass" />
+              <xsd:element minOccurs="0" name="equipGrpId" type="ns3:equipGrpId" />
+              <xsd:element minOccurs="0" name="equipLocation" type="ns3:equipLocation" />
+              <xsd:element minOccurs="0" name="equipStatus" type="ns3:equipStatus" />
+              <xsd:element minOccurs="0" name="equipmentHierarchy" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="excludeMaintenanceType" type="ns3:excludeMaintenanceType" />
+              <xsd:element minOccurs="0" name="excludeWorkOrderKeys" type="ns3:ArrayOfWorkOrderKeyDTO" />
+              <xsd:element minOccurs="0" name="excludeWorkOrderType" type="ns3:excludeWorkOrderType" />
+              <xsd:element minOccurs="0" name="exportComment" type="ns3:exportComment" />
+              <xsd:element minOccurs="0" name="exportView" type="ns3:exportView" />
+              <xsd:element minOccurs="0" name="graphicalView" type="ns3:graphicalView" />
+              <xsd:element minOccurs="0" name="hierarchySearch" type="ns3:hierarchySearch" />
+              <xsd:element minOccurs="0" name="includeEquipmentHierarchy" type="ns3:includeEquipmentHierarchy" />
+              <xsd:element minOccurs="0" name="includeOnlyProjectWorkOrders" type="ns3:includeOnlyProjectWorkOrders" />
+              <xsd:element minOccurs="0" name="includePreferedEGI" type="ns3:includePreferedEGI" />
+              <xsd:element minOccurs="0" name="includeProjectHierarchy" type="ns3:includeProjectHierarchy" />
+              <xsd:element minOccurs="0" name="includeSubLists" type="ns3:includeSubLists" />
+              <xsd:element minOccurs="0" name="includeWorkOrderKeys" type="ns3:ArrayOfWorkOrderKeyDTO" />
+              <xsd:element minOccurs="0" name="listId" type="ns3:listId" />
+              <xsd:element minOccurs="0" name="listTyp" type="ns3:listTyp" />
+              <xsd:element minOccurs="0" name="location" type="ns3:location" />
+              <xsd:element minOccurs="0" name="locationFr" type="ns3:locationFr" />
+              <xsd:element minOccurs="0" name="maintTypes" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="matchOnChildren" type="ns3:matchOnChildren" />
+              <xsd:element minOccurs="0" name="origPriority" type="ns3:origPriority" />
+              <xsd:element minOccurs="0" name="originatorId" type="ns3:originatorId" />
+              <xsd:element minOccurs="0" name="outageId" type="ns3:outageId" />
+              <xsd:element minOccurs="0" name="overlappingDateSearch" type="ns3:overlappingDateSearch" />
+              <xsd:element minOccurs="0" name="parentWo" type="ns3:parentWo" />
+              <xsd:element minOccurs="0" name="planFinDate" type="ns3:planFinDate" />
+              <xsd:element minOccurs="0" name="planFinTime" type="ns3:planFinTime" />
+              <xsd:element minOccurs="0" name="planPriority" type="ns3:planPriority" />
+              <xsd:element minOccurs="0" name="planStrDate" type="ns3:planStrDate" />
+              <xsd:element minOccurs="0" name="planStrTime" type="ns3:planStrTime" />
+              <xsd:element minOccurs="0" name="preferedEGI" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="printerId" type="ns3:printerId" />
+              <xsd:element minOccurs="0" name="prodUnitItem" type="ns3:prodUnitItem" />
+              <xsd:element minOccurs="0" name="projectHierarchy" type="ns3:ArrayOfProjectRefDTO" />
+              <xsd:element minOccurs="0" name="projectNo" type="ns3:projectNo" />
+              <xsd:element minOccurs="0" name="recallTimeHrs" type="ns3:recallTimeHrs" />
+              <xsd:element minOccurs="0" name="reportId" type="ns3:reportId" />
+              <xsd:element minOccurs="0" name="requestId" type="ns3:requestId" />
+              <xsd:element minOccurs="0" name="resourceCrewTotalsOnly" type="ns3:resourceCrewTotalsOnly" />
+              <xsd:element minOccurs="0" name="resourceCrews" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="resourceDisableAvailabilityCache" type="ns3:resourceDisableAvailabilityCache" />
+              <xsd:element minOccurs="0" name="resourceTotalsOnly" type="ns3:resourceTotalsOnly" />
+              <xsd:element minOccurs="0" name="resourceTypes" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="resourceWorkGroupTotalsOnly" type="ns3:resourceWorkGroupTotalsOnly" />
+              <xsd:element minOccurs="0" name="resourceWorkGroups" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="retrieveResourceRequirements" type="ns3:retrieveResourceRequirements" />
+              <xsd:element minOccurs="0" name="schSegFr" type="ns3:schSegFr" />
+              <xsd:element minOccurs="0" name="schSegTo" type="ns3:schSegTo" />
+              <xsd:element minOccurs="0" name="searchEntity" type="ns3:searchEntity" />
+              <xsd:element minOccurs="0" name="searchView" type="ns3:searchView" />
+              <xsd:element minOccurs="0" name="seriesID" type="ns3:seriesID" />
+              <xsd:element minOccurs="0" name="showResources" type="ns3:showResources" />
+              <xsd:element minOccurs="0" name="shutdownNo" type="ns3:shutdownNo" />
+              <xsd:element minOccurs="0" name="shutdownTypes" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="ns3:stdJobNo" />
+              <xsd:element minOccurs="0" name="subLists" type="ns3:ArrayOfEquipListRefDTO" />
+              <xsd:element minOccurs="0" name="useIncreasedForecastLimit" type="ns3:useIncreasedForecastLimit" />
+              <xsd:element minOccurs="0" name="woJobCode1" type="ns3:woJobCode1" />
+              <xsd:element minOccurs="0" name="woJobCode10" type="ns3:woJobCode10" />
+              <xsd:element minOccurs="0" name="woJobCode2" type="ns3:woJobCode2" />
+              <xsd:element minOccurs="0" name="woJobCode3" type="ns3:woJobCode3" />
+              <xsd:element minOccurs="0" name="woJobCode4" type="ns3:woJobCode4" />
+              <xsd:element minOccurs="0" name="woJobCode5" type="ns3:woJobCode5" />
+              <xsd:element minOccurs="0" name="woJobCode6" type="ns3:woJobCode6" />
+              <xsd:element minOccurs="0" name="woJobCode7" type="ns3:woJobCode7" />
+              <xsd:element minOccurs="0" name="woJobCode8" type="ns3:woJobCode8" />
+              <xsd:element minOccurs="0" name="woJobCode9" type="ns3:woJobCode9" />
+              <xsd:element minOccurs="0" name="woStatusMSearch" type="ns3:woStatusMSearch" />
+              <xsd:element minOccurs="0" name="woStatusUs" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="woTypes" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="workGroups" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:workOrder" />
+              <xsd:element minOccurs="0" name="workReqClassif" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="workReqType" type="tns:ArrayOfString" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfEquipListRefDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipListRefDTO" nillable="true" type="ns3:EquipListRefDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="equipListType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipListId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="EquipListRefDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="equipListId" type="ns3:equipListId" />
+              <xsd:element minOccurs="0" name="equipListType" type="ns3:equipListType" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWorkOrderKeyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WorkOrderKeyDTO" nillable="true" type="ns3:WorkOrderKeyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfProjectRefDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ProjectRefDTO" nillable="true" type="ns3:ProjectRefDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ProjectRefDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="dstrctCode" type="ns3:dstrctCode" />
+              <xsd:element minOccurs="0" name="projectNo" type="ns3:projectNo" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfEquipmentDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipmentDTO" nillable="true" type="ns3:EquipmentDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfEquipmentServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipmentServiceResult" nillable="true" type="ns3:EquipmentServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.ellipse.mincom.com">
+      <xsd:import namespace="http://errors.ellipse.mincom.com" />
+      <xsd:import namespace="http://instances.base.types.ellipse.mincom.com" />
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="ServiceDTO" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Base">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="customAttributes" type="ns5:ArrayOfAttribute" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:BaseServiceResult" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="BaseServiceResult" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errors" type="ns6:ArrayOfError" />
+          <xsd:element minOccurs="0" name="informationalMessages" type="ns6:ArrayOfMessage" />
+          <xsd:element minOccurs="0" name="warnings" type="ns6:ArrayOfWarning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractSearchParam" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
+      <xsd:complexType name="Base" abstract="true" />
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns5:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com">
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://instances.m8mwp.types.ellipse.mincom.com" />
+      <xsd:element name="update">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:JobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:JobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDelete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfJobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDeleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfJobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfJobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfJobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleLinkJobs">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in1" nillable="true" type="ns3:ArrayOfJobsCreateLinkMWPDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in2" nillable="true" type="ns3:JobsCreateLinkMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleLinkJobsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfJobsCreateLinkMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfJobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfJobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="bulkUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:JobsBulkUpdateMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="bulkUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:JobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="linkJobs">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in1" nillable="true" type="ns3:JobsCreateLinkMWPDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="in2" nillable="true" type="ns3:JobsCreateLinkMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="linkJobsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfJobsCreateLinkMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="equipment">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:EquipmentDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="equipmentResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:EquipmentServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="unlink">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:JobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="unlinkResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:JobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleBulkUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfJobsBulkUpdateMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleBulkUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfJobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="create">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:JobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:JobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="jobsSearch">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns3:JobsMWPSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:JobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="jobsSearchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfJobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleEquipment">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfEquipmentDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleEquipmentResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfEquipmentServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUnlink">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfJobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUnlinkResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfJobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfJobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfJobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="search">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns3:JobsMWPSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:JobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfJobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:JobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:JobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:JobsMWPDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:JobsMWPServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfError">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Error">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Message">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fieldId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="messageId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageText" type="xsd:string" />
+          <xsd:element minOccurs="0" name="parentInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarning">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Warning" nillable="true" type="ns6:Warning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Warning">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMessage">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="multipleLinkJobsRequest">
+    <wsdl:part name="parameters" element="tns:multipleLinkJobs" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleBulkUpdateResponse">
+    <wsdl:part name="parameters" element="tns:multipleBulkUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreate" />
+  </wsdl:message>
+  <wsdl:message name="unlinkResponse">
+    <wsdl:part name="parameters" element="tns:unlinkResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="parameters" element="tns:delete" />
+  </wsdl:message>
+  <wsdl:message name="jobsSearchResponse">
+    <wsdl:part name="parameters" element="tns:jobsSearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="jobsSearchRequest">
+    <wsdl:part name="parameters" element="tns:jobsSearch" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteRequest">
+    <wsdl:part name="parameters" element="tns:multipleDelete" />
+  </wsdl:message>
+  <wsdl:message name="updateRequest">
+    <wsdl:part name="parameters" element="tns:update" />
+  </wsdl:message>
+  <wsdl:message name="createRequest">
+    <wsdl:part name="parameters" element="tns:create" />
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateResponse">
+    <wsdl:part name="parameters" element="tns:updateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateRequest">
+    <wsdl:part name="parameters" element="tns:multipleUpdate" />
+  </wsdl:message>
+  <wsdl:message name="equipmentResponse">
+    <wsdl:part name="parameters" element="tns:equipmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleBulkUpdateRequest">
+    <wsdl:part name="parameters" element="tns:multipleBulkUpdate" />
+  </wsdl:message>
+  <wsdl:message name="bulkUpdateResponse">
+    <wsdl:part name="parameters" element="tns:bulkUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUnlinkRequest">
+    <wsdl:part name="parameters" element="tns:multipleUnlink" />
+  </wsdl:message>
+  <wsdl:message name="multipleLinkJobsResponse">
+    <wsdl:part name="parameters" element="tns:multipleLinkJobsResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUnlinkResponse">
+    <wsdl:part name="parameters" element="tns:multipleUnlinkResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleEquipmentResponse">
+    <wsdl:part name="parameters" element="tns:multipleEquipmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchRequest">
+    <wsdl:part name="parameters" element="tns:search" />
+  </wsdl:message>
+  <wsdl:message name="searchResponse">
+    <wsdl:part name="parameters" element="tns:searchResponse" />
+  </wsdl:message>
+  <wsdl:message name="bulkUpdateRequest">
+    <wsdl:part name="parameters" element="tns:bulkUpdate" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateResponse">
+    <wsdl:part name="parameters" element="tns:multipleUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="unlinkRequest">
+    <wsdl:part name="parameters" element="tns:unlink" />
+  </wsdl:message>
+  <wsdl:message name="linkJobsResponse">
+    <wsdl:part name="parameters" element="tns:linkJobsResponse" />
+  </wsdl:message>
+  <wsdl:message name="equipmentRequest">
+    <wsdl:part name="parameters" element="tns:equipment" />
+  </wsdl:message>
+  <wsdl:message name="multipleEquipmentRequest">
+    <wsdl:part name="parameters" element="tns:multipleEquipment" />
+  </wsdl:message>
+  <wsdl:message name="linkJobsRequest">
+    <wsdl:part name="parameters" element="tns:linkJobs" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="parameters" element="tns:deleteResponse" />
+  </wsdl:message>
+  <wsdl:portType name="JobsMWP">
+    <wsdl:operation name="update">
+      <wsdl:input name="updateRequest" message="tns:updateRequest" />
+      <wsdl:output name="updateResponse" message="tns:updateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdl:input name="multipleDeleteRequest" message="tns:multipleDeleteRequest" />
+      <wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
+      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleLinkJobs">
+      <wsdl:input name="multipleLinkJobsRequest" message="tns:multipleLinkJobsRequest" />
+      <wsdl:output name="multipleLinkJobsResponse" message="tns:multipleLinkJobsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdl:input name="multipleUpdateRequest" message="tns:multipleUpdateRequest" />
+      <wsdl:output name="multipleUpdateResponse" message="tns:multipleUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="bulkUpdate">
+      <wsdl:input name="bulkUpdateRequest" message="tns:bulkUpdateRequest" />
+      <wsdl:output name="bulkUpdateResponse" message="tns:bulkUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="linkJobs">
+      <wsdl:input name="linkJobsRequest" message="tns:linkJobsRequest" />
+      <wsdl:output name="linkJobsResponse" message="tns:linkJobsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="equipment">
+      <wsdl:input name="equipmentRequest" message="tns:equipmentRequest" />
+      <wsdl:output name="equipmentResponse" message="tns:equipmentResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="unlink">
+      <wsdl:input name="unlinkRequest" message="tns:unlinkRequest" />
+      <wsdl:output name="unlinkResponse" message="tns:unlinkResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleBulkUpdate">
+      <wsdl:input name="multipleBulkUpdateRequest" message="tns:multipleBulkUpdateRequest" />
+      <wsdl:output name="multipleBulkUpdateResponse" message="tns:multipleBulkUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input name="createRequest" message="tns:createRequest" />
+      <wsdl:output name="createResponse" message="tns:createResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="jobsSearch">
+      <wsdl:input name="jobsSearchRequest" message="tns:jobsSearchRequest" />
+      <wsdl:output name="jobsSearchResponse" message="tns:jobsSearchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleEquipment">
+      <wsdl:input name="multipleEquipmentRequest" message="tns:multipleEquipmentRequest" />
+      <wsdl:output name="multipleEquipmentResponse" message="tns:multipleEquipmentResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleUnlink">
+      <wsdl:input name="multipleUnlinkRequest" message="tns:multipleUnlinkRequest" />
+      <wsdl:output name="multipleUnlinkResponse" message="tns:multipleUnlinkResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdl:input name="searchRequest" message="tns:searchRequest" />
+      <wsdl:output name="searchResponse" message="tns:searchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input name="deleteRequest" message="tns:deleteRequest" />
+      <wsdl:output name="deleteResponse" message="tns:deleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="JobsMWPServiceHttpBinding" type="tns:JobsMWP">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="update">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="updateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleLinkJobs">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleLinkJobsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleLinkJobsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="bulkUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="bulkUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="bulkUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="linkJobs">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="linkJobsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="linkJobsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="equipment">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="equipmentRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="equipmentResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="unlink">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="unlinkRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="unlinkResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleBulkUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleBulkUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleBulkUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="jobsSearch">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="jobsSearchRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="jobsSearchResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleEquipment">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleEquipmentRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleEquipmentResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleUnlink">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUnlinkRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleUnlinkResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="JobsMWPService">
+    <wsdl:port name="JobsMWPServiceHttpPort" binding="tns:JobsMWPServiceHttpBinding">
+      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/JobsMWPService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
