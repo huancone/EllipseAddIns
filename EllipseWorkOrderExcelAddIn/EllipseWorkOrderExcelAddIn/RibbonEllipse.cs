@@ -4154,7 +4154,7 @@ namespace EllipseWorkOrderExcelAddIn
                     var districtCode = _cells.GetEmptyIfNull(woCells.GetCell(2, 3).Value2);
                     var workOrder = _cells.GetEmptyIfNull(woCells.GetCell(2, j).Value2);
 
-                    var taskList = WorkOrderActions.FetchWorkOrderTask(_eFunctions, districtCode, workOrder);
+                    var taskList = WorkOrderActions.FetchWorkOrderTask(_eFunctions, districtCode, workOrder, "");
 
 
                     foreach (var task in taskList)

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <wsdl:definitions xmlns:ns2="http://service.ellipse.mincom.com" xmlns:tns="http://jobsmwp.m8mwp.service.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:ns3="http://instances.m8mwp.types.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
@@ -393,7 +393,7 @@
           <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="woTaskNo">
+      <xsd:simpleType name="WoTaskNo">
         <xsd:restriction base="xsd:string">
           <xsd:maxLength value="3" />
           <xsd:minLength value="0" />
@@ -1428,7 +1428,7 @@
               <xsd:element minOccurs="0" name="woJobCodex9" type="ns3:woJobCodex9" />
               <xsd:element minOccurs="0" name="woStatusM" type="ns3:woStatusM" />
               <xsd:element minOccurs="0" name="woStatusU" type="ns3:woStatusU" />
-              <xsd:element minOccurs="0" name="woTaskNo" type="ns3:woTaskNo" />
+              <xsd:element minOccurs="0" name="WoTaskNo" type="ns3:WoTaskNo" />
               <xsd:element minOccurs="0" name="woType" type="ns3:woType" />
               <xsd:element minOccurs="0" name="workGroup" type="ns3:workGroup" />
               <xsd:element minOccurs="0" name="workOrder" type="ns3:workOrder" />

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 
 namespace EllipseJobsClassLibrary
 {
@@ -25,23 +24,13 @@ namespace EllipseJobsClassLibrary
         public string RaisedDate{ get; set; }
         public string Reference{ get; set; }
         public string StdJobNo{ get; set; }
+        public string StdJobTask { get; set; }
         public string WoDesc{ get; set; }
         public string WoStatusM{ get; set; }
         public string WoStatusU{ get; set; }
         public string WoType{ get; set; }
         public string WorkGroup{ get; set; }
         public string WorkOrder{ get; set; }
-        public List<WorkOrderTask> JobTaskList{ get; set; }
-
-        
-
-    }
-
-    public class WorkOrderTask
-    {
-        public string DistrictCode { get; set; }
-        public string WorkGroup { get; set; }
-        public string WorkOrder { get; set; }
         public string WoTaskNo { get; set; }
         public string WoTaskDesc { get; set; }
         public string EstimatedMachHrs { get; set; }
@@ -51,8 +40,29 @@ namespace EllipseJobsClassLibrary
 
     public class LabourResources
     {
+
+        public string WorkGroup { get; set; }
         public string ResourceCode { get; set; }
         public decimal EstimatedLabourHours { get; set; }
         public decimal RealLabourHours { get; set; }
+        public decimal AvailableLabourHours { get; set; }
+    }
+
+    public class PSoftLabourDetails
+    {
+        public string WorkGroup { get; set; }
+        public string Code { get; set; }
+        public string Date { get; set; }
+        public decimal Hours { get; set; }
+        public string EmployeeId { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class EllipseLabourDetails
+    {
+        public string WorkGroup { get; set; }
+        public string Code { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal Hours { get; set; }
     }
 }
