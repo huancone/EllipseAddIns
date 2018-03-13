@@ -24,7 +24,7 @@ namespace EllipseMSO010ExcelAddIn
 
         private const string SheetName01 = "MSO010 Codes";
         private const int TitleRow01 = 9;
-        private const int ResultColumn01 = 6;
+        private const int ResultColumn01 = 7;
         private const string TableName01 = "CodesTable";
         private const string ValidationSheetName = "ValidationSheet";
         private Thread _thread;
@@ -94,6 +94,33 @@ namespace EllipseMSO010ExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
+        private void btnModify_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ModifyCodeList);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:CreateWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
         public void FormatSheet()
         {
             try
@@ -160,6 +187,7 @@ namespace EllipseMSO010ExcelAddIn
                 _cells.GetCell(03, TitleRow01).Value = "CODE";
                 _cells.GetCell(04, TitleRow01).Value = "STATUS";
                 _cells.GetCell(05, TitleRow01).Value = "DESCRIPTION";
+                _cells.GetCell(06, TitleRow01).Value = "ASSOC_REC";
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = StyleConstants.TitleResult;
 
@@ -272,6 +300,7 @@ namespace EllipseMSO010ExcelAddIn
                     item.Code = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value).ToUpper();
                     item.ActiveStatus = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value);
                     item.Description = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
+                    item.AssocRec = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
 
                     item.ActiveStatus = string.IsNullOrWhiteSpace(item.ActiveStatus) ? "Y" : item.ActiveStatus;
 
@@ -297,6 +326,71 @@ namespace EllipseMSO010ExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+
+        public void ModifyCodeList()
+        {
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
+
+            var i = TitleRow01 + 1;
+            //ScreenService Opción en reemplazo de los servicios
+            var opSheet = new Screen.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+
+            var proxySheet = new Screen.ScreenService();
+            ////ScreenService
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            while (!string.IsNullOrEmpty(_cells.GetNullOrTrimmedValue(_cells.GetCell(1, i).Value2)) || !string.IsNullOrEmpty(_cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value2)))
+            {
+                try
+                {
+                    // ReSharper disable once UseObjectOrCollectionInitializer
+                    var item = new ItemCode();
+                    //GENERAL
+                    item.Type = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value).ToUpper();
+                    item.TypeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
+                    item.Code = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value).ToUpper();
+                    item.ActiveStatus = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value);
+                    item.Description = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
+                    item.AssocRec = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
+
+                    item.ActiveStatus = string.IsNullOrWhiteSpace(item.ActiveStatus) ? "Y" : item.ActiveStatus;
+
+                    ModifyCodeRegister(opSheet, proxySheet, item);
+
+                    _cells.GetCell(ResultColumn01, i).Value = "REGISTRO CREADO";
+                    _cells.GetCell(1, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:CreateCodeList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn01, i).Select();
+                    i++;
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
         public void CreateCodeRegister(Screen.OperationContext opContext, Screen.ScreenService proxySheet, ItemCode item)
         {
             proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
@@ -335,6 +429,7 @@ namespace EllipseMSO010ExcelAddIn
 
             arrayFields = new ArrayScreenNameValue();
             arrayFields.Add("TABLE_DESC2I1", item.Description);
+            arrayFields.Add("ASSOC_REC2I1", item.AssocRec);
 
             request = new Screen.ScreenSubmitRequestDTO
             {
@@ -343,6 +438,7 @@ namespace EllipseMSO010ExcelAddIn
             };
             reply = proxySheet.submit(opContext, request);
             var attemp = 0;
+
             while (reply != null && reply.mapName == "MSM010B")
             {
                 if(_eFunctions.CheckReplyError(reply))
@@ -350,6 +446,75 @@ namespace EllipseMSO010ExcelAddIn
                 if (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" || reply.functionKeys.StartsWith("XMIT-WARNING"))
                 {
                     request = new Screen.ScreenSubmitRequestDTO {screenKey = "1"};
+                    reply = proxySheet.submit(opContext, request);
+                }
+                else
+                {
+                    attemp++;
+                    if (attemp <= 1) continue;
+                    replyFields = new ArrayScreenNameValue(reply.screenFields);
+                    if (replyFields.GetField("TABLE_CODE_A2I1").value != item.Code)
+                        break;
+                    throw new Exception("SE HA PRODUCIDO UN ERROR AL INTENTAR CREAR EL CÓDIGO " + item.Code + " en el tipo " + item.Type);
+                }
+            }
+        }
+
+        public void ModifyCodeRegister(Screen.OperationContext opContext, Screen.ScreenService proxySheet, ItemCode item)
+        {
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            _eFunctions.RevertOperation(opContext, proxySheet);
+            //ejecutamos el programa
+            var reply = proxySheet.executeScreen(opContext, "MSO010");
+            //Validamos el ingreso
+            if (reply.mapName != "MSM010A")
+                throw new Exception("NO SE PUEDE INGRESAR AL PROGRAMA MSO010");
+            //se adicionan los valores a los campos
+            var arrayFields = new ArrayScreenNameValue();
+            arrayFields.Add("OPTION1I", "2");
+            arrayFields.Add("TABLE_TYPE1I", item.Type);
+            arrayFields.Add("TABLE_CODE1I", item.Code);
+
+            var request = new Screen.ScreenSubmitRequestDTO
+            {
+                screenFields = arrayFields.ToArray(),
+                screenKey = "1"
+            };
+            reply = proxySheet.submit(opContext, request);
+
+            if (reply == null)
+                throw new Exception("SE HA PRODUCIDO UN ERROR AL INTENTAR CREAR EL CÓDIGO " + item.Code + " en el tipo " + item.Type);
+            if (_eFunctions.CheckReplyError(reply) || _eFunctions.CheckReplyWarning(reply))
+                throw new Exception(reply.message);
+            if (reply.mapName != "MSM010B")
+                throw new Exception("NO SE HA PODIDO CONTINUAR CON EL SIGUIENTE PASO MSM010B");
+
+            //no hay errores ni advertencias
+            var replyFields = new ArrayScreenNameValue(reply.screenFields);
+            if (replyFields.GetField("TABLE_CODE_A2I1").value != item.Code)
+                throw new Exception("EL CÓDIGO MOSTRADO NO COINCIDE CON EL CÓDIGO A REGISTRAR");
+            if (replyFields.GetField("TABLE_TYPE2I").value != item.Type)
+                throw new Exception("EL TIPO MOSTRADO NO COINCIDE CON EL TIPO A REGISTRAR");
+
+            arrayFields = new ArrayScreenNameValue();
+            arrayFields.Add("TABLE_DESC2I1", item.Description);
+            arrayFields.Add("ASSOC_REC2I1", item.AssocRec);
+
+            request = new Screen.ScreenSubmitRequestDTO
+            {
+                screenFields = arrayFields.ToArray(),
+                screenKey = "1"
+            };
+            reply = proxySheet.submit(opContext, request);
+            var attemp = 0;
+
+            while (reply != null && reply.mapName == "MSM010B")
+            {
+                if (_eFunctions.CheckReplyError(reply))
+                    throw new Exception(reply.message);
+                if (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" || reply.functionKeys.StartsWith("XMIT-WARNING"))
+                {
+                    request = new Screen.ScreenSubmitRequestDTO { screenKey = "1" };
                     reply = proxySheet.submit(opContext, request);
                 }
                 else
@@ -379,7 +544,8 @@ namespace EllipseMSO010ExcelAddIn
                     TypeDescription = drItem["TYPE_DESC"].ToString().Trim(),
                     Code = drItem["TABLE_CODE"].ToString().Trim(),
                     Description = drItem["TABLE_DESC"].ToString().Trim(),
-                    ActiveStatus = drItem["ACTIVE_FLAG"].ToString().Trim()
+                    ActiveStatus = drItem["ACTIVE_FLAG"].ToString().Trim(),
+                    AssocRec = drItem["ASSOC_REC"].ToString().Trim()
                 };
                 list.Add(order);
             }
@@ -443,7 +609,8 @@ namespace EllipseMSO010ExcelAddIn
                                "   CO.TABLE_CODE," +
                                "   CO.TABLE_DESC," +
                                "   CO.ACTIVE_FLAG," +
-                               "   TY.TABLE_DESC TYPE_DESC" +
+                               "   TY.TABLE_DESC TYPE_DESC," +
+                               "   CO.ASSOC_REC" +
                                " FROM ELLIPSE.MSF010 CO" +
                                " LEFT JOIN ELLIPSE.MSF010 TY" +
                                " ON CO.TABLE_TYPE  = TY.TABLE_CODE" +
@@ -510,6 +677,7 @@ namespace EllipseMSO010ExcelAddIn
             public string Code;
             public string ActiveStatus;
             public string Description;
+            public string AssocRec;
         }
 
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)

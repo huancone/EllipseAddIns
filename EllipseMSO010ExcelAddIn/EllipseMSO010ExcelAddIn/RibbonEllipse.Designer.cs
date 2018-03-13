@@ -47,9 +47,11 @@ namespace EllipseMSO010ExcelAddIn
             this.btnReview = this.Factory.CreateRibbonButton();
             this.btnCreate = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.btnModify = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO010.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -61,8 +63,8 @@ namespace EllipseMSO010ExcelAddIn
             // grpMSO010
             // 
             this.grpMSO010.Items.Add(this.box1);
-            this.grpMSO010.Items.Add(this.menuActions);
             this.grpMSO010.Items.Add(this.drpEnviroment);
+            this.grpMSO010.Items.Add(this.menuActions);
             this.grpMSO010.Label = "MSO010 Codes";
             this.grpMSO010.Name = "grpMSO010";
             // 
@@ -94,6 +96,7 @@ namespace EllipseMSO010ExcelAddIn
             // 
             this.menuActions.Items.Add(this.btnReview);
             this.menuActions.Items.Add(this.btnCreate);
+            this.menuActions.Items.Add(this.btnModify);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
@@ -119,6 +122,13 @@ namespace EllipseMSO010ExcelAddIn
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // btnModify
+            // 
+            this.btnModify.Label = "Modificar Registro";
+            this.btnModify.Name = "btnModify";
+            this.btnModify.ShowImage = true;
+            this.btnModify.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnModify_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -131,6 +141,7 @@ namespace EllipseMSO010ExcelAddIn
             this.grpMSO010.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
@@ -146,6 +157,7 @@ namespace EllipseMSO010ExcelAddIn
         internal RibbonButton btnStopThread;
         internal RibbonBox box1;
         internal RibbonButton btnAbout;
+        internal RibbonButton btnModify;
     }
 
     partial class ThisRibbonCollection

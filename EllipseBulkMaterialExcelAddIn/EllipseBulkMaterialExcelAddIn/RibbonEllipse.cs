@@ -1057,8 +1057,8 @@ namespace EllipseBulkMaterialExcelAddIn
                     "  )   " +
                     "SELECT   " +
                     "  EQUIPO.EQUIP_NO,   " +
-                    "  DECODE ( PROFILES.EQUIP_GRP_ID, NULL, 'NO TIENE', PROFILES.EQUIP_GRP_ID ) EQUIP_GRP_ID,   " +
-                    "  DECODE ( PROFILES.FUEL_OIL_TYPE, NULL, 'NO TIENE', PROFILES.FUEL_OIL_TYPE ) FUEL_OIL_TYPE,   " +
+                    "  DECODE ( PROFILES.EQUIP_GRP_ID, NULL, 'NO TIENE', TRIM(PROFILES.EQUIP_GRP_ID) ) EQUIP_GRP_ID,   " +
+                    "  DECODE ( PROFILES.FUEL_OIL_TYPE, NULL, 'NO TIENE', TRIM(PROFILES.FUEL_OIL_TYPE) ) FUEL_OIL_TYPE,   " +
                     "  DECODE ( PROFILES.FUEL_CAPACITY, NULL, 0, PROFILES.FUEL_CAPACITY ) FUEL_CAPACITY   " +
                     "FROM   " +
                     "  EQUIPO   " +

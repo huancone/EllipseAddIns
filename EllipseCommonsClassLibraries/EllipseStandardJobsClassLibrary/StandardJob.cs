@@ -163,21 +163,20 @@ namespace EllipseStandardJobsClassLibrary
         public string ExtTaskText { get; set; }
     }
 
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class TaskRequirement
     {
-        public string standardJob;
-        public string districtCode;
-        public string workGroup;
-        public string sJTaskDesc;
-        public string sJTaskNo;
-        public string reqType;
-        public string seqNo;
-        public string reqCode;
-        public string reqDesc;
-        public string qtyReq;
-        public string hrsReq;
-        public string uoM;
+        public string StandardJob;
+        public string DistrictCode;
+        public string WorkGroup;
+        public string SJTaskDesc;
+        public string SJTaskNo;
+        public string ReqType;
+        public string SeqNo;
+        public string ReqCode;
+        public string ReqDesc;
+        public string QtyReq;
+        public string HrsReq;
+        public string UoM;
     }
 
     public class StandardJobReferenceCodes
@@ -641,11 +640,12 @@ namespace EllipseStandardJobsClassLibrary
             return list;
         }
 
-        public static List<TaskRequirement> FetchTaskRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string taskNo)
+        public static List<TaskRequirement> FetchTaskRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string taskNo = null)
         {
-            var sqlQuery = Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob, taskNo.PadLeft(3, '0'));
-            var stdDataReader =
-                ef.GetQueryResult(sqlQuery);
+            var sqlQuery = (taskNo == null) ? Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob)
+                                          : Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob, taskNo.PadLeft(3, '0'));
+            
+            var stdDataReader = ef.GetQueryResult(sqlQuery);
 
             var list = new List<TaskRequirement>();
 
@@ -660,18 +660,18 @@ namespace EllipseStandardJobsClassLibrary
                 // ReSharper disable once UseObjectOrCollectionInitializer
                 var taskReq = new TaskRequirement();
 
-                taskReq.districtCode = "" + stdDataReader["DSTRCT_CODE"].ToString().Trim();
-                taskReq.workGroup = "" + stdDataReader["WORK_GROUP"].ToString().Trim();
-                taskReq.standardJob = "" + stdDataReader["STD_JOB_NO"].ToString().Trim();
+                taskReq.DistrictCode = "" + stdDataReader["DSTRCT_CODE"].ToString().Trim();
+                taskReq.WorkGroup = "" + stdDataReader["WORK_GROUP"].ToString().Trim();
+                taskReq.StandardJob = "" + stdDataReader["STD_JOB_NO"].ToString().Trim();
 
-                taskReq.sJTaskNo = "" + stdDataReader["STD_JOB_TASK"].ToString().Trim();
-                taskReq.sJTaskDesc = "" + stdDataReader["SJ_TASK_DESC"].ToString().Trim();
-                taskReq.reqType = "" + stdDataReader["REQ_TYPE"].ToString().Trim();
-                taskReq.seqNo = "" + stdDataReader["SEQ_NO"].ToString().Trim();
-                taskReq.reqCode = "" + stdDataReader["RES_CODE"].ToString().Trim();
-                taskReq.reqDesc = "" + stdDataReader["RES_DESC"].ToString().Trim();
-                taskReq.qtyReq = "" + stdDataReader["QTY_REQ"].ToString().Trim();
-                taskReq.hrsReq = "" + stdDataReader["HRS_QTY"].ToString().Trim();
+                taskReq.SJTaskNo = "" + stdDataReader["STD_JOB_TASK"].ToString().Trim();
+                taskReq.SJTaskDesc = "" + stdDataReader["SJ_TASK_DESC"].ToString().Trim();
+                taskReq.ReqType = "" + stdDataReader["REQ_TYPE"].ToString().Trim();
+                taskReq.SeqNo = "" + stdDataReader["SEQ_NO"].ToString().Trim();
+                taskReq.ReqCode = "" + stdDataReader["RES_CODE"].ToString().Trim();
+                taskReq.ReqDesc = "" + stdDataReader["RES_DESC"].ToString().Trim();
+                taskReq.QtyReq = "" + stdDataReader["QTY_REQ"].ToString().Trim();
+                taskReq.HrsReq = "" + stdDataReader["HRS_QTY"].ToString().Trim();
 
                 list.Add(taskReq);
             }
@@ -772,11 +772,11 @@ namespace EllipseStandardJobsClassLibrary
 
         public static void ModifyStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask)
         {
-
-
             ef.InitiatePostConnection();
+
             if(!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
                 stdTask.SjTaskNo = stdTask.SjTaskNo.PadLeft(3, '0');
+
             var requestXml = "";
             requestXml = requestXml + "<interaction>";
             requestXml = requestXml + "	<actions>";
@@ -917,17 +917,17 @@ namespace EllipseStandardJobsClassLibrary
 
             //se cargan los parámetros de la orden
 
-            requestTaskReq.districtCode = taskReq.districtCode ?? requestTaskReq.districtCode;
-            requestTaskReq.stdJobNo = taskReq.standardJob ?? requestTaskReq.stdJobNo;
-            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
-                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
-            requestTaskReq.SJTaskNo = taskReq.sJTaskNo ?? requestTaskReq.SJTaskNo;
+            requestTaskReq.districtCode = taskReq.DistrictCode ?? requestTaskReq.districtCode;
+            requestTaskReq.stdJobNo = taskReq.StandardJob ?? requestTaskReq.stdJobNo;
+            if (!string.IsNullOrWhiteSpace(taskReq.SJTaskNo))
+                taskReq.SJTaskNo = taskReq.SJTaskNo.PadLeft(3, '0');
+            requestTaskReq.SJTaskNo = taskReq.SJTaskNo ?? requestTaskReq.SJTaskNo;
 
-            requestTaskReq.resourceClass = taskReq.reqCode.Substring(0, 1);
-            requestTaskReq.resourceCode = taskReq.reqCode.Substring(1);
-            requestTaskReq.quantityRequired = taskReq.qtyReq != null ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal);
+            requestTaskReq.resourceClass = taskReq.ReqCode.Substring(0, 1);
+            requestTaskReq.resourceCode = taskReq.ReqCode.Substring(1);
+            requestTaskReq.quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal);
             requestTaskReq.quantityRequiredSpecified = true;
-            requestTaskReq.hrsReqd = taskReq.hrsReq != null ? Convert.ToDecimal(taskReq.hrsReq) : default(decimal);
+            requestTaskReq.hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal);
             requestTaskReq.hrsReqdSpecified = true;
             requestTaskReq.classType = "ST";
             requestTaskReq.enteredInd = "S";
@@ -944,15 +944,15 @@ namespace EllipseStandardJobsClassLibrary
 
             //se cargan los parámetros de la orden
 
-            requestTaskReq.districtCode = taskReq.districtCode ?? requestTaskReq.districtCode;
-            requestTaskReq.stdJobNo = taskReq.standardJob ?? requestTaskReq.stdJobNo;
-            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
-                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
-            requestTaskReq.SJTaskNo = taskReq.sJTaskNo ?? requestTaskReq.SJTaskNo;
+            requestTaskReq.districtCode = taskReq.DistrictCode ?? requestTaskReq.districtCode;
+            requestTaskReq.stdJobNo = taskReq.StandardJob ?? requestTaskReq.stdJobNo;
+            if (!string.IsNullOrWhiteSpace(taskReq.SJTaskNo))
+                taskReq.SJTaskNo = taskReq.SJTaskNo.PadLeft(3, '0');
+            requestTaskReq.SJTaskNo = taskReq.SJTaskNo ?? requestTaskReq.SJTaskNo;
 
-            requestTaskReq.seqNo = taskReq.seqNo ?? requestTaskReq.seqNo;
-            requestTaskReq.stockCode = taskReq.reqCode.Substring(1).PadLeft(9, '0');
-            requestTaskReq.unitQuantityReqd = taskReq.qtyReq != null ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal);
+            requestTaskReq.seqNo = taskReq.SeqNo ?? requestTaskReq.seqNo;
+            requestTaskReq.stockCode = taskReq.ReqCode.Substring(1).PadLeft(9, '0');
+            requestTaskReq.unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal);
             requestTaskReq.unitQuantityReqdSpecified = true;
             requestTaskReq.catalogueFlag = true;
             requestTaskReq.catalogueFlagSpecified = true;
@@ -980,18 +980,18 @@ namespace EllipseStandardJobsClassLibrary
 
             var requestTaskReqList = new List<ResourceReqmntsServiceModifyRequestDTO>();
 
-            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
-                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
+            if (!string.IsNullOrWhiteSpace(taskReq.SJTaskNo))
+                taskReq.SJTaskNo = taskReq.SJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new ResourceReqmntsServiceModifyRequestDTO
             {
-                districtCode = taskReq.districtCode,
-                stdJobNo = taskReq.standardJob,
-                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? taskReq.sJTaskNo : null ,
-                resourceClass = taskReq.reqCode.Substring(0, 1),
-                resourceCode = taskReq.reqCode.Substring(1),
-                quantityRequired = taskReq.qtyReq != null ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal),
+                districtCode = taskReq.DistrictCode,
+                stdJobNo = taskReq.StandardJob,
+                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? taskReq.SJTaskNo : null ,
+                resourceClass = taskReq.ReqCode.Substring(0, 1),
+                resourceCode = taskReq.ReqCode.Substring(1),
+                quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
                 quantityRequiredSpecified = true,
-                hrsReqd = taskReq.hrsReq != null ? Convert.ToDecimal(taskReq.hrsReq) : default(decimal),
+                hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal),
                 hrsReqdSpecified = true,
                 classType = "ST",
                 enteredInd = "S"
@@ -1009,16 +1009,16 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<MaterialReqmntsService.MaterialReqmntsServiceModifyRequestDTO>();
-            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
-                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
+            if (!string.IsNullOrWhiteSpace(taskReq.SJTaskNo))
+                taskReq.SJTaskNo = taskReq.SJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new MaterialReqmntsService.MaterialReqmntsServiceModifyRequestDTO
             {
-                districtCode = taskReq.districtCode,
-                stdJobNo = taskReq.standardJob,
-                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? taskReq.sJTaskNo : null,
-                seqNo = taskReq.seqNo,
-                stockCode = taskReq.reqCode.Substring(1).PadLeft(9, '0'),
-                unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.qtyReq) ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal),
+                districtCode = taskReq.DistrictCode,
+                stdJobNo = taskReq.StandardJob,
+                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? taskReq.SJTaskNo : null,
+                seqNo = taskReq.SeqNo,
+                stockCode = taskReq.ReqCode.Substring(1).PadLeft(9, '0'),
+                unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.QtyReq) ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
                 unitQuantityReqdSpecified = true,
                 catalogueFlag = true,
                 catalogueFlagSpecified = true,
@@ -1046,15 +1046,15 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<ResourceReqmntsServiceDeleteRequestDTO>();
-            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
-                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
+            if (!string.IsNullOrWhiteSpace(taskReq.SJTaskNo))
+                taskReq.SJTaskNo = taskReq.SJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new ResourceReqmntsServiceDeleteRequestDTO()
             {
-                districtCode = taskReq.districtCode,
-                stdJobNo = taskReq.standardJob,
-                SJTaskNo = Convert.ToString(Convert.ToDecimal(taskReq.sJTaskNo), CultureInfo.InvariantCulture),
-                resourceClass = taskReq.reqCode.Substring(0, 1),
-                resourceCode = taskReq.reqCode.Substring(1),
+                districtCode = taskReq.DistrictCode,
+                stdJobNo = taskReq.StandardJob,
+                SJTaskNo = Convert.ToString(Convert.ToDecimal(taskReq.SJTaskNo), CultureInfo.InvariantCulture),
+                resourceClass = taskReq.ReqCode.Substring(0, 1),
+                resourceCode = taskReq.ReqCode.Substring(1),
                 classType = "ST",
                 enteredInd = "S"
             };
@@ -1071,14 +1071,14 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<MaterialReqmntsService.MaterialReqmntsServiceDeleteRequestDTO>();
-            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
-                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
+            if (!string.IsNullOrWhiteSpace(taskReq.SJTaskNo))
+                taskReq.SJTaskNo = taskReq.SJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new MaterialReqmntsService.MaterialReqmntsServiceDeleteRequestDTO
             {
-                districtCode = taskReq.districtCode,
-                stdJobNo = taskReq.standardJob,
-                SJTaskNo = Convert.ToString(Convert.ToDecimal(taskReq.sJTaskNo), CultureInfo.InvariantCulture),
-                seqNo = taskReq.seqNo,
+                districtCode = taskReq.DistrictCode,
+                stdJobNo = taskReq.StandardJob,
+                SJTaskNo = Convert.ToString(Convert.ToDecimal(taskReq.SJTaskNo), CultureInfo.InvariantCulture),
+                seqNo = taskReq.SeqNo,
                 classType = "ST",
                 enteredInd = "S",
                 CUItemNoSpecified = false,
@@ -1098,18 +1098,18 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<EquipmentReqmntsServiceCreateRequestDTO>();
-            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
-                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
+            if (!string.IsNullOrWhiteSpace(taskReq.SJTaskNo))
+                taskReq.SJTaskNo = taskReq.SJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new EquipmentReqmntsServiceCreateRequestDTO
             {
-                districtCode = taskReq.districtCode,
-                stdJobNo = taskReq.standardJob,
-                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? taskReq.sJTaskNo : null,
-                seqNo = taskReq.seqNo,
-                eqptType = taskReq.reqCode.Substring(1),
-                unitQuantityReqd = taskReq.qtyReq != null ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal),
+                districtCode = taskReq.DistrictCode,
+                stdJobNo = taskReq.StandardJob,
+                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? taskReq.SJTaskNo : null,
+                seqNo = taskReq.SeqNo,
+                eqptType = taskReq.ReqCode.Substring(1),
+                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
                 unitQuantityReqdSpecified = true,
-                UOM = taskReq.uoM,
+                UOM = taskReq.UoM,
                 contestibleFlg = false,
                 contestibleFlgSpecified = true,
                 classType = "ST",
@@ -1133,18 +1133,18 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<EquipmentReqmntsServiceModifyRequestDTO>();
-            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
-                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
+            if (!string.IsNullOrWhiteSpace(taskReq.SJTaskNo))
+                taskReq.SJTaskNo = taskReq.SJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new EquipmentReqmntsServiceModifyRequestDTO
             {
-                districtCode = taskReq.districtCode,
-                stdJobNo = taskReq.standardJob,
-                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? taskReq.sJTaskNo : null,
-                seqNo = taskReq.seqNo,
-                eqptType = taskReq.reqCode.Substring(1),
-                unitQuantityReqd = taskReq.qtyReq != null ? Convert.ToDecimal(taskReq.qtyReq) : default(decimal),
+                districtCode = taskReq.DistrictCode,
+                stdJobNo = taskReq.StandardJob,
+                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? taskReq.SJTaskNo : null,
+                seqNo = taskReq.SeqNo,
+                eqptType = taskReq.ReqCode.Substring(1),
+                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
                 unitQuantityReqdSpecified = true,
-                UOM = taskReq.uoM,
+                UOM = taskReq.UoM,
                 contestibleFlg = false,
                 contestibleFlgSpecified = true,
                 classType = "ST",
@@ -1168,15 +1168,15 @@ namespace EllipseStandardJobsClassLibrary
             };
 
             var requestTaskReqList = new List<EquipmentReqmntsServiceDeleteRequestDTO>();
-            if (!string.IsNullOrWhiteSpace(taskReq.sJTaskNo))
-                taskReq.sJTaskNo = taskReq.sJTaskNo.PadLeft(3, '0');
+            if (!string.IsNullOrWhiteSpace(taskReq.SJTaskNo))
+                taskReq.SJTaskNo = taskReq.SJTaskNo.PadLeft(3, '0');
             var requestTaskReq = new EquipmentReqmntsServiceDeleteRequestDTO
             {
-                districtCode = taskReq.districtCode,
-                stdJobNo = taskReq.standardJob,
-                SJTaskNo = Convert.ToString(Convert.ToDecimal(taskReq.sJTaskNo), CultureInfo.InvariantCulture),
-                seqNo = taskReq.seqNo,
-                operationTypeEQP = taskReq.reqCode,
+                districtCode = taskReq.DistrictCode,
+                stdJobNo = taskReq.StandardJob,
+                SJTaskNo = Convert.ToString(Convert.ToDecimal(taskReq.SJTaskNo), CultureInfo.InvariantCulture),
+                seqNo = taskReq.SeqNo,
+                operationTypeEQP = taskReq.ReqCode,
                 classType = "ST",
                 enteredInd = "S",
                 CUItemNoSpecified = false,
@@ -1370,6 +1370,65 @@ namespace EllipseStandardJobsClassLibrary
                                "   TSK.WORK_GROUP = '" + workGroup + "' " +
                                " AND TSK.STD_JOB_NO = '" + standardJob + "' " +
                                " AND TSK.STD_JOB_TASK = '" + taskNo + "'" +
+                               " AND TABLE_TYPE = 'ET' ";
+
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+
+                return query;
+
+            }
+
+            public static string GetFetchStdJobTaskRequirementsQuery(string dbReference, string dbLink, string districtCode, string workGroup, string standardJob)
+            {
+                var query = "" +
+                               " SELECT" +
+                               " 'LAB' REQ_TYPE, TSK.DSTRCT_CODE, TSK.WORK_GROUP, TSK.STD_JOB_NO, TSK.STD_JOB_TASK, TSK.SJ_TASK_DESC, 'N/A' SEQ_NO, RS.RESOURCE_TYPE RES_CODE, TO_NUMBER(RS.CREW_SIZE) QTY_REQ, RS.EST_RESRCE_HRS HRS_QTY, TT.TABLE_DESC RES_DESC, '' UNITS" +
+                               " FROM" +
+                               " " + dbReference + ".MSF693" + dbLink + " TSK INNER JOIN " + dbReference + ".MSF735" +
+                               dbLink + " RS ON RS.KEY_735_ID = '" + districtCode +
+                               "' || TSK.STD_JOB_NO || TSK.STD_JOB_TASK" +
+                               " AND RS.REC_735_TYPE = 'ST' INNER JOIN " + dbReference + ".MSF010" + dbLink +
+                               " TT ON TT.TABLE_CODE = RS.RESOURCE_TYPE" +
+                               " AND TT.TABLE_TYPE = 'TT'" +
+                               " WHERE" +
+                               " TRIM(TSK.WORK_GROUP) = '" + workGroup + "' AND TSK.STD_JOB_NO = '" + standardJob + "'" +
+                               " UNION ALL" +
+                               " SELECT" +
+                               " 'MAT' REQ_TYPE, TSK.DSTRCT_CODE, TSK.WORK_GROUP, TSK.STD_JOB_NO, TSK.STD_JOB_TASK, TSK.SJ_TASK_DESC, RS.SEQNCE_NO SEQ_NO, RS.STOCK_CODE RES_CODE, RS.UNIT_QTY_REQD QTY_REQ, 0 HRS_QTY, SCT.DESC_LINEX1||SCT.ITEM_NAME RES_DESC,'' UNITS" +
+                               " FROM" +
+                               " " + dbReference + ".MSF693" + dbLink + " TSK INNER JOIN " + dbReference + ".MSF734" +
+                               dbLink + " RS ON RS.CLASS_KEY = '" + districtCode +
+                               "' || TSK.STD_JOB_NO || TSK.STD_JOB_TASK" +
+                               " AND RS.CLASS_TYPE = 'ST' LEFT JOIN " + dbReference + ".MSF100" + dbLink +
+                               " SCT ON RS.STOCK_CODE = SCT.STOCK_CODE" +
+                               " WHERE" +
+                               " TRIM(TSK.WORK_GROUP) = '" + workGroup + "' AND TSK.STD_JOB_NO = '" + standardJob + "'" +
+                               " UNION ALL" +
+                               " SELECT " +
+                               "   'EQU' REQ_TYPE, " +
+                               "   TSK.DSTRCT_CODE, " +
+                               "   TSK.WORK_GROUP, " +
+                               "   TSK.STD_JOB_NO, " +
+                               "   TSK.STD_JOB_TASK, " +
+                               "   TSK.SJ_TASK_DESC, " +
+                               "   RS.SEQNCE_NO SEQ_NO, " +
+                               "   RS.EQPT_TYPE RES_CODE, " +
+                               "   RS.QTY_REQ, " +
+                               "   RS.UNIT_QTY_REQD HRS_QTY, " +
+                               "   ET.TABLE_DESC RES_DESC," +
+                               "   RS.UOM UNITS " +
+                               " FROM " +
+                               "   " + dbReference + ".MSF693" + dbLink + " TSK " +
+                               " INNER JOIN " + dbReference + ".MSF733" + dbLink + " RS " +
+                               " ON " +
+                               "   RS.CLASS_KEY = '" + districtCode + "' || TSK.STD_JOB_NO || TSK.STD_JOB_TASK " +
+                               " AND RS.CLASS_TYPE = 'ST' " +
+                               " INNER JOIN ELLIPSE.MSF010 ET " +
+                               " ON " +
+                               "   RS.EQPT_TYPE = ET.TABLE_CODE " +
+                               " WHERE " +
+                               "   TSK.WORK_GROUP = '" + workGroup + "' " +
+                               " AND TSK.STD_JOB_NO = '" + standardJob + "' " +
                                " AND TABLE_TYPE = 'ET' ";
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");

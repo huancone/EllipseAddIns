@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using System.Xml.XPath;
+// ReSharper disable PossibleNullReferenceException
 
 namespace EllipseCommonsClassLibrary.Connections
 {
@@ -72,12 +73,13 @@ namespace EllipseCommonsClassLibrary.Connections
         }
         public static List<string> GetEnviromentList()
         {
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            var enviromentList = new List<string>();
-            enviromentList.Add(EllipseProductivo);
-            enviromentList.Add(EllipseTest);
-            enviromentList.Add(EllipseDesarrollo);
-            enviromentList.Add(EllipseContingencia);
+            var enviromentList = new List<string>
+            {
+                EllipseProductivo,
+                EllipseTest,
+                EllipseDesarrollo,
+                EllipseContingencia
+            };
 
             return enviromentList;
         }

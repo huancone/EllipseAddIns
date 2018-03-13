@@ -1,0 +1,1986 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://ellipse.enterpriseservice.mincom.com" xmlns:tns="http://materialreqmnts.ellipse.enterpriseservice.mincom.com" xmlns:ns5="http://dto.dependant.ellipse.enterpriseservice.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns3="http://attribute.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns4="http://exception.enterpriseservice.mincom.com" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://exception.enterpriseservice.mincom.com" />
+      <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
+      <xsd:import namespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceFetchRateRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceFetchRateRequestDTO" nillable="true" type="tns:MaterialReqmntsServiceFetchRateRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="estimateNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="districtCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="JEItemNo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="versionNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaterialReqmntsServiceFetchRateRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="JEItemNo" type="tns:JEItemNo" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaterialReqmntsServiceFetchRateRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
+              <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceFetchRateRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnRateAmount" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleFetchRate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaterialReqmntsServiceFetchRateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceFetchRateReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaterialReqmntsServiceFetchRateReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceFetchRateReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceFetchRateReplyDTO" nillable="true" type="tns:MaterialReqmntsServiceFetchRateReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="rateAmount">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaterialReqmntsServiceFetchRateReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="rateAmount" type="tns:rateAmount" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleFetchRateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceFetchRateReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EnterpriseServiceOperationException" type="ns4:EnterpriseServiceOperationException" />
+      <xsd:simpleType name="CUItemNo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="seqNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="CUNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SJTaskNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderTask">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="projectNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="operationType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="classType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stdJobNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaterialReqmntsServiceReadRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
+              <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
+              <xsd:element minOccurs="0" name="JEItemNo" type="tns:JEItemNo" />
+              <xsd:element minOccurs="0" name="SJTaskNo" type="tns:SJTaskNo" />
+              <xsd:element minOccurs="0" name="classType" type="tns:classType" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
+              <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaterialReqmntsServiceReadRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="seqNo" type="tns:seqNo" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="tns:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceReadRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnCUItemNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCUNumDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCUNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCatalogueFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnClassType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCondTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContestibleFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEnteredInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEstimateNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEstimatedNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFixedAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJEItemNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperationType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjectNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPropertyUnit" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityLeftToReq" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequisitioned" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityofUnits" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRateAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSJTaskDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSJTaskNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCategory" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotReqdQuantity" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalOnlyFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUOM" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUOMDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitQuantityReqd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnVersionNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWOTaskDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderTask" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaterialReqmntsServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="propertyUnit">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityRequired">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="CUNumDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="estimatedNoDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="condTypeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="mnemonic">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityRequisitioned">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="catalogueFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="unitQuantityReqd">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="UOMDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="totReqdQuantity">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stdJobDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="condType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="matDesc1">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="operTypeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="matDesc2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WOTaskDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="matDesc3">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="matDesc4">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="partNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="status">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityLeftToReq">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityofUnits">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockCategory">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="fixedAmount">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="SJTaskDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="projDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="enteredInd">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="UOM">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="contestibleFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="totalOnlyFlg">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:complexType name="MaterialReqmntsServiceReadReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
+              <xsd:element minOccurs="0" name="CUNumDescription" type="tns:CUNumDescription" />
+              <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
+              <xsd:element minOccurs="0" name="JEItemNo" type="tns:JEItemNo" />
+              <xsd:element minOccurs="0" name="SJTaskDescription" type="tns:SJTaskDescription" />
+              <xsd:element minOccurs="0" name="SJTaskNo" type="tns:SJTaskNo" />
+              <xsd:element minOccurs="0" name="UOM" type="tns:UOM" />
+              <xsd:element minOccurs="0" name="UOMDescription" type="tns:UOMDescription" />
+              <xsd:element minOccurs="0" name="WOTaskDescription" type="tns:WOTaskDescription" />
+              <xsd:element minOccurs="0" name="catalogueFlag" type="tns:catalogueFlag" />
+              <xsd:element minOccurs="0" name="classType" type="tns:classType" />
+              <xsd:element minOccurs="0" name="condType" type="tns:condType" />
+              <xsd:element minOccurs="0" name="condTypeDescription" type="tns:condTypeDescription" />
+              <xsd:element minOccurs="0" name="contestibleFlag" type="tns:contestibleFlag" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
+              <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
+              <xsd:element minOccurs="0" name="estimatedNoDescription" type="tns:estimatedNoDescription" />
+              <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
+              <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
+              <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
+              <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
+              <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
+              <xsd:element minOccurs="0" name="operTypeDescription" type="tns:operTypeDescription" />
+              <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
+              <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="projDescription" type="tns:projDescription" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="propertyUnit" type="tns:propertyUnit" />
+              <xsd:element minOccurs="0" name="quantityLeftToReq" type="tns:quantityLeftToReq" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="quantityRequisitioned" type="tns:quantityRequisitioned" />
+              <xsd:element minOccurs="0" name="quantityofUnits" type="tns:quantityofUnits" />
+              <xsd:element minOccurs="0" name="rateAmount" type="tns:rateAmount" />
+              <xsd:element minOccurs="0" name="seqNo" type="tns:seqNo" />
+              <xsd:element minOccurs="0" name="status" type="tns:status" />
+              <xsd:element minOccurs="0" name="stdJobDescription" type="tns:stdJobDescription" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stockCategory" type="tns:stockCategory" />
+              <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
+              <xsd:element minOccurs="0" name="stockCodeDescription" type="tns:stockCodeDescription" />
+              <xsd:element minOccurs="0" name="totReqdQuantity" type="tns:totReqdQuantity" />
+              <xsd:element minOccurs="0" name="totalOnlyFlg" type="tns:totalOnlyFlg" />
+              <xsd:element minOccurs="0" name="unitQuantityReqd" type="tns:unitQuantityReqd" />
+              <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderDescription" type="tns:workOrderDescription" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="tns:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceReadReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleFetchRateWithPartialResults">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaterialReqmntsServiceFetchRateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleFetchRateWithPartialResultsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceFetchRateReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="fetchRate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaterialReqmntsServiceFetchRateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="fetchRateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceFetchRateReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceDeleteRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceDeleteRequestDTO" nillable="true" type="tns:MaterialReqmntsServiceDeleteRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="operationTypeMAT">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaterialReqmntsServiceDeleteRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
+              <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
+              <xsd:element minOccurs="0" name="JEItemNo" type="tns:JEItemNo" />
+              <xsd:element minOccurs="0" name="SJTaskNo" type="tns:SJTaskNo" />
+              <xsd:element minOccurs="0" name="classType" type="tns:classType" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
+              <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
+              <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
+              <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaterialReqmntsServiceDeleteRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="seqNo" type="tns:seqNo" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="tns:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceDeleteRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleDelete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaterialReqmntsServiceDeleteRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceDeleteReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaterialReqmntsServiceDeleteReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceDeleteReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceDeleteReplyDTO" nillable="true" type="tns:MaterialReqmntsServiceDeleteReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceDeleteReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleDeleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceDeleteReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceRetrieveOperationTypesRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
+              <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceRetrieveOperationTypesRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnOperTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperationType" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveOperationTypes">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaterialReqmntsServiceRetrieveOperationTypesRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:MaterialReqmntsServiceRetrieveOperationTypesRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceRetrieveOperationTypesReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaterialReqmntsServiceRetrieveOperationTypesReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceRetrieveOperationTypesReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceRetrieveOperationTypesReplyDTO" nillable="true" type="tns:MaterialReqmntsServiceRetrieveOperationTypesReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceRetrieveOperationTypesReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="operTypeDescription" type="tns:operTypeDescription" />
+              <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveOperationTypesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceRetrieveOperationTypesReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="resourceCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="eqptType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceClass">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaterialReqmntsServiceShowRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="UOM" type="tns:UOM" />
+              <xsd:element minOccurs="0" name="condType" type="tns:condType" />
+              <xsd:element minOccurs="0" name="eqptType" type="tns:eqptType" />
+              <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
+              <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaterialReqmntsServiceShowRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="resourceClass" type="tns:resourceClass" />
+              <xsd:element minOccurs="0" name="resourceCode" type="tns:resourceCode" />
+              <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceShowRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnCondTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUOM" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUOMDescription" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="show">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaterialReqmntsServiceShowRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceShowReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="UOM" type="tns:UOM" />
+              <xsd:element minOccurs="0" name="UOMDescription" type="tns:UOMDescription" />
+              <xsd:element minOccurs="0" name="condTypeDescription" type="tns:condTypeDescription" />
+              <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
+              <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
+              <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
+              <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
+              <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
+              <xsd:element minOccurs="0" name="stockCodeDescription" type="tns:stockCodeDescription" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="showResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceShowReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaterialReqmntsServiceDeleteRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceDeleteReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceModifyRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
+              <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
+              <xsd:element minOccurs="0" name="JEItemNo" type="tns:JEItemNo" />
+              <xsd:element minOccurs="0" name="SJTaskNo" type="tns:SJTaskNo" />
+              <xsd:element minOccurs="0" name="UOM" type="tns:UOM" />
+              <xsd:element minOccurs="0" name="catalogueFlag" type="tns:catalogueFlag" />
+              <xsd:element minOccurs="0" name="classType" type="tns:classType" />
+              <xsd:element minOccurs="0" name="contestibleFlag" type="tns:contestibleFlag" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
+              <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
+              <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
+              <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
+              <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
+              <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
+              <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
+              <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
+              <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="propertyUnit" type="tns:propertyUnit" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="rateAmount" type="tns:rateAmount" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaterialReqmntsServiceModifyRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="seqNo" type="tns:seqNo" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stockCategory" type="tns:stockCategory" />
+              <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
+              <xsd:element minOccurs="0" name="stockCodeDescription" type="tns:stockCodeDescription" />
+              <xsd:element minOccurs="0" name="totalOnlyFlg" type="tns:totalOnlyFlg" />
+              <xsd:element minOccurs="0" name="unitQuantityReqd" type="tns:unitQuantityReqd" />
+              <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="tns:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceModifyRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnCUItemNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCUNumDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCUNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCatalogueFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnClassType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContestibleFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEnteredInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEstimateNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEstimatedNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFixedAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJEItemNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperationType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperationTypeMAT" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjectNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPropUnitDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPropertyUnit" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityLeftToReq" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequisitioned" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityofUnits" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRateAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSJTaskDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSJTaskNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCategory" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotReqdQuantity" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalOnlyFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUOM" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUOMDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitQuantityReqd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnVersionNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWOTaskDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderTask" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="modify">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaterialReqmntsServiceModifyRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="propUnitDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaterialReqmntsServiceModifyReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
+              <xsd:element minOccurs="0" name="CUNumDescription" type="tns:CUNumDescription" />
+              <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
+              <xsd:element minOccurs="0" name="JEItemNo" type="tns:JEItemNo" />
+              <xsd:element minOccurs="0" name="SJTaskDescription" type="tns:SJTaskDescription" />
+              <xsd:element minOccurs="0" name="SJTaskNo" type="tns:SJTaskNo" />
+              <xsd:element minOccurs="0" name="UOM" type="tns:UOM" />
+              <xsd:element minOccurs="0" name="UOMDescription" type="tns:UOMDescription" />
+              <xsd:element minOccurs="0" name="WOTaskDescription" type="tns:WOTaskDescription" />
+              <xsd:element minOccurs="0" name="catalogueFlag" type="tns:catalogueFlag" />
+              <xsd:element minOccurs="0" name="classType" type="tns:classType" />
+              <xsd:element minOccurs="0" name="contestibleFlag" type="tns:contestibleFlag" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
+              <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
+              <xsd:element minOccurs="0" name="estimatedNoDescription" type="tns:estimatedNoDescription" />
+              <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
+              <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
+              <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
+              <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
+              <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
+              <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
+              <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="projDescription" type="tns:projDescription" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="propUnitDescription" type="tns:propUnitDescription" />
+              <xsd:element minOccurs="0" name="propertyUnit" type="tns:propertyUnit" />
+              <xsd:element minOccurs="0" name="quantityLeftToReq" type="tns:quantityLeftToReq" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="quantityRequisitioned" type="tns:quantityRequisitioned" />
+              <xsd:element minOccurs="0" name="quantityofUnits" type="tns:quantityofUnits" />
+              <xsd:element minOccurs="0" name="rateAmount" type="tns:rateAmount" />
+              <xsd:element minOccurs="0" name="seqNo" type="tns:seqNo" />
+              <xsd:element minOccurs="0" name="stdJobDescription" type="tns:stdJobDescription" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stockCategory" type="tns:stockCategory" />
+              <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
+              <xsd:element minOccurs="0" name="stockCodeDescription" type="tns:stockCodeDescription" />
+              <xsd:element minOccurs="0" name="totReqdQuantity" type="tns:totReqdQuantity" />
+              <xsd:element minOccurs="0" name="totalOnlyFlg" type="tns:totalOnlyFlg" />
+              <xsd:element minOccurs="0" name="unitQuantityReqd" type="tns:unitQuantityReqd" />
+              <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderDescription" type="tns:workOrderDescription" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="tns:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="modifyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceModifyReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceModifyRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceModifyRequestDTO" nillable="true" type="tns:MaterialReqmntsServiceModifyRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleModify">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaterialReqmntsServiceModifyRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceModifyReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaterialReqmntsServiceModifyReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceModifyReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceModifyReplyDTO" nillable="true" type="tns:MaterialReqmntsServiceModifyReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleModifyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceModifyReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceShowRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceShowRequestDTO" nillable="true" type="tns:MaterialReqmntsServiceShowRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleShow">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaterialReqmntsServiceShowRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceShowReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaterialReqmntsServiceShowReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceShowReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceShowReplyDTO" nillable="true" type="tns:MaterialReqmntsServiceShowReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleShowResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceShowReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="districtCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="currentRateFlg">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaterialReqmntsServiceCreateRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
+              <xsd:element minOccurs="0" name="CUNumDescription" type="tns:CUNumDescription" />
+              <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
+              <xsd:element minOccurs="0" name="JEItemNo" type="tns:JEItemNo" />
+              <xsd:element minOccurs="0" name="SJTaskNo" type="tns:SJTaskNo" />
+              <xsd:element minOccurs="0" name="UOM" type="tns:UOM" />
+              <xsd:element minOccurs="0" name="catalogueFlag" type="tns:catalogueFlag" />
+              <xsd:element minOccurs="0" name="classType" type="tns:classType" />
+              <xsd:element minOccurs="0" name="contestibleFlag" type="tns:contestibleFlag" />
+              <xsd:element minOccurs="0" name="currentRateFlg" type="tns:currentRateFlg" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="districtCodeDescription" type="tns:districtCodeDescription" />
+              <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
+              <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
+              <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
+              <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
+              <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
+              <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
+              <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
+              <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
+              <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="propertyUnit" type="tns:propertyUnit" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="rateAmount" type="tns:rateAmount" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MaterialReqmntsServiceCreateRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="seqNo" type="tns:seqNo" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stockCategory" type="tns:stockCategory" />
+              <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
+              <xsd:element minOccurs="0" name="totalOnlyFlg" type="tns:totalOnlyFlg" />
+              <xsd:element minOccurs="0" name="unitQuantityReqd" type="tns:unitQuantityReqd" />
+              <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="tns:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceCreateRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnCUItemNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCUNumDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCUNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCatalogueFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnClassType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContestibleFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEnteredInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEstimateNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEstimatedNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFixedAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJEItemNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperationType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperationTypeMAT" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjectNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPropUnitDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPropertyUnit" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityLeftToReq" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequisitioned" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityofUnits" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRateAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSJTaskDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSJTaskNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCategory" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotReqdQuantity" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalOnlyFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUOM" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUOMDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitQuantityReqd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUserId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnVersionNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWOTaskDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderTask" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="create">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaterialReqmntsServiceCreateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="userId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MaterialReqmntsServiceCreateReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
+              <xsd:element minOccurs="0" name="CUNumDescription" type="tns:CUNumDescription" />
+              <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
+              <xsd:element minOccurs="0" name="JEItemNo" type="tns:JEItemNo" />
+              <xsd:element minOccurs="0" name="SJTaskDescription" type="tns:SJTaskDescription" />
+              <xsd:element minOccurs="0" name="SJTaskNo" type="tns:SJTaskNo" />
+              <xsd:element minOccurs="0" name="UOM" type="tns:UOM" />
+              <xsd:element minOccurs="0" name="UOMDescription" type="tns:UOMDescription" />
+              <xsd:element minOccurs="0" name="WOTaskDescription" type="tns:WOTaskDescription" />
+              <xsd:element minOccurs="0" name="catalogueFlag" type="tns:catalogueFlag" />
+              <xsd:element minOccurs="0" name="classType" type="tns:classType" />
+              <xsd:element minOccurs="0" name="contestibleFlag" type="tns:contestibleFlag" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
+              <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
+              <xsd:element minOccurs="0" name="estimatedNoDescription" type="tns:estimatedNoDescription" />
+              <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
+              <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
+              <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
+              <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
+              <xsd:element minOccurs="0" name="operTypeDescription" type="tns:operTypeDescription" />
+              <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
+              <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
+              <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="projDescription" type="tns:projDescription" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="propUnitDescription" type="tns:propUnitDescription" />
+              <xsd:element minOccurs="0" name="propertyUnit" type="tns:propertyUnit" />
+              <xsd:element minOccurs="0" name="quantityLeftToReq" type="tns:quantityLeftToReq" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="quantityRequisitioned" type="tns:quantityRequisitioned" />
+              <xsd:element minOccurs="0" name="quantityofUnits" type="tns:quantityofUnits" />
+              <xsd:element minOccurs="0" name="rateAmount" type="tns:rateAmount" />
+              <xsd:element minOccurs="0" name="seqNo" type="tns:seqNo" />
+              <xsd:element minOccurs="0" name="stdJobDescription" type="tns:stdJobDescription" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stockCategory" type="tns:stockCategory" />
+              <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
+              <xsd:element minOccurs="0" name="stockCodeDescription" type="tns:stockCodeDescription" />
+              <xsd:element minOccurs="0" name="totReqdQuantity" type="tns:totReqdQuantity" />
+              <xsd:element minOccurs="0" name="totalOnlyFlg" type="tns:totalOnlyFlg" />
+              <xsd:element minOccurs="0" name="unitQuantityReqd" type="tns:unitQuantityReqd" />
+              <xsd:element minOccurs="0" name="userId" type="tns:userId" />
+              <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderDescription" type="tns:workOrderDescription" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="tns:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="createResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceCreateReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="retrAllFlg">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="noDefaultFlg">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="internalOnlyFlg">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="ignoreErrorFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="requisitionOnlyFlg">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:complexType name="MaterialReqmntsServiceRetrieveRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
+              <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
+              <xsd:element minOccurs="0" name="JEItemNo" type="tns:JEItemNo" />
+              <xsd:element minOccurs="0" name="SJTaskNo" type="tns:SJTaskNo" />
+              <xsd:element minOccurs="0" name="classType" type="tns:classType" />
+              <xsd:element minOccurs="0" name="currentRateFlg" type="tns:currentRateFlg" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
+              <xsd:element minOccurs="0" name="ignoreErrorFlag" type="tns:ignoreErrorFlag" />
+              <xsd:element minOccurs="0" name="internalOnlyFlg" type="tns:internalOnlyFlg" />
+              <xsd:element minOccurs="0" name="noDefaultFlg" type="tns:noDefaultFlg" />
+              <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
+              <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="quantityofUnits" type="tns:quantityofUnits" />
+              <xsd:element minOccurs="0" name="requisitionOnlyFlg" type="tns:requisitionOnlyFlg" />
+              <xsd:element minOccurs="0" name="retrAllFlg" type="tns:retrAllFlg" />
+              <xsd:element minOccurs="0" name="seqNo" type="tns:seqNo" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="tns:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceRetrieveRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnCUItemNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCUNumDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCUNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCatalogueFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnClassType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContestibleFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEnteredInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEstimateNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEstimatedNoDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFixedAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnJEItemNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperTypeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperationType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnOperationTypeMAT" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjectNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPropUnitDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPropertyUnit" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityLeftToReq" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequisitioned" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityofUnits" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRateAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSJTaskDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSJTaskNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdJobNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCategory" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotReqdQuantity" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalOnlyFlg" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUOM" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUOMDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitQuantityReqd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnVersionNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWOTaskDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrderTask" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieve">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MaterialReqmntsServiceRetrieveRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:MaterialReqmntsServiceRetrieveRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceRetrieveReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaterialReqmntsServiceRetrieveReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceRetrieveReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceRetrieveReplyDTO" nillable="true" type="tns:MaterialReqmntsServiceRetrieveReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MaterialReqmntsServiceRetrieveReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
+              <xsd:element minOccurs="0" name="CUNumDescription" type="tns:CUNumDescription" />
+              <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
+              <xsd:element minOccurs="0" name="JEItemNo" type="tns:JEItemNo" />
+              <xsd:element minOccurs="0" name="SJTaskDescription" type="tns:SJTaskDescription" />
+              <xsd:element minOccurs="0" name="SJTaskNo" type="tns:SJTaskNo" />
+              <xsd:element minOccurs="0" name="UOM" type="tns:UOM" />
+              <xsd:element minOccurs="0" name="UOMDescription" type="tns:UOMDescription" />
+              <xsd:element minOccurs="0" name="WOTaskDescription" type="tns:WOTaskDescription" />
+              <xsd:element minOccurs="0" name="catalogueFlag" type="tns:catalogueFlag" />
+              <xsd:element minOccurs="0" name="classType" type="tns:classType" />
+              <xsd:element minOccurs="0" name="contestibleFlag" type="tns:contestibleFlag" />
+              <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
+              <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
+              <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
+              <xsd:element minOccurs="0" name="estimatedNoDescription" type="tns:estimatedNoDescription" />
+              <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
+              <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
+              <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
+              <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
+              <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
+              <xsd:element minOccurs="0" name="operTypeDescription" type="tns:operTypeDescription" />
+              <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
+              <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
+              <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="projDescription" type="tns:projDescription" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="propUnitDescription" type="tns:propUnitDescription" />
+              <xsd:element minOccurs="0" name="propertyUnit" type="tns:propertyUnit" />
+              <xsd:element minOccurs="0" name="quantityLeftToReq" type="tns:quantityLeftToReq" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="quantityRequisitioned" type="tns:quantityRequisitioned" />
+              <xsd:element minOccurs="0" name="quantityofUnits" type="tns:quantityofUnits" />
+              <xsd:element minOccurs="0" name="rateAmount" type="tns:rateAmount" />
+              <xsd:element minOccurs="0" name="seqNo" type="tns:seqNo" />
+              <xsd:element minOccurs="0" name="status" type="tns:status" />
+              <xsd:element minOccurs="0" name="stdJobDescription" type="tns:stdJobDescription" />
+              <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stockCategory" type="tns:stockCategory" />
+              <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
+              <xsd:element minOccurs="0" name="stockCodeDescription" type="tns:stockCodeDescription" />
+              <xsd:element minOccurs="0" name="totReqdQuantity" type="tns:totReqdQuantity" />
+              <xsd:element minOccurs="0" name="totalOnlyFlg" type="tns:totalOnlyFlg" />
+              <xsd:element minOccurs="0" name="unitQuantityReqd" type="tns:unitQuantityReqd" />
+              <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns5:WorkOrderDTO" />
+              <xsd:element minOccurs="0" name="workOrderDescription" type="tns:workOrderDescription" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="tns:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceRetrieveReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceReadRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceReadRequestDTO" nillable="true" type="tns:MaterialReqmntsServiceReadRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaterialReqmntsServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceReadReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaterialReqmntsServiceReadReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceReadReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceReadReplyDTO" nillable="true" type="tns:MaterialReqmntsServiceReadReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceReadReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadWithPartialResults">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaterialReqmntsServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadWithPartialResultsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceReadReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceCreateRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceCreateRequestDTO" nillable="true" type="tns:MaterialReqmntsServiceCreateRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleCreate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMaterialReqmntsServiceCreateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MaterialReqmntsServiceCreateReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMaterialReqmntsServiceCreateReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMaterialReqmntsServiceCreateReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MaterialReqmntsServiceCreateReplyDTO" nillable="true" type="tns:MaterialReqmntsServiceCreateReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleCreateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MaterialReqmntsServiceCreateReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ellipse.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
+      <xsd:complexType name="AbstractDTO" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="customAttributes" type="ns3:ArrayOfAttribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractReplyCollectionDTO" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractReplyDTO" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="warningsAndInformation" type="ns2:ArrayOfWarningMessageDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarningMessageDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WarningMessageDTO" nillable="true" type="ns2:WarningMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="WarningMessageDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ApplicationMessageImpl" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ApplicationMessageImpl">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="code" type="xsd:string" />
+          <xsd:element minOccurs="0" name="dtoIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="fieldName" type="xsd:string" />
+          <xsd:element minOccurs="0" name="message" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfErrorMessageDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ErrorMessageDTO" nillable="true" type="ns2:ErrorMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ErrorMessageDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ApplicationMessageImpl" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:import namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns3:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
+          <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://exception.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="EnterpriseServiceOperationException">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errorMessages" type="ns2:ArrayOfErrorMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
+      <xsd:complexType name="WorkOrderDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="prefix" type="xsd:string" />
+          <xsd:element minOccurs="0" name="no" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="multipleDeleteRequest">
+    <wsdl:part name="parameters" element="tns:multipleDelete" />
+  </wsdl:message>
+  <wsdl:message name="multipleFetchRateRequest">
+    <wsdl:part name="parameters" element="tns:multipleFetchRate" />
+  </wsdl:message>
+  <wsdl:message name="multipleFetchRateWithPartialResultsRequest">
+    <wsdl:part name="parameters" element="tns:multipleFetchRateWithPartialResults" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveOperationTypesRequest">
+    <wsdl:part name="parameters" element="tns:retrieveOperationTypes" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="showRequest">
+    <wsdl:part name="parameters" element="tns:show" />
+  </wsdl:message>
+  <wsdl:message name="retrieveOperationTypesResponse">
+    <wsdl:part name="parameters" element="tns:retrieveOperationTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleFetchRateWithPartialResultsResponse">
+    <wsdl:part name="parameters" element="tns:multipleFetchRateWithPartialResultsResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="parameters" element="tns:delete" />
+  </wsdl:message>
+  <wsdl:message name="retrieveResponse">
+    <wsdl:part name="parameters" element="tns:retrieveResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPartialResultsRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResults" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreate" />
+  </wsdl:message>
+  <wsdl:message name="multipleFetchRateResponse">
+    <wsdl:part name="parameters" element="tns:multipleFetchRateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleModifyResponse">
+    <wsdl:part name="parameters" element="tns:multipleModifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="showResponse">
+    <wsdl:part name="parameters" element="tns:showResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchRateRequest">
+    <wsdl:part name="parameters" element="tns:fetchRate" />
+  </wsdl:message>
+  <wsdl:message name="modifyRequest">
+    <wsdl:part name="parameters" element="tns:modify" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="modifyResponse">
+    <wsdl:part name="parameters" element="tns:modifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleModifyRequest">
+    <wsdl:part name="parameters" element="tns:multipleModify" />
+  </wsdl:message>
+  <wsdl:message name="createRequest">
+    <wsdl:part name="parameters" element="tns:create" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPartialResultsResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResultsResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleShowRequest">
+    <wsdl:part name="parameters" element="tns:multipleShow" />
+  </wsdl:message>
+  <wsdl:message name="EnterpriseServiceOperationException">
+    <wsdl:part name="EnterpriseServiceOperationException" element="tns:EnterpriseServiceOperationException" />
+  </wsdl:message>
+  <wsdl:message name="fetchRateResponse">
+    <wsdl:part name="parameters" element="tns:fetchRateResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="parameters" element="tns:deleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleShowResponse">
+    <wsdl:part name="parameters" element="tns:multipleShowResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveRequest">
+    <wsdl:part name="parameters" element="tns:retrieve" />
+  </wsdl:message>
+  <wsdl:portType name="MaterialReqmnts">
+    <wsdl:operation name="multipleFetchRate">
+      <wsdl:input name="multipleFetchRateRequest" message="tns:multipleFetchRateRequest" />
+      <wsdl:output name="multipleFetchRateResponse" message="tns:multipleFetchRateResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleFetchRateWithPartialResults">
+      <wsdl:input name="multipleFetchRateWithPartialResultsRequest" message="tns:multipleFetchRateWithPartialResultsRequest" />
+      <wsdl:output name="multipleFetchRateWithPartialResultsResponse" message="tns:multipleFetchRateWithPartialResultsResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="fetchRate">
+      <wsdl:input name="fetchRateRequest" message="tns:fetchRateRequest" />
+      <wsdl:output name="fetchRateResponse" message="tns:fetchRateResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdl:input name="multipleDeleteRequest" message="tns:multipleDeleteRequest" />
+      <wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveOperationTypes">
+      <wsdl:input name="retrieveOperationTypesRequest" message="tns:retrieveOperationTypesRequest" />
+      <wsdl:output name="retrieveOperationTypesResponse" message="tns:retrieveOperationTypesResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="show">
+      <wsdl:input name="showRequest" message="tns:showRequest" />
+      <wsdl:output name="showResponse" message="tns:showResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input name="deleteRequest" message="tns:deleteRequest" />
+      <wsdl:output name="deleteResponse" message="tns:deleteResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="modify">
+      <wsdl:input name="modifyRequest" message="tns:modifyRequest" />
+      <wsdl:output name="modifyResponse" message="tns:modifyResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleModify">
+      <wsdl:input name="multipleModifyRequest" message="tns:multipleModifyRequest" />
+      <wsdl:output name="multipleModifyResponse" message="tns:multipleModifyResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleShow">
+      <wsdl:input name="multipleShowRequest" message="tns:multipleShowRequest" />
+      <wsdl:output name="multipleShowResponse" message="tns:multipleShowResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input name="createRequest" message="tns:createRequest" />
+      <wsdl:output name="createResponse" message="tns:createResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieve">
+      <wsdl:input name="retrieveRequest" message="tns:retrieveRequest" />
+      <wsdl:output name="retrieveResponse" message="tns:retrieveResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadWithPartialResults">
+      <wsdl:input name="multipleReadWithPartialResultsRequest" message="tns:multipleReadWithPartialResultsRequest" />
+      <wsdl:output name="multipleReadWithPartialResultsResponse" message="tns:multipleReadWithPartialResultsResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
+      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MaterialReqmntsServiceHttpBinding" type="tns:MaterialReqmnts">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="multipleFetchRate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleFetchRateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleFetchRateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleFetchRateWithPartialResults">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleFetchRateWithPartialResultsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleFetchRateWithPartialResultsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fetchRate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="fetchRateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="fetchRateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveOperationTypes">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveOperationTypesRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveOperationTypesResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="show">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="showRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="showResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="modify">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="modifyRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="modifyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleModify">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleModifyRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleModifyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleShow">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleShowRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleShowResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieve">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadWithPartialResults">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadWithPartialResultsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadWithPartialResultsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MaterialReqmntsService">
+    <wsdl:port name="MaterialReqmntsServiceHttpPort" binding="tns:MaterialReqmntsServiceHttpBinding">
+      <wsdlsoap:address location="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/MaterialReqmntsService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

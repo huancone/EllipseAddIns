@@ -1270,7 +1270,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableNameQualRev, ResultColumnQualRev);
             var i = TitleRowQualRev + 1;
-            const int validationRow = TitleRowQualRev - 1;
+            const int validationRow = TitleRow01 - 1;
 
             var opSheet = new StandardJobService.OperationContext
             {
@@ -1805,18 +1805,18 @@ namespace EllipseStandardJobsExcelAddIn
                     foreach (var req in reqList)
                     {
                         //GENERAL
-                        _cells.GetCell(1, i).Value = "" + req.districtCode;
-                        _cells.GetCell(2, i).Value = "" + req.workGroup;
-                        _cells.GetCell(3, i).Value = "" + req.standardJob;
-                        _cells.GetCell(4, i).Value = "" + req.sJTaskNo;
-                        _cells.GetCell(5, i).Value = "" + req.sJTaskDesc;
+                        _cells.GetCell(1, i).Value = "" + req.DistrictCode;
+                        _cells.GetCell(2, i).Value = "" + req.WorkGroup;
+                        _cells.GetCell(3, i).Value = "" + req.StandardJob;
+                        _cells.GetCell(4, i).Value = "" + req.SJTaskNo;
+                        _cells.GetCell(5, i).Value = "" + req.SJTaskDesc;
                         _cells.GetCell(6, i).Value = "M";
-                        _cells.GetCell(7, i).Value = "" + req.reqType;
-                        _cells.GetCell(8, i).Value = "" + req.seqNo;
-                        _cells.GetCell(9, i).Value = "" + req.reqCode;
-                        _cells.GetCell(10, i).Value = "" + req.reqDesc;
-                        _cells.GetCell(11, i).Value = "" + req.qtyReq;
-                        _cells.GetCell(12, i).Value = "" + req.hrsReq;
+                        _cells.GetCell(7, i).Value = "" + req.ReqType;
+                        _cells.GetCell(8, i).Value = "" + req.SeqNo;
+                        _cells.GetCell(9, i).Value = "" + req.ReqCode;
+                        _cells.GetCell(10, i).Value = "" + req.ReqDesc;
+                        _cells.GetCell(11, i).Value = "" + req.QtyReq;
+                        _cells.GetCell(12, i).Value = "" + req.HrsReq;
                         _cells.GetCell(ResultColumn03, i).Select();
                         i++;//aumenta req
                     }
@@ -1891,49 +1891,49 @@ namespace EllipseStandardJobsExcelAddIn
                     var taskReq = new TaskRequirement();
                     //GENERAL
 
-                    taskReq.districtCode = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
-                    taskReq.workGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
-                    taskReq.standardJob = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
+                    taskReq.DistrictCode = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+                    taskReq.WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
+                    taskReq.StandardJob = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
                     //STD_JOB_DESC	
-                    taskReq.sJTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value);
-                    taskReq.sJTaskNo = string.IsNullOrWhiteSpace(taskReq.sJTaskNo) ? "001" : taskReq.sJTaskNo;
-                    taskReq.sJTaskDesc = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
+                    taskReq.SJTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value);
+                    taskReq.SJTaskNo = string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? "001" : taskReq.SJTaskNo;
+                    taskReq.SJTaskDesc = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
                     string action = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);
-                    taskReq.reqType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
-                    taskReq.seqNo = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
-                    taskReq.reqCode = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value);
-                    taskReq.reqDesc = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value);
-                    taskReq.qtyReq = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value);
-                    taskReq.hrsReq = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value);
-                    taskReq.uoM = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value);
+                    taskReq.ReqType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
+                    taskReq.SeqNo = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
+                    taskReq.ReqCode = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value);
+                    taskReq.ReqDesc = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value);
+                    taskReq.QtyReq = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value);
+                    taskReq.HrsReq = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value);
+                    taskReq.UoM = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value);
 
                     if (string.IsNullOrWhiteSpace(action))
                         continue;
                     else if (action.Equals("C"))
                     {
-                        if (taskReq.reqType.Equals("LAB"))
+                        if (taskReq.ReqType.Equals("LAB"))
                             StandardJobActions.CreateTaskResource(urlService, opSheetResource, taskReq);
-                        else if (taskReq.reqType.Equals("MAT"))
+                        else if (taskReq.ReqType.Equals("MAT"))
                             StandardJobActions.CreateTaskMaterial(urlService, opSheetMaterial, taskReq);
-                        else if (taskReq.reqType.Equals("EQU"))
+                        else if (taskReq.ReqType.Equals("EQU"))
                             StandardJobActions.CreateTaskEquipment(urlService, opSheetEquipment, taskReq);
                     }
                     else if (action.Equals("M"))
                     {
-                        if (taskReq.reqType.Equals("LAB"))
+                        if (taskReq.ReqType.Equals("LAB"))
                             StandardJobActions.ModifyTaskResource(urlService, opSheetResource, taskReq);
-                        else if (taskReq.reqType.Equals("MAT"))
+                        else if (taskReq.ReqType.Equals("MAT"))
                             StandardJobActions.ModifyTaskMaterial(urlService, opSheetMaterial, taskReq);
-                        else if (taskReq.reqType.Equals("EQU"))
+                        else if (taskReq.ReqType.Equals("EQU"))
                             StandardJobActions.ModifyTaskEquipment(urlService, opSheetEquipment, taskReq);
                     }
                     else if (action.Equals("D"))
                     {
-                        if (taskReq.reqType.Equals("LAB"))
+                        if (taskReq.ReqType.Equals("LAB"))
                             StandardJobActions.DeleteTaskResource(urlService, opSheetResource, taskReq);
-                        else if (taskReq.reqType.Equals("MAT"))
+                        else if (taskReq.ReqType.Equals("MAT"))
                             StandardJobActions.DeleteTaskMaterial(urlService, opSheetMaterial, taskReq);
-                        else if (taskReq.reqType.Equals("EQU"))
+                        else if (taskReq.ReqType.Equals("EQU"))
                             StandardJobActions.DeleteTaskEquipment(urlService, opSheetEquipment, taskReq);
                     }
 

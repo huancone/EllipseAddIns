@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
@@ -12,26 +13,27 @@ using Screen = EllipseCommonsClassLibrary.ScreenService;
 
 namespace EllipseStatisticsProfileExcelAddIn
 {
+    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     public partial class RibbonEllipse
     {
-        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        ExcelStyleCells _cells;
+        EllipseFunctions _eFunctions = new EllipseFunctions();
+        FormAuthenticate _frmAuth = new FormAuthenticate();
+        Application _excelApp;
+
+        
         private readonly string _sheetName01 = "Statistics Profile";
-        private ExcelStyleCells _cells;
-        private Application _excelApp;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
 
-            var enviromentList = Environments.GetEnviromentList();
-            foreach (var item in enviromentList)
+            var enviroments = Environments.GetEnviromentList();
+            foreach (var env in enviroments)
             {
-                var drpItem = Factory.CreateRibbonDropDownItem();
-                drpItem.Label = item;
-                drpEnviroment.Items.Add(drpItem);
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnviroment.Items.Add(item);
             }
         }
 
@@ -45,23 +47,25 @@ namespace EllipseStatisticsProfileExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
                 _excelApp.Workbooks.Add();
-                _excelApp.ActiveWorkbook.ActiveSheet.Name = _sheetName01;
-
-                var excelSheet = _excelApp.ActiveWorkbook.ActiveSheet;
-
-                var optionList = new List<string>();
-
+                while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
+                    _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
 
+                _cells.SetCursorWait();
+
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = _sheetName01;
+
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
-                _cells.MergeCells("A1", "A2");
+                _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("B1").Value = "STATISTICS PROFILES - ELLIPSE 8";
-                _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
-                _cells.MergeCells("B1", "J2");
+                _cells.GetCell("C1").Value = "STATISTICS PROFILES - ELLIPSE 8";
+                _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("C1", "J2");
 
                 _cells.GetCell("A4:AT4").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetCell("AU4").Style = _cells.GetStyle(StyleConstants.TitleInformation);
@@ -71,6 +75,7 @@ namespace EllipseStatisticsProfileExcelAddIn
                 _cells.GetCell("F4").Value = "Primary Statistic";
                 _cells.GetCell("AU4").Value = "Result";
 
+                var optionList = new List<string>();
                 _cells.GetCell("A4").Value = "Options";
                 optionList.Add("3. Maintain Operating Statistics Profile");
                 optionList.Add("4. Maintain General Equipment Profile");
@@ -78,6 +83,7 @@ namespace EllipseStatisticsProfileExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("A5:A100"), optionList);
 
                 _cells.GetCell("B4").Value = "Profile Type";
+                
                 optionList = new List<string> { "EGI", "Equipment" };
                 _cells.SetValidationList(_cells.GetCell("B5:B100"), optionList);
 
@@ -92,12 +98,15 @@ namespace EllipseStatisticsProfileExcelAddIn
                     _cells.GetCell(i * 2 + startColumn + 1, 4).Value = "D/I";
                 }
 
-                excelSheet.Cells.Columns.AutoFit();
-                excelSheet.Cells.Rows.AutoFit();
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             }
             catch (Exception error)
             {
                 _cells.GetCell("AU5").Value = error.Message;
+            }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
             }
         }
 
@@ -111,6 +120,9 @@ namespace EllipseStatisticsProfileExcelAddIn
             var statType = new List<string>();
             var statEntry = new List<string>();
             var arrayFields = new ArrayScreenNameValue();
+
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
 
             _frmAuth.StartPosition = FormStartPosition.CenterScreen;
             _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
@@ -318,8 +330,8 @@ namespace EllipseStatisticsProfileExcelAddIn
                     arrayFields = new ArrayScreenNameValue();
 
                     arrayFields.Add("PLANT_NO2I", profile);
-                    arrayFields.Add("FUEL_OIL_TYPE2I", fuelOilType2I);
-                    arrayFields.Add("FUEL_CAPACITY2I", fuelCapacity2I);
+                    arrayFields.Add("FUEL_OIL_TYPE2I", _cells.GetNullIfTrimmedEmpty(fuelOilType2I) == null ? replySheet.screenFields[9].value : fuelOilType2I);
+                    arrayFields.Add("FUEL_CAPACITY2I",   _cells.GetNullIfTrimmedEmpty(fuelCapacity2I) == null ? replySheet.screenFields[1].value : fuelCapacity2I) ;
                     arrayFields.Add("VAL_PROF_FLG2I", "N");
 
                     requestSheet.screenFields = arrayFields.ToArray();
