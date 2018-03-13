@@ -640,11 +640,12 @@ namespace EllipseStandardJobsClassLibrary
             return list;
         }
 
-        public static List<TaskRequirement> FetchTaskRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string taskNo)
+        public static List<TaskRequirement> FetchTaskRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string taskNo = null)
         {
-            var sqlQuery = Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob, taskNo.PadLeft(3, '0'));
-            var stdDataReader =
-                ef.GetQueryResult(sqlQuery);
+            var sqlQuery = (taskNo == null) ? Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob)
+                                          : Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob, taskNo.PadLeft(3, '0'));
+            
+            var stdDataReader = ef.GetQueryResult(sqlQuery);
 
             var list = new List<TaskRequirement>();
 
@@ -771,11 +772,11 @@ namespace EllipseStandardJobsClassLibrary
 
         public static void ModifyStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask)
         {
-
-
             ef.InitiatePostConnection();
+
             if(!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
                 stdTask.SjTaskNo = stdTask.SjTaskNo.PadLeft(3, '0');
+
             var requestXml = "";
             requestXml = requestXml + "<interaction>";
             requestXml = requestXml + "	<actions>";
@@ -1369,6 +1370,65 @@ namespace EllipseStandardJobsClassLibrary
                                "   TSK.WORK_GROUP = '" + workGroup + "' " +
                                " AND TSK.STD_JOB_NO = '" + standardJob + "' " +
                                " AND TSK.STD_JOB_TASK = '" + taskNo + "'" +
+                               " AND TABLE_TYPE = 'ET' ";
+
+                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+
+                return query;
+
+            }
+
+            public static string GetFetchStdJobTaskRequirementsQuery(string dbReference, string dbLink, string districtCode, string workGroup, string standardJob)
+            {
+                var query = "" +
+                               " SELECT" +
+                               " 'LAB' REQ_TYPE, TSK.DSTRCT_CODE, TSK.WORK_GROUP, TSK.STD_JOB_NO, TSK.STD_JOB_TASK, TSK.SJ_TASK_DESC, 'N/A' SEQ_NO, RS.RESOURCE_TYPE RES_CODE, TO_NUMBER(RS.CREW_SIZE) QTY_REQ, RS.EST_RESRCE_HRS HRS_QTY, TT.TABLE_DESC RES_DESC, '' UNITS" +
+                               " FROM" +
+                               " " + dbReference + ".MSF693" + dbLink + " TSK INNER JOIN " + dbReference + ".MSF735" +
+                               dbLink + " RS ON RS.KEY_735_ID = '" + districtCode +
+                               "' || TSK.STD_JOB_NO || TSK.STD_JOB_TASK" +
+                               " AND RS.REC_735_TYPE = 'ST' INNER JOIN " + dbReference + ".MSF010" + dbLink +
+                               " TT ON TT.TABLE_CODE = RS.RESOURCE_TYPE" +
+                               " AND TT.TABLE_TYPE = 'TT'" +
+                               " WHERE" +
+                               " TRIM(TSK.WORK_GROUP) = '" + workGroup + "' AND TSK.STD_JOB_NO = '" + standardJob + "'" +
+                               " UNION ALL" +
+                               " SELECT" +
+                               " 'MAT' REQ_TYPE, TSK.DSTRCT_CODE, TSK.WORK_GROUP, TSK.STD_JOB_NO, TSK.STD_JOB_TASK, TSK.SJ_TASK_DESC, RS.SEQNCE_NO SEQ_NO, RS.STOCK_CODE RES_CODE, RS.UNIT_QTY_REQD QTY_REQ, 0 HRS_QTY, SCT.DESC_LINEX1||SCT.ITEM_NAME RES_DESC,'' UNITS" +
+                               " FROM" +
+                               " " + dbReference + ".MSF693" + dbLink + " TSK INNER JOIN " + dbReference + ".MSF734" +
+                               dbLink + " RS ON RS.CLASS_KEY = '" + districtCode +
+                               "' || TSK.STD_JOB_NO || TSK.STD_JOB_TASK" +
+                               " AND RS.CLASS_TYPE = 'ST' LEFT JOIN " + dbReference + ".MSF100" + dbLink +
+                               " SCT ON RS.STOCK_CODE = SCT.STOCK_CODE" +
+                               " WHERE" +
+                               " TRIM(TSK.WORK_GROUP) = '" + workGroup + "' AND TSK.STD_JOB_NO = '" + standardJob + "'" +
+                               " UNION ALL" +
+                               " SELECT " +
+                               "   'EQU' REQ_TYPE, " +
+                               "   TSK.DSTRCT_CODE, " +
+                               "   TSK.WORK_GROUP, " +
+                               "   TSK.STD_JOB_NO, " +
+                               "   TSK.STD_JOB_TASK, " +
+                               "   TSK.SJ_TASK_DESC, " +
+                               "   RS.SEQNCE_NO SEQ_NO, " +
+                               "   RS.EQPT_TYPE RES_CODE, " +
+                               "   RS.QTY_REQ, " +
+                               "   RS.UNIT_QTY_REQD HRS_QTY, " +
+                               "   ET.TABLE_DESC RES_DESC," +
+                               "   RS.UOM UNITS " +
+                               " FROM " +
+                               "   " + dbReference + ".MSF693" + dbLink + " TSK " +
+                               " INNER JOIN " + dbReference + ".MSF733" + dbLink + " RS " +
+                               " ON " +
+                               "   RS.CLASS_KEY = '" + districtCode + "' || TSK.STD_JOB_NO || TSK.STD_JOB_TASK " +
+                               " AND RS.CLASS_TYPE = 'ST' " +
+                               " INNER JOIN ELLIPSE.MSF010 ET " +
+                               " ON " +
+                               "   RS.EQPT_TYPE = ET.TABLE_CODE " +
+                               " WHERE " +
+                               "   TSK.WORK_GROUP = '" + workGroup + "' " +
+                               " AND TSK.STD_JOB_NO = '" + standardJob + "' " +
                                " AND TABLE_TYPE = 'ET' ";
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");

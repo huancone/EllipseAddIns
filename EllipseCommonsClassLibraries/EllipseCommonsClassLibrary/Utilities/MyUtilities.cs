@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using System.Text.RegularExpressions;
-
+using System.Xml.Serialization;
 using EllipseCommonsClassLibrary.Classes;
 
 
@@ -215,9 +215,4 @@ namespace EllipseCommonsClassLibrary.Utilities
             return new Uri(baseUri, relativeUrl).AbsoluteUri;
         }
     }
-
-    
-    
-    
-
 }

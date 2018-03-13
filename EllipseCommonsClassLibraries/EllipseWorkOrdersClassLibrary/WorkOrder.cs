@@ -350,6 +350,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string EstimatedMachHrsSpecified;
         public string EstimatedDurationsHrsSpecified;
         public string ExtTaskText;
+        public string ClosedStatus;
 
         public WorkOrderTaskService.WorkOrderDTO WorkOrderDto { get; private set; }
 
@@ -389,7 +390,9 @@ namespace EllipseWorkOrdersClassLibrary
         public string ReqCode;
         public string ReqDesc;
         public string QtyReq;
+        public string QtyIss;
         public string HrsReq;
+        public string HrsReal;
         public string UoM;
-        }
+    }
 }
