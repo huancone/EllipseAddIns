@@ -22,5 +22,26 @@ namespace EllipseLabourCostingExcelAddIn.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/LabourCostingTransService")]
+        public string EllipseLabourCostingExcelAddIn_LabourCostingTransService_LabourCostingTransService {
+            get {
+                return ((string)(this["EllipseLabourCostingExcelAddIn_LabourCostingTransService_LabourCostingTransServic" +
+                    "e"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/LabourCostWeekService")]
+        public string EllipseLabourCostingExcelAddIn_LabourCostWeekService_LabourCostWeekService {
+            get {
+                return ((string)(this["EllipseLabourCostingExcelAddIn_LabourCostWeekService_LabourCostWeekService"]));
+            }
+        }
     }
 }

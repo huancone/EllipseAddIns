@@ -237,7 +237,7 @@
     <ManifestKeyFile>EllipsePlannerExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CDC2EEC43509B9823EF7B4C6D4C3CC36F5150BEA</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>98891F1662D296B582B8E6F5482CAC30C1BDD622</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

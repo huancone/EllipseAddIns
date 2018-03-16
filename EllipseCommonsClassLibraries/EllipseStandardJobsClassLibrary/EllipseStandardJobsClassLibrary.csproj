@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EllipseReferenceCodesClassLibrary">
+      <HintPath>..\EllipseReferenceCodesClassLibrary\bin\Debug\EllipseReferenceCodesClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="EllipseStdTextClassLibrary">
+      <HintPath>..\EllipseStdTextClassLibrary\bin\Debug\EllipseStdTextClassLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="LINQtoCSV, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\EllipseStandardJobsExcelAddIn\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
       <Private>True</Private>
@@ -443,14 +449,6 @@
     <ProjectReference Include="..\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
       <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
       <Name>EllipseCommonsClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj">
-      <Project>{093ec04e-6e92-4e59-848b-5b79277ffe9b}</Project>
-      <Name>EllipseReferenceCodesClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
-      <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
-      <Name>EllipseStdTextClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -18,8 +18,8 @@ using EllipseStdTextClassLibrary;
 using WorkOrderTaskService = EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
 using ResourceReqmntsService = EllipseWorkOrdersClassLibrary.ResourceReqmntsService;
-using MaterialReqmntsService=EllipseWorkOrdersClassLibrary.MaterialReqmntsService;
-using EquipmentReqmntsService=EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
+using MaterialReqmntsService = EllipseWorkOrdersClassLibrary.MaterialReqmntsService;
+using EquipmentReqmntsService = EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
 
 namespace EllipseWorkOrderExcelAddIn
 {
@@ -38,7 +38,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const string SheetName05 = "CloseCommentsWorkOrders";
         private const string SheetName06 = "DurationWorkOrders";
         private const string SheetName07 = "ProgressWorkOrders";
-        
+
         private const string SheetNameD01 = "WorkOrdersDetailed";
         private const string SheetNameD02 = "WOTasks";
         private const string SheetNameD03 = "WORequirements";
@@ -60,7 +60,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const int TitleRowD04 = 6;
         private const int TitleRowQ01 = 7;
         private const int TitleRowCc01 = 6;
-        
+
         private const int ResultColumn01 = 54;
         private const int ResultColumn02 = 23;
         private const int ResultColumn03 = 16;
@@ -521,7 +521,7 @@ namespace EllipseWorkOrderExcelAddIn
                 Debugger.LogError("RibbonEllipse.cs:UpdateWorkProgress()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
-        } 
+        }
         private void ReviewWorkProgress()
         {
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -594,7 +594,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 try
                 {
-                    var wo = new WorkOrder {districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value)};
+                    var wo = new WorkOrder { districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value) };
 
                     wo.SetWorkOrderDto(WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value)));
                     wo.pcComplete = percentUpdate ? _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value) : null;
@@ -641,7 +641,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void UpdateWorkProgress()
         {
-            if(_progressUpdate)
+            if (_progressUpdate)
                 RecordWorkProgress(true, false);
             else
                 RecordWorkProgress(false, true);
@@ -834,8 +834,8 @@ namespace EllipseWorkOrderExcelAddIn
                     _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
-				
-				_cells.SetCursorWait();
+
+                _cells.SetCursorWait();
 
                 _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 4
                 _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 5
@@ -877,7 +877,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("A4").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
                     "INST: IMIS, MINA\n" +
                     "" + ManagementArea.ManejoDeCarbon.Key + ": " + QuarterMasters.Ferrocarril.Key + ", " + QuarterMasters.PuertoBolivar.Key + ", " + QuarterMasters.PlantasDeCarbon.Key + "\n" +
-                    "" + ManagementArea.Mantenimiento.Key + ": MINA\n"+ 
+                    "" + ManagementArea.Mantenimiento.Key + ": MINA\n" +
                     "" + ManagementArea.SoporteOperacion.Key + ": ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
 
@@ -889,7 +889,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B6"), statusList, ValidationSheetName, 4);
                 _cells.GetRange("A3", "A6").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B6").Style = _cells.GetStyle(StyleConstants.Select);
-                
+
                 _cells.GetCell("C3").Value = "FECHA";
                 _cells.GetCell("D3").Value = SearchDateCriteriaType.Raised.Value;
                 _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 5);
@@ -901,7 +901,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("D5").AddComment("YYYYMMDD");
                 _cells.GetRange("C3", "C5").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("D3", "D5").Style = _cells.GetStyle(StyleConstants.Select);
-                
+
                 _cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01).Style = StyleConstants.TitleOptional;
                 for (var i = 4; i < ResultColumn01 - 4; i++)
                 {
@@ -931,7 +931,7 @@ namespace EllipseWorkOrderExcelAddIn
                 var mtTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetMtTypeList());
                 var usTypeCodes = MyUtilities.GetCodeList(WorkOrderActions.GetUserStatusCodeList(_eFunctions).ToList());
 
-                
+
                 _cells.GetCell(8, TitleRow01).Value = "WO_TYPE";
                 _cells.GetCell(8, TitleRow01).Style = StyleConstants.TitleRequired;
                 _cells.SetValidationList(_cells.GetCell(8, TitleRow01 + 1), woTypeCodes, ValidationSheetName, 6, false);
@@ -999,7 +999,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(37, TitleRow01).Value = "PARENT_WO";
                 _cells.GetRange(35, TitleRow01 - 2, 37, TitleRow01 - 2).Style = StyleConstants.Select;
                 _cells.GetRange(35, TitleRow01 - 2, 37, TitleRow01 - 2).Merge();
-                
+
                 //JOB_CODES
                 _cells.GetCell(38, TitleRow01 - 2).Value = "JOB CODES/FALLAS";
                 _cells.GetCell(38, TitleRow01 - 2).AddComment("Debe seleccionar por lo menos un Job Code para las órdenes correctivas/reparación");
@@ -1026,13 +1026,13 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(52, TitleRow01).Value = "CLOSED DATE";
                 _cells.GetCell(53, TitleRow01).Value = "COMPL_BY";
                 _cells.GetRange(50, TitleRow01 - 2, 53, TitleRow01 - 2).Style = StyleConstants.Option;
-                _cells.GetRange(50, TitleRow01    , 53, TitleRow01    ).Style = StyleConstants.TitleInformation;
+                _cells.GetRange(50, TitleRow01, 53, TitleRow01).Style = StyleConstants.TitleInformation;
                 _cells.GetRange(50, TitleRow01 - 2, 53, TitleRow01 - 1).Merge();
 
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = StyleConstants.TitleResult;
-				_cells.GetRange(1, TitleRow01 + 1, ResultColumn01, TitleRow01 + 1).NumberFormat = NumberFormatConstants.Text;
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01+1), TableName01);
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, TitleRow01 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1), TableName01);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                 #endregion
 
@@ -1190,7 +1190,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(13, TitleRow03).Value = "QTY ISS";       //_cells.GetCell(12, i).Value = req.QtyIss;  
                 _cells.GetCell(14, TitleRow03).Value = "HRS_REQ";       //_cells.GetCell(13, i).Value = req.HrsReq;  
                 _cells.GetCell(15, TitleRow03).Value = "HRS_REAL";      //_cells.GetCell(14, i).Value = req.HrsReal; 
-                                                                        
+
 
                 _cells.GetCell(8, TitleRow03).AddComment("Aplica solo para Creación y Modificación de Requerimientos");
                 _cells.GetCell(9, TitleRow03).AddComment("Recurso: Class+Code (Ver hoja de recursos) \nMaterial: StockCode");
@@ -1258,7 +1258,7 @@ namespace EllipseWorkOrderExcelAddIn
 
                 _cells.GetCell(ResultColumn04, TitleRow04).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn04, TitleRow04).Style = StyleConstants.TitleResult;
-				_cells.GetRange(1, TitleRow04 + 1, ResultColumn04, TitleRow04 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.GetRange(1, TitleRow04 + 1, ResultColumn04, TitleRow04 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow04, ResultColumn04, TitleRow04 + 1), TableName04);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                 #endregion
@@ -1300,7 +1300,7 @@ namespace EllipseWorkOrderExcelAddIn
 
                 _cells.GetCell(ResultColumn05, TitleRow05).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn05, TitleRow05).Style = StyleConstants.TitleResult;
-				_cells.GetRange(1, TitleRow05 + 1, ResultColumn05, TitleRow05 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.GetRange(1, TitleRow05 + 1, ResultColumn05, TitleRow05 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow05, ResultColumn05, TitleRow05 + 1), TableName05);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                 #endregion
@@ -1332,12 +1332,12 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(7, TitleRow06).Value = "ACTION";
                 _cells.GetCell(7, TitleRow06).Style = StyleConstants.TitleAction;
                 _cells.GetCell(7, TitleRow06).AddComment("Crear, Eliminar");
-                var actionsList = new List<string> {"Crear", "Eliminar"};
+                var actionsList = new List<string> { "Crear", "Eliminar" };
                 _cells.SetValidationList(_cells.GetCell(7, TitleRow06 + 1), actionsList, ValidationSheetName, 12, false);
 
                 _cells.GetCell(ResultColumn06, TitleRow06).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn06, TitleRow06).Style = StyleConstants.TitleResult;
-				_cells.GetRange(1, TitleRow06 + 1, ResultColumn06, TitleRow06 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.GetRange(1, TitleRow06 + 1, ResultColumn06, TitleRow06 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow06, ResultColumn06, TitleRow06 + 1), TableName06);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                 #endregion
@@ -1399,7 +1399,7 @@ namespace EllipseWorkOrderExcelAddIn
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }
-        
+
         private void FormatDetailed()
         {
             try
@@ -1489,7 +1489,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(i, TitleRowD01 - 1).AddComment("Solo se modificará este campo si es verdadero (VERDADERO, TRUE, Y, 1)");
                     _cells.GetCell(i, TitleRowD01 - 1).Value = "true";
                 }
-                
+
                 //GENERAL
                 _cells.GetCell(1, TitleRowD01).Value = "WORK_GROUP";
                 _cells.GetCell(1, TitleRowD01).Style = StyleConstants.TitleRequired;
@@ -1688,13 +1688,13 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(31, TitleRowD04).Value = "Departamento";
                 _cells.GetCell(32, TitleRowD04).Value = "Localización";
 
-                
+
                 _cells.GetCell(ResultColumnD04, TitleRowD04).Value = "RESULTADO";
                 _cells.GetCell(ResultColumnD04, TitleRowD04).Style = StyleConstants.TitleResult;
                 _cells.GetRange(1, TitleRowD04 + 1, ResultColumnD04, TitleRowD04 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRowD04, ResultColumnD04, TitleRowD04 + 1), TableNameD04);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-                
+
                 _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
             }
             catch (Exception ex)
@@ -1989,6 +1989,7 @@ namespace EllipseWorkOrderExcelAddIn
                     // ReSharper disable once UseObjectOrCollectionInitializer
                     var wo = new WorkOrder();
                     //GENERAL
+                    wo.districtCode = _frmAuth.EllipseDsct;
                     wo.workGroup = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
                     string workNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
                     if (workNo != null)
@@ -2070,20 +2071,32 @@ namespace EllipseWorkOrderExcelAddIn
                     var extendedBody = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value);
                     wo.SetExtendedDescription(extendedHeader, extendedBody);
 
+                    List<string> ots = null;
+                    if (wo.workGroup == "CALLCEN")
+                    {
+                        ots = WorkOrderActions.FetchOrigDocNo(_eFunctions,wo.districtCode, wo.workGroup, wo.origDocType, wo.origDocNo);
+                        if (ots != null)
+                        {
+                            _cells.GetCell(ResultColumnD01, i).Value = "YA EXISTE LA ORDEN RELACIONADA " + wo.origDocNo + " DEL SISTEMA MAXIMO";
+                            _cells.GetCell(ResultColumnD01, i).Style = StyleConstants.Warning;
+                        }
+                        
+                    }
+
+                    if (ots != null) continue;
                     var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
-                    wo.SetWorkOrderDto(replySheet.workOrder.prefix,replySheet.workOrder.no);
-                    var replyExtended = WorkOrderActions.UpdateWorkOrderExtendedDescription(urlService, opSheet, district, wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no, extendedHeader, extendedBody);
+                    wo.SetWorkOrderDto(replySheet.workOrder.prefix, replySheet.workOrder.no);
+                    ReplyMessage replyExtended = WorkOrderActions.UpdateWorkOrderExtendedDescription(urlService, opSheet, district, wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no, extendedHeader, extendedBody);
+
                     var stringErrors = "";
 
                     if (replyExtended != null && replyExtended.Errors != null && replyExtended.Errors.Length > 0)
-                        foreach (var error in replyExtended.Errors)
-                            stringErrors += "/" + error;
+                        stringErrors = replyExtended.Errors.Aggregate(stringErrors, (current, error) => current + ("/" + error));
 
                     _cells.GetCell(ResultColumnD01, i).Value = "CREADA " + replySheet.workOrder.prefix + replySheet.workOrder.no + stringErrors;
                     _cells.GetCell(2, i).Value = replySheet.workOrder.prefix + replySheet.workOrder.no;
                     _cells.GetCell(1, i).Style = string.IsNullOrWhiteSpace(stringErrors) ? StyleConstants.Success : StyleConstants.Warning;
                     _cells.GetCell(ResultColumnD01, i).Style = string.IsNullOrWhiteSpace(stringErrors) ? StyleConstants.Success : StyleConstants.Warning;
-
                 }
                 catch (Exception ex)
                 {
@@ -2224,7 +2237,7 @@ namespace EllipseWorkOrderExcelAddIn
                     if (replyExtended != null && replyExtended.Errors != null && replyExtended.Errors.Length > 0)
                         foreach (var error in replyExtended.Errors)
                             stringErrors += "/" + error;
-                        
+
 
                     _cells.GetCell(ResultColumnD01, i).Value = "ACTUALIZADA " + stringErrors;
                     _cells.GetCell(1, i).Style = string.IsNullOrWhiteSpace(stringErrors) ? StyleConstants.Success : StyleConstants.Warning;
@@ -2252,7 +2265,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 _excelApp = Globals.ThisAddIn.Application;
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-                
+
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
@@ -2379,7 +2392,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRange(TableName01);
 
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -2445,7 +2458,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(29, i).Value = "'" + wo.planStrTime;
                     _cells.GetCell(30, i).Value = "'" + wo.planFinDate;
                     _cells.GetCell(31, i).Value = "'" + wo.planFinTime;
-                    
+
                     _cells.GetCell(32, i).Value = "" + wo.unitOfWork;
                     _cells.GetCell(33, i).Value = "" + wo.unitsRequired;
                     _cells.GetCell(34, i).Value = "" + wo.pcComplete + "%/" + wo.unitsComplete;
@@ -2479,21 +2492,21 @@ namespace EllipseWorkOrderExcelAddIn
                 }
                 finally
                 {
-					_cells.GetCell(2, i).Select();
+                    _cells.GetCell(2, i).Select();
                     i++;
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-        
+
         private void ReReviewWoList()
         {
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
             var i = TitleRow01 + 1;
@@ -2506,9 +2519,9 @@ namespace EllipseWorkOrderExcelAddIn
                     district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
                     var woNo = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, woNo);
-					
-					if(wo == null || wo.GetWorkOrderDto().no == null)
-                        throw new Exception ("WORK ORDER NO ENCONTRADA");
+
+                    if (wo == null || wo.GetWorkOrderDto().no == null)
+                        throw new Exception("WORK ORDER NO ENCONTRADA");
                     //Para resetear el estilo
                     _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
                     //GENERAL
@@ -2592,7 +2605,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRange(TableNameQ01);
 
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -2708,7 +2721,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var completeCodeList = _eFunctions.GetDictionaryItemCodes("SC");
             var i = TitleRowQ01 + 1;
@@ -2719,8 +2732,8 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     var woNo = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                     var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, "" + _cells.GetCell("B3").Value, woNo);
-					if(wo == null || wo.GetWorkOrderDto().no == null)
-                        throw new Exception ("WORK ORDER NO ENCONTRADA");
+                    if (wo == null || wo.GetWorkOrderDto().no == null)
+                        throw new Exception("WORK ORDER NO ENCONTRADA");
 
                     var wc = new WorkOrderQualityStyles(wo);
                     //GENERAL
@@ -2781,7 +2794,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(31, i).Style = wc.JobCodesFlag;
                     _cells.GetCell(32, i).Value = "'" + wo.closeCommitDate;
                     string outString;
-                    
+
                     _cells.GetCell(33, i).Value = completeCodeList.ContainsKey(wo.completedCode) ? "'" + wo.completedCode + " - " + completeCodeList.TryGetValue(wo.completedCode, out outString) : "";
                     _cells.GetCell(34, i).Value = "" + wo.completeTextFlag;
                     _cells.GetCell(34, i).Style = wc.CompleteTextFlag;
@@ -2809,7 +2822,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
             var i = TitleRow01 + 1;
@@ -2947,7 +2960,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
             const int validationRow = TitleRow01 - 1;
@@ -2966,7 +2979,7 @@ namespace EllipseWorkOrderExcelAddIn
             var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
             var userName = _frmAuth.EllipseUser.ToUpper();
             var planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
-            if(!planValidation)
+            if (!planValidation)
                 planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWJO", EllipseFunctions.ProgramAccessType.Full);
             //if (!planValidation)
             //    planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWOT", EllipseFunctions.ProgramAccessType.Full);
@@ -3081,7 +3094,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName04, ResultColumn04);
 
             var i = TitleRow04 + 1;
@@ -3117,7 +3130,7 @@ namespace EllipseWorkOrderExcelAddIn
                     {
                         var woData = WorkOrderActions.FetchWorkOrder(_eFunctions, wo.districtCode, wo.workOrder.prefix + wo.workOrder.no);
                         _eFunctions.CloseConnection();
-                        if(WoStatusList.ClosedCode.Equals(woData.workOrderStatusM.Trim()) || WoStatusList.CancelledCode.Equals(woData.workOrderStatusM.Trim()))
+                        if (WoStatusList.ClosedCode.Equals(woData.workOrderStatusM.Trim()) || WoStatusList.CancelledCode.Equals(woData.workOrderStatusM.Trim()))
                             throw new Exception("La orden " + wo.workOrder.prefix + wo.workOrder.no + " ya está cerrada como " + WoStatusList.GetStatusName(woData.workOrderStatusM.Trim()) + " con código " + woData.completedCode);
                     }
                     var reply = WorkOrderActions.CompleteWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
@@ -3126,7 +3139,7 @@ namespace EllipseWorkOrderExcelAddIn
                         _cells.GetCell(ResultColumn04, i).Value = "COMPLETADA";
                         _cells.GetCell(1, i).Style = StyleConstants.Success;
                         _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Success;
-                        
+
                         if (!string.IsNullOrWhiteSpace(wo.completeCommentToAppend)) continue;
                         _cells.GetCell(ResultColumn04, i).Value = "COMPLETADA / No se han ingresado comentarios";
                         _cells.GetCell(ResultColumn04, i).Style = StyleConstants.Warning;
@@ -3160,7 +3173,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName04, ResultColumn04);
 
             var i = TitleRow04 + 1;
@@ -3221,7 +3234,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-           
+
             _cells.ClearTableRangeColumn(TableName05, ResultColumn05);
 
             var i = TitleRow05 + 1;
@@ -3237,7 +3250,7 @@ namespace EllipseWorkOrderExcelAddIn
                     string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
                     var closeText = WorkOrderActions.GetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo);
 
-                    _cells.GetCell(ResultColumn05-1, i).Value = closeText;
+                    _cells.GetCell(ResultColumn05 - 1, i).Value = closeText;
                     _cells.GetCell(ResultColumn05, i).Value = "CONSULTA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Success;
@@ -3266,7 +3279,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName05, ResultColumn05);
 
             var i = TitleRow05 + 1;
@@ -3304,14 +3317,14 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-        
+
 
         private void GetDurationWoList()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             var woCell = new ExcelStyleCells(_excelApp, SheetName01);
             string districtCode = woCell.GetEmptyIfNull(woCell.GetCell("B3").Value);
             _cells.ClearTableRange(TableName06);
@@ -3323,12 +3336,12 @@ namespace EllipseWorkOrderExcelAddIn
 
                 var opSheet = new WorkOrderService.OperationContext
                 {
-					district = _frmAuth.EllipseDsct,
-					position = _frmAuth.EllipsePost,
-					maxInstances = 100,
-					maxInstancesSpecified = true,
-					returnWarnings = Debugger.DebugWarnings,
-					returnWarningsSpecified = true
+                    district = _frmAuth.EllipseDsct,
+                    position = _frmAuth.EllipsePost,
+                    maxInstances = 100,
+                    maxInstancesSpecified = true,
+                    returnWarnings = Debugger.DebugWarnings,
+                    returnWarningsSpecified = true
                 };
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -3385,7 +3398,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRangeColumn(TableName06, ResultColumn06);
 
             var opSheet = new WorkOrderService.OperationContext
@@ -3419,19 +3432,19 @@ namespace EllipseWorkOrderExcelAddIn
                     switch (action)
                     {
                         case "CREAR":
-                        {
-                            WorkOrderActions.CreateWorkOrderDuration(urlService, opSheet, districtCode, wo, duration);
-                            _cells.GetCell(ResultColumn06, i).Value = "CREADO";
-                            _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Success;
-                            _cells.GetCell(7, i).Value = "";//Para evitar duplicados por repetición
-                        }
+                            {
+                                WorkOrderActions.CreateWorkOrderDuration(urlService, opSheet, districtCode, wo, duration);
+                                _cells.GetCell(ResultColumn06, i).Value = "CREADO";
+                                _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Success;
+                                _cells.GetCell(7, i).Value = "";//Para evitar duplicados por repetición
+                            }
                             break;
                         case "ELIMINAR":
-                        {
-                            WorkOrderActions.DeleteWorkOrderDuration(urlService, opSheet, districtCode, wo, duration);
-                            _cells.GetCell(ResultColumn06, i).Value = "ELIMINADO";
-                            _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Success;
-                        }
+                            {
+                                WorkOrderActions.DeleteWorkOrderDuration(urlService, opSheet, districtCode, wo, duration);
+                                _cells.GetCell(ResultColumn06, i).Value = "ELIMINADO";
+                                _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Success;
+                            }
                             break;
                         default:
                             _cells.GetCell(ResultColumn06, i).Value = "---";
@@ -3455,7 +3468,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void ReviewRefCodesList()
         {
-            
+
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
 
@@ -3475,7 +3488,7 @@ namespace EllipseWorkOrderExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var i = TitleRowD04 + 1;
-            
+
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
                 try
@@ -3484,10 +3497,10 @@ namespace EllipseWorkOrderExcelAddIn
                     district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
                     var workOrder = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
 
-                    var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, workOrder); 
+                    var wo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, workOrder);
                     if (wo == null || wo.GetWorkOrderDto().no == null)
                         throw new Exception("WORK ORDER NO ENCONTRADA");
-                    
+
                     var woRefCodes = WorkOrderActions.GetWorkOrderReferenceCodes(_eFunctions, urlService, opSheet, district, workOrder);
                     //GENERAL
                     _cells.GetCell(3, i).Value = "'" + woRefCodes.WorkRequest;
@@ -3563,7 +3576,7 @@ namespace EllipseWorkOrderExcelAddIn
                 returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
             };
-            
+
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -3696,7 +3709,7 @@ namespace EllipseWorkOrderExcelAddIn
                     "FFCC, PBV, PTAS\n");
                 _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
 
-                var quartermasterList = new List<string> {"PUERTO BOLIVAR", "FERROCARRIL", "PLANTAS DE CARBON"};
+                var quartermasterList = new List<string> { "PUERTO BOLIVAR", "FERROCARRIL", "PLANTAS DE CARBON" };
                 _cells.GetCell("A3").Value = SearchFieldCriteriaType.Quartermaster.Value;
                 _cells.GetCell("A3").Style = StyleConstants.Option;
                 _cells.GetCell("B3").Style = StyleConstants.Select;
@@ -3891,7 +3904,7 @@ namespace EllipseWorkOrderExcelAddIn
             var district = "ICOR";
 
             var i = TitleRowCc01 + 1;
-            while(!string.IsNullOrWhiteSpace(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value)))
+            while (!string.IsNullOrWhiteSpace(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value)))
             {
                 try
                 {
@@ -3950,61 +3963,61 @@ namespace EllipseWorkOrderExcelAddIn
             //Creo el formulario de Opciones del Export
             #region Formulario Export
             //CheckBoxes
-            var cbWorkOrder = new CheckBox { AutoSize = true,  Text = @"Orden de Trabajo", Checked = dc.WorkOrder};
-            var cbTaskNo = new CheckBox { AutoSize = true,  Text = @"Tarea No", Checked = dc.TaskNo};
-            var cbTaskDescription = new CheckBox { AutoSize = true,  Text = @"Descripción Tarea", Checked = dc.TaskDescription };
-            var cbWorkOrderDescription = new CheckBox { AutoSize = true,  Text = @"Descripción General", Checked = dc.WorkOrderDescription };
-            var cbCriticalDescription = new CheckBox { AutoSize = true,  Text = @"Descripción BT", Checked = dc.CriticalDescription };
-            var cbEquipmentNo = new CheckBox { AutoSize = true,  Text = @"Equipo.", Checked = dc.EquipmentNo };
-            var cbAssignPerson = new CheckBox { AutoSize = true,  Text = @"Responsable", Checked = dc.AssignPerson };
-            var cbDepartment = new CheckBox { AutoSize = true,  Text = @"Departamento", Checked = dc.Department };
-            var cbQuartermaster = new CheckBox { AutoSize = true,  Text = @"SuperIntendencia", Checked = dc.Quartermaster };
-            var cbPlanStartDate = new CheckBox { AutoSize = true,  Text = @"Fecha Planeada", Checked = dc.PlanStartDate };
-            var cbRaisedDate = new CheckBox { AutoSize = true,  Text = @"Fecha Origen", Checked = dc.RaisedDate };
-            var cbMaintSchTask = new CheckBox { AutoSize = true,  Text = @"Mst No.", Checked = dc.MaintSchTask };
-            var cbStdJobNo = new CheckBox { AutoSize = true,  Text = @"Estándar Job No.", Checked = dc.StdJobNo };
-            var cbStatus = new CheckBox { AutoSize = true,  Text = @"Estado", Checked = dc.Status };
-            var cbCompletedCode = new CheckBox { AutoSize = true,  Text = @"Código Completado", Checked = dc.CompletedCode };
-            var cbCompletedBy = new CheckBox { AutoSize = true,  Text = @"Completado Por", Checked = dc.CompletedBy };
-            var cbCompletedDate = new CheckBox { AutoSize = true,  Text = @"Fecha Completado", Checked = dc.CompletedDate };
-            var cbInstructionsText = new CheckBox { AutoSize = true,  Text = @"Instrucciones", Checked = dc.InstructionsText };
-            var cbFrequencyText = new CheckBox { AutoSize = true,  Text = @"Frecuencia", Checked = dc.FrequencyText };
+            var cbWorkOrder = new CheckBox { AutoSize = true, Text = @"Orden de Trabajo", Checked = dc.WorkOrder };
+            var cbTaskNo = new CheckBox { AutoSize = true, Text = @"Tarea No", Checked = dc.TaskNo };
+            var cbTaskDescription = new CheckBox { AutoSize = true, Text = @"Descripción Tarea", Checked = dc.TaskDescription };
+            var cbWorkOrderDescription = new CheckBox { AutoSize = true, Text = @"Descripción General", Checked = dc.WorkOrderDescription };
+            var cbCriticalDescription = new CheckBox { AutoSize = true, Text = @"Descripción BT", Checked = dc.CriticalDescription };
+            var cbEquipmentNo = new CheckBox { AutoSize = true, Text = @"Equipo.", Checked = dc.EquipmentNo };
+            var cbAssignPerson = new CheckBox { AutoSize = true, Text = @"Responsable", Checked = dc.AssignPerson };
+            var cbDepartment = new CheckBox { AutoSize = true, Text = @"Departamento", Checked = dc.Department };
+            var cbQuartermaster = new CheckBox { AutoSize = true, Text = @"SuperIntendencia", Checked = dc.Quartermaster };
+            var cbPlanStartDate = new CheckBox { AutoSize = true, Text = @"Fecha Planeada", Checked = dc.PlanStartDate };
+            var cbRaisedDate = new CheckBox { AutoSize = true, Text = @"Fecha Origen", Checked = dc.RaisedDate };
+            var cbMaintSchTask = new CheckBox { AutoSize = true, Text = @"Mst No.", Checked = dc.MaintSchTask };
+            var cbStdJobNo = new CheckBox { AutoSize = true, Text = @"Estándar Job No.", Checked = dc.StdJobNo };
+            var cbStatus = new CheckBox { AutoSize = true, Text = @"Estado", Checked = dc.Status };
+            var cbCompletedCode = new CheckBox { AutoSize = true, Text = @"Código Completado", Checked = dc.CompletedCode };
+            var cbCompletedBy = new CheckBox { AutoSize = true, Text = @"Completado Por", Checked = dc.CompletedBy };
+            var cbCompletedDate = new CheckBox { AutoSize = true, Text = @"Fecha Completado", Checked = dc.CompletedDate };
+            var cbInstructionsText = new CheckBox { AutoSize = true, Text = @"Instrucciones", Checked = dc.InstructionsText };
+            var cbFrequencyText = new CheckBox { AutoSize = true, Text = @"Frecuencia", Checked = dc.FrequencyText };
 
             var comboList = new List<CheckBox>
             {
-                cbWorkOrder, 
-                cbTaskNo, 
-                cbTaskDescription, 
-                cbWorkOrderDescription, 
-                cbCriticalDescription, 
-                cbEquipmentNo, 
-                cbAssignPerson, 
-                cbDepartment, 
-                cbQuartermaster, 
-                cbPlanStartDate, 
-                cbRaisedDate, 
-                cbMaintSchTask, 
-                cbStdJobNo, 
-                cbStatus, 
-                cbCompletedCode, 
-                cbCompletedBy, 
-                cbCompletedDate, 
-                cbInstructionsText, 
+                cbWorkOrder,
+                cbTaskNo,
+                cbTaskDescription,
+                cbWorkOrderDescription,
+                cbCriticalDescription,
+                cbEquipmentNo,
+                cbAssignPerson,
+                cbDepartment,
+                cbQuartermaster,
+                cbPlanStartDate,
+                cbRaisedDate,
+                cbMaintSchTask,
+                cbStdJobNo,
+                cbStatus,
+                cbCompletedCode,
+                cbCompletedBy,
+                cbCompletedDate,
+                cbInstructionsText,
                 cbFrequencyText
             };
 
             //Button Pane
-            var okButton = new Button { DialogResult = DialogResult.OK, Text = @"Generar RTF"};
-            var cancelButton = new Button { DialogResult = DialogResult.Cancel, Text = @"Cancelar"};
+            var okButton = new Button { DialogResult = DialogResult.OK, Text = @"Generar RTF" };
+            var cancelButton = new Button { DialogResult = DialogResult.Cancel, Text = @"Cancelar" };
             var btnPane = new FlowLayoutPanel()
             {
                 FlowDirection = FlowDirection.LeftToRight,
-                
+
             };
-            
+
             btnPane.Controls.Add(okButton);
             btnPane.Controls.Add(cancelButton);
-            
+
             //Tab Pane
             var tabPane = new TableLayoutPanel { AutoSize = true, Padding = new Padding(9), ColumnCount = 2 };
             var comboArray = comboList.ToArray();
@@ -4375,7 +4388,7 @@ namespace EllipseWorkOrderExcelAddIn
                         AplCompModCode = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value),
                         AplSeqNo = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value),
                         ExtTaskText = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value),
-                        
+
                     };
 
                     woTask.SetWorkOrderDto(woTask.WorkOrder);
@@ -4495,7 +4508,7 @@ namespace EllipseWorkOrderExcelAddIn
                     taskReq.WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);                     //_cells.GetCell(2, i).Value = "" + req.WorkGroup;    
                     taskReq.WorkOrder = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);                     //_cells.GetCell(3, i).Value = "" + req.WorkOrder;     
                     taskReq.WoTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value);                      //_cells.GetCell(4, i).Value = "" + req.WoTaskNo;      
-                    taskReq.WoTaskNo = string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? "001" : taskReq.WoTaskNo;     
+                    taskReq.WoTaskNo = string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? "001" : taskReq.WoTaskNo;
                     taskReq.WoTaskDesc = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);                    //_cells.GetCell(5, i).Value = "" + req.WoTaskDesc;
                     taskReq.ReqType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);                       //_cells.GetCell(7, i).Value = "" + req.ReqType;       
                     taskReq.SeqNo = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);                         //_cells.GetCell(8, i).Value = "" + req.SeqNo;         
@@ -4506,7 +4519,7 @@ namespace EllipseWorkOrderExcelAddIn
                     taskReq.QtyIss = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value);                       //_cells.GetCell(13, i).Value = "" + req.QtyIss;      
                     taskReq.HrsReq = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value);                       //_cells.GetCell(14, i).Value = "" + req.HrsReq;      
                     taskReq.HrsReal = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value);                      //_cells.GetCell(15, i).Value = "" + req.HrsReal;     
-                                                                                                                             
+
 
                     if (string.IsNullOrWhiteSpace(action))
                         continue;

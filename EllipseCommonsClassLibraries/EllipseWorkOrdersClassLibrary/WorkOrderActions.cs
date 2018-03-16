@@ -133,14 +133,34 @@ namespace EllipseWorkOrdersClassLibrary
             return list;
         }
 
+
+
+        public static List<string> FetchOrigDocNo(EllipseFunctions ef, string districtCode, string workGroup,
+            string origDocType, string origDocNo)
+        {
+            var sqlQuery = Queries.GetFetchOrirgDocNo(ef.dbReference, ef.dbLink, districtCode, workGroup, origDocType,
+                origDocNo);
+            var list = new List<string>();
+            var drWorkOrder = ef.GetQueryResult(sqlQuery);
+
+            if (drWorkOrder == null || drWorkOrder.IsClosed || !drWorkOrder.HasRows) return list;
+
+            while (drWorkOrder.Read())
+            {
+                list.Add(drWorkOrder["WORK_ORDER"].ToString().Trim());
+            }
+            return list;
+        }
+
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ef"></param>
-        /// <param name="district"></param>
-        /// <param name="workOrder"></param>
-        /// <returns></returns>
-        public static WorkOrder FetchWorkOrder(EllipseFunctions ef, string district, WorkOrderDTO workOrder)
+                /// 
+                /// </summary>
+                /// <param name="ef"></param>
+                /// <param name="district"></param>
+                /// <param name="workOrder"></param>
+                /// <returns></returns>
+            public static
+            WorkOrder FetchWorkOrder(EllipseFunctions ef, string district, WorkOrderDTO workOrder)
         {
             return FetchWorkOrder(ef, district, workOrder.prefix + workOrder.no);
         }
@@ -442,6 +462,7 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag);
             requestWo.calculatedOtherFlag = MyUtilities.IsTrue(wo.calculatedOtherFlag, true);
             requestWo.calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag);
+
             //se envía la acción
             return proxyWo.create(opContext, requestWo);
         }
@@ -2289,6 +2310,22 @@ namespace EllipseWorkOrdersClassLibrary
                 return query;
 
             }
+
+            public static string GetFetchOrirgDocNo(string dbReference, string dbLink, string districtCode, string workGroup, string origDocType, string origDocNo)
+            {
+                var query = "";
+                query += "SELECT ";
+                query += "    WORK_ORDER ";
+                query += "FROM ";
+                query += "    " + dbReference + ".MSF620" + dbLink + " WO ";
+                query += "WHERE ";
+                query += "    WO.DSTRCT_CODE = '" + districtCode + "' ";
+                query += "    AND WO.WORK_GROUP = '" + workGroup + "' ";
+                query += "    AND WO.ORIG_DOC_TYPE = 'OT' ";
+                query += "    AND WO.ORIG_DOC_NO = '"+ origDocNo + "' ";
+                return query;
+            }
         }
+
     }
 }
