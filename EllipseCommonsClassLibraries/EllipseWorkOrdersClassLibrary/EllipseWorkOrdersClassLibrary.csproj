@@ -30,18 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EllipseCommonsClassLibrary">
-      <HintPath>..\EllipseCommonsClassLibrary\bin\Debug\EllipseCommonsClassLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="EllipseReferenceCodesClassLibrary">
-      <HintPath>..\EllipseReferenceCodesClassLibrary\bin\Debug\EllipseReferenceCodesClassLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="EllipseStdTextClassLibrary">
-      <HintPath>..\EllipseStdTextClassLibrary\bin\Debug\EllipseStdTextClassLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\..\EllipseWorkOrderExcelAddIn\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Oracle.ManagedDataAccess">
+      <HintPath>..\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -647,6 +637,20 @@
     <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceScheduleReplyDTO.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
+      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
+      <Name>EllipseCommonsClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj">
+      <Project>{093ec04e-6e92-4e59-848b-5b79277ffe9b}</Project>
+      <Name>EllipseReferenceCodesClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
+      <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
+      <Name>EllipseStdTextClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

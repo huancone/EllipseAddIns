@@ -16,6 +16,7 @@ using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 using OperationContext = EllipseWorkOrdersClassLibrary.WorkOrderService.OperationContext;
 using WorkOrderDTO = EllipseWorkOrdersClassLibrary.WorkOrderService.WorkOrderDTO;
+// ReSharper disable UseStringInterpolation
 
 namespace EllipseWorkOrdersClassLibrary
 {
@@ -1264,7 +1265,7 @@ namespace EllipseWorkOrdersClassLibrary
 
         public static List<TaskRequirement> FetchTaskRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string taskNo = null)
         {
-            var sqlQuery = Queries.GetFetchWoTaskRealRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, stdJob, taskNo?.PadLeft(3, '0'));
+            var sqlQuery = Queries.GetFetchWoTaskRealRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, stdJob, string.IsNullOrWhiteSpace(taskNo) ? null : taskNo.PadLeft(3, '0'));
             var woTaskDataReader =
                 ef.GetQueryResult(sqlQuery);
 
@@ -1856,9 +1857,9 @@ namespace EllipseWorkOrdersClassLibrary
                 //establecemos los parámetros para el rango de fechas
                 string dateParameters;
                 if (string.IsNullOrEmpty(startDate))
-                    startDate = $"{DateTime.Now.Year:0000}" + "0101";
+                    startDate = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 if (string.IsNullOrEmpty(endDate))
-                    endDate = $"{DateTime.Now.Year:0000}" + $"{DateTime.Now.Month:00}" + $"{DateTime.Now.Day:00}";
+                    endDate = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
 
                 if (dateCriteriaKey == SearchDateCriteriaType.Raised.Key)
                     dateParameters = " AND WO.RAISED_DATE BETWEEN '" + startDate + "' AND '" + endDate + "'";

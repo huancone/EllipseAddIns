@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities.RuntimeConfigSettings;
+
 namespace EllipseCommonsClassLibrary
 {
     partial class SettingsBox : Form
@@ -103,6 +105,7 @@ namespace EllipseCommonsClassLibrary
             tbServiceFileNetworkUrl.Text = Configuration.ServiceFilePath;
             tbTnsNameUrl.Text = Configuration.TnsnamesFilePath;
             cbForceRegionConfig.Checked = Debugger.ForceRegionalization;
+            cbForceServerList.Checked = Configuration.IsServiceListForced;
         }
 
         private void okButton_Click(object sender, EventArgs e)
@@ -112,8 +115,10 @@ namespace EllipseCommonsClassLibrary
             Debugger.DebugWarnings = cbDebugWarnings.Checked;
             Debugger.DebugQueries = cbDebugQueries.Checked;
             Configuration.ServiceFilePath = tbServiceFileNetworkUrl.Text;
+            Configuration.IsServiceListForced = cbForceServerList.Checked;
             Debugger.DebugErrors = cbDebugErrors.Checked;
             Debugger.ForceRegionalization = cbForceRegionConfig.Checked;
+            RuntimeConfigSettings.UpdateTnsUrlValue(tbTnsNameUrl.Text);
         }
 
         private void btnGenerateFromUrl_Click(object sender, EventArgs e)
@@ -121,11 +126,11 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 Configuration.GenerateEllipseConfigurationXmlFile(Configuration.DefaultServiceFilePath, tbServiceFileNetworkUrl.Text);
-                MessageBox.Show("Se ha generado el archivo local de configuración de Ellipse a partir del archivo de red " + Configuration.DefaultServiceFilePath + Configuration.ConfigXmlFileName + " al directorio especificado", "Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"Se ha generado el archivo local de configuración de Ellipse a partir del archivo de red " + Configuration.DefaultServiceFilePath + Configuration.ConfigXmlFileName + @" al directorio especificado", @"Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Generate Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, @"Generate Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void btnGenerateDefault_Click(object sender, EventArgs e)
@@ -133,11 +138,11 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 Configuration.GenerateEllipseConfigurationXmlFile(tbServiceFileNetworkUrl.Text);
-                MessageBox.Show("Se ha generado el archivo local de configuración de Ellipse de forma predeterminada", "Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"Se ha generado el archivo local de configuración de Ellipse de forma predeterminada", @"Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Generate Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, @"Generate Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -146,11 +151,11 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 Configuration.DeleteEllipseConfigurationXmlFile();
-                MessageBox.Show("Se ha eliminado el archivo local de configuración de Ellipse", "Delete Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"Se ha eliminado el archivo local de configuración de Ellipse", @"Delete Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Delete Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, @"Delete Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -167,30 +172,76 @@ namespace EllipseCommonsClassLibrary
 
         private void btnOpenTnsnamesPath_Click(object sender, EventArgs e)
         {
-            Process.Start(Configuration.DefaultTnsnamesFilePath);
+            try
+            {
+                Process.Start(tbTnsNameUrl.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"No se puede abrir la ruta especificada. Asegúrese que la ruta es correcta e intente de nuevo." + ex.Message, @"Abrir directorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void btnOpenLocalPath_Click(object sender, EventArgs e)
         {
-            Process.Start(Configuration.LocalDataPath);
+            try
+            {
+                Process.Start(tbLocalDataPath.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"No se puede abrir la ruta especificada. Asegúrese que la ruta es correcta e intente de nuevo." + ex.Message, @"Abrir directorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void btnOpenServicesPath_Click(object sender, EventArgs e)
         {
-            Process.Start(Configuration.ServiceFilePath);
+            try
+            {
+                Process.Start(tbServiceFileNetworkUrl.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"No se puede abrir la ruta especificada. Asegúrese que la ruta es correcta e intente de nuevo." + ex.Message, @"Abrir directorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void btnGenerateTnsnamesFile_Click(object sender, EventArgs e)
         {
             try
             {
+                RuntimeConfigSettings.UpdateTnsUrlValue(tbTnsNameUrl.Text);
                 Configuration.GenerateEllipseTnsnamesFile(Configuration.TnsnamesFilePath);
-                MessageBox.Show("Se ha generado el archivo local de TNSNAMES de forma predeterminada", "Generate Local Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"Se ha generado el archivo local de TNSNAMES de forma predeterminada", @"Generate Local Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Generate Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, @"Generate Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnRestoreTnsnamesUrl_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                RuntimeConfigSettings.UpdateTnsUrlValue(Configuration.DefaultTnsnamesFilePath);
+                tbTnsNameUrl.Text = Configuration.DefaultTnsnamesFilePath;
+                MessageBox.Show(@"Se ha restaurado la ruta del archivo de TNSNAMES a su ubicación predeterminada. En caso de que este archivo no exista comuníquese con el administrador de sistemas", @"Restore Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"Restore Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnGenerateCustomDb_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDeleteCustomDb_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

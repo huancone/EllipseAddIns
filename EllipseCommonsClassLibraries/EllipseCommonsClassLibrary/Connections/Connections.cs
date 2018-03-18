@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 // ReSharper disable PossibleNullReferenceException
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace EllipseCommonsClassLibrary.Connections
 {
@@ -36,51 +38,70 @@ namespace EllipseCommonsClassLibrary.Connections
             if (serviceType == null)
                 serviceType = ServiceType.EwsService;
 
-            var serviceFile = Configuration.ServiceFilePath + Configuration.ConfigXmlFileName;
+            var serviceFile = Configuration.ServiceFilePath + "\\" + Configuration.ConfigXmlFileName;
             if (!File.Exists(serviceFile))
                 throw new Exception("No se puede leer el archivo de configuración de servicios de Ellipse. Asegúrese de que el archivo exista o cree un archivo local.");
 
-            var doc = XDocument.Load(serviceFile);
-            var urlServer = "";
+            var xmlDoc = XDocument.Load(serviceFile);
+            string urlServer;
             if (serviceType.Equals(ServiceType.EwsService))
             {
 
                 if (enviroment == EllipseProductivo)
                     urlServer = WebService.Productivo;
-                if (enviroment == EllipseContingencia)
+                else if (enviroment == EllipseContingencia)
                     urlServer = WebService.Contingencia;
-                if (enviroment == EllipseDesarrollo)
+                else if (enviroment == EllipseDesarrollo)
                     urlServer = WebService.Desarrollo;
-                if (enviroment == EllipseTest)
+                else if (enviroment == EllipseTest)
                     urlServer = WebService.Test;
+                else
+                    urlServer = "/ellipse/webservice/" + enviroment;
 
-                return doc.XPathSelectElement(urlServer + "[1]").Value;
+                return xmlDoc.XPathSelectElement(urlServer + "[1]").Value;
             }
             if (serviceType.Equals(ServiceType.PostService))
             {
                 if (enviroment == EllipseProductivo)
                     urlServer = UrlPost.Productivo;
-                if (enviroment == EllipseContingencia)
+                else if (enviroment == EllipseContingencia)
                     urlServer = UrlPost.Contingencia;
-                if (enviroment == EllipseDesarrollo)
+                else if (enviroment == EllipseDesarrollo)
                     urlServer = UrlPost.Desarrollo;
-                if (enviroment == EllipseTest)
+                else if (enviroment == EllipseTest)
                     urlServer = UrlPost.Test;
+                else
+                    urlServer = "/ellipse/url/" + enviroment;
 
-                return doc.XPathSelectElement(urlServer + "[1]").Value;
+                return xmlDoc.XPathSelectElement(urlServer + "[1]").Value;
             }
             throw new NullReferenceException("No se ha encontrado el servidor seleccionado");
         }
         public static List<string> GetEnviromentList()
         {
-            var enviromentList = new List<string>
+            var enviromentList = new List<string>();
+            if (Configuration.IsServiceListForced)
             {
-                EllipseProductivo,
-                EllipseTest,
-                EllipseDesarrollo,
-                EllipseContingencia
-            };
+                var xmlDoc = new XmlDocument();
+                var urlPath = Configuration.ServiceFilePath + "\\" + Configuration.ConfigXmlFileName;
+                xmlDoc.Load(urlPath);
 
+                const string fullNode = "//ellipse/url";
+                var nodeItemList = xmlDoc.SelectSingleNode(fullNode).ChildNodes;
+
+                foreach (XmlNode item in nodeItemList)
+                    enviromentList.Add(item.Name);
+            }
+            else
+            {
+                enviromentList = new List<string>
+                {
+                    EllipseProductivo,
+                    EllipseTest,
+                    EllipseDesarrollo,
+                    EllipseContingencia
+                };
+            }
             return enviromentList;
         }
 

@@ -12,6 +12,7 @@ using EllipseCommonsClassLibrary.Utilities;
 using System.Web.Services.Ellipse;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
+using EllipseCommonsClassLibrary.Utilities.RuntimeConfigSettings;
 
 
 namespace EllipseLogSheetStatisticsExcelAddIn
@@ -652,6 +653,13 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             new AboutBoxExcelAddIn().ShowDialog();
         }
 
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+
+           
+        }
     }
     public class ModelHeaderNameValue
     {

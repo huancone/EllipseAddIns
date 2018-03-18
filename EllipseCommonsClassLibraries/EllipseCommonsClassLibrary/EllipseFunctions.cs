@@ -82,7 +82,8 @@ namespace EllipseCommonsClassLibrary
             }
             else if (enviroment == Connections.Environments.EllipseDesarrollo)
             {
-                _dbname = "EL8DESA";
+                //_dbname = "EL8DESA";
+                _dbname = "EL89TST";
                 _dbuser = "SIGCON";
                 _dbpass = "ventyx";
                 dbLink = "";

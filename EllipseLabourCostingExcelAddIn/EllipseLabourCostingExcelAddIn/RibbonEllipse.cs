@@ -16,7 +16,8 @@ using System.Web.Services.Ellipse;
 using EllipseWorkOrdersClassLibrary;
 using EllipseStdTextClassLibrary;
 using System.Threading;
-
+using EllipseLabourCostingExcelAddIn.LabourCostingTransService;
+using OperationContext = EllipseLabourCostingExcelAddIn.LabourCostingTransService.OperationContext;
 namespace EllipseLabourCostingExcelAddIn
 {
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
@@ -32,12 +33,15 @@ namespace EllipseLabourCostingExcelAddIn
         const int DefaultStartCol = 3;
         const int NroEle = 3;//cantidad de elementos por orden a ingresar (HRS, TSK, Earning Code)
         const int DefaultTitleRow = 9;
-        const int Mso850TitleRow = 5;
+        const int Mso850TitleRow = 5;//Deprecated
+        const int Mse850TitleRow = 5;
         const int ElecsaTitleRow = 6;
         const int ElecsaTitleColumn = 6;
-        private const int Mso850ResultColumn = 18;
+        private const int Mso850ResultColumn = 18;//Deprecated
+        private const int Mse850ResultColumn = 14;
         private const int ElecsaResultColumn = 30;
-        private const string TableNameMso850 = "Mso850Table";
+        private const string TableNameMso850 = "Mso850Table";//Deprecated
+        private const string TableNameMse850 = "Mse850Table";
         private const string TableNameDefault = "LabourDefaultTable";
         private const string TableNameElecsa = "ElecsaTable";
 
@@ -80,7 +84,7 @@ namespace EllipseLabourCostingExcelAddIn
 
         private void btnFormatMso850_Click(object sender, RibbonControlEventArgs e)
         {
-            FormatMso850Sheet();
+            FormatMse850Sheet();
         }
 
         private void btnFormatElecsa_Click(object sender, RibbonControlEventArgs e)
@@ -90,27 +94,39 @@ namespace EllipseLabourCostingExcelAddIn
 
         private void btnLoadLaborSheet_Click(object sender, RibbonControlEventArgs e)
         {
-            //si ya hay un thread corriendo que no se ha detenido
-            if (_thread != null && _thread.IsAlive) return;
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-
-            if (!_cells.IsDecimalDotSeparator())
-                if (MessageBox.Show(@"El separador de decimales configurado actualmente no es el punto. Usar un separador de decimales diferente puede generar errores al momento de cargar valores numéricos. ¿Está seguro que desea continuar?", @"ALERTA DE SEPARADOR DE DECIMALES", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
-
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Default))
-                _thread = new Thread(LoadDefaultLabourCost);
-            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Mso850))
-                _thread = new Thread(LoadMso850LabourCost);
-            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Elecsa))
-                _thread = new Thread(LoadElecsaLabourCost);
-            else
+            try
             {
-                MessageBox.Show(@"La hoja de Excel no tiene el formato válido para el cargue de labor");
-                return;
+                if (!_cells.IsDecimalDotSeparator())
+                    if (MessageBox.Show(@"El separador de decimales configurado actualmente no es el punto. Usar un separador de decimales diferente puede generar errores al momento de cargar valores numéricos. ¿Está seguro que desea continuar?", @"ALERTA DE SEPARADOR DE DECIMALES", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
+                //si si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Default))
+                    _thread = new Thread(LoadDefaultLabourCost);
+                //else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Mso850)) //Deprecated
+                //    _thread = new Thread(LoadMso850LabourCost);
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Mse850))
+                    _thread = new Thread(LoadMse850LabourCost);
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Elecsa))
+                    _thread = new Thread(LoadElecsaLabourCost);
+                else
+                {
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato válido para el cargue de labor");
+                    return;
+                }
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+
             }
-            _thread.SetApartmentState(ApartmentState.STA);
-            _thread.Start();
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:LoadLaborSheet()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private void btnCleanSheet_Click(object sender, RibbonControlEventArgs e)
@@ -295,7 +311,86 @@ namespace EllipseLabourCostingExcelAddIn
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }
+        public void FormatMse850Sheet()
+        {
+            try
+            {
+                _excelApp.Workbooks.Add();
+                while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
+                    _excelApp.ActiveWorkbook.Worksheets.Add();
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01 + LabourSheetTypeConstants.Mse850;
+                _cells.CreateNewWorksheet(ValidationSheetName);
 
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "A2");
+
+                _cells.GetCell("B1").Value = "LOAD EMPLOYEES LABOUR - ELLIPSE 8";
+                _cells.GetCell("B1").Style = StyleConstants.HeaderDefault;
+                _cells.MergeCells("B1", "J2");
+
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = StyleConstants.TitleRequired;
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = StyleConstants.TitleOptional;
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = StyleConstants.TitleInformation;
+
+                //listas de validación
+                //var itemListEc = _eFunctions.GetItemCodes("EA");//earning codes
+                //var earningCodeList = itemListEc.Select(item => item.code + " - " + item.description).ToList();
+
+                //var itemListLc = _eFunctions.GetItemCodes("LC");//laborclass codes
+                //var laborClassList = itemListLc.Select(item => item.code + " - " + item.description).ToList();
+
+                _cells.GetRange(1, Mse850TitleRow, Mse850ResultColumn - 1, Mse850TitleRow).Style = StyleConstants.TitleRequired;
+                _cells.GetRange(1, Mse850TitleRow + 1, Mse850ResultColumn - 1, Mse850TitleRow + 1).NumberFormat = NumberFormatConstants.Text;
+
+                _cells.GetCell(1, Mse850TitleRow).Value = "Trans.Date";
+                _cells.GetCell(1, Mse850TitleRow).AddComment("yyyyMMss");
+                _cells.GetCell(2, Mse850TitleRow).Value = "EmployeeId";
+                _cells.GetCell(3, Mse850TitleRow).Value = "InterDistrict";
+                _cells.GetCell(3, Mse850TitleRow).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(4, Mse850TitleRow).Value = "Project";
+                _cells.GetCell(4, Mse850TitleRow).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(5, Mse850TitleRow).Value = "WorkOrder";
+                _cells.GetCell(6, Mse850TitleRow).Value = "WOTask";
+                _cells.GetCell(6, Mse850TitleRow).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(7, Mse850TitleRow).Value = "EquipmentRef";
+                _cells.GetCell(8, Mse850TitleRow).Value = "EquipmentNo";
+                _cells.GetCell(8, Mse850TitleRow).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(9, Mse850TitleRow).Value = "LaborClass";
+                //_cells.SetValidationList(_cells.GetCell(9, Mse850TitleRow + 1), laborClassList, ValidationSheetName, 2);
+                _cells.GetCell(9, Mse850TitleRow).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(10, Mse850TitleRow).Value = "EarningCode";
+                //_cells.SetValidationList(_cells.GetCell(10, Mse850TitleRow + 1), earningCodeList, ValidationSheetName, 3);
+                _cells.GetCell(10, Mse850TitleRow).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(11, Mse850TitleRow).Value = "Hours";
+                _cells.GetCell(11, Mse850TitleRow).AddComment("hh.mm");
+                _cells.GetCell(12, Mse850TitleRow).Value = "OvertimeIndicator";
+                _cells.GetCell(12, Mse850TitleRow).AddComment("Y/N");
+                _cells.GetCell(12, Mse850TitleRow).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(13, Mse850TitleRow).Value = "AccountCode";
+                _cells.GetCell(13, Mse850TitleRow).Style = StyleConstants.TitleOptional;
+
+                _cells.GetCell(Mse850ResultColumn, Mse850TitleRow).Value = "RESULTADO";
+                _cells.GetCell(Mse850ResultColumn, Mse850TitleRow).Style = StyleConstants.TitleResult;
+                _cells.FormatAsTable(
+                    _cells.GetRange(1, Mse850TitleRow, Mse850ResultColumn, Mse850TitleRow + 1),
+                    TableNameMse850);
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+            }
+        }
         public void FormatMso850Sheet()
         {
             try
@@ -524,32 +619,28 @@ namespace EllipseLabourCostingExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName01 + LabourSheetTypeConstants.Default)
-                    throw new Exception("La hoja seleccionada no coincide con el modelo requerido");
-
-                if (drpEnviroment.Label == null || drpEnviroment.Label.Equals(""))
-                    throw new ArgumentException("Seleccione un ambiente válido");
-
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-
-                if (_frmAuth.ShowDialog() != DialogResult.OK) return; //no se autentica, se cancela el proceso
-
-
-
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
-                var opSheet = new Screen.OperationContext
+                //Deprecated
+                //var opSheet = new Screen.OperationContext
+                //{
+                //    district = _frmAuth.EllipseDsct,
+                //    position = _frmAuth.EllipsePost,
+                //    maxInstances = 100,
+                //    returnWarnings = Debugger.DebugWarnings
+                //};
+                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
+                var opSheet = new OperationContext
                 {
                     district = _frmAuth.EllipseDsct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
                 };
-
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
                 var i = 10;
                 //recorro la lista de empleados de forma vertical
@@ -558,9 +649,8 @@ namespace EllipseLabourCostingExcelAddIn
                     //proceso por empleado
                     var employee = new LabourEmployee
                     {
-                        WOP_IND = "W",
-                        EMP_ID = ("" + _cells.GetCell(2, i).Value).Trim(),
-                        TRAN_DATE = ("" + _cells.GetCell(2, 5).Value).Trim()
+                        Employee = ("" + _cells.GetCell(2, i).Value).Trim(),
+                        TransactionDate = ("" + _cells.GetCell(2, 5).Value).Trim()
                     };
 
                     //recorro la lista de órdenes de forma horizontal
@@ -579,18 +669,18 @@ namespace EllipseLabourCostingExcelAddIn
                                         earningClass.IndexOf(" - ", StringComparison.Ordinal));
 
 
-                                employee.ORD_HRS = _cells.GetEmptyIfNull(_cells.GetCell(j, i).Value2);
-                                employee.TASK = _cells.GetEmptyIfNull(_cells.GetCell(j + 1, i).Value2);
-                                if (string.IsNullOrWhiteSpace(employee.TASK))
-                                    employee.TASK = "001";
+                                employee.LabourCostingHours = _cells.GetEmptyIfNull(_cells.GetCell(j, i).Value2);
+                                employee.WorkOrderTask = _cells.GetEmptyIfNull(_cells.GetCell(j + 1, i).Value2);
+                                if (string.IsNullOrWhiteSpace(employee.WorkOrderTask))
+                                    employee.WorkOrderTask = "001";
                                 //el número de tarea debe tener tres dígitos 001
-                                if (employee.TASK.Length > 1 && employee.TASK.Length < 3)
-                                    employee.TASK = employee.TASK.PadLeft(3, '0');
-                                employee.EARN_CLASS = earningClass;
+                                if (employee.WorkOrderTask.Length > 1 && employee.WorkOrderTask.Length < 3)
+                                    employee.WorkOrderTask = employee.WorkOrderTask.PadLeft(3, '0');
+                                employee.EarnCode = earningClass;
 
-                                employee.WO_PROJ = _cells.GetEmptyIfNull(_cells.GetCell(j, DefaultTitleRow - 2).Value2);
+                                employee.WorkOrder = _cells.GetEmptyIfNull(_cells.GetCell(j, DefaultTitleRow - 2).Value2);
 
-                                LoadEmployee(opSheet, employee);
+                                LoadEmployeeMse(urlService, opSheet, employee);
 
                                 _cells.GetRange(j, i, j, i).ClearComments();
                                 _cells.GetRange(j, i, j + NroEle - 1, i).Style = StyleConstants.Success;
@@ -628,26 +718,119 @@ namespace EllipseLabourCostingExcelAddIn
 
         }
 
+        public void LoadMse850LabourCost()
+        {
+            try
+            {
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                _cells.SetCursorWait();
+                
+                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
+                var opSheet = new OperationContext
+                {
+                    district = _frmAuth.EllipseDsct,
+                    position = _frmAuth.EllipsePost,
+                    maxInstances = 100,
+                    returnWarnings = Debugger.DebugWarnings
+                };
+
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+                var i = Mse850TitleRow + 1;
+                //recorro la lista de empleados de forma vertical
+                while (!_cells.GetEmptyIfNull(_cells.GetCell(1, i).Value2).Equals(""))
+                {
+                    try
+                    {
+                        //valores de listas
+                        var transactionDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
+                        var employeeId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
+                        var interDistrict = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value);
+                        var project = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value);
+                        var workOrder = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
+                        var woTask = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
+                        var equipmentRef = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value);
+                        var equipmentNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value);
+                        var laborClass = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value);
+                        var earningCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, i).Value);
+                        var hours = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, i).Value);
+                        var overtimeIndicator = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value);
+                        var accountCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value);
+
+                        //obtengo solo el código sin la descripción
+                        if (earningCode != null && earningCode.Contains(" - "))
+                            earningCode = earningCode.Substring(0, earningCode.IndexOf(" - ", StringComparison.Ordinal));
+                        if (laborClass != null && laborClass.Contains(" - "))
+                            laborClass = laborClass.Substring(0, laborClass.IndexOf(" - ", StringComparison.Ordinal));
+
+                        //proceso por empleado
+                        var employee = new LabourEmployee
+                        {
+                            TransactionDate = transactionDate,
+                            Employee = employeeId,
+                            InterDistrictCode = interDistrict,
+                            Project = project,
+                            WorkOrder = workOrder,
+                            WorkOrderTask = woTask,
+                            EquipmentRef = equipmentRef,
+                            EquipmentNo = equipmentNo,
+                            LabourClass = laborClass,
+                            EarnCode = earningCode,
+                            LabourCostingHours = hours,
+                            OvertimeInd = MyUtilities.IsTrue(overtimeIndicator),
+                            AccountCode = accountCode,
+                        };
+
+                        if (!string.IsNullOrWhiteSpace(employee.WorkOrder))
+                        {
+                            if (string.IsNullOrWhiteSpace(employee.WorkOrderTask))
+                                employee.WorkOrderTask = "001";
+                            if (employee.WorkOrderTask.Length > 1 && employee.WorkOrderTask.Length < 3)
+                                employee.WorkOrderTask = employee.WorkOrderTask.PadLeft(3, '0');
+                        }
+
+
+                        LoadEmployeeMse(urlService, opSheet, employee);
+                        _cells.GetCell(Mse850ResultColumn, i).Value = "SUCCESS";
+                        _cells.GetCell(Mse850ResultColumn, i).Style = StyleConstants.Success;
+                        _cells.GetCell(Mse850ResultColumn, i).Select();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debugger.LogError("RibbonEllipse:LoadMso850LabourCost()",
+                            "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                        _cells.GetCell(Mse850ResultColumn, i).Value = "ERROR: " + ex.Message;
+                        _cells.GetCell(Mse850ResultColumn, i).Style = StyleConstants.Error;
+                        _cells.GetCell(Mse850ResultColumn, i).Select();
+                    }
+                    finally
+                    {
+                        i++;
+                    }
+                } //--while de registros
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Debugger.LogError("RibbonEllipse:LoadMse850LabourCost()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+            }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
+            }
+        }
+
+        //Deprecated
+        [Obsolete("Not used anymore", true)]
         public void LoadMso850LabourCost()
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName01 + LabourSheetTypeConstants.Mso850)
-                    throw new Exception("La hoja seleccionada no coincide con el modelo requerido");
-
-                if (drpEnviroment.Label == null || drpEnviroment.Label.Equals(""))
-                    throw new ArgumentException("Seleccione un ambiente válido");
-
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
-
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-
-                if (_frmAuth.ShowDialog() != DialogResult.OK) return; //no se autentica, se cancela el proceso
-
-
 
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new Screen.OperationContext
@@ -681,35 +864,35 @@ namespace EllipseLabourCostingExcelAddIn
                         //proceso por empleado
                         var employee = new LabourEmployee
                         {
-                            TRAN_DATE = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
-                            ORD_HRS = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value),
-                            OT_HRS = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value),
-                            VALUE = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value),
-                            INT_DSTRCT_CDE = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
-                            ACCOUNT = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value),
-                            STATUS = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value),
-                            WOP_IND = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value),
-                            WO_PROJ = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value),
-                            TASK = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value),
-                            EMP_ID = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, i).Value),
-                            EQUIPMENT = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value),
-                            UNITS_COMP = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value),
-                            PC_COMP = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, i).Value),
-                            CODE_COMP = codeComp,
-                            EARN_CLASS = earningCode,
-                            LABOUR_CLASS = laborClass
+                            TransactionDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
+                            LabourCostingHours = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value),
+                            OvertimeInd = MyUtilities.IsTrue(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value)),
+                            LabourCostingValue = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value),
+                            InterDistrictCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
+                            AccountCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value),
+                            PostingStatus = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value),
+                            Project = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value),
+                            WorkOrder = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value),
+                            WorkOrderTask = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value),
+                            Employee = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, i).Value),
+                            EquipmentNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value),
+                            UnitsComplete = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value),
+                            PercentComplete = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, i).Value),
+                            CompletedCode = codeComp,
+                            EarnCode = earningCode,
+                            LabourClass = laborClass
                         };
 
-                        if (employee.WOP_IND == "W")
+                        if (!string.IsNullOrWhiteSpace(employee.WorkOrder))
                         {
-                            if (string.IsNullOrWhiteSpace(employee.TASK))
-                                employee.TASK = "001";
-                            if (employee.TASK.Length > 1 && employee.TASK.Length < 3)
-                                employee.TASK = employee.TASK.PadLeft(3, '0');
+                            if (string.IsNullOrWhiteSpace(employee.WorkOrderTask))
+                                employee.WorkOrderTask = "001";
+                            if (employee.WorkOrderTask.Length > 1 && employee.WorkOrderTask.Length < 3)
+                                employee.WorkOrderTask = employee.WorkOrderTask.PadLeft(3, '0');
                         }
 
 
-                        LoadEmployee(opSheet, employee);
+                        LoadEmployeeMso(opSheet, employee);
                         _cells.GetCell(Mso850ResultColumn, i).Value = "SUCCESS";
                         _cells.GetCell(Mso850ResultColumn, i).Style = StyleConstants.Success;
                         _cells.GetCell(Mso850ResultColumn, i).Select();
@@ -743,32 +926,29 @@ namespace EllipseLabourCostingExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName01 + LabourSheetTypeConstants.Elecsa)
-                    throw new Exception("La hoja seleccionada no coincide con el modelo requerido");
-
-                if (drpEnviroment.Label == null || drpEnviroment.Label.Equals(""))
-                    throw new ArgumentException("Seleccione un ambiente válido");
-
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-
-                if (_frmAuth.ShowDialog() != DialogResult.OK) return; //no se autentica, se cancela el proceso
-
-
-
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
-                var opSheet = new Screen.OperationContext
+                //Deprecated
+                //var opSheet = new Screen.OperationContext
+                //{
+                //    district = _frmAuth.EllipseDsct,
+                //    position = _frmAuth.EllipsePost,
+                //    maxInstances = 100,
+                //    returnWarnings = Debugger.DebugWarnings
+                //};
+
+                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
+                var opSheet = new OperationContext
                 {
                     district = _frmAuth.EllipseDsct,
                     position = _frmAuth.EllipsePost,
                     maxInstances = 100,
                     returnWarnings = Debugger.DebugWarnings
                 };
-
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
                 var districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, ElecsaTitleRow - 3).Value2);
@@ -776,7 +956,6 @@ namespace EllipseLabourCostingExcelAddIn
 
                 var i = ElecsaTitleRow + 1;
                 const string employeeId = "CONPBVELE";
-                const string wpFlag = "W";
                 const string earningCode = "001";
                 var transDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, ElecsaTitleRow - 2).Value2);
 
@@ -815,18 +994,17 @@ namespace EllipseLabourCostingExcelAddIn
                                 //proceso por empleado
                                 var employee = new LabourEmployee
                                 {
-                                    TRAN_DATE = transDate,
-                                    ORD_HRS = hours,
-                                    ACCOUNT = costCenter,
-                                    WOP_IND = wpFlag,
-                                    WO_PROJ = workOrder,
-                                    TASK = task,
-                                    EMP_ID = employeeId,
-                                    EARN_CLASS = earningCode,
-                                    LABOUR_CLASS = laborClass
+                                    TransactionDate = transDate,
+                                    LabourCostingHours = hours,
+                                    AccountCode = costCenter,
+                                    WorkOrder = workOrder,
+                                    WorkOrderTask = task,
+                                    Employee = employeeId,
+                                    EarnCode = earningCode,
+                                    LabourClass = laborClass
                                 };
 
-                                LoadEmployee(opSheet, employee, false);
+                                LoadEmployeeMse(urlService, opSheet, employee, false);
                                 _cells.GetCell(j, i).ClearComments();
                                 _cells.GetCell(j, i).Style = StyleConstants.Success;
                                 _cells.GetCell(j, i).Select();
@@ -898,8 +1076,6 @@ namespace EllipseLabourCostingExcelAddIn
                             jobDurationsFinish = endHour
                         };
 
-
-                        var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
                         WorkOrderActions.CreateWorkOrderDuration(urlService, opWo, districtCode, wo, duration);
 
                         var stdTextId = "CW" + districtCode + workOrder;
@@ -941,8 +1117,10 @@ namespace EllipseLabourCostingExcelAddIn
         }
         public void CleanLabourTable()
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Mso850))
-                _cells.ClearTableRange(TableNameMso850);
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Mso850))//Deprecated
+                _cells.ClearTableRange(TableNameMso850);//Deprecated
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Mse850))
+                _cells.ClearTableRange(TableNameMse850);
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Elecsa))
                 _cells.ClearTableRange(TableNameElecsa);
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Default))
@@ -950,13 +1128,74 @@ namespace EllipseLabourCostingExcelAddIn
 
         }
 
+        [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
+        public LabourCostingTransServiceResult LoadEmployeeMse(string urlService, OperationContext opContext, LabourEmployee labourEmployee, bool replaceExisting = true)
+        {
+            var proxyLt = new LabourCostingTransService.LabourCostingTransService();
+            proxyLt.Url = urlService + "/LabourCostingTrans";
+
+            var requestLt = new LabourCostingTransDTO();
+
+
+            requestLt.transactionDate = new DateTime(int.Parse(labourEmployee.TransactionDate.Substring(0, 4)), int.Parse(labourEmployee.TransactionDate.Substring(4, 2)), int.Parse(labourEmployee.TransactionDate.Substring(6, 2)));
+            requestLt.transactionDateSpecified = true;
+            
+            requestLt.labourCostingHours = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingHours) ? Convert.ToDecimal(labourEmployee.LabourCostingHours) : default(decimal);
+            requestLt.labourCostingHoursSpecified = !string.IsNullOrEmpty(labourEmployee.LabourCostingHours);
+            requestLt.labourCostingValue = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingValue) ? Convert.ToDecimal(labourEmployee.LabourCostingValue) : default(decimal);
+            requestLt.labourCostingValueSpecified = !string.IsNullOrEmpty(labourEmployee.LabourCostingValue);
+            requestLt.interDistrictCode = labourEmployee.InterDistrictCode;
+            requestLt.accountCode = labourEmployee.AccountCode;
+            requestLt.postingStatus = labourEmployee.PostingStatus;
+            requestLt.project = labourEmployee.Project;
+            requestLt.workOrder = labourEmployee.WorkOrder;
+            requestLt.workOrderTask = labourEmployee.WorkOrderTask;
+
+            requestLt.employee = labourEmployee.Employee;
+            requestLt.equipmentNo = labourEmployee.EquipmentNo;
+            requestLt.equipmentReference = labourEmployee.EquipmentRef;
+            requestLt.percentComplete = !string.IsNullOrWhiteSpace(labourEmployee.PercentComplete) ? Convert.ToDecimal(labourEmployee.PercentComplete) : default(decimal);
+            requestLt.percentCompleteSpecified = !string.IsNullOrEmpty(labourEmployee.PercentComplete);
+            requestLt.earnCode = labourEmployee.EarnCode;
+            requestLt.labourClass = labourEmployee.LabourClass;
+
+            requestLt.overtimeInd = labourEmployee.OvertimeInd;
+            requestLt.overtimeIndSpecified = true;
+            requestLt.unitsComplete = !string.IsNullOrWhiteSpace(labourEmployee.UnitsComplete) ? Convert.ToDecimal(labourEmployee.UnitsComplete) : default(decimal);
+            requestLt.unitsCompleteSpecified = !string.IsNullOrEmpty(labourEmployee.UnitsComplete);
+            requestLt.completedCode = labourEmployee.CompletedCode;
+
+            //Search Existing
+            if (replaceExisting)
+            {
+                var requestSearch = new LabourCostingTransSearchParam();
+                requestSearch.transactionDate = new DateTime(int.Parse(labourEmployee.TransactionDate.Substring(0, 4)), int.Parse(labourEmployee.TransactionDate.Substring(4, 2)), int.Parse(labourEmployee.TransactionDate.Substring(6, 2)));
+                requestSearch.transactionDateSpecified = true;
+                requestSearch.employee = labourEmployee.Employee;
+                requestSearch.project = labourEmployee.Project;
+                requestSearch.workOrder = labourEmployee.WorkOrder;
+                requestSearch.workOrderTask = labourEmployee.WorkOrderTask;
+                var searchRestartDto = new LabourCostingTransDTO();
+                var replySearch = proxyLt.search(opContext, requestSearch, searchRestartDto);
+                //Existe un elemento
+                if (replySearch != null && replySearch.Length >= 1)
+                    proxyLt.delete(opContext, replySearch[0].labourCostingTransDTO);
+            }
+            //se envía la acción
+            //return proxyLt.multipleCreate(opContext, multipleRequestLt);
+            return proxyLt.create(opContext, requestLt);
+
+
+        }
+        
         /// <summary>
         /// Carga un registro de labor para el empleado asignado
         /// </summary>
         /// <param name="opSheet"></param>
         /// <param name="labourEmployee"></param>
         /// <param name="replaceExisting">bool: Si es true y ya existe un registro con la misma ot-tarea se modificará por el nuevo registro. Si es false, se ignorará el registro y siempre se adicionará uno nuevo</param>
-        public void LoadEmployee(Screen.OperationContext opSheet, LabourEmployee labourEmployee, bool replaceExisting = true)
+        [Obsolete("Not used anymore", true)]//Deprecated
+        public void LoadEmployeeMso(Screen.OperationContext opSheet, LabourEmployee labourEmployee, bool replaceExisting = true)
         {
             //Proceso del screen
             var proxySheet = new Screen.ScreenService();
@@ -975,8 +1214,8 @@ namespace EllipseLabourCostingExcelAddIn
             if (replySheet == null || replySheet.mapName != "MSM850A" || ValidateError(replySheet) || _eFunctions.CheckReplyWarning(replySheet))
                 throw new Exception("No se pudo establecer comunicación con el servicio");
             //Enviamos datos principales para activar los campos de labor
-            arrayFields.Add("EMP_ID1I", labourEmployee.EMP_ID);
-            arrayFields.Add("TRAN_DATE1I", labourEmployee.TRAN_DATE);
+            arrayFields.Add("EMP_ID1I", labourEmployee.Employee);
+            arrayFields.Add("TRAN_DATE1I", labourEmployee.TransactionDate);
 
             requestSheet.screenFields = arrayFields.ToArray();
             requestSheet.screenKey = "1";
@@ -992,9 +1231,9 @@ namespace EllipseLabourCostingExcelAddIn
                 var replyFields = new ArrayScreenNameValue(replySheet.screenFields);
                 //son variables para determinar el cambio de screen real
                 //reajustamos el valor de la tarea a un numérico ###
-                if (string.IsNullOrWhiteSpace(labourEmployee.TASK)) 
-                    if (labourEmployee.WOP_IND == "W")
-                        labourEmployee.TASK = labourEmployee.TASK == "" ? "": "001";
+                if (string.IsNullOrWhiteSpace(labourEmployee.WorkOrderTask)) 
+                    if (!string.IsNullOrWhiteSpace(labourEmployee.WorkOrder))
+                        labourEmployee.WorkOrderTask = labourEmployee.WorkOrderTask == "" ? "" : "001";
                 
 
                 //iniciamos el recorrido
@@ -1003,7 +1242,7 @@ namespace EllipseLabourCostingExcelAddIn
                     //comprobamos que: 1. Que no exista OT-Tarea cargada para que no se duplique, y 2. nos ubicamos en el último campo disponible
                     //si existe 1, entonces actualizamos la información. Si no, continuamos a ubicarnos en 2.
                     var isEmpty = replyFields.GetField("WO_PROJ1I" + rowMso).value.Equals("");
-                    var sameWo = labourEmployee.WO_PROJ.Equals(replyFields.GetField("WO_PROJ1I" + rowMso).value);
+                    var sameWo = labourEmployee.WorkOrder.Equals(replyFields.GetField("WO_PROJ1I" + rowMso).value);
                     var screenTaskValue = replyFields.GetField("TASK1I" + rowMso).value;
                     var isWopInd = replyFields.GetField("WOP_IND1I" + rowMso).value.Equals("W");
 
@@ -1012,8 +1251,8 @@ namespace EllipseLabourCostingExcelAddIn
                         screenTaskValue = "001";
                     }
 
-                    var sameTask = labourEmployee.TASK == screenTaskValue;
-                    var sameEarnClass = string.IsNullOrWhiteSpace(labourEmployee.EARN_CLASS) || labourEmployee.EARN_CLASS.Equals(replyFields.GetField("EARN_CLASS1I" + rowMso).value);
+                    var sameTask = labourEmployee.WorkOrderTask == screenTaskValue;
+                    var sameEarnClass = string.IsNullOrWhiteSpace(labourEmployee.EarnCode) || labourEmployee.EarnCode.Equals(replyFields.GetField("EARN_CLASS1I" + rowMso).value);
                     //si se encuentra una posición para escribir la labor se activa el flag y se sale del while
                     if (isEmpty || (replaceExisting && sameWo && sameTask && sameEarnClass))
                     {
@@ -1028,7 +1267,7 @@ namespace EllipseLabourCostingExcelAddIn
 
                     var errorLoopPos = 0;//para controlar que no se quede atrapado en loop infinito
                     //verifico la respuesta de este envío por errores y advertencias
-                    while (replySheet.mapName == "MSM850A" && replyFields.GetField("TRAN_DATE1I").value == labourEmployee.TRAN_DATE && !ValidateError(replySheet))
+                    while (replySheet.mapName == "MSM850A" && replyFields.GetField("TRAN_DATE1I").value == labourEmployee.TransactionDate && !ValidateError(replySheet))
                     {
                         //Creamos la nueva acción de envío reutilizando los elementos anteriores
                         requestSheet = new Screen.ScreenSubmitRequestDTO { screenKey = "1" };
@@ -1052,18 +1291,18 @@ namespace EllipseLabourCostingExcelAddIn
                     rowMso = 1;
                 }
                 //ingresamos los elementos para los campos a enviar   
-                arrayFields.Add("ORD_HRS1I" + rowMso, labourEmployee.ORD_HRS);
-                arrayFields.Add("OT_HRS1I" + rowMso, labourEmployee.OT_HRS);
-                arrayFields.Add("ACCOUNT1I" + rowMso, labourEmployee.ACCOUNT);
-                arrayFields.Add("WOP_IND1I" + rowMso, labourEmployee.WOP_IND);
-                arrayFields.Add("WO_PROJ1I" + rowMso, labourEmployee.WO_PROJ);
-                arrayFields.Add("TASK1I" + rowMso, labourEmployee.TASK);
-                arrayFields.Add("EQUIPMENT1I" + rowMso, labourEmployee.EQUIPMENT);
-                arrayFields.Add("UNITS_COMP1I" + rowMso, labourEmployee.UNITS_COMP);
-                arrayFields.Add("PC_COMP1I" + rowMso, labourEmployee.PC_COMP);
-                arrayFields.Add("CODE_COMP1I" + rowMso, labourEmployee.CODE_COMP);
-                arrayFields.Add("EARN_CLASS1I" + rowMso, labourEmployee.EARN_CLASS);
-                arrayFields.Add("LABOUR_CLASS1I" + rowMso, labourEmployee.LABOUR_CLASS);
+                arrayFields.Add("ORD_HRS1I" + rowMso, labourEmployee.LabourCostingHours);
+                arrayFields.Add("OT_HRS1I" + rowMso, labourEmployee.OvertimeInd ? labourEmployee.LabourCostingHours : null);
+                arrayFields.Add("ACCOUNT1I" + rowMso, labourEmployee.AccountCode);
+                arrayFields.Add("WOP_IND1I" + rowMso, string.IsNullOrWhiteSpace(labourEmployee.WorkOrder) ? "P" : "W");
+                arrayFields.Add("WO_PROJ1I" + rowMso, string.IsNullOrWhiteSpace(labourEmployee.WorkOrder) ? labourEmployee.Project : labourEmployee.WorkOrder);
+                arrayFields.Add("TASK1I" + rowMso, labourEmployee.WorkOrderTask);
+                arrayFields.Add("EQUIPMENT1I" + rowMso, labourEmployee.EquipmentNo);
+                arrayFields.Add("UNITS_COMP1I" + rowMso, labourEmployee.UnitsComplete);
+                arrayFields.Add("PC_COMP1I" + rowMso, labourEmployee.PercentComplete);
+                arrayFields.Add("CODE_COMP1I" + rowMso, labourEmployee.CompletedCode);
+                arrayFields.Add("EARN_CLASS1I" + rowMso, labourEmployee.EarnCode);
+                arrayFields.Add("LABOUR_CLASS1I" + rowMso, labourEmployee.LabourClass);
                 //enviamos la información
                 requestSheet = new Screen.ScreenSubmitRequestDTO
                 {
@@ -1216,7 +1455,8 @@ namespace EllipseLabourCostingExcelAddIn
         public static class LabourSheetTypeConstants
         {
             public static string Default = "Default";
-            public static string Mso850 = "MSO850";
+            public static string Mso850 = "MSO850";//Deprecated
+            public static string Mse850 = "MSE850";
             public static string Elecsa = "ELECSA";
         }
 
@@ -1301,23 +1541,26 @@ namespace EllipseLabourCostingExcelAddIn
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class LabourEmployee
     {
-        public string TRAN_DATE;
-        public string ORD_HRS;
-        public string OT_HRS;
-        public string VALUE;
-        public string INT_DSTRCT_CDE;
-        public string ACCOUNT;
-        public string STATUS;
-        public string WOP_IND;
-        public string WO_PROJ;
-        public string TASK;
-        public string EMP_ID;
-        public string EQUIPMENT;
-        public string UNITS_COMP;
-        public string PC_COMP;
-        public string CODE_COMP;
-        public string EARN_CLASS;
-        public string LABOUR_CLASS;
+        public string TransactionDate;
+        public string LabourCostingHours;
+        public bool OvertimeInd;
+        public string LabourCostingValue;
+        public string InterDistrictCode;
+        public string AccountCode;
+        public string PostingStatus;
+        public string Project;
+        public string WorkOrder;
+        public string WorkOrderTask;
+        public string Employee;
+        public string EquipmentNo;
+        public string EquipmentRef;
+        public string UnitsComplete;
+        public string PercentComplete;
+        public string CompletedCode;
+        public string EarnCode;
+        public string LabourClass;
+
+
     }
     public static class Queries
     {

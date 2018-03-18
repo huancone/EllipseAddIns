@@ -8,5 +8,8 @@
     <Setting Name="EllipseLabourCostingExcelAddIn_LabourCostWeekService_LabourCostWeekService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://ews-el8test.lmnerp03.cerrejon.com/ews/services/LabourCostWeekService</Value>
     </Setting>
+    <Setting Name="EllipseLabourCostingExcelAddIn_LabourCostsService_LabourCostsService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-el8test.lmnerp03.cerrejon.com/ews/services/LabourCostsService</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

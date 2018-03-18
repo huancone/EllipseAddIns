@@ -2,6 +2,8 @@
 using EllipseCommonsClassLibrary.Utilities;
 using System.Reflection;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
+using EllipseCommonsClassLibrary.Utilities.RuntimeConfigSettings;
 
 namespace EllipseCommonsClassLibrary.Connections
 {
@@ -12,10 +14,24 @@ namespace EllipseCommonsClassLibrary.Connections
         public static string DefaultLocalDataPath = @"c:\ellipse\";
         private const string EllipseHomeEnvironmentVariable = "EllipseAddInsHome";
         private const string EllipseServicesEnvironmentVariable = "EllipseServiceUrlFile";
-       
+        private const string EllipseServicesForcedList = "EllipseServiceForcedList";
+
         public const string ConfigXmlFileName = "EllipseConfiguration.xml";
         public const string TnsnamesFileName = "tnsnames.ora";
 
+        public static bool IsServiceListForced
+        {
+            get
+            {
+                var varForced = "" + Environment.GetEnvironmentVariable(EllipseServicesForcedList, EnvironmentVariableTarget.User);
+                var varForcedExpanded = Environment.ExpandEnvironmentVariables(varForced);
+                return !string.IsNullOrWhiteSpace(varForcedExpanded) && varForcedExpanded.ToLower().Equals("true");
+            }
+            set
+            {
+                Environment.SetEnvironmentVariable(EllipseServicesForcedList, value.ToString(), EnvironmentVariableTarget.User);
+            }
+        }
         public static string LocalDataPath
         {
             get
@@ -68,7 +84,16 @@ namespace EllipseCommonsClassLibrary.Connections
         }
         public static string TnsnamesFilePath
         {
-            get { return DefaultTnsnamesFilePath; }
+            get
+            {
+                return RuntimeConfigSettings.GetTnsUrlValue(); ; 
+            }
+            set
+            {
+                if (value.Equals(RuntimeConfigSettings.GetTnsUrlValue()))
+                    return;
+                RuntimeConfigSettings.UpdateTnsUrlValue(value);
+            }
         }
 
         public static void GenerateEllipseConfigurationXmlFile(string targetUrl)
@@ -149,6 +174,8 @@ namespace EllipseCommonsClassLibrary.Connections
         {
             try
             {
+                if (FileWriter.NormalizePath(targetUrl, true).Equals(FileWriter.NormalizePath(DefaultTnsnamesFilePath, true)))
+                    throw new Exception("No se puede reemplazar el archivo " + TnsnamesFileName + " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
                 if (File.Exists(TnsnamesFilePath + TnsnamesFileName))
                 {
                     FileWriter.MoveFileToDirectory(TnsnamesFileName, TnsnamesFilePath, TnsnamesFileName + DateTime.Today.Year + DateTime.Today.Month + DateTime.Today.Day + ".BAK", TnsnamesFilePath);
@@ -193,7 +220,11 @@ namespace EllipseCommonsClassLibrary.Connections
                 throw;
             }
         }
-    
+
+        public static void GenerateEllipseDatabaseFile()
+        {
+            
+        }
     }
 
     public static class WebService
