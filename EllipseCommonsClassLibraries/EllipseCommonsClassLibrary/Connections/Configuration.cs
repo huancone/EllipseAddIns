@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EllipseCommonsClassLibrary.Utilities;
 using System.Reflection;
 using System.IO;
@@ -18,6 +19,8 @@ namespace EllipseCommonsClassLibrary.Connections
 
         public const string ConfigXmlFileName = "EllipseConfiguration.xml";
         public const string TnsnamesFileName = "tnsnames.ora";
+        public const string DatabaseXmlFileName = "EllipseDatabases.xml";
+        public const string EncryptPassPhrase = "hambingsdevel";
 
         public static bool IsServiceListForced
         {
@@ -162,6 +165,7 @@ namespace EllipseCommonsClassLibrary.Connections
                     throw new Exception("No se puede eliminar el archivo de configuración original del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
                 var configFilePath = FileWriter.NormalizePath(ServiceFilePath, true);
                 FileWriter.DeleteFile(configFilePath, ConfigXmlFileName);
+                ServiceFilePath = DefaultServiceFilePath;
             }
             catch (Exception ex)
             {
@@ -170,6 +174,7 @@ namespace EllipseCommonsClassLibrary.Connections
             }
         }
 
+        
         public static void GenerateEllipseTnsnamesFile(string targetUrl)
         {
             try
@@ -223,7 +228,55 @@ namespace EllipseCommonsClassLibrary.Connections
 
         public static void GenerateEllipseDatabaseFile()
         {
-            
+            var databaseList = new List<DatabaseItem>();
+            databaseList.Add(new DatabaseItem("Productivo", "EL8PROD", "SIGCON", "ventyx", "ELLIPSE"));
+            databaseList.Add(new DatabaseItem("Contingencia", "EL8PROD", "SIGCON", "ventyx", "ELLIPSE"));
+            databaseList.Add(new DatabaseItem("Desarrollo", "EL8DESA", "SIGCON", "ventyx", "ELLIPSE"));
+            databaseList.Add(new DatabaseItem("Test", "EL8TEST", "SIGCON", "ventyx", "ELLIPSE"));
+            databaseList.Add(new DatabaseItem("ellprod", "EL8PROD", "SIGCON", "ventyx", "ELLIPSE"));
+            databaseList.Add(new DatabaseItem("ellcont", "EL8PROD", "SIGCON", "ventyx", "ELLIPSE"));
+            databaseList.Add(new DatabaseItem("elldesa", "EL8DESA", "SIGCON", "ventyx", "ELLIPSE"));
+            databaseList.Add(new DatabaseItem("elltest", "EL8TEST", "SIGCON", "ventyx", "ELLIPSE"));
+            databaseList.Add(new DatabaseItem("SCADARDB", "PBVFWL01", "SCADARDBADMINGUI", "momia2011", "SCADARDB.DBO", null, "SCADARDB"));
+            databaseList.Add(new DatabaseItem("SIGCOR", "SIGCOPRD", "CONSULBO", "consulbo", "ELLIPSE", "@DBLELLIPSE8"));
+
+            var xmlFile = "";
+
+            xmlFile += @"<?xml version=""1.0"" encoding=""UTF-8""?>";
+            xmlFile += @"<ellipse>";
+            xmlFile += @"  <connections>";
+            foreach(var item in databaseList)
+                xmlFile += @"    <" + item.Name + " dbname='" + item.DbName + "' dbuser='" + item.DbUser + "' dbpassword='' dbencodedpassword='" + item.DbEncodedPassword + "' dbreference='" + item.DbReference + "' dblink='" + item.DbLink + "' " + (string.IsNullOrWhiteSpace(item.DbCatalog) ? null : "dbcatalog='" + item.DbCatalog + "'")+ "/>";
+            xmlFile += @"  </connections>";
+            xmlFile += @"</ellipse>";
+
+            try
+            {
+                var configFilePath = FileWriter.NormalizePath(LocalDataPath, true);
+                const string configFileName = DatabaseXmlFileName;
+
+                FileWriter.CreateDirectory(configFilePath);
+                FileWriter.WriteTextToFile(xmlFile, configFileName, configFilePath);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("GenerateEllipseDatabaseFile", "No se puede crear el archivo de bases de datos\n" + ex.Message);
+                throw;
+            }
+        }
+
+        public static void DeleteEllipseDatabaseFile()
+        {
+            try
+            {
+                var configFilePath = FileWriter.NormalizePath(ServiceFilePath, true);
+                FileWriter.DeleteFile(configFilePath, DatabaseXmlFileName);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("No se puede eliminar el archivo de configuración", ex.Message);
+                throw;
+            }
         }
     }
 
@@ -251,5 +304,66 @@ namespace EllipseCommonsClassLibrary.Connections
         public static string UrlContingencia = "http://ellipse-el8prod.lmnerp02.cerrejon.com/ria-Ellipse-8.4.31_112/bind?app=";
         public static string UrlDesarrollo = "http://ellipse-el8test.lmnerp03.cerrejon.com/ria-Ellipse-8.9.1_226/bind?app=";
         public static string UrlTest = "http://ellipse-el84test.bogdrp03.cerrejon.com/ria-Ellipse-8.4.32_191/bind?app=";
+    }
+
+    public class DatabaseItem
+    {
+        public string Name;
+        public string DbName;
+        public string DbUser;
+        private string _dbEncodedPassword;
+        public string DbLink;
+        public string DbReference;
+        public string DbCatalog;
+        private string _dbPassword;
+
+        public DatabaseItem(string name, string dbName, string dbUser, string dbPassword, string dbReference)
+        {
+            SetDataBaseItem(name, dbName, dbUser, dbPassword, dbReference, null, null);
+        }
+        public DatabaseItem(string name, string dbName, string dbUser, string dbPassword, string dbReference, string dbLink)
+        {
+            SetDataBaseItem(name, dbName, dbUser, dbPassword, dbLink, dbReference, null);
+        }
+        public DatabaseItem(string name, string dbName, string dbUser, string dbPassword, string dbReference, string dbLink, string dbCatalog)
+        {
+            SetDataBaseItem(name, dbName, dbUser, dbPassword, dbLink, dbReference, dbCatalog);
+        }
+
+        public DatabaseItem()
+        {
+            
+        }
+
+        private void SetDataBaseItem(string name, string dbName, string dbUser, string dbPassword,  string dbReference, string dbLink, string dbCatalog)
+        {
+            Name = name;
+            DbName = dbName;
+            DbUser = dbUser;
+            DbPassword = dbPassword;
+            DbReference = dbReference;
+            DbLink = dbLink;
+            DbCatalog = dbCatalog;
+
+        }
+
+        public string DbPassword
+        {
+            get { return string.IsNullOrWhiteSpace(_dbPassword) ? EncryptString.Decrypt(DbEncodedPassword, Configuration.EncryptPassPhrase) : _dbPassword; }
+            set
+            {
+                _dbPassword = value;
+                _dbEncodedPassword = EncryptString.Encrypt(value, Configuration.EncryptPassPhrase);
+            }
+        }
+        public string DbEncodedPassword
+        {
+            get { return _dbEncodedPassword; }
+            set
+            {
+                _dbEncodedPassword = value;
+                _dbPassword = EncryptString.Decrypt(value, Configuration.EncryptPassPhrase);
+            }
+        }
     }
 }

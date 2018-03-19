@@ -105,6 +105,7 @@
     <Compile Include="SettingsBox.Designer.cs">
       <DependentUpon>SettingsBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\EncryptString.cs" />
     <Compile Include="Utilities\MyDateTime\Formats.cs" />
     <Compile Include="Utilities\MyDateTime\Operations.cs" />
     <Compile Include="Utilities\FileWriter.cs" />
