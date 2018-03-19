@@ -50,6 +50,7 @@
             this.btnReviewWorkOrder = this.Factory.CreateRibbonButton();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.cbReplaceExisting = this.Factory.CreateRibbonCheckBox();
             this.tabEllipse.SuspendLayout();
             this.grpEllipse.SuspendLayout();
             this.box1.SuspendLayout();
@@ -134,6 +135,7 @@
             // 
             this.menuActions.Items.Add(this.btnLoadLaborSheet);
             this.menuActions.Items.Add(this.btnReviewWorkOrder);
+            this.menuActions.Items.Add(this.cbReplaceExisting);
             this.menuActions.Items.Add(this.btnCleanSheet);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "&Acciones";
@@ -166,6 +168,12 @@
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
+            // 
+            // cbReplaceExisting
+            // 
+            this.cbReplaceExisting.Checked = true;
+            this.cbReplaceExisting.Label = "Reemplazar horas en e&xistente";
+            this.cbReplaceExisting.Name = "cbReplaceExisting";
             // 
             // RibbonEllipse
             // 
@@ -200,6 +208,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewWorkOrder;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbReplaceExisting;
     }
 
     partial class ThisRibbonCollection
