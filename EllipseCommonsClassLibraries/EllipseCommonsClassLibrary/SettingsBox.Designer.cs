@@ -43,9 +43,8 @@
             this.gbEllipseSettings = new System.Windows.Forms.GroupBox();
             this.cbForceServerList = new System.Windows.Forms.CheckBox();
             this.btnOpenServicesPath = new System.Windows.Forms.Button();
-            this.btnRestoreServicePath = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnDeleteLocalServiceFile = new System.Windows.Forms.Button();
+            this.btnRestoreServiceFile = new System.Windows.Forms.Button();
             this.btnGenerateServiceFileFromDefault = new System.Windows.Forms.Button();
             this.btnGenerateServiceFileFromUrl = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -61,10 +60,13 @@
             this.btnGenerateCustomDb = new System.Windows.Forms.Button();
             this.btnRestoreTnsnamesUrl = new System.Windows.Forms.Button();
             this.ttSettings = new System.Windows.Forms.ToolTip(this.components);
+            this.gbServiceDatabaseRelation = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.gbDebugging.SuspendLayout();
             this.gbGlobalSettings.SuspendLayout();
             this.gbEllipseSettings.SuspendLayout();
             this.gbDatabaseSettings.SuspendLayout();
+            this.gbServiceDatabaseRelation.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelProductName
@@ -83,7 +85,7 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(252, 541);
+            this.okButton.Location = new System.Drawing.Point(255, 588);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 26);
             this.okButton.TabIndex = 30;
@@ -95,7 +97,7 @@
             this.gbDebugging.Controls.Add(this.cbDebugErrors);
             this.gbDebugging.Controls.Add(this.cbDebugWarnings);
             this.gbDebugging.Controls.Add(this.cbDebugQueries);
-            this.gbDebugging.Location = new System.Drawing.Point(12, 432);
+            this.gbDebugging.Location = new System.Drawing.Point(12, 456);
             this.gbDebugging.Name = "gbDebugging";
             this.gbDebugging.Size = new System.Drawing.Size(318, 103);
             this.gbDebugging.TabIndex = 37;
@@ -175,11 +177,11 @@
             // 
             // btnRestoreLocalPath
             // 
-            this.btnRestoreLocalPath.Location = new System.Drawing.Point(278, 59);
+            this.btnRestoreLocalPath.Location = new System.Drawing.Point(6, 58);
             this.btnRestoreLocalPath.Name = "btnRestoreLocalPath";
-            this.btnRestoreLocalPath.Size = new System.Drawing.Size(29, 23);
+            this.btnRestoreLocalPath.Size = new System.Drawing.Size(75, 23);
             this.btnRestoreLocalPath.TabIndex = 14;
-            this.btnRestoreLocalPath.Text = "X";
+            this.btnRestoreLocalPath.Text = "Restaurar";
             this.ttSettings.SetToolTip(this.btnRestoreLocalPath, "Restaurar Ruta Predeterminada");
             this.btnRestoreLocalPath.UseVisualStyleBackColor = true;
             this.btnRestoreLocalPath.Click += new System.EventHandler(this.btnRestoreLocalPath_Click);
@@ -187,7 +189,7 @@
             // cbForceRegionConfig
             // 
             this.cbForceRegionConfig.AutoSize = true;
-            this.cbForceRegionConfig.Location = new System.Drawing.Point(9, 58);
+            this.cbForceRegionConfig.Location = new System.Drawing.Point(87, 62);
             this.cbForceRegionConfig.Name = "cbForceRegionConfig";
             this.cbForceRegionConfig.Size = new System.Drawing.Size(166, 17);
             this.cbForceRegionConfig.TabIndex = 6;
@@ -196,18 +198,16 @@
             // 
             // gbEllipseSettings
             // 
-            this.gbEllipseSettings.Controls.Add(this.cbForceServerList);
             this.gbEllipseSettings.Controls.Add(this.btnOpenServicesPath);
-            this.gbEllipseSettings.Controls.Add(this.btnRestoreServicePath);
             this.gbEllipseSettings.Controls.Add(this.label2);
-            this.gbEllipseSettings.Controls.Add(this.btnDeleteLocalServiceFile);
+            this.gbEllipseSettings.Controls.Add(this.btnRestoreServiceFile);
             this.gbEllipseSettings.Controls.Add(this.btnGenerateServiceFileFromDefault);
             this.gbEllipseSettings.Controls.Add(this.btnGenerateServiceFileFromUrl);
             this.gbEllipseSettings.Controls.Add(this.label1);
             this.gbEllipseSettings.Controls.Add(this.tbServiceFileNetworkUrl);
             this.gbEllipseSettings.Location = new System.Drawing.Point(12, 125);
             this.gbEllipseSettings.Name = "gbEllipseSettings";
-            this.gbEllipseSettings.Size = new System.Drawing.Size(318, 143);
+            this.gbEllipseSettings.Size = new System.Drawing.Size(318, 107);
             this.gbEllipseSettings.TabIndex = 39;
             this.gbEllipseSettings.TabStop = false;
             this.gbEllipseSettings.Text = "Servicios Ellipse:";
@@ -215,11 +215,11 @@
             // cbForceServerList
             // 
             this.cbForceServerList.AutoSize = true;
-            this.cbForceServerList.Location = new System.Drawing.Point(9, 118);
+            this.cbForceServerList.Location = new System.Drawing.Point(6, 32);
             this.cbForceServerList.Name = "cbForceServerList";
-            this.cbForceServerList.Size = new System.Drawing.Size(215, 17);
+            this.cbForceServerList.Size = new System.Drawing.Size(290, 17);
             this.cbForceServerList.TabIndex = 17;
-            this.cbForceServerList.Text = "Forzar lista de &servidores del archivo xml";
+            this.cbForceServerList.Text = "Forzar lista de &servidores/Databases de los archivos xml";
             this.cbForceServerList.UseVisualStyleBackColor = true;
             // 
             // btnOpenServicesPath
@@ -233,39 +233,28 @@
             this.btnOpenServicesPath.UseVisualStyleBackColor = true;
             this.btnOpenServicesPath.Click += new System.EventHandler(this.btnOpenServicesPath_Click);
             // 
-            // btnRestoreServicePath
-            // 
-            this.btnRestoreServicePath.Location = new System.Drawing.Point(278, 63);
-            this.btnRestoreServicePath.Name = "btnRestoreServicePath";
-            this.btnRestoreServicePath.Size = new System.Drawing.Size(29, 23);
-            this.btnRestoreServicePath.TabIndex = 13;
-            this.btnRestoreServicePath.Text = "X";
-            this.ttSettings.SetToolTip(this.btnRestoreServicePath, "Restaurar Ruta Predeterminada");
-            this.btnRestoreServicePath.UseVisualStyleBackColor = true;
-            this.btnRestoreServicePath.Click += new System.EventHandler(this.btnRestoreServicePath_Click);
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 73);
+            this.label2.Location = new System.Drawing.Point(6, 59);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(156, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Generar Archivo Personalizado:";
             // 
-            // btnDeleteLocalServiceFile
+            // btnRestoreServiceFile
             // 
-            this.btnDeleteLocalServiceFile.Location = new System.Drawing.Point(181, 89);
-            this.btnDeleteLocalServiceFile.Name = "btnDeleteLocalServiceFile";
-            this.btnDeleteLocalServiceFile.Size = new System.Drawing.Size(91, 23);
-            this.btnDeleteLocalServiceFile.TabIndex = 4;
-            this.btnDeleteLocalServiceFile.Text = "&Eliminar Local";
-            this.btnDeleteLocalServiceFile.UseVisualStyleBackColor = true;
-            this.btnDeleteLocalServiceFile.Click += new System.EventHandler(this.btnDeleteLocalEllipseSettings_Click);
+            this.btnRestoreServiceFile.Location = new System.Drawing.Point(6, 75);
+            this.btnRestoreServiceFile.Name = "btnRestoreServiceFile";
+            this.btnRestoreServiceFile.Size = new System.Drawing.Size(75, 23);
+            this.btnRestoreServiceFile.TabIndex = 4;
+            this.btnRestoreServiceFile.Text = "Re&staurar";
+            this.btnRestoreServiceFile.UseVisualStyleBackColor = true;
+            this.btnRestoreServiceFile.Click += new System.EventHandler(this.btnDeleteLocalEllipseSettings_Click);
             // 
             // btnGenerateServiceFileFromDefault
             // 
-            this.btnGenerateServiceFileFromDefault.Location = new System.Drawing.Point(85, 89);
+            this.btnGenerateServiceFileFromDefault.Location = new System.Drawing.Point(85, 75);
             this.btnGenerateServiceFileFromDefault.Name = "btnGenerateServiceFileFromDefault";
             this.btnGenerateServiceFileFromDefault.Size = new System.Drawing.Size(90, 23);
             this.btnGenerateServiceFileFromDefault.TabIndex = 3;
@@ -275,11 +264,11 @@
             // 
             // btnGenerateServiceFileFromUrl
             // 
-            this.btnGenerateServiceFileFromUrl.Location = new System.Drawing.Point(6, 89);
+            this.btnGenerateServiceFileFromUrl.Location = new System.Drawing.Point(181, 75);
             this.btnGenerateServiceFileFromUrl.Name = "btnGenerateServiceFileFromUrl";
-            this.btnGenerateServiceFileFromUrl.Size = new System.Drawing.Size(71, 23);
+            this.btnGenerateServiceFileFromUrl.Size = new System.Drawing.Size(91, 23);
             this.btnGenerateServiceFileFromUrl.TabIndex = 2;
-            this.btnGenerateServiceFileFromUrl.Text = "Desde &Url";
+            this.btnGenerateServiceFileFromUrl.Text = "&Copiar a Local";
             this.btnGenerateServiceFileFromUrl.UseVisualStyleBackColor = true;
             this.btnGenerateServiceFileFromUrl.Click += new System.EventHandler(this.btnGenerateFromUrl_Click);
             // 
@@ -338,18 +327,14 @@
             // 
             // gbDatabaseSettings
             // 
-            this.gbDatabaseSettings.Controls.Add(this.label5);
-            this.gbDatabaseSettings.Controls.Add(this.label3);
-            this.gbDatabaseSettings.Controls.Add(this.btnDeleteCustomDb);
-            this.gbDatabaseSettings.Controls.Add(this.btnGenerateCustomDb);
             this.gbDatabaseSettings.Controls.Add(this.btnRestoreTnsnamesUrl);
             this.gbDatabaseSettings.Controls.Add(this.label4);
             this.gbDatabaseSettings.Controls.Add(this.btnOpenTnsnamesPath);
             this.gbDatabaseSettings.Controls.Add(this.btnGenerateTnsnamesFile);
             this.gbDatabaseSettings.Controls.Add(this.tbTnsNameUrl);
-            this.gbDatabaseSettings.Location = new System.Drawing.Point(12, 274);
+            this.gbDatabaseSettings.Location = new System.Drawing.Point(12, 238);
             this.gbDatabaseSettings.Name = "gbDatabaseSettings";
-            this.gbDatabaseSettings.Size = new System.Drawing.Size(318, 152);
+            this.gbDatabaseSettings.Size = new System.Drawing.Size(318, 91);
             this.gbDatabaseSettings.TabIndex = 40;
             this.gbDatabaseSettings.TabStop = false;
             this.gbDatabaseSettings.Text = "Bases de Datos:";
@@ -357,7 +342,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 105);
+            this.label5.Location = new System.Drawing.Point(6, 65);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(284, 13);
             this.label5.TabIndex = 20;
@@ -366,7 +351,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 88);
+            this.label3.Location = new System.Drawing.Point(6, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(303, 13);
             this.label3.TabIndex = 19;
@@ -374,8 +359,7 @@
             // 
             // btnDeleteCustomDb
             // 
-            this.btnDeleteCustomDb.Enabled = false;
-            this.btnDeleteCustomDb.Location = new System.Drawing.Point(102, 121);
+            this.btnDeleteCustomDb.Location = new System.Drawing.Point(105, 81);
             this.btnDeleteCustomDb.Name = "btnDeleteCustomDb";
             this.btnDeleteCustomDb.Size = new System.Drawing.Size(91, 23);
             this.btnDeleteCustomDb.TabIndex = 18;
@@ -385,8 +369,7 @@
             // 
             // btnGenerateCustomDb
             // 
-            this.btnGenerateCustomDb.Enabled = false;
-            this.btnGenerateCustomDb.Location = new System.Drawing.Point(6, 121);
+            this.btnGenerateCustomDb.Location = new System.Drawing.Point(9, 81);
             this.btnGenerateCustomDb.Name = "btnGenerateCustomDb";
             this.btnGenerateCustomDb.Size = new System.Drawing.Size(90, 23);
             this.btnGenerateCustomDb.TabIndex = 17;
@@ -404,11 +387,36 @@
             this.btnRestoreTnsnamesUrl.UseVisualStyleBackColor = true;
             this.btnRestoreTnsnamesUrl.Click += new System.EventHandler(this.btnRestoreTnsnamesUrl_Click);
             // 
+            // gbServiceDatabaseRelation
+            // 
+            this.gbServiceDatabaseRelation.Controls.Add(this.label6);
+            this.gbServiceDatabaseRelation.Controls.Add(this.btnDeleteCustomDb);
+            this.gbServiceDatabaseRelation.Controls.Add(this.label5);
+            this.gbServiceDatabaseRelation.Controls.Add(this.btnGenerateCustomDb);
+            this.gbServiceDatabaseRelation.Controls.Add(this.cbForceServerList);
+            this.gbServiceDatabaseRelation.Controls.Add(this.label3);
+            this.gbServiceDatabaseRelation.Location = new System.Drawing.Point(12, 335);
+            this.gbServiceDatabaseRelation.Name = "gbServiceDatabaseRelation";
+            this.gbServiceDatabaseRelation.Size = new System.Drawing.Size(318, 115);
+            this.gbServiceDatabaseRelation.TabIndex = 41;
+            this.gbServiceDatabaseRelation.TabStop = false;
+            this.gbServiceDatabaseRelation.Text = "Servicios/Bases de Datos:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 52);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(202, 13);
+            this.label6.TabIndex = 21;
+            this.label6.Text = "Generar Xml de Servers/Bases de Datos:";
+            // 
             // SettingsBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(339, 579);
+            this.ClientSize = new System.Drawing.Size(339, 626);
+            this.Controls.Add(this.gbServiceDatabaseRelation);
             this.Controls.Add(this.gbDatabaseSettings);
             this.Controls.Add(this.gbEllipseSettings);
             this.Controls.Add(this.gbGlobalSettings);
@@ -433,6 +441,8 @@
             this.gbEllipseSettings.PerformLayout();
             this.gbDatabaseSettings.ResumeLayout(false);
             this.gbDatabaseSettings.PerformLayout();
+            this.gbServiceDatabaseRelation.ResumeLayout(false);
+            this.gbServiceDatabaseRelation.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -450,7 +460,7 @@
         private System.Windows.Forms.GroupBox gbGlobalSettings;
         private System.Windows.Forms.GroupBox gbEllipseSettings;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnDeleteLocalServiceFile;
+        private System.Windows.Forms.Button btnRestoreServiceFile;
         private System.Windows.Forms.Button btnGenerateServiceFileFromDefault;
         private System.Windows.Forms.Button btnGenerateServiceFileFromUrl;
         private System.Windows.Forms.Label label1;
@@ -460,7 +470,6 @@
         private System.Windows.Forms.TextBox tbTnsNameUrl;
         private System.Windows.Forms.Button btnRestoreLocalPath;
         private System.Windows.Forms.Button btnOpenTnsnamesPath;
-        private System.Windows.Forms.Button btnRestoreServicePath;
         private System.Windows.Forms.Button btnGenerateTnsnamesFile;
         private System.Windows.Forms.Button btnOpenLocalPath;
         private System.Windows.Forms.ToolTip ttSettings;
@@ -472,6 +481,8 @@
         private System.Windows.Forms.Button btnDeleteCustomDb;
         private System.Windows.Forms.Button btnGenerateCustomDb;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.GroupBox gbServiceDatabaseRelation;
+        private System.Windows.Forms.Label label6;
 
     }
 }

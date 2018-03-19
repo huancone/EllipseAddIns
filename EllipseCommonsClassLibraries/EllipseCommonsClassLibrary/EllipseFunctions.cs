@@ -22,7 +22,7 @@ namespace EllipseCommonsClassLibrary
         // ReSharper disable once InconsistentNaming
         public string dbLink; //Ej. @DBLMIMS, @DBLELLIPSE8
         // ReSharper disable once InconsistentNaming
-        public string dbReference; //Ej. MIMSPROD, ELLIPSE
+        public string dbReference; //Ej. ELLIPSE, MIMSPROD
 
         private SqlConnection _sqlConn;
         private SqlCommand _sqlComm;
@@ -37,13 +37,14 @@ namespace EllipseCommonsClassLibrary
         private bool _poolingDataBase = true;//default ODP true
         public PostService PostServiceProxy;
         private int _queryAttempt;
-        private string _defaultDbReferenceName = "ELLIPSE";
+
         /// <summary>
         /// Constructor de la clase. Inicia la clase con el nombre de ambientes disponibles (Ej. Productivo, Test, etc) y sus respectivas direcciones web de conexión a los web services
         /// </summary>
         public EllipseFunctions()
         {
-            SetDBSettings(Connections.Environments.EllipseProductivo);
+            if(!Connections.Configuration.IsServiceListForced)
+              SetDBSettings(Connections.Environments.EllipseProductivo);
         }
 
         public EllipseFunctions(EllipseFunctions ellipseFunctions)
@@ -72,60 +73,17 @@ namespace EllipseCommonsClassLibrary
         public bool SetDBSettings(string enviroment)
         {
             CleanDbSettings();
-            if(enviroment == Connections.Environments.EllipseProductivo)
-            {
-                _dbname = "EL8PROD";
-                _dbuser = "SIGCON";
-                _dbpass = "ventyx";
-                dbLink = "";
-                dbReference = _defaultDbReferenceName;
-            }
-            else if (enviroment == Connections.Environments.EllipseDesarrollo)
-            {
-                //_dbname = "EL8DESA";
-                _dbname = "EL89TST";
-                _dbuser = "SIGCON";
-                _dbpass = "ventyx";
-                dbLink = "";
-                dbReference = _defaultDbReferenceName;
-            }
-            else if (enviroment == Connections.Environments.EllipseContingencia)
-            {
-                _dbname = "EL8PROD";
-                _dbuser = "SIGCON";
-                _dbpass = "ventyx";
-                dbLink = "";
-                dbReference = _defaultDbReferenceName;
-            }
-            else if (enviroment == Connections.Environments.EllipseTest)
-            {
-                _dbname = "EL8TEST";
-                _dbuser = "SIGCON";
-                _dbpass = "ventyx";
-                dbLink = "";
-                dbReference = _defaultDbReferenceName;
-            }
-            else if (enviroment == Connections.Environments.SigcorProductivo)
-            {
-                _dbname = "SIGCOPRD";
-                _dbuser = "CONSULBO";
-                _dbpass = "consulbo";
-                dbLink = "@DBLELLIPSE8";
-                dbReference = _defaultDbReferenceName;
-            }
-            else if (enviroment == Connections.Environments.ScadaRdb)
-            {
-                _dbname = "PBVFWL01";
-                _dbcatalog = "SCADARDB";
-                _dbuser = "SCADARDBADMINGUI";
-                _dbpass = "momia2011";
-                dbLink = "";
-                dbReference = "SCADARDB.DBO";
-            }
-            else
-            {
-                throw new NullReferenceException("NO SE PUEDE ENCONTRAR LA BASE DE DATOS SELECCIONADA");
-            }
+            var dbItem = Connections.Environments.GetDatabaseItem(enviroment);
+            if(dbItem == null || dbItem.Name.Equals(null))
+                throw new NullReferenceException("No se puede encontrar la base de datos seleccionada. Verifique que eligió un servidor de ellipse válido y que la base de datos relacionada existe");
+
+            _dbname = dbItem.DbName;
+            _dbuser = dbItem.DbUser;
+            _dbpass = dbItem.DbPassword;
+            dbLink = dbItem.DbLink;
+            dbReference = dbItem.DbReference;
+            _dbcatalog = dbItem.DbCatalog;
+
             SetCurrentEnviroment(enviroment);
             return true;
         }
@@ -197,7 +155,7 @@ namespace EllipseCommonsClassLibrary
             _dbcatalog = dbcatalog;
             _dbpass = dbpass;
             dbLink = "";
-            dbReference = _defaultDbReferenceName;
+            dbReference = Connections.Environments.DefaultDbReferenceName;
             SetCurrentEnviroment(Connections.Environments.CustomDatabase);
             return true;
         }
