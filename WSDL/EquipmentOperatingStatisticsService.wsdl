@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://equipmentoperatingstatistics.m3401.service.ellipse.mincom.com" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:ns2="http://instances.m3401.types.ellipse.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:ns3="http://service.ellipse.mincom.com" xmlns:tns="http://equipmentoperatingstatistics.m3401.service.ellipse.mincom.com" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+  <wsdl:types>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+<xsd:complexType name="OperationContext">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="district" type="xsd:string"/>
+<xsd:element minOccurs="0" name="maxInstances" type="xsd:int"/>
+<xsd:element minOccurs="0" name="position" type="xsd:string"/>
+<xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean"/>
+<xsd:element minOccurs="0" name="runAs" type="ns1:RunAs"/>
+<xsd:element minOccurs="0" name="trace" type="xsd:boolean"/>
+<xsd:element minOccurs="0" name="transaction" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="RunAs">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="district" type="xsd:string"/>
+<xsd:element minOccurs="0" name="position" type="xsd:string"/>
+<xsd:element minOccurs="0" name="user" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:schema>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.m3401.types.ellipse.mincom.com">
+<xsd:import namespace="http://service.ellipse.mincom.com"/>
+<xsd:complexType name="ArrayOfEquipmentOperatingStatisticsDTO">
+<xsd:sequence>
+<xsd:element maxOccurs="unbounded" minOccurs="0" name="EquipmentOperatingStatisticsDTO" nillable="true" type="ns2:EquipmentOperatingStatisticsDTO"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:simpleType name="equipmentNumber">
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="12"/>
+<xsd:minLength value="0"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="isMeterChange">
+<xsd:restriction base="xsd:boolean"/>
+</xsd:simpleType>
+<xsd:simpleType name="statisticDate">
+<xsd:restriction base="xsd:string"/>
+</xsd:simpleType>
+<xsd:simpleType name="meterReading">
+<xsd:restriction base="xsd:decimal">
+<xsd:fractionDigits value="2"/>
+<xsd:minInclusive value="0"/>
+<xsd:maxInclusive value="999999999.99"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="shiftCode">
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="2"/>
+<xsd:minLength value="0"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="operationStatisticType">
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="2"/>
+<xsd:minLength value="0"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:complexType name="EquipmentOperatingStatisticsDTO">
+<xsd:complexContent>
+<xsd:extension base="ns3:ServiceDTO">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="equipmentNumber" type="ns2:equipmentNumber"/>
+<xsd:element minOccurs="0" name="isMeterChange" type="ns2:isMeterChange"/>
+<xsd:element minOccurs="0" name="meterReading" type="ns2:meterReading"/>
+<xsd:element minOccurs="0" name="operationStatisticType" type="ns2:operationStatisticType"/>
+<xsd:element minOccurs="0" name="shiftCode" type="ns2:shiftCode"/>
+<xsd:element minOccurs="0" name="statisticDate" type="ns2:statisticDate"/>
+</xsd:sequence>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="ArrayOfEquipmentOperatingStatisticsServiceResult">
+<xsd:sequence>
+<xsd:element maxOccurs="unbounded" minOccurs="0" name="EquipmentOperatingStatisticsServiceResult" nillable="true" type="ns2:EquipmentOperatingStatisticsServiceResult"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="EquipmentOperatingStatisticsServiceResult">
+<xsd:complexContent>
+<xsd:extension base="ns3:ServiceResult">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="equipmentOperatingStatisticsDTO" type="ns2:EquipmentOperatingStatisticsDTO"/>
+</xsd:sequence>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+</xsd:schema>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.ellipse.mincom.com">
+<xsd:import namespace="http://errors.ellipse.mincom.com"/>
+<xsd:import namespace="http://attribute.ellipse.mincom.com"/>
+<xsd:import namespace="http://instances.base.types.ellipse.mincom.com"/>
+<xsd:complexType abstract="true" name="ServiceDTO">
+<xsd:complexContent>
+<xsd:extension base="ns4:Base">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="customAttributes" type="ns5:ArrayOfAttribute"/>
+</xsd:sequence>
+</xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="ServiceResult">
+<xsd:complexContent>
+<xsd:extension base="ns3:BaseServiceResult"/>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType abstract="true" name="BaseServiceResult">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="errors" type="ns6:ArrayOfError"/>
+<xsd:element minOccurs="0" name="informationalMessages" type="ns6:ArrayOfMessage"/>
+<xsd:element minOccurs="0" name="warnings" type="ns6:ArrayOfWarning"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:schema>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+<xsd:complexType name="ArrayOfAttribute">
+<xsd:sequence>
+<xsd:element maxOccurs="unbounded" minOccurs="0" name="Attribute" nillable="true" type="ns5:Attribute"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="Attribute">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+<xsd:element minOccurs="0" name="value" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:schema>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
+<xsd:complexType abstract="true" name="Base"/>
+</xsd:schema>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://equipmentoperatingstatistics.m3401.service.ellipse.mincom.com">
+<xsd:import namespace="http://connectivity.service.ews.mincom.com"/>
+<xsd:import namespace="http://instances.m3401.types.ellipse.mincom.com"/>
+<xsd:element name="multipleAdjust">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfEquipmentOperatingStatisticsDTO"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="multipleAdjustResponse">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns2:ArrayOfEquipmentOperatingStatisticsServiceResult"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="adjust">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+<xsd:element maxOccurs="1" minOccurs="1" name="serviceDTO" nillable="true" type="ns2:EquipmentOperatingStatisticsDTO"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+<xsd:element name="adjustResponse">
+<xsd:complexType>
+<xsd:sequence>
+<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns2:EquipmentOperatingStatisticsServiceResult"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:element>
+</xsd:schema>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
+<xsd:complexType name="ArrayOfMessage">
+<xsd:sequence>
+<xsd:element maxOccurs="unbounded" minOccurs="0" name="Message" nillable="true" type="ns6:Message"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="Message">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="fieldId" type="xsd:string"/>
+<xsd:element minOccurs="0" name="fieldIndex" type="xsd:int"/>
+<xsd:element minOccurs="0" name="messageId" type="xsd:string"/>
+<xsd:element minOccurs="0" name="messageInstance" type="xsd:string"/>
+<xsd:element minOccurs="0" name="messageText" type="xsd:string"/>
+<xsd:element minOccurs="0" name="parentInstance" type="xsd:string"/>
+<xsd:element minOccurs="0" name="user" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="ArrayOfWarning">
+<xsd:sequence>
+<xsd:element maxOccurs="unbounded" minOccurs="0" name="Warning" nillable="true" type="ns6:Warning"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="Warning">
+<xsd:complexContent>
+<xsd:extension base="ns6:Message"/>
+</xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="ArrayOfError">
+<xsd:sequence>
+<xsd:element maxOccurs="unbounded" minOccurs="0" name="Error" nillable="true" type="ns6:Error"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="Error">
+<xsd:complexContent>
+<xsd:extension base="ns6:Message"/>
+</xsd:complexContent>
+</xsd:complexType>
+</xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="adjustRequest">
+    <wsdl:part name="parameters" element="tns:adjust">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="multipleAdjustRequest">
+    <wsdl:part name="parameters" element="tns:multipleAdjust">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="adjustResponse">
+    <wsdl:part name="parameters" element="tns:adjustResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="multipleAdjustResponse">
+    <wsdl:part name="parameters" element="tns:multipleAdjustResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="EquipmentOperatingStatistics">
+    <wsdl:operation name="multipleAdjust">
+      <wsdl:input name="multipleAdjustRequest" message="tns:multipleAdjustRequest">
+    </wsdl:input>
+      <wsdl:output name="multipleAdjustResponse" message="tns:multipleAdjustResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="adjust">
+      <wsdl:input name="adjustRequest" message="tns:adjustRequest">
+    </wsdl:input>
+      <wsdl:output name="adjustResponse" message="tns:adjustResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EquipmentOperatingStatisticsServiceHttpBinding" type="tns:EquipmentOperatingStatistics">
+    <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsp:PolicyReference URI="#EquipmentOperatingStatisticsServiceHttpBindingPolicy"/>
+    <wsdl:operation name="multipleAdjust">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="multipleAdjustRequest">
+        <wsdlsoap:body use="literal"/>
+        <wsp:PolicyReference URI="#EquipmentOperatingStatisticsServiceHttpBinding_Policy"/>
+      </wsdl:input>
+      <wsdl:output name="multipleAdjustResponse">
+        <wsdlsoap:body use="literal"/>
+        <wsp:PolicyReference URI="#EquipmentOperatingStatisticsServiceHttpBinding_Policy"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="adjust">
+      <wsdlsoap:operation soapAction=""/>
+      <wsdl:input name="adjustRequest">
+        <wsdlsoap:body use="literal"/>
+        <wsp:PolicyReference URI="#EquipmentOperatingStatisticsServiceHttpBinding_Policy"/>
+      </wsdl:input>
+      <wsdl:output name="adjustResponse">
+        <wsdlsoap:body use="literal"/>
+        <wsp:PolicyReference URI="#EquipmentOperatingStatisticsServiceHttpBinding_Policy"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EquipmentOperatingStatisticsService">
+    <wsdl:port name="EquipmentOperatingStatisticsServiceHttpPort" binding="tns:EquipmentOperatingStatisticsServiceHttpBinding">
+      <wsdlsoap:address location="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/EquipmentOperatingStatisticsService"/>
+    </wsdl:port>
+  </wsdl:service>
+  <wsp:Policy wsu:Id="EquipmentOperatingStatisticsServiceHttpBindingPolicy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SymmetricBinding>
+          <wsp:Policy/>
+        </sp:SymmetricBinding>
+        <sp:EncryptedSupportingTokens>
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10/>
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:EncryptedSupportingTokens>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="EquipmentOperatingStatisticsServiceHttpBinding_Policy">
+    <wsp:ExactlyOne>
+      <wsp:All/>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+</wsdl:definitions>

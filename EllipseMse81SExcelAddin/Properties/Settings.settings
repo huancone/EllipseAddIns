@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EllipseMse81SExcelAddin.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="EllipseMse81SExcelAddin_EmployeeService_EmployeeService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EmployeeService</Value>
+    </Setting>
+    <Setting Name="EllipseMse81SExcelAddin_EmployeeHandlerService_EmployeeHandlerService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EmployeeHandlerService</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

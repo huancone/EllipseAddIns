@@ -1,0 +1,2216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<wsdl:definitions xmlns:ns2="http://service.ellipse.mincom.com"
+                  xmlns:tns="http://catalogue.m3101.service.ellipse.mincom.com"
+                  xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                  xmlns:ns3="http://instances.m3101.types.ellipse.mincom.com"
+                  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"
+                  xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
+                  xmlns:ns4="http://instances.base.types.ellipse.mincom.com"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding"
+                  xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                  xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com"
+                  targetNamespace="http://catalogue.m3101.service.ellipse.mincom.com"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="CatalogueServiceHttpBindingPolicy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SymmetricBinding>
+          <wsp:Policy />
+        </sp:SymmetricBinding>
+        <sp:EncryptedSupportingTokens>
+          <wsp:Policy>
+            <sp:UsernameToken
+              sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10 />
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:EncryptedSupportingTokens>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="CatalogueServiceHttpBinding_Policy">
+    <wsp:ExactlyOne>
+      <wsp:All />
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://instances.m3101.types.ellipse.mincom.com">
+      <xsd:import namespace="http://service.ellipse.mincom.com" />
+      <xsd:import namespace="http://instances.base.types.ellipse.mincom.com" />
+      <xsd:simpleType name="stockCodeIndicator">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="tariffCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="18" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="policyVersion">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastModTime">
+        <xsd:restriction base="xsd:time" />
+      </xsd:simpleType>
+      <xsd:simpleType name="consumeAtSupplyCustomerAccount">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="newStockRequestReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="catalogueTemplateName">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="100" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isExcludedFromRequirementDetermination">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="lastModDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="templateProductServiceCategories">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="32687" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="policyId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="description">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="250" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockSectionx10">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="packedDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="160" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="shelfLifeInspectionFrequency">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="99999.0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="batchLotManagementIndicator">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="stockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="9" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="specialStorageCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockItemOwnerTeamDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockItemOwner">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="amendmentReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="6" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isExistedInventory">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="concessionCategoryCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="shelfLife">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="mergedToStockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="9" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="policyName">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="100" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="cascadingId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="supplyAccountingMethod">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="colloquialName">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="24" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="unitedNationsTransportCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="colloquialCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stocktakeCategory">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="treatmentRequirementCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assetInd">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="extendedText">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10000" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="purchaseTransactionIndicator">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="weight">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="3" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="9999.999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="qualityDocumentType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="colloquialType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isRelifeAllowed">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="extendedTextUuid">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="32" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isPackagingOrTreatmentRequired">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="repairItemCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="hazardousMaterialCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="productServiceCategoryName">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="100" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="unitOfIssue">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="trackingIndicator">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="repairManagementCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isGloballyMaintained">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="catalogueTemplateVersion">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="partNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="repairOrderFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="externallyManagedIndicator">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="inspectionType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isAutoGenerateRepairOrder">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="itemName">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="packagingRequirementCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="manufacturerMnemonic">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="8" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockSectionx6">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="originCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockSectionx5">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockSectionx8">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockSectionx7">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="standardItemNameId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockSectionx2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockSectionx1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastModUser">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="10" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockSectionx4">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockSectionx3">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="descriptionLinex3">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="productServiceCategoryId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="descriptionLinex2">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="creationDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="isItemNameEnabled">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="descriptionLinex1">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="districtCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="catalogueTemplateId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="20" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockSectionx9">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="maximumEntitlementQuantity">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="descriptionLinex4">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="classification">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isQualityDocumentationRequired">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="volume">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="6" />
+          <xsd:minInclusive value="0" />
+          <xsd:maxInclusive value="999.999999" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="globalStorageCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isInspectionRequired">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="isEntitlementCheckingRequired">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:complexType name="CatalogueDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="amendmentReference" type="ns3:amendmentReference" />
+              <xsd:element minOccurs="0" name="assetInd" type="ns3:assetInd" />
+              <xsd:element minOccurs="0" name="batchLotManagementIndicator" type="ns3:batchLotManagementIndicator" />
+              <xsd:element minOccurs="0" name="cascadingId" type="ns3:cascadingId" />
+              <xsd:element minOccurs="0" name="cataloguePropertyEntryDTO" type="ns3:ArrayOfCataloguePropertyEntryDTO" />
+              <xsd:element minOccurs="0" name="catalogueTemplateId" type="ns3:catalogueTemplateId" />
+              <xsd:element minOccurs="0" name="catalogueTemplateName" type="ns3:catalogueTemplateName" />
+              <xsd:element minOccurs="0" name="catalogueTemplateVersion" type="ns3:catalogueTemplateVersion" />
+              <xsd:element minOccurs="0" name="classification" type="ns3:classification" />
+              <xsd:element minOccurs="0" name="colloquialCode" type="ns3:colloquialCode" />
+              <xsd:element minOccurs="0" name="colloquialName" type="ns3:colloquialName" />
+              <xsd:element minOccurs="0" name="colloquialType" type="ns3:colloquialType" />
+              <xsd:element minOccurs="0" name="concessionCategoryCode" type="ns3:concessionCategoryCode" />
+              <xsd:element minOccurs="0" name="consumeAtSupplyCustomerAccount"
+                           type="ns3:consumeAtSupplyCustomerAccount" />
+              <xsd:element minOccurs="0" name="creationDate" type="ns3:creationDate" />
+              <xsd:element minOccurs="0" name="defaultMediaId" type="ns4:Image" />
+              <xsd:element minOccurs="0" name="description" type="ns3:description" />
+              <xsd:element minOccurs="0" name="descriptionLinex1" type="ns3:descriptionLinex1" />
+              <xsd:element minOccurs="0" name="descriptionLinex2" type="ns3:descriptionLinex2" />
+              <xsd:element minOccurs="0" name="descriptionLinex3" type="ns3:descriptionLinex3" />
+              <xsd:element minOccurs="0" name="descriptionLinex4" type="ns3:descriptionLinex4" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns3:districtCode" />
+              <xsd:element minOccurs="0" name="extendedText" type="ns3:extendedText" />
+              <xsd:element minOccurs="0" name="extendedTextUuid" type="ns3:extendedTextUuid" />
+              <xsd:element minOccurs="0" name="externallyManagedIndicator" type="ns3:externallyManagedIndicator" />
+              <xsd:element minOccurs="0" name="globalStorageCode" type="ns3:globalStorageCode" />
+              <xsd:element minOccurs="0" name="hazardousMaterialCode" type="ns3:hazardousMaterialCode" />
+              <xsd:element minOccurs="0" name="inspectionType" type="ns3:inspectionType" />
+              <xsd:element minOccurs="0" name="isAutoGenerateRepairOrder" type="ns3:isAutoGenerateRepairOrder" />
+              <xsd:element minOccurs="0" name="isEntitlementCheckingRequired" type="ns3:isEntitlementCheckingRequired" />
+              <xsd:element minOccurs="0" name="isExcludedFromRequirementDetermination"
+                           type="ns3:isExcludedFromRequirementDetermination" />
+              <xsd:element minOccurs="0" name="isExistedInventory" type="ns3:isExistedInventory" />
+              <xsd:element minOccurs="0" name="isGloballyMaintained" type="ns3:isGloballyMaintained" />
+              <xsd:element minOccurs="0" name="isInspectionRequired" type="ns3:isInspectionRequired" />
+              <xsd:element minOccurs="0" name="isItemNameEnabled" type="ns3:isItemNameEnabled" />
+              <xsd:element minOccurs="0" name="isPackagingOrTreatmentRequired"
+                           type="ns3:isPackagingOrTreatmentRequired" />
+              <xsd:element minOccurs="0" name="isQualityDocumentationRequired"
+                           type="ns3:isQualityDocumentationRequired" />
+              <xsd:element minOccurs="0" name="isRelifeAllowed" type="ns3:isRelifeAllowed" />
+              <xsd:element minOccurs="0" name="itemName" type="ns3:itemName" />
+              <xsd:element minOccurs="0" name="lastModDate" type="ns3:lastModDate" />
+              <xsd:element minOccurs="0" name="lastModTime" type="ns3:lastModTime" />
+              <xsd:element minOccurs="0" name="lastModUser" type="ns3:lastModUser" />
+              <xsd:element minOccurs="0" name="manufacturerMnemonic" type="ns3:manufacturerMnemonic" />
+              <xsd:element minOccurs="0" name="maximumEntitlementQuantity" type="ns3:maximumEntitlementQuantity" />
+              <xsd:element minOccurs="0" name="mergedToStockCode" type="ns3:mergedToStockCode" />
+              <xsd:element minOccurs="0" name="newStockRequestReference" type="ns3:newStockRequestReference" />
+              <xsd:element minOccurs="0" name="originCode" type="ns3:originCode" />
+              <xsd:element minOccurs="0" name="packagingRequirementCode" type="ns3:packagingRequirementCode" />
+              <xsd:element minOccurs="0" name="packedDescription" type="ns3:packedDescription" />
+              <xsd:element minOccurs="0" name="partNumber" type="ns3:partNumber" />
+              <xsd:element minOccurs="0" name="policyId" type="ns3:policyId" />
+              <xsd:element minOccurs="0" name="policyName" type="ns3:policyName" />
+              <xsd:element minOccurs="0" name="policyVersion" type="ns3:policyVersion" />
+              <xsd:element minOccurs="0" name="productServiceCategoryId" type="ns3:productServiceCategoryId" />
+              <xsd:element minOccurs="0" name="productServiceCategoryName" type="ns3:productServiceCategoryName" />
+              <xsd:element minOccurs="0" name="purchaseTransactionIndicator" type="ns3:purchaseTransactionIndicator" />
+              <xsd:element minOccurs="0" name="qualityDocumentType" type="ns3:qualityDocumentType" />
+              <xsd:element minOccurs="0" name="repairItemCode" type="ns3:repairItemCode" />
+              <xsd:element minOccurs="0" name="repairManagementCode" type="ns3:repairManagementCode" />
+              <xsd:element minOccurs="0" name="repairOrderFlag" type="ns3:repairOrderFlag" />
+              <xsd:element minOccurs="0" name="shelfLife" type="ns3:shelfLife" />
+              <xsd:element minOccurs="0" name="shelfLifeInspectionFrequency" type="ns3:shelfLifeInspectionFrequency" />
+              <xsd:element minOccurs="0" name="specialStorageCode" type="ns3:specialStorageCode" />
+              <xsd:element minOccurs="0" name="standardItemNameId" type="ns3:standardItemNameId" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns3:stockCode" />
+              <xsd:element minOccurs="0" name="stockCodeIndicator" type="ns3:stockCodeIndicator" />
+              <xsd:element minOccurs="0" name="stockItemOwner" type="ns3:stockItemOwner" />
+              <xsd:element minOccurs="0" name="stockItemOwnerTeamDescription" type="ns3:stockItemOwnerTeamDescription" />
+              <xsd:element minOccurs="0" name="stockSectionx1" type="ns3:stockSectionx1" />
+              <xsd:element minOccurs="0" name="stockSectionx10" type="ns3:stockSectionx10" />
+              <xsd:element minOccurs="0" name="stockSectionx2" type="ns3:stockSectionx2" />
+              <xsd:element minOccurs="0" name="stockSectionx3" type="ns3:stockSectionx3" />
+              <xsd:element minOccurs="0" name="stockSectionx4" type="ns3:stockSectionx4" />
+              <xsd:element minOccurs="0" name="stockSectionx5" type="ns3:stockSectionx5" />
+              <xsd:element minOccurs="0" name="stockSectionx6" type="ns3:stockSectionx6" />
+              <xsd:element minOccurs="0" name="stockSectionx7" type="ns3:stockSectionx7" />
+              <xsd:element minOccurs="0" name="stockSectionx8" type="ns3:stockSectionx8" />
+              <xsd:element minOccurs="0" name="stockSectionx9" type="ns3:stockSectionx9" />
+              <xsd:element minOccurs="0" name="stockStatus" type="ns3:stockStatus" />
+              <xsd:element minOccurs="0" name="stockType" type="ns3:stockType" />
+              <xsd:element minOccurs="0" name="stocktakeCategory" type="ns3:stocktakeCategory" />
+              <xsd:element minOccurs="0" name="supplyAccountingMethod" type="ns3:supplyAccountingMethod" />
+              <xsd:element minOccurs="0" name="tariffCode" type="ns3:tariffCode" />
+              <xsd:element minOccurs="0" name="templateProductServiceCategories"
+                           type="ns3:templateProductServiceCategories" />
+              <xsd:element minOccurs="0" name="trackingIndicator" type="ns3:trackingIndicator" />
+              <xsd:element minOccurs="0" name="treatmentRequirementCode" type="ns3:treatmentRequirementCode" />
+              <xsd:element minOccurs="0" name="unitOfIssue" type="ns3:unitOfIssue" />
+              <xsd:element minOccurs="0" name="unitedNationsTransportCode" type="ns3:unitedNationsTransportCode" />
+              <xsd:element minOccurs="0" name="volume" type="ns3:volume" />
+              <xsd:element minOccurs="0" name="weight" type="ns3:weight" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCataloguePropertyEntryDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CataloguePropertyEntryDTO" nillable="true"
+                       type="ns3:CataloguePropertyEntryDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="propertyId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="200" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="value">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="100" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="CataloguePropertyEntryDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="propertyId" type="ns3:propertyId" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns3:stockCode" />
+              <xsd:element minOccurs="0" name="value" type="ns3:value" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogueServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="catalogueDTO" type="ns3:CatalogueDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCatalogueDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CatalogueDTO" nillable="true" type="ns3:CatalogueDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCatalogueServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CatalogueServiceResult" nillable="true"
+                       type="ns3:CatalogueServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="catalogueStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="30" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="sequenceNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="groupId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="modifierCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="2" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="componentCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="4" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="CatalogueSearchParam">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractSearchParam">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="cataloguePropertyEntryDTO" type="ns3:ArrayOfCataloguePropertyEntryDTO" />
+              <xsd:element minOccurs="0" name="catalogueStatus" type="ns3:catalogueStatus" />
+              <xsd:element minOccurs="0" name="catalogueTemplateId" type="ns3:catalogueTemplateId" />
+              <xsd:element minOccurs="0" name="catalogueTemplateVersion" type="ns3:catalogueTemplateVersion" />
+              <xsd:element minOccurs="0" name="colloquialName" type="ns3:colloquialName" />
+              <xsd:element minOccurs="0" name="componentCode" type="ns3:componentCode" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns3:districtCode" />
+              <xsd:element minOccurs="0" name="equipmentNumber" type="ns3:equipmentNumber" />
+              <xsd:element minOccurs="0" name="equipmentReference" type="ns3:equipmentReference" />
+              <xsd:element minOccurs="0" name="groupId" type="ns3:groupId" />
+              <xsd:element minOccurs="0" name="manufacturerMnemonic" type="ns3:manufacturerMnemonic" />
+              <xsd:element minOccurs="0" name="modifierCode" type="ns3:modifierCode" />
+              <xsd:element minOccurs="0" name="partNumber" type="ns3:partNumber" />
+              <xsd:element minOccurs="0" name="policyId" type="ns3:policyId" />
+              <xsd:element minOccurs="0" name="policyVersion" type="ns3:policyVersion" />
+              <xsd:element minOccurs="0" name="productServiceCategoryId" type="ns3:productServiceCategoryId" />
+              <xsd:element minOccurs="0" name="sequenceNumber" type="ns3:sequenceNumber" />
+              <xsd:element minOccurs="0" name="standardItemNameId" type="ns3:standardItemNameId" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns3:stockCode" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogueWithPackedDescDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:CatalogueLightDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="descriptionLinex1" type="ns3:descriptionLinex1" />
+              <xsd:element minOccurs="0" name="descriptionLinex2" type="ns3:descriptionLinex2" />
+              <xsd:element minOccurs="0" name="descriptionLinex3" type="ns3:descriptionLinex3" />
+              <xsd:element minOccurs="0" name="descriptionLinex4" type="ns3:descriptionLinex4" />
+              <xsd:element minOccurs="0" name="packedDescription" type="ns3:packedDescription" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogueLightDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="assetInd" type="ns3:assetInd" />
+              <xsd:element minOccurs="0" name="batchLotManagementIndicator" type="ns3:batchLotManagementIndicator" />
+              <xsd:element minOccurs="0" name="consumeAtSupplyCustomerAccount"
+                           type="ns3:consumeAtSupplyCustomerAccount" />
+              <xsd:element minOccurs="0" name="globalStorageCode" type="ns3:globalStorageCode" />
+              <xsd:element minOccurs="0" name="hazardousMaterialCode" type="ns3:hazardousMaterialCode" />
+              <xsd:element minOccurs="0" name="isEntitlementCheckingRequired" type="ns3:isEntitlementCheckingRequired" />
+              <xsd:element minOccurs="0" name="isQualityDocumentationRequired"
+                           type="ns3:isQualityDocumentationRequired" />
+              <xsd:element minOccurs="0" name="isRelifeAllowed" type="ns3:isRelifeAllowed" />
+              <xsd:element minOccurs="0" name="itemName" type="ns3:itemName" />
+              <xsd:element minOccurs="0" name="packagingRequirementCode" type="ns3:packagingRequirementCode" />
+              <xsd:element minOccurs="0" name="qualityDocumentType" type="ns3:qualityDocumentType" />
+              <xsd:element minOccurs="0" name="repairItemCode" type="ns3:repairItemCode" />
+              <xsd:element minOccurs="0" name="repairManagementCode" type="ns3:repairManagementCode" />
+              <xsd:element minOccurs="0" name="repairOrderFlag" type="ns3:repairOrderFlag" />
+              <xsd:element minOccurs="0" name="shelfLife" type="ns3:shelfLife" />
+              <xsd:element minOccurs="0" name="shelfLifeInspectionFrequency" type="ns3:shelfLifeInspectionFrequency" />
+              <xsd:element minOccurs="0" name="specialStorageCode" type="ns3:specialStorageCode" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns3:stockCode" />
+              <xsd:element minOccurs="0" name="stockStatus" type="ns3:stockStatus" />
+              <xsd:element minOccurs="0" name="supplyAccountingMethod" type="ns3:supplyAccountingMethod" />
+              <xsd:element minOccurs="0" name="trackingIndicator" type="ns3:trackingIndicator" />
+              <xsd:element minOccurs="0" name="treatmentRequirementCode" type="ns3:treatmentRequirementCode" />
+              <xsd:element minOccurs="0" name="unitOfIssue" type="ns3:unitOfIssue" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogueWithPackedDescServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="catalogueWithPackedDescDTO" type="ns3:CatalogueWithPackedDescDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCatalogueLightDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CatalogueLightDTO" nillable="true"
+                       type="ns3:CatalogueLightDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCatalogueLightServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CatalogueLightServiceResult" nillable="true"
+                       type="ns3:CatalogueLightServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CatalogueLightServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="catalogueLightDTO" type="ns3:CatalogueLightDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="keyType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="refNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="refCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="40" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="entityType">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="3" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="CatalogueRetrieveViaRefCodesSearchParam">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractSearchParam">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="entityType" type="ns3:entityType" />
+              <xsd:element minOccurs="0" name="keyType" type="ns3:keyType" />
+              <xsd:element minOccurs="0" name="refCode" type="ns3:refCode" />
+              <xsd:element minOccurs="0" name="refNo" type="ns3:refNo" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="copyFromStockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="9" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="CatalogueCopyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="copyFromStockCode" type="ns3:copyFromStockCode" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns3:stockCode" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="partNumberSearchMethod">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="colloquialNameSearchMethod">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="1" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentId">
+        <xsd:restriction base="xsd:string">
+          <xsd:maxLength value="12" />
+          <xsd:minLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="CatalogueAdvancedSearchParam">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractSearchParam">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="cataloguePropertyEntryDTO" type="ns3:ArrayOfCataloguePropertyEntryDTO" />
+              <xsd:element minOccurs="0" name="catalogueStatus" type="ns3:catalogueStatus" />
+              <xsd:element minOccurs="0" name="catalogueTemplateId" type="ns3:catalogueTemplateId" />
+              <xsd:element minOccurs="0" name="catalogueTemplateVersion" type="ns3:catalogueTemplateVersion" />
+              <xsd:element minOccurs="0" name="colloquialName" type="ns3:colloquialName" />
+              <xsd:element minOccurs="0" name="colloquialNameSearchMethod" type="ns3:colloquialNameSearchMethod" />
+              <xsd:element minOccurs="0" name="componentCode" type="ns3:componentCode" />
+              <xsd:element minOccurs="0" name="entityType" type="ns3:entityType" />
+              <xsd:element minOccurs="0" name="equipmentId" type="ns3:equipmentId" />
+              <xsd:element minOccurs="0" name="groupId" type="ns3:groupId" />
+              <xsd:element minOccurs="0" name="keyType" type="ns3:keyType" />
+              <xsd:element minOccurs="0" name="manufacturerMnemonic" type="ns3:manufacturerMnemonic" />
+              <xsd:element minOccurs="0" name="modifierCode" type="ns3:modifierCode" />
+              <xsd:element minOccurs="0" name="partNumber" type="ns3:partNumber" />
+              <xsd:element minOccurs="0" name="partNumberSearchMethod" type="ns3:partNumberSearchMethod" />
+              <xsd:element minOccurs="0" name="policyId" type="ns3:policyId" />
+              <xsd:element minOccurs="0" name="policyVersion" type="ns3:policyVersion" />
+              <xsd:element minOccurs="0" name="productServiceCategoryId" type="ns3:productServiceCategoryId" />
+              <xsd:element minOccurs="0" name="refCode" type="ns3:refCode" />
+              <xsd:element minOccurs="0" name="refNo" type="ns3:refNo" />
+              <xsd:element minOccurs="0" name="sequenceNumber" type="ns3:sequenceNumber" />
+              <xsd:element minOccurs="0" name="standardItemNameId" type="ns3:standardItemNameId" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns3:stockCode" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCatalogueCopyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CatalogueCopyDTO" nillable="true"
+                       type="ns3:CatalogueCopyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCatalogueWithPackedDescDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CatalogueWithPackedDescDTO" nillable="true"
+                       type="ns3:CatalogueWithPackedDescDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCatalogueWithPackedDescServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CatalogueWithPackedDescServiceResult" nillable="true"
+                       type="ns3:CatalogueWithPackedDescServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://service.ellipse.mincom.com">
+      <xsd:import namespace="http://errors.ellipse.mincom.com" />
+      <xsd:import namespace="http://instances.base.types.ellipse.mincom.com" />
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="ServiceDTO" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Base">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="customAttributes" type="ns5:ArrayOfAttribute" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:BaseServiceResult" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="BaseServiceResult" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errors" type="ns6:ArrayOfError" />
+          <xsd:element minOccurs="0" name="informationalMessages" type="ns6:ArrayOfMessage" />
+          <xsd:element minOccurs="0" name="warnings" type="ns6:ArrayOfWarning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractSearchParam" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://instances.base.types.ellipse.mincom.com">
+      <xsd:complexType name="Base" abstract="true" />
+      <xsd:complexType name="Image">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Media">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="classId" type="xsd:string" />
+              <xsd:element minOccurs="0" name="fileType" type="xsd:string" />
+              <xsd:element minOccurs="0" name="height" type="xsd:double" />
+              <xsd:element minOccurs="0" name="image" type="xsd:byte" />
+              <xsd:element minOccurs="0" name="sizeInBytes" type="xsd:double" />
+              <xsd:element minOccurs="0" name="uploadServletUrl" type="xsd:string" />
+              <xsd:element minOccurs="0" name="url" type="xsd:string" />
+              <xsd:element minOccurs="0" name="width" type="xsd:double" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Media" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Complex">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="description" type="xsd:string" />
+              <xsd:element minOccurs="0" name="id" type="xsd:string" />
+              <xsd:element minOccurs="0" name="name" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Complex">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Base" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns5:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://catalogue.m3101.service.ellipse.mincom.com">
+      <xsd:import namespace="http://instances.m3101.types.ellipse.mincom.com" />
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:element name="update">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="suspend">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="suspendResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleModifyTemplate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleModifyTemplateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="districtInventorySearch">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true"
+                         type="ns3:CatalogueSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="districtInventorySearchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdateIsAsset">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdateIsAssetResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDelete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDeleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleSuspend">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleSuspendResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleActivate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleActivateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readWithPackedDescription">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true"
+                         type="ns3:CatalogueWithPackedDescDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readWithPackedDescriptionResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:CatalogueWithPackedDescServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadLight">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true"
+                         type="ns3:ArrayOfCatalogueLightDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadLightResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueLightServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="retrieveViaRefCodes">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true"
+                         type="ns3:CatalogueRetrieveViaRefCodesSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="retrieveViaRefCodesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadActive">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true"
+                         type="ns3:ArrayOfCatalogueLightDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadActiveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueLightServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="activate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="activateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="search">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true"
+                         type="ns3:CatalogueSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpgrade">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpgradeResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="modifyTemplate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="modifyTemplateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="copy">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueCopyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="copyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="advancedSearch">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true"
+                         type="ns3:CatalogueAdvancedSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="advancedSearchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCopy">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true"
+                         type="ns3:ArrayOfCatalogueCopyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCopyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="create">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="upgrade">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="upgradeResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateIsAsset">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateIsAssetResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readActive">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueLightDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readActiveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueLightServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readLight">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CatalogueLightDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readLightResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CatalogueLightServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadWithPackedDescription">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true"
+                         type="ns3:ArrayOfCatalogueWithPackedDescDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadWithPackedDescriptionResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true"
+                         type="ns3:ArrayOfCatalogueWithPackedDescServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://errors.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfError">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Error">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Message">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fieldId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="messageId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageText" type="xsd:string" />
+          <xsd:element minOccurs="0" name="parentInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMessage">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarning">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Warning" nillable="true" type="ns6:Warning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Warning">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="suspendRequest">
+    <wsdl:part name="parameters" element="tns:suspend" />
+  </wsdl:message>
+  <wsdl:message name="multipleSuspendRequest">
+    <wsdl:part name="parameters" element="tns:multipleSuspend" />
+  </wsdl:message>
+  <wsdl:message name="multipleCopyRequest">
+    <wsdl:part name="parameters" element="tns:multipleCopy" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="modifyTemplateResponse">
+    <wsdl:part name="parameters" element="tns:modifyTemplateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateIsAssetResponse">
+    <wsdl:part name="parameters" element="tns:multipleUpdateIsAssetResponse" />
+  </wsdl:message>
+  <wsdl:message name="copyResponse">
+    <wsdl:part name="parameters" element="tns:copyResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateRequest">
+    <wsdl:part name="parameters" element="tns:multipleUpdate" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:message name="createRequest">
+    <wsdl:part name="parameters" element="tns:create" />
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadLightRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadLight" />
+  </wsdl:message>
+  <wsdl:message name="districtInventorySearchRequest">
+    <wsdl:part name="parameters" element="tns:districtInventorySearch" />
+  </wsdl:message>
+  <wsdl:message name="retrieveViaRefCodesRequest">
+    <wsdl:part name="parameters" element="tns:retrieveViaRefCodes" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="advancedSearchRequest">
+    <wsdl:part name="parameters" element="tns:advancedSearch" />
+  </wsdl:message>
+  <wsdl:message name="activateRequest">
+    <wsdl:part name="parameters" element="tns:activate" />
+  </wsdl:message>
+  <wsdl:message name="updateIsAssetRequest">
+    <wsdl:part name="parameters" element="tns:updateIsAsset" />
+  </wsdl:message>
+  <wsdl:message name="upgradeRequest">
+    <wsdl:part name="parameters" element="tns:upgrade" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadActiveRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadActive" />
+  </wsdl:message>
+  <wsdl:message name="multipleCopyResponse">
+    <wsdl:part name="parameters" element="tns:multipleCopyResponse" />
+  </wsdl:message>
+  <wsdl:message name="readActiveRequest">
+    <wsdl:part name="parameters" element="tns:readActive" />
+  </wsdl:message>
+  <wsdl:message name="readWithPackedDescriptionResponse">
+    <wsdl:part name="parameters" element="tns:readWithPackedDescriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="suspendResponse">
+    <wsdl:part name="parameters" element="tns:suspendResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPackedDescriptionRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPackedDescription" />
+  </wsdl:message>
+  <wsdl:message name="multipleActivateRequest">
+    <wsdl:part name="parameters" element="tns:multipleActivate" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateResponse">
+    <wsdl:part name="parameters" element="tns:multipleUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="readActiveResponse">
+    <wsdl:part name="parameters" element="tns:readActiveResponse" />
+  </wsdl:message>
+  <wsdl:message name="readLightResponse">
+    <wsdl:part name="parameters" element="tns:readLightResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreate" />
+  </wsdl:message>
+  <wsdl:message name="multipleSuspendResponse">
+    <wsdl:part name="parameters" element="tns:multipleSuspendResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="parameters" element="tns:delete" />
+  </wsdl:message>
+  <wsdl:message name="updateIsAssetResponse">
+    <wsdl:part name="parameters" element="tns:updateIsAssetResponse" />
+  </wsdl:message>
+  <wsdl:message name="advancedSearchResponse">
+    <wsdl:part name="parameters" element="tns:advancedSearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateResponse">
+    <wsdl:part name="parameters" element="tns:updateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpgradeResponse">
+    <wsdl:part name="parameters" element="tns:multipleUpgradeResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="readWithPackedDescriptionRequest">
+    <wsdl:part name="parameters" element="tns:readWithPackedDescription" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateIsAssetRequest">
+    <wsdl:part name="parameters" element="tns:multipleUpdateIsAsset" />
+  </wsdl:message>
+  <wsdl:message name="updateRequest">
+    <wsdl:part name="parameters" element="tns:update" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteRequest">
+    <wsdl:part name="parameters" element="tns:multipleDelete" />
+  </wsdl:message>
+  <wsdl:message name="multipleActivateResponse">
+    <wsdl:part name="parameters" element="tns:multipleActivateResponse" />
+  </wsdl:message>
+  <wsdl:message name="readLightRequest">
+    <wsdl:part name="parameters" element="tns:readLight" />
+  </wsdl:message>
+  <wsdl:message name="searchRequest">
+    <wsdl:part name="parameters" element="tns:search" />
+  </wsdl:message>
+  <wsdl:message name="modifyTemplateRequest">
+    <wsdl:part name="parameters" element="tns:modifyTemplate" />
+  </wsdl:message>
+  <wsdl:message name="searchResponse">
+    <wsdl:part name="parameters" element="tns:searchResponse" />
+  </wsdl:message>
+  <wsdl:message name="upgradeResponse">
+    <wsdl:part name="parameters" element="tns:upgradeResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveViaRefCodesResponse">
+    <wsdl:part name="parameters" element="tns:retrieveViaRefCodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadActiveResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadActiveResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpgradeRequest">
+    <wsdl:part name="parameters" element="tns:multipleUpgrade" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadLightResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadLightResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPackedDescriptionResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPackedDescriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleModifyTemplateRequest">
+    <wsdl:part name="parameters" element="tns:multipleModifyTemplate" />
+  </wsdl:message>
+  <wsdl:message name="copyRequest">
+    <wsdl:part name="parameters" element="tns:copy" />
+  </wsdl:message>
+  <wsdl:message name="districtInventorySearchResponse">
+    <wsdl:part name="parameters" element="tns:districtInventorySearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="parameters" element="tns:deleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleModifyTemplateResponse">
+    <wsdl:part name="parameters" element="tns:multipleModifyTemplateResponse" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="activateResponse">
+    <wsdl:part name="parameters" element="tns:activateResponse" />
+  </wsdl:message>
+  <wsdl:portType name="Catalogue">
+    <wsdl:operation name="update">
+      <wsdl:input name="updateRequest" message="tns:updateRequest" />
+      <wsdl:output name="updateResponse" message="tns:updateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="suspend">
+      <wsdl:input name="suspendRequest" message="tns:suspendRequest" />
+      <wsdl:output name="suspendResponse" message="tns:suspendResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleModifyTemplate">
+      <wsdl:input name="multipleModifyTemplateRequest" message="tns:multipleModifyTemplateRequest" />
+      <wsdl:output name="multipleModifyTemplateResponse" message="tns:multipleModifyTemplateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="districtInventorySearch">
+      <wsdl:input name="districtInventorySearchRequest" message="tns:districtInventorySearchRequest" />
+      <wsdl:output name="districtInventorySearchResponse" message="tns:districtInventorySearchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdateIsAsset">
+      <wsdl:input name="multipleUpdateIsAssetRequest" message="tns:multipleUpdateIsAssetRequest" />
+      <wsdl:output name="multipleUpdateIsAssetResponse" message="tns:multipleUpdateIsAssetResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdl:input name="multipleDeleteRequest" message="tns:multipleDeleteRequest" />
+      <wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
+      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdl:input name="multipleUpdateRequest" message="tns:multipleUpdateRequest" />
+      <wsdl:output name="multipleUpdateResponse" message="tns:multipleUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleSuspend">
+      <wsdl:input name="multipleSuspendRequest" message="tns:multipleSuspendRequest" />
+      <wsdl:output name="multipleSuspendResponse" message="tns:multipleSuspendResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleActivate">
+      <wsdl:input name="multipleActivateRequest" message="tns:multipleActivateRequest" />
+      <wsdl:output name="multipleActivateResponse" message="tns:multipleActivateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="readWithPackedDescription">
+      <wsdl:input name="readWithPackedDescriptionRequest" message="tns:readWithPackedDescriptionRequest" />
+      <wsdl:output name="readWithPackedDescriptionResponse" message="tns:readWithPackedDescriptionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadLight">
+      <wsdl:input name="multipleReadLightRequest" message="tns:multipleReadLightRequest" />
+      <wsdl:output name="multipleReadLightResponse" message="tns:multipleReadLightResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveViaRefCodes">
+      <wsdl:input name="retrieveViaRefCodesRequest" message="tns:retrieveViaRefCodesRequest" />
+      <wsdl:output name="retrieveViaRefCodesResponse" message="tns:retrieveViaRefCodesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadActive">
+      <wsdl:input name="multipleReadActiveRequest" message="tns:multipleReadActiveRequest" />
+      <wsdl:output name="multipleReadActiveResponse" message="tns:multipleReadActiveResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="activate">
+      <wsdl:input name="activateRequest" message="tns:activateRequest" />
+      <wsdl:output name="activateResponse" message="tns:activateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdl:input name="searchRequest" message="tns:searchRequest" />
+      <wsdl:output name="searchResponse" message="tns:searchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpgrade">
+      <wsdl:input name="multipleUpgradeRequest" message="tns:multipleUpgradeRequest" />
+      <wsdl:output name="multipleUpgradeResponse" message="tns:multipleUpgradeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input name="deleteRequest" message="tns:deleteRequest" />
+      <wsdl:output name="deleteResponse" message="tns:deleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="modifyTemplate">
+      <wsdl:input name="modifyTemplateRequest" message="tns:modifyTemplateRequest" />
+      <wsdl:output name="modifyTemplateResponse" message="tns:modifyTemplateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="copy">
+      <wsdl:input name="copyRequest" message="tns:copyRequest" />
+      <wsdl:output name="copyResponse" message="tns:copyResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="advancedSearch">
+      <wsdl:input name="advancedSearchRequest" message="tns:advancedSearchRequest" />
+      <wsdl:output name="advancedSearchResponse" message="tns:advancedSearchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCopy">
+      <wsdl:input name="multipleCopyRequest" message="tns:multipleCopyRequest" />
+      <wsdl:output name="multipleCopyResponse" message="tns:multipleCopyResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input name="createRequest" message="tns:createRequest" />
+      <wsdl:output name="createResponse" message="tns:createResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="upgrade">
+      <wsdl:input name="upgradeRequest" message="tns:upgradeRequest" />
+      <wsdl:output name="upgradeResponse" message="tns:upgradeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="updateIsAsset">
+      <wsdl:input name="updateIsAssetRequest" message="tns:updateIsAssetRequest" />
+      <wsdl:output name="updateIsAssetResponse" message="tns:updateIsAssetResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="readActive">
+      <wsdl:input name="readActiveRequest" message="tns:readActiveRequest" />
+      <wsdl:output name="readActiveResponse" message="tns:readActiveResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="readLight">
+      <wsdl:input name="readLightRequest" message="tns:readLightRequest" />
+      <wsdl:output name="readLightResponse" message="tns:readLightResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadWithPackedDescription">
+      <wsdl:input name="multipleReadWithPackedDescriptionRequest"
+                  message="tns:multipleReadWithPackedDescriptionRequest" />
+      <wsdl:output name="multipleReadWithPackedDescriptionResponse"
+                   message="tns:multipleReadWithPackedDescriptionResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CatalogueServiceHttpBinding" type="tns:Catalogue">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsp:PolicyReference URI="#CatalogueServiceHttpBindingPolicy" />
+    <wsdl:operation name="update">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="updateRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="updateResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="suspend">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="suspendRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="suspendResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleModifyTemplate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleModifyTemplateRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleModifyTemplateResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="districtInventorySearch">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="districtInventorySearchRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="districtInventorySearchResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdateIsAsset">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUpdateIsAssetRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleUpdateIsAssetResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUpdateRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleUpdateResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleSuspend">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleSuspendRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleSuspendResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleActivate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleActivateRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleActivateResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="readWithPackedDescription">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readWithPackedDescriptionRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="readWithPackedDescriptionResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadLight">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadLightRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadLightResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveViaRefCodes">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveViaRefCodesRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="retrieveViaRefCodesResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadActive">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadActiveRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadActiveResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="activate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="activateRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="activateResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="searchResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpgrade">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUpgradeRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleUpgradeResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="modifyTemplate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="modifyTemplateRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="modifyTemplateResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="copy">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="copyRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="copyResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="advancedSearch">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="advancedSearchRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="advancedSearchResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCopy">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCopyRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleCopyResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="upgrade">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="upgradeRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="upgradeResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateIsAsset">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="updateIsAssetRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="updateIsAssetResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="readActive">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readActiveRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="readActiveResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="readLight">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readLightRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="readLightResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadWithPackedDescription">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadWithPackedDescriptionRequest">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadWithPackedDescriptionResponse">
+        <wsdlsoap:body use="literal" />
+        <wsp:PolicyReference URI="#CatalogueServiceHttpBinding_Policy" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CatalogueService">
+    <wsdl:port name="CatalogueServiceHttpPort" binding="tns:CatalogueServiceHttpBinding">
+      <wsdlsoap:address location="http://localhost/services/CatalogueService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
