@@ -1,9 +1,0 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EllipseMSO905ExcelAddIn.Properties" GeneratedClassName="Settings">
-  <Profiles />
-  <Settings>
-    <Setting Name="EllipseMSO905ExcelAddIn_ScreenService_ScreenService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/ScreenService</Value>
-    </Setting>
-  </Settings>
-</SettingsFile>

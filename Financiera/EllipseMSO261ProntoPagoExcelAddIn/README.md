@@ -1,2 +1,0 @@
-# EllipseMSO261ProntoPagoExcelAddIn
-huancone
