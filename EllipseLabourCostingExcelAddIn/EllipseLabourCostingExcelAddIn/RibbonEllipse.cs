@@ -201,8 +201,9 @@ namespace EllipseLabourCostingExcelAddIn
 
                 _cells.GetRange("A6", "AZ65536").EntireRow.Delete(Excel.XlDirection.xlUp);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
                 var sqlQuery = Queries.GetGroupEmployeesQuery(groupName, _eFunctions.dbReference, _eFunctions.dbLink);
+
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
                 var drEmployees = _eFunctions.GetQueryResult(sqlQuery);
 
                 _cells.GetCell("A6").Value = "NÚMERO OT";
@@ -307,7 +308,7 @@ namespace EllipseLabourCostingExcelAddIn
             {
                 Debugger.LogError("RibbonEllipse:FormatGroupDefault()",
                     "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar obtener el formato del grupo seleccionado. " + ex.Message);
+                MessageBox.Show(@"Se ha producido un error al intentar obtener el formato del grupo seleccionado");
             }
             finally
             {

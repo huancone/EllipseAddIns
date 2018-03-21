@@ -115,13 +115,10 @@ namespace EllipseCommonsClassLibrary
             Debugger.DebugWarnings = cbDebugWarnings.Checked;
             Debugger.DebugQueries = cbDebugQueries.Checked;
             Configuration.ServiceFilePath = tbServiceFileNetworkUrl.Text;
+            Configuration.IsServiceListForced = cbForceServerList.Checked;
             Debugger.DebugErrors = cbDebugErrors.Checked;
             Debugger.ForceRegionalization = cbForceRegionConfig.Checked;
             RuntimeConfigSettings.UpdateTnsUrlValue(tbTnsNameUrl.Text);
-
-            if (!Configuration.IsServiceListForced.Equals(cbForceServerList.Checked))
-                MessageBox.Show(@"La configuración de Forzar Lista de Servidores ha cambiado. Debe reinicar la aplicación para que los cambios surjan efecto");
-            Configuration.IsServiceListForced = cbForceServerList.Checked;
         }
 
         private void btnGenerateFromUrl_Click(object sender, EventArgs e)
@@ -154,13 +151,18 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 Configuration.DeleteEllipseConfigurationXmlFile();
-                tbServiceFileNetworkUrl.Text = Configuration.ServiceFilePath;
-                MessageBox.Show(@"Se ha restaurado la dirección del archivo de configuración de los Servicios de Ellipse", @"Restore Ellipse Service File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"Se ha eliminado el archivo local de configuración de Ellipse", @"Delete Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, @"Delete Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+
+        private void btnRestoreServicePath_Click(object sender, EventArgs e)
+        {
+            tbServiceFileNetworkUrl.Text = Configuration.DefaultServiceFilePath;
         }
 
         private void btnRestoreLocalPath_Click(object sender, EventArgs e)
@@ -234,20 +236,12 @@ namespace EllipseCommonsClassLibrary
 
         private void btnGenerateCustomDb_Click(object sender, EventArgs e)
         {
-            Configuration.GenerateEllipseDatabaseFile();
+
         }
 
         private void btnDeleteCustomDb_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Configuration.DeleteEllipseDatabaseFile();
-                MessageBox.Show(@"Se ha eliminado el archivo local de bases de datos de Ellipse", @"Delete Local Ellipse Database File", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, @"Delete Local Ellipse Database File", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+
         }
     }
 }

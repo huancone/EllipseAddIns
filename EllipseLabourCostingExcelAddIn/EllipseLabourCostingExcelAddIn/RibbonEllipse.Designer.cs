@@ -48,9 +48,9 @@
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoadLaborSheet = this.Factory.CreateRibbonButton();
             this.btnReviewWorkOrder = this.Factory.CreateRibbonButton();
-            this.cbReplaceExisting = this.Factory.CreateRibbonCheckBox();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.cbReplaceExisting = this.Factory.CreateRibbonCheckBox();
             this.tabEllipse.SuspendLayout();
             this.grpEllipse.SuspendLayout();
             this.box1.SuspendLayout();
@@ -155,12 +155,6 @@
             this.btnReviewWorkOrder.ShowImage = true;
             this.btnReviewWorkOrder.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewWorkOrder_Click);
             // 
-            // cbReplaceExisting
-            // 
-            this.cbReplaceExisting.Checked = true;
-            this.cbReplaceExisting.Label = "Reemplazar horas en e&xistente";
-            this.cbReplaceExisting.Name = "cbReplaceExisting";
-            // 
             // btnCleanSheet
             // 
             this.btnCleanSheet.Label = "&Limpiar Hoja";
@@ -174,6 +168,12 @@
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
+            // 
+            // cbReplaceExisting
+            // 
+            this.cbReplaceExisting.Checked = true;
+            this.cbReplaceExisting.Label = "Reemplazar horas en e&xistente";
+            this.cbReplaceExisting.Name = "cbReplaceExisting";
             // 
             // RibbonEllipse
             // 
