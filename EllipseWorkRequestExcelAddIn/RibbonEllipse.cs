@@ -1865,7 +1865,7 @@ namespace EllipseWorkRequestExcelAddIn
                         throw new Exception("WORK REQUEST NO ENCONTRADO");
                     //GENERAL
                     _cells.GetCell(01, i).Value = "'" + wr.requestId;
-                    _cells.GetCell(02, i).Value = "'" + wr.requestIdDescription1;                       
+                    _cells.GetCell(02, i).Value = "'" + wr.requestIdDescription1;
                     _cells.GetCell(03, i).Value = "'" + wr.employee;
                     _cells.GetCell(04, i).Value = "'" + wr.priorityCode;
                     _cells.GetCell(05, i).Value = "'" + wr.requestIdDescription2;
@@ -2348,15 +2348,17 @@ namespace EllipseWorkRequestExcelAddIn
                     if (string.IsNullOrWhiteSpace(replySheet.requestId))
                         throw new Exception("No se ha podido crear el WorkRequest");
                     var errorList = "";
+
                     var replyExtended = WorkRequestActions.UpdateWorkRequestExtendedDescription(urlService, opContext, requestId, wr.GetExtendedDescription(urlService, opContext));
+
                     if (replyExtended != null && replyExtended.Errors != null && replyExtended.Errors.Length > 0)
-                        foreach (var error in replyExtended.Errors)
-                            errorList += "\nError: " + error;
+                        errorList = replyExtended.Errors.Aggregate(errorList, (current, error) => current + ("\nError: " + error));
 
                     var replyRefCode = WorkRequestReferenceCodesActions.ModifyReferenceCodes(_eFunctions, urlService, opContext, requestId, wrRefCodes);
+
                     if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
-                        foreach (var error in replyExtended.Errors)
-                            errorList += "\nError: " + error;
+                        if (replyExtended != null && replyExtended.Errors != null)
+                            errorList = replyExtended.Errors.Aggregate(errorList, (current, error) => current + ("\nError: " + error));
 
                     if (!string.IsNullOrWhiteSpace(errorList))
                     {
@@ -2515,13 +2517,13 @@ namespace EllipseWorkRequestExcelAddIn
                         workGroup = "PLANFC",
                         requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
                         equipmentNo = "FERROCARRIL",
-                        employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(3, i).Value))? employee: _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
+                        employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(3, i).Value)) ? employee : _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                         classification = "SS",
                         requestType = "ES",
                         priorityCode = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value)),
                         requestIdDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
                         sourceReference = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
-                        raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value))? todayDate: _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
+                        raisedDate = string.IsNullOrWhiteSpace(_cells.GetEmptyIfNull(_cells.GetCell(7, i).Value)) ? todayDate : _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
                         requiredByDate = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
                         closedDate = _cells.GetEmptyIfNull(_cells.GetCell(09, i).Value),
                         assignPerson = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value),
@@ -2534,7 +2536,7 @@ namespace EllipseWorkRequestExcelAddIn
                     var extendedDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, i).Value);
                     var replySheet = WorkRequestActions.ModifyWorkRequest(urlService, opSheet, wr);
                     wr.requestId = replySheet.requestId;
-                    
+
                     WorkRequestActions.UpdateWorkRequestExtendedDescription(urlService, opSheet, wr.requestId, null, extendedDescription);
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumnPfc01, i).Style = StyleConstants.Success;
@@ -2643,13 +2645,12 @@ namespace EllipseWorkRequestExcelAddIn
                     var errorList = "";
                     var replyExtended = WorkRequestActions.UpdateWorkRequestExtendedDescription(urlService, opContext, requestId, wr.GetExtendedDescription(urlService, opContext));
                     if (replyExtended != null && replyExtended.Errors != null && replyExtended.Errors.Length > 0)
-                        foreach (var error in replyExtended.Errors)
-                            errorList += "\nError: " + error;
+                        errorList = replyExtended.Errors.Aggregate(errorList, (current, error) => current + ("\nError: " + error));
 
                     var replyRefCode = WorkRequestReferenceCodesActions.ModifyReferenceCodes(_eFunctions, urlService, opContext, requestId, wrRefCodes);
                     if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
-                        foreach (var error in replyExtended.Errors)
-                            errorList += "\nError: " + error;
+                        if (replyExtended != null && replyExtended.Errors != null)
+                            errorList = replyExtended.Errors.Aggregate(errorList, (current, error) => current + ("\nError: " + error));
 
                     if (!string.IsNullOrWhiteSpace(errorList))
                     {
@@ -3216,7 +3217,7 @@ namespace EllipseWorkRequestExcelAddIn
                 //_cells.GetCell(11, TitleRowV01).Value = "FECHA CREACIÓN";
                 //_cells.GetCell(11, TitleRowV01).Style = StyleConstants.TitleInformation;
 
-                var actionList = new List<string> {"HACER SEGUIMIENTO", "SOLICITAR A OPERACIONES REPARAR"};
+                var actionList = new List<string> { "HACER SEGUIMIENTO", "SOLICITAR A OPERACIONES REPARAR" };
                 _cells.SetValidationList(_cells.GetCell(02, TitleRowV01 + 1), actionList, ValidationSheetName, 1);
 
                 var clasificationList = new List<string>
@@ -3229,10 +3230,10 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.SetValidationList(_cells.GetCell(05, TitleRowV01 + 1), clasificationList, ValidationSheetName, 2,
                     false);
 
-                var priorityList = new List<string> {"P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA"};
+                var priorityList = new List<string> { "P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA" };
                 _cells.SetValidationList(_cells.GetCell(06, TitleRowV01 + 1), priorityList, ValidationSheetName, 3, false);
 
-                var agreementList = new List<string> {"1D - UN DÍA", "7D - 7 DÍAS", "14 - 14 DÍAS", "1Y - 1 AÑO"};
+                var agreementList = new List<string> { "1D - UN DÍA", "7D - 7 DÍAS", "14 - 14 DÍAS", "1Y - 1 AÑO" };
                 _cells.SetValidationList(_cells.GetCell(07, TitleRowV01 + 1), agreementList, ValidationSheetName, 4, false);
 
                 var failureList = new List<string>
@@ -3363,7 +3364,7 @@ namespace EllipseWorkRequestExcelAddIn
                 //Esto se hace para evitar modificaciones en WR que no corresponden a este grupo
                 var searchCriteriaList = new List<string>
                 {
-                    WorkRequestActions.SearchFieldCriteriaType.AssignedTo.Value, 
+                    WorkRequestActions.SearchFieldCriteriaType.AssignedTo.Value,
                     WorkRequestActions.SearchFieldCriteriaType.Originator.Value,
                     WorkRequestActions.SearchFieldCriteriaType.CompletedBy.Value,
                     WorkRequestActions.SearchFieldCriteriaType.RequestType.Value
@@ -3383,7 +3384,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
                 _cells.GetCell("A3").Value = WorkRequestActions.SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("B3").Value = "PLANFC";
-                var workGroupList = new List<string> {"PLANFC" };
+                var workGroupList = new List<string> { "PLANFC" };
                 _cells.SetValidationList(_cells.GetCell("B3"), workGroupList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = WorkRequestActions.SearchFieldCriteriaType.Originator.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2, false);
@@ -3443,8 +3444,8 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(10, TitleRowPfc01).Value = "ASIGNADO A";
                 _cells.GetCell(11, TitleRowPfc01).Value = "DESCRIPCIÓN EXTENDIDA";
 
-                var priorityList = new List<string> {"P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA"};
-                _cells.SetValidationList(_cells.GetCell(04, TitleRowPfc01 + 1), priorityList, ValidationSheetName, 5,false);
+                var priorityList = new List<string> { "P1 - EMERGENCIA", "P2 - ALTA", "P3 - NORMAL", "P4 - BAJA" };
+                _cells.SetValidationList(_cells.GetCell(04, TitleRowPfc01 + 1), priorityList, ValidationSheetName, 5, false);
 
                 var referenceList = new List<string>
                 {
@@ -3456,7 +3457,7 @@ namespace EllipseWorkRequestExcelAddIn
                     "CAPEX",
                     "OTRO"
                 };
-                _cells.SetValidationList(_cells.GetCell(05, TitleRowPfc01 + 1), referenceList, ValidationSheetName, 7,false);
+                _cells.SetValidationList(_cells.GetCell(05, TitleRowPfc01 + 1), referenceList, ValidationSheetName, 7, false);
 
                 //
                 _cells.GetCell(ResultColumnPfc01, TitleRowPfc01).Value = "RESULTADO";

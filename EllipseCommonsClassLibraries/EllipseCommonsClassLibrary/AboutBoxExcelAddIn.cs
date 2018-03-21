@@ -43,13 +43,7 @@ namespace EllipseCommonsClassLibrary
             }
         }
 
-        public string AssemblyVersion
-        {
-            get
-            {
-                return _addInAssembly.GetName().Version.ToString();
-            }
-        }
+        public string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public string AssemblyDescription
         {

@@ -41,7 +41,7 @@
     <PublishUrl>D:\Projects\Release\EllipseWorkRequestExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.2.0.5</ApplicationVersion>
+    <ApplicationVersion>1.2.0.7</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -57,7 +57,7 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 y x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -77,7 +77,7 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Runtime de Microsoft Visual Studio 2010 Tools para Office %28x86 y x64%29</ProductName>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
@@ -283,7 +283,7 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
   <PropertyGroup>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>44599977A29D028FF4844F36CD15CE9930B0C3B7</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>34704A5AFB986320480A679A4A40DEE73DB1C96F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>

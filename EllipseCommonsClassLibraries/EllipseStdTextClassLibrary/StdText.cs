@@ -134,13 +134,14 @@ namespace EllipseStdTextClassLibrary
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(text)) return true;
                 var proxySt = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustom"};
 
                 //text = SpliceText(text, _lineLength);
                 var arrayText = MyUtilities.SplitText(text, _lineLength);
                 //se envía la acción
 
-                //proxySt.setExtendedText(opContext, stdTextId, text);
+                //proxySt.setExtendedText(opContext, stdTextId, text)
                 proxySt.setExtendedTextWithArray(opContext, stdTextId, arrayText);
                 return true;
             }

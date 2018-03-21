@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseWorkOrderExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.5.0.4</ApplicationVersion>
+    <ApplicationVersion>1.5.0.5</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
