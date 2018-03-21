@@ -2075,7 +2075,7 @@ namespace EllipseWorkOrderExcelAddIn
                     if (wo.workGroup == "CALLCEN")
                     {
                         ots = WorkOrderActions.FetchOrigDocNo(_eFunctions,wo.districtCode, wo.workGroup, wo.origDocType, wo.origDocNo);
-                        if (ots != null)
+                        if (ots != null && ots.Count > 0)
                         {
                             _cells.GetCell(ResultColumnD01, i).Value = "YA EXISTE LA ORDEN RELACIONADA " + wo.origDocNo + " DEL SISTEMA MAXIMO";
                             _cells.GetCell(ResultColumnD01, i).Style = StyleConstants.Warning;
@@ -2083,7 +2083,7 @@ namespace EllipseWorkOrderExcelAddIn
                         
                     }
 
-                    if (ots != null) continue;
+                    if (ots != null && ots.Count > 0) continue;
                     var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
                     wo.SetWorkOrderDto(replySheet.workOrder.prefix, replySheet.workOrder.no);
                     ReplyMessage replyExtended = WorkOrderActions.UpdateWorkOrderExtendedDescription(urlService, opSheet, district, wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no, extendedHeader, extendedBody);
