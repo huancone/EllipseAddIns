@@ -134,7 +134,8 @@ namespace EllipseStdTextClassLibrary
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(text)) return true;
+                if (text == null)
+                    text = "";
                 var proxySt = new StdTextCustomService.StdTextCustomService {Url = urlService + "/StdTextCustom"};
 
                 //text = SpliceText(text, _lineLength);
@@ -148,7 +149,7 @@ namespace EllipseStdTextClassLibrary
             catch (Exception ex)
             {
                 Debugger.LogError(
-                    "StdText:setCustomText(String, StdTextCustomService.OperationContext, string, string)", ex.Message);
+                    "StdText:setText(String, StdTextCustomService.OperationContext, string, string)", ex.Message);
                 throw;
             }
         }

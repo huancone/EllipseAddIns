@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
+// ReSharper disable ConvertPropertyToExpressionBody
 
 namespace EllipseCommonsClassLibrary
 {
@@ -43,7 +44,13 @@ namespace EllipseCommonsClassLibrary
             }
         }
 
-        public string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public string AssemblyVersion
+        {
+            get
+            {
+                return _addInAssembly.GetName().Version.ToString();
+            }
+        }
 
         public string AssemblyDescription
         {

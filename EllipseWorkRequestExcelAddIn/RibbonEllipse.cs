@@ -174,60 +174,28 @@ namespace EllipseWorkRequestExcelAddIn
         {
             try
             {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
-                {
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-
                     _thread = new Thread(CreateWorkRequestList);
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameM01)
-                {
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-
                     _thread = new Thread(CreateWorkRequestMnttoList);
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameV01)
-                {
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-
                     _thread = new Thread(CreateWorkRequestVagonesList);
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNamePfc01)
-                {
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-
                     _thread = new Thread(CreateWorkRequestPfcList);
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
                 else
+                {
                     MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+                    return;
+                }
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
             }
             catch (Exception ex)
             {
@@ -2325,22 +2293,22 @@ namespace EllipseWorkRequestExcelAddIn
                     wr.SetExtendedDescription(header, body);
                     var wrRefCodes = new WorkRequestReferenceCodes
                     {
-                        WorkOrderOrigen = _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value),
-                        StockCode1 = _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value),
-                        StockCode1Qty = _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value),
-                        StockCode2 = _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value),
-                        StockCode2Qty = _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value),
-                        StockCode3 = _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value),
-                        StockCode3Qty = _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value),
-                        StockCode4 = _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value),
-                        StockCode4Qty = _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value),
-                        StockCode5 = _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value),
-                        StockCode5Qty = _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value),
-                        HorasHombre = _cells.GetEmptyIfNull(_cells.GetCell(41, i).Value),
-                        DuracionTarea = _cells.GetEmptyIfNull(_cells.GetCell(42, i).Value),
-                        EquipoDetenido = _cells.GetEmptyIfNull(_cells.GetCell(43, i).Value),
-                        RaisedReprogramada = _cells.GetEmptyIfNull(_cells.GetCell(44, i).Value),
-                        CambioHora = _cells.GetEmptyIfNull(_cells.GetCell(45, i).Value)
+                        WorkOrderOrigen = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(30, i).Value),
+                        StockCode1 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(31, i).Value),
+                        StockCode1Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(32, i).Value),
+                        StockCode2 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(33, i).Value),
+                        StockCode2Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(34, i).Value),
+                        StockCode3 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(35, i).Value),
+                        StockCode3Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(36, i).Value),
+                        StockCode4 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(37, i).Value),
+                        StockCode4Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(38, i).Value),
+                        StockCode5 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(39, i).Value),
+                        StockCode5Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(40, i).Value),
+                        HorasHombre = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(41, i).Value),
+                        DuracionTarea = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(42, i).Value),
+                        EquipoDetenido = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(43, i).Value),
+                        RaisedReprogramada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(44, i).Value),
+                        CambioHora = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(45, i).Value)
                     };
 
                     var replySheet = WorkRequestActions.CreateWorkRequest(urlService, opContext, wr);

@@ -974,7 +974,67 @@ namespace EllipseWorkRequestClassLibrary
             //Corresponde a la misma acción de modificar, excepto que se garantiza que todos los RefCodes sean actualizados con la nueva información
             return ModifyReferenceCodes(eFunctions, urlService, opContext, requestId, wrRefCodes);
         }
-        
+
+        private static List<ReferenceCodeItem> GetNotNullRefCodeList(string entityType, string entityValue, WorkRequestReferenceCodes wrRefCodes)
+        {
+            var refItemList = new List<ReferenceCodeItem>();
+
+            var riStockCode01 = new ReferenceCodeItem(entityType, entityValue, "001", "9001", wrRefCodes.StockCode1, null, wrRefCodes.StockCode1Qty) { ShortName = "StockCode 01" };
+            var riStockCode02 = new ReferenceCodeItem(entityType, entityValue, "001", "9002", wrRefCodes.StockCode2, null, wrRefCodes.StockCode2Qty) { ShortName = "StockCode 02" };
+            var riStockCode03 = new ReferenceCodeItem(entityType, entityValue, "001", "9003", wrRefCodes.StockCode3, null, wrRefCodes.StockCode3Qty) { ShortName = "StockCode 03" };
+            var riStockCode04 = new ReferenceCodeItem(entityType, entityValue, "001", "9004", wrRefCodes.StockCode4, null, wrRefCodes.StockCode4Qty) { ShortName = "StockCode 04" };
+            var riStockCode05 = new ReferenceCodeItem(entityType, entityValue, "001", "9005", wrRefCodes.StockCode5, null, wrRefCodes.StockCode5Qty) { ShortName = "StockCode 05" };
+            var riHorasHombre = new ReferenceCodeItem(entityType, entityValue, "006", "001", wrRefCodes.HorasHombre, null, wrRefCodes.HorasQty) { ShortName = "Horas Hombre" };
+            var riDuracionTarea = new ReferenceCodeItem(entityType, entityValue, "007", "001", wrRefCodes.DuracionTarea) { ShortName = "Duracion Tarea" };
+            var riEquipoDetenido = new ReferenceCodeItem(entityType, entityValue, "008", "001", wrRefCodes.EquipoDetenido) { ShortName = "Equipo Detenido" };
+            var riWorkOrderOrigen = new ReferenceCodeItem(entityType, entityValue, "009", "001", wrRefCodes.WorkOrderOrigen) { ShortName = "OT de Inspección" };
+            var riRaisedReprogramada = new ReferenceCodeItem(entityType, entityValue, "010", "001", wrRefCodes.RaisedReprogramada) { ShortName = "Raised Reprogramada" };
+            var riCambioHora = new ReferenceCodeItem(entityType, entityValue, "011", "001", wrRefCodes.CambioHora) { ShortName = "Cambio Hora" };
+            var riFechaPlanInicial = new ReferenceCodeItem(entityType, entityValue, "012", "001", wrRefCodes.FechaPlanInicial) { ShortName = "Fecha Plan Inicial" };
+            var riFechaPlanFinal = new ReferenceCodeItem(entityType, entityValue, "013", "001", wrRefCodes.FechaPlanFinal) { ShortName = "Fecha Plan Final" };
+            var riFechaEjecucionInicial = new ReferenceCodeItem(entityType, entityValue, "014", "001", wrRefCodes.FechaEjecucionInicial) { ShortName = "Fecha Ejecución Inicial" };
+            var riFechaEjecucionFinal = new ReferenceCodeItem(entityType, entityValue, "015", "001", wrRefCodes.FechaEjecucionFinal) { ShortName = "Fecha Ejecución Final" };
+            var riCalificacionEncuesta = new ReferenceCodeItem(entityType, entityValue, "016", "001", wrRefCodes.CalificacionEncuesta) { ShortName = "Calificación Encuesta" };
+            var riWorkOrderReparacion = new ReferenceCodeItem(entityType, entityValue, "017", "001", wrRefCodes.WorkOrderReparacion) { ShortName = "OT de Reparación" };
+
+            if(!(wrRefCodes.StockCode1 == null && wrRefCodes.StockCode1Qty == null))
+                refItemList.Add(riStockCode01);
+            if (!(wrRefCodes.StockCode2 == null && wrRefCodes.StockCode2Qty == null))
+                refItemList.Add(riStockCode02);
+            if (!(wrRefCodes.StockCode3 == null && wrRefCodes.StockCode3Qty == null))
+                refItemList.Add(riStockCode03);
+            if (!(wrRefCodes.StockCode4 == null && wrRefCodes.StockCode4Qty == null))
+                refItemList.Add(riStockCode04);
+            if (!(wrRefCodes.StockCode5 == null && wrRefCodes.StockCode5Qty == null))
+                refItemList.Add(riStockCode05);
+
+            if (wrRefCodes.HorasHombre != null)
+                refItemList.Add(riHorasHombre);
+            if (wrRefCodes.DuracionTarea != null)
+                refItemList.Add(riDuracionTarea);
+            if (wrRefCodes.EquipoDetenido != null)
+                refItemList.Add(riEquipoDetenido);
+            if (wrRefCodes.WorkOrderOrigen != null)
+                refItemList.Add(riWorkOrderOrigen);
+            if (wrRefCodes.RaisedReprogramada != null)
+                refItemList.Add(riRaisedReprogramada);
+            if (wrRefCodes.CambioHora != null)
+                refItemList.Add(riCambioHora);
+            if (wrRefCodes.FechaPlanInicial != null)
+                refItemList.Add(riFechaPlanInicial);
+            if (wrRefCodes.FechaPlanFinal != null)
+                refItemList.Add(riFechaPlanFinal);
+            if (wrRefCodes.FechaEjecucionInicial != null)
+                refItemList.Add(riFechaEjecucionInicial);
+            if (wrRefCodes.FechaEjecucionFinal != null)
+                refItemList.Add(riFechaEjecucionFinal);
+            if (wrRefCodes.CalificacionEncuesta != null)
+                refItemList.Add(riCalificacionEncuesta);
+            if (wrRefCodes.WorkOrderReparacion != null)
+                refItemList.Add(riWorkOrderReparacion);
+
+            return refItemList;
+        }
         public static ReplyMessage ModifyReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string requestId, WorkRequestReferenceCodes wrRefCodes)
         {
             long defaultLong;
@@ -989,44 +1049,7 @@ namespace EllipseWorkRequestClassLibrary
             var reply = new ReplyMessage();
             var error = new List<string>();
 
-            var refItemList = new List<ReferenceCodeItem>();
-
-
-            var riStockCode01 = new ReferenceCodeItem(entityType, entityValue, "001", "9001", wrRefCodes.StockCode1, null, wrRefCodes.StockCode1Qty) { ShortName = "StockCode 01" };
-            var riStockCode02 = new ReferenceCodeItem(entityType, entityValue, "001", "9002", wrRefCodes.StockCode2, null, wrRefCodes.StockCode2Qty) { ShortName = "StockCode 02" };
-            var riStockCode03 = new ReferenceCodeItem(entityType, entityValue, "001", "9003", wrRefCodes.StockCode3, null, wrRefCodes.StockCode3Qty) { ShortName = "StockCode 03" };
-            var riStockCode04 = new ReferenceCodeItem(entityType, entityValue, "001", "9004", wrRefCodes.StockCode4, null, wrRefCodes.StockCode4Qty) { ShortName = "StockCode 04" };
-            var riStockCode05 = new ReferenceCodeItem(entityType, entityValue, "001", "9005", wrRefCodes.StockCode5, null, wrRefCodes.StockCode5Qty) { ShortName = "StockCode 05" };
-            var riHorasHombre = new ReferenceCodeItem(entityType, entityValue, "006", "001", wrRefCodes.HorasHombre, null, wrRefCodes.HorasQty) { ShortName = "Horas Hombre" };
-            var riDuracionTarea = new ReferenceCodeItem(entityType, entityValue, "007", "001", wrRefCodes.DuracionTarea) { ShortName = "Duracion Tarea"};
-            var riEquipoDetenido = new ReferenceCodeItem(entityType, entityValue, "008", "001", wrRefCodes.EquipoDetenido) { ShortName = "Equipo Detenido"};
-            var riWorkOrderOrigen = new ReferenceCodeItem(entityType, entityValue, "009", "001", wrRefCodes.WorkOrderOrigen) { ShortName = "OT de Inspección"};
-            var riRaisedReprogramada = new ReferenceCodeItem(entityType, entityValue, "010", "001", wrRefCodes.RaisedReprogramada) { ShortName = "Raised Reprogramada"};
-            var riCambioHora = new ReferenceCodeItem(entityType, entityValue, "011", "001", wrRefCodes.CambioHora) { ShortName = "Cambio Hora"};
-            var riFechaPlanInicial = new ReferenceCodeItem(entityType, entityValue, "012", "001", wrRefCodes.FechaPlanInicial) { ShortName = "Fecha Plan Inicial" };
-            var riFechaPlanFinal = new ReferenceCodeItem(entityType, entityValue, "013", "001", wrRefCodes.FechaPlanFinal) { ShortName = "Fecha Plan Final" };
-            var riFechaEjecucionInicial = new ReferenceCodeItem(entityType, entityValue, "014", "001", wrRefCodes.FechaEjecucionInicial) { ShortName = "Fecha Ejecución Inicial" };
-            var riFechaEjecucionFinal = new ReferenceCodeItem(entityType, entityValue, "015", "001", wrRefCodes.FechaEjecucionFinal) { ShortName = "Fecha Ejecución Final" };
-            var riCalificacionEncuesta = new ReferenceCodeItem(entityType, entityValue, "016", "001", wrRefCodes.CalificacionEncuesta) { ShortName = "Calificación Encuesta" };
-            var riWorkOrderReparacion = new ReferenceCodeItem(entityType, entityValue, "017", "001", wrRefCodes.WorkOrderReparacion) { ShortName = "OT de Reparación" };
-
-            refItemList.Add(riStockCode01);
-            refItemList.Add(riStockCode02);
-            refItemList.Add(riStockCode03);
-            refItemList.Add(riStockCode04);
-            refItemList.Add(riStockCode05);
-            refItemList.Add(riHorasHombre);
-            refItemList.Add(riDuracionTarea);
-            refItemList.Add(riEquipoDetenido);
-            refItemList.Add(riWorkOrderOrigen);
-            refItemList.Add(riRaisedReprogramada);
-            refItemList.Add(riCambioHora);
-            refItemList.Add(riFechaPlanInicial);
-            refItemList.Add(riFechaPlanFinal);
-            refItemList.Add(riFechaEjecucionInicial);
-            refItemList.Add(riFechaEjecucionFinal);
-            refItemList.Add(riCalificacionEncuesta);
-            refItemList.Add(riWorkOrderReparacion);
+            var refItemList = GetNotNullRefCodeList(entityType, entityValue, wrRefCodes);
 
             foreach (var item in refItemList)
             {

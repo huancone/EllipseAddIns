@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="EllipseReferenceCodesClassLibrary_RefCodesService_RefCodesService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/RefCodesService</Value>
+      <Value Profile="(Default)">http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/RefCodesService</Value>
     </Setting>
   </Settings>
 </SettingsFile>
