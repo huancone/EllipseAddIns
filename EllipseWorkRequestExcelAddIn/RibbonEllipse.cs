@@ -600,6 +600,10 @@ namespace EllipseWorkRequestExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName03))
                 {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(UpdateReferenceCodesList);
@@ -686,7 +690,7 @@ namespace EllipseWorkRequestExcelAddIn
 
                         var replyRefCode = WorkRequestReferenceCodesActions.ModifyReferenceCodes(_eFunctions, urlService, opContext, requestId, wrRefCodes);
                         if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
-                            foreach (var error in replyExtended.Errors)
+                            foreach (var error in replyRefCode.Errors)
                                 errorList += "\nError: " + error;
 
                         if (!string.IsNullOrWhiteSpace(errorList))

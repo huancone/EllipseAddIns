@@ -979,11 +979,11 @@ namespace EllipseWorkRequestClassLibrary
         {
             var refItemList = new List<ReferenceCodeItem>();
 
-            var riStockCode01 = new ReferenceCodeItem(entityType, entityValue, "001", "9001", wrRefCodes.StockCode1, null, wrRefCodes.StockCode1Qty) { ShortName = "StockCode 01" };
-            var riStockCode02 = new ReferenceCodeItem(entityType, entityValue, "001", "9002", wrRefCodes.StockCode2, null, wrRefCodes.StockCode2Qty) { ShortName = "StockCode 02" };
-            var riStockCode03 = new ReferenceCodeItem(entityType, entityValue, "001", "9003", wrRefCodes.StockCode3, null, wrRefCodes.StockCode3Qty) { ShortName = "StockCode 03" };
-            var riStockCode04 = new ReferenceCodeItem(entityType, entityValue, "001", "9004", wrRefCodes.StockCode4, null, wrRefCodes.StockCode4Qty) { ShortName = "StockCode 04" };
-            var riStockCode05 = new ReferenceCodeItem(entityType, entityValue, "001", "9005", wrRefCodes.StockCode5, null, wrRefCodes.StockCode5Qty) { ShortName = "StockCode 05" };
+            var riStockCode01 = new ReferenceCodeItem(entityType, entityValue, "001", "001", wrRefCodes.StockCode1, null, wrRefCodes.StockCode1Qty) { ShortName = "StockCode 01" };
+            var riStockCode02 = new ReferenceCodeItem(entityType, entityValue, "001", "002", wrRefCodes.StockCode2, null, wrRefCodes.StockCode2Qty) { ShortName = "StockCode 02" };
+            var riStockCode03 = new ReferenceCodeItem(entityType, entityValue, "001", "003", wrRefCodes.StockCode3, null, wrRefCodes.StockCode3Qty) { ShortName = "StockCode 03" };
+            var riStockCode04 = new ReferenceCodeItem(entityType, entityValue, "001", "004", wrRefCodes.StockCode4, null, wrRefCodes.StockCode4Qty) { ShortName = "StockCode 04" };
+            var riStockCode05 = new ReferenceCodeItem(entityType, entityValue, "001", "005", wrRefCodes.StockCode5, null, wrRefCodes.StockCode5Qty) { ShortName = "StockCode 05" };
             var riHorasHombre = new ReferenceCodeItem(entityType, entityValue, "006", "001", wrRefCodes.HorasHombre, null, wrRefCodes.HorasQty) { ShortName = "Horas Hombre" };
             var riDuracionTarea = new ReferenceCodeItem(entityType, entityValue, "007", "001", wrRefCodes.DuracionTarea) { ShortName = "Duracion Tarea" };
             var riEquipoDetenido = new ReferenceCodeItem(entityType, entityValue, "008", "001", wrRefCodes.EquipoDetenido) { ShortName = "Equipo Detenido" };

@@ -38,6 +38,9 @@
             this.grpStdText = this.Factory.CreateRibbonGroup();
             this.box1 = this.Factory.CreateRibbonBox();
             this.box2 = this.Factory.CreateRibbonBox();
+            this.btnFormatSheet = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
+            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuStdText = this.Factory.CreateRibbonMenu();
             this.btnGetHeaderAndText = this.Factory.CreateRibbonButton();
@@ -51,9 +54,6 @@
             this.btnUpdateRefCodes = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.btnCleanTable = this.Factory.CreateRibbonButton();
-            this.btnAbout = this.Factory.CreateRibbonButton();
-            this.btnFormatSheet = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.tab1.SuspendLayout();
             this.grpStdText.SuspendLayout();
             this.box1.SuspendLayout();
@@ -85,6 +85,23 @@
             this.box2.Items.Add(this.btnFormatSheet);
             this.box2.Items.Add(this.btnAbout);
             this.box2.Name = "box2";
+            // 
+            // btnFormatSheet
+            // 
+            this.btnFormatSheet.Label = "Formatear Hoja";
+            this.btnFormatSheet.Name = "btnFormatSheet";
+            this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
+            // drpEnviroment
+            // 
+            this.drpEnviroment.Label = "Env.";
+            this.drpEnviroment.Name = "drpEnviroment";
             // 
             // menuActions
             // 
@@ -184,23 +201,6 @@
             this.btnCleanTable.Name = "btnCleanTable";
             this.btnCleanTable.ShowImage = true;
             this.btnCleanTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanTable_Click);
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
-            // 
-            // btnFormatSheet
-            // 
-            this.btnFormatSheet.Label = "Formatear Hoja";
-            this.btnFormatSheet.Name = "btnFormatSheet";
-            this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
-            // 
-            // drpEnviroment
-            // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
             // 
             // RibbonEllipse
             // 
