@@ -1,12 +1,16 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EllipseStdTextClassLibrary.Properties" GeneratedClassName="Settings">
+
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
+              GeneratedClassNamespace="EllipseStdTextClassLibrary.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="EllipseStdTextClassLibrary_StdTextService_StdTextService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/StdTextService</Value>
+    <Setting Name="EllipseStdTextClassLibrary_StdTextService_StdTextService" Type="(Web Service URL)"
+             Scope="Application">
+      <Value Profile="(Default)">http://ews-el8test.lmnerp03.cerrejon.com/ews/services/StdTextService</Value>
     </Setting>
-    <Setting Name="EllipseStdTextClassLibrary_StdTextCustomService_StdTextCustomService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/StdTextCustomService</Value>
+    <Setting Name="EllipseStdTextClassLibrary_StdTextCustomService_StdTextCustomService" Type="(Web Service URL)"
+             Scope="Application">
+      <Value Profile="(Default)">http://ews-el8test.lmnerp03.cerrejon.com/ews/services/StdTextCustomService</Value>
     </Setting>
   </Settings>
 </SettingsFile>
