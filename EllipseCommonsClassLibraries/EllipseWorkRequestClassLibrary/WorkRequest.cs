@@ -984,6 +984,7 @@ namespace EllipseWorkRequestClassLibrary
             var riStockCode03 = new ReferenceCodeItem(entityType, entityValue, "001", "003", wrRefCodes.StockCode3, null, wrRefCodes.StockCode3Qty) { ShortName = "StockCode 03" };
             var riStockCode04 = new ReferenceCodeItem(entityType, entityValue, "001", "004", wrRefCodes.StockCode4, null, wrRefCodes.StockCode4Qty) { ShortName = "StockCode 04" };
             var riStockCode05 = new ReferenceCodeItem(entityType, entityValue, "001", "005", wrRefCodes.StockCode5, null, wrRefCodes.StockCode5Qty) { ShortName = "StockCode 05" };
+
             var riHorasHombre = new ReferenceCodeItem(entityType, entityValue, "006", "001", wrRefCodes.HorasHombre, null, wrRefCodes.HorasQty) { ShortName = "Horas Hombre" };
             var riDuracionTarea = new ReferenceCodeItem(entityType, entityValue, "007", "001", wrRefCodes.DuracionTarea) { ShortName = "Duracion Tarea" };
             var riEquipoDetenido = new ReferenceCodeItem(entityType, entityValue, "008", "001", wrRefCodes.EquipoDetenido) { ShortName = "Equipo Detenido" };
@@ -997,7 +998,7 @@ namespace EllipseWorkRequestClassLibrary
             var riCalificacionEncuesta = new ReferenceCodeItem(entityType, entityValue, "016", "001", wrRefCodes.CalificacionEncuesta) { ShortName = "Calificación Encuesta" };
             var riWorkOrderReparacion = new ReferenceCodeItem(entityType, entityValue, "017", "001", wrRefCodes.WorkOrderReparacion) { ShortName = "OT de Reparación" };
 
-            if(!(wrRefCodes.StockCode1 == null && wrRefCodes.StockCode1Qty == null))
+            if (!(wrRefCodes.StockCode1 == null && wrRefCodes.StockCode1Qty == null))
                 refItemList.Add(riStockCode01);
             if (!(wrRefCodes.StockCode2 == null && wrRefCodes.StockCode2Qty == null))
                 refItemList.Add(riStockCode02);
