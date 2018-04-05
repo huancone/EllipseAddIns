@@ -642,7 +642,7 @@ namespace EllipseWorkRequestClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("WorkOrder.UpdateWorkOrderExtendedDescription()", ex.Message);
+                Debugger.LogError("WorkRequest.UpdateWorkRequestExtendedDescription()", ex.Message);
                 reply.Message = "Error al actualizar el texto extendido de WorkRequest " + requestId;
                 var errorList = new List<string> { "No se pudo actualizar el texto del StdText WQ" + requestId };
                 reply.Errors = errorList.ToArray();
