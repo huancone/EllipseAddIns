@@ -1199,6 +1199,7 @@ namespace EllipseCommonsClassLibrary.Classes
         public static string General = "General";
         public static string Text = "@";
         public static string Integer = "0";
+        public static string Date = "yyyyMMdd";
     }
 
     public static class LanguageSettingConstants

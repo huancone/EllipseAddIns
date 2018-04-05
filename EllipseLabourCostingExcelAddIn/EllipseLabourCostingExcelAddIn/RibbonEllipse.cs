@@ -382,9 +382,7 @@ namespace EllipseLabourCostingExcelAddIn
 
                 _cells.GetCell(Mse850ResultColumn, Mse850TitleRow).Value = "RESULTADO";
                 _cells.GetCell(Mse850ResultColumn, Mse850TitleRow).Style = StyleConstants.TitleResult;
-                _cells.FormatAsTable(
-                    _cells.GetRange(1, Mse850TitleRow, Mse850ResultColumn, Mse850TitleRow + 1),
-                    TableNameMse850);
+                _cells.FormatAsTable(_cells.GetRange(1, Mse850TitleRow, Mse850ResultColumn, Mse850TitleRow + 1),TableNameMse850);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
             }

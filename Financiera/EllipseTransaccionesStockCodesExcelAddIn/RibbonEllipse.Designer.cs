@@ -55,6 +55,7 @@
             this.tabEllipse.SuspendLayout();
             this.grpStockCodeTrans.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -196,6 +197,7 @@
             this.grpStockCodeTrans.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

@@ -351,8 +351,8 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             "   (" +
                             "     SELECT" +
                             "       METER_VALUE," +
-                            "       STAT_DATE," +
-                            "       MAX(STAT_DATE) OVER(PARTITION BY EQUIP_NO) MAX_FECHA" +
+                            "       STAT_DATE || SHIFT_SEQ_NO STAT_DATE," +
+                            "       MAX(STAT_DATE || SHIFT_SEQ_NO) OVER(PARTITION BY EQUIP_NO) MAX_FECHA" +
                             "     FROM" +
                             "       " + dbReference + ".MSF400" + dbLink +
                             "     WHERE" +
@@ -390,8 +390,8 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             "   (" +
                             "     SELECT" +
                             "       METER_VALUE," +
-                            "       STAT_DATE," +
-                            "       MAX(STAT_DATE) OVER(PARTITION BY EQUIP_NO) MAX_FECHA" +
+                            "       STAT_DATE || SHIFT_SEQ_NO STAT_DATE," +
+                            "       MAX(STAT_DATE || SHIFT_SEQ_NO) OVER(PARTITION BY EQUIP_NO) MAX_FECHA" +
                             "     FROM" +
                             "       " + dbReference + ".MSF400" + dbLink +
                             "     WHERE" +

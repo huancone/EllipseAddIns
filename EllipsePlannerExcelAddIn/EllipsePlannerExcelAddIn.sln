@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipsePlannerExcelAddIn", "EllipsePlannerExcelAddIn\EllipsePlannerExcelAddIn.csproj", "{41B508C4-5ABF-4740-B57B-B0C3D14DA62E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B08F098E-E4DE-4431-8CF1-0E3156B96A00} = {B08F098E-E4DE-4431-8CF1-0E3156B96A00}
+		{D83698A3-3B22-4AF7-B92A-26E2A05B1764} = {D83698A3-3B22-4AF7-B92A-26E2A05B1764}
+		{838948CE-353C-41FE-904E-753B4678AEEB} = {838948CE-353C-41FE-904E-753B4678AEEB}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseCommonsClassLibrary", "..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj", "{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}"
 EndProject

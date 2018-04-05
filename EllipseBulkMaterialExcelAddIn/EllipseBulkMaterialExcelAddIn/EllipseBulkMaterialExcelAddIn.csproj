@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseBulkMaterialExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.1.0.2</ApplicationVersion>
+    <ApplicationVersion>2.1.0.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -55,7 +55,7 @@
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 y x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -75,7 +75,7 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Runtime de Microsoft Visual Studio 2010 Tools para Office %28x86 y x64%29</ProductName>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
@@ -247,7 +247,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="EllipseBulkMaterialExcelAddIn_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -333,10 +332,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>EllipseBulkMaterialExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>44599977A29D028FF4844F36CD15CE9930B0C3B7</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>34704A5AFB986320480A679A4A40DEE73DB1C96F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

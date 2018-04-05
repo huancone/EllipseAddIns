@@ -40,8 +40,9 @@
       <HintPath>..\..\EllipseWorkRequestExcelAddIn\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>Web References\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=105.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\EllipsePlannerExcelAddIn\packages\RestSharp.105.2.2\lib\net4\RestSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -125,7 +126,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Constants\WoTypeMtType.cs" />
   </ItemGroup>

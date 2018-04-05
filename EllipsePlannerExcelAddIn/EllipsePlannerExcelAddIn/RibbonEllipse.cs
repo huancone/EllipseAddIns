@@ -45,8 +45,8 @@ namespace EllipsePlannerExcelAddIn
 
         //Columnas de Resultado
         private const int ResultColumnResources = 12;
-        private const int ResultColumnEllipse = 4;
-        private const int ResultColumnPsoft = 6;
+        private const int ResultColumnEllipse = 5;
+        private const int ResultColumnPsoft = 4;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
@@ -164,10 +164,10 @@ namespace EllipsePlannerExcelAddIn
 
                 _cells.GetCell(1, TitleRowResources).Value = "Grupo";
                 _cells.GetCell(2, TitleRowResources).Value = "Equipo";
-                _cells.GetCell(3, TitleRowResources).Value = "Descripcion";
+                _cells.GetCell(3, TitleRowResources).Value = "Eq Desc";
                 _cells.GetCell(4, TitleRowResources).Value = "MST";
                 _cells.GetCell(5, TitleRowResources).Value = "Referencia";
-                _cells.GetCell(6, TitleRowResources).Value = "Descripcion";
+                _cells.GetCell(6, TitleRowResources).Value = "Ref Desc";
                 _cells.GetCell(7, TitleRowResources).Value = "Tarea";
                 _cells.GetCell(8, TitleRowResources).Value = "Recurso";
                 _cells.GetCell(9, TitleRowResources).Value = "Horas Estimadas";
@@ -177,6 +177,7 @@ namespace EllipsePlannerExcelAddIn
                 _cells.GetRange(1, TitleRowResources, ResultColumnResources, TitleRowResources).Style = StyleConstants.TitleInformation;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRowResources, ResultColumnResources, TitleRowResources + 1), TableJobResources);
                 _cells.GetRange(1, TitleRowResources, ResultColumnResources, TitleRowResources + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.GetRange(12, TitleRowResources, 12, TitleRowResources + 1).NumberFormat = NumberFormatConstants.Date;
 
                 //hoja 2
                 _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
@@ -199,11 +200,13 @@ namespace EllipsePlannerExcelAddIn
 
                 _cells.GetCell(1, TitleRowEllipse).Value = "Grupo";
                 _cells.GetCell(2, TitleRowEllipse).Value = "Recurso";
-                _cells.GetCell(3, TitleRowEllipse).Value = "Planeadas";
-                _cells.GetCell(4, TitleRowEllipse).Value = "Disponibles";
+                _cells.GetCell(3, TitleRowEllipse).Value = "Fecha";
+                _cells.GetCell(4, TitleRowEllipse).Value = "Planeadas";
+                _cells.GetCell(5, TitleRowEllipse).Value = "Disponibles";
                 _cells.GetRange(1, TitleRowEllipse, ResultColumnEllipse, TitleRowEllipse).Style = StyleConstants.TitleInformation;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRowEllipse, ResultColumnEllipse, TitleRowEllipse + 1), TableEllipseResources);
                 _cells.GetRange(1, TitleRowEllipse, ResultColumnEllipse, TitleRowEllipse + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.GetRange(3, TitleRowEllipse, 3, TitleRowEllipse + 1).NumberFormat = NumberFormatConstants.Date;
 
                 //hoja 3
                 _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
@@ -225,11 +228,9 @@ namespace EllipsePlannerExcelAddIn
                 _cells.GetCell("K4").Style = StyleConstants.TitleAction;
 
                 _cells.GetCell(1, TitleRowPsoft).Value = "Grupo";
-                _cells.GetCell(2, TitleRowEllipse).Value = "Cedula";
-                _cells.GetCell(3, TitleRowEllipse).Value = "Nombre";
-                _cells.GetCell(4, TitleRowPsoft).Value = "Recurso";
-                _cells.GetCell(5, TitleRowPsoft).Value = "Fecha";
-                _cells.GetCell(6, TitleRowPsoft).Value = "Horas";
+                _cells.GetCell(2, TitleRowPsoft).Value = "Recurso";
+                _cells.GetCell(3, TitleRowPsoft).Value = "Cantidad";
+                _cells.GetCell(4, TitleRowPsoft).Value = "Horas";
                 _cells.GetRange(1, TitleRowPsoft, ResultColumnPsoft, TitleRowPsoft).Style = StyleConstants.TitleInformation;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRowPsoft, ResultColumnPsoft, TitleRowPsoft + 1), TablePsoftResources);
                 _cells.GetRange(1, TitleRowPsoft, ResultColumnPsoft, TitleRowPsoft + 1).NumberFormat = NumberFormatConstants.Text;
@@ -300,39 +301,42 @@ namespace EllipsePlannerExcelAddIn
 
 
                 //consumo de servicio de msewts
-                List<Jobs> replySheet = JobActions.FetchJobsPost(_eFunctions, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
+                List<Jobs> ellipseJobs = JobActions.FetchJobsPost(_eFunctions, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
 
                 //consulta sobre tabla de peoplesoft
-                List<PSoftLabourDetails> psoftResources = JobActions.GetPsoftResources(district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
-
-                //Recursos disponibles agrupados
-                var pSoftTotalResource = (from r in psoftResources select r).GroupBy(l => new { l.WorkGroup, l.Code })
-                    .Select(cl => new LabourResources
-                    {
-                        WorkGroup = cl.First().WorkGroup,
-                        ResourceCode = cl.First().Code,
-                        AvailableLabourHours = cl.Sum(c => c.Hours)
-                    }).ToList();
+                List<LabourResources> psoftResources = JobActions.GetPsoftResources(district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
 
                 //recursos planeados agrupados
-                var ellipseTotalresource = (from jobs in replySheet from resources in jobs.LabourResourcesList select resources).GroupBy(l => new { l.WorkGroup, l.ResourceCode })
+                var ellipseTotalresource = (from jobs in ellipseJobs from resources in jobs.LabourResourcesList select resources).GroupBy(l => new { l.WorkGroup, l.Date, l.ResourceCode })
                     .Select(cl => new LabourResources
                     {
                         WorkGroup = cl.First().WorkGroup,
                         ResourceCode = cl.First().ResourceCode,
+                        Date = cl.First().Date,
                         EstimatedLabourHours = cl.Sum(c => c.EstimatedLabourHours)
                     }).ToList();
-                    
-                var totalResources = ellipseTotalresource.Union(pSoftTotalResource).GroupBy(a => new { a.WorkGroup, a.ResourceCode }).Select(cl => new LabourResources
+
+                var totalResources = ellipseTotalresource.Union(psoftResources).GroupBy(a => new { a.WorkGroup, a.Date, a.ResourceCode }).Select(cl => new LabourResources
                 {
                     WorkGroup = cl.First().WorkGroup,
                     ResourceCode = cl.First().ResourceCode,
+                    Date = cl.First().Date,
                     EstimatedLabourHours = cl.Sum(c => c.EstimatedLabourHours),
                     AvailableLabourHours = cl.Sum(c => c.AvailableLabourHours)
                 }).ToList();
 
+                //Recursos disponibles agrupados
+                var pSoftTotalResource = (from r in psoftResources select r).GroupBy(l => new { l.WorkGroup, l.ResourceCode })
+                    .Select(cl => new LabourResources
+                    {
+                        WorkGroup = cl.First().WorkGroup,
+                        ResourceCode = cl.First().ResourceCode,
+                        Quantity = cl.Average(c => c.Quantity),
+                        AvailableLabourHours = cl.Sum(c => c.AvailableLabourHours)
+                    }).ToList();
+
                 var i = TitleRowResources + 1;
-                foreach (var j in replySheet)
+                foreach (var j in ellipseJobs)
                 {
                     if (j.LabourResourcesList.Count > 0)
                     {
@@ -364,7 +368,6 @@ namespace EllipsePlannerExcelAddIn
                         _cells.GetCell(7, i).Value = j.WoDesc;
                         _cells.GetCell(12, i).Value = j.PlanStrDate;
                     }
-
                 }
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
@@ -375,8 +378,9 @@ namespace EllipsePlannerExcelAddIn
                 {
                     _cells.GetCell(1, i).Value = r.WorkGroup;
                     _cells.GetCell(2, i).Value = r.ResourceCode;
-                    _cells.GetCell(3, i).Value = r.EstimatedLabourHours - r.RealLabourHours;
-                    _cells.GetCell(4, i).Value = r.AvailableLabourHours;
+                    _cells.GetCell(3, i).Value = r.Date;
+                    _cells.GetCell(4, i).Value = r.EstimatedLabourHours - r.RealLabourHours;
+                    _cells.GetCell(5, i).Value = r.AvailableLabourHours;
                     i++;
                 }
 
@@ -388,34 +392,27 @@ namespace EllipsePlannerExcelAddIn
                     var chart = chartObject.Chart;
 
                     // Set chart range.
-                    var range = _cells.GetRange(1,TitleRowEllipse, 4, TitleRowEllipse + totalResources.Count);
+                    var range = _cells.GetRange(1, TitleRowEllipse, ResultColumnEllipse, TitleRowEllipse + totalResources.Count);
                     chart.SetSourceData(range);
 
                     // Set chart properties.
                     chart.ChartType = XlChartType.xlColumnClustered;
                     chart.ChartWizard(range);
-
-
-
                 }
 
                 //hoja de peoplesoft
                 _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
 
                 i = TitleRowPsoft + 1;
-                foreach (var r in psoftResources)
+                foreach (var r in pSoftTotalResource)
                 {
                     _cells.GetCell(1, i).Value = r.WorkGroup;
-                    _cells.GetCell(2, i).Value = r.EmployeeId;
-                    _cells.GetCell(3, i).Value = r.Name;
-                    _cells.GetCell(4, i).Value = r.Code;
-                    _cells.GetCell(5, i).Value = r.Date;
-                    _cells.GetCell(6, i).Value = r.Hours;
+                    _cells.GetCell(2, i).Value = r.ResourceCode;
+                    _cells.GetCell(3, i).Value = r.Quantity;
+                    _cells.GetCell(4, i).Value = r.AvailableLabourHours;
                     i++;
                 }
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-
-               
 
                 if (_cells != null) _cells.SetCursorDefault();
             }

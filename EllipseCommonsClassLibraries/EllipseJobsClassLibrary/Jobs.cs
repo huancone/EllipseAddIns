@@ -43,26 +43,10 @@ namespace EllipseJobsClassLibrary
 
         public string WorkGroup { get; set; }
         public string ResourceCode { get; set; }
+        public DateTime Date { get; set; }
+        public double Quantity { get; set; }
+        public double AvailableLabourHours { get; set; }
         public decimal EstimatedLabourHours { get; set; }
         public decimal RealLabourHours { get; set; }
-        public decimal AvailableLabourHours { get; set; }
-    }
-
-    public class PSoftLabourDetails
-    {
-        public string WorkGroup { get; set; }
-        public string Code { get; set; }
-        public string Date { get; set; }
-        public decimal Hours { get; set; }
-        public string EmployeeId { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class EllipseLabourDetails
-    {
-        public string WorkGroup { get; set; }
-        public string Code { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal Hours { get; set; }
     }
 }

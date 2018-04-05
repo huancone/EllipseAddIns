@@ -12,7 +12,7 @@ using EllipseWorkOrdersClassLibrary;
 
 namespace EllipseJobsClassLibrary
 {
-    public class JobActions
+    public static class JobActions
     {
         public static List<Jobs> FetchJobsPost(EllipseFunctions ef, string district, string dateInclude, int searchCriteriaKey1, string searchCriteriaValue1, string startDate, string endDate)
         {
@@ -142,14 +142,14 @@ namespace EllipseJobsClassLibrary
                 RaisedDate = (string)dto.Element("raisedDate"),
                 Reference = (string)dto.Element("reference"),
                 StdJobNo = (string)dto.Element("stdJobNo"),
-                StdJobTask = (string)dto.Element("woTaskNo"),
+                StdJobTask = (string)dto.Element("wOTaskNo"),
                 WoDesc = (string)dto.Element("woDesc"),
                 WoStatusM = (string)dto.Element("woStatusM"),
                 WoStatusU = (string)dto.Element("woStatusU"),
                 WoType = (string)dto.Element("woType"),
                 WorkGroup = (string)dto.Element("workGroup"),
                 WorkOrder = (string)dto.Element("workOrder"),
-                WoTaskNo = (string)dto.Element("woTaskNo")
+                WoTaskNo = (string)dto.Element("wOTaskNo")
             }).ToList();
 
             foreach (var job in jobs)
@@ -165,6 +165,7 @@ namespace EllipseJobsClassLibrary
                                                 {
                                                     WorkGroup = req.WorkGroup,
                                                     ResourceCode = req.ReqCode,
+                                                    Date = job.PlanStrDate,
                                                     EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDecimal(req.HrsReq) : 0,
                                                     RealLabourHours = !string.IsNullOrEmpty(req.HrsReal) ? Convert.ToDecimal(req.HrsReal) : 0
                                                 }
@@ -185,6 +186,7 @@ namespace EllipseJobsClassLibrary
                                                 {
                                                     WorkGroup = req.WorkGroup,
                                                     ResourceCode = req.ReqCode,
+                                                    Date = job.PlanStrDate,
                                                     EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDecimal(req.HrsReq) : 0,
                                                     RealLabourHours = 0
                                                 }
@@ -199,25 +201,24 @@ namespace EllipseJobsClassLibrary
             return jobs;
         }
 
-        public static List<PSoftLabourDetails> GetPsoftResources(string district, int primakeryKey, string primaryValue, string startDate, string endDate)
+        public static List<LabourResources> GetPsoftResources(string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
             var ef = new EllipseFunctions();
             ef.SetDBSettings(Environments.SigcorProductivo);
             var sqlQuery = Queries.GetPsoftResourcesQuery(ef.dbReference, ef.dbLink, district, primakeryKey, primaryValue, startDate, endDate);
             var drResources = ef.GetQueryResult(sqlQuery);
-            var list = new List<PSoftLabourDetails>();
+            var list = new List<LabourResources>();
 
             if (drResources == null || drResources.IsClosed || !drResources.HasRows) return list;
             while (drResources.Read())
             {
-                var res = new PSoftLabourDetails
+                var res = new LabourResources
                 {
                     WorkGroup = drResources["GRUPO"].ToString().Trim(),
-                    EmployeeId = drResources["EMPLOYEE_ID"].ToString().Trim(),
-                    Name = drResources["NAME"].ToString().Trim(),
-                    Code = drResources["RECURSO"].ToString().Trim(),
-                    Date = drResources["FECHA"].ToString().Trim(),
-                    Hours = Convert.ToDecimal(drResources["HORAS"].ToString().Trim())
+                    ResourceCode = drResources["RECURSO"].ToString().Trim(),
+                    Date = DateTime.ParseExact(drResources["FECHA"].ToString().Trim(), "yyyyMMdd", CultureInfo.InvariantCulture),
+                    Quantity = Convert.ToDouble(drResources["CANTIDAD"].ToString().Trim()),
+                    AvailableLabourHours = Convert.ToDouble(drResources["HORAS"].ToString().Trim())
                 };
                 list.Add(res);
             }
@@ -227,7 +228,7 @@ namespace EllipseJobsClassLibrary
 
     }
 
-    public class Queries
+    public static class Queries
     {
         public static string GetPsoftResourcesQuery(string dbReference, string dbLink, string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
@@ -240,31 +241,72 @@ namespace EllipseJobsClassLibrary
             else
                 groupList = Groups.GetWorkGroupList().Where(g => g.Details == primaryValue).Select(g => g.Name).ToList();
 
-            var query = "";
-            query = query + "SELECT ";
-            query = query + "    WE.WORK_GROUP GRUPO, ";
-            query = query + "    EMP.RESOURCE_TYPE RECURSO, ";
-            query = query + "    EMP.EMPLOYEE_ID, ";
-            query = query + "    TRIM(EMP.FIRST_NAME) || ' ' || TRIM(EMP.SURNAME) NAME, ";
-            query = query + "    TO_CHAR(TURNOS.FEC_JORND, 'YYYYMMDD') FECHA, ";
-            query = query + "    SUM( (TURNOS.HORAS) * (1 - ( (WG.BDOWN_ALLOW_PC + WG.ASSIGN_OTH_PC) / 100) ) ) HORAS ";
-            query = query + "FROM ";
-            query = query + "    " + dbReference + ".MSF810" + dbLink + " EMP ";
-            query = query + "     INNER JOIN " + dbReference + ".MSF723" + dbLink + " WE ";
-            query = query + "      ON EMP.EMPLOYEE_ID = WE.EMPLOYEE_ID ";
-            query = query + "    INNER JOIN SIGMDC.MDC_EXPLOTACION TURNOS ";
-            query = query + "    ON LPAD(EMP.EMPLOYEE_ID, 11, '0') = LPAD(TURNOS.EMPLID, 11, '0') ";
-            query = query + "    INNER JOIN " + dbReference + ".MSF720" + dbLink + " WG ";
-            query = query + "     ON WE.WORK_GROUP = WG.WORK_GROUP ";
-            query = query + "WHERE ";
-            query = query + "    WE.WORK_GROUP IN (" + groupList.Aggregate("", (current, g) => current + "'" + g + "'") + ") ";
-            query = query + "    AND TO_CHAR(TURNOS.FEC_JORND, 'YYYYMMDD') BETWEEN '" + startDate + "' AND '" + endDate + "' ";
-            query = query + "    AND WE.STOP_DT_REVSD = '00000000' ";
-            query = query + "    AND TRIM(EMP.RESOURCE_TYPE)IS NOT NULL ";
-            query = query + "    AND TRIM(EMP.RESOURCE_TYPE) <> 'SMPT' ";
-            query = query + "GROUP BY WE.WORK_GROUP, EMP.RESOURCE_TYPE, EMP.EMPLOYEE_ID, TRIM(EMP.FIRST_NAME) || ' ' || TRIM(EMP.SURNAME), TO_CHAR(TURNOS.FEC_JORND,'YYYYMMDD') ";
-            query = query + "ORDER BY 1,2,3,4 ";
-
+            var query = "WITH CTE_DATES ( CTE_DATE ) AS ( " +
+                        "	SELECT CAST(TO_DATE('" + startDate + "','YYYYMMDD') AS DATE) CTE_DATE FROM DUAL " +
+                        "	UNION ALL " +
+                        "	SELECT CAST( (CTE_DATE + 1) AS DATE) CTE_DATE FROM CTE_DATES WHERE TRUNC(CTE_DATE) + 1 <= TO_DATE('" + endDate + "','YYYYMMDD') " +
+                        "),FECHAS AS ( " +
+                        "	SELECT TO_CHAR(CTE_DATE,'YYYYMMDD') FECHA FROM CTE_DATES " +
+                        "),PSOFT AS ( " +
+                        "	SELECT " +
+                        "		WE.WORK_GROUP, " +
+                        "		EMP.RESOURCE_TYPE, " +
+                        "		FECHAS.FECHA, " +
+                        "		COUNT(DISTINCT TURNOS.EMPLID) CANTIDAD, " +
+                        "		SUM(TURNOS.HORAS) HORAS " +
+                        "	FROM " +
+                        "		" + dbReference + ".MSF810" + dbLink + " EMP " +
+                        "		INNER JOIN " + dbReference + ".MSF723" + dbLink + " WE " +
+                        "		ON EMP.EMPLOYEE_ID = WE.EMPLOYEE_ID " +
+                        "		INNER JOIN SIGMDC.MDC_EXPLOTACION TURNOS " +
+                        "		ON LPAD(EMP.EMPLOYEE_ID,11,'0') = LPAD(TURNOS.EMPLID,11,'0'), " +
+                        "		FECHAS " +
+                        "	WHERE " +
+                        "		WE.WORK_GROUP IN (" + groupList.Aggregate("", (current, g) => current + "'" + g + "'") + ") " +
+                        "		AND   WE.STOP_DT_REVSD = '00000000' " +
+                        "		AND   TRIM(EMP.RESOURCE_TYPE) IS NOT NULL " +
+                        "		AND   TRIM(EMP.RESOURCE_TYPE) NOT IN ('SMPT','SSUP') " +
+                        "		AND   TO_CHAR(TURNOS.FEC_JORND,'YYYYMMDD') = FECHAS.FECHA " +
+                        "	GROUP BY " +
+                        "		WE.WORK_GROUP, EMP.RESOURCE_TYPE, FECHAS.FECHA " +
+                        "),ELL AS ( " +
+                        "	SELECT " +
+                        "		EST.WORK_GROUP, " +
+                        "		EST.RESOURCE_TYPE, " +
+                        "		EST.REQ_RESRC_NO, " +
+                        "		FECHAS.FECHA " +
+                        "	FROM " +
+                        "		" + dbReference + ".MSF730_RESRC_REQ" + dbLink + " EST, " +
+                        "		FECHAS " +
+                        "	WHERE " +
+                        "		EST.WORK_GROUP IN (" + groupList.Aggregate("", (current, g) => current + "'" + g + "'") + ") " +
+                        "),RESOURCES AS ( " +
+                        "	SELECT " +
+                        "		DECODE(PSOFT.WORK_GROUP,NULL,ELL.WORK_GROUP,PSOFT.WORK_GROUP) GRUPO, " +
+                        "		DECODE(PSOFT.RESOURCE_TYPE,NULL,ELL.RESOURCE_TYPE,PSOFT.RESOURCE_TYPE) RECURSO, " +
+                        "		DECODE(PSOFT.CANTIDAD,NULL,ELL.REQ_RESRC_NO,PSOFT.CANTIDAD) CANTIDAD, " +
+                        "		PSOFT.HORAS, " +
+                        "		1 - (( WG.BDOWN_ALLOW_PC + ASSIGN_OTH_PC ) / 100) BDOWN, " +
+                        "		DECODE(PSOFT.FECHA,NULL,ELL.FECHA,PSOFT.FECHA) FECHA, " +
+                        "		TO_DATE(DECODE(PSOFT.FECHA,NULL,ELL.FECHA,PSOFT.FECHA) || ' ' || DEF_STR_TIME,'YYYYMMDD HH24MISS') INICIO_TURNO, " +
+                        "		TO_DATE(DECODE(PSOFT.FECHA,NULL,ELL.FECHA,PSOFT.FECHA) || ' ' || DEF_STOP_TIME,'YYYYMMDD HH24MISS') FIN_TURNO " +
+                        "	FROM " +
+                        "		ELL " +
+                        "		FULL JOIN PSOFT " +
+                        "		ON ELL.WORK_GROUP = PSOFT.WORK_GROUP " +
+                        "		   AND ELL.RESOURCE_TYPE = PSOFT.RESOURCE_TYPE " +
+                        "		   AND ELL.FECHA = PSOFT.FECHA " +
+                        "		INNER JOIN " + dbReference + ".MSF720" + dbLink + " WG " +
+                        "		ON ( ELL.WORK_GROUP = WG.WORK_GROUP OR PSOFT.WORK_GROUP = WG.WORK_GROUP ) " +
+                        ") " +
+                        "SELECT " +
+                        "	GRUPO, " +
+                        "	RECURSO, " +
+                        "	FECHA, " +
+                        "	CANTIDAD, " +
+                        "	CEIL(DECODE(HORAS, NULL, (FIN_TURNO - INICIO_TURNO)* 24 * CANTIDAD, HORAS) * BDOWN) HORAS " +
+                        "FROM " +
+                        "	RESOURCES ";
             return query;
         }
     }
