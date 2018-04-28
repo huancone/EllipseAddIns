@@ -166,8 +166,8 @@ namespace EllipseJobsClassLibrary
                                                     WorkGroup = req.WorkGroup,
                                                     ResourceCode = req.ReqCode,
                                                     Date = job.PlanStrDate,
-                                                    EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDecimal(req.HrsReq) : 0,
-                                                    RealLabourHours = !string.IsNullOrEmpty(req.HrsReal) ? Convert.ToDecimal(req.HrsReal) : 0
+                                                    EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDouble(req.HrsReq) : 0,
+                                                    RealLabourHours = !string.IsNullOrEmpty(req.HrsReal) ? Convert.ToDouble(req.HrsReal) : 0
                                                 }
                                                 where req.ReqType == "LAB"
                                                 select requirement)
@@ -187,7 +187,7 @@ namespace EllipseJobsClassLibrary
                                                     WorkGroup = req.WorkGroup,
                                                     ResourceCode = req.ReqCode,
                                                     Date = job.PlanStrDate,
-                                                    EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDecimal(req.HrsReq) : 0,
+                                                    EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDouble(req.HrsReq) : 0,
                                                     RealLabourHours = 0
                                                 }
                                                 where req.ReqType == "LAB"
@@ -226,6 +226,20 @@ namespace EllipseJobsClassLibrary
             return list;
         }
 
+        public static void SaveResources(List<LabourResources> resourcesToSave)
+        {
+            var ef = new EllipseFunctions();
+            ef.SetDBSettings(Environments.SigcorProductivo);
+            foreach (var r in resourcesToSave)
+            {
+                var sqlQuery = Queries.CheckifResourceExist(ef.dbReference, r);
+                var drExist = ef.GetQueryResult(sqlQuery);
+
+
+                sqlQuery = Queries.SaveResourcesQuery(ef.dbReference, r);
+                var drSaved = ef.GetQueryResult(sqlQuery);
+            }
+        }
     }
 
     public static class Queries
@@ -307,6 +321,26 @@ namespace EllipseJobsClassLibrary
                         "	CEIL(DECODE(HORAS, NULL, (FIN_TURNO - INICIO_TURNO)* 24 * CANTIDAD, HORAS) * BDOWN) HORAS " +
                         "FROM " +
                         "	RESOURCES ";
+            return query;
+        }
+
+        public static string SaveResourcesQuery(string dbReference, LabourResources l)
+        {
+            var query = "UPDATE SIGMDC.RECURSOS_PROGRAMACION SET  " +
+                        "   HORAS_PRO   = " + l.EstimatedLabourHours + " " +
+                        "   WHERE FECHA ='" + l.Date.ToString("yyyyMMdd") + "' " +
+                        "   AND  GRUPO  ='" + l.WorkGroup + "'  " +
+                        "   AND  RECURSO    ='" + l.ResourceCode + "'  ";
+
+            return query;
+        }
+
+        public static string CheckifResourceExist(string dbReference, LabourResources l)
+        {
+            var query = "select FECHA, GRUPO,RECURSO from SIGMDC.RECURSOS_PROGRAMACION where trim(FECHA) = '" + l.Date.ToString("yyyyMMdd") + "'" +
+                " AND trim(GRUPO) = '" + l.WorkGroup + "'" +
+                " AND trim(RECURSO) = '" + l.ResourceCode + "'";
+
             return query;
         }
     }

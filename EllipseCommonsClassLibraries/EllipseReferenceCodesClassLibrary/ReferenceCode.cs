@@ -90,6 +90,7 @@ namespace EllipseReferenceCodesClassLibrary
             try
             {
                 if (item.StdTextFlag && !string.IsNullOrWhiteSpace(item.StdtxtId))
+
                     item.StdText = StdText.GetText(urlService, StdText.GetStdTextOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings), "RC" + item.StdtxtId);
             }
             catch (Exception ex)

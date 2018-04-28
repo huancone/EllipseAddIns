@@ -51,6 +51,7 @@
             this.tabEllipse.SuspendLayout();
             this.grpMaintenanceScheduleTask.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -163,6 +164,7 @@
             this.grpMaintenanceScheduleTask.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

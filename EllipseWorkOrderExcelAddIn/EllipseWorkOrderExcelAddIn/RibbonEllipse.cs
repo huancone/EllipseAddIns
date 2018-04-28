@@ -72,7 +72,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const int ResultColumnD01 = 56;
         private const int ResultColumnD02 = 8;
         private const int ResultColumnD03 = 3;
-        private const int ResultColumnD04 = 33;
+        private const int ResultColumnD04 = 35;
         private const int ResultColumnQ01 = 36;
         private const int ResultColumnCc01 = 20;
 
@@ -1624,6 +1624,7 @@ namespace EllipseWorkOrderExcelAddIn
                 //CONSTRUYO LA HOJA 2 - WO TASKS
 
                 //CONSTRUYO LA HOJA 3 - WO TASKS REQUIREMENTS
+
                 //CONSTRUYO LA HOJA 4 - WO TASKS REFERENCE CODES
                 _excelApp.ActiveWorkbook.Sheets[2].Select(Type.Missing);
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetNameD04;
@@ -1687,6 +1688,8 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(30, TitleRowD04).Value = "Relacionar EV";
                 _cells.GetCell(31, TitleRowD04).Value = "Departamento";
                 _cells.GetCell(32, TitleRowD04).Value = "Localización";
+                _cells.GetCell(33, TitleRowD04).Value = "Metodo de Contacto";
+                _cells.GetCell(34, TitleRowD04).Value = "Detalle de Contacto";
 
 
                 _cells.GetCell(ResultColumnD04, TitleRowD04).Value = "RESULTADO";
@@ -3533,6 +3536,8 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(30, i).Value = "'" + woRefCodes.RelacionarEv;
                     _cells.GetCell(31, i).Value = "'" + woRefCodes.Departamento;
                     _cells.GetCell(32, i).Value = "'" + woRefCodes.Localizacion;
+                    _cells.GetCell(33, i).Value = "'" + woRefCodes.MetodoContacto;
+                    _cells.GetCell(34, i).Value = "'" + woRefCodes.MetodoContactoText;
 
                     _cells.GetCell(ResultColumnD04, i).Value = "CONSULTADO";
                     _cells.GetCell(ResultColumnD04, i).Style = StyleConstants.Success;
@@ -3617,7 +3622,9 @@ namespace EllipseWorkOrderExcelAddIn
                         FechaEntrega = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null,
                         RelacionarEv = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
                         Departamento = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
-                        Localizacion = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null
+                        Localizacion = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
+                        MetodoContacto = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
+                        MetodoContactoText = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null
                     };
 
 

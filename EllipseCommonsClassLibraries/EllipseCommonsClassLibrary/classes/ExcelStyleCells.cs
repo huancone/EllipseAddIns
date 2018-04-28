@@ -1143,24 +1143,24 @@ namespace EllipseCommonsClassLibrary.Classes
         //2. Adicionarla a la lista del método GetStyleName
         //3. Adicionarla a CreateStyle
 
-        public static string Normal = "MyNormal";
-        public static string Success = "Success";
-        public static string Warning = "Warning";
-        public static string Error = "Error";
-        public static string HeaderDefault = "HeaderDefault";
-        public static string HeaderSize17 = "HeaderSize17";
-        public static string TitleDefault = "TitleDefault";
-        public static string TitleRequired = "TitleRequired";
-        public static string TitleOptional = "TitleOptional";
-        public static string TitleInformation = "TitleInformation";
-        public static string TitleAction = "TitleAction";
-        public static string TitleAdditional = "TitleAdditional";
-        public static string TitleResult = "TitleResult";
-        public static string Option = "Option";
-        public static string Select = "Select";
-        public static string Disabled = "Disabled";
-        public static string Time = "Time";
-        public static string ItalicSmall = "ItalicSmall";
+        public const string Normal = "MyNormal";
+        public const string Success = "Success";
+        public const string Warning = "Warning";
+        public const string Error = "Error";
+        public const string HeaderDefault = "HeaderDefault";
+        public const string HeaderSize17 = "HeaderSize17";
+        public const string TitleDefault = "TitleDefault";
+        public const string TitleRequired = "TitleRequired";
+        public const string TitleOptional = "TitleOptional";
+        public const string TitleInformation = "TitleInformation";
+        public const string TitleAction = "TitleAction";
+        public const string TitleAdditional = "TitleAdditional";
+        public const string TitleResult = "TitleResult";
+        public const string Option = "Option";
+        public const string Select = "Select";
+        public const string Disabled = "Disabled";
+        public const string Time = "Time";
+        public const string ItalicSmall = "ItalicSmall";
         public static List<string> GetStyleListName()
         {
             var styleConstantsList = new List<string>
@@ -1190,22 +1190,23 @@ namespace EllipseCommonsClassLibrary.Classes
 
         public static class TableStyleConstants
         {
-            public static string DefaultTableStyle = "TableStyleLight8";
+            public const string DefaultTableStyle = "TableStyleLight8";
         }
     }
     //Formatos de Número para Celdas del Sistema
     public static class NumberFormatConstants
     {
-        public static string General = "General";
-        public static string Text = "@";
-        public static string Integer = "0";
-        public static string Date = "yyyyMMdd";
+        public const string General = "General";
+        public const string Text = "@";
+        public const string Integer = "0";
+        public const string Date = "yyyyMMdd";
+        public const string Percentage = "###,##%";
     }
 
     public static class LanguageSettingConstants
     {
-        public static string ListSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
-        public static string DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+        public static readonly string ListSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
+        public static readonly string DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 
     }
 

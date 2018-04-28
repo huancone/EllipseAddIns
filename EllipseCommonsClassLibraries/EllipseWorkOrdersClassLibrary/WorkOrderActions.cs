@@ -154,14 +154,14 @@ namespace EllipseWorkOrdersClassLibrary
         }
 
         /// <summary>
-                /// 
-                /// </summary>
-                /// <param name="ef"></param>
-                /// <param name="district"></param>
-                /// <param name="workOrder"></param>
-                /// <returns></returns>
-            public static
-            WorkOrder FetchWorkOrder(EllipseFunctions ef, string district, WorkOrderDTO workOrder)
+        /// 
+        /// </summary>
+        /// <param name="ef"></param>
+        /// <param name="district"></param>
+        /// <param name="workOrder"></param>
+        /// <returns></returns>
+        public static
+        WorkOrder FetchWorkOrder(EllipseFunctions ef, string district, WorkOrderDTO workOrder)
         {
             return FetchWorkOrder(ef, district, workOrder.prefix + workOrder.no);
         }
@@ -973,8 +973,7 @@ namespace EllipseWorkOrdersClassLibrary
             var item029 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "029", "001");
             var item030 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "030", "001");
             var item031 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "031", "001");
-
-
+            var item033 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "033", "001");
 
             woRefCodes.WorkRequest = item001.RefCode; //001_9001
             woRefCodes.ComentariosDuraciones = item002.RefCode; //002_9001
@@ -1006,6 +1005,8 @@ namespace EllipseWorkOrdersClassLibrary
             woRefCodes.RelacionarEv = item029.RefCode; //029_001
             woRefCodes.Departamento = item030.RefCode; //030_9001
             woRefCodes.Localizacion = item031.RefCode; //031_001
+            woRefCodes.MetodoContacto = item033.RefCode; //033_001
+            woRefCodes.MetodoContactoText = item033.StdText;//033_001
 
             newef.CloseConnection();
             return woRefCodes;
@@ -1057,6 +1058,7 @@ namespace EllipseWorkOrdersClassLibrary
             var item029 = new ReferenceCodeItem(entityType, entityValue, "029", "001", woRefCodes.RelacionarEv) { ShortName = "RelacionarEv" };
             var item030 = new ReferenceCodeItem(entityType, entityValue, "030", "001", woRefCodes.Departamento) { ShortName = "Departamento" };
             var item031 = new ReferenceCodeItem(entityType, entityValue, "031", "001", woRefCodes.Localizacion) { ShortName = "Localizacion" };
+            var item033 = new ReferenceCodeItem(entityType, entityValue, "033", "001", woRefCodes.MetodoContacto, null, woRefCodes.MetodoContactoText) { ShortName = "Metodo de Contacto" };
 
             itemList.Add(item001);
             itemList.Add(item002);
@@ -1085,6 +1087,7 @@ namespace EllipseWorkOrdersClassLibrary
             itemList.Add(item029);
             itemList.Add(item030);
             itemList.Add(item031);
+            itemList.Add(item033);
 
             var refCodeOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
 
@@ -2323,7 +2326,7 @@ namespace EllipseWorkOrdersClassLibrary
                 query += "    WO.DSTRCT_CODE = '" + districtCode + "' ";
                 query += "    AND WO.WORK_GROUP = '" + workGroup + "' ";
                 query += "    AND WO.ORIG_DOC_TYPE = 'OT' ";
-                query += "    AND WO.ORIG_DOC_NO = '"+ origDocNo + "' ";
+                query += "    AND WO.ORIG_DOC_NO = '" + origDocNo + "' ";
                 return query;
             }
         }

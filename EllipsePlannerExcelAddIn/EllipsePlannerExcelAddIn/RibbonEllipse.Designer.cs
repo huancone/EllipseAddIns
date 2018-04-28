@@ -40,8 +40,8 @@
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
-            this.menuJobs = this.Factory.CreateRibbonMenu();
             this.btnReviewJobs = this.Factory.CreateRibbonButton();
+            this.btnLoadData = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
@@ -84,17 +84,11 @@
             // 
             // menuActions
             // 
-            this.menuActions.Items.Add(this.menuJobs);
+            this.menuActions.Items.Add(this.btnReviewJobs);
+            this.menuActions.Items.Add(this.btnLoadData);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "&Acciones";
             this.menuActions.Name = "menuActions";
-            // 
-            // menuJobs
-            // 
-            this.menuJobs.Items.Add(this.btnReviewJobs);
-            this.menuJobs.Label = "&Work Planner";
-            this.menuJobs.Name = "menuJobs";
-            this.menuJobs.ShowImage = true;
             // 
             // btnReviewJobs
             // 
@@ -102,6 +96,13 @@
             this.btnReviewJobs.Name = "btnReviewJobs";
             this.btnReviewJobs.ShowImage = true;
             this.btnReviewJobs.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewJobs_Click);
+            // 
+            // btnLoadData
+            // 
+            this.btnLoadData.Label = "Cargar Información";
+            this.btnLoadData.Name = "btnLoadData";
+            this.btnLoadData.ShowImage = true;
+            this.btnLoadData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadData_Click);
             // 
             // btnStopThread
             // 
@@ -138,10 +139,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
-        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuJobs;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewJobs;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadData;
     }
 
     partial class ThisRibbonCollection

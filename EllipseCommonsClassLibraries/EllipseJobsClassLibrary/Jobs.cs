@@ -46,7 +46,7 @@ namespace EllipseJobsClassLibrary
         public DateTime Date { get; set; }
         public double Quantity { get; set; }
         public double AvailableLabourHours { get; set; }
-        public decimal EstimatedLabourHours { get; set; }
-        public decimal RealLabourHours { get; set; }
+        public double EstimatedLabourHours { get; set; }
+        public double RealLabourHours { get; set; }
     }
 }

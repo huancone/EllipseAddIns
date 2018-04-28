@@ -52,5 +52,7 @@
         public string Departamento;//030_9001
         //public string DepartamentoText;//030_9001
         public string Localizacion;//031_001
+        public string MetodoContacto;//033_001
+        public string MetodoContactoText;
     }
 }
