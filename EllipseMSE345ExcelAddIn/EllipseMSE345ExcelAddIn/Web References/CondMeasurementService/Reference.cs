@@ -23,49 +23,55 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="CondMeasurementServiceHttpBinding", Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractReplyCollectionDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ApplicationMessageImpl))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EnterpriseServiceOperationException))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ApplicationMessageImpl))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Attribute[]))]
     public partial class CondMeasurementService : System.Web.Services.Protocols.SoapHttpClientProtocol {
+        
+        private System.Threading.SendOrPostCallback readOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback retrieveMntTypesOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback createAckOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleCreateAckOperationCompleted;
         
         private System.Threading.SendOrPostCallback multipleDeleteOperationCompleted;
         
-        private System.Threading.SendOrPostCallback multipleCreateOperationCompleted;
-        
         private System.Threading.SendOrPostCallback retrieveMntsOperationCompleted;
         
-        private System.Threading.SendOrPostCallback multipleReadWithPartialResultsOperationCompleted;
+        private System.Threading.SendOrPostCallback deleteOperationCompleted;
         
         private System.Threading.SendOrPostCallback modifyOperationCompleted;
         
         private System.Threading.SendOrPostCallback multipleCreateWOOperationCompleted;
         
-        private System.Threading.SendOrPostCallback createOperationCompleted;
+        private System.Threading.SendOrPostCallback multipleModifyOperationCompleted;
         
         private System.Threading.SendOrPostCallback createWOOperationCompleted;
         
-        private System.Threading.SendOrPostCallback multipleModifyOperationCompleted;
+        private System.Threading.SendOrPostCallback retrieveAllMntsOperationCompleted;
         
-        private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
+        private System.Threading.SendOrPostCallback multipleGetxtKeyOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback createOperationCompleted;
         
         private System.Threading.SendOrPostCallback retrieveOperationCompleted;
         
-        private System.Threading.SendOrPostCallback deleteOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback readOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback retrieveAllMntsOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback retrieveMntTypesOperationCompleted;
+        private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
         
         private System.Threading.SendOrPostCallback getxtKeyOperationCompleted;
         
-        private System.Threading.SendOrPostCallback multipleGetxtKeyOperationCompleted;
+        private System.Threading.SendOrPostCallback multipleReadWithPartialResultsOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleCreateOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -106,16 +112,25 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
-        public event multipleDeleteCompletedEventHandler multipleDeleteCompleted;
+        public event readCompletedEventHandler readCompleted;
         
         /// <remarks/>
-        public event multipleCreateCompletedEventHandler multipleCreateCompleted;
+        public event retrieveMntTypesCompletedEventHandler retrieveMntTypesCompleted;
+        
+        /// <remarks/>
+        public event createAckCompletedEventHandler createAckCompleted;
+        
+        /// <remarks/>
+        public event multipleCreateAckCompletedEventHandler multipleCreateAckCompleted;
+        
+        /// <remarks/>
+        public event multipleDeleteCompletedEventHandler multipleDeleteCompleted;
         
         /// <remarks/>
         public event retrieveMntsCompletedEventHandler retrieveMntsCompleted;
         
         /// <remarks/>
-        public event multipleReadWithPartialResultsCompletedEventHandler multipleReadWithPartialResultsCompleted;
+        public event deleteCompletedEventHandler deleteCompleted;
         
         /// <remarks/>
         public event modifyCompletedEventHandler modifyCompleted;
@@ -124,37 +139,166 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         public event multipleCreateWOCompletedEventHandler multipleCreateWOCompleted;
         
         /// <remarks/>
-        public event createCompletedEventHandler createCompleted;
+        public event multipleModifyCompletedEventHandler multipleModifyCompleted;
         
         /// <remarks/>
         public event createWOCompletedEventHandler createWOCompleted;
         
         /// <remarks/>
-        public event multipleModifyCompletedEventHandler multipleModifyCompleted;
+        public event retrieveAllMntsCompletedEventHandler retrieveAllMntsCompleted;
         
         /// <remarks/>
-        public event multipleReadCompletedEventHandler multipleReadCompleted;
+        public event multipleGetxtKeyCompletedEventHandler multipleGetxtKeyCompleted;
+        
+        /// <remarks/>
+        public event createCompletedEventHandler createCompleted;
         
         /// <remarks/>
         public event retrieveCompletedEventHandler retrieveCompleted;
         
         /// <remarks/>
-        public event deleteCompletedEventHandler deleteCompleted;
-        
-        /// <remarks/>
-        public event readCompletedEventHandler readCompleted;
-        
-        /// <remarks/>
-        public event retrieveAllMntsCompletedEventHandler retrieveAllMntsCompleted;
-        
-        /// <remarks/>
-        public event retrieveMntTypesCompletedEventHandler retrieveMntTypesCompleted;
+        public event multipleReadCompletedEventHandler multipleReadCompleted;
         
         /// <remarks/>
         public event getxtKeyCompletedEventHandler getxtKeyCompleted;
         
         /// <remarks/>
-        public event multipleGetxtKeyCompletedEventHandler multipleGetxtKeyCompleted;
+        public event multipleReadWithPartialResultsCompletedEventHandler multipleReadWithPartialResultsCompleted;
+        
+        /// <remarks/>
+        public event multipleCreateCompletedEventHandler multipleCreateCompleted;
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public CondMeasurementServiceReadReplyDTO read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceReadRequestDTO requestParameters) {
+            object[] results = this.Invoke("read", new object[] {
+                        context,
+                        requestParameters});
+            return ((CondMeasurementServiceReadReplyDTO)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void readAsync(OperationContext context, CondMeasurementServiceReadRequestDTO requestParameters) {
+            this.readAsync(context, requestParameters, null);
+        }
+        
+        /// <remarks/>
+        public void readAsync(OperationContext context, CondMeasurementServiceReadRequestDTO requestParameters, object userState) {
+            if ((this.readOperationCompleted == null)) {
+                this.readOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreadOperationCompleted);
+            }
+            this.InvokeAsync("read", new object[] {
+                        context,
+                        requestParameters}, this.readOperationCompleted, userState);
+        }
+        
+        private void OnreadOperationCompleted(object arg) {
+            if ((this.readCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public CondMeasurementServiceRetrieveMntTypesReplyCollectionDTO retrieveMntTypes([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceRetrieveMntTypesRequestDTO requestParameters, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceRetrieveMntTypesRequiredAttributesDTO requiredAttributes, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string restartInfo) {
+            object[] results = this.Invoke("retrieveMntTypes", new object[] {
+                        context,
+                        requestParameters,
+                        requiredAttributes,
+                        restartInfo});
+            return ((CondMeasurementServiceRetrieveMntTypesReplyCollectionDTO)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void retrieveMntTypesAsync(OperationContext context, CondMeasurementServiceRetrieveMntTypesRequestDTO requestParameters, CondMeasurementServiceRetrieveMntTypesRequiredAttributesDTO requiredAttributes, string restartInfo) {
+            this.retrieveMntTypesAsync(context, requestParameters, requiredAttributes, restartInfo, null);
+        }
+        
+        /// <remarks/>
+        public void retrieveMntTypesAsync(OperationContext context, CondMeasurementServiceRetrieveMntTypesRequestDTO requestParameters, CondMeasurementServiceRetrieveMntTypesRequiredAttributesDTO requiredAttributes, string restartInfo, object userState) {
+            if ((this.retrieveMntTypesOperationCompleted == null)) {
+                this.retrieveMntTypesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnretrieveMntTypesOperationCompleted);
+            }
+            this.InvokeAsync("retrieveMntTypes", new object[] {
+                        context,
+                        requestParameters,
+                        requiredAttributes,
+                        restartInfo}, this.retrieveMntTypesOperationCompleted, userState);
+        }
+        
+        private void OnretrieveMntTypesOperationCompleted(object arg) {
+            if ((this.retrieveMntTypesCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.retrieveMntTypesCompleted(this, new retrieveMntTypesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public CondMeasurementServiceCreateAckReplyDTO createAck([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceCreateAckRequestDTO requestParameters) {
+            object[] results = this.Invoke("createAck", new object[] {
+                        context,
+                        requestParameters});
+            return ((CondMeasurementServiceCreateAckReplyDTO)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void createAckAsync(OperationContext context, CondMeasurementServiceCreateAckRequestDTO requestParameters) {
+            this.createAckAsync(context, requestParameters, null);
+        }
+        
+        /// <remarks/>
+        public void createAckAsync(OperationContext context, CondMeasurementServiceCreateAckRequestDTO requestParameters, object userState) {
+            if ((this.createAckOperationCompleted == null)) {
+                this.createAckOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateAckOperationCompleted);
+            }
+            this.InvokeAsync("createAck", new object[] {
+                        context,
+                        requestParameters}, this.createAckOperationCompleted, userState);
+        }
+        
+        private void OncreateAckOperationCompleted(object arg) {
+            if ((this.createAckCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.createAckCompleted(this, new createAckCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public CondMeasurementServiceCreateAckReplyCollectionDTO multipleCreateAck([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] CondMeasurementServiceCreateAckRequestDTO[] requestParameters) {
+            object[] results = this.Invoke("multipleCreateAck", new object[] {
+                        context,
+                        requestParameters});
+            return ((CondMeasurementServiceCreateAckReplyCollectionDTO)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleCreateAckAsync(OperationContext context, CondMeasurementServiceCreateAckRequestDTO[] requestParameters) {
+            this.multipleCreateAckAsync(context, requestParameters, null);
+        }
+        
+        /// <remarks/>
+        public void multipleCreateAckAsync(OperationContext context, CondMeasurementServiceCreateAckRequestDTO[] requestParameters, object userState) {
+            if ((this.multipleCreateAckOperationCompleted == null)) {
+                this.multipleCreateAckOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateAckOperationCompleted);
+            }
+            this.InvokeAsync("multipleCreateAck", new object[] {
+                        context,
+                        requestParameters}, this.multipleCreateAckOperationCompleted, userState);
+        }
+        
+        private void OnmultipleCreateAckOperationCompleted(object arg) {
+            if ((this.multipleCreateAckCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleCreateAckCompleted(this, new multipleCreateAckCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -185,38 +329,6 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
             if ((this.multipleDeleteCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.multipleDeleteCompleted(this, new multipleDeleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CondMeasurementServiceCreateReplyCollectionDTO multipleCreate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] CondMeasurementServiceCreateRequestDTO[] requestParameters) {
-            object[] results = this.Invoke("multipleCreate", new object[] {
-                        context,
-                        requestParameters});
-            return ((CondMeasurementServiceCreateReplyCollectionDTO)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleCreateAsync(OperationContext context, CondMeasurementServiceCreateRequestDTO[] requestParameters) {
-            this.multipleCreateAsync(context, requestParameters, null);
-        }
-        
-        /// <remarks/>
-        public void multipleCreateAsync(OperationContext context, CondMeasurementServiceCreateRequestDTO[] requestParameters, object userState) {
-            if ((this.multipleCreateOperationCompleted == null)) {
-                this.multipleCreateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateOperationCompleted);
-            }
-            this.InvokeAsync("multipleCreate", new object[] {
-                        context,
-                        requestParameters}, this.multipleCreateOperationCompleted, userState);
-        }
-        
-        private void OnmultipleCreateOperationCompleted(object arg) {
-            if ((this.multipleCreateCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleCreateCompleted(this, new multipleCreateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -259,32 +371,32 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CondMeasurementServiceReadReplyCollectionDTO multipleReadWithPartialResults([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] CondMeasurementServiceReadRequestDTO[] requestParameters) {
-            object[] results = this.Invoke("multipleReadWithPartialResults", new object[] {
+        public CondMeasurementServiceDeleteReplyDTO delete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceDeleteRequestDTO requestParameters) {
+            object[] results = this.Invoke("delete", new object[] {
                         context,
                         requestParameters});
-            return ((CondMeasurementServiceReadReplyCollectionDTO)(results[0]));
+            return ((CondMeasurementServiceDeleteReplyDTO)(results[0]));
         }
         
         /// <remarks/>
-        public void multipleReadWithPartialResultsAsync(OperationContext context, CondMeasurementServiceReadRequestDTO[] requestParameters) {
-            this.multipleReadWithPartialResultsAsync(context, requestParameters, null);
+        public void deleteAsync(OperationContext context, CondMeasurementServiceDeleteRequestDTO requestParameters) {
+            this.deleteAsync(context, requestParameters, null);
         }
         
         /// <remarks/>
-        public void multipleReadWithPartialResultsAsync(OperationContext context, CondMeasurementServiceReadRequestDTO[] requestParameters, object userState) {
-            if ((this.multipleReadWithPartialResultsOperationCompleted == null)) {
-                this.multipleReadWithPartialResultsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadWithPartialResultsOperationCompleted);
+        public void deleteAsync(OperationContext context, CondMeasurementServiceDeleteRequestDTO requestParameters, object userState) {
+            if ((this.deleteOperationCompleted == null)) {
+                this.deleteOperationCompleted = new System.Threading.SendOrPostCallback(this.OndeleteOperationCompleted);
             }
-            this.InvokeAsync("multipleReadWithPartialResults", new object[] {
+            this.InvokeAsync("delete", new object[] {
                         context,
-                        requestParameters}, this.multipleReadWithPartialResultsOperationCompleted, userState);
+                        requestParameters}, this.deleteOperationCompleted, userState);
         }
         
-        private void OnmultipleReadWithPartialResultsOperationCompleted(object arg) {
-            if ((this.multipleReadWithPartialResultsCompleted != null)) {
+        private void OndeleteOperationCompleted(object arg) {
+            if ((this.deleteCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleReadWithPartialResultsCompleted(this, new multipleReadWithPartialResultsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.deleteCompleted(this, new deleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -355,70 +467,6 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CondMeasurementServiceCreateReplyDTO create([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceCreateRequestDTO requestParameters) {
-            object[] results = this.Invoke("create", new object[] {
-                        context,
-                        requestParameters});
-            return ((CondMeasurementServiceCreateReplyDTO)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void createAsync(OperationContext context, CondMeasurementServiceCreateRequestDTO requestParameters) {
-            this.createAsync(context, requestParameters, null);
-        }
-        
-        /// <remarks/>
-        public void createAsync(OperationContext context, CondMeasurementServiceCreateRequestDTO requestParameters, object userState) {
-            if ((this.createOperationCompleted == null)) {
-                this.createOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateOperationCompleted);
-            }
-            this.InvokeAsync("create", new object[] {
-                        context,
-                        requestParameters}, this.createOperationCompleted, userState);
-        }
-        
-        private void OncreateOperationCompleted(object arg) {
-            if ((this.createCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.createCompleted(this, new createCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CondMeasurementServiceCreateWOReplyDTO createWO([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceCreateWORequestDTO requestParameters) {
-            object[] results = this.Invoke("createWO", new object[] {
-                        context,
-                        requestParameters});
-            return ((CondMeasurementServiceCreateWOReplyDTO)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void createWOAsync(OperationContext context, CondMeasurementServiceCreateWORequestDTO requestParameters) {
-            this.createWOAsync(context, requestParameters, null);
-        }
-        
-        /// <remarks/>
-        public void createWOAsync(OperationContext context, CondMeasurementServiceCreateWORequestDTO requestParameters, object userState) {
-            if ((this.createWOOperationCompleted == null)) {
-                this.createWOOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateWOOperationCompleted);
-            }
-            this.InvokeAsync("createWO", new object[] {
-                        context,
-                        requestParameters}, this.createWOOperationCompleted, userState);
-        }
-        
-        private void OncreateWOOperationCompleted(object arg) {
-            if ((this.createWOCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.createWOCompleted(this, new createWOCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
         public CondMeasurementServiceModifyReplyCollectionDTO multipleModify([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] CondMeasurementServiceModifyRequestDTO[] requestParameters) {
             object[] results = this.Invoke("multipleModify", new object[] {
                         context,
@@ -451,132 +499,32 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CondMeasurementServiceReadReplyCollectionDTO multipleRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] CondMeasurementServiceReadRequestDTO[] requestParameters) {
-            object[] results = this.Invoke("multipleRead", new object[] {
+        public CondMeasurementServiceCreateWOReplyDTO createWO([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceCreateWORequestDTO requestParameters) {
+            object[] results = this.Invoke("createWO", new object[] {
                         context,
                         requestParameters});
-            return ((CondMeasurementServiceReadReplyCollectionDTO)(results[0]));
+            return ((CondMeasurementServiceCreateWOReplyDTO)(results[0]));
         }
         
         /// <remarks/>
-        public void multipleReadAsync(OperationContext context, CondMeasurementServiceReadRequestDTO[] requestParameters) {
-            this.multipleReadAsync(context, requestParameters, null);
+        public void createWOAsync(OperationContext context, CondMeasurementServiceCreateWORequestDTO requestParameters) {
+            this.createWOAsync(context, requestParameters, null);
         }
         
         /// <remarks/>
-        public void multipleReadAsync(OperationContext context, CondMeasurementServiceReadRequestDTO[] requestParameters, object userState) {
-            if ((this.multipleReadOperationCompleted == null)) {
-                this.multipleReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadOperationCompleted);
+        public void createWOAsync(OperationContext context, CondMeasurementServiceCreateWORequestDTO requestParameters, object userState) {
+            if ((this.createWOOperationCompleted == null)) {
+                this.createWOOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateWOOperationCompleted);
             }
-            this.InvokeAsync("multipleRead", new object[] {
+            this.InvokeAsync("createWO", new object[] {
                         context,
-                        requestParameters}, this.multipleReadOperationCompleted, userState);
+                        requestParameters}, this.createWOOperationCompleted, userState);
         }
         
-        private void OnmultipleReadOperationCompleted(object arg) {
-            if ((this.multipleReadCompleted != null)) {
+        private void OncreateWOOperationCompleted(object arg) {
+            if ((this.createWOCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleReadCompleted(this, new multipleReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CondMeasurementServiceRetrieveReplyCollectionDTO retrieve([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceRetrieveRequestDTO requestParameters, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceRetrieveRequiredAttributesDTO requiredAttributes, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string restartInfo) {
-            object[] results = this.Invoke("retrieve", new object[] {
-                        context,
-                        requestParameters,
-                        requiredAttributes,
-                        restartInfo});
-            return ((CondMeasurementServiceRetrieveReplyCollectionDTO)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void retrieveAsync(OperationContext context, CondMeasurementServiceRetrieveRequestDTO requestParameters, CondMeasurementServiceRetrieveRequiredAttributesDTO requiredAttributes, string restartInfo) {
-            this.retrieveAsync(context, requestParameters, requiredAttributes, restartInfo, null);
-        }
-        
-        /// <remarks/>
-        public void retrieveAsync(OperationContext context, CondMeasurementServiceRetrieveRequestDTO requestParameters, CondMeasurementServiceRetrieveRequiredAttributesDTO requiredAttributes, string restartInfo, object userState) {
-            if ((this.retrieveOperationCompleted == null)) {
-                this.retrieveOperationCompleted = new System.Threading.SendOrPostCallback(this.OnretrieveOperationCompleted);
-            }
-            this.InvokeAsync("retrieve", new object[] {
-                        context,
-                        requestParameters,
-                        requiredAttributes,
-                        restartInfo}, this.retrieveOperationCompleted, userState);
-        }
-        
-        private void OnretrieveOperationCompleted(object arg) {
-            if ((this.retrieveCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.retrieveCompleted(this, new retrieveCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CondMeasurementServiceDeleteReplyDTO delete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceDeleteRequestDTO requestParameters) {
-            object[] results = this.Invoke("delete", new object[] {
-                        context,
-                        requestParameters});
-            return ((CondMeasurementServiceDeleteReplyDTO)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void deleteAsync(OperationContext context, CondMeasurementServiceDeleteRequestDTO requestParameters) {
-            this.deleteAsync(context, requestParameters, null);
-        }
-        
-        /// <remarks/>
-        public void deleteAsync(OperationContext context, CondMeasurementServiceDeleteRequestDTO requestParameters, object userState) {
-            if ((this.deleteOperationCompleted == null)) {
-                this.deleteOperationCompleted = new System.Threading.SendOrPostCallback(this.OndeleteOperationCompleted);
-            }
-            this.InvokeAsync("delete", new object[] {
-                        context,
-                        requestParameters}, this.deleteOperationCompleted, userState);
-        }
-        
-        private void OndeleteOperationCompleted(object arg) {
-            if ((this.deleteCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.deleteCompleted(this, new deleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CondMeasurementServiceReadReplyDTO read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceReadRequestDTO requestParameters) {
-            object[] results = this.Invoke("read", new object[] {
-                        context,
-                        requestParameters});
-            return ((CondMeasurementServiceReadReplyDTO)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void readAsync(OperationContext context, CondMeasurementServiceReadRequestDTO requestParameters) {
-            this.readAsync(context, requestParameters, null);
-        }
-        
-        /// <remarks/>
-        public void readAsync(OperationContext context, CondMeasurementServiceReadRequestDTO requestParameters, object userState) {
-            if ((this.readOperationCompleted == null)) {
-                this.readOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreadOperationCompleted);
-            }
-            this.InvokeAsync("read", new object[] {
-                        context,
-                        requestParameters}, this.readOperationCompleted, userState);
-        }
-        
-        private void OnreadOperationCompleted(object arg) {
-            if ((this.readCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.createWOCompleted(this, new createWOCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -619,36 +567,132 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CondMeasurementServiceRetrieveMntTypesReplyCollectionDTO retrieveMntTypes([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceRetrieveMntTypesRequestDTO requestParameters, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceRetrieveMntTypesRequiredAttributesDTO requiredAttributes, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string restartInfo) {
-            object[] results = this.Invoke("retrieveMntTypes", new object[] {
+        public CondMeasurementServiceGetxtKeyReplyCollectionDTO multipleGetxtKey([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] CondMeasurementServiceGetxtKeyRequestDTO[] requestParameters) {
+            object[] results = this.Invoke("multipleGetxtKey", new object[] {
+                        context,
+                        requestParameters});
+            return ((CondMeasurementServiceGetxtKeyReplyCollectionDTO)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleGetxtKeyAsync(OperationContext context, CondMeasurementServiceGetxtKeyRequestDTO[] requestParameters) {
+            this.multipleGetxtKeyAsync(context, requestParameters, null);
+        }
+        
+        /// <remarks/>
+        public void multipleGetxtKeyAsync(OperationContext context, CondMeasurementServiceGetxtKeyRequestDTO[] requestParameters, object userState) {
+            if ((this.multipleGetxtKeyOperationCompleted == null)) {
+                this.multipleGetxtKeyOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleGetxtKeyOperationCompleted);
+            }
+            this.InvokeAsync("multipleGetxtKey", new object[] {
+                        context,
+                        requestParameters}, this.multipleGetxtKeyOperationCompleted, userState);
+        }
+        
+        private void OnmultipleGetxtKeyOperationCompleted(object arg) {
+            if ((this.multipleGetxtKeyCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleGetxtKeyCompleted(this, new multipleGetxtKeyCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public CondMeasurementServiceCreateReplyDTO create([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceCreateRequestDTO requestParameters) {
+            object[] results = this.Invoke("create", new object[] {
+                        context,
+                        requestParameters});
+            return ((CondMeasurementServiceCreateReplyDTO)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void createAsync(OperationContext context, CondMeasurementServiceCreateRequestDTO requestParameters) {
+            this.createAsync(context, requestParameters, null);
+        }
+        
+        /// <remarks/>
+        public void createAsync(OperationContext context, CondMeasurementServiceCreateRequestDTO requestParameters, object userState) {
+            if ((this.createOperationCompleted == null)) {
+                this.createOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateOperationCompleted);
+            }
+            this.InvokeAsync("create", new object[] {
+                        context,
+                        requestParameters}, this.createOperationCompleted, userState);
+        }
+        
+        private void OncreateOperationCompleted(object arg) {
+            if ((this.createCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.createCompleted(this, new createCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public CondMeasurementServiceRetrieveReplyCollectionDTO retrieve([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceRetrieveRequestDTO requestParameters, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] CondMeasurementServiceRetrieveRequiredAttributesDTO requiredAttributes, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string restartInfo) {
+            object[] results = this.Invoke("retrieve", new object[] {
                         context,
                         requestParameters,
                         requiredAttributes,
                         restartInfo});
-            return ((CondMeasurementServiceRetrieveMntTypesReplyCollectionDTO)(results[0]));
+            return ((CondMeasurementServiceRetrieveReplyCollectionDTO)(results[0]));
         }
         
         /// <remarks/>
-        public void retrieveMntTypesAsync(OperationContext context, CondMeasurementServiceRetrieveMntTypesRequestDTO requestParameters, CondMeasurementServiceRetrieveMntTypesRequiredAttributesDTO requiredAttributes, string restartInfo) {
-            this.retrieveMntTypesAsync(context, requestParameters, requiredAttributes, restartInfo, null);
+        public void retrieveAsync(OperationContext context, CondMeasurementServiceRetrieveRequestDTO requestParameters, CondMeasurementServiceRetrieveRequiredAttributesDTO requiredAttributes, string restartInfo) {
+            this.retrieveAsync(context, requestParameters, requiredAttributes, restartInfo, null);
         }
         
         /// <remarks/>
-        public void retrieveMntTypesAsync(OperationContext context, CondMeasurementServiceRetrieveMntTypesRequestDTO requestParameters, CondMeasurementServiceRetrieveMntTypesRequiredAttributesDTO requiredAttributes, string restartInfo, object userState) {
-            if ((this.retrieveMntTypesOperationCompleted == null)) {
-                this.retrieveMntTypesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnretrieveMntTypesOperationCompleted);
+        public void retrieveAsync(OperationContext context, CondMeasurementServiceRetrieveRequestDTO requestParameters, CondMeasurementServiceRetrieveRequiredAttributesDTO requiredAttributes, string restartInfo, object userState) {
+            if ((this.retrieveOperationCompleted == null)) {
+                this.retrieveOperationCompleted = new System.Threading.SendOrPostCallback(this.OnretrieveOperationCompleted);
             }
-            this.InvokeAsync("retrieveMntTypes", new object[] {
+            this.InvokeAsync("retrieve", new object[] {
                         context,
                         requestParameters,
                         requiredAttributes,
-                        restartInfo}, this.retrieveMntTypesOperationCompleted, userState);
+                        restartInfo}, this.retrieveOperationCompleted, userState);
         }
         
-        private void OnretrieveMntTypesOperationCompleted(object arg) {
-            if ((this.retrieveMntTypesCompleted != null)) {
+        private void OnretrieveOperationCompleted(object arg) {
+            if ((this.retrieveCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.retrieveMntTypesCompleted(this, new retrieveMntTypesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.retrieveCompleted(this, new retrieveCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public CondMeasurementServiceReadReplyCollectionDTO multipleRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] CondMeasurementServiceReadRequestDTO[] requestParameters) {
+            object[] results = this.Invoke("multipleRead", new object[] {
+                        context,
+                        requestParameters});
+            return ((CondMeasurementServiceReadReplyCollectionDTO)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleReadAsync(OperationContext context, CondMeasurementServiceReadRequestDTO[] requestParameters) {
+            this.multipleReadAsync(context, requestParameters, null);
+        }
+        
+        /// <remarks/>
+        public void multipleReadAsync(OperationContext context, CondMeasurementServiceReadRequestDTO[] requestParameters, object userState) {
+            if ((this.multipleReadOperationCompleted == null)) {
+                this.multipleReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadOperationCompleted);
+            }
+            this.InvokeAsync("multipleRead", new object[] {
+                        context,
+                        requestParameters}, this.multipleReadOperationCompleted, userState);
+        }
+        
+        private void OnmultipleReadOperationCompleted(object arg) {
+            if ((this.multipleReadCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleReadCompleted(this, new multipleReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -687,32 +731,64 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public CondMeasurementServiceGetxtKeyReplyCollectionDTO multipleGetxtKey([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] CondMeasurementServiceGetxtKeyRequestDTO[] requestParameters) {
-            object[] results = this.Invoke("multipleGetxtKey", new object[] {
+        public CondMeasurementServiceReadReplyCollectionDTO multipleReadWithPartialResults([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] CondMeasurementServiceReadRequestDTO[] requestParameters) {
+            object[] results = this.Invoke("multipleReadWithPartialResults", new object[] {
                         context,
                         requestParameters});
-            return ((CondMeasurementServiceGetxtKeyReplyCollectionDTO)(results[0]));
+            return ((CondMeasurementServiceReadReplyCollectionDTO)(results[0]));
         }
         
         /// <remarks/>
-        public void multipleGetxtKeyAsync(OperationContext context, CondMeasurementServiceGetxtKeyRequestDTO[] requestParameters) {
-            this.multipleGetxtKeyAsync(context, requestParameters, null);
+        public void multipleReadWithPartialResultsAsync(OperationContext context, CondMeasurementServiceReadRequestDTO[] requestParameters) {
+            this.multipleReadWithPartialResultsAsync(context, requestParameters, null);
         }
         
         /// <remarks/>
-        public void multipleGetxtKeyAsync(OperationContext context, CondMeasurementServiceGetxtKeyRequestDTO[] requestParameters, object userState) {
-            if ((this.multipleGetxtKeyOperationCompleted == null)) {
-                this.multipleGetxtKeyOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleGetxtKeyOperationCompleted);
+        public void multipleReadWithPartialResultsAsync(OperationContext context, CondMeasurementServiceReadRequestDTO[] requestParameters, object userState) {
+            if ((this.multipleReadWithPartialResultsOperationCompleted == null)) {
+                this.multipleReadWithPartialResultsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadWithPartialResultsOperationCompleted);
             }
-            this.InvokeAsync("multipleGetxtKey", new object[] {
+            this.InvokeAsync("multipleReadWithPartialResults", new object[] {
                         context,
-                        requestParameters}, this.multipleGetxtKeyOperationCompleted, userState);
+                        requestParameters}, this.multipleReadWithPartialResultsOperationCompleted, userState);
         }
         
-        private void OnmultipleGetxtKeyOperationCompleted(object arg) {
-            if ((this.multipleGetxtKeyCompleted != null)) {
+        private void OnmultipleReadWithPartialResultsOperationCompleted(object arg) {
+            if ((this.multipleReadWithPartialResultsCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleGetxtKeyCompleted(this, new multipleGetxtKeyCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.multipleReadWithPartialResultsCompleted(this, new multipleReadWithPartialResultsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public CondMeasurementServiceCreateReplyCollectionDTO multipleCreate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] CondMeasurementServiceCreateRequestDTO[] requestParameters) {
+            object[] results = this.Invoke("multipleCreate", new object[] {
+                        context,
+                        requestParameters});
+            return ((CondMeasurementServiceCreateReplyCollectionDTO)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleCreateAsync(OperationContext context, CondMeasurementServiceCreateRequestDTO[] requestParameters) {
+            this.multipleCreateAsync(context, requestParameters, null);
+        }
+        
+        /// <remarks/>
+        public void multipleCreateAsync(OperationContext context, CondMeasurementServiceCreateRequestDTO[] requestParameters, object userState) {
+            if ((this.multipleCreateOperationCompleted == null)) {
+                this.multipleCreateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateOperationCompleted);
+            }
+            this.InvokeAsync("multipleCreate", new object[] {
+                        context,
+                        requestParameters}, this.multipleCreateOperationCompleted, userState);
+        }
+        
+        private void OnmultipleCreateOperationCompleted(object arg) {
+            if ((this.multipleCreateCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleCreateCompleted(this, new multipleCreateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -736,14 +812,20 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://connectivity.service.ews.mincom.com")]
     public partial class OperationContext {
         
+        private string applicationClientIdField;
+        
         private string districtField;
+        
+        private bool eventDisableField;
+        
+        private bool eventDisableFieldSpecified;
         
         private int maxInstancesField;
         
@@ -757,11 +839,23 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         
         private RunAs runAsField;
         
+        private string tenantIdField;
+        
         private bool traceField;
         
         private bool traceFieldSpecified;
         
         private string transactionField;
+        
+        /// <remarks/>
+        public string applicationClientId {
+            get {
+                return this.applicationClientIdField;
+            }
+            set {
+                this.applicationClientIdField = value;
+            }
+        }
         
         /// <remarks/>
         public string district {
@@ -770,6 +864,27 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
             }
             set {
                 this.districtField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool eventDisable {
+            get {
+                return this.eventDisableField;
+            }
+            set {
+                this.eventDisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool eventDisableSpecified {
+            get {
+                return this.eventDisableFieldSpecified;
+            }
+            set {
+                this.eventDisableFieldSpecified = value;
             }
         }
         
@@ -836,6 +951,16 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
+        public string tenantId {
+            get {
+                return this.tenantIdField;
+            }
+            set {
+                this.tenantIdField = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool trace {
             get {
                 return this.traceField;
@@ -868,7 +993,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -913,22 +1038,23 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceGetxtKeyReplyCollectionDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntTypesReplyCollectionDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveAllMntsReplyCollectionDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateReplyCollectionDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceReadReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveReplyCollectionDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceGetxtKeyReplyCollectionDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveAllMntsReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceModifyReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateWOReplyCollectionDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceReadReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntsReplyCollectionDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceDeleteReplyCollectionDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateAckReplyCollectionDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntTypesReplyCollectionDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class AbstractReplyCollectionDTO {
+    public abstract partial class AbstractReplyCollectionDTO {
         
         private string collectionRestartPointField;
         
@@ -944,17 +1070,17 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceGetxtKeyReplyCollectionDTO : AbstractReplyCollectionDTO {
+    public partial class CondMeasurementServiceCreateReplyCollectionDTO : AbstractReplyCollectionDTO {
         
-        private CondMeasurementServiceGetxtKeyReplyDTO[] replyElementsField;
+        private CondMeasurementServiceCreateReplyDTO[] replyElementsField;
         
         /// <remarks/>
-        public CondMeasurementServiceGetxtKeyReplyDTO[] replyElements {
+        public CondMeasurementServiceCreateReplyDTO[] replyElements {
             get {
                 return this.replyElementsField;
             }
@@ -965,22 +1091,361 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceGetxtKeyReplyDTO : AbstractReplyDTO {
+    public partial class CondMeasurementServiceCreateReplyDTO : AbstractReplyDTO {
+        
+        private string wODescField;
+        
+        private string compCodeField;
+        
+        private string compCodeDescriptionField;
+        
+        private string compModCodeField;
+        
+        private string compModCodeDescriptionField;
+        
+        private string condMonMeasField;
+        
+        private string condMonMeasDescriptionField;
+        
+        private string condMonPosField;
+        
+        private string condMonPosDescriptionField;
+        
+        private string condMonTypeField;
+        
+        private string condMonTypeDescriptionField;
+        
+        private string districtCodeField;
+        
+        private string districtNameField;
+        
+        private string equipmentDescription1Field;
+        
+        private string equipmentDescription2Field;
+        
+        private string equipmentNoField;
+        
+        private string equipmentRefField;
+        
+        private string measureDateField;
+        
+        private string measureOrigntField;
+        
+        private string measureProcIndField;
+        
+        private string measureStatusField;
+        
+        private string measureTimeField;
+        
+        private decimal measureValueField;
+        
+        private bool measureValueFieldSpecified;
         
         private decimal narrativeNoField;
         
         private bool narrativeNoFieldSpecified;
+        
+        private bool spcTriggered1Field;
+        
+        private bool spcTriggered1FieldSpecified;
+        
+        private bool spcTriggered10Field;
+        
+        private bool spcTriggered10FieldSpecified;
+        
+        private bool spcTriggered2Field;
+        
+        private bool spcTriggered2FieldSpecified;
+        
+        private bool spcTriggered3Field;
+        
+        private bool spcTriggered3FieldSpecified;
+        
+        private bool spcTriggered4Field;
+        
+        private bool spcTriggered4FieldSpecified;
+        
+        private bool spcTriggered5Field;
+        
+        private bool spcTriggered5FieldSpecified;
+        
+        private bool spcTriggered6Field;
+        
+        private bool spcTriggered6FieldSpecified;
+        
+        private bool spcTriggered7Field;
+        
+        private bool spcTriggered7FieldSpecified;
+        
+        private bool spcTriggered8Field;
+        
+        private bool spcTriggered8FieldSpecified;
+        
+        private bool spcTriggered9Field;
+        
+        private bool spcTriggered9FieldSpecified;
         
         private string stdTxtKeyField;
         
         private bool stdTxtKeyExistsField;
         
         private bool stdTxtKeyExistsFieldSpecified;
+        
+        private string unitofMeasureField;
+        
+        private string visInsCode1Field;
+        
+        private string visInsCode2Field;
+        
+        private string visInsCode3Field;
+        
+        private WorkOrderDTO workOrderField;
+        
+        /// <remarks/>
+        public string WODesc {
+            get {
+                return this.wODescField;
+            }
+            set {
+                this.wODescField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCodeDescription {
+            get {
+                return this.compCodeDescriptionField;
+            }
+            set {
+                this.compCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCodeDescription {
+            get {
+                return this.compModCodeDescriptionField;
+            }
+            set {
+                this.compModCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonMeas {
+            get {
+                return this.condMonMeasField;
+            }
+            set {
+                this.condMonMeasField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonMeasDescription {
+            get {
+                return this.condMonMeasDescriptionField;
+            }
+            set {
+                this.condMonMeasDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPos {
+            get {
+                return this.condMonPosField;
+            }
+            set {
+                this.condMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPosDescription {
+            get {
+                return this.condMonPosDescriptionField;
+            }
+            set {
+                this.condMonPosDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonType {
+            get {
+                return this.condMonTypeField;
+            }
+            set {
+                this.condMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonTypeDescription {
+            get {
+                return this.condMonTypeDescriptionField;
+            }
+            set {
+                this.condMonTypeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string districtCode {
+            get {
+                return this.districtCodeField;
+            }
+            set {
+                this.districtCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string districtName {
+            get {
+                return this.districtNameField;
+            }
+            set {
+                this.districtNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentDescription1 {
+            get {
+                return this.equipmentDescription1Field;
+            }
+            set {
+                this.equipmentDescription1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentDescription2 {
+            get {
+                return this.equipmentDescription2Field;
+            }
+            set {
+                this.equipmentDescription2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentNo {
+            get {
+                return this.equipmentNoField;
+            }
+            set {
+                this.equipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentRef {
+            get {
+                return this.equipmentRefField;
+            }
+            set {
+                this.equipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureDate {
+            get {
+                return this.measureDateField;
+            }
+            set {
+                this.measureDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureOrignt {
+            get {
+                return this.measureOrigntField;
+            }
+            set {
+                this.measureOrigntField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureProcInd {
+            get {
+                return this.measureProcIndField;
+            }
+            set {
+                this.measureProcIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureStatus {
+            get {
+                return this.measureStatusField;
+            }
+            set {
+                this.measureStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureTime {
+            get {
+                return this.measureTimeField;
+            }
+            set {
+                this.measureTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal measureValue {
+            get {
+                return this.measureValueField;
+            }
+            set {
+                this.measureValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool measureValueSpecified {
+            get {
+                return this.measureValueFieldSpecified;
+            }
+            set {
+                this.measureValueFieldSpecified = value;
+            }
+        }
         
         /// <remarks/>
         public decimal narrativeNo {
@@ -1000,6 +1465,216 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
             }
             set {
                 this.narrativeNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered1 {
+            get {
+                return this.spcTriggered1Field;
+            }
+            set {
+                this.spcTriggered1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered1Specified {
+            get {
+                return this.spcTriggered1FieldSpecified;
+            }
+            set {
+                this.spcTriggered1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered10 {
+            get {
+                return this.spcTriggered10Field;
+            }
+            set {
+                this.spcTriggered10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered10Specified {
+            get {
+                return this.spcTriggered10FieldSpecified;
+            }
+            set {
+                this.spcTriggered10FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered2 {
+            get {
+                return this.spcTriggered2Field;
+            }
+            set {
+                this.spcTriggered2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered2Specified {
+            get {
+                return this.spcTriggered2FieldSpecified;
+            }
+            set {
+                this.spcTriggered2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered3 {
+            get {
+                return this.spcTriggered3Field;
+            }
+            set {
+                this.spcTriggered3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered3Specified {
+            get {
+                return this.spcTriggered3FieldSpecified;
+            }
+            set {
+                this.spcTriggered3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered4 {
+            get {
+                return this.spcTriggered4Field;
+            }
+            set {
+                this.spcTriggered4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered4Specified {
+            get {
+                return this.spcTriggered4FieldSpecified;
+            }
+            set {
+                this.spcTriggered4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered5 {
+            get {
+                return this.spcTriggered5Field;
+            }
+            set {
+                this.spcTriggered5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered5Specified {
+            get {
+                return this.spcTriggered5FieldSpecified;
+            }
+            set {
+                this.spcTriggered5FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered6 {
+            get {
+                return this.spcTriggered6Field;
+            }
+            set {
+                this.spcTriggered6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered6Specified {
+            get {
+                return this.spcTriggered6FieldSpecified;
+            }
+            set {
+                this.spcTriggered6FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered7 {
+            get {
+                return this.spcTriggered7Field;
+            }
+            set {
+                this.spcTriggered7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered7Specified {
+            get {
+                return this.spcTriggered7FieldSpecified;
+            }
+            set {
+                this.spcTriggered7FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered8 {
+            get {
+                return this.spcTriggered8Field;
+            }
+            set {
+                this.spcTriggered8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered8Specified {
+            get {
+                return this.spcTriggered8FieldSpecified;
+            }
+            set {
+                this.spcTriggered8FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered9 {
+            get {
+                return this.spcTriggered9Field;
+            }
+            set {
+                this.spcTriggered9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered9Specified {
+            get {
+                return this.spcTriggered9FieldSpecified;
+            }
+            set {
+                this.spcTriggered9FieldSpecified = value;
             }
         }
         
@@ -1033,25 +1708,109 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
                 this.stdTxtKeyExistsFieldSpecified = value;
             }
         }
+        
+        /// <remarks/>
+        public string unitofMeasure {
+            get {
+                return this.unitofMeasureField;
+            }
+            set {
+                this.unitofMeasureField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string visInsCode1 {
+            get {
+                return this.visInsCode1Field;
+            }
+            set {
+                this.visInsCode1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string visInsCode2 {
+            get {
+                return this.visInsCode2Field;
+            }
+            set {
+                this.visInsCode2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string visInsCode3 {
+            get {
+                return this.visInsCode3Field;
+            }
+            set {
+                this.visInsCode3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public WorkOrderDTO workOrder {
+            get {
+                return this.workOrderField;
+            }
+            set {
+                this.workOrderField = value;
+            }
+        }
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceGetxtKeyReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntTypesReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveAllMntsReplyDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com")]
+    public partial class WorkOrderDTO {
+        
+        private string prefixField;
+        
+        private string noField;
+        
+        /// <remarks/>
+        public string prefix {
+            get {
+                return this.prefixField;
+            }
+            set {
+                this.prefixField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string no {
+            get {
+                return this.noField;
+            }
+            set {
+                this.noField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceGetxtKeyReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveAllMntsReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateWOReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceModifyReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceReadReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntsReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceDeleteReplyDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateAckReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntTypesReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceReadReplyDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class AbstractReplyDTO : AbstractDTO {
+    public abstract partial class AbstractReplyDTO : AbstractDTO {
         
         private WarningMessageDTO[] warningsAndInformationField;
         
@@ -1067,7 +1826,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1078,7 +1837,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ErrorMessageDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WarningMessageDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1173,7 +1932,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1182,33 +1941,35 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveAllMntsRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntsRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntTypesRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceReadRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceGetxtKeyRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceModifyRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateWORequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceDeleteRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateAckRequestDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceGetxtKeyReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntTypesReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveAllMntsReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceGetxtKeyReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveAllMntsReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateWOReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceModifyReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceReadReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntsReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceDeleteReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceGetxtKeyRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntTypesRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveAllMntsRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateWORequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceModifyRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceReadRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntsRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceDeleteRequestDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateAckReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntTypesReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceReadReplyDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class AbstractDTO {
+    public abstract partial class AbstractDTO {
         
         private Attribute[] customAttributesField;
         
@@ -1225,7 +1986,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1233,6 +1994,10 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     public partial class Attribute {
         
         private string nameField;
+        
+        private string namespaceField;
+        
+        private anyType2anyTypeMapEntry[] propertiesField;
         
         private string valueField;
         
@@ -1243,6 +2008,27 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
             }
             set {
                 this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string @namespace {
+            get {
+                return this.namespaceField;
+            }
+            set {
+                this.namespaceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("entry", Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com", IsNullable=false)]
+        public anyType2anyTypeMapEntry[] properties {
+            get {
+                return this.propertiesField;
+            }
+            set {
+                this.propertiesField = value;
             }
         }
         
@@ -1258,12 +2044,477 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class anyType2anyTypeMapEntry {
+        
+        private object keyField;
+        
+        private object valueField;
+        
+        /// <remarks/>
+        public object key {
+            get {
+                return this.keyField;
+            }
+            set {
+                this.keyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public object value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceGetxtKeyRequestDTO : AbstractDTO {
+    public partial class CondMeasurementServiceRetrieveRequestDTO : AbstractDTO {
+        
+        private string cSetSearchTypeField;
+        
+        private string assignPersonField;
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string condMonPosField;
+        
+        private string condMonTypeField;
+        
+        private string equipmentNoField;
+        
+        private string equipmentRefField;
+        
+        private string startDateField;
+        
+        private string workGroupField;
+        
+        private WorkOrderDTO workOrderField;
+        
+        /// <remarks/>
+        public string CSetSearchType {
+            get {
+                return this.cSetSearchTypeField;
+            }
+            set {
+                this.cSetSearchTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string assignPerson {
+            get {
+                return this.assignPersonField;
+            }
+            set {
+                this.assignPersonField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPos {
+            get {
+                return this.condMonPosField;
+            }
+            set {
+                this.condMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonType {
+            get {
+                return this.condMonTypeField;
+            }
+            set {
+                this.condMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentNo {
+            get {
+                return this.equipmentNoField;
+            }
+            set {
+                this.equipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentRef {
+            get {
+                return this.equipmentRefField;
+            }
+            set {
+                this.equipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string startDate {
+            get {
+                return this.startDateField;
+            }
+            set {
+                this.startDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workGroup {
+            get {
+                return this.workGroupField;
+            }
+            set {
+                this.workGroupField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public WorkOrderDTO workOrder {
+            get {
+                return this.workOrderField;
+            }
+            set {
+                this.workOrderField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceRetrieveAllMntsRequestDTO : AbstractDTO {
+        
+        private string cSetSearchTypeField;
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string condMonPosField;
+        
+        private string condMonTypeField;
+        
+        private string equipmentNoField;
+        
+        private string equipmentRefField;
+        
+        private string startDateField;
+        
+        /// <remarks/>
+        public string CSetSearchType {
+            get {
+                return this.cSetSearchTypeField;
+            }
+            set {
+                this.cSetSearchTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPos {
+            get {
+                return this.condMonPosField;
+            }
+            set {
+                this.condMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonType {
+            get {
+                return this.condMonTypeField;
+            }
+            set {
+                this.condMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentNo {
+            get {
+                return this.equipmentNoField;
+            }
+            set {
+                this.equipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentRef {
+            get {
+                return this.equipmentRefField;
+            }
+            set {
+                this.equipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string startDate {
+            get {
+                return this.startDateField;
+            }
+            set {
+                this.startDateField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceRetrieveMntsRequestDTO : AbstractDTO {
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string condMonPosField;
+        
+        private string condMonTypeField;
+        
+        private string equipmentNoField;
+        
+        private string equipmentRefField;
+        
+        private string measureDateField;
+        
+        private string measureTimeField;
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPos {
+            get {
+                return this.condMonPosField;
+            }
+            set {
+                this.condMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonType {
+            get {
+                return this.condMonTypeField;
+            }
+            set {
+                this.condMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentNo {
+            get {
+                return this.equipmentNoField;
+            }
+            set {
+                this.equipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentRef {
+            get {
+                return this.equipmentRefField;
+            }
+            set {
+                this.equipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureDate {
+            get {
+                return this.measureDateField;
+            }
+            set {
+                this.measureDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureTime {
+            get {
+                return this.measureTimeField;
+            }
+            set {
+                this.measureTimeField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceRetrieveMntTypesRequestDTO : AbstractDTO {
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string condMonPosField;
+        
+        private string condMonTypeField;
+        
+        private string equipmentNoField;
+        
+        private string equipmentRefField;
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPos {
+            get {
+                return this.condMonPosField;
+            }
+            set {
+                this.condMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonType {
+            get {
+                return this.condMonTypeField;
+            }
+            set {
+                this.condMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentNo {
+            get {
+                return this.equipmentNoField;
+            }
+            set {
+                this.equipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentRef {
+            get {
+                return this.equipmentRefField;
+            }
+            set {
+                this.equipmentRefField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceCreateRequestDTO : AbstractDTO {
         
         private string compCodeField;
         
@@ -1283,7 +2534,17 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         
         private string measureTimeField;
         
-        private CondMeasurementServiceGetxtKeyRequiredAttributesDTO requiredAttributesField;
+        private decimal measureValueField;
+        
+        private bool measureValueFieldSpecified;
+        
+        private CondMeasurementServiceCreateRequiredAttributesDTO requiredAttributesField;
+        
+        private string visInsCode1Field;
+        
+        private string visInsCode2Field;
+        
+        private string visInsCode3Field;
         
         /// <remarks/>
         public string compCode {
@@ -1376,7 +2637,28 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
-        public CondMeasurementServiceGetxtKeyRequiredAttributesDTO requiredAttributes {
+        public decimal measureValue {
+            get {
+                return this.measureValueField;
+            }
+            set {
+                this.measureValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool measureValueSpecified {
+            get {
+                return this.measureValueFieldSpecified;
+            }
+            set {
+                this.measureValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceCreateRequiredAttributesDTO requiredAttributes {
             get {
                 return this.requiredAttributesField;
             }
@@ -1384,10 +2666,2453 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
                 this.requiredAttributesField = value;
             }
         }
+        
+        /// <remarks/>
+        public string visInsCode1 {
+            get {
+                return this.visInsCode1Field;
+            }
+            set {
+                this.visInsCode1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string visInsCode2 {
+            get {
+                return this.visInsCode2Field;
+            }
+            set {
+                this.visInsCode2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string visInsCode3 {
+            get {
+                return this.visInsCode3Field;
+            }
+            set {
+                this.visInsCode3Field = value;
+            }
+        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceCreateRequiredAttributesDTO : AbstractRequiredAttributesDTO {
+        
+        private bool returnCompCodeField;
+        
+        private bool returnCompCodeFieldSpecified;
+        
+        private bool returnCompCodeDescriptionField;
+        
+        private bool returnCompCodeDescriptionFieldSpecified;
+        
+        private bool returnCompModCodeField;
+        
+        private bool returnCompModCodeFieldSpecified;
+        
+        private bool returnCompModCodeDescriptionField;
+        
+        private bool returnCompModCodeDescriptionFieldSpecified;
+        
+        private bool returnCondMonMeasField;
+        
+        private bool returnCondMonMeasFieldSpecified;
+        
+        private bool returnCondMonMeasDescriptionField;
+        
+        private bool returnCondMonMeasDescriptionFieldSpecified;
+        
+        private bool returnCondMonPosField;
+        
+        private bool returnCondMonPosFieldSpecified;
+        
+        private bool returnCondMonPosDescriptionField;
+        
+        private bool returnCondMonPosDescriptionFieldSpecified;
+        
+        private bool returnCondMonTypeField;
+        
+        private bool returnCondMonTypeFieldSpecified;
+        
+        private bool returnCondMonTypeDescriptionField;
+        
+        private bool returnCondMonTypeDescriptionFieldSpecified;
+        
+        private bool returnDistrictCodeField;
+        
+        private bool returnDistrictCodeFieldSpecified;
+        
+        private bool returnDistrictNameField;
+        
+        private bool returnDistrictNameFieldSpecified;
+        
+        private bool returnEquipmentDescription1Field;
+        
+        private bool returnEquipmentDescription1FieldSpecified;
+        
+        private bool returnEquipmentDescription2Field;
+        
+        private bool returnEquipmentDescription2FieldSpecified;
+        
+        private bool returnEquipmentNoField;
+        
+        private bool returnEquipmentNoFieldSpecified;
+        
+        private bool returnEquipmentRefField;
+        
+        private bool returnEquipmentRefFieldSpecified;
+        
+        private bool returnMeasureDateField;
+        
+        private bool returnMeasureDateFieldSpecified;
+        
+        private bool returnMeasureOrigntField;
+        
+        private bool returnMeasureOrigntFieldSpecified;
+        
+        private bool returnMeasureProcIndField;
+        
+        private bool returnMeasureProcIndFieldSpecified;
+        
+        private bool returnMeasureStatusField;
+        
+        private bool returnMeasureStatusFieldSpecified;
+        
+        private bool returnMeasureTimeField;
+        
+        private bool returnMeasureTimeFieldSpecified;
+        
+        private bool returnMeasureValueField;
+        
+        private bool returnMeasureValueFieldSpecified;
+        
+        private bool returnNarrativeNoField;
+        
+        private bool returnNarrativeNoFieldSpecified;
+        
+        private bool returnSpcTriggered1Field;
+        
+        private bool returnSpcTriggered1FieldSpecified;
+        
+        private bool returnSpcTriggered10Field;
+        
+        private bool returnSpcTriggered10FieldSpecified;
+        
+        private bool returnSpcTriggered2Field;
+        
+        private bool returnSpcTriggered2FieldSpecified;
+        
+        private bool returnSpcTriggered3Field;
+        
+        private bool returnSpcTriggered3FieldSpecified;
+        
+        private bool returnSpcTriggered4Field;
+        
+        private bool returnSpcTriggered4FieldSpecified;
+        
+        private bool returnSpcTriggered5Field;
+        
+        private bool returnSpcTriggered5FieldSpecified;
+        
+        private bool returnSpcTriggered6Field;
+        
+        private bool returnSpcTriggered6FieldSpecified;
+        
+        private bool returnSpcTriggered7Field;
+        
+        private bool returnSpcTriggered7FieldSpecified;
+        
+        private bool returnSpcTriggered8Field;
+        
+        private bool returnSpcTriggered8FieldSpecified;
+        
+        private bool returnSpcTriggered9Field;
+        
+        private bool returnSpcTriggered9FieldSpecified;
+        
+        private bool returnStdTxtKeyField;
+        
+        private bool returnStdTxtKeyFieldSpecified;
+        
+        private bool returnStdTxtKeyExistsField;
+        
+        private bool returnStdTxtKeyExistsFieldSpecified;
+        
+        private bool returnUnitofMeasureField;
+        
+        private bool returnUnitofMeasureFieldSpecified;
+        
+        private bool returnVisInsCode1Field;
+        
+        private bool returnVisInsCode1FieldSpecified;
+        
+        private bool returnVisInsCode2Field;
+        
+        private bool returnVisInsCode2FieldSpecified;
+        
+        private bool returnVisInsCode3Field;
+        
+        private bool returnVisInsCode3FieldSpecified;
+        
+        private bool returnWODescField;
+        
+        private bool returnWODescFieldSpecified;
+        
+        private bool returnWorkOrderField;
+        
+        private bool returnWorkOrderFieldSpecified;
+        
+        /// <remarks/>
+        public bool returnCompCode {
+            get {
+                return this.returnCompCodeField;
+            }
+            set {
+                this.returnCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompCodeSpecified {
+            get {
+                return this.returnCompCodeFieldSpecified;
+            }
+            set {
+                this.returnCompCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompCodeDescription {
+            get {
+                return this.returnCompCodeDescriptionField;
+            }
+            set {
+                this.returnCompCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompCodeDescriptionSpecified {
+            get {
+                return this.returnCompCodeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCompCodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompModCode {
+            get {
+                return this.returnCompModCodeField;
+            }
+            set {
+                this.returnCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompModCodeSpecified {
+            get {
+                return this.returnCompModCodeFieldSpecified;
+            }
+            set {
+                this.returnCompModCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompModCodeDescription {
+            get {
+                return this.returnCompModCodeDescriptionField;
+            }
+            set {
+                this.returnCompModCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompModCodeDescriptionSpecified {
+            get {
+                return this.returnCompModCodeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCompModCodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonMeas {
+            get {
+                return this.returnCondMonMeasField;
+            }
+            set {
+                this.returnCondMonMeasField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonMeasSpecified {
+            get {
+                return this.returnCondMonMeasFieldSpecified;
+            }
+            set {
+                this.returnCondMonMeasFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonMeasDescription {
+            get {
+                return this.returnCondMonMeasDescriptionField;
+            }
+            set {
+                this.returnCondMonMeasDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonMeasDescriptionSpecified {
+            get {
+                return this.returnCondMonMeasDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCondMonMeasDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonPos {
+            get {
+                return this.returnCondMonPosField;
+            }
+            set {
+                this.returnCondMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonPosSpecified {
+            get {
+                return this.returnCondMonPosFieldSpecified;
+            }
+            set {
+                this.returnCondMonPosFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonPosDescription {
+            get {
+                return this.returnCondMonPosDescriptionField;
+            }
+            set {
+                this.returnCondMonPosDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonPosDescriptionSpecified {
+            get {
+                return this.returnCondMonPosDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCondMonPosDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonType {
+            get {
+                return this.returnCondMonTypeField;
+            }
+            set {
+                this.returnCondMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonTypeSpecified {
+            get {
+                return this.returnCondMonTypeFieldSpecified;
+            }
+            set {
+                this.returnCondMonTypeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonTypeDescription {
+            get {
+                return this.returnCondMonTypeDescriptionField;
+            }
+            set {
+                this.returnCondMonTypeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonTypeDescriptionSpecified {
+            get {
+                return this.returnCondMonTypeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCondMonTypeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnDistrictCode {
+            get {
+                return this.returnDistrictCodeField;
+            }
+            set {
+                this.returnDistrictCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnDistrictCodeSpecified {
+            get {
+                return this.returnDistrictCodeFieldSpecified;
+            }
+            set {
+                this.returnDistrictCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnDistrictName {
+            get {
+                return this.returnDistrictNameField;
+            }
+            set {
+                this.returnDistrictNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnDistrictNameSpecified {
+            get {
+                return this.returnDistrictNameFieldSpecified;
+            }
+            set {
+                this.returnDistrictNameFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentDescription1 {
+            get {
+                return this.returnEquipmentDescription1Field;
+            }
+            set {
+                this.returnEquipmentDescription1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentDescription1Specified {
+            get {
+                return this.returnEquipmentDescription1FieldSpecified;
+            }
+            set {
+                this.returnEquipmentDescription1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentDescription2 {
+            get {
+                return this.returnEquipmentDescription2Field;
+            }
+            set {
+                this.returnEquipmentDescription2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentDescription2Specified {
+            get {
+                return this.returnEquipmentDescription2FieldSpecified;
+            }
+            set {
+                this.returnEquipmentDescription2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentNo {
+            get {
+                return this.returnEquipmentNoField;
+            }
+            set {
+                this.returnEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentNoSpecified {
+            get {
+                return this.returnEquipmentNoFieldSpecified;
+            }
+            set {
+                this.returnEquipmentNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentRef {
+            get {
+                return this.returnEquipmentRefField;
+            }
+            set {
+                this.returnEquipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentRefSpecified {
+            get {
+                return this.returnEquipmentRefFieldSpecified;
+            }
+            set {
+                this.returnEquipmentRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureDate {
+            get {
+                return this.returnMeasureDateField;
+            }
+            set {
+                this.returnMeasureDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureDateSpecified {
+            get {
+                return this.returnMeasureDateFieldSpecified;
+            }
+            set {
+                this.returnMeasureDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureOrignt {
+            get {
+                return this.returnMeasureOrigntField;
+            }
+            set {
+                this.returnMeasureOrigntField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureOrigntSpecified {
+            get {
+                return this.returnMeasureOrigntFieldSpecified;
+            }
+            set {
+                this.returnMeasureOrigntFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureProcInd {
+            get {
+                return this.returnMeasureProcIndField;
+            }
+            set {
+                this.returnMeasureProcIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureProcIndSpecified {
+            get {
+                return this.returnMeasureProcIndFieldSpecified;
+            }
+            set {
+                this.returnMeasureProcIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureStatus {
+            get {
+                return this.returnMeasureStatusField;
+            }
+            set {
+                this.returnMeasureStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureStatusSpecified {
+            get {
+                return this.returnMeasureStatusFieldSpecified;
+            }
+            set {
+                this.returnMeasureStatusFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureTime {
+            get {
+                return this.returnMeasureTimeField;
+            }
+            set {
+                this.returnMeasureTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureTimeSpecified {
+            get {
+                return this.returnMeasureTimeFieldSpecified;
+            }
+            set {
+                this.returnMeasureTimeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureValue {
+            get {
+                return this.returnMeasureValueField;
+            }
+            set {
+                this.returnMeasureValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureValueSpecified {
+            get {
+                return this.returnMeasureValueFieldSpecified;
+            }
+            set {
+                this.returnMeasureValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnNarrativeNo {
+            get {
+                return this.returnNarrativeNoField;
+            }
+            set {
+                this.returnNarrativeNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnNarrativeNoSpecified {
+            get {
+                return this.returnNarrativeNoFieldSpecified;
+            }
+            set {
+                this.returnNarrativeNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered1 {
+            get {
+                return this.returnSpcTriggered1Field;
+            }
+            set {
+                this.returnSpcTriggered1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered1Specified {
+            get {
+                return this.returnSpcTriggered1FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered10 {
+            get {
+                return this.returnSpcTriggered10Field;
+            }
+            set {
+                this.returnSpcTriggered10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered10Specified {
+            get {
+                return this.returnSpcTriggered10FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered10FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered2 {
+            get {
+                return this.returnSpcTriggered2Field;
+            }
+            set {
+                this.returnSpcTriggered2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered2Specified {
+            get {
+                return this.returnSpcTriggered2FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered3 {
+            get {
+                return this.returnSpcTriggered3Field;
+            }
+            set {
+                this.returnSpcTriggered3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered3Specified {
+            get {
+                return this.returnSpcTriggered3FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered4 {
+            get {
+                return this.returnSpcTriggered4Field;
+            }
+            set {
+                this.returnSpcTriggered4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered4Specified {
+            get {
+                return this.returnSpcTriggered4FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered5 {
+            get {
+                return this.returnSpcTriggered5Field;
+            }
+            set {
+                this.returnSpcTriggered5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered5Specified {
+            get {
+                return this.returnSpcTriggered5FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered5FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered6 {
+            get {
+                return this.returnSpcTriggered6Field;
+            }
+            set {
+                this.returnSpcTriggered6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered6Specified {
+            get {
+                return this.returnSpcTriggered6FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered6FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered7 {
+            get {
+                return this.returnSpcTriggered7Field;
+            }
+            set {
+                this.returnSpcTriggered7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered7Specified {
+            get {
+                return this.returnSpcTriggered7FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered7FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered8 {
+            get {
+                return this.returnSpcTriggered8Field;
+            }
+            set {
+                this.returnSpcTriggered8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered8Specified {
+            get {
+                return this.returnSpcTriggered8FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered8FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered9 {
+            get {
+                return this.returnSpcTriggered9Field;
+            }
+            set {
+                this.returnSpcTriggered9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered9Specified {
+            get {
+                return this.returnSpcTriggered9FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered9FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnStdTxtKey {
+            get {
+                return this.returnStdTxtKeyField;
+            }
+            set {
+                this.returnStdTxtKeyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnStdTxtKeySpecified {
+            get {
+                return this.returnStdTxtKeyFieldSpecified;
+            }
+            set {
+                this.returnStdTxtKeyFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnStdTxtKeyExists {
+            get {
+                return this.returnStdTxtKeyExistsField;
+            }
+            set {
+                this.returnStdTxtKeyExistsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnStdTxtKeyExistsSpecified {
+            get {
+                return this.returnStdTxtKeyExistsFieldSpecified;
+            }
+            set {
+                this.returnStdTxtKeyExistsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnUnitofMeasure {
+            get {
+                return this.returnUnitofMeasureField;
+            }
+            set {
+                this.returnUnitofMeasureField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnUnitofMeasureSpecified {
+            get {
+                return this.returnUnitofMeasureFieldSpecified;
+            }
+            set {
+                this.returnUnitofMeasureFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnVisInsCode1 {
+            get {
+                return this.returnVisInsCode1Field;
+            }
+            set {
+                this.returnVisInsCode1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnVisInsCode1Specified {
+            get {
+                return this.returnVisInsCode1FieldSpecified;
+            }
+            set {
+                this.returnVisInsCode1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnVisInsCode2 {
+            get {
+                return this.returnVisInsCode2Field;
+            }
+            set {
+                this.returnVisInsCode2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnVisInsCode2Specified {
+            get {
+                return this.returnVisInsCode2FieldSpecified;
+            }
+            set {
+                this.returnVisInsCode2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnVisInsCode3 {
+            get {
+                return this.returnVisInsCode3Field;
+            }
+            set {
+                this.returnVisInsCode3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnVisInsCode3Specified {
+            get {
+                return this.returnVisInsCode3FieldSpecified;
+            }
+            set {
+                this.returnVisInsCode3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWODesc {
+            get {
+                return this.returnWODescField;
+            }
+            set {
+                this.returnWODescField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWODescSpecified {
+            get {
+                return this.returnWODescFieldSpecified;
+            }
+            set {
+                this.returnWODescFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrder {
+            get {
+                return this.returnWorkOrderField;
+            }
+            set {
+                this.returnWorkOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderSpecified {
+            get {
+                return this.returnWorkOrderFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceGetxtKeyRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveAllMntsRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateWORequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceModifyRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntsRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceDeleteRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateAckRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntTypesRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceReadRequiredAttributesDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
+    public abstract partial class AbstractRequiredAttributesDTO {
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceRetrieveRequiredAttributesDTO : AbstractRequiredAttributesDTO {
+        
+        private bool returnAlarmDistrictField;
+        
+        private bool returnAlarmDistrictFieldSpecified;
+        
+        private bool returnAlarmIndField;
+        
+        private bool returnAlarmIndFieldSpecified;
+        
+        private bool returnAlarmWOField;
+        
+        private bool returnAlarmWOFieldSpecified;
+        
+        private bool returnAssignPersonField;
+        
+        private bool returnAssignPersonFieldSpecified;
+        
+        private bool returnAssignPersonDescriptionField;
+        
+        private bool returnAssignPersonDescriptionFieldSpecified;
+        
+        private bool returnCompCodeField;
+        
+        private bool returnCompCodeFieldSpecified;
+        
+        private bool returnCompCodeDescriptionField;
+        
+        private bool returnCompCodeDescriptionFieldSpecified;
+        
+        private bool returnCompModCodeField;
+        
+        private bool returnCompModCodeFieldSpecified;
+        
+        private bool returnCompModCodeDescriptionField;
+        
+        private bool returnCompModCodeDescriptionFieldSpecified;
+        
+        private bool returnCondMonMeasField;
+        
+        private bool returnCondMonMeasFieldSpecified;
+        
+        private bool returnCondMonMeasDescriptionField;
+        
+        private bool returnCondMonMeasDescriptionFieldSpecified;
+        
+        private bool returnCondMonPosField;
+        
+        private bool returnCondMonPosFieldSpecified;
+        
+        private bool returnCondMonPosDescriptionField;
+        
+        private bool returnCondMonPosDescriptionFieldSpecified;
+        
+        private bool returnCondMonTypeField;
+        
+        private bool returnCondMonTypeFieldSpecified;
+        
+        private bool returnCondMonTypeDescriptionField;
+        
+        private bool returnCondMonTypeDescriptionFieldSpecified;
+        
+        private bool returnDistrictCodeField;
+        
+        private bool returnDistrictCodeFieldSpecified;
+        
+        private bool returnDistrictNameField;
+        
+        private bool returnDistrictNameFieldSpecified;
+        
+        private bool returnEquipmentDescription1Field;
+        
+        private bool returnEquipmentDescription1FieldSpecified;
+        
+        private bool returnEquipmentDescription2Field;
+        
+        private bool returnEquipmentDescription2FieldSpecified;
+        
+        private bool returnEquipmentNoField;
+        
+        private bool returnEquipmentNoFieldSpecified;
+        
+        private bool returnEquipmentRefField;
+        
+        private bool returnEquipmentRefFieldSpecified;
+        
+        private bool returnInstallEequipRefField;
+        
+        private bool returnInstallEequipRefFieldSpecified;
+        
+        private bool returnInstallEquipmentDescription1Field;
+        
+        private bool returnInstallEquipmentDescription1FieldSpecified;
+        
+        private bool returnInstallEquipmentDescription2Field;
+        
+        private bool returnInstallEquipmentDescription2FieldSpecified;
+        
+        private bool returnInstallEquipmentNoField;
+        
+        private bool returnInstallEquipmentNoFieldSpecified;
+        
+        private bool returnMeasureDateField;
+        
+        private bool returnMeasureDateFieldSpecified;
+        
+        private bool returnMeasureOrigntField;
+        
+        private bool returnMeasureOrigntFieldSpecified;
+        
+        private bool returnMeasureProcIndField;
+        
+        private bool returnMeasureProcIndFieldSpecified;
+        
+        private bool returnMeasureStatusField;
+        
+        private bool returnMeasureStatusFieldSpecified;
+        
+        private bool returnMeasureTimeField;
+        
+        private bool returnMeasureTimeFieldSpecified;
+        
+        private bool returnMeasureValueField;
+        
+        private bool returnMeasureValueFieldSpecified;
+        
+        private bool returnNarrativeNoField;
+        
+        private bool returnNarrativeNoFieldSpecified;
+        
+        private bool returnSpcTriggered1Field;
+        
+        private bool returnSpcTriggered1FieldSpecified;
+        
+        private bool returnSpcTriggered10Field;
+        
+        private bool returnSpcTriggered10FieldSpecified;
+        
+        private bool returnSpcTriggered2Field;
+        
+        private bool returnSpcTriggered2FieldSpecified;
+        
+        private bool returnSpcTriggered3Field;
+        
+        private bool returnSpcTriggered3FieldSpecified;
+        
+        private bool returnSpcTriggered4Field;
+        
+        private bool returnSpcTriggered4FieldSpecified;
+        
+        private bool returnSpcTriggered5Field;
+        
+        private bool returnSpcTriggered5FieldSpecified;
+        
+        private bool returnSpcTriggered6Field;
+        
+        private bool returnSpcTriggered6FieldSpecified;
+        
+        private bool returnSpcTriggered7Field;
+        
+        private bool returnSpcTriggered7FieldSpecified;
+        
+        private bool returnSpcTriggered8Field;
+        
+        private bool returnSpcTriggered8FieldSpecified;
+        
+        private bool returnSpcTriggered9Field;
+        
+        private bool returnSpcTriggered9FieldSpecified;
+        
+        private bool returnUnitofMeasureField;
+        
+        private bool returnUnitofMeasureFieldSpecified;
+        
+        private bool returnVisInsCode1Field;
+        
+        private bool returnVisInsCode1FieldSpecified;
+        
+        private bool returnVisInsCode2Field;
+        
+        private bool returnVisInsCode2FieldSpecified;
+        
+        private bool returnVisInsCode3Field;
+        
+        private bool returnVisInsCode3FieldSpecified;
+        
+        private bool returnWODescField;
+        
+        private bool returnWODescFieldSpecified;
+        
+        private bool returnWorkGroupField;
+        
+        private bool returnWorkGroupFieldSpecified;
+        
+        private bool returnWorkGroupDescriptionField;
+        
+        private bool returnWorkGroupDescriptionFieldSpecified;
+        
+        private bool returnWorkOrderField;
+        
+        private bool returnWorkOrderFieldSpecified;
+        
+        private bool returnWorkOrderCompCodeField;
+        
+        private bool returnWorkOrderCompCodeFieldSpecified;
+        
+        private bool returnWorkOrderCompModCodeField;
+        
+        private bool returnWorkOrderCompModCodeFieldSpecified;
+        
+        private bool returnWorkOrderEequipRefField;
+        
+        private bool returnWorkOrderEequipRefFieldSpecified;
+        
+        private bool returnWorkOrderEquipmentNoField;
+        
+        private bool returnWorkOrderEquipmentNoFieldSpecified;
+        
+        /// <remarks/>
+        public bool returnAlarmDistrict {
+            get {
+                return this.returnAlarmDistrictField;
+            }
+            set {
+                this.returnAlarmDistrictField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAlarmDistrictSpecified {
+            get {
+                return this.returnAlarmDistrictFieldSpecified;
+            }
+            set {
+                this.returnAlarmDistrictFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAlarmInd {
+            get {
+                return this.returnAlarmIndField;
+            }
+            set {
+                this.returnAlarmIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAlarmIndSpecified {
+            get {
+                return this.returnAlarmIndFieldSpecified;
+            }
+            set {
+                this.returnAlarmIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAlarmWO {
+            get {
+                return this.returnAlarmWOField;
+            }
+            set {
+                this.returnAlarmWOField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAlarmWOSpecified {
+            get {
+                return this.returnAlarmWOFieldSpecified;
+            }
+            set {
+                this.returnAlarmWOFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAssignPerson {
+            get {
+                return this.returnAssignPersonField;
+            }
+            set {
+                this.returnAssignPersonField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAssignPersonSpecified {
+            get {
+                return this.returnAssignPersonFieldSpecified;
+            }
+            set {
+                this.returnAssignPersonFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAssignPersonDescription {
+            get {
+                return this.returnAssignPersonDescriptionField;
+            }
+            set {
+                this.returnAssignPersonDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAssignPersonDescriptionSpecified {
+            get {
+                return this.returnAssignPersonDescriptionFieldSpecified;
+            }
+            set {
+                this.returnAssignPersonDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompCode {
+            get {
+                return this.returnCompCodeField;
+            }
+            set {
+                this.returnCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompCodeSpecified {
+            get {
+                return this.returnCompCodeFieldSpecified;
+            }
+            set {
+                this.returnCompCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompCodeDescription {
+            get {
+                return this.returnCompCodeDescriptionField;
+            }
+            set {
+                this.returnCompCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompCodeDescriptionSpecified {
+            get {
+                return this.returnCompCodeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCompCodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompModCode {
+            get {
+                return this.returnCompModCodeField;
+            }
+            set {
+                this.returnCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompModCodeSpecified {
+            get {
+                return this.returnCompModCodeFieldSpecified;
+            }
+            set {
+                this.returnCompModCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompModCodeDescription {
+            get {
+                return this.returnCompModCodeDescriptionField;
+            }
+            set {
+                this.returnCompModCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompModCodeDescriptionSpecified {
+            get {
+                return this.returnCompModCodeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCompModCodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonMeas {
+            get {
+                return this.returnCondMonMeasField;
+            }
+            set {
+                this.returnCondMonMeasField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonMeasSpecified {
+            get {
+                return this.returnCondMonMeasFieldSpecified;
+            }
+            set {
+                this.returnCondMonMeasFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonMeasDescription {
+            get {
+                return this.returnCondMonMeasDescriptionField;
+            }
+            set {
+                this.returnCondMonMeasDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonMeasDescriptionSpecified {
+            get {
+                return this.returnCondMonMeasDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCondMonMeasDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonPos {
+            get {
+                return this.returnCondMonPosField;
+            }
+            set {
+                this.returnCondMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonPosSpecified {
+            get {
+                return this.returnCondMonPosFieldSpecified;
+            }
+            set {
+                this.returnCondMonPosFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonPosDescription {
+            get {
+                return this.returnCondMonPosDescriptionField;
+            }
+            set {
+                this.returnCondMonPosDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonPosDescriptionSpecified {
+            get {
+                return this.returnCondMonPosDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCondMonPosDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonType {
+            get {
+                return this.returnCondMonTypeField;
+            }
+            set {
+                this.returnCondMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonTypeSpecified {
+            get {
+                return this.returnCondMonTypeFieldSpecified;
+            }
+            set {
+                this.returnCondMonTypeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonTypeDescription {
+            get {
+                return this.returnCondMonTypeDescriptionField;
+            }
+            set {
+                this.returnCondMonTypeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonTypeDescriptionSpecified {
+            get {
+                return this.returnCondMonTypeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCondMonTypeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnDistrictCode {
+            get {
+                return this.returnDistrictCodeField;
+            }
+            set {
+                this.returnDistrictCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnDistrictCodeSpecified {
+            get {
+                return this.returnDistrictCodeFieldSpecified;
+            }
+            set {
+                this.returnDistrictCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnDistrictName {
+            get {
+                return this.returnDistrictNameField;
+            }
+            set {
+                this.returnDistrictNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnDistrictNameSpecified {
+            get {
+                return this.returnDistrictNameFieldSpecified;
+            }
+            set {
+                this.returnDistrictNameFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentDescription1 {
+            get {
+                return this.returnEquipmentDescription1Field;
+            }
+            set {
+                this.returnEquipmentDescription1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentDescription1Specified {
+            get {
+                return this.returnEquipmentDescription1FieldSpecified;
+            }
+            set {
+                this.returnEquipmentDescription1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentDescription2 {
+            get {
+                return this.returnEquipmentDescription2Field;
+            }
+            set {
+                this.returnEquipmentDescription2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentDescription2Specified {
+            get {
+                return this.returnEquipmentDescription2FieldSpecified;
+            }
+            set {
+                this.returnEquipmentDescription2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentNo {
+            get {
+                return this.returnEquipmentNoField;
+            }
+            set {
+                this.returnEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentNoSpecified {
+            get {
+                return this.returnEquipmentNoFieldSpecified;
+            }
+            set {
+                this.returnEquipmentNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentRef {
+            get {
+                return this.returnEquipmentRefField;
+            }
+            set {
+                this.returnEquipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentRefSpecified {
+            get {
+                return this.returnEquipmentRefFieldSpecified;
+            }
+            set {
+                this.returnEquipmentRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnInstallEequipRef {
+            get {
+                return this.returnInstallEequipRefField;
+            }
+            set {
+                this.returnInstallEequipRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnInstallEequipRefSpecified {
+            get {
+                return this.returnInstallEequipRefFieldSpecified;
+            }
+            set {
+                this.returnInstallEequipRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnInstallEquipmentDescription1 {
+            get {
+                return this.returnInstallEquipmentDescription1Field;
+            }
+            set {
+                this.returnInstallEquipmentDescription1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnInstallEquipmentDescription1Specified {
+            get {
+                return this.returnInstallEquipmentDescription1FieldSpecified;
+            }
+            set {
+                this.returnInstallEquipmentDescription1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnInstallEquipmentDescription2 {
+            get {
+                return this.returnInstallEquipmentDescription2Field;
+            }
+            set {
+                this.returnInstallEquipmentDescription2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnInstallEquipmentDescription2Specified {
+            get {
+                return this.returnInstallEquipmentDescription2FieldSpecified;
+            }
+            set {
+                this.returnInstallEquipmentDescription2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnInstallEquipmentNo {
+            get {
+                return this.returnInstallEquipmentNoField;
+            }
+            set {
+                this.returnInstallEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnInstallEquipmentNoSpecified {
+            get {
+                return this.returnInstallEquipmentNoFieldSpecified;
+            }
+            set {
+                this.returnInstallEquipmentNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureDate {
+            get {
+                return this.returnMeasureDateField;
+            }
+            set {
+                this.returnMeasureDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureDateSpecified {
+            get {
+                return this.returnMeasureDateFieldSpecified;
+            }
+            set {
+                this.returnMeasureDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureOrignt {
+            get {
+                return this.returnMeasureOrigntField;
+            }
+            set {
+                this.returnMeasureOrigntField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureOrigntSpecified {
+            get {
+                return this.returnMeasureOrigntFieldSpecified;
+            }
+            set {
+                this.returnMeasureOrigntFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureProcInd {
+            get {
+                return this.returnMeasureProcIndField;
+            }
+            set {
+                this.returnMeasureProcIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureProcIndSpecified {
+            get {
+                return this.returnMeasureProcIndFieldSpecified;
+            }
+            set {
+                this.returnMeasureProcIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureStatus {
+            get {
+                return this.returnMeasureStatusField;
+            }
+            set {
+                this.returnMeasureStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureStatusSpecified {
+            get {
+                return this.returnMeasureStatusFieldSpecified;
+            }
+            set {
+                this.returnMeasureStatusFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureTime {
+            get {
+                return this.returnMeasureTimeField;
+            }
+            set {
+                this.returnMeasureTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureTimeSpecified {
+            get {
+                return this.returnMeasureTimeFieldSpecified;
+            }
+            set {
+                this.returnMeasureTimeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureValue {
+            get {
+                return this.returnMeasureValueField;
+            }
+            set {
+                this.returnMeasureValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureValueSpecified {
+            get {
+                return this.returnMeasureValueFieldSpecified;
+            }
+            set {
+                this.returnMeasureValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnNarrativeNo {
+            get {
+                return this.returnNarrativeNoField;
+            }
+            set {
+                this.returnNarrativeNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnNarrativeNoSpecified {
+            get {
+                return this.returnNarrativeNoFieldSpecified;
+            }
+            set {
+                this.returnNarrativeNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered1 {
+            get {
+                return this.returnSpcTriggered1Field;
+            }
+            set {
+                this.returnSpcTriggered1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered1Specified {
+            get {
+                return this.returnSpcTriggered1FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered10 {
+            get {
+                return this.returnSpcTriggered10Field;
+            }
+            set {
+                this.returnSpcTriggered10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered10Specified {
+            get {
+                return this.returnSpcTriggered10FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered10FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered2 {
+            get {
+                return this.returnSpcTriggered2Field;
+            }
+            set {
+                this.returnSpcTriggered2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered2Specified {
+            get {
+                return this.returnSpcTriggered2FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered3 {
+            get {
+                return this.returnSpcTriggered3Field;
+            }
+            set {
+                this.returnSpcTriggered3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered3Specified {
+            get {
+                return this.returnSpcTriggered3FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered4 {
+            get {
+                return this.returnSpcTriggered4Field;
+            }
+            set {
+                this.returnSpcTriggered4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered4Specified {
+            get {
+                return this.returnSpcTriggered4FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered5 {
+            get {
+                return this.returnSpcTriggered5Field;
+            }
+            set {
+                this.returnSpcTriggered5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered5Specified {
+            get {
+                return this.returnSpcTriggered5FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered5FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered6 {
+            get {
+                return this.returnSpcTriggered6Field;
+            }
+            set {
+                this.returnSpcTriggered6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered6Specified {
+            get {
+                return this.returnSpcTriggered6FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered6FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered7 {
+            get {
+                return this.returnSpcTriggered7Field;
+            }
+            set {
+                this.returnSpcTriggered7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered7Specified {
+            get {
+                return this.returnSpcTriggered7FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered7FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered8 {
+            get {
+                return this.returnSpcTriggered8Field;
+            }
+            set {
+                this.returnSpcTriggered8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered8Specified {
+            get {
+                return this.returnSpcTriggered8FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered8FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered9 {
+            get {
+                return this.returnSpcTriggered9Field;
+            }
+            set {
+                this.returnSpcTriggered9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered9Specified {
+            get {
+                return this.returnSpcTriggered9FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered9FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnUnitofMeasure {
+            get {
+                return this.returnUnitofMeasureField;
+            }
+            set {
+                this.returnUnitofMeasureField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnUnitofMeasureSpecified {
+            get {
+                return this.returnUnitofMeasureFieldSpecified;
+            }
+            set {
+                this.returnUnitofMeasureFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnVisInsCode1 {
+            get {
+                return this.returnVisInsCode1Field;
+            }
+            set {
+                this.returnVisInsCode1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnVisInsCode1Specified {
+            get {
+                return this.returnVisInsCode1FieldSpecified;
+            }
+            set {
+                this.returnVisInsCode1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnVisInsCode2 {
+            get {
+                return this.returnVisInsCode2Field;
+            }
+            set {
+                this.returnVisInsCode2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnVisInsCode2Specified {
+            get {
+                return this.returnVisInsCode2FieldSpecified;
+            }
+            set {
+                this.returnVisInsCode2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnVisInsCode3 {
+            get {
+                return this.returnVisInsCode3Field;
+            }
+            set {
+                this.returnVisInsCode3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnVisInsCode3Specified {
+            get {
+                return this.returnVisInsCode3FieldSpecified;
+            }
+            set {
+                this.returnVisInsCode3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWODesc {
+            get {
+                return this.returnWODescField;
+            }
+            set {
+                this.returnWODescField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWODescSpecified {
+            get {
+                return this.returnWODescFieldSpecified;
+            }
+            set {
+                this.returnWODescFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkGroup {
+            get {
+                return this.returnWorkGroupField;
+            }
+            set {
+                this.returnWorkGroupField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkGroupSpecified {
+            get {
+                return this.returnWorkGroupFieldSpecified;
+            }
+            set {
+                this.returnWorkGroupFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkGroupDescription {
+            get {
+                return this.returnWorkGroupDescriptionField;
+            }
+            set {
+                this.returnWorkGroupDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkGroupDescriptionSpecified {
+            get {
+                return this.returnWorkGroupDescriptionFieldSpecified;
+            }
+            set {
+                this.returnWorkGroupDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrder {
+            get {
+                return this.returnWorkOrderField;
+            }
+            set {
+                this.returnWorkOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderSpecified {
+            get {
+                return this.returnWorkOrderFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrderCompCode {
+            get {
+                return this.returnWorkOrderCompCodeField;
+            }
+            set {
+                this.returnWorkOrderCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderCompCodeSpecified {
+            get {
+                return this.returnWorkOrderCompCodeFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderCompCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrderCompModCode {
+            get {
+                return this.returnWorkOrderCompModCodeField;
+            }
+            set {
+                this.returnWorkOrderCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderCompModCodeSpecified {
+            get {
+                return this.returnWorkOrderCompModCodeFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderCompModCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrderEequipRef {
+            get {
+                return this.returnWorkOrderEequipRefField;
+            }
+            set {
+                this.returnWorkOrderEequipRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderEequipRefSpecified {
+            get {
+                return this.returnWorkOrderEequipRefFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderEequipRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrderEquipmentNo {
+            get {
+                return this.returnWorkOrderEquipmentNoField;
+            }
+            set {
+                this.returnWorkOrderEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderEquipmentNoSpecified {
+            get {
+                return this.returnWorkOrderEquipmentNoFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderEquipmentNoFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1471,110 +5196,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceGetxtKeyRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntTypesRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveAllMntsRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateWORequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceModifyRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceReadRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceRetrieveMntsRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceCreateRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CondMeasurementServiceDeleteRequiredAttributesDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class AbstractRequiredAttributesDTO {
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveMntTypesRequiredAttributesDTO : AbstractRequiredAttributesDTO {
-        
-        private bool returnCondMonMeasField;
-        
-        private bool returnCondMonMeasFieldSpecified;
-        
-        private bool returnCondMonMeasDescriptionField;
-        
-        private bool returnCondMonMeasDescriptionFieldSpecified;
-        
-        private bool returnUnitofMeasureField;
-        
-        private bool returnUnitofMeasureFieldSpecified;
-        
-        /// <remarks/>
-        public bool returnCondMonMeas {
-            get {
-                return this.returnCondMonMeasField;
-            }
-            set {
-                this.returnCondMonMeasField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonMeasSpecified {
-            get {
-                return this.returnCondMonMeasFieldSpecified;
-            }
-            set {
-                this.returnCondMonMeasFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonMeasDescription {
-            get {
-                return this.returnCondMonMeasDescriptionField;
-            }
-            set {
-                this.returnCondMonMeasDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonMeasDescriptionSpecified {
-            get {
-                return this.returnCondMonMeasDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCondMonMeasDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnUnitofMeasure {
-            get {
-                return this.returnUnitofMeasureField;
-            }
-            set {
-                this.returnUnitofMeasureField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnUnitofMeasureSpecified {
-            get {
-                return this.returnUnitofMeasureFieldSpecified;
-            }
-            set {
-                this.returnUnitofMeasureFieldSpecified = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2083,1016 +5705,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveRequiredAttributesDTO : AbstractRequiredAttributesDTO {
-        
-        private bool returnAlarmDistrictField;
-        
-        private bool returnAlarmDistrictFieldSpecified;
-        
-        private bool returnAlarmIndField;
-        
-        private bool returnAlarmIndFieldSpecified;
-        
-        private bool returnAlarmWOField;
-        
-        private bool returnAlarmWOFieldSpecified;
-        
-        private bool returnCompCodeField;
-        
-        private bool returnCompCodeFieldSpecified;
-        
-        private bool returnCompCodeDescriptionField;
-        
-        private bool returnCompCodeDescriptionFieldSpecified;
-        
-        private bool returnCompModCodeField;
-        
-        private bool returnCompModCodeFieldSpecified;
-        
-        private bool returnCompModCodeDescriptionField;
-        
-        private bool returnCompModCodeDescriptionFieldSpecified;
-        
-        private bool returnCondMonMeasField;
-        
-        private bool returnCondMonMeasFieldSpecified;
-        
-        private bool returnCondMonMeasDescriptionField;
-        
-        private bool returnCondMonMeasDescriptionFieldSpecified;
-        
-        private bool returnCondMonPosField;
-        
-        private bool returnCondMonPosFieldSpecified;
-        
-        private bool returnCondMonPosDescriptionField;
-        
-        private bool returnCondMonPosDescriptionFieldSpecified;
-        
-        private bool returnCondMonTypeField;
-        
-        private bool returnCondMonTypeFieldSpecified;
-        
-        private bool returnCondMonTypeDescriptionField;
-        
-        private bool returnCondMonTypeDescriptionFieldSpecified;
-        
-        private bool returnDistrictCodeField;
-        
-        private bool returnDistrictCodeFieldSpecified;
-        
-        private bool returnDistrictNameField;
-        
-        private bool returnDistrictNameFieldSpecified;
-        
-        private bool returnEquipmentDescription1Field;
-        
-        private bool returnEquipmentDescription1FieldSpecified;
-        
-        private bool returnEquipmentDescription2Field;
-        
-        private bool returnEquipmentDescription2FieldSpecified;
-        
-        private bool returnEquipmentNoField;
-        
-        private bool returnEquipmentNoFieldSpecified;
-        
-        private bool returnEquipmentRefField;
-        
-        private bool returnEquipmentRefFieldSpecified;
-        
-        private bool returnInstallEequipRefField;
-        
-        private bool returnInstallEequipRefFieldSpecified;
-        
-        private bool returnInstallEquipmentDescription1Field;
-        
-        private bool returnInstallEquipmentDescription1FieldSpecified;
-        
-        private bool returnInstallEquipmentDescription2Field;
-        
-        private bool returnInstallEquipmentDescription2FieldSpecified;
-        
-        private bool returnInstallEquipmentNoField;
-        
-        private bool returnInstallEquipmentNoFieldSpecified;
-        
-        private bool returnMeasureDateField;
-        
-        private bool returnMeasureDateFieldSpecified;
-        
-        private bool returnMeasureOrigntField;
-        
-        private bool returnMeasureOrigntFieldSpecified;
-        
-        private bool returnMeasureProcIndField;
-        
-        private bool returnMeasureProcIndFieldSpecified;
-        
-        private bool returnMeasureStatusField;
-        
-        private bool returnMeasureStatusFieldSpecified;
-        
-        private bool returnMeasureTimeField;
-        
-        private bool returnMeasureTimeFieldSpecified;
-        
-        private bool returnMeasureValueField;
-        
-        private bool returnMeasureValueFieldSpecified;
-        
-        private bool returnNarrativeNoField;
-        
-        private bool returnNarrativeNoFieldSpecified;
-        
-        private bool returnUnitofMeasureField;
-        
-        private bool returnUnitofMeasureFieldSpecified;
-        
-        private bool returnVisInsCode1Field;
-        
-        private bool returnVisInsCode1FieldSpecified;
-        
-        private bool returnVisInsCode2Field;
-        
-        private bool returnVisInsCode2FieldSpecified;
-        
-        private bool returnVisInsCode3Field;
-        
-        private bool returnVisInsCode3FieldSpecified;
-        
-        private bool returnWODescField;
-        
-        private bool returnWODescFieldSpecified;
-        
-        private bool returnWorkOrderField;
-        
-        private bool returnWorkOrderFieldSpecified;
-        
-        private bool returnWorkOrderCompCodeField;
-        
-        private bool returnWorkOrderCompCodeFieldSpecified;
-        
-        private bool returnWorkOrderCompModCodeField;
-        
-        private bool returnWorkOrderCompModCodeFieldSpecified;
-        
-        private bool returnWorkOrderEequipRefField;
-        
-        private bool returnWorkOrderEequipRefFieldSpecified;
-        
-        private bool returnWorkOrderEquipmentNoField;
-        
-        private bool returnWorkOrderEquipmentNoFieldSpecified;
-        
-        /// <remarks/>
-        public bool returnAlarmDistrict {
-            get {
-                return this.returnAlarmDistrictField;
-            }
-            set {
-                this.returnAlarmDistrictField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnAlarmDistrictSpecified {
-            get {
-                return this.returnAlarmDistrictFieldSpecified;
-            }
-            set {
-                this.returnAlarmDistrictFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnAlarmInd {
-            get {
-                return this.returnAlarmIndField;
-            }
-            set {
-                this.returnAlarmIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnAlarmIndSpecified {
-            get {
-                return this.returnAlarmIndFieldSpecified;
-            }
-            set {
-                this.returnAlarmIndFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnAlarmWO {
-            get {
-                return this.returnAlarmWOField;
-            }
-            set {
-                this.returnAlarmWOField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnAlarmWOSpecified {
-            get {
-                return this.returnAlarmWOFieldSpecified;
-            }
-            set {
-                this.returnAlarmWOFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompCode {
-            get {
-                return this.returnCompCodeField;
-            }
-            set {
-                this.returnCompCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompCodeSpecified {
-            get {
-                return this.returnCompCodeFieldSpecified;
-            }
-            set {
-                this.returnCompCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompCodeDescription {
-            get {
-                return this.returnCompCodeDescriptionField;
-            }
-            set {
-                this.returnCompCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompCodeDescriptionSpecified {
-            get {
-                return this.returnCompCodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCompCodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompModCode {
-            get {
-                return this.returnCompModCodeField;
-            }
-            set {
-                this.returnCompModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompModCodeSpecified {
-            get {
-                return this.returnCompModCodeFieldSpecified;
-            }
-            set {
-                this.returnCompModCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompModCodeDescription {
-            get {
-                return this.returnCompModCodeDescriptionField;
-            }
-            set {
-                this.returnCompModCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompModCodeDescriptionSpecified {
-            get {
-                return this.returnCompModCodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCompModCodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonMeas {
-            get {
-                return this.returnCondMonMeasField;
-            }
-            set {
-                this.returnCondMonMeasField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonMeasSpecified {
-            get {
-                return this.returnCondMonMeasFieldSpecified;
-            }
-            set {
-                this.returnCondMonMeasFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonMeasDescription {
-            get {
-                return this.returnCondMonMeasDescriptionField;
-            }
-            set {
-                this.returnCondMonMeasDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonMeasDescriptionSpecified {
-            get {
-                return this.returnCondMonMeasDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCondMonMeasDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonPos {
-            get {
-                return this.returnCondMonPosField;
-            }
-            set {
-                this.returnCondMonPosField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonPosSpecified {
-            get {
-                return this.returnCondMonPosFieldSpecified;
-            }
-            set {
-                this.returnCondMonPosFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonPosDescription {
-            get {
-                return this.returnCondMonPosDescriptionField;
-            }
-            set {
-                this.returnCondMonPosDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonPosDescriptionSpecified {
-            get {
-                return this.returnCondMonPosDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCondMonPosDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonType {
-            get {
-                return this.returnCondMonTypeField;
-            }
-            set {
-                this.returnCondMonTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonTypeSpecified {
-            get {
-                return this.returnCondMonTypeFieldSpecified;
-            }
-            set {
-                this.returnCondMonTypeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonTypeDescription {
-            get {
-                return this.returnCondMonTypeDescriptionField;
-            }
-            set {
-                this.returnCondMonTypeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonTypeDescriptionSpecified {
-            get {
-                return this.returnCondMonTypeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCondMonTypeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnDistrictCode {
-            get {
-                return this.returnDistrictCodeField;
-            }
-            set {
-                this.returnDistrictCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnDistrictCodeSpecified {
-            get {
-                return this.returnDistrictCodeFieldSpecified;
-            }
-            set {
-                this.returnDistrictCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnDistrictName {
-            get {
-                return this.returnDistrictNameField;
-            }
-            set {
-                this.returnDistrictNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnDistrictNameSpecified {
-            get {
-                return this.returnDistrictNameFieldSpecified;
-            }
-            set {
-                this.returnDistrictNameFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentDescription1 {
-            get {
-                return this.returnEquipmentDescription1Field;
-            }
-            set {
-                this.returnEquipmentDescription1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentDescription1Specified {
-            get {
-                return this.returnEquipmentDescription1FieldSpecified;
-            }
-            set {
-                this.returnEquipmentDescription1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentDescription2 {
-            get {
-                return this.returnEquipmentDescription2Field;
-            }
-            set {
-                this.returnEquipmentDescription2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentDescription2Specified {
-            get {
-                return this.returnEquipmentDescription2FieldSpecified;
-            }
-            set {
-                this.returnEquipmentDescription2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentNo {
-            get {
-                return this.returnEquipmentNoField;
-            }
-            set {
-                this.returnEquipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentNoSpecified {
-            get {
-                return this.returnEquipmentNoFieldSpecified;
-            }
-            set {
-                this.returnEquipmentNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentRef {
-            get {
-                return this.returnEquipmentRefField;
-            }
-            set {
-                this.returnEquipmentRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentRefSpecified {
-            get {
-                return this.returnEquipmentRefFieldSpecified;
-            }
-            set {
-                this.returnEquipmentRefFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnInstallEequipRef {
-            get {
-                return this.returnInstallEequipRefField;
-            }
-            set {
-                this.returnInstallEequipRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnInstallEequipRefSpecified {
-            get {
-                return this.returnInstallEequipRefFieldSpecified;
-            }
-            set {
-                this.returnInstallEequipRefFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnInstallEquipmentDescription1 {
-            get {
-                return this.returnInstallEquipmentDescription1Field;
-            }
-            set {
-                this.returnInstallEquipmentDescription1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnInstallEquipmentDescription1Specified {
-            get {
-                return this.returnInstallEquipmentDescription1FieldSpecified;
-            }
-            set {
-                this.returnInstallEquipmentDescription1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnInstallEquipmentDescription2 {
-            get {
-                return this.returnInstallEquipmentDescription2Field;
-            }
-            set {
-                this.returnInstallEquipmentDescription2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnInstallEquipmentDescription2Specified {
-            get {
-                return this.returnInstallEquipmentDescription2FieldSpecified;
-            }
-            set {
-                this.returnInstallEquipmentDescription2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnInstallEquipmentNo {
-            get {
-                return this.returnInstallEquipmentNoField;
-            }
-            set {
-                this.returnInstallEquipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnInstallEquipmentNoSpecified {
-            get {
-                return this.returnInstallEquipmentNoFieldSpecified;
-            }
-            set {
-                this.returnInstallEquipmentNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureDate {
-            get {
-                return this.returnMeasureDateField;
-            }
-            set {
-                this.returnMeasureDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureDateSpecified {
-            get {
-                return this.returnMeasureDateFieldSpecified;
-            }
-            set {
-                this.returnMeasureDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureOrignt {
-            get {
-                return this.returnMeasureOrigntField;
-            }
-            set {
-                this.returnMeasureOrigntField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureOrigntSpecified {
-            get {
-                return this.returnMeasureOrigntFieldSpecified;
-            }
-            set {
-                this.returnMeasureOrigntFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureProcInd {
-            get {
-                return this.returnMeasureProcIndField;
-            }
-            set {
-                this.returnMeasureProcIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureProcIndSpecified {
-            get {
-                return this.returnMeasureProcIndFieldSpecified;
-            }
-            set {
-                this.returnMeasureProcIndFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureStatus {
-            get {
-                return this.returnMeasureStatusField;
-            }
-            set {
-                this.returnMeasureStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureStatusSpecified {
-            get {
-                return this.returnMeasureStatusFieldSpecified;
-            }
-            set {
-                this.returnMeasureStatusFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureTime {
-            get {
-                return this.returnMeasureTimeField;
-            }
-            set {
-                this.returnMeasureTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureTimeSpecified {
-            get {
-                return this.returnMeasureTimeFieldSpecified;
-            }
-            set {
-                this.returnMeasureTimeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureValue {
-            get {
-                return this.returnMeasureValueField;
-            }
-            set {
-                this.returnMeasureValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureValueSpecified {
-            get {
-                return this.returnMeasureValueFieldSpecified;
-            }
-            set {
-                this.returnMeasureValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnNarrativeNo {
-            get {
-                return this.returnNarrativeNoField;
-            }
-            set {
-                this.returnNarrativeNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnNarrativeNoSpecified {
-            get {
-                return this.returnNarrativeNoFieldSpecified;
-            }
-            set {
-                this.returnNarrativeNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnUnitofMeasure {
-            get {
-                return this.returnUnitofMeasureField;
-            }
-            set {
-                this.returnUnitofMeasureField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnUnitofMeasureSpecified {
-            get {
-                return this.returnUnitofMeasureFieldSpecified;
-            }
-            set {
-                this.returnUnitofMeasureFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnVisInsCode1 {
-            get {
-                return this.returnVisInsCode1Field;
-            }
-            set {
-                this.returnVisInsCode1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnVisInsCode1Specified {
-            get {
-                return this.returnVisInsCode1FieldSpecified;
-            }
-            set {
-                this.returnVisInsCode1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnVisInsCode2 {
-            get {
-                return this.returnVisInsCode2Field;
-            }
-            set {
-                this.returnVisInsCode2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnVisInsCode2Specified {
-            get {
-                return this.returnVisInsCode2FieldSpecified;
-            }
-            set {
-                this.returnVisInsCode2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnVisInsCode3 {
-            get {
-                return this.returnVisInsCode3Field;
-            }
-            set {
-                this.returnVisInsCode3Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnVisInsCode3Specified {
-            get {
-                return this.returnVisInsCode3FieldSpecified;
-            }
-            set {
-                this.returnVisInsCode3FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWODesc {
-            get {
-                return this.returnWODescField;
-            }
-            set {
-                this.returnWODescField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWODescSpecified {
-            get {
-                return this.returnWODescFieldSpecified;
-            }
-            set {
-                this.returnWODescFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrder {
-            get {
-                return this.returnWorkOrderField;
-            }
-            set {
-                this.returnWorkOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderSpecified {
-            get {
-                return this.returnWorkOrderFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrderCompCode {
-            get {
-                return this.returnWorkOrderCompCodeField;
-            }
-            set {
-                this.returnWorkOrderCompCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderCompCodeSpecified {
-            get {
-                return this.returnWorkOrderCompCodeFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderCompCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrderCompModCode {
-            get {
-                return this.returnWorkOrderCompModCodeField;
-            }
-            set {
-                this.returnWorkOrderCompModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderCompModCodeSpecified {
-            get {
-                return this.returnWorkOrderCompModCodeFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderCompModCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrderEequipRef {
-            get {
-                return this.returnWorkOrderEequipRefField;
-            }
-            set {
-                this.returnWorkOrderEequipRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderEequipRefSpecified {
-            get {
-                return this.returnWorkOrderEequipRefFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderEequipRefFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrderEquipmentNo {
-            get {
-                return this.returnWorkOrderEquipmentNoField;
-            }
-            set {
-                this.returnWorkOrderEquipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderEquipmentNoSpecified {
-            get {
-                return this.returnWorkOrderEquipmentNoFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderEquipmentNoFieldSpecified = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3151,7 +5764,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3249,6 +5862,46 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         private bool returnNarrativeNoField;
         
         private bool returnNarrativeNoFieldSpecified;
+        
+        private bool returnSpcTriggered1Field;
+        
+        private bool returnSpcTriggered1FieldSpecified;
+        
+        private bool returnSpcTriggered10Field;
+        
+        private bool returnSpcTriggered10FieldSpecified;
+        
+        private bool returnSpcTriggered2Field;
+        
+        private bool returnSpcTriggered2FieldSpecified;
+        
+        private bool returnSpcTriggered3Field;
+        
+        private bool returnSpcTriggered3FieldSpecified;
+        
+        private bool returnSpcTriggered4Field;
+        
+        private bool returnSpcTriggered4FieldSpecified;
+        
+        private bool returnSpcTriggered5Field;
+        
+        private bool returnSpcTriggered5FieldSpecified;
+        
+        private bool returnSpcTriggered6Field;
+        
+        private bool returnSpcTriggered6FieldSpecified;
+        
+        private bool returnSpcTriggered7Field;
+        
+        private bool returnSpcTriggered7FieldSpecified;
+        
+        private bool returnSpcTriggered8Field;
+        
+        private bool returnSpcTriggered8FieldSpecified;
+        
+        private bool returnSpcTriggered9Field;
+        
+        private bool returnSpcTriggered9FieldSpecified;
         
         private bool returnStdTxtKeyField;
         
@@ -3766,6 +6419,216 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
+        public bool returnSpcTriggered1 {
+            get {
+                return this.returnSpcTriggered1Field;
+            }
+            set {
+                this.returnSpcTriggered1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered1Specified {
+            get {
+                return this.returnSpcTriggered1FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered10 {
+            get {
+                return this.returnSpcTriggered10Field;
+            }
+            set {
+                this.returnSpcTriggered10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered10Specified {
+            get {
+                return this.returnSpcTriggered10FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered10FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered2 {
+            get {
+                return this.returnSpcTriggered2Field;
+            }
+            set {
+                this.returnSpcTriggered2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered2Specified {
+            get {
+                return this.returnSpcTriggered2FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered3 {
+            get {
+                return this.returnSpcTriggered3Field;
+            }
+            set {
+                this.returnSpcTriggered3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered3Specified {
+            get {
+                return this.returnSpcTriggered3FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered4 {
+            get {
+                return this.returnSpcTriggered4Field;
+            }
+            set {
+                this.returnSpcTriggered4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered4Specified {
+            get {
+                return this.returnSpcTriggered4FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered5 {
+            get {
+                return this.returnSpcTriggered5Field;
+            }
+            set {
+                this.returnSpcTriggered5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered5Specified {
+            get {
+                return this.returnSpcTriggered5FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered5FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered6 {
+            get {
+                return this.returnSpcTriggered6Field;
+            }
+            set {
+                this.returnSpcTriggered6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered6Specified {
+            get {
+                return this.returnSpcTriggered6FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered6FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered7 {
+            get {
+                return this.returnSpcTriggered7Field;
+            }
+            set {
+                this.returnSpcTriggered7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered7Specified {
+            get {
+                return this.returnSpcTriggered7FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered7FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered8 {
+            get {
+                return this.returnSpcTriggered8Field;
+            }
+            set {
+                this.returnSpcTriggered8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered8Specified {
+            get {
+                return this.returnSpcTriggered8FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered8FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered9 {
+            get {
+                return this.returnSpcTriggered9Field;
+            }
+            set {
+                this.returnSpcTriggered9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered9Specified {
+            get {
+                return this.returnSpcTriggered9FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered9FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnStdTxtKey {
             get {
                 return this.returnStdTxtKeyField;
@@ -3935,891 +6798,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceReadRequiredAttributesDTO : AbstractRequiredAttributesDTO {
-        
-        private bool returnCompCodeField;
-        
-        private bool returnCompCodeFieldSpecified;
-        
-        private bool returnCompCodeDescriptionField;
-        
-        private bool returnCompCodeDescriptionFieldSpecified;
-        
-        private bool returnCompModCodeField;
-        
-        private bool returnCompModCodeFieldSpecified;
-        
-        private bool returnCompModCodeDescriptionField;
-        
-        private bool returnCompModCodeDescriptionFieldSpecified;
-        
-        private bool returnCondMonMeasField;
-        
-        private bool returnCondMonMeasFieldSpecified;
-        
-        private bool returnCondMonPosField;
-        
-        private bool returnCondMonPosFieldSpecified;
-        
-        private bool returnCondMonPosDescriptionField;
-        
-        private bool returnCondMonPosDescriptionFieldSpecified;
-        
-        private bool returnCondMonTypeField;
-        
-        private bool returnCondMonTypeFieldSpecified;
-        
-        private bool returnCondMonTypeDescriptionField;
-        
-        private bool returnCondMonTypeDescriptionFieldSpecified;
-        
-        private bool returnDistrictNameField;
-        
-        private bool returnDistrictNameFieldSpecified;
-        
-        private bool returnEquipmentDescription1Field;
-        
-        private bool returnEquipmentDescription1FieldSpecified;
-        
-        private bool returnEquipmentDescription2Field;
-        
-        private bool returnEquipmentDescription2FieldSpecified;
-        
-        private bool returnEquipmentNoField;
-        
-        private bool returnEquipmentNoFieldSpecified;
-        
-        private bool returnEquipmentRefField;
-        
-        private bool returnEquipmentRefFieldSpecified;
-        
-        private bool returnInstallEequipRefField;
-        
-        private bool returnInstallEequipRefFieldSpecified;
-        
-        private bool returnInstallEquipmentDescription1Field;
-        
-        private bool returnInstallEquipmentDescription1FieldSpecified;
-        
-        private bool returnInstallEquipmentDescription2Field;
-        
-        private bool returnInstallEquipmentDescription2FieldSpecified;
-        
-        private bool returnInstallEquipmentNoField;
-        
-        private bool returnInstallEquipmentNoFieldSpecified;
-        
-        private bool returnMeasureDateField;
-        
-        private bool returnMeasureDateFieldSpecified;
-        
-        private bool returnMeasureOrigntField;
-        
-        private bool returnMeasureOrigntFieldSpecified;
-        
-        private bool returnMeasureProcIndField;
-        
-        private bool returnMeasureProcIndFieldSpecified;
-        
-        private bool returnMeasureStatusField;
-        
-        private bool returnMeasureStatusFieldSpecified;
-        
-        private bool returnMeasureTimeField;
-        
-        private bool returnMeasureTimeFieldSpecified;
-        
-        private bool returnMeasureValueField;
-        
-        private bool returnMeasureValueFieldSpecified;
-        
-        private bool returnNarrativeNoField;
-        
-        private bool returnNarrativeNoFieldSpecified;
-        
-        private bool returnUnitofMeasureField;
-        
-        private bool returnUnitofMeasureFieldSpecified;
-        
-        private bool returnVisInsCode1Field;
-        
-        private bool returnVisInsCode1FieldSpecified;
-        
-        private bool returnVisInsCode2Field;
-        
-        private bool returnVisInsCode2FieldSpecified;
-        
-        private bool returnVisInsCode3Field;
-        
-        private bool returnVisInsCode3FieldSpecified;
-        
-        private bool returnWODescField;
-        
-        private bool returnWODescFieldSpecified;
-        
-        private bool returnWorkOrderField;
-        
-        private bool returnWorkOrderFieldSpecified;
-        
-        private bool returnWorkOrderCompCodeField;
-        
-        private bool returnWorkOrderCompCodeFieldSpecified;
-        
-        private bool returnWorkOrderCompModCodeField;
-        
-        private bool returnWorkOrderCompModCodeFieldSpecified;
-        
-        private bool returnWorkOrderEequipRefField;
-        
-        private bool returnWorkOrderEequipRefFieldSpecified;
-        
-        private bool returnWorkOrderEquipmentNoField;
-        
-        private bool returnWorkOrderEquipmentNoFieldSpecified;
-        
-        /// <remarks/>
-        public bool returnCompCode {
-            get {
-                return this.returnCompCodeField;
-            }
-            set {
-                this.returnCompCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompCodeSpecified {
-            get {
-                return this.returnCompCodeFieldSpecified;
-            }
-            set {
-                this.returnCompCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompCodeDescription {
-            get {
-                return this.returnCompCodeDescriptionField;
-            }
-            set {
-                this.returnCompCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompCodeDescriptionSpecified {
-            get {
-                return this.returnCompCodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCompCodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompModCode {
-            get {
-                return this.returnCompModCodeField;
-            }
-            set {
-                this.returnCompModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompModCodeSpecified {
-            get {
-                return this.returnCompModCodeFieldSpecified;
-            }
-            set {
-                this.returnCompModCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompModCodeDescription {
-            get {
-                return this.returnCompModCodeDescriptionField;
-            }
-            set {
-                this.returnCompModCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompModCodeDescriptionSpecified {
-            get {
-                return this.returnCompModCodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCompModCodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonMeas {
-            get {
-                return this.returnCondMonMeasField;
-            }
-            set {
-                this.returnCondMonMeasField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonMeasSpecified {
-            get {
-                return this.returnCondMonMeasFieldSpecified;
-            }
-            set {
-                this.returnCondMonMeasFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonPos {
-            get {
-                return this.returnCondMonPosField;
-            }
-            set {
-                this.returnCondMonPosField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonPosSpecified {
-            get {
-                return this.returnCondMonPosFieldSpecified;
-            }
-            set {
-                this.returnCondMonPosFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonPosDescription {
-            get {
-                return this.returnCondMonPosDescriptionField;
-            }
-            set {
-                this.returnCondMonPosDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonPosDescriptionSpecified {
-            get {
-                return this.returnCondMonPosDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCondMonPosDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonType {
-            get {
-                return this.returnCondMonTypeField;
-            }
-            set {
-                this.returnCondMonTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonTypeSpecified {
-            get {
-                return this.returnCondMonTypeFieldSpecified;
-            }
-            set {
-                this.returnCondMonTypeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonTypeDescription {
-            get {
-                return this.returnCondMonTypeDescriptionField;
-            }
-            set {
-                this.returnCondMonTypeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonTypeDescriptionSpecified {
-            get {
-                return this.returnCondMonTypeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCondMonTypeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnDistrictName {
-            get {
-                return this.returnDistrictNameField;
-            }
-            set {
-                this.returnDistrictNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnDistrictNameSpecified {
-            get {
-                return this.returnDistrictNameFieldSpecified;
-            }
-            set {
-                this.returnDistrictNameFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentDescription1 {
-            get {
-                return this.returnEquipmentDescription1Field;
-            }
-            set {
-                this.returnEquipmentDescription1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentDescription1Specified {
-            get {
-                return this.returnEquipmentDescription1FieldSpecified;
-            }
-            set {
-                this.returnEquipmentDescription1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentDescription2 {
-            get {
-                return this.returnEquipmentDescription2Field;
-            }
-            set {
-                this.returnEquipmentDescription2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentDescription2Specified {
-            get {
-                return this.returnEquipmentDescription2FieldSpecified;
-            }
-            set {
-                this.returnEquipmentDescription2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentNo {
-            get {
-                return this.returnEquipmentNoField;
-            }
-            set {
-                this.returnEquipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentNoSpecified {
-            get {
-                return this.returnEquipmentNoFieldSpecified;
-            }
-            set {
-                this.returnEquipmentNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentRef {
-            get {
-                return this.returnEquipmentRefField;
-            }
-            set {
-                this.returnEquipmentRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentRefSpecified {
-            get {
-                return this.returnEquipmentRefFieldSpecified;
-            }
-            set {
-                this.returnEquipmentRefFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnInstallEequipRef {
-            get {
-                return this.returnInstallEequipRefField;
-            }
-            set {
-                this.returnInstallEequipRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnInstallEequipRefSpecified {
-            get {
-                return this.returnInstallEequipRefFieldSpecified;
-            }
-            set {
-                this.returnInstallEequipRefFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnInstallEquipmentDescription1 {
-            get {
-                return this.returnInstallEquipmentDescription1Field;
-            }
-            set {
-                this.returnInstallEquipmentDescription1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnInstallEquipmentDescription1Specified {
-            get {
-                return this.returnInstallEquipmentDescription1FieldSpecified;
-            }
-            set {
-                this.returnInstallEquipmentDescription1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnInstallEquipmentDescription2 {
-            get {
-                return this.returnInstallEquipmentDescription2Field;
-            }
-            set {
-                this.returnInstallEquipmentDescription2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnInstallEquipmentDescription2Specified {
-            get {
-                return this.returnInstallEquipmentDescription2FieldSpecified;
-            }
-            set {
-                this.returnInstallEquipmentDescription2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnInstallEquipmentNo {
-            get {
-                return this.returnInstallEquipmentNoField;
-            }
-            set {
-                this.returnInstallEquipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnInstallEquipmentNoSpecified {
-            get {
-                return this.returnInstallEquipmentNoFieldSpecified;
-            }
-            set {
-                this.returnInstallEquipmentNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureDate {
-            get {
-                return this.returnMeasureDateField;
-            }
-            set {
-                this.returnMeasureDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureDateSpecified {
-            get {
-                return this.returnMeasureDateFieldSpecified;
-            }
-            set {
-                this.returnMeasureDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureOrignt {
-            get {
-                return this.returnMeasureOrigntField;
-            }
-            set {
-                this.returnMeasureOrigntField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureOrigntSpecified {
-            get {
-                return this.returnMeasureOrigntFieldSpecified;
-            }
-            set {
-                this.returnMeasureOrigntFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureProcInd {
-            get {
-                return this.returnMeasureProcIndField;
-            }
-            set {
-                this.returnMeasureProcIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureProcIndSpecified {
-            get {
-                return this.returnMeasureProcIndFieldSpecified;
-            }
-            set {
-                this.returnMeasureProcIndFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureStatus {
-            get {
-                return this.returnMeasureStatusField;
-            }
-            set {
-                this.returnMeasureStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureStatusSpecified {
-            get {
-                return this.returnMeasureStatusFieldSpecified;
-            }
-            set {
-                this.returnMeasureStatusFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureTime {
-            get {
-                return this.returnMeasureTimeField;
-            }
-            set {
-                this.returnMeasureTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureTimeSpecified {
-            get {
-                return this.returnMeasureTimeFieldSpecified;
-            }
-            set {
-                this.returnMeasureTimeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureValue {
-            get {
-                return this.returnMeasureValueField;
-            }
-            set {
-                this.returnMeasureValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureValueSpecified {
-            get {
-                return this.returnMeasureValueFieldSpecified;
-            }
-            set {
-                this.returnMeasureValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnNarrativeNo {
-            get {
-                return this.returnNarrativeNoField;
-            }
-            set {
-                this.returnNarrativeNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnNarrativeNoSpecified {
-            get {
-                return this.returnNarrativeNoFieldSpecified;
-            }
-            set {
-                this.returnNarrativeNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnUnitofMeasure {
-            get {
-                return this.returnUnitofMeasureField;
-            }
-            set {
-                this.returnUnitofMeasureField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnUnitofMeasureSpecified {
-            get {
-                return this.returnUnitofMeasureFieldSpecified;
-            }
-            set {
-                this.returnUnitofMeasureFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnVisInsCode1 {
-            get {
-                return this.returnVisInsCode1Field;
-            }
-            set {
-                this.returnVisInsCode1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnVisInsCode1Specified {
-            get {
-                return this.returnVisInsCode1FieldSpecified;
-            }
-            set {
-                this.returnVisInsCode1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnVisInsCode2 {
-            get {
-                return this.returnVisInsCode2Field;
-            }
-            set {
-                this.returnVisInsCode2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnVisInsCode2Specified {
-            get {
-                return this.returnVisInsCode2FieldSpecified;
-            }
-            set {
-                this.returnVisInsCode2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnVisInsCode3 {
-            get {
-                return this.returnVisInsCode3Field;
-            }
-            set {
-                this.returnVisInsCode3Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnVisInsCode3Specified {
-            get {
-                return this.returnVisInsCode3FieldSpecified;
-            }
-            set {
-                this.returnVisInsCode3FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWODesc {
-            get {
-                return this.returnWODescField;
-            }
-            set {
-                this.returnWODescField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWODescSpecified {
-            get {
-                return this.returnWODescFieldSpecified;
-            }
-            set {
-                this.returnWODescFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrder {
-            get {
-                return this.returnWorkOrderField;
-            }
-            set {
-                this.returnWorkOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderSpecified {
-            get {
-                return this.returnWorkOrderFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrderCompCode {
-            get {
-                return this.returnWorkOrderCompCodeField;
-            }
-            set {
-                this.returnWorkOrderCompCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderCompCodeSpecified {
-            get {
-                return this.returnWorkOrderCompCodeFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderCompCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrderCompModCode {
-            get {
-                return this.returnWorkOrderCompModCodeField;
-            }
-            set {
-                this.returnWorkOrderCompModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderCompModCodeSpecified {
-            get {
-                return this.returnWorkOrderCompModCodeFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderCompModCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrderEequipRef {
-            get {
-                return this.returnWorkOrderEequipRefField;
-            }
-            set {
-                this.returnWorkOrderEequipRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderEequipRefSpecified {
-            get {
-                return this.returnWorkOrderEequipRefFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderEequipRefFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrderEquipmentNo {
-            get {
-                return this.returnWorkOrderEquipmentNoField;
-            }
-            set {
-                this.returnWorkOrderEquipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderEquipmentNoSpecified {
-            get {
-                return this.returnWorkOrderEquipmentNoFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderEquipmentNoFieldSpecified = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4933,6 +6912,46 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         private bool returnNarrativeNoField;
         
         private bool returnNarrativeNoFieldSpecified;
+        
+        private bool returnSpcTriggered1Field;
+        
+        private bool returnSpcTriggered1FieldSpecified;
+        
+        private bool returnSpcTriggered10Field;
+        
+        private bool returnSpcTriggered10FieldSpecified;
+        
+        private bool returnSpcTriggered2Field;
+        
+        private bool returnSpcTriggered2FieldSpecified;
+        
+        private bool returnSpcTriggered3Field;
+        
+        private bool returnSpcTriggered3FieldSpecified;
+        
+        private bool returnSpcTriggered4Field;
+        
+        private bool returnSpcTriggered4FieldSpecified;
+        
+        private bool returnSpcTriggered5Field;
+        
+        private bool returnSpcTriggered5FieldSpecified;
+        
+        private bool returnSpcTriggered6Field;
+        
+        private bool returnSpcTriggered6FieldSpecified;
+        
+        private bool returnSpcTriggered7Field;
+        
+        private bool returnSpcTriggered7FieldSpecified;
+        
+        private bool returnSpcTriggered8Field;
+        
+        private bool returnSpcTriggered8FieldSpecified;
+        
+        private bool returnSpcTriggered9Field;
+        
+        private bool returnSpcTriggered9FieldSpecified;
         
         private bool returnStdJobNoField;
         
@@ -5546,6 +7565,216 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
+        public bool returnSpcTriggered1 {
+            get {
+                return this.returnSpcTriggered1Field;
+            }
+            set {
+                this.returnSpcTriggered1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered1Specified {
+            get {
+                return this.returnSpcTriggered1FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered10 {
+            get {
+                return this.returnSpcTriggered10Field;
+            }
+            set {
+                this.returnSpcTriggered10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered10Specified {
+            get {
+                return this.returnSpcTriggered10FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered10FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered2 {
+            get {
+                return this.returnSpcTriggered2Field;
+            }
+            set {
+                this.returnSpcTriggered2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered2Specified {
+            get {
+                return this.returnSpcTriggered2FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered3 {
+            get {
+                return this.returnSpcTriggered3Field;
+            }
+            set {
+                this.returnSpcTriggered3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered3Specified {
+            get {
+                return this.returnSpcTriggered3FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered4 {
+            get {
+                return this.returnSpcTriggered4Field;
+            }
+            set {
+                this.returnSpcTriggered4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered4Specified {
+            get {
+                return this.returnSpcTriggered4FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered5 {
+            get {
+                return this.returnSpcTriggered5Field;
+            }
+            set {
+                this.returnSpcTriggered5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered5Specified {
+            get {
+                return this.returnSpcTriggered5FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered5FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered6 {
+            get {
+                return this.returnSpcTriggered6Field;
+            }
+            set {
+                this.returnSpcTriggered6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered6Specified {
+            get {
+                return this.returnSpcTriggered6FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered6FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered7 {
+            get {
+                return this.returnSpcTriggered7Field;
+            }
+            set {
+                this.returnSpcTriggered7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered7Specified {
+            get {
+                return this.returnSpcTriggered7FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered7FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered8 {
+            get {
+                return this.returnSpcTriggered8Field;
+            }
+            set {
+                this.returnSpcTriggered8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered8Specified {
+            get {
+                return this.returnSpcTriggered8FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered8FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered9 {
+            get {
+                return this.returnSpcTriggered9Field;
+            }
+            set {
+                this.returnSpcTriggered9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered9Specified {
+            get {
+                return this.returnSpcTriggered9FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered9FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnStdJobNo {
             get {
                 return this.returnStdJobNoField;
@@ -5778,791 +8007,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceCreateRequiredAttributesDTO : AbstractRequiredAttributesDTO {
-        
-        private bool returnCompCodeField;
-        
-        private bool returnCompCodeFieldSpecified;
-        
-        private bool returnCompCodeDescriptionField;
-        
-        private bool returnCompCodeDescriptionFieldSpecified;
-        
-        private bool returnCompModCodeField;
-        
-        private bool returnCompModCodeFieldSpecified;
-        
-        private bool returnCompModCodeDescriptionField;
-        
-        private bool returnCompModCodeDescriptionFieldSpecified;
-        
-        private bool returnCondMonMeasField;
-        
-        private bool returnCondMonMeasFieldSpecified;
-        
-        private bool returnCondMonMeasDescriptionField;
-        
-        private bool returnCondMonMeasDescriptionFieldSpecified;
-        
-        private bool returnCondMonPosField;
-        
-        private bool returnCondMonPosFieldSpecified;
-        
-        private bool returnCondMonPosDescriptionField;
-        
-        private bool returnCondMonPosDescriptionFieldSpecified;
-        
-        private bool returnCondMonTypeField;
-        
-        private bool returnCondMonTypeFieldSpecified;
-        
-        private bool returnCondMonTypeDescriptionField;
-        
-        private bool returnCondMonTypeDescriptionFieldSpecified;
-        
-        private bool returnDistrictCodeField;
-        
-        private bool returnDistrictCodeFieldSpecified;
-        
-        private bool returnDistrictNameField;
-        
-        private bool returnDistrictNameFieldSpecified;
-        
-        private bool returnEquipmentDescription1Field;
-        
-        private bool returnEquipmentDescription1FieldSpecified;
-        
-        private bool returnEquipmentDescription2Field;
-        
-        private bool returnEquipmentDescription2FieldSpecified;
-        
-        private bool returnEquipmentNoField;
-        
-        private bool returnEquipmentNoFieldSpecified;
-        
-        private bool returnEquipmentRefField;
-        
-        private bool returnEquipmentRefFieldSpecified;
-        
-        private bool returnMeasureDateField;
-        
-        private bool returnMeasureDateFieldSpecified;
-        
-        private bool returnMeasureOrigntField;
-        
-        private bool returnMeasureOrigntFieldSpecified;
-        
-        private bool returnMeasureProcIndField;
-        
-        private bool returnMeasureProcIndFieldSpecified;
-        
-        private bool returnMeasureStatusField;
-        
-        private bool returnMeasureStatusFieldSpecified;
-        
-        private bool returnMeasureTimeField;
-        
-        private bool returnMeasureTimeFieldSpecified;
-        
-        private bool returnMeasureValueField;
-        
-        private bool returnMeasureValueFieldSpecified;
-        
-        private bool returnNarrativeNoField;
-        
-        private bool returnNarrativeNoFieldSpecified;
-        
-        private bool returnStdTxtKeyField;
-        
-        private bool returnStdTxtKeyFieldSpecified;
-        
-        private bool returnStdTxtKeyExistsField;
-        
-        private bool returnStdTxtKeyExistsFieldSpecified;
-        
-        private bool returnUnitofMeasureField;
-        
-        private bool returnUnitofMeasureFieldSpecified;
-        
-        private bool returnVisInsCode1Field;
-        
-        private bool returnVisInsCode1FieldSpecified;
-        
-        private bool returnVisInsCode2Field;
-        
-        private bool returnVisInsCode2FieldSpecified;
-        
-        private bool returnVisInsCode3Field;
-        
-        private bool returnVisInsCode3FieldSpecified;
-        
-        private bool returnWODescField;
-        
-        private bool returnWODescFieldSpecified;
-        
-        private bool returnWorkOrderField;
-        
-        private bool returnWorkOrderFieldSpecified;
-        
-        /// <remarks/>
-        public bool returnCompCode {
-            get {
-                return this.returnCompCodeField;
-            }
-            set {
-                this.returnCompCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompCodeSpecified {
-            get {
-                return this.returnCompCodeFieldSpecified;
-            }
-            set {
-                this.returnCompCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompCodeDescription {
-            get {
-                return this.returnCompCodeDescriptionField;
-            }
-            set {
-                this.returnCompCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompCodeDescriptionSpecified {
-            get {
-                return this.returnCompCodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCompCodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompModCode {
-            get {
-                return this.returnCompModCodeField;
-            }
-            set {
-                this.returnCompModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompModCodeSpecified {
-            get {
-                return this.returnCompModCodeFieldSpecified;
-            }
-            set {
-                this.returnCompModCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompModCodeDescription {
-            get {
-                return this.returnCompModCodeDescriptionField;
-            }
-            set {
-                this.returnCompModCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompModCodeDescriptionSpecified {
-            get {
-                return this.returnCompModCodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCompModCodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonMeas {
-            get {
-                return this.returnCondMonMeasField;
-            }
-            set {
-                this.returnCondMonMeasField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonMeasSpecified {
-            get {
-                return this.returnCondMonMeasFieldSpecified;
-            }
-            set {
-                this.returnCondMonMeasFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonMeasDescription {
-            get {
-                return this.returnCondMonMeasDescriptionField;
-            }
-            set {
-                this.returnCondMonMeasDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonMeasDescriptionSpecified {
-            get {
-                return this.returnCondMonMeasDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCondMonMeasDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonPos {
-            get {
-                return this.returnCondMonPosField;
-            }
-            set {
-                this.returnCondMonPosField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonPosSpecified {
-            get {
-                return this.returnCondMonPosFieldSpecified;
-            }
-            set {
-                this.returnCondMonPosFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonPosDescription {
-            get {
-                return this.returnCondMonPosDescriptionField;
-            }
-            set {
-                this.returnCondMonPosDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonPosDescriptionSpecified {
-            get {
-                return this.returnCondMonPosDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCondMonPosDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonType {
-            get {
-                return this.returnCondMonTypeField;
-            }
-            set {
-                this.returnCondMonTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonTypeSpecified {
-            get {
-                return this.returnCondMonTypeFieldSpecified;
-            }
-            set {
-                this.returnCondMonTypeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCondMonTypeDescription {
-            get {
-                return this.returnCondMonTypeDescriptionField;
-            }
-            set {
-                this.returnCondMonTypeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCondMonTypeDescriptionSpecified {
-            get {
-                return this.returnCondMonTypeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCondMonTypeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnDistrictCode {
-            get {
-                return this.returnDistrictCodeField;
-            }
-            set {
-                this.returnDistrictCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnDistrictCodeSpecified {
-            get {
-                return this.returnDistrictCodeFieldSpecified;
-            }
-            set {
-                this.returnDistrictCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnDistrictName {
-            get {
-                return this.returnDistrictNameField;
-            }
-            set {
-                this.returnDistrictNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnDistrictNameSpecified {
-            get {
-                return this.returnDistrictNameFieldSpecified;
-            }
-            set {
-                this.returnDistrictNameFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentDescription1 {
-            get {
-                return this.returnEquipmentDescription1Field;
-            }
-            set {
-                this.returnEquipmentDescription1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentDescription1Specified {
-            get {
-                return this.returnEquipmentDescription1FieldSpecified;
-            }
-            set {
-                this.returnEquipmentDescription1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentDescription2 {
-            get {
-                return this.returnEquipmentDescription2Field;
-            }
-            set {
-                this.returnEquipmentDescription2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentDescription2Specified {
-            get {
-                return this.returnEquipmentDescription2FieldSpecified;
-            }
-            set {
-                this.returnEquipmentDescription2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentNo {
-            get {
-                return this.returnEquipmentNoField;
-            }
-            set {
-                this.returnEquipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentNoSpecified {
-            get {
-                return this.returnEquipmentNoFieldSpecified;
-            }
-            set {
-                this.returnEquipmentNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentRef {
-            get {
-                return this.returnEquipmentRefField;
-            }
-            set {
-                this.returnEquipmentRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentRefSpecified {
-            get {
-                return this.returnEquipmentRefFieldSpecified;
-            }
-            set {
-                this.returnEquipmentRefFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureDate {
-            get {
-                return this.returnMeasureDateField;
-            }
-            set {
-                this.returnMeasureDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureDateSpecified {
-            get {
-                return this.returnMeasureDateFieldSpecified;
-            }
-            set {
-                this.returnMeasureDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureOrignt {
-            get {
-                return this.returnMeasureOrigntField;
-            }
-            set {
-                this.returnMeasureOrigntField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureOrigntSpecified {
-            get {
-                return this.returnMeasureOrigntFieldSpecified;
-            }
-            set {
-                this.returnMeasureOrigntFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureProcInd {
-            get {
-                return this.returnMeasureProcIndField;
-            }
-            set {
-                this.returnMeasureProcIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureProcIndSpecified {
-            get {
-                return this.returnMeasureProcIndFieldSpecified;
-            }
-            set {
-                this.returnMeasureProcIndFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureStatus {
-            get {
-                return this.returnMeasureStatusField;
-            }
-            set {
-                this.returnMeasureStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureStatusSpecified {
-            get {
-                return this.returnMeasureStatusFieldSpecified;
-            }
-            set {
-                this.returnMeasureStatusFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureTime {
-            get {
-                return this.returnMeasureTimeField;
-            }
-            set {
-                this.returnMeasureTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureTimeSpecified {
-            get {
-                return this.returnMeasureTimeFieldSpecified;
-            }
-            set {
-                this.returnMeasureTimeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnMeasureValue {
-            get {
-                return this.returnMeasureValueField;
-            }
-            set {
-                this.returnMeasureValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnMeasureValueSpecified {
-            get {
-                return this.returnMeasureValueFieldSpecified;
-            }
-            set {
-                this.returnMeasureValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnNarrativeNo {
-            get {
-                return this.returnNarrativeNoField;
-            }
-            set {
-                this.returnNarrativeNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnNarrativeNoSpecified {
-            get {
-                return this.returnNarrativeNoFieldSpecified;
-            }
-            set {
-                this.returnNarrativeNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnStdTxtKey {
-            get {
-                return this.returnStdTxtKeyField;
-            }
-            set {
-                this.returnStdTxtKeyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnStdTxtKeySpecified {
-            get {
-                return this.returnStdTxtKeyFieldSpecified;
-            }
-            set {
-                this.returnStdTxtKeyFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnStdTxtKeyExists {
-            get {
-                return this.returnStdTxtKeyExistsField;
-            }
-            set {
-                this.returnStdTxtKeyExistsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnStdTxtKeyExistsSpecified {
-            get {
-                return this.returnStdTxtKeyExistsFieldSpecified;
-            }
-            set {
-                this.returnStdTxtKeyExistsFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnUnitofMeasure {
-            get {
-                return this.returnUnitofMeasureField;
-            }
-            set {
-                this.returnUnitofMeasureField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnUnitofMeasureSpecified {
-            get {
-                return this.returnUnitofMeasureFieldSpecified;
-            }
-            set {
-                this.returnUnitofMeasureFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnVisInsCode1 {
-            get {
-                return this.returnVisInsCode1Field;
-            }
-            set {
-                this.returnVisInsCode1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnVisInsCode1Specified {
-            get {
-                return this.returnVisInsCode1FieldSpecified;
-            }
-            set {
-                this.returnVisInsCode1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnVisInsCode2 {
-            get {
-                return this.returnVisInsCode2Field;
-            }
-            set {
-                this.returnVisInsCode2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnVisInsCode2Specified {
-            get {
-                return this.returnVisInsCode2FieldSpecified;
-            }
-            set {
-                this.returnVisInsCode2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnVisInsCode3 {
-            get {
-                return this.returnVisInsCode3Field;
-            }
-            set {
-                this.returnVisInsCode3Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnVisInsCode3Specified {
-            get {
-                return this.returnVisInsCode3FieldSpecified;
-            }
-            set {
-                this.returnVisInsCode3FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWODesc {
-            get {
-                return this.returnWODescField;
-            }
-            set {
-                this.returnWODescField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWODescSpecified {
-            get {
-                return this.returnWODescFieldSpecified;
-            }
-            set {
-                this.returnWODescFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnWorkOrder {
-            get {
-                return this.returnWorkOrderField;
-            }
-            set {
-                this.returnWorkOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnWorkOrderSpecified {
-            get {
-                return this.returnWorkOrderFieldSpecified;
-            }
-            set {
-                this.returnWorkOrderFieldSpecified = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6821,352 +8266,1295 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveMntTypesRequestDTO : AbstractDTO {
+    public partial class CondMeasurementServiceCreateAckRequiredAttributesDTO : AbstractRequiredAttributesDTO {
         
-        private string compCodeField;
+        private bool returnAlarmDistrictField;
         
-        private string compModCodeField;
+        private bool returnAlarmDistrictFieldSpecified;
         
-        private string condMonPosField;
+        private bool returnAlarmWOField;
         
-        private string condMonTypeField;
-        
-        private string equipmentNoField;
-        
-        private string equipmentRefField;
+        private bool returnAlarmWOFieldSpecified;
         
         /// <remarks/>
-        public string compCode {
+        public bool returnAlarmDistrict {
             get {
-                return this.compCodeField;
+                return this.returnAlarmDistrictField;
             }
             set {
-                this.compCodeField = value;
+                this.returnAlarmDistrictField = value;
             }
         }
         
         /// <remarks/>
-        public string compModCode {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAlarmDistrictSpecified {
             get {
-                return this.compModCodeField;
+                return this.returnAlarmDistrictFieldSpecified;
             }
             set {
-                this.compModCodeField = value;
+                this.returnAlarmDistrictFieldSpecified = value;
             }
         }
         
         /// <remarks/>
-        public string condMonPos {
+        public bool returnAlarmWO {
             get {
-                return this.condMonPosField;
+                return this.returnAlarmWOField;
             }
             set {
-                this.condMonPosField = value;
+                this.returnAlarmWOField = value;
             }
         }
         
         /// <remarks/>
-        public string condMonType {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAlarmWOSpecified {
             get {
-                return this.condMonTypeField;
+                return this.returnAlarmWOFieldSpecified;
             }
             set {
-                this.condMonTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentNo {
-            get {
-                return this.equipmentNoField;
-            }
-            set {
-                this.equipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentRef {
-            get {
-                return this.equipmentRefField;
-            }
-            set {
-                this.equipmentRefField = value;
+                this.returnAlarmWOFieldSpecified = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveAllMntsRequestDTO : AbstractDTO {
+    public partial class CondMeasurementServiceRetrieveMntTypesRequiredAttributesDTO : AbstractRequiredAttributesDTO {
         
-        private string cSetSearchTypeField;
+        private bool returnCondMonMeasField;
         
-        private string compCodeField;
+        private bool returnCondMonMeasFieldSpecified;
         
-        private string compModCodeField;
+        private bool returnCondMonMeasDescriptionField;
         
-        private string condMonPosField;
+        private bool returnCondMonMeasDescriptionFieldSpecified;
         
-        private string condMonTypeField;
+        private bool returnUnitofMeasureField;
         
-        private string equipmentNoField;
-        
-        private string equipmentRefField;
-        
-        private string startDateField;
+        private bool returnUnitofMeasureFieldSpecified;
         
         /// <remarks/>
-        public string CSetSearchType {
+        public bool returnCondMonMeas {
             get {
-                return this.cSetSearchTypeField;
+                return this.returnCondMonMeasField;
             }
             set {
-                this.cSetSearchTypeField = value;
+                this.returnCondMonMeasField = value;
             }
         }
         
         /// <remarks/>
-        public string compCode {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonMeasSpecified {
             get {
-                return this.compCodeField;
+                return this.returnCondMonMeasFieldSpecified;
             }
             set {
-                this.compCodeField = value;
+                this.returnCondMonMeasFieldSpecified = value;
             }
         }
         
         /// <remarks/>
-        public string compModCode {
+        public bool returnCondMonMeasDescription {
             get {
-                return this.compModCodeField;
+                return this.returnCondMonMeasDescriptionField;
             }
             set {
-                this.compModCodeField = value;
+                this.returnCondMonMeasDescriptionField = value;
             }
         }
         
         /// <remarks/>
-        public string condMonPos {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonMeasDescriptionSpecified {
             get {
-                return this.condMonPosField;
+                return this.returnCondMonMeasDescriptionFieldSpecified;
             }
             set {
-                this.condMonPosField = value;
+                this.returnCondMonMeasDescriptionFieldSpecified = value;
             }
         }
         
         /// <remarks/>
-        public string condMonType {
+        public bool returnUnitofMeasure {
             get {
-                return this.condMonTypeField;
+                return this.returnUnitofMeasureField;
             }
             set {
-                this.condMonTypeField = value;
+                this.returnUnitofMeasureField = value;
             }
         }
         
         /// <remarks/>
-        public string equipmentNo {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnUnitofMeasureSpecified {
             get {
-                return this.equipmentNoField;
+                return this.returnUnitofMeasureFieldSpecified;
             }
             set {
-                this.equipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentRef {
-            get {
-                return this.equipmentRefField;
-            }
-            set {
-                this.equipmentRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string startDate {
-            get {
-                return this.startDateField;
-            }
-            set {
-                this.startDateField = value;
+                this.returnUnitofMeasureFieldSpecified = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveRequestDTO : AbstractDTO {
+    public partial class CondMeasurementServiceReadRequiredAttributesDTO : AbstractRequiredAttributesDTO {
         
-        private string cSetSearchTypeField;
+        private bool returnCompCodeField;
         
-        private string compCodeField;
+        private bool returnCompCodeFieldSpecified;
         
-        private string compModCodeField;
+        private bool returnCompCodeDescriptionField;
         
-        private string condMonPosField;
+        private bool returnCompCodeDescriptionFieldSpecified;
         
-        private string condMonTypeField;
+        private bool returnCompModCodeField;
         
-        private string equipmentNoField;
+        private bool returnCompModCodeFieldSpecified;
         
-        private string equipmentRefField;
+        private bool returnCompModCodeDescriptionField;
         
-        private string startDateField;
+        private bool returnCompModCodeDescriptionFieldSpecified;
         
-        private WorkOrderDTO workOrderField;
+        private bool returnCondMonMeasField;
+        
+        private bool returnCondMonMeasFieldSpecified;
+        
+        private bool returnCondMonPosField;
+        
+        private bool returnCondMonPosFieldSpecified;
+        
+        private bool returnCondMonPosDescriptionField;
+        
+        private bool returnCondMonPosDescriptionFieldSpecified;
+        
+        private bool returnCondMonTypeField;
+        
+        private bool returnCondMonTypeFieldSpecified;
+        
+        private bool returnCondMonTypeDescriptionField;
+        
+        private bool returnCondMonTypeDescriptionFieldSpecified;
+        
+        private bool returnDistrictNameField;
+        
+        private bool returnDistrictNameFieldSpecified;
+        
+        private bool returnEquipmentDescription1Field;
+        
+        private bool returnEquipmentDescription1FieldSpecified;
+        
+        private bool returnEquipmentDescription2Field;
+        
+        private bool returnEquipmentDescription2FieldSpecified;
+        
+        private bool returnEquipmentNoField;
+        
+        private bool returnEquipmentNoFieldSpecified;
+        
+        private bool returnEquipmentRefField;
+        
+        private bool returnEquipmentRefFieldSpecified;
+        
+        private bool returnInstallEequipRefField;
+        
+        private bool returnInstallEequipRefFieldSpecified;
+        
+        private bool returnInstallEquipmentDescription1Field;
+        
+        private bool returnInstallEquipmentDescription1FieldSpecified;
+        
+        private bool returnInstallEquipmentDescription2Field;
+        
+        private bool returnInstallEquipmentDescription2FieldSpecified;
+        
+        private bool returnInstallEquipmentNoField;
+        
+        private bool returnInstallEquipmentNoFieldSpecified;
+        
+        private bool returnMeasureDateField;
+        
+        private bool returnMeasureDateFieldSpecified;
+        
+        private bool returnMeasureOrigntField;
+        
+        private bool returnMeasureOrigntFieldSpecified;
+        
+        private bool returnMeasureProcIndField;
+        
+        private bool returnMeasureProcIndFieldSpecified;
+        
+        private bool returnMeasureStatusField;
+        
+        private bool returnMeasureStatusFieldSpecified;
+        
+        private bool returnMeasureTimeField;
+        
+        private bool returnMeasureTimeFieldSpecified;
+        
+        private bool returnMeasureValueField;
+        
+        private bool returnMeasureValueFieldSpecified;
+        
+        private bool returnNarrativeNoField;
+        
+        private bool returnNarrativeNoFieldSpecified;
+        
+        private bool returnSpcTriggered1Field;
+        
+        private bool returnSpcTriggered1FieldSpecified;
+        
+        private bool returnSpcTriggered10Field;
+        
+        private bool returnSpcTriggered10FieldSpecified;
+        
+        private bool returnSpcTriggered2Field;
+        
+        private bool returnSpcTriggered2FieldSpecified;
+        
+        private bool returnSpcTriggered3Field;
+        
+        private bool returnSpcTriggered3FieldSpecified;
+        
+        private bool returnSpcTriggered4Field;
+        
+        private bool returnSpcTriggered4FieldSpecified;
+        
+        private bool returnSpcTriggered5Field;
+        
+        private bool returnSpcTriggered5FieldSpecified;
+        
+        private bool returnSpcTriggered6Field;
+        
+        private bool returnSpcTriggered6FieldSpecified;
+        
+        private bool returnSpcTriggered7Field;
+        
+        private bool returnSpcTriggered7FieldSpecified;
+        
+        private bool returnSpcTriggered8Field;
+        
+        private bool returnSpcTriggered8FieldSpecified;
+        
+        private bool returnSpcTriggered9Field;
+        
+        private bool returnSpcTriggered9FieldSpecified;
+        
+        private bool returnUnitofMeasureField;
+        
+        private bool returnUnitofMeasureFieldSpecified;
+        
+        private bool returnVisInsCode1Field;
+        
+        private bool returnVisInsCode1FieldSpecified;
+        
+        private bool returnVisInsCode2Field;
+        
+        private bool returnVisInsCode2FieldSpecified;
+        
+        private bool returnVisInsCode3Field;
+        
+        private bool returnVisInsCode3FieldSpecified;
+        
+        private bool returnWODescField;
+        
+        private bool returnWODescFieldSpecified;
+        
+        private bool returnWorkOrderField;
+        
+        private bool returnWorkOrderFieldSpecified;
+        
+        private bool returnWorkOrderCompCodeField;
+        
+        private bool returnWorkOrderCompCodeFieldSpecified;
+        
+        private bool returnWorkOrderCompModCodeField;
+        
+        private bool returnWorkOrderCompModCodeFieldSpecified;
+        
+        private bool returnWorkOrderEequipRefField;
+        
+        private bool returnWorkOrderEequipRefFieldSpecified;
+        
+        private bool returnWorkOrderEquipmentNoField;
+        
+        private bool returnWorkOrderEquipmentNoFieldSpecified;
         
         /// <remarks/>
-        public string CSetSearchType {
+        public bool returnCompCode {
             get {
-                return this.cSetSearchTypeField;
+                return this.returnCompCodeField;
             }
             set {
-                this.cSetSearchTypeField = value;
+                this.returnCompCodeField = value;
             }
         }
         
         /// <remarks/>
-        public string compCode {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompCodeSpecified {
             get {
-                return this.compCodeField;
+                return this.returnCompCodeFieldSpecified;
             }
             set {
-                this.compCodeField = value;
+                this.returnCompCodeFieldSpecified = value;
             }
         }
         
         /// <remarks/>
-        public string compModCode {
+        public bool returnCompCodeDescription {
             get {
-                return this.compModCodeField;
+                return this.returnCompCodeDescriptionField;
             }
             set {
-                this.compModCodeField = value;
+                this.returnCompCodeDescriptionField = value;
             }
         }
         
         /// <remarks/>
-        public string condMonPos {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompCodeDescriptionSpecified {
             get {
-                return this.condMonPosField;
+                return this.returnCompCodeDescriptionFieldSpecified;
             }
             set {
-                this.condMonPosField = value;
+                this.returnCompCodeDescriptionFieldSpecified = value;
             }
         }
         
         /// <remarks/>
-        public string condMonType {
+        public bool returnCompModCode {
             get {
-                return this.condMonTypeField;
+                return this.returnCompModCodeField;
             }
             set {
-                this.condMonTypeField = value;
+                this.returnCompModCodeField = value;
             }
         }
         
         /// <remarks/>
-        public string equipmentNo {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompModCodeSpecified {
             get {
-                return this.equipmentNoField;
+                return this.returnCompModCodeFieldSpecified;
             }
             set {
-                this.equipmentNoField = value;
+                this.returnCompModCodeFieldSpecified = value;
             }
         }
         
         /// <remarks/>
-        public string equipmentRef {
+        public bool returnCompModCodeDescription {
             get {
-                return this.equipmentRefField;
+                return this.returnCompModCodeDescriptionField;
             }
             set {
-                this.equipmentRefField = value;
+                this.returnCompModCodeDescriptionField = value;
             }
         }
         
         /// <remarks/>
-        public string startDate {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompModCodeDescriptionSpecified {
             get {
-                return this.startDateField;
+                return this.returnCompModCodeDescriptionFieldSpecified;
             }
             set {
-                this.startDateField = value;
+                this.returnCompModCodeDescriptionFieldSpecified = value;
             }
         }
         
         /// <remarks/>
-        public WorkOrderDTO workOrder {
+        public bool returnCondMonMeas {
             get {
-                return this.workOrderField;
+                return this.returnCondMonMeasField;
             }
             set {
-                this.workOrderField = value;
+                this.returnCondMonMeasField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonMeasSpecified {
+            get {
+                return this.returnCondMonMeasFieldSpecified;
+            }
+            set {
+                this.returnCondMonMeasFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonPos {
+            get {
+                return this.returnCondMonPosField;
+            }
+            set {
+                this.returnCondMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonPosSpecified {
+            get {
+                return this.returnCondMonPosFieldSpecified;
+            }
+            set {
+                this.returnCondMonPosFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonPosDescription {
+            get {
+                return this.returnCondMonPosDescriptionField;
+            }
+            set {
+                this.returnCondMonPosDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonPosDescriptionSpecified {
+            get {
+                return this.returnCondMonPosDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCondMonPosDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonType {
+            get {
+                return this.returnCondMonTypeField;
+            }
+            set {
+                this.returnCondMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonTypeSpecified {
+            get {
+                return this.returnCondMonTypeFieldSpecified;
+            }
+            set {
+                this.returnCondMonTypeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCondMonTypeDescription {
+            get {
+                return this.returnCondMonTypeDescriptionField;
+            }
+            set {
+                this.returnCondMonTypeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCondMonTypeDescriptionSpecified {
+            get {
+                return this.returnCondMonTypeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCondMonTypeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnDistrictName {
+            get {
+                return this.returnDistrictNameField;
+            }
+            set {
+                this.returnDistrictNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnDistrictNameSpecified {
+            get {
+                return this.returnDistrictNameFieldSpecified;
+            }
+            set {
+                this.returnDistrictNameFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentDescription1 {
+            get {
+                return this.returnEquipmentDescription1Field;
+            }
+            set {
+                this.returnEquipmentDescription1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentDescription1Specified {
+            get {
+                return this.returnEquipmentDescription1FieldSpecified;
+            }
+            set {
+                this.returnEquipmentDescription1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentDescription2 {
+            get {
+                return this.returnEquipmentDescription2Field;
+            }
+            set {
+                this.returnEquipmentDescription2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentDescription2Specified {
+            get {
+                return this.returnEquipmentDescription2FieldSpecified;
+            }
+            set {
+                this.returnEquipmentDescription2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentNo {
+            get {
+                return this.returnEquipmentNoField;
+            }
+            set {
+                this.returnEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentNoSpecified {
+            get {
+                return this.returnEquipmentNoFieldSpecified;
+            }
+            set {
+                this.returnEquipmentNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentRef {
+            get {
+                return this.returnEquipmentRefField;
+            }
+            set {
+                this.returnEquipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentRefSpecified {
+            get {
+                return this.returnEquipmentRefFieldSpecified;
+            }
+            set {
+                this.returnEquipmentRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnInstallEequipRef {
+            get {
+                return this.returnInstallEequipRefField;
+            }
+            set {
+                this.returnInstallEequipRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnInstallEequipRefSpecified {
+            get {
+                return this.returnInstallEequipRefFieldSpecified;
+            }
+            set {
+                this.returnInstallEequipRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnInstallEquipmentDescription1 {
+            get {
+                return this.returnInstallEquipmentDescription1Field;
+            }
+            set {
+                this.returnInstallEquipmentDescription1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnInstallEquipmentDescription1Specified {
+            get {
+                return this.returnInstallEquipmentDescription1FieldSpecified;
+            }
+            set {
+                this.returnInstallEquipmentDescription1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnInstallEquipmentDescription2 {
+            get {
+                return this.returnInstallEquipmentDescription2Field;
+            }
+            set {
+                this.returnInstallEquipmentDescription2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnInstallEquipmentDescription2Specified {
+            get {
+                return this.returnInstallEquipmentDescription2FieldSpecified;
+            }
+            set {
+                this.returnInstallEquipmentDescription2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnInstallEquipmentNo {
+            get {
+                return this.returnInstallEquipmentNoField;
+            }
+            set {
+                this.returnInstallEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnInstallEquipmentNoSpecified {
+            get {
+                return this.returnInstallEquipmentNoFieldSpecified;
+            }
+            set {
+                this.returnInstallEquipmentNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureDate {
+            get {
+                return this.returnMeasureDateField;
+            }
+            set {
+                this.returnMeasureDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureDateSpecified {
+            get {
+                return this.returnMeasureDateFieldSpecified;
+            }
+            set {
+                this.returnMeasureDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureOrignt {
+            get {
+                return this.returnMeasureOrigntField;
+            }
+            set {
+                this.returnMeasureOrigntField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureOrigntSpecified {
+            get {
+                return this.returnMeasureOrigntFieldSpecified;
+            }
+            set {
+                this.returnMeasureOrigntFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureProcInd {
+            get {
+                return this.returnMeasureProcIndField;
+            }
+            set {
+                this.returnMeasureProcIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureProcIndSpecified {
+            get {
+                return this.returnMeasureProcIndFieldSpecified;
+            }
+            set {
+                this.returnMeasureProcIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureStatus {
+            get {
+                return this.returnMeasureStatusField;
+            }
+            set {
+                this.returnMeasureStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureStatusSpecified {
+            get {
+                return this.returnMeasureStatusFieldSpecified;
+            }
+            set {
+                this.returnMeasureStatusFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureTime {
+            get {
+                return this.returnMeasureTimeField;
+            }
+            set {
+                this.returnMeasureTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureTimeSpecified {
+            get {
+                return this.returnMeasureTimeFieldSpecified;
+            }
+            set {
+                this.returnMeasureTimeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMeasureValue {
+            get {
+                return this.returnMeasureValueField;
+            }
+            set {
+                this.returnMeasureValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMeasureValueSpecified {
+            get {
+                return this.returnMeasureValueFieldSpecified;
+            }
+            set {
+                this.returnMeasureValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnNarrativeNo {
+            get {
+                return this.returnNarrativeNoField;
+            }
+            set {
+                this.returnNarrativeNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnNarrativeNoSpecified {
+            get {
+                return this.returnNarrativeNoFieldSpecified;
+            }
+            set {
+                this.returnNarrativeNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered1 {
+            get {
+                return this.returnSpcTriggered1Field;
+            }
+            set {
+                this.returnSpcTriggered1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered1Specified {
+            get {
+                return this.returnSpcTriggered1FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered10 {
+            get {
+                return this.returnSpcTriggered10Field;
+            }
+            set {
+                this.returnSpcTriggered10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered10Specified {
+            get {
+                return this.returnSpcTriggered10FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered10FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered2 {
+            get {
+                return this.returnSpcTriggered2Field;
+            }
+            set {
+                this.returnSpcTriggered2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered2Specified {
+            get {
+                return this.returnSpcTriggered2FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered3 {
+            get {
+                return this.returnSpcTriggered3Field;
+            }
+            set {
+                this.returnSpcTriggered3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered3Specified {
+            get {
+                return this.returnSpcTriggered3FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered4 {
+            get {
+                return this.returnSpcTriggered4Field;
+            }
+            set {
+                this.returnSpcTriggered4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered4Specified {
+            get {
+                return this.returnSpcTriggered4FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered5 {
+            get {
+                return this.returnSpcTriggered5Field;
+            }
+            set {
+                this.returnSpcTriggered5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered5Specified {
+            get {
+                return this.returnSpcTriggered5FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered5FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered6 {
+            get {
+                return this.returnSpcTriggered6Field;
+            }
+            set {
+                this.returnSpcTriggered6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered6Specified {
+            get {
+                return this.returnSpcTriggered6FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered6FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered7 {
+            get {
+                return this.returnSpcTriggered7Field;
+            }
+            set {
+                this.returnSpcTriggered7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered7Specified {
+            get {
+                return this.returnSpcTriggered7FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered7FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered8 {
+            get {
+                return this.returnSpcTriggered8Field;
+            }
+            set {
+                this.returnSpcTriggered8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered8Specified {
+            get {
+                return this.returnSpcTriggered8FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered8FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSpcTriggered9 {
+            get {
+                return this.returnSpcTriggered9Field;
+            }
+            set {
+                this.returnSpcTriggered9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSpcTriggered9Specified {
+            get {
+                return this.returnSpcTriggered9FieldSpecified;
+            }
+            set {
+                this.returnSpcTriggered9FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnUnitofMeasure {
+            get {
+                return this.returnUnitofMeasureField;
+            }
+            set {
+                this.returnUnitofMeasureField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnUnitofMeasureSpecified {
+            get {
+                return this.returnUnitofMeasureFieldSpecified;
+            }
+            set {
+                this.returnUnitofMeasureFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnVisInsCode1 {
+            get {
+                return this.returnVisInsCode1Field;
+            }
+            set {
+                this.returnVisInsCode1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnVisInsCode1Specified {
+            get {
+                return this.returnVisInsCode1FieldSpecified;
+            }
+            set {
+                this.returnVisInsCode1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnVisInsCode2 {
+            get {
+                return this.returnVisInsCode2Field;
+            }
+            set {
+                this.returnVisInsCode2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnVisInsCode2Specified {
+            get {
+                return this.returnVisInsCode2FieldSpecified;
+            }
+            set {
+                this.returnVisInsCode2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnVisInsCode3 {
+            get {
+                return this.returnVisInsCode3Field;
+            }
+            set {
+                this.returnVisInsCode3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnVisInsCode3Specified {
+            get {
+                return this.returnVisInsCode3FieldSpecified;
+            }
+            set {
+                this.returnVisInsCode3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWODesc {
+            get {
+                return this.returnWODescField;
+            }
+            set {
+                this.returnWODescField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWODescSpecified {
+            get {
+                return this.returnWODescFieldSpecified;
+            }
+            set {
+                this.returnWODescFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrder {
+            get {
+                return this.returnWorkOrderField;
+            }
+            set {
+                this.returnWorkOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderSpecified {
+            get {
+                return this.returnWorkOrderFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrderCompCode {
+            get {
+                return this.returnWorkOrderCompCodeField;
+            }
+            set {
+                this.returnWorkOrderCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderCompCodeSpecified {
+            get {
+                return this.returnWorkOrderCompCodeFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderCompCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrderCompModCode {
+            get {
+                return this.returnWorkOrderCompModCodeField;
+            }
+            set {
+                this.returnWorkOrderCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderCompModCodeSpecified {
+            get {
+                return this.returnWorkOrderCompModCodeFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderCompModCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrderEequipRef {
+            get {
+                return this.returnWorkOrderEequipRefField;
+            }
+            set {
+                this.returnWorkOrderEequipRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderEequipRefSpecified {
+            get {
+                return this.returnWorkOrderEequipRefFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderEequipRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnWorkOrderEquipmentNo {
+            get {
+                return this.returnWorkOrderEquipmentNoField;
+            }
+            set {
+                this.returnWorkOrderEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnWorkOrderEquipmentNoSpecified {
+            get {
+                return this.returnWorkOrderEquipmentNoFieldSpecified;
+            }
+            set {
+                this.returnWorkOrderEquipmentNoFieldSpecified = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com")]
-    public partial class WorkOrderDTO {
-        
-        private string prefixField;
-        
-        private string noField;
-        
-        /// <remarks/>
-        public string prefix {
-            get {
-                return this.prefixField;
-            }
-            set {
-                this.prefixField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string no {
-            get {
-                return this.noField;
-            }
-            set {
-                this.noField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceCreateWORequestDTO : AbstractDTO {
+    public partial class CondMeasurementServiceReadRequestDTO : AbstractDTO {
         
         private string compCodeField;
         
         private string compModCodeField;
+        
+        private string condMonMeasField;
         
         private string condMonPosField;
         
@@ -7178,15 +9566,11 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         
         private string measureDateField;
         
-        private string measureOrigntField;
-        
         private string measureTimeField;
         
-        private CondMeasurementServiceCreateWORequiredAttributesDTO requiredAttributesField;
+        private CondMeasurementServiceReadRequiredAttributesDTO requiredAttributesField;
         
-        private string stdJobNoField;
-        
-        private string workOrderPrefixField;
+        private WorkOrderDTO workOrderField;
         
         /// <remarks/>
         public string compCode {
@@ -7205,6 +9589,16 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
             }
             set {
                 this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonMeas {
+            get {
+                return this.condMonMeasField;
+            }
+            set {
+                this.condMonMeasField = value;
             }
         }
         
@@ -7259,12 +9653,141 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
-        public string measureOrignt {
+        public string measureTime {
             get {
-                return this.measureOrigntField;
+                return this.measureTimeField;
             }
             set {
-                this.measureOrigntField = value;
+                this.measureTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceReadRequiredAttributesDTO requiredAttributes {
+            get {
+                return this.requiredAttributesField;
+            }
+            set {
+                this.requiredAttributesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public WorkOrderDTO workOrder {
+            get {
+                return this.workOrderField;
+            }
+            set {
+                this.workOrderField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceGetxtKeyRequestDTO : AbstractDTO {
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string condMonMeasField;
+        
+        private string condMonPosField;
+        
+        private string condMonTypeField;
+        
+        private string equipmentNoField;
+        
+        private string equipmentRefField;
+        
+        private string measureDateField;
+        
+        private string measureTimeField;
+        
+        private CondMeasurementServiceGetxtKeyRequiredAttributesDTO requiredAttributesField;
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonMeas {
+            get {
+                return this.condMonMeasField;
+            }
+            set {
+                this.condMonMeasField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPos {
+            get {
+                return this.condMonPosField;
+            }
+            set {
+                this.condMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonType {
+            get {
+                return this.condMonTypeField;
+            }
+            set {
+                this.condMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentNo {
+            get {
+                return this.equipmentNoField;
+            }
+            set {
+                this.equipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentRef {
+            get {
+                return this.equipmentRefField;
+            }
+            set {
+                this.equipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureDate {
+            get {
+                return this.measureDateField;
+            }
+            set {
+                this.measureDateField = value;
             }
         }
         
@@ -7279,7 +9802,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
-        public CondMeasurementServiceCreateWORequiredAttributesDTO requiredAttributes {
+        public CondMeasurementServiceGetxtKeyRequiredAttributesDTO requiredAttributes {
             get {
                 return this.requiredAttributesField;
             }
@@ -7287,30 +9810,10 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
                 this.requiredAttributesField = value;
             }
         }
-        
-        /// <remarks/>
-        public string stdJobNo {
-            get {
-                return this.stdJobNoField;
-            }
-            set {
-                this.stdJobNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderPrefix {
-            get {
-                return this.workOrderPrefixField;
-            }
-            set {
-                this.workOrderPrefixField = value;
-            }
-        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7500,18 +10003,16 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceReadRequestDTO : AbstractDTO {
+    public partial class CondMeasurementServiceCreateWORequestDTO : AbstractDTO {
         
         private string compCodeField;
         
         private string compModCodeField;
-        
-        private string condMonMeasField;
         
         private string condMonPosField;
         
@@ -7523,11 +10024,15 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         
         private string measureDateField;
         
+        private string measureOrigntField;
+        
         private string measureTimeField;
         
-        private CondMeasurementServiceReadRequiredAttributesDTO requiredAttributesField;
+        private CondMeasurementServiceCreateWORequiredAttributesDTO requiredAttributesField;
         
-        private WorkOrderDTO workOrderField;
+        private string stdJobNoField;
+        
+        private string workOrderPrefixField;
         
         /// <remarks/>
         public string compCode {
@@ -7546,16 +10051,6 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
             }
             set {
                 this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonMeas {
-            get {
-                return this.condMonMeasField;
-            }
-            set {
-                this.condMonMeasField = value;
             }
         }
         
@@ -7610,6 +10105,16 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
+        public string measureOrignt {
+            get {
+                return this.measureOrigntField;
+            }
+            set {
+                this.measureOrigntField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string measureTime {
             get {
                 return this.measureTimeField;
@@ -7620,7 +10125,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
-        public CondMeasurementServiceReadRequiredAttributesDTO requiredAttributes {
+        public CondMeasurementServiceCreateWORequiredAttributesDTO requiredAttributes {
             get {
                 return this.requiredAttributesField;
             }
@@ -7630,313 +10135,28 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
-        public WorkOrderDTO workOrder {
+        public string stdJobNo {
             get {
-                return this.workOrderField;
+                return this.stdJobNoField;
             }
             set {
-                this.workOrderField = value;
+                this.stdJobNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderPrefix {
+            get {
+                return this.workOrderPrefixField;
+            }
+            set {
+                this.workOrderPrefixField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveMntsRequestDTO : AbstractDTO {
-        
-        private string compCodeField;
-        
-        private string compModCodeField;
-        
-        private string condMonPosField;
-        
-        private string condMonTypeField;
-        
-        private string equipmentNoField;
-        
-        private string equipmentRefField;
-        
-        private string measureDateField;
-        
-        private string measureTimeField;
-        
-        /// <remarks/>
-        public string compCode {
-            get {
-                return this.compCodeField;
-            }
-            set {
-                this.compCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCode {
-            get {
-                return this.compModCodeField;
-            }
-            set {
-                this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonPos {
-            get {
-                return this.condMonPosField;
-            }
-            set {
-                this.condMonPosField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonType {
-            get {
-                return this.condMonTypeField;
-            }
-            set {
-                this.condMonTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentNo {
-            get {
-                return this.equipmentNoField;
-            }
-            set {
-                this.equipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentRef {
-            get {
-                return this.equipmentRefField;
-            }
-            set {
-                this.equipmentRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureDate {
-            get {
-                return this.measureDateField;
-            }
-            set {
-                this.measureDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureTime {
-            get {
-                return this.measureTimeField;
-            }
-            set {
-                this.measureTimeField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceCreateRequestDTO : AbstractDTO {
-        
-        private string compCodeField;
-        
-        private string compModCodeField;
-        
-        private string condMonMeasField;
-        
-        private string condMonPosField;
-        
-        private string condMonTypeField;
-        
-        private string equipmentNoField;
-        
-        private string equipmentRefField;
-        
-        private string measureDateField;
-        
-        private string measureTimeField;
-        
-        private decimal measureValueField;
-        
-        private bool measureValueFieldSpecified;
-        
-        private CondMeasurementServiceCreateRequiredAttributesDTO requiredAttributesField;
-        
-        private string visInsCode1Field;
-        
-        private string visInsCode2Field;
-        
-        private string visInsCode3Field;
-        
-        /// <remarks/>
-        public string compCode {
-            get {
-                return this.compCodeField;
-            }
-            set {
-                this.compCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCode {
-            get {
-                return this.compModCodeField;
-            }
-            set {
-                this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonMeas {
-            get {
-                return this.condMonMeasField;
-            }
-            set {
-                this.condMonMeasField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonPos {
-            get {
-                return this.condMonPosField;
-            }
-            set {
-                this.condMonPosField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonType {
-            get {
-                return this.condMonTypeField;
-            }
-            set {
-                this.condMonTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentNo {
-            get {
-                return this.equipmentNoField;
-            }
-            set {
-                this.equipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentRef {
-            get {
-                return this.equipmentRefField;
-            }
-            set {
-                this.equipmentRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureDate {
-            get {
-                return this.measureDateField;
-            }
-            set {
-                this.measureDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureTime {
-            get {
-                return this.measureTimeField;
-            }
-            set {
-                this.measureTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal measureValue {
-            get {
-                return this.measureValueField;
-            }
-            set {
-                this.measureValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool measureValueSpecified {
-            get {
-                return this.measureValueFieldSpecified;
-            }
-            set {
-                this.measureValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceCreateRequiredAttributesDTO requiredAttributes {
-            get {
-                return this.requiredAttributesField;
-            }
-            set {
-                this.requiredAttributesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode1 {
-            get {
-                return this.visInsCode1Field;
-            }
-            set {
-                this.visInsCode1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode2 {
-            get {
-                return this.visInsCode2Field;
-            }
-            set {
-                this.visInsCode2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode3 {
-            get {
-                return this.visInsCode3Field;
-            }
-            set {
-                this.visInsCode3Field = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8090,18 +10310,373 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveMntTypesReplyDTO : AbstractReplyDTO {
+    public partial class CondMeasurementServiceCreateAckRequestDTO : AbstractDTO {
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string condMonPosField;
+        
+        private string condMonTypeField;
+        
+        private string equipmentNoField;
+        
+        private string equipmentRefField;
+        
+        private string measureDateField;
+        
+        private string measureOrigntField;
+        
+        private string measureTimeField;
+        
+        private CondMeasurementServiceCreateAckRequiredAttributesDTO requiredAttributesField;
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPos {
+            get {
+                return this.condMonPosField;
+            }
+            set {
+                this.condMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonType {
+            get {
+                return this.condMonTypeField;
+            }
+            set {
+                this.condMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentNo {
+            get {
+                return this.equipmentNoField;
+            }
+            set {
+                this.equipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentRef {
+            get {
+                return this.equipmentRefField;
+            }
+            set {
+                this.equipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureDate {
+            get {
+                return this.measureDateField;
+            }
+            set {
+                this.measureDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureOrignt {
+            get {
+                return this.measureOrigntField;
+            }
+            set {
+                this.measureOrigntField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureTime {
+            get {
+                return this.measureTimeField;
+            }
+            set {
+                this.measureTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceCreateAckRequiredAttributesDTO requiredAttributes {
+            get {
+                return this.requiredAttributesField;
+            }
+            set {
+                this.requiredAttributesField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceRetrieveReplyDTO : AbstractReplyDTO {
+        
+        private string wODescField;
+        
+        private string alarmDistrictField;
+        
+        private string alarmIndField;
+        
+        private WorkOrderDTO alarmWOField;
+        
+        private string assignPersonField;
+        
+        private string assignPersonDescriptionField;
+        
+        private string compCodeField;
+        
+        private string compCodeDescriptionField;
+        
+        private string compModCodeField;
+        
+        private string compModCodeDescriptionField;
         
         private string condMonMeasField;
         
         private string condMonMeasDescriptionField;
         
+        private string condMonPosField;
+        
+        private string condMonPosDescriptionField;
+        
+        private string condMonTypeField;
+        
+        private string condMonTypeDescriptionField;
+        
+        private string districtCodeField;
+        
+        private string districtNameField;
+        
+        private string equipmentDescription1Field;
+        
+        private string equipmentDescription2Field;
+        
+        private string equipmentNoField;
+        
+        private string equipmentRefField;
+        
+        private string installEequipRefField;
+        
+        private string installEquipmentDescription1Field;
+        
+        private string installEquipmentDescription2Field;
+        
+        private string installEquipmentNoField;
+        
+        private string measureDateField;
+        
+        private string measureOrigntField;
+        
+        private string measureProcIndField;
+        
+        private string measureStatusField;
+        
+        private string measureTimeField;
+        
+        private decimal measureValueField;
+        
+        private bool measureValueFieldSpecified;
+        
+        private decimal narrativeNoField;
+        
+        private bool narrativeNoFieldSpecified;
+        
+        private bool spcTriggered1Field;
+        
+        private bool spcTriggered1FieldSpecified;
+        
+        private bool spcTriggered10Field;
+        
+        private bool spcTriggered10FieldSpecified;
+        
+        private bool spcTriggered2Field;
+        
+        private bool spcTriggered2FieldSpecified;
+        
+        private bool spcTriggered3Field;
+        
+        private bool spcTriggered3FieldSpecified;
+        
+        private bool spcTriggered4Field;
+        
+        private bool spcTriggered4FieldSpecified;
+        
+        private bool spcTriggered5Field;
+        
+        private bool spcTriggered5FieldSpecified;
+        
+        private bool spcTriggered6Field;
+        
+        private bool spcTriggered6FieldSpecified;
+        
+        private bool spcTriggered7Field;
+        
+        private bool spcTriggered7FieldSpecified;
+        
+        private bool spcTriggered8Field;
+        
+        private bool spcTriggered8FieldSpecified;
+        
+        private bool spcTriggered9Field;
+        
+        private bool spcTriggered9FieldSpecified;
+        
         private string unitofMeasureField;
+        
+        private string visInsCode1Field;
+        
+        private string visInsCode2Field;
+        
+        private string visInsCode3Field;
+        
+        private string workGroupField;
+        
+        private string workGroupDescriptionField;
+        
+        private WorkOrderDTO workOrderField;
+        
+        private string workOrderCompCodeField;
+        
+        private string workOrderCompModCodeField;
+        
+        private string workOrderEequipRefField;
+        
+        private string workOrderEquipmentNoField;
+        
+        /// <remarks/>
+        public string WODesc {
+            get {
+                return this.wODescField;
+            }
+            set {
+                this.wODescField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string alarmDistrict {
+            get {
+                return this.alarmDistrictField;
+            }
+            set {
+                this.alarmDistrictField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string alarmInd {
+            get {
+                return this.alarmIndField;
+            }
+            set {
+                this.alarmIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public WorkOrderDTO alarmWO {
+            get {
+                return this.alarmWOField;
+            }
+            set {
+                this.alarmWOField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string assignPerson {
+            get {
+                return this.assignPersonField;
+            }
+            set {
+                this.assignPersonField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string assignPersonDescription {
+            get {
+                return this.assignPersonDescriptionField;
+            }
+            set {
+                this.assignPersonDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCodeDescription {
+            get {
+                return this.compCodeDescriptionField;
+            }
+            set {
+                this.compCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCodeDescription {
+            get {
+                return this.compModCodeDescriptionField;
+            }
+            set {
+                this.compModCodeDescriptionField = value;
+            }
+        }
         
         /// <remarks/>
         public string condMonMeas {
@@ -8124,6 +10699,448 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
+        public string condMonPos {
+            get {
+                return this.condMonPosField;
+            }
+            set {
+                this.condMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPosDescription {
+            get {
+                return this.condMonPosDescriptionField;
+            }
+            set {
+                this.condMonPosDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonType {
+            get {
+                return this.condMonTypeField;
+            }
+            set {
+                this.condMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonTypeDescription {
+            get {
+                return this.condMonTypeDescriptionField;
+            }
+            set {
+                this.condMonTypeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string districtCode {
+            get {
+                return this.districtCodeField;
+            }
+            set {
+                this.districtCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string districtName {
+            get {
+                return this.districtNameField;
+            }
+            set {
+                this.districtNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentDescription1 {
+            get {
+                return this.equipmentDescription1Field;
+            }
+            set {
+                this.equipmentDescription1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentDescription2 {
+            get {
+                return this.equipmentDescription2Field;
+            }
+            set {
+                this.equipmentDescription2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentNo {
+            get {
+                return this.equipmentNoField;
+            }
+            set {
+                this.equipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentRef {
+            get {
+                return this.equipmentRefField;
+            }
+            set {
+                this.equipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string installEequipRef {
+            get {
+                return this.installEequipRefField;
+            }
+            set {
+                this.installEequipRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string installEquipmentDescription1 {
+            get {
+                return this.installEquipmentDescription1Field;
+            }
+            set {
+                this.installEquipmentDescription1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string installEquipmentDescription2 {
+            get {
+                return this.installEquipmentDescription2Field;
+            }
+            set {
+                this.installEquipmentDescription2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string installEquipmentNo {
+            get {
+                return this.installEquipmentNoField;
+            }
+            set {
+                this.installEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureDate {
+            get {
+                return this.measureDateField;
+            }
+            set {
+                this.measureDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureOrignt {
+            get {
+                return this.measureOrigntField;
+            }
+            set {
+                this.measureOrigntField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureProcInd {
+            get {
+                return this.measureProcIndField;
+            }
+            set {
+                this.measureProcIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureStatus {
+            get {
+                return this.measureStatusField;
+            }
+            set {
+                this.measureStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureTime {
+            get {
+                return this.measureTimeField;
+            }
+            set {
+                this.measureTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal measureValue {
+            get {
+                return this.measureValueField;
+            }
+            set {
+                this.measureValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool measureValueSpecified {
+            get {
+                return this.measureValueFieldSpecified;
+            }
+            set {
+                this.measureValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal narrativeNo {
+            get {
+                return this.narrativeNoField;
+            }
+            set {
+                this.narrativeNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool narrativeNoSpecified {
+            get {
+                return this.narrativeNoFieldSpecified;
+            }
+            set {
+                this.narrativeNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered1 {
+            get {
+                return this.spcTriggered1Field;
+            }
+            set {
+                this.spcTriggered1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered1Specified {
+            get {
+                return this.spcTriggered1FieldSpecified;
+            }
+            set {
+                this.spcTriggered1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered10 {
+            get {
+                return this.spcTriggered10Field;
+            }
+            set {
+                this.spcTriggered10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered10Specified {
+            get {
+                return this.spcTriggered10FieldSpecified;
+            }
+            set {
+                this.spcTriggered10FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered2 {
+            get {
+                return this.spcTriggered2Field;
+            }
+            set {
+                this.spcTriggered2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered2Specified {
+            get {
+                return this.spcTriggered2FieldSpecified;
+            }
+            set {
+                this.spcTriggered2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered3 {
+            get {
+                return this.spcTriggered3Field;
+            }
+            set {
+                this.spcTriggered3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered3Specified {
+            get {
+                return this.spcTriggered3FieldSpecified;
+            }
+            set {
+                this.spcTriggered3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered4 {
+            get {
+                return this.spcTriggered4Field;
+            }
+            set {
+                this.spcTriggered4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered4Specified {
+            get {
+                return this.spcTriggered4FieldSpecified;
+            }
+            set {
+                this.spcTriggered4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered5 {
+            get {
+                return this.spcTriggered5Field;
+            }
+            set {
+                this.spcTriggered5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered5Specified {
+            get {
+                return this.spcTriggered5FieldSpecified;
+            }
+            set {
+                this.spcTriggered5FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered6 {
+            get {
+                return this.spcTriggered6Field;
+            }
+            set {
+                this.spcTriggered6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered6Specified {
+            get {
+                return this.spcTriggered6FieldSpecified;
+            }
+            set {
+                this.spcTriggered6FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered7 {
+            get {
+                return this.spcTriggered7Field;
+            }
+            set {
+                this.spcTriggered7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered7Specified {
+            get {
+                return this.spcTriggered7FieldSpecified;
+            }
+            set {
+                this.spcTriggered7FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered8 {
+            get {
+                return this.spcTriggered8Field;
+            }
+            set {
+                this.spcTriggered8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered8Specified {
+            get {
+                return this.spcTriggered8FieldSpecified;
+            }
+            set {
+                this.spcTriggered8FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered9 {
+            get {
+                return this.spcTriggered9Field;
+            }
+            set {
+                this.spcTriggered9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered9Specified {
+            get {
+                return this.spcTriggered9FieldSpecified;
+            }
+            set {
+                this.spcTriggered9FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public string unitofMeasure {
             get {
                 return this.unitofMeasureField;
@@ -8132,10 +11149,181 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
                 this.unitofMeasureField = value;
             }
         }
+        
+        /// <remarks/>
+        public string visInsCode1 {
+            get {
+                return this.visInsCode1Field;
+            }
+            set {
+                this.visInsCode1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string visInsCode2 {
+            get {
+                return this.visInsCode2Field;
+            }
+            set {
+                this.visInsCode2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string visInsCode3 {
+            get {
+                return this.visInsCode3Field;
+            }
+            set {
+                this.visInsCode3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workGroup {
+            get {
+                return this.workGroupField;
+            }
+            set {
+                this.workGroupField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workGroupDescription {
+            get {
+                return this.workGroupDescriptionField;
+            }
+            set {
+                this.workGroupDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public WorkOrderDTO workOrder {
+            get {
+                return this.workOrderField;
+            }
+            set {
+                this.workOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderCompCode {
+            get {
+                return this.workOrderCompCodeField;
+            }
+            set {
+                this.workOrderCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderCompModCode {
+            get {
+                return this.workOrderCompModCodeField;
+            }
+            set {
+                this.workOrderCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderEequipRef {
+            get {
+                return this.workOrderEequipRefField;
+            }
+            set {
+                this.workOrderEequipRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderEquipmentNo {
+            get {
+                return this.workOrderEquipmentNoField;
+            }
+            set {
+                this.workOrderEquipmentNoField = value;
+            }
+        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceGetxtKeyReplyDTO : AbstractReplyDTO {
+        
+        private decimal narrativeNoField;
+        
+        private bool narrativeNoFieldSpecified;
+        
+        private string stdTxtKeyField;
+        
+        private bool stdTxtKeyExistsField;
+        
+        private bool stdTxtKeyExistsFieldSpecified;
+        
+        /// <remarks/>
+        public decimal narrativeNo {
+            get {
+                return this.narrativeNoField;
+            }
+            set {
+                this.narrativeNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool narrativeNoSpecified {
+            get {
+                return this.narrativeNoFieldSpecified;
+            }
+            set {
+                this.narrativeNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stdTxtKey {
+            get {
+                return this.stdTxtKeyField;
+            }
+            set {
+                this.stdTxtKeyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool stdTxtKeyExists {
+            get {
+                return this.stdTxtKeyExistsField;
+            }
+            set {
+                this.stdTxtKeyExistsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool stdTxtKeyExistsSpecified {
+            get {
+                return this.stdTxtKeyExistsFieldSpecified;
+            }
+            set {
+                this.stdTxtKeyExistsFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8423,522 +11611,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveReplyDTO : AbstractReplyDTO {
-        
-        private string wODescField;
-        
-        private string alarmDistrictField;
-        
-        private string alarmIndField;
-        
-        private WorkOrderDTO alarmWOField;
-        
-        private string compCodeField;
-        
-        private string compCodeDescriptionField;
-        
-        private string compModCodeField;
-        
-        private string compModCodeDescriptionField;
-        
-        private string condMonMeasField;
-        
-        private string condMonMeasDescriptionField;
-        
-        private string condMonPosField;
-        
-        private string condMonPosDescriptionField;
-        
-        private string condMonTypeField;
-        
-        private string condMonTypeDescriptionField;
-        
-        private string districtCodeField;
-        
-        private string districtNameField;
-        
-        private string equipmentDescription1Field;
-        
-        private string equipmentDescription2Field;
-        
-        private string equipmentNoField;
-        
-        private string equipmentRefField;
-        
-        private string installEequipRefField;
-        
-        private string installEquipmentDescription1Field;
-        
-        private string installEquipmentDescription2Field;
-        
-        private string installEquipmentNoField;
-        
-        private string measureDateField;
-        
-        private string measureOrigntField;
-        
-        private string measureProcIndField;
-        
-        private string measureStatusField;
-        
-        private string measureTimeField;
-        
-        private decimal measureValueField;
-        
-        private bool measureValueFieldSpecified;
-        
-        private decimal narrativeNoField;
-        
-        private bool narrativeNoFieldSpecified;
-        
-        private string unitofMeasureField;
-        
-        private string visInsCode1Field;
-        
-        private string visInsCode2Field;
-        
-        private string visInsCode3Field;
-        
-        private WorkOrderDTO workOrderField;
-        
-        private string workOrderCompCodeField;
-        
-        private string workOrderCompModCodeField;
-        
-        private string workOrderEequipRefField;
-        
-        private string workOrderEquipmentNoField;
-        
-        /// <remarks/>
-        public string WODesc {
-            get {
-                return this.wODescField;
-            }
-            set {
-                this.wODescField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string alarmDistrict {
-            get {
-                return this.alarmDistrictField;
-            }
-            set {
-                this.alarmDistrictField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string alarmInd {
-            get {
-                return this.alarmIndField;
-            }
-            set {
-                this.alarmIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public WorkOrderDTO alarmWO {
-            get {
-                return this.alarmWOField;
-            }
-            set {
-                this.alarmWOField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compCode {
-            get {
-                return this.compCodeField;
-            }
-            set {
-                this.compCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compCodeDescription {
-            get {
-                return this.compCodeDescriptionField;
-            }
-            set {
-                this.compCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCode {
-            get {
-                return this.compModCodeField;
-            }
-            set {
-                this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCodeDescription {
-            get {
-                return this.compModCodeDescriptionField;
-            }
-            set {
-                this.compModCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonMeas {
-            get {
-                return this.condMonMeasField;
-            }
-            set {
-                this.condMonMeasField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonMeasDescription {
-            get {
-                return this.condMonMeasDescriptionField;
-            }
-            set {
-                this.condMonMeasDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonPos {
-            get {
-                return this.condMonPosField;
-            }
-            set {
-                this.condMonPosField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonPosDescription {
-            get {
-                return this.condMonPosDescriptionField;
-            }
-            set {
-                this.condMonPosDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonType {
-            get {
-                return this.condMonTypeField;
-            }
-            set {
-                this.condMonTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonTypeDescription {
-            get {
-                return this.condMonTypeDescriptionField;
-            }
-            set {
-                this.condMonTypeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string districtCode {
-            get {
-                return this.districtCodeField;
-            }
-            set {
-                this.districtCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string districtName {
-            get {
-                return this.districtNameField;
-            }
-            set {
-                this.districtNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentDescription1 {
-            get {
-                return this.equipmentDescription1Field;
-            }
-            set {
-                this.equipmentDescription1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentDescription2 {
-            get {
-                return this.equipmentDescription2Field;
-            }
-            set {
-                this.equipmentDescription2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentNo {
-            get {
-                return this.equipmentNoField;
-            }
-            set {
-                this.equipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentRef {
-            get {
-                return this.equipmentRefField;
-            }
-            set {
-                this.equipmentRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string installEequipRef {
-            get {
-                return this.installEequipRefField;
-            }
-            set {
-                this.installEequipRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string installEquipmentDescription1 {
-            get {
-                return this.installEquipmentDescription1Field;
-            }
-            set {
-                this.installEquipmentDescription1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string installEquipmentDescription2 {
-            get {
-                return this.installEquipmentDescription2Field;
-            }
-            set {
-                this.installEquipmentDescription2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string installEquipmentNo {
-            get {
-                return this.installEquipmentNoField;
-            }
-            set {
-                this.installEquipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureDate {
-            get {
-                return this.measureDateField;
-            }
-            set {
-                this.measureDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureOrignt {
-            get {
-                return this.measureOrigntField;
-            }
-            set {
-                this.measureOrigntField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureProcInd {
-            get {
-                return this.measureProcIndField;
-            }
-            set {
-                this.measureProcIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureStatus {
-            get {
-                return this.measureStatusField;
-            }
-            set {
-                this.measureStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureTime {
-            get {
-                return this.measureTimeField;
-            }
-            set {
-                this.measureTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal measureValue {
-            get {
-                return this.measureValueField;
-            }
-            set {
-                this.measureValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool measureValueSpecified {
-            get {
-                return this.measureValueFieldSpecified;
-            }
-            set {
-                this.measureValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal narrativeNo {
-            get {
-                return this.narrativeNoField;
-            }
-            set {
-                this.narrativeNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool narrativeNoSpecified {
-            get {
-                return this.narrativeNoFieldSpecified;
-            }
-            set {
-                this.narrativeNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string unitofMeasure {
-            get {
-                return this.unitofMeasureField;
-            }
-            set {
-                this.unitofMeasureField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode1 {
-            get {
-                return this.visInsCode1Field;
-            }
-            set {
-                this.visInsCode1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode2 {
-            get {
-                return this.visInsCode2Field;
-            }
-            set {
-                this.visInsCode2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode3 {
-            get {
-                return this.visInsCode3Field;
-            }
-            set {
-                this.visInsCode3Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public WorkOrderDTO workOrder {
-            get {
-                return this.workOrderField;
-            }
-            set {
-                this.workOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderCompCode {
-            get {
-                return this.workOrderCompCodeField;
-            }
-            set {
-                this.workOrderCompCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderCompModCode {
-            get {
-                return this.workOrderCompModCodeField;
-            }
-            set {
-                this.workOrderCompModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderEequipRef {
-            get {
-                return this.workOrderEequipRefField;
-            }
-            set {
-                this.workOrderEequipRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderEquipmentNo {
-            get {
-                return this.workOrderEquipmentNoField;
-            }
-            set {
-                this.workOrderEquipmentNoField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8971,7 +11644,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9029,6 +11702,46 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         private decimal narrativeNoField;
         
         private bool narrativeNoFieldSpecified;
+        
+        private bool spcTriggered1Field;
+        
+        private bool spcTriggered1FieldSpecified;
+        
+        private bool spcTriggered10Field;
+        
+        private bool spcTriggered10FieldSpecified;
+        
+        private bool spcTriggered2Field;
+        
+        private bool spcTriggered2FieldSpecified;
+        
+        private bool spcTriggered3Field;
+        
+        private bool spcTriggered3FieldSpecified;
+        
+        private bool spcTriggered4Field;
+        
+        private bool spcTriggered4FieldSpecified;
+        
+        private bool spcTriggered5Field;
+        
+        private bool spcTriggered5FieldSpecified;
+        
+        private bool spcTriggered6Field;
+        
+        private bool spcTriggered6FieldSpecified;
+        
+        private bool spcTriggered7Field;
+        
+        private bool spcTriggered7FieldSpecified;
+        
+        private bool spcTriggered8Field;
+        
+        private bool spcTriggered8FieldSpecified;
+        
+        private bool spcTriggered9Field;
+        
+        private bool spcTriggered9FieldSpecified;
         
         private string stdTxtKeyField;
         
@@ -9309,6 +12022,216 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
+        public bool spcTriggered1 {
+            get {
+                return this.spcTriggered1Field;
+            }
+            set {
+                this.spcTriggered1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered1Specified {
+            get {
+                return this.spcTriggered1FieldSpecified;
+            }
+            set {
+                this.spcTriggered1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered10 {
+            get {
+                return this.spcTriggered10Field;
+            }
+            set {
+                this.spcTriggered10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered10Specified {
+            get {
+                return this.spcTriggered10FieldSpecified;
+            }
+            set {
+                this.spcTriggered10FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered2 {
+            get {
+                return this.spcTriggered2Field;
+            }
+            set {
+                this.spcTriggered2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered2Specified {
+            get {
+                return this.spcTriggered2FieldSpecified;
+            }
+            set {
+                this.spcTriggered2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered3 {
+            get {
+                return this.spcTriggered3Field;
+            }
+            set {
+                this.spcTriggered3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered3Specified {
+            get {
+                return this.spcTriggered3FieldSpecified;
+            }
+            set {
+                this.spcTriggered3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered4 {
+            get {
+                return this.spcTriggered4Field;
+            }
+            set {
+                this.spcTriggered4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered4Specified {
+            get {
+                return this.spcTriggered4FieldSpecified;
+            }
+            set {
+                this.spcTriggered4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered5 {
+            get {
+                return this.spcTriggered5Field;
+            }
+            set {
+                this.spcTriggered5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered5Specified {
+            get {
+                return this.spcTriggered5FieldSpecified;
+            }
+            set {
+                this.spcTriggered5FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered6 {
+            get {
+                return this.spcTriggered6Field;
+            }
+            set {
+                this.spcTriggered6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered6Specified {
+            get {
+                return this.spcTriggered6FieldSpecified;
+            }
+            set {
+                this.spcTriggered6FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered7 {
+            get {
+                return this.spcTriggered7Field;
+            }
+            set {
+                this.spcTriggered7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered7Specified {
+            get {
+                return this.spcTriggered7FieldSpecified;
+            }
+            set {
+                this.spcTriggered7FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered8 {
+            get {
+                return this.spcTriggered8Field;
+            }
+            set {
+                this.spcTriggered8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered8Specified {
+            get {
+                return this.spcTriggered8FieldSpecified;
+            }
+            set {
+                this.spcTriggered8FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered9 {
+            get {
+                return this.spcTriggered9Field;
+            }
+            set {
+                this.spcTriggered9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered9Specified {
+            get {
+                return this.spcTriggered9FieldSpecified;
+            }
+            set {
+                this.spcTriggered9FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public string stdTxtKey {
             get {
                 return this.stdTxtKeyField;
@@ -9391,462 +12314,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceReadReplyDTO : AbstractReplyDTO {
-        
-        private string wODescField;
-        
-        private string compCodeField;
-        
-        private string compCodeDescriptionField;
-        
-        private string compModCodeField;
-        
-        private string compModCodeDescriptionField;
-        
-        private string condMonMeasField;
-        
-        private string condMonPosField;
-        
-        private string condMonPosDescriptionField;
-        
-        private string condMonTypeField;
-        
-        private string condMonTypeDescriptionField;
-        
-        private string districtNameField;
-        
-        private string equipmentDescription1Field;
-        
-        private string equipmentDescription2Field;
-        
-        private string equipmentNoField;
-        
-        private string equipmentRefField;
-        
-        private string installEequipRefField;
-        
-        private string installEquipmentDescription1Field;
-        
-        private string installEquipmentDescription2Field;
-        
-        private string installEquipmentNoField;
-        
-        private string measureDateField;
-        
-        private string measureOrigntField;
-        
-        private string measureProcIndField;
-        
-        private string measureStatusField;
-        
-        private string measureTimeField;
-        
-        private decimal measureValueField;
-        
-        private bool measureValueFieldSpecified;
-        
-        private decimal narrativeNoField;
-        
-        private bool narrativeNoFieldSpecified;
-        
-        private string unitofMeasureField;
-        
-        private string visInsCode1Field;
-        
-        private string visInsCode2Field;
-        
-        private string visInsCode3Field;
-        
-        private WorkOrderDTO workOrderField;
-        
-        private string workOrderCompCodeField;
-        
-        private string workOrderCompModCodeField;
-        
-        private string workOrderEequipRefField;
-        
-        private string workOrderEquipmentNoField;
-        
-        /// <remarks/>
-        public string WODesc {
-            get {
-                return this.wODescField;
-            }
-            set {
-                this.wODescField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compCode {
-            get {
-                return this.compCodeField;
-            }
-            set {
-                this.compCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compCodeDescription {
-            get {
-                return this.compCodeDescriptionField;
-            }
-            set {
-                this.compCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCode {
-            get {
-                return this.compModCodeField;
-            }
-            set {
-                this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCodeDescription {
-            get {
-                return this.compModCodeDescriptionField;
-            }
-            set {
-                this.compModCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonMeas {
-            get {
-                return this.condMonMeasField;
-            }
-            set {
-                this.condMonMeasField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonPos {
-            get {
-                return this.condMonPosField;
-            }
-            set {
-                this.condMonPosField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonPosDescription {
-            get {
-                return this.condMonPosDescriptionField;
-            }
-            set {
-                this.condMonPosDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonType {
-            get {
-                return this.condMonTypeField;
-            }
-            set {
-                this.condMonTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonTypeDescription {
-            get {
-                return this.condMonTypeDescriptionField;
-            }
-            set {
-                this.condMonTypeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string districtName {
-            get {
-                return this.districtNameField;
-            }
-            set {
-                this.districtNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentDescription1 {
-            get {
-                return this.equipmentDescription1Field;
-            }
-            set {
-                this.equipmentDescription1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentDescription2 {
-            get {
-                return this.equipmentDescription2Field;
-            }
-            set {
-                this.equipmentDescription2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentNo {
-            get {
-                return this.equipmentNoField;
-            }
-            set {
-                this.equipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentRef {
-            get {
-                return this.equipmentRefField;
-            }
-            set {
-                this.equipmentRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string installEequipRef {
-            get {
-                return this.installEequipRefField;
-            }
-            set {
-                this.installEequipRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string installEquipmentDescription1 {
-            get {
-                return this.installEquipmentDescription1Field;
-            }
-            set {
-                this.installEquipmentDescription1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string installEquipmentDescription2 {
-            get {
-                return this.installEquipmentDescription2Field;
-            }
-            set {
-                this.installEquipmentDescription2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string installEquipmentNo {
-            get {
-                return this.installEquipmentNoField;
-            }
-            set {
-                this.installEquipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureDate {
-            get {
-                return this.measureDateField;
-            }
-            set {
-                this.measureDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureOrignt {
-            get {
-                return this.measureOrigntField;
-            }
-            set {
-                this.measureOrigntField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureProcInd {
-            get {
-                return this.measureProcIndField;
-            }
-            set {
-                this.measureProcIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureStatus {
-            get {
-                return this.measureStatusField;
-            }
-            set {
-                this.measureStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureTime {
-            get {
-                return this.measureTimeField;
-            }
-            set {
-                this.measureTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal measureValue {
-            get {
-                return this.measureValueField;
-            }
-            set {
-                this.measureValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool measureValueSpecified {
-            get {
-                return this.measureValueFieldSpecified;
-            }
-            set {
-                this.measureValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal narrativeNo {
-            get {
-                return this.narrativeNoField;
-            }
-            set {
-                this.narrativeNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool narrativeNoSpecified {
-            get {
-                return this.narrativeNoFieldSpecified;
-            }
-            set {
-                this.narrativeNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string unitofMeasure {
-            get {
-                return this.unitofMeasureField;
-            }
-            set {
-                this.unitofMeasureField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode1 {
-            get {
-                return this.visInsCode1Field;
-            }
-            set {
-                this.visInsCode1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode2 {
-            get {
-                return this.visInsCode2Field;
-            }
-            set {
-                this.visInsCode2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode3 {
-            get {
-                return this.visInsCode3Field;
-            }
-            set {
-                this.visInsCode3Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public WorkOrderDTO workOrder {
-            get {
-                return this.workOrderField;
-            }
-            set {
-                this.workOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderCompCode {
-            get {
-                return this.workOrderCompCodeField;
-            }
-            set {
-                this.workOrderCompCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderCompModCode {
-            get {
-                return this.workOrderCompModCodeField;
-            }
-            set {
-                this.workOrderCompModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderEequipRef {
-            get {
-                return this.workOrderEequipRefField;
-            }
-            set {
-                this.workOrderEequipRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderEquipmentNo {
-            get {
-                return this.workOrderEquipmentNoField;
-            }
-            set {
-                this.workOrderEquipmentNoField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9916,6 +12384,46 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         private decimal narrativeNoField;
         
         private bool narrativeNoFieldSpecified;
+        
+        private bool spcTriggered1Field;
+        
+        private bool spcTriggered1FieldSpecified;
+        
+        private bool spcTriggered10Field;
+        
+        private bool spcTriggered10FieldSpecified;
+        
+        private bool spcTriggered2Field;
+        
+        private bool spcTriggered2FieldSpecified;
+        
+        private bool spcTriggered3Field;
+        
+        private bool spcTriggered3FieldSpecified;
+        
+        private bool spcTriggered4Field;
+        
+        private bool spcTriggered4FieldSpecified;
+        
+        private bool spcTriggered5Field;
+        
+        private bool spcTriggered5FieldSpecified;
+        
+        private bool spcTriggered6Field;
+        
+        private bool spcTriggered6FieldSpecified;
+        
+        private bool spcTriggered7Field;
+        
+        private bool spcTriggered7FieldSpecified;
+        
+        private bool spcTriggered8Field;
+        
+        private bool spcTriggered8FieldSpecified;
+        
+        private bool spcTriggered9Field;
+        
+        private bool spcTriggered9FieldSpecified;
         
         private string stdJobNoField;
         
@@ -10258,6 +12766,216 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
         }
         
         /// <remarks/>
+        public bool spcTriggered1 {
+            get {
+                return this.spcTriggered1Field;
+            }
+            set {
+                this.spcTriggered1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered1Specified {
+            get {
+                return this.spcTriggered1FieldSpecified;
+            }
+            set {
+                this.spcTriggered1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered10 {
+            get {
+                return this.spcTriggered10Field;
+            }
+            set {
+                this.spcTriggered10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered10Specified {
+            get {
+                return this.spcTriggered10FieldSpecified;
+            }
+            set {
+                this.spcTriggered10FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered2 {
+            get {
+                return this.spcTriggered2Field;
+            }
+            set {
+                this.spcTriggered2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered2Specified {
+            get {
+                return this.spcTriggered2FieldSpecified;
+            }
+            set {
+                this.spcTriggered2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered3 {
+            get {
+                return this.spcTriggered3Field;
+            }
+            set {
+                this.spcTriggered3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered3Specified {
+            get {
+                return this.spcTriggered3FieldSpecified;
+            }
+            set {
+                this.spcTriggered3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered4 {
+            get {
+                return this.spcTriggered4Field;
+            }
+            set {
+                this.spcTriggered4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered4Specified {
+            get {
+                return this.spcTriggered4FieldSpecified;
+            }
+            set {
+                this.spcTriggered4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered5 {
+            get {
+                return this.spcTriggered5Field;
+            }
+            set {
+                this.spcTriggered5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered5Specified {
+            get {
+                return this.spcTriggered5FieldSpecified;
+            }
+            set {
+                this.spcTriggered5FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered6 {
+            get {
+                return this.spcTriggered6Field;
+            }
+            set {
+                this.spcTriggered6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered6Specified {
+            get {
+                return this.spcTriggered6FieldSpecified;
+            }
+            set {
+                this.spcTriggered6FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered7 {
+            get {
+                return this.spcTriggered7Field;
+            }
+            set {
+                this.spcTriggered7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered7Specified {
+            get {
+                return this.spcTriggered7FieldSpecified;
+            }
+            set {
+                this.spcTriggered7FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered8 {
+            get {
+                return this.spcTriggered8Field;
+            }
+            set {
+                this.spcTriggered8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered8Specified {
+            get {
+                return this.spcTriggered8FieldSpecified;
+            }
+            set {
+                this.spcTriggered8FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered9 {
+            get {
+                return this.spcTriggered9Field;
+            }
+            set {
+                this.spcTriggered9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered9Specified {
+            get {
+                return this.spcTriggered9FieldSpecified;
+            }
+            set {
+                this.spcTriggered9FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public string stdJobNo {
             get {
                 return this.stdJobNoField;
@@ -10350,427 +13068,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceCreateReplyDTO : AbstractReplyDTO {
-        
-        private string wODescField;
-        
-        private string compCodeField;
-        
-        private string compCodeDescriptionField;
-        
-        private string compModCodeField;
-        
-        private string compModCodeDescriptionField;
-        
-        private string condMonMeasField;
-        
-        private string condMonMeasDescriptionField;
-        
-        private string condMonPosField;
-        
-        private string condMonPosDescriptionField;
-        
-        private string condMonTypeField;
-        
-        private string condMonTypeDescriptionField;
-        
-        private string districtCodeField;
-        
-        private string districtNameField;
-        
-        private string equipmentDescription1Field;
-        
-        private string equipmentDescription2Field;
-        
-        private string equipmentNoField;
-        
-        private string equipmentRefField;
-        
-        private string measureDateField;
-        
-        private string measureOrigntField;
-        
-        private string measureProcIndField;
-        
-        private string measureStatusField;
-        
-        private string measureTimeField;
-        
-        private decimal measureValueField;
-        
-        private bool measureValueFieldSpecified;
-        
-        private decimal narrativeNoField;
-        
-        private bool narrativeNoFieldSpecified;
-        
-        private string stdTxtKeyField;
-        
-        private bool stdTxtKeyExistsField;
-        
-        private bool stdTxtKeyExistsFieldSpecified;
-        
-        private string unitofMeasureField;
-        
-        private string visInsCode1Field;
-        
-        private string visInsCode2Field;
-        
-        private string visInsCode3Field;
-        
-        private WorkOrderDTO workOrderField;
-        
-        /// <remarks/>
-        public string WODesc {
-            get {
-                return this.wODescField;
-            }
-            set {
-                this.wODescField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compCode {
-            get {
-                return this.compCodeField;
-            }
-            set {
-                this.compCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compCodeDescription {
-            get {
-                return this.compCodeDescriptionField;
-            }
-            set {
-                this.compCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCode {
-            get {
-                return this.compModCodeField;
-            }
-            set {
-                this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCodeDescription {
-            get {
-                return this.compModCodeDescriptionField;
-            }
-            set {
-                this.compModCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonMeas {
-            get {
-                return this.condMonMeasField;
-            }
-            set {
-                this.condMonMeasField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonMeasDescription {
-            get {
-                return this.condMonMeasDescriptionField;
-            }
-            set {
-                this.condMonMeasDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonPos {
-            get {
-                return this.condMonPosField;
-            }
-            set {
-                this.condMonPosField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonPosDescription {
-            get {
-                return this.condMonPosDescriptionField;
-            }
-            set {
-                this.condMonPosDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonType {
-            get {
-                return this.condMonTypeField;
-            }
-            set {
-                this.condMonTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string condMonTypeDescription {
-            get {
-                return this.condMonTypeDescriptionField;
-            }
-            set {
-                this.condMonTypeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string districtCode {
-            get {
-                return this.districtCodeField;
-            }
-            set {
-                this.districtCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string districtName {
-            get {
-                return this.districtNameField;
-            }
-            set {
-                this.districtNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentDescription1 {
-            get {
-                return this.equipmentDescription1Field;
-            }
-            set {
-                this.equipmentDescription1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentDescription2 {
-            get {
-                return this.equipmentDescription2Field;
-            }
-            set {
-                this.equipmentDescription2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentNo {
-            get {
-                return this.equipmentNoField;
-            }
-            set {
-                this.equipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentRef {
-            get {
-                return this.equipmentRefField;
-            }
-            set {
-                this.equipmentRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureDate {
-            get {
-                return this.measureDateField;
-            }
-            set {
-                this.measureDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureOrignt {
-            get {
-                return this.measureOrigntField;
-            }
-            set {
-                this.measureOrigntField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureProcInd {
-            get {
-                return this.measureProcIndField;
-            }
-            set {
-                this.measureProcIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureStatus {
-            get {
-                return this.measureStatusField;
-            }
-            set {
-                this.measureStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string measureTime {
-            get {
-                return this.measureTimeField;
-            }
-            set {
-                this.measureTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal measureValue {
-            get {
-                return this.measureValueField;
-            }
-            set {
-                this.measureValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool measureValueSpecified {
-            get {
-                return this.measureValueFieldSpecified;
-            }
-            set {
-                this.measureValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal narrativeNo {
-            get {
-                return this.narrativeNoField;
-            }
-            set {
-                this.narrativeNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool narrativeNoSpecified {
-            get {
-                return this.narrativeNoFieldSpecified;
-            }
-            set {
-                this.narrativeNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stdTxtKey {
-            get {
-                return this.stdTxtKeyField;
-            }
-            set {
-                this.stdTxtKeyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool stdTxtKeyExists {
-            get {
-                return this.stdTxtKeyExistsField;
-            }
-            set {
-                this.stdTxtKeyExistsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool stdTxtKeyExistsSpecified {
-            get {
-                return this.stdTxtKeyExistsFieldSpecified;
-            }
-            set {
-                this.stdTxtKeyExistsFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string unitofMeasure {
-            get {
-                return this.unitofMeasureField;
-            }
-            set {
-                this.unitofMeasureField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode1 {
-            get {
-                return this.visInsCode1Field;
-            }
-            set {
-                this.visInsCode1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode2 {
-            get {
-                return this.visInsCode2Field;
-            }
-            set {
-                this.visInsCode2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string visInsCode3 {
-            get {
-                return this.visInsCode3Field;
-            }
-            set {
-                this.visInsCode3Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public WorkOrderDTO workOrder {
-            get {
-                return this.workOrderField;
-            }
-            set {
-                this.workOrderField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10912,112 +13210,790 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveMntTypesReplyCollectionDTO : AbstractReplyCollectionDTO {
+    public partial class CondMeasurementServiceCreateAckReplyDTO : AbstractReplyDTO {
         
-        private CondMeasurementServiceRetrieveMntTypesReplyDTO[] replyElementsField;
+        private string alarmDistrictField;
+        
+        private WorkOrderDTO alarmWOField;
         
         /// <remarks/>
-        public CondMeasurementServiceRetrieveMntTypesReplyDTO[] replyElements {
+        public string alarmDistrict {
             get {
-                return this.replyElementsField;
+                return this.alarmDistrictField;
             }
             set {
-                this.replyElementsField = value;
+                this.alarmDistrictField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public WorkOrderDTO alarmWO {
+            get {
+                return this.alarmWOField;
+            }
+            set {
+                this.alarmWOField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveAllMntsReplyCollectionDTO : AbstractReplyCollectionDTO {
+    public partial class CondMeasurementServiceRetrieveMntTypesReplyDTO : AbstractReplyDTO {
         
-        private CondMeasurementServiceRetrieveAllMntsReplyDTO[] replyElementsField;
+        private string condMonMeasField;
+        
+        private string condMonMeasDescriptionField;
+        
+        private string unitofMeasureField;
         
         /// <remarks/>
-        public CondMeasurementServiceRetrieveAllMntsReplyDTO[] replyElements {
+        public string condMonMeas {
             get {
-                return this.replyElementsField;
+                return this.condMonMeasField;
             }
             set {
-                this.replyElementsField = value;
+                this.condMonMeasField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonMeasDescription {
+            get {
+                return this.condMonMeasDescriptionField;
+            }
+            set {
+                this.condMonMeasDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string unitofMeasure {
+            get {
+                return this.unitofMeasureField;
+            }
+            set {
+                this.unitofMeasureField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceRetrieveReplyCollectionDTO : AbstractReplyCollectionDTO {
+    public partial class CondMeasurementServiceReadReplyDTO : AbstractReplyDTO {
         
-        private CondMeasurementServiceRetrieveReplyDTO[] replyElementsField;
+        private string wODescField;
+        
+        private string compCodeField;
+        
+        private string compCodeDescriptionField;
+        
+        private string compModCodeField;
+        
+        private string compModCodeDescriptionField;
+        
+        private string condMonMeasField;
+        
+        private string condMonPosField;
+        
+        private string condMonPosDescriptionField;
+        
+        private string condMonTypeField;
+        
+        private string condMonTypeDescriptionField;
+        
+        private string districtNameField;
+        
+        private string equipmentDescription1Field;
+        
+        private string equipmentDescription2Field;
+        
+        private string equipmentNoField;
+        
+        private string equipmentRefField;
+        
+        private string installEequipRefField;
+        
+        private string installEquipmentDescription1Field;
+        
+        private string installEquipmentDescription2Field;
+        
+        private string installEquipmentNoField;
+        
+        private string measureDateField;
+        
+        private string measureOrigntField;
+        
+        private string measureProcIndField;
+        
+        private string measureStatusField;
+        
+        private string measureTimeField;
+        
+        private decimal measureValueField;
+        
+        private bool measureValueFieldSpecified;
+        
+        private decimal narrativeNoField;
+        
+        private bool narrativeNoFieldSpecified;
+        
+        private bool spcTriggered1Field;
+        
+        private bool spcTriggered1FieldSpecified;
+        
+        private bool spcTriggered10Field;
+        
+        private bool spcTriggered10FieldSpecified;
+        
+        private bool spcTriggered2Field;
+        
+        private bool spcTriggered2FieldSpecified;
+        
+        private bool spcTriggered3Field;
+        
+        private bool spcTriggered3FieldSpecified;
+        
+        private bool spcTriggered4Field;
+        
+        private bool spcTriggered4FieldSpecified;
+        
+        private bool spcTriggered5Field;
+        
+        private bool spcTriggered5FieldSpecified;
+        
+        private bool spcTriggered6Field;
+        
+        private bool spcTriggered6FieldSpecified;
+        
+        private bool spcTriggered7Field;
+        
+        private bool spcTriggered7FieldSpecified;
+        
+        private bool spcTriggered8Field;
+        
+        private bool spcTriggered8FieldSpecified;
+        
+        private bool spcTriggered9Field;
+        
+        private bool spcTriggered9FieldSpecified;
+        
+        private string unitofMeasureField;
+        
+        private string visInsCode1Field;
+        
+        private string visInsCode2Field;
+        
+        private string visInsCode3Field;
+        
+        private WorkOrderDTO workOrderField;
+        
+        private string workOrderCompCodeField;
+        
+        private string workOrderCompModCodeField;
+        
+        private string workOrderEequipRefField;
+        
+        private string workOrderEquipmentNoField;
         
         /// <remarks/>
-        public CondMeasurementServiceRetrieveReplyDTO[] replyElements {
+        public string WODesc {
             get {
-                return this.replyElementsField;
+                return this.wODescField;
             }
             set {
-                this.replyElementsField = value;
+                this.wODescField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCodeDescription {
+            get {
+                return this.compCodeDescriptionField;
+            }
+            set {
+                this.compCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCodeDescription {
+            get {
+                return this.compModCodeDescriptionField;
+            }
+            set {
+                this.compModCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonMeas {
+            get {
+                return this.condMonMeasField;
+            }
+            set {
+                this.condMonMeasField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPos {
+            get {
+                return this.condMonPosField;
+            }
+            set {
+                this.condMonPosField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonPosDescription {
+            get {
+                return this.condMonPosDescriptionField;
+            }
+            set {
+                this.condMonPosDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonType {
+            get {
+                return this.condMonTypeField;
+            }
+            set {
+                this.condMonTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string condMonTypeDescription {
+            get {
+                return this.condMonTypeDescriptionField;
+            }
+            set {
+                this.condMonTypeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string districtName {
+            get {
+                return this.districtNameField;
+            }
+            set {
+                this.districtNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentDescription1 {
+            get {
+                return this.equipmentDescription1Field;
+            }
+            set {
+                this.equipmentDescription1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentDescription2 {
+            get {
+                return this.equipmentDescription2Field;
+            }
+            set {
+                this.equipmentDescription2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentNo {
+            get {
+                return this.equipmentNoField;
+            }
+            set {
+                this.equipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentRef {
+            get {
+                return this.equipmentRefField;
+            }
+            set {
+                this.equipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string installEequipRef {
+            get {
+                return this.installEequipRefField;
+            }
+            set {
+                this.installEequipRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string installEquipmentDescription1 {
+            get {
+                return this.installEquipmentDescription1Field;
+            }
+            set {
+                this.installEquipmentDescription1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string installEquipmentDescription2 {
+            get {
+                return this.installEquipmentDescription2Field;
+            }
+            set {
+                this.installEquipmentDescription2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string installEquipmentNo {
+            get {
+                return this.installEquipmentNoField;
+            }
+            set {
+                this.installEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureDate {
+            get {
+                return this.measureDateField;
+            }
+            set {
+                this.measureDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureOrignt {
+            get {
+                return this.measureOrigntField;
+            }
+            set {
+                this.measureOrigntField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureProcInd {
+            get {
+                return this.measureProcIndField;
+            }
+            set {
+                this.measureProcIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureStatus {
+            get {
+                return this.measureStatusField;
+            }
+            set {
+                this.measureStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string measureTime {
+            get {
+                return this.measureTimeField;
+            }
+            set {
+                this.measureTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal measureValue {
+            get {
+                return this.measureValueField;
+            }
+            set {
+                this.measureValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool measureValueSpecified {
+            get {
+                return this.measureValueFieldSpecified;
+            }
+            set {
+                this.measureValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal narrativeNo {
+            get {
+                return this.narrativeNoField;
+            }
+            set {
+                this.narrativeNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool narrativeNoSpecified {
+            get {
+                return this.narrativeNoFieldSpecified;
+            }
+            set {
+                this.narrativeNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered1 {
+            get {
+                return this.spcTriggered1Field;
+            }
+            set {
+                this.spcTriggered1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered1Specified {
+            get {
+                return this.spcTriggered1FieldSpecified;
+            }
+            set {
+                this.spcTriggered1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered10 {
+            get {
+                return this.spcTriggered10Field;
+            }
+            set {
+                this.spcTriggered10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered10Specified {
+            get {
+                return this.spcTriggered10FieldSpecified;
+            }
+            set {
+                this.spcTriggered10FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered2 {
+            get {
+                return this.spcTriggered2Field;
+            }
+            set {
+                this.spcTriggered2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered2Specified {
+            get {
+                return this.spcTriggered2FieldSpecified;
+            }
+            set {
+                this.spcTriggered2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered3 {
+            get {
+                return this.spcTriggered3Field;
+            }
+            set {
+                this.spcTriggered3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered3Specified {
+            get {
+                return this.spcTriggered3FieldSpecified;
+            }
+            set {
+                this.spcTriggered3FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered4 {
+            get {
+                return this.spcTriggered4Field;
+            }
+            set {
+                this.spcTriggered4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered4Specified {
+            get {
+                return this.spcTriggered4FieldSpecified;
+            }
+            set {
+                this.spcTriggered4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered5 {
+            get {
+                return this.spcTriggered5Field;
+            }
+            set {
+                this.spcTriggered5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered5Specified {
+            get {
+                return this.spcTriggered5FieldSpecified;
+            }
+            set {
+                this.spcTriggered5FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered6 {
+            get {
+                return this.spcTriggered6Field;
+            }
+            set {
+                this.spcTriggered6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered6Specified {
+            get {
+                return this.spcTriggered6FieldSpecified;
+            }
+            set {
+                this.spcTriggered6FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered7 {
+            get {
+                return this.spcTriggered7Field;
+            }
+            set {
+                this.spcTriggered7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered7Specified {
+            get {
+                return this.spcTriggered7FieldSpecified;
+            }
+            set {
+                this.spcTriggered7FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered8 {
+            get {
+                return this.spcTriggered8Field;
+            }
+            set {
+                this.spcTriggered8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered8Specified {
+            get {
+                return this.spcTriggered8FieldSpecified;
+            }
+            set {
+                this.spcTriggered8FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool spcTriggered9 {
+            get {
+                return this.spcTriggered9Field;
+            }
+            set {
+                this.spcTriggered9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool spcTriggered9Specified {
+            get {
+                return this.spcTriggered9FieldSpecified;
+            }
+            set {
+                this.spcTriggered9FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string unitofMeasure {
+            get {
+                return this.unitofMeasureField;
+            }
+            set {
+                this.unitofMeasureField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string visInsCode1 {
+            get {
+                return this.visInsCode1Field;
+            }
+            set {
+                this.visInsCode1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string visInsCode2 {
+            get {
+                return this.visInsCode2Field;
+            }
+            set {
+                this.visInsCode2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string visInsCode3 {
+            get {
+                return this.visInsCode3Field;
+            }
+            set {
+                this.visInsCode3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public WorkOrderDTO workOrder {
+            get {
+                return this.workOrderField;
+            }
+            set {
+                this.workOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderCompCode {
+            get {
+                return this.workOrderCompCodeField;
+            }
+            set {
+                this.workOrderCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderCompModCode {
+            get {
+                return this.workOrderCompModCodeField;
+            }
+            set {
+                this.workOrderCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderEequipRef {
+            get {
+                return this.workOrderEequipRefField;
+            }
+            set {
+                this.workOrderEequipRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderEquipmentNo {
+            get {
+                return this.workOrderEquipmentNoField;
+            }
+            set {
+                this.workOrderEquipmentNoField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceModifyReplyCollectionDTO : AbstractReplyCollectionDTO {
-        
-        private CondMeasurementServiceModifyReplyDTO[] replyElementsField;
-        
-        /// <remarks/>
-        public CondMeasurementServiceModifyReplyDTO[] replyElements {
-            get {
-                return this.replyElementsField;
-            }
-            set {
-                this.replyElementsField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceCreateWOReplyCollectionDTO : AbstractReplyCollectionDTO {
-        
-        private CondMeasurementServiceCreateWOReplyDTO[] replyElementsField;
-        
-        /// <remarks/>
-        public CondMeasurementServiceCreateWOReplyDTO[] replyElements {
-            get {
-                return this.replyElementsField;
-            }
-            set {
-                this.replyElementsField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11038,7 +14014,112 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceRetrieveReplyCollectionDTO : AbstractReplyCollectionDTO {
+        
+        private CondMeasurementServiceRetrieveReplyDTO[] replyElementsField;
+        
+        /// <remarks/>
+        public CondMeasurementServiceRetrieveReplyDTO[] replyElements {
+            get {
+                return this.replyElementsField;
+            }
+            set {
+                this.replyElementsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceGetxtKeyReplyCollectionDTO : AbstractReplyCollectionDTO {
+        
+        private CondMeasurementServiceGetxtKeyReplyDTO[] replyElementsField;
+        
+        /// <remarks/>
+        public CondMeasurementServiceGetxtKeyReplyDTO[] replyElements {
+            get {
+                return this.replyElementsField;
+            }
+            set {
+                this.replyElementsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceRetrieveAllMntsReplyCollectionDTO : AbstractReplyCollectionDTO {
+        
+        private CondMeasurementServiceRetrieveAllMntsReplyDTO[] replyElementsField;
+        
+        /// <remarks/>
+        public CondMeasurementServiceRetrieveAllMntsReplyDTO[] replyElements {
+            get {
+                return this.replyElementsField;
+            }
+            set {
+                this.replyElementsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceModifyReplyCollectionDTO : AbstractReplyCollectionDTO {
+        
+        private CondMeasurementServiceModifyReplyDTO[] replyElementsField;
+        
+        /// <remarks/>
+        public CondMeasurementServiceModifyReplyDTO[] replyElements {
+            get {
+                return this.replyElementsField;
+            }
+            set {
+                this.replyElementsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceCreateWOReplyCollectionDTO : AbstractReplyCollectionDTO {
+        
+        private CondMeasurementServiceCreateWOReplyDTO[] replyElementsField;
+        
+        /// <remarks/>
+        public CondMeasurementServiceCreateWOReplyDTO[] replyElements {
+            get {
+                return this.replyElementsField;
+            }
+            set {
+                this.replyElementsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11059,28 +14140,7 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
-    public partial class CondMeasurementServiceCreateReplyCollectionDTO : AbstractReplyCollectionDTO {
-        
-        private CondMeasurementServiceCreateReplyDTO[] replyElementsField;
-        
-        /// <remarks/>
-        public CondMeasurementServiceCreateReplyDTO[] replyElements {
-            get {
-                return this.replyElementsField;
-            }
-            set {
-                this.replyElementsField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11101,323 +14161,75 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceCreateAckReplyCollectionDTO : AbstractReplyCollectionDTO {
         
-        private object[] results;
-        
-        internal multipleDeleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
+        private CondMeasurementServiceCreateAckReplyDTO[] replyElementsField;
         
         /// <remarks/>
-        public CondMeasurementServiceDeleteReplyCollectionDTO Result {
+        public CondMeasurementServiceCreateAckReplyDTO[] replyElements {
             get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceDeleteReplyCollectionDTO)(this.results[0]));
+                return this.replyElementsField;
+            }
+            set {
+                this.replyElementsField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://condmeasurement.ellipse.enterpriseservice.mincom.com")]
+    public partial class CondMeasurementServiceRetrieveMntTypesReplyCollectionDTO : AbstractReplyCollectionDTO {
         
-        private object[] results;
-        
-        internal multipleCreateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
+        private CondMeasurementServiceRetrieveMntTypesReplyDTO[] replyElementsField;
         
         /// <remarks/>
-        public CondMeasurementServiceCreateReplyCollectionDTO Result {
+        public CondMeasurementServiceRetrieveMntTypesReplyDTO[] replyElements {
             get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceCreateReplyCollectionDTO)(this.results[0]));
+                return this.replyElementsField;
+            }
+            set {
+                this.replyElementsField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void retrieveMntsCompletedEventHandler(object sender, retrieveMntsCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class retrieveMntsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://exception.enterpriseservice.mincom.com")]
+    public partial class EnterpriseServiceOperationException {
         
-        private object[] results;
-        
-        internal retrieveMntsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
+        private ErrorMessageDTO[] errorMessagesField;
         
         /// <remarks/>
-        public CondMeasurementServiceRetrieveMntsReplyCollectionDTO Result {
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
+        public ErrorMessageDTO[] errorMessages {
             get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceRetrieveMntsReplyCollectionDTO)(this.results[0]));
+                return this.errorMessagesField;
+            }
+            set {
+                this.errorMessagesField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleReadWithPartialResultsCompletedEventHandler(object sender, multipleReadWithPartialResultsCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleReadWithPartialResultsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleReadWithPartialResultsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceReadReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceReadReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void modifyCompletedEventHandler(object sender, modifyCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class modifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal modifyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceModifyReplyDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceModifyReplyDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleCreateWOCompletedEventHandler(object sender, multipleCreateWOCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleCreateWOCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleCreateWOCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceCreateWOReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceCreateWOReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal createCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceCreateReplyDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceCreateReplyDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void createWOCompletedEventHandler(object sender, createWOCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class createWOCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal createWOCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceCreateWOReplyDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceCreateWOReplyDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleModifyCompletedEventHandler(object sender, multipleModifyCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleModifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleModifyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceModifyReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceModifyReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceReadReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceReadReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void retrieveCompletedEventHandler(object sender, retrieveCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class retrieveCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal retrieveCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceRetrieveReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceRetrieveReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal deleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceDeleteReplyDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceDeleteReplyDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11439,37 +14251,11 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void retrieveAllMntsCompletedEventHandler(object sender, retrieveAllMntsCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class retrieveAllMntsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal retrieveAllMntsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public CondMeasurementServiceRetrieveAllMntsReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceRetrieveAllMntsReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void retrieveMntTypesCompletedEventHandler(object sender, retrieveMntTypesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class retrieveMntTypesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11491,11 +14277,375 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void createAckCompletedEventHandler(object sender, createAckCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class createAckCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal createAckCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceCreateAckReplyDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceCreateAckReplyDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void multipleCreateAckCompletedEventHandler(object sender, multipleCreateAckCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleCreateAckCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleCreateAckCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceCreateAckReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceCreateAckReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleDeleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceDeleteReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceDeleteReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void retrieveMntsCompletedEventHandler(object sender, retrieveMntsCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class retrieveMntsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal retrieveMntsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceRetrieveMntsReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceRetrieveMntsReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal deleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceDeleteReplyDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceDeleteReplyDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void modifyCompletedEventHandler(object sender, modifyCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class modifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal modifyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceModifyReplyDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceModifyReplyDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void multipleCreateWOCompletedEventHandler(object sender, multipleCreateWOCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleCreateWOCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleCreateWOCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceCreateWOReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceCreateWOReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void multipleModifyCompletedEventHandler(object sender, multipleModifyCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleModifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleModifyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceModifyReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceModifyReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void createWOCompletedEventHandler(object sender, createWOCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class createWOCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal createWOCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceCreateWOReplyDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceCreateWOReplyDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void retrieveAllMntsCompletedEventHandler(object sender, retrieveAllMntsCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class retrieveAllMntsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal retrieveAllMntsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceRetrieveAllMntsReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceRetrieveAllMntsReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void multipleGetxtKeyCompletedEventHandler(object sender, multipleGetxtKeyCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleGetxtKeyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleGetxtKeyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceGetxtKeyReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceGetxtKeyReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal createCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceCreateReplyDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceCreateReplyDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void retrieveCompletedEventHandler(object sender, retrieveCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class retrieveCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal retrieveCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceRetrieveReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceRetrieveReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceReadReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceReadReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     public delegate void getxtKeyCompletedEventHandler(object sender, getxtKeyCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getxtKeyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11517,27 +14667,53 @@ namespace EllipseMSE345ExcelAddIn.CondMeasurementService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleGetxtKeyCompletedEventHandler(object sender, multipleGetxtKeyCompletedEventArgs e);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void multipleReadWithPartialResultsCompletedEventHandler(object sender, multipleReadWithPartialResultsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleGetxtKeyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class multipleReadWithPartialResultsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal multipleGetxtKeyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal multipleReadWithPartialResultsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public CondMeasurementServiceGetxtKeyReplyCollectionDTO Result {
+        public CondMeasurementServiceReadReplyCollectionDTO Result {
             get {
                 this.RaiseExceptionIfNecessary();
-                return ((CondMeasurementServiceGetxtKeyReplyCollectionDTO)(this.results[0]));
+                return ((CondMeasurementServiceReadReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleCreateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public CondMeasurementServiceCreateReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((CondMeasurementServiceCreateReplyCollectionDTO)(this.results[0]));
             }
         }
     }

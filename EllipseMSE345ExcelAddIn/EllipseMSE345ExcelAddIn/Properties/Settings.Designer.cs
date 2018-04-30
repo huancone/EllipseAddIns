@@ -26,7 +26,7 @@ namespace EllipseMSE345ExcelAddIn.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8desa.lmnerp03.cerrejon.com/ews/services/CondMeasurementService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/CondMeasurementService")]
         public string EllipseMSE345ExcelAddIn_CondMeasurementService_CondMeasurementService {
             get {
                 return ((string)(this["EllipseMSE345ExcelAddIn_CondMeasurementService_CondMeasurementService"]));

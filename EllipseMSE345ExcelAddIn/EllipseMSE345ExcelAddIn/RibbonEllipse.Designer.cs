@@ -34,18 +34,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItemImpl1 = this.Factory.CreateRibbonDropDownItem();
-            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItemImpl2 = this.Factory.CreateRibbonDropDownItem();
-            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItemImpl3 = this.Factory.CreateRibbonDropDownItem();
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpCondMonit = this.Factory.CreateRibbonGroup();
-            this.mFormatear = this.Factory.CreateRibbonMenu();
-            this.Formatear = this.Factory.CreateRibbonButton();
-            this.fMantto = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
-            this.Crear = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
+            this.menuFormat = this.Factory.CreateRibbonMenu();
+            this.btnFormatGeneral = this.Factory.CreateRibbonButton();
+            this.btnFormatMntto = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
+            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.btnCreate = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpCondMonit.SuspendLayout();
             this.box1.SuspendLayout();
@@ -61,59 +58,53 @@
             // 
             this.grpCondMonit.Items.Add(this.box1);
             this.grpCondMonit.Items.Add(this.drpEnviroment);
-            this.grpCondMonit.Items.Add(this.Crear);
+            this.grpCondMonit.Items.Add(this.btnCreate);
             this.grpCondMonit.Label = "MSE345";
             this.grpCondMonit.Name = "grpCondMonit";
             // 
-            // mFormatear
-            // 
-            this.mFormatear.Items.Add(this.Formatear);
-            this.mFormatear.Items.Add(this.fMantto);
-            this.mFormatear.Label = "Formatear";
-            this.mFormatear.Name = "mFormatear";
-            // 
-            // Formatear
-            // 
-            this.Formatear.Label = "Formato Estandar";
-            this.Formatear.Name = "Formatear";
-            this.Formatear.ShowImage = true;
-            this.Formatear.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Formatear_Click);
-            // 
-            // fMantto
-            // 
-            this.fMantto.Label = "Formato Mantto";
-            this.fMantto.Name = "fMantto";
-            this.fMantto.ShowImage = true;
-            this.fMantto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.fMantto_Click);
-            // 
-            // drpEnviroment
-            // 
-            ribbonDropDownItemImpl1.Label = "Productivo";
-            ribbonDropDownItemImpl2.Label = "Test";
-            ribbonDropDownItemImpl3.Label = "Desarrollo";
-            this.drpEnviroment.Items.Add(ribbonDropDownItemImpl1);
-            this.drpEnviroment.Items.Add(ribbonDropDownItemImpl2);
-            this.drpEnviroment.Items.Add(ribbonDropDownItemImpl3);
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
-            // 
-            // Crear
-            // 
-            this.Crear.Label = "Cargar Info";
-            this.Crear.Name = "Crear";
-            this.Crear.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Crear_Click);
-            // 
             // box1
             // 
-            this.box1.Items.Add(this.mFormatear);
+            this.box1.Items.Add(this.menuFormat);
             this.box1.Items.Add(this.btnAbout);
             this.box1.Name = "box1";
+            // 
+            // menuFormat
+            // 
+            this.menuFormat.Items.Add(this.btnFormatGeneral);
+            this.menuFormat.Items.Add(this.btnFormatMntto);
+            this.menuFormat.Label = "Formatear";
+            this.menuFormat.Name = "menuFormat";
+            // 
+            // btnFormatGeneral
+            // 
+            this.btnFormatGeneral.Label = "Formato Estandar";
+            this.btnFormatGeneral.Name = "btnFormatGeneral";
+            this.btnFormatGeneral.ShowImage = true;
+            this.btnFormatGeneral.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatGeneral_Click);
+            // 
+            // btnFormatMntto
+            // 
+            this.btnFormatMntto.Label = "Formato Mantto";
+            this.btnFormatMntto.Name = "btnFormatMntto";
+            this.btnFormatMntto.ShowImage = true;
+            this.btnFormatMntto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatMntto_Click);
             // 
             // btnAbout
             // 
             this.btnAbout.Label = "?";
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
+            // drpEnviroment
+            // 
+            this.drpEnviroment.Label = "Env.";
+            this.drpEnviroment.Name = "drpEnviroment";
+            // 
+            // btnCreate
+            // 
+            this.btnCreate.Label = "Cargar Info";
+            this.btnCreate.Name = "btnCreate";
+            this.btnCreate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreate_Click);
             // 
             // RibbonEllipse
             // 
@@ -135,10 +126,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpCondMonit;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton Crear;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton Formatear;
-        internal Microsoft.Office.Tools.Ribbon.RibbonMenu mFormatear;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton fMantto;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreate;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatGeneral;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatMntto;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
     }

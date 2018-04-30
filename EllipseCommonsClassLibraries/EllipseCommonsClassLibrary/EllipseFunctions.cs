@@ -527,10 +527,10 @@ namespace EllipseCommonsClassLibrary
             public static int AnyAccess = 99;
         }
 
-        public List<EllipseCodeItem> GetItemCodes(string tableType)
+        public List<EllipseCodeItem> GetItemCodes(string tableType, string additionalQueryParameters)
         {
             var listItems = new List<EllipseCodeItem>();
-            var query = "SELECT * FROM " + dbReference + ".MSF010" + dbLink + " WHERE TABLE_TYPE = '" + tableType + "' AND ACTIVE_FLAG = 'Y'";
+            var query = "SELECT * FROM " + dbReference + ".MSF010" + dbLink + " WHERE TABLE_TYPE = '" + tableType + "' AND ACTIVE_FLAG = 'Y' " + additionalQueryParameters;
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             var drItemCodes = GetQueryResult(query);
@@ -543,6 +543,11 @@ namespace EllipseCommonsClassLibrary
             }
 
             return listItems;
+        }
+
+        public List<EllipseCodeItem> GetItemCodes(string tableType)
+        {
+            return GetItemCodes(tableType, null);
         }
 
         public Dictionary<string, string> GetDictionaryItemCodes(string tableType)
