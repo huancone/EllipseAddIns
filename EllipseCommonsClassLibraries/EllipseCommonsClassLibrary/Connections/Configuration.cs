@@ -239,6 +239,7 @@ namespace EllipseCommonsClassLibrary.Connections
             databaseList.Add(new DatabaseItem("elltest", "EL8TEST", "SIGCON", "ventyx", "ELLIPSE"));
             databaseList.Add(new DatabaseItem("SCADARDB", "PBVFWL01", "SCADARDBADMINGUI", "momia2011", "SCADARDB.DBO", null, "SCADARDB"));
             databaseList.Add(new DatabaseItem("SIGCOR", "SIGCOPRD", "CONSULBO", "consulbo", "ELLIPSE", "@DBLELLIPSE8"));
+            databaseList.Add(new DatabaseItem("SIGCOPRD", "SIGCOPRD", "CONSULBO", "consulbo", "ELLIPSE", "@DBLELLIPSE8"));
 
             var xmlFile = "";
 

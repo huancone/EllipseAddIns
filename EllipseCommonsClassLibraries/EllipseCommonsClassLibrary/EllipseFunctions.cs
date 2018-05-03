@@ -29,10 +29,8 @@ namespace EllipseCommonsClassLibrary
         private OracleConnection _sqlOracleConn;
         private OracleCommand _sqlOracleComm;
         private string _currentConnectionString;
-
         private string _currentEnviroment;
-        public string CurrentEnviroment { get; set; }
-    
+
         private int _connectionTimeOut = 30;//default ODP 15
         private bool _poolingDataBase = true;//default ODP true
         public PostService PostServiceProxy;

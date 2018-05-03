@@ -846,8 +846,8 @@ namespace EllipseCommonsClassLibrary.Classes
             validCells.SetAlwaysActiveSheet(false);
             var rangeColumn = validCells.GetCell(validationColumnIndex, 1);
             rangeColumn = rangeColumn.EntireColumn;
-            rangeColumn.Delete(Type.Missing);
-            foreach(var value in validationValues)
+            rangeColumn.Clear();
+            foreach (var value in validationValues)
             {
                 validCells.GetCell(validationColumnIndex, i).Value = "'" + value;
                 i++;
@@ -915,7 +915,7 @@ namespace EllipseCommonsClassLibrary.Classes
             validCells.SetAlwaysActiveSheet(false);
             var rangeColumn = validCells.GetCell(validationColumnIndex, 1);
             rangeColumn = rangeColumn.EntireColumn;
-            rangeColumn.Delete(Type.Missing);
+            rangeColumn.Clear();
             foreach (var value in validationValues)
             {
                 validCells.GetCell(validationColumnIndex, i).Value = "" + value;

@@ -84,3 +84,13 @@ SIGCORTST =
       (SID = sigcotst)
     )
   )
+
+SIGCOPRD =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (COMMUNITY = tcpip.com)(PROTOCOL = TCP)(HOST = lmndbs03.cerrejon.com)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SID = sigcoprd)
+    )
+  )

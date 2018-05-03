@@ -116,7 +116,7 @@ namespace EllipseCommonsClassLibrary.Connections
                 if (Configuration.IsServiceListForced)
                 {
                     var xmlDoc = new XmlDocument();
-                    var urlPath = Configuration.LocalDataPath + "\\" + Configuration.DatabaseXmlFileName;
+                    var urlPath = Configuration.LocalDataPath + Configuration.DatabaseXmlFileName;
                     xmlDoc.Load(urlPath);
 
                     const string fullNode = "//ellipse/connections";
