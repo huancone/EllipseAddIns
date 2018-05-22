@@ -261,6 +261,12 @@ namespace EllipseMSO265ExcelAddIn
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
 
+            _excelApp = Globals.ThisAddIn.Application;
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+
             if (excelSheet.Name != _sheetName01) return;
 
             _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).Delete();
@@ -331,6 +337,7 @@ namespace EllipseMSO265ExcelAddIn
         {
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
+
             switch (excelSheet.Name)
             {
                 case "MSO265 Cesantias":
@@ -343,6 +350,11 @@ namespace EllipseMSO265ExcelAddIn
         {
             var currentRow = TittleRow + 1;
             var supplierInfo = new SupplierInfo();
+
+            _excelApp = Globals.ThisAddIn.Application;
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
 
             _cells.GetRange(12, TittleRow + 1, 13, _excelSheetItems.ListRows.Count + TittleRow).Style = _cells.GetStyle(StyleConstants.Normal);
             _cells.GetRange(18, TittleRow + 1, 19, _excelSheetItems.ListRows.Count + TittleRow).Style = _cells.GetStyle(StyleConstants.Normal);
@@ -423,6 +435,11 @@ namespace EllipseMSO265ExcelAddIn
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
+            _excelApp = Globals.ThisAddIn.Application;
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
             var currentRow = TittleRow + 1;
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
             {
@@ -430,12 +447,9 @@ namespace EllipseMSO265ExcelAddIn
                 {
                     _cells.GetCell(1, currentRow).Select();
 
-                    var fechaFactura =
-                        DateTime.ParseExact(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value), "MMddyy",
-                            CultureInfo.InvariantCulture);
-                    var fechaPago =
-                        DateTime.ParseExact(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value), "MMddyy",
-                            CultureInfo.InvariantCulture);
+                    var fechaFactura = DateTime.ParseExact(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value), "MMddyy", CultureInfo.InvariantCulture);
+
+                    var fechaPago = DateTime.ParseExact(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value), "MMddyy", CultureInfo.InvariantCulture);
 
                     var nominaInfo = new Nomina
                     {
@@ -456,10 +470,10 @@ namespace EllipseMSO265ExcelAddIn
                         PosicionAprobador = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value)
                     };
 
-
                     var urlEnviroment = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
-                    EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost,
-                        _frmAuth.EllipseDsct, urlEnviroment);
+
+                    EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
+
                     var responseDto = EFunctions.InitiatePostConnection();
 
                     if (responseDto.GotErrorMessages()) return;
@@ -481,8 +495,8 @@ namespace EllipseMSO265ExcelAddIn
 
                     responseDto = EFunctions.ExecutePostRequest(requestXml);
 
-                    var errorMessage = responseDto.Errors.Aggregate("",
-                        (current, msg) => current + (msg.Field + " " + msg.Text));
+                    var errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
+
                     if (errorMessage.Equals(""))
                     {
                         requestXml = "<interaction>                                                     ";
@@ -563,50 +577,68 @@ namespace EllipseMSO265ExcelAddIn
                         requestXml = requestXml + "		</action>";
                         requestXml = requestXml + "	</actions>                                                       ";
                         requestXml = requestXml + "	<chains/>                                                        ";
-                        requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId +
-                                     "</connectionId>";
+                        requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                         requestXml = requestXml + "	<application>ServiceInteraction</application>                    ";
                         requestXml = requestXml + "	<applicationPage>unknown</applicationPage>                       ";
                         requestXml = requestXml + "</interaction>                                                    ";
 
                         requestXml = requestXml.Replace("&", "&amp;");
                         responseDto = EFunctions.ExecutePostRequest(requestXml);
-                        errorMessage = responseDto.Errors.Aggregate("",
-                            (current, msg) => current + (msg.Field + " " + msg.Text));
+                        errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                         if (errorMessage.Equals(""))
                         {
-                            if (responseDto.ResponseString.Contains("MSM202A"))
-                            {
-                                requestXml = requestXml + "<interaction> ";
-                                requestXml = requestXml + "	<actions> ";
-                                requestXml = requestXml + "		<action> ";
-                                requestXml = requestXml + "			<name>submitScreen</name> ";
-                                requestXml = requestXml + "			<data> ";
-                                requestXml = requestXml + "				<inputs> ";
-                                requestXml = requestXml + "					<screenField> ";
-                                requestXml = requestXml + "						<name>SUP_MNEMONIC1I</name> ";
-                                requestXml = requestXml + "						<value>" + nominaInfo.Cedula + "</value> ";
-                                requestXml = requestXml + "					</screenField> ";
-                                requestXml = requestXml + "					<screenField> ";
-                                requestXml = requestXml + "						<name>SUP_STATUS_IND1I</name> ";
-                                requestXml = requestXml + "						<value>A</value> ";
-                                requestXml = requestXml + "					</screenField> ";
-                                requestXml = requestXml + "				</inputs> ";
-                                requestXml = requestXml + "				<screenName>MSM202A</screenName> ";
-                                requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
-                                requestXml = requestXml + "			</data> ";
-                                requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
-                                requestXml = requestXml + "		</action> ";
-                                requestXml = requestXml + "	</actions> ";
-                                requestXml = requestXml + "	<chains/> ";
-                                requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId +
-                                             "</connectionId> ";
-                                requestXml = requestXml + "	<application>ServiceInteraction</application> ";
-                                requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
-                                requestXml = requestXml + "</interaction> ";
+                            if (!responseDto.ResponseString.Contains("MSM202A")) continue;
+                            requestXml = requestXml + "<interaction> ";
+                            requestXml = requestXml + "	<actions> ";
+                            requestXml = requestXml + "		<action> ";
+                            requestXml = requestXml + "			<name>submitScreen</name> ";
+                            requestXml = requestXml + "			<data> ";
+                            requestXml = requestXml + "				<inputs> ";
+                            requestXml = requestXml + "					<screenField> ";
+                            requestXml = requestXml + "						<name>SUP_MNEMONIC1I</name> ";
+                            requestXml = requestXml + "						<value>" + nominaInfo.Cedula + "</value> ";
+                            requestXml = requestXml + "					</screenField> ";
+                            requestXml = requestXml + "					<screenField> ";
+                            requestXml = requestXml + "						<name>SUP_STATUS_IND1I</name> ";
+                            requestXml = requestXml + "						<value>A</value> ";
+                            requestXml = requestXml + "					</screenField> ";
+                            requestXml = requestXml + "				</inputs> ";
+                            requestXml = requestXml + "				<screenName>MSM202A</screenName> ";
+                            requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
+                            requestXml = requestXml + "			</data> ";
+                            requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
+                            requestXml = requestXml + "		</action> ";
+                            requestXml = requestXml + "	</actions> ";
+                            requestXml = requestXml + "	<chains/> ";
+                            requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
+                            requestXml = requestXml + "	<application>ServiceInteraction</application> ";
+                            requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
+                            requestXml = requestXml + "</interaction> ";
 
-                                requestXml = requestXml.Replace("&", "&amp;");
+                            requestXml = requestXml.Replace("&", "&amp;");
+                            responseDto = EFunctions.ExecutePostRequest(requestXml);
+                            errorMessage = responseDto.Errors.Aggregate("",
+                                (current, msg) => current + (msg.Field + " " + msg.Text));
+
+                            if (errorMessage.Equals(""))
+                            {
+                                requestXml = "<interaction>";
+                                requestXml = requestXml + "	<actions>";
+                                requestXml = requestXml + "		<action>";
+                                requestXml = requestXml + "			<name>submitScreen</name>";
+                                requestXml = requestXml + "			<data>";
+                                requestXml = requestXml + "				<screenName>MSM265A</screenName>";
+                                requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
+                                requestXml = requestXml + "			</data>";
+                                requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
+                                requestXml = requestXml + "		</action>";
+                                requestXml = requestXml + "	</actions>";
+                                requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                                requestXml = requestXml + "	<application>ServiceInteraction</application>";
+                                requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
+                                requestXml = requestXml + "</interaction>";
+
                                 responseDto = EFunctions.ExecutePostRequest(requestXml);
                                 errorMessage = responseDto.Errors.Aggregate("",
                                     (current, msg) => current + (msg.Field + " " + msg.Text));
@@ -624,8 +656,7 @@ namespace EllipseMSO265ExcelAddIn
                                     requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
                                     requestXml = requestXml + "		</action>";
                                     requestXml = requestXml + "	</actions>";
-                                    requestXml = requestXml + "	<connectionId>" +
-                                                 EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                                    requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                                     requestXml = requestXml + "	<application>ServiceInteraction</application>";
                                     requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
                                     requestXml = requestXml + "</interaction>";
@@ -636,41 +667,10 @@ namespace EllipseMSO265ExcelAddIn
 
                                     if (errorMessage.Equals(""))
                                     {
-                                        requestXml = "<interaction>";
-                                        requestXml = requestXml + "	<actions>";
-                                        requestXml = requestXml + "		<action>";
-                                        requestXml = requestXml + "			<name>submitScreen</name>";
-                                        requestXml = requestXml + "			<data>";
-                                        requestXml = requestXml + "				<screenName>MSM265A</screenName>";
-                                        requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
-                                        requestXml = requestXml + "			</data>";
-                                        requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
-                                        requestXml = requestXml + "		</action>";
-                                        requestXml = requestXml + "	</actions>";
-                                        requestXml = requestXml + "	<connectionId>" +
-                                                     EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
-                                        requestXml = requestXml + "	<application>ServiceInteraction</application>";
-                                        requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
-                                        requestXml = requestXml + "</interaction>";
-
-                                        responseDto = EFunctions.ExecutePostRequest(requestXml);
-                                        errorMessage = responseDto.Errors.Aggregate("",
-                                            (current, msg) => current + (msg.Field + " " + msg.Text));
-
-                                        if (errorMessage.Equals(""))
-                                        {
-                                            _cells.GetCell(_resultColumn, currentRow).Select();
-                                            _cells.GetCell(_resultColumn, currentRow).Value = "Creado";
-                                            _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
-                                                _cells.GetStyle(StyleConstants.Success);
-                                        }
-                                        else
-                                        {
-                                            _cells.GetCell(_resultColumn, currentRow).Select();
-                                            _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                                            _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
-                                                _cells.GetStyle(StyleConstants.Error);
-                                        }
+                                        _cells.GetCell(_resultColumn, currentRow).Select();
+                                        _cells.GetCell(_resultColumn, currentRow).Value = "Creado";
+                                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
+                                            _cells.GetStyle(StyleConstants.Success);
                                     }
                                     else
                                     {
@@ -688,6 +688,13 @@ namespace EllipseMSO265ExcelAddIn
                                         _cells.GetStyle(StyleConstants.Error);
                                 }
                             }
+                            else
+                            {
+                                _cells.GetCell(_resultColumn, currentRow).Select();
+                                _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
+                                _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
+                                    _cells.GetStyle(StyleConstants.Error);
+                            }
                         }
                         else
                         {
@@ -697,7 +704,6 @@ namespace EllipseMSO265ExcelAddIn
                                 _cells.GetStyle(StyleConstants.Error);
                         }
                     }
-
                     else
                     {
                         _cells.GetCell(_resultColumn, currentRow).Select();
@@ -721,6 +727,11 @@ namespace EllipseMSO265ExcelAddIn
         private void LoadCesantiasPost()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            _excelApp = Globals.ThisAddIn.Application;
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
 
             var currentRow = TittleRow + 1;
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
@@ -853,16 +864,14 @@ namespace EllipseMSO265ExcelAddIn
                         requestXml = requestXml + "		</action>";
                         requestXml = requestXml + "	</actions>                                                       ";
                         requestXml = requestXml + "	<chains/>                                                        ";
-                        requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId +
-                                     "</connectionId>";
+                        requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                         requestXml = requestXml + "	<application>ServiceInteraction</application>                    ";
                         requestXml = requestXml + "	<applicationPage>unknown</applicationPage>                       ";
                         requestXml = requestXml + "</interaction>                                                    ";
 
                         requestXml = requestXml.Replace("&", "&amp;");
                         responseDto = EFunctions.ExecutePostRequest(requestXml);
-                        errorMessage = responseDto.Errors.Aggregate("",
-                            (current, msg) => current + (msg.Field + " " + msg.Text));
+                        errorMessage = responseDto.Errors.Aggregate("",(current, msg) => current + (msg.Field + " " + msg.Text));
 
                         if (errorMessage.Equals(""))
                         {
@@ -877,8 +886,7 @@ namespace EllipseMSO265ExcelAddIn
                             requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
                             requestXml = requestXml + "		</action>";
                             requestXml = requestXml + "	</actions>";
-                            requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId +
-                                         "</connectionId>";
+                            requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                             requestXml = requestXml + "	<application>ServiceInteraction</application>";
                             requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
                             requestXml = requestXml + "</interaction>";
@@ -900,22 +908,19 @@ namespace EllipseMSO265ExcelAddIn
                                 requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
                                 requestXml = requestXml + "		</action>";
                                 requestXml = requestXml + "	</actions>";
-                                requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId +
-                                             "</connectionId>";
+                                requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                                 requestXml = requestXml + "	<application>ServiceInteraction</application>";
                                 requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
                                 requestXml = requestXml + "</interaction>";
 
                                 responseDto = EFunctions.ExecutePostRequest(requestXml);
-                                errorMessage = responseDto.Errors.Aggregate("",
-                                    (current, msg) => current + (msg.Field + " " + msg.Text));
+                                errorMessage = responseDto.Errors.Aggregate("",(current, msg) => current + (msg.Field + " " + msg.Text));
 
                                 if (errorMessage.Equals(""))
                                 {
                                     _cells.GetCell(_resultColumn, currentRow).Select();
                                     _cells.GetCell(_resultColumn, currentRow).Value = "Creado";
-                                    _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
-                                        _cells.GetStyle(StyleConstants.Success);
+                                    _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =_cells.GetStyle(StyleConstants.Success);
                                 }
                                 else
                                 {
@@ -965,15 +970,18 @@ namespace EllipseMSO265ExcelAddIn
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
+            _excelApp = Globals.ThisAddIn.Application;
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
             var currentRow = TittleRow + 1;
 
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
 
-            _cells.GetRange(_resultColumn, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow)
-                .ClearContents();
-            _cells.GetRange(_resultColumn, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow)
-                .Style = _cells.GetStyle(StyleConstants.Normal);
+            _cells.GetRange(_resultColumn, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).ClearContents();
+            _cells.GetRange(_resultColumn, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).Style = _cells.GetStyle(StyleConstants.Normal);
 
             proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
 

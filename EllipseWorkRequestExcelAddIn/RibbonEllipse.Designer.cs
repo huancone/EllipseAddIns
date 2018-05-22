@@ -67,6 +67,7 @@
             this.tabEllipse.SuspendLayout();
             this.grpWorkRequest.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // menu1
             // 
@@ -299,6 +300,7 @@
             this.grpWorkRequest.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

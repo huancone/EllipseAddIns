@@ -3294,8 +3294,7 @@ namespace EllipseWorkOrderExcelAddIn
                 try
                 {
                     //GENERAL
-                    var wo =
-                        WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
+                    var wo = WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
                     var closeText = _cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value2);
                     var districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
                     WorkOrderActions.SetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo, closeText);

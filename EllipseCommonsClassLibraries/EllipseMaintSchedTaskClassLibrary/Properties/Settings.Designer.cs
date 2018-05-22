@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EllipseMstExcelAddIn.Properties {
+namespace EllipseMaintSchedTaskClassLibrary.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,6 +20,16 @@ namespace EllipseMstExcelAddIn.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/MaintSchedTskService")]
+        public string EllipseMaintSchedTaskClassLibrary_MaintSchedTskService_MaintSchedTskService {
+            get {
+                return ((string)(this["EllipseMaintSchedTaskClassLibrary_MaintSchedTskService_MaintSchedTskService"]));
             }
         }
     }

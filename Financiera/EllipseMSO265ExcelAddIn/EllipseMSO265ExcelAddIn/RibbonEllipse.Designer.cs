@@ -39,19 +39,20 @@ namespace EllipseMSO265ExcelAddIn
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpMSO265 = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.menuFormats = this.Factory.CreateRibbonMenu();
             this.btnFormatCesantias = this.Factory.CreateRibbonButton();
             this.btnNomina = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReloadParameters = this.Factory.CreateRibbonButton();
             this.btnValidate = this.Factory.CreateRibbonButton();
             this.btnLoad = this.Factory.CreateRibbonButton();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO265.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -67,6 +68,12 @@ namespace EllipseMSO265ExcelAddIn
             this.grpMSO265.Items.Add(this.menuActions);
             this.grpMSO265.Label = "MSO265";
             this.grpMSO265.Name = "grpMSO265";
+            // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuFormats);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
             // 
             // menuFormats
             // 
@@ -88,6 +95,12 @@ namespace EllipseMSO265ExcelAddIn
             this.btnNomina.Name = "btnNomina";
             this.btnNomina.ShowImage = true;
             this.btnNomina.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnNomina_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnviroment
             // 
@@ -123,18 +136,6 @@ namespace EllipseMSO265ExcelAddIn
             this.btnLoad.ShowImage = true;
             this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
             // 
-            // box1
-            // 
-            this.box1.Items.Add(this.menuFormats);
-            this.box1.Items.Add(this.btnAbout);
-            this.box1.Name = "box1";
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
-            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -147,6 +148,7 @@ namespace EllipseMSO265ExcelAddIn
             this.grpMSO265.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

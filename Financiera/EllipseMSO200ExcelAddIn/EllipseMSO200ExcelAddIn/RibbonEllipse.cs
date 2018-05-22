@@ -255,6 +255,7 @@ namespace EllipseMSO200ExcelAddIn
                     }
 
                     var existe = false;
+                    // ReSharper disable once UnusedVariable
                     foreach (var banco in ListaBancos.Where(banco => employee.CodigoBanco.PadLeft(2, '0') == banco.CodigoNomina.PadLeft(2, '0')))
                     {
                         existe = true;
@@ -723,8 +724,7 @@ namespace EllipseMSO200ExcelAddIn
                                "  ELLIPSE.MSF203 BI " +
                                "WHERE " +
                                "  BI.TAX_FILE_NO = '" + cedula + "' " +
-                               "  AND BI.DSTRCT_CODE = '" + districtCode + "' " +
-                               "  AND BI.SUP_STATUS  <> 9";
+                               "  AND BI.DSTRCT_CODE = '" + districtCode + "' ";
                 return sqlQuery;
             }
         }

@@ -36,19 +36,20 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpMSO200 = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.menuFormats = this.Factory.CreateRibbonMenu();
             this.btnChangeAccounts = this.Factory.CreateRibbonButton();
             this.btnFormatInactiveBusiness = this.Factory.CreateRibbonButton();
             this.btnInactivateSupplier = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.ValidateAccounts = this.Factory.CreateRibbonButton();
             this.btnLoad = this.Factory.CreateRibbonButton();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO200.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -60,10 +61,16 @@
             // grpMSO200
             // 
             this.grpMSO200.Items.Add(this.box1);
-            this.grpMSO200.Items.Add(this.menuFormats);
             this.grpMSO200.Items.Add(this.drpEnviroment);
+            this.grpMSO200.Items.Add(this.menuActions);
             this.grpMSO200.Label = "MSO200";
             this.grpMSO200.Name = "grpMSO200";
+            // 
+            // box1
+            // 
+            this.box1.Items.Add(this.menuFormats);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
             // 
             // menuFormats
             // 
@@ -94,6 +101,12 @@
             this.btnInactivateSupplier.ShowImage = true;
             this.btnInactivateSupplier.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnInactivateSupplier_Click);
             // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            // 
             // drpEnviroment
             // 
             this.drpEnviroment.Label = "Env.";
@@ -120,18 +133,6 @@
             this.btnLoad.ShowImage = true;
             this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
             // 
-            // box1
-            // 
-            this.box1.Items.Add(this.menuActions);
-            this.box1.Items.Add(this.btnAbout);
-            this.box1.Name = "box1";
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
-            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -144,6 +145,7 @@
             this.grpMSO200.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

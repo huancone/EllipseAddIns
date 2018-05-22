@@ -47,6 +47,7 @@
             this.tabEllipse.SuspendLayout();
             this.grpEqOperStatistics.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -127,6 +128,7 @@
             this.grpEqOperStatistics.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

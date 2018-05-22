@@ -235,7 +235,7 @@ namespace EllipseWorkRequestExcelAddIn
                     var wr = new WorkRequest
                     {
                         requestId = _cells.GetNullOrTrimmedValue(_cells.GetCell(1, i).Value),
-                        workGroup = "PLANFC",
+                        workGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, 3).Value),
                         requestIdDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
                         equipmentNo = "FERROCARRIL",
                         employee = string.IsNullOrEmpty(_cells.GetEmptyIfNull(_cells.GetCell(3, i).Value))
@@ -3491,7 +3491,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
                 _cells.GetCell("A3").Value = WorkRequestActions.SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("B3").Value = "PLANFC";
-                var workGroupList = new List<string> { "PLANFC" };
+                var workGroupList = new List<string> { "PLANFC"};
                 _cells.SetValidationList(_cells.GetCell("B3"), workGroupList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = WorkRequestActions.SearchFieldCriteriaType.Originator.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2, false);
@@ -3562,6 +3562,8 @@ namespace EllipseWorkRequestExcelAddIn
                     "VPP",
                     "CAPEX MAYOR",
                     "CAPEX",
+                    "PEDIDO",
+                    "COMPRA",
                     "OTRO"
                 };
                 _cells.SetValidationList(_cells.GetCell(05, TitleRowPfc01 + 1), referenceList, ValidationSheetName, 7, false);
