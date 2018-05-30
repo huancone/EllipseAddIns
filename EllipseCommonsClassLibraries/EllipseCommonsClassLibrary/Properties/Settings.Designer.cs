@@ -36,7 +36,7 @@ namespace EllipseCommonsClassLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/AuthenticatorService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/AuthenticatorService")]
         public string EllipseCommonsClassLibrary_AuthenticatorService_AuthenticatorService {
             get {
                 return ((string)(this["EllipseCommonsClassLibrary_AuthenticatorService_AuthenticatorService"]));

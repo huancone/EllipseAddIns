@@ -139,6 +139,7 @@ namespace EllipseMaintSchedTaskClassLibrary
             var request = new MaintSchedTskServiceCreateRequestDTO
             {
                 equipmentGrpId = mst.EquipmentGrpId,
+                equipmentNo = mst.EquipmentNo,
                 equipmentRef = mst.EquipmentNo,
                 compCode = mst.CompCode,
                 compModCode = mst.CompModCode,

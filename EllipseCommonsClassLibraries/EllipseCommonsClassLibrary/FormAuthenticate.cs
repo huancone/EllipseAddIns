@@ -30,11 +30,7 @@ namespace EllipseCommonsClassLibrary
             EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
             EllipsePswd = txtPassword.Text;
             EllipseUser = txtUsername.Text.ToUpper();
-            ////FrAth frm = new FrAth(EllipseUser, EllipseDsct, EllipsePost);
-            ////frm.StartPosition = FormStartPosition.CenterScreen;
-            ////frm.ShowDialog();
-            ////if (frm.Auth.Authenticated)
-            ////    MessageBox.Show("Autenticado");
+
             var authSer = new Authenticator.AuthenticatorService();
             var opAuth = new Authenticator.OperationContext
             {
@@ -53,7 +49,7 @@ namespace EllipseCommonsClassLibrary
             authSer.Url = _eFunctions.GetServicesUrl(SelectedEnviroment) + "/AuthenticatorService";
             try
             {
-                ClientConversation.authenticate(EllipseUser, EllipsePswd);
+                ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDsct, EllipsePost);
                 authSer.authenticate(opAuth);
 
                 DialogResult = DialogResult.OK;

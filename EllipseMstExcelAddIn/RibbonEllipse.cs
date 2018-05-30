@@ -641,9 +641,10 @@ namespace EllipseMstExcelAddIn
                 maxInstances = 100,
                 returnWarnings = Debugger.DebugWarnings
             };
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
 
             var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -693,10 +694,10 @@ namespace EllipseMstExcelAddIn
 
                     mst.StatutoryFlg = "N";
 
-                    MstActions.CreateMaintenanceScheduleTaskPost(_eFunctions, mst);
-                    //var replySheet = MstActions.CreateMaintenanceScheduleTask(urlService, opSheet, mst);
+                    //MstActions.CreateMaintenanceScheduleTaskPost(_eFunctions, mst);
+                    var replySheet = MstActions.CreateMaintenanceScheduleTask(urlService, opSheet, mst);
 
-                    _cells.GetCell(ResultColumn01, i).Value = "CREADA ";
+                    _cells.GetCell(ResultColumn01, i).Value = "CREADA " + replySheet.equipmentNo + " " + replySheet.maintenanceSchTask;
                     _cells.GetCell(6, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
                 }
