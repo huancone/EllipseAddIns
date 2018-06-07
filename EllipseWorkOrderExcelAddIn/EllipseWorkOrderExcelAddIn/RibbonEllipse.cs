@@ -2077,13 +2077,13 @@ namespace EllipseWorkOrderExcelAddIn
                     List<string> ots = null;
                     if (wo.workGroup == "CALLCEN")
                     {
-                        ots = WorkOrderActions.FetchOrigDocNo(_eFunctions,wo.districtCode, wo.workGroup, wo.origDocType, wo.origDocNo);
+                        ots = WorkOrderActions.FetchOrigDocNo(_eFunctions, wo.districtCode, wo.workGroup, wo.origDocType, wo.origDocNo);
                         if (ots != null && ots.Count > 0)
                         {
                             _cells.GetCell(ResultColumnD01, i).Value = "YA EXISTE LA ORDEN RELACIONADA " + wo.origDocNo + " DEL SISTEMA MAXIMO";
                             _cells.GetCell(ResultColumnD01, i).Style = StyleConstants.Warning;
                         }
-                        
+
                     }
 
                     if (ots != null && ots.Count > 0) continue;
@@ -3288,6 +3288,15 @@ namespace EllipseWorkOrderExcelAddIn
             var i = TitleRow05 + 1;
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+            var opSheet = new WorkOrderService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
             {
@@ -3297,7 +3306,8 @@ namespace EllipseWorkOrderExcelAddIn
                     var wo = WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
                     var closeText = _cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value2);
                     var districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-                    WorkOrderActions.SetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo, closeText);
+                    //WorkOrderActions.SetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo, closeText);
+                    WorkOrderActions.AppendTextToCloseComment(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, districtCode, wo.prefix + wo.no, closeText);
 
                     _cells.GetCell(ResultColumn05, i).Value = "ACTUALIZADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;

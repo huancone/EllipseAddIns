@@ -503,10 +503,21 @@ namespace EllipsePlannerExcelAddIn
                         AvailableLabourHours = Convert.ToDouble(_cells.GetCell(13, i).Value)
                     });
                 }
-
                 JobActions.SaveResources(resourcesToSave);
 
-
+                _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
+                var tasksToSave = new List<Jobs>();
+                while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value) != null)
+                {
+                    tasksToSave.Add(new Jobs
+                    {
+                        WorkGroup = _cells.GetCell(1, i).Value.ToString(),
+                        PlanStrDate = DateTime.FromOADate(Convert.ToDouble(_cells.GetCell(12, i).Value)),
+                        WorkOrder = _cells.GetCell(5, i).Value.ToString(),
+                        WoTaskNo = _cells.GetCell(7, i).Value.ToString()
+                    });
+                }
+                JobActions.SaveTasks(tasksToSave);
             }
             catch (Exception ex)
             {

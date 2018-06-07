@@ -230,14 +230,19 @@ namespace EllipseJobsClassLibrary
         {
             var ef = new EllipseFunctions();
             ef.SetDBSettings(Environments.SigcorProductivo);
-            foreach (var r in resourcesToSave)
+            foreach (var sqlQuery in resourcesToSave.Select(r => Queries.SaveResourcesQuery(ef.dbReference, r)))
             {
-                var sqlQuery = Queries.CheckifResourceExist(ef.dbReference, r);
-                var drExist = ef.GetQueryResult(sqlQuery);
+                ef.GetQueryResult(sqlQuery);
+            }
+        }
 
-
-                sqlQuery = Queries.SaveResourcesQuery(ef.dbReference, r);
-                var drSaved = ef.GetQueryResult(sqlQuery);
+        public static void SaveTasks(List<Jobs> tasksToSave)
+        {
+            var ef = new EllipseFunctions();
+            ef.SetDBSettings(Environments.SigcorProductivo);
+            foreach (var sqlQuery in tasksToSave.Select(r => Queries.SaveTaskQuery(ef.dbReference, r)))
+            {
+                ef.GetQueryResult(sqlQuery);
             }
         }
     }
@@ -326,21 +331,47 @@ namespace EllipseJobsClassLibrary
 
         public static string SaveResourcesQuery(string dbReference, LabourResources l)
         {
-            var query = "UPDATE SIGMDC.RECURSOS_PROGRAMACION SET  " +
-                        "   HORAS_PRO   = " + l.EstimatedLabourHours + " " +
-                        "   WHERE FECHA ='" + l.Date.ToString("yyyyMMdd") + "' " +
-                        "   AND  GRUPO  ='" + l.WorkGroup + "'  " +
-                        "   AND  RECURSO    ='" + l.ResourceCode + "'  ";
+            var query = "MERGE INTO SIGMDC.RECURSOS_PROGRAMACION T USING                  " +
+                        "(SELECT                                                                      " +
+                        "    '" + l.WorkGroup + "' GRUPO,                                             " +
+                        "    '" + l.ResourceCode + "' RECURSO,                                        " +
+                        "    '" + l.Date.ToString("yyyyMMdd") + "' FECHA,                             " +
+                        "    '" + l.EstimatedLabourHours + "' HORAS_PRO,                              " +
+                        "    '" + l.AvailableLabourHours + "' HORAS_DISPO                             " +
+                        "    FROM                                                                     " +
+                        "    DUAL                                                                     " +
+                        ")S ON (                                                                      " +
+                        "    T.GRUPO = S.GRUPO                                                        " +
+                        "    AND T.RECURSO = S.RECURSO                                                " +
+                        "    AND T.FECHA = S.FECHA                                                    " +
+                        ")                                                                            " +
+                        "WHEN MATCHED THEN UPDATE SET T.HORAS_PRO = S.HORAS_PRO                       " +
+                        "WHEN NOT MATCHED THEN INSERT(GRUPO, RECURSO, FECHA, HORAS_PRO, HORAS_DISPO)  " +
+                        "VALUES(S.GRUPO, S.RECURSO, S.FECHA, S.HORAS_PRO, S.HORAS_DISPO);             ";
 
             return query;
         }
 
-        public static string CheckifResourceExist(string dbReference, LabourResources l)
+        public static string SaveTaskQuery(string dbReference, Jobs t)
         {
-            var query = "select FECHA, GRUPO,RECURSO from SIGMDC.RECURSOS_PROGRAMACION where trim(FECHA) = '" + l.Date.ToString("yyyyMMdd") + "'" +
-                " AND trim(GRUPO) = '" + l.WorkGroup + "'" +
-                " AND trim(RECURSO) = '" + l.ResourceCode + "'";
-
+            var query = "MERGE INTO SIGMDC.SEG_PROGRAMACION T USING                                " +
+                        "(SELECT                                                                   " +
+                        "    '" + t.WorkGroup + "' WORK_GROUP,                                                 " +
+                        "    '" + t.PlanStrDate + "' FECHA,                                                     " +
+                        "    '" + t.WorkOrder + "' WORK_ORDER,                                                " +
+                        "    '" + t.WoTaskNo + "' WO_TASK_NO                                                      " +
+                        " FROM                                                                     " +
+                        "                                                                          " +
+                        "    DUAL                                                                  " +
+                        ")                                                                         " +
+                        "S ON (                                                                    " +
+                        "    T.WORK_GROUP = S.WORK_GROUP                                           " +
+                        "    AND T.FECHA = S.FECHA                                                 " +
+                        "    AND T.WORK_ORDER = S.WORK_ORDER                                       " +
+                        "    AND T.WO_TASK_NO = S.WO_TASK_NO                                       " +
+                        ")                                                                         " +
+                        "WHEN NOT MATCHED THEN INSERT(WORK_GROUP, FECHA, WORK_ORDER, WO_TASK_NO)   " +
+                        "VALUES(S.WORK_GROUP, S.FECHA, S.WORK_ORDER, S.WO_TASK_NO);                ";
             return query;
         }
     }

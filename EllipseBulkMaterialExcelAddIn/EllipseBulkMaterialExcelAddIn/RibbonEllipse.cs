@@ -235,7 +235,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B4"), GetListIdList("PCOMBU"), ValidationSheetName, 2);
                 _cells.GetRange("A3", "A4").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
-                
+
                 var statusCodeList = _eFunctions.GetItemCodes("ES").Select(item => item.code + " - " + item.description).ToList();
                 var equipClassCodeList = _eFunctions.GetItemCodes("EC").Select(item => item.code + " - " + item.description).ToList();
                 var equipTypeCodeList = _eFunctions.GetItemCodes("ET").Select(item => item.code + " - " + item.description).ToList();
@@ -281,7 +281,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 _cells.GetCell(20, TitleRow02).Value = "RESULTADO";
                 _cells.GetCell(20, TitleRow02).Style = StyleConstants.TitleResult;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
-                
+
                 ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
 
                 #endregion
@@ -547,8 +547,8 @@ namespace EllipseBulkMaterialExcelAddIn
                                         }
                                         catch (Exception error)
                                         {
-                                           MessageBox.Show(error.Message);
-                                           DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
+                                            MessageBox.Show(error.Message);
+                                            DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
                                         }
                                     }
                                     else if (errorCounter == 0 & requestItemList.Count > 0)
@@ -600,7 +600,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 }
                 else
                 {
-                    _cells.GetRange(1, currentHeader, ResultColumn01 - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Success);                    _cells.GetRange(1, currentHeader, 6, currentRow).Select();
+                    _cells.GetRange(1, currentHeader, ResultColumn01 - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Success); _cells.GetRange(1, currentHeader, 6, currentRow).Select();
                 }
             }
             catch (Exception)
@@ -982,7 +982,7 @@ namespace EllipseBulkMaterialExcelAddIn
                     "AND EQUIP_NO = '" + equipNo + "'";
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-                
+
                 return query;
             }
 
@@ -1070,11 +1070,11 @@ namespace EllipseBulkMaterialExcelAddIn
                     "  PROFILES.PESO   ";
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-                
+
                 return query;
             }
 
-            public static string GetLastStatistic(string equipNo, string statType, string statDate,  string dbReference, string dbLink)
+            public static string GetLastStatistic(string equipNo, string statType, string statDate, string dbReference, string dbLink)
             {
                 var query = "" +
                     "SELECT " +
@@ -1112,7 +1112,7 @@ namespace EllipseBulkMaterialExcelAddIn
                     "OR STAT.STAT_DATE IS NULL ";
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-                
+
                 return query;
             }
 
@@ -1210,7 +1210,7 @@ namespace EllipseBulkMaterialExcelAddIn
             var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
             var searchCriteriaKey2 = EquipListSearchFieldCriteria.ListId.Key;
             var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
-            var previousEquipment = new Equipment {EquipmentNo = ""};
+            var previousEquipment = new Equipment { EquipmentNo = "" };
 
             var listeq = ListActions.FetchListEquipmentsList(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, null);
             var i = TitleRow02 + 1;
@@ -1220,7 +1220,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 {
                     //Para resetear el estilo
                     _cells.GetRange(1, i, ResultColumn02, i).Style = StyleConstants.Normal;
-                    _cells.GetCell(1, i).Value = "'" + eql.EquipNo;                    
+                    _cells.GetCell(1, i).Value = "'" + eql.EquipNo;
                     _cells.GetCell(5, i).Value = "'" + eql.ListType;
                     _cells.GetCell(6, i).Value = "'" + eql.ListId;
 

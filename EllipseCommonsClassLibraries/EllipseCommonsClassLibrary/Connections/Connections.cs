@@ -21,7 +21,7 @@ namespace EllipseCommonsClassLibrary.Connections
         public static string EllipseDesarrollo = "Desarrollo";
         public static string EllipseTest = "Test";
 
-        public static string SigcorProductivo = "SIGCOPROD";
+        public static string SigcorProductivo = "SIGCOR";
         public static string ScadaRdb = "SCADARDB";
         public static string CustomDatabase = "Personalizada";
 

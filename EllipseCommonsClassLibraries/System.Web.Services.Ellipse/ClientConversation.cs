@@ -14,8 +14,8 @@
             ClientConversation.password = password;
             ClientConversation.district = district;
             ClientConversation.position = position;
-            //TO DO New District Variable
         }
+
         public static void authenticate(string username, string password)
         {
             ClientConversation.username = username;

@@ -290,14 +290,9 @@ namespace EllipseMstExcelAddIn
                 _cells.GetCell(26, TitleRow01).AddComment("Indicador 8. Indica cuál día de la semana elegida en OCCURRENCE TYPE\n1. Lunes\n2.Martes\n3.Miércoles\n4.Jueves\n5.Viernes\n6.Sábado\n7.Domingo");
                 _cells.GetCell(27, TitleRow01).Value = "DAY OF MONTH";
                 _cells.GetCell(27, TitleRow01).AddComment("Indicador 7. Indica cuál día del mes (número)");
-                _cells.GetCell(28, TitleRow01).Value = "FREQUENCY";
-                _cells.GetCell(28, TitleRow01).AddComment("Indicador 7 y 8. Indica la frecuencia del mes (cada cuántos meses)");
-                _cells.GetCell(29, TitleRow01).Value = "START MONTH";
-                _cells.GetCell(29, TitleRow01).AddComment("Indicador 7 y 8. Indica a partir de qué mes\n1.Enero\n2.Febrero\n3.Marzo\n4.Abril\n5.Mayo\n6.Junio\n7.Julio\n8.Agosto\n24.Septiembre\n10.Octubre\n11.Noviembre\n12.Diciembre");
-                _cells.GetCell(30, TitleRow01).Value = "START YEAR";
-
-
-
+                _cells.GetCell(28, TitleRow01).Value = "START MONTH";
+                _cells.GetCell(28, TitleRow01).AddComment("Indicador 7 y 8. Indica a partir de qué mes\n1.Enero\n2.Febrero\n3.Marzo\n4.Abril\n5.Mayo\n6.Junio\n7.Julio\n8.Agosto\n24.Septiembre\n10.Octubre\n11.Noviembre\n12.Diciembre");
+                _cells.GetCell(29, TitleRow01).Value = "START YEAR";
 
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleResult);
@@ -457,10 +452,9 @@ namespace EllipseMstExcelAddIn
 
                         _cells.GetCell(26, i).Value2 = "" + mst.DayOfWeek;
                         _cells.GetCell(27, i).Value2 = "" + mst.DayOfMonth;
-                        _cells.GetCell(28, i).Value2 = "" + mst.SchedFreq1;
 
-                        _cells.GetCell(29, i).Value2 = "" + mst.StartMonth;
-                        _cells.GetCell(30, i).Value2 = "" + mst.StartYear;
+                        _cells.GetCell(28, i).Value2 = "" + mst.StartMonth;
+                        _cells.GetCell(29, i).Value2 = "" + mst.StartYear;
 
                         string freqDescription;
                         if (mst.SchedInd.Equals("1")) //Last Schedule Date
@@ -540,40 +534,29 @@ namespace EllipseMstExcelAddIn
                         _cells.GetCell("B3").Value2 = "" + mst.DistrictCode;
                         _cells.GetCell(1, i).Value2 = "" + mst.WorkGroup;
                         _cells.GetCell(2, i).Value2 = "" + mst.RecType;
-                        _cells.GetCell(3, i).Value2 = mst.RecType == MstType.Equipment
-                            ? "" + mst.EquipmentNo
-                            : "" + mst.EquipmentGrpId;
+                        _cells.GetCell(3, i).Value2 = mst.RecType == MstType.Equipment ? "" + mst.EquipmentNo : "" + mst.EquipmentGrpId;
                         _cells.GetCell(4, i).Value2 = "" + mst.CompCode;
                         _cells.GetCell(5, i).Value2 = "" + mst.CompModCode;
                         _cells.GetCell(6, i).Value2 = "" + mst.MaintenanceSchTask;
                         _cells.GetCell(7, i).Value2 = "" + mst.SchedDescription1;
                         _cells.GetCell(8, i).Value2 = "" + mst.SchedDescription2;
-
                         _cells.GetCell(9, i).Value2 = "" + mst.StdJobNo;
-
                         _cells.GetCell(10, i).Value2 = "" + mst.JobDescCode;
                         _cells.GetCell(11, i).Value2 = "" + mst.AssignPerson;
                         _cells.GetCell(12, i).Value2 = "" + mst.SchedInd;
-
                         _cells.GetCell(13, i).Value2 = "" + mst.SchedFreq1;
                         _cells.GetCell(14, i).Value2 = "" + mst.StatType1;
-
                         _cells.GetCell(15, i).Value2 = "" + mst.LastSchedStat1;
                         _cells.GetCell(16, i).Value2 = "" + mst.LastPerfStat1;
                         _cells.GetCell(17, i).Value2 = "" + mst.LastSchedDate;
                         _cells.GetCell(18, i).Value2 = "" + mst.LastPerfDate;
-
                         _cells.GetCell(19, i).Value2 = "" + mst.NextSchedDate;
                         _cells.GetCell(20, i).Value2 = "" + mst.NextSchedStat;
-
                         _cells.GetCell(25, i).Value2 = "" + mst.OccurrenceType;
-
                         _cells.GetCell(26, i).Value2 = "" + mst.DayOfWeek;
                         _cells.GetCell(27, i).Value2 = "" + mst.DayOfMonth;
-                        _cells.GetCell(28, i).Value2 = "" + mst.SchedFreq1;
-
-                        _cells.GetCell(29, i).Value2 = "" + mst.StartMonth;
-                        _cells.GetCell(30, i).Value2 = "" + mst.StartYear;
+                        _cells.GetCell(28, i).Value2 = "" + mst.StartMonth;
+                        _cells.GetCell(29, i).Value2 = "" + mst.StartYear;
 
                         string freqDescription;
                         if (mst.SchedInd.Equals("1")) //Last Schedule Date
@@ -633,6 +616,7 @@ namespace EllipseMstExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
+            const int validationRow = TitleRow01 - 1;
 
             var opSheet = new EllipseMaintSchedTaskClassLibrary.MaintSchedTskService.OperationContext
             {
@@ -642,9 +626,9 @@ namespace EllipseMstExcelAddIn
                 returnWarnings = Debugger.DebugWarnings
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
 
             var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -663,41 +647,79 @@ namespace EllipseMstExcelAddIn
                     mst.CompCode = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value2);
                     mst.CompModCode = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value2);
                     mst.MaintenanceSchTask = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value2);
-                    mst.SchedDescription1 = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value2);
-                    mst.SchedDescription2 = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value2);
+
+                    mst.SchedDescription1 = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
+                    mst.SchedDescription2 = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null;
 
                     mst.ConAstSegFr = "0";
                     mst.ConAstSegTo = "0";
 
-                    mst.StdJobNo = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value2);
+                    mst.StdJobNo = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null;
 
-                    mst.JobDescCode = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value2);
-                    mst.AssignPerson = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value2);
-                    mst.SchedInd = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value2);
+                    mst.JobDescCode = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
+                    mst.AssignPerson = MyUtilities.IsTrue(_cells.GetCell(11, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value) : null;
+                    mst.SchedInd = MyUtilities.IsTrue(_cells.GetCell(12, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value) : null;
 
                     mst.AutoRequisitionInd = "N";
                     mst.MsHistFlag = "Y";
 
-                    mst.SchedFreq1 = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value2);
-                    mst.StatType1 = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value2);
+                    mst.StatType1 = MyUtilities.IsTrue(_cells.GetCell(14, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value) : null;
 
-                    mst.LastSchedStat1 = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value2);
-                    mst.LastPerfStat1 = _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value2);
+                    mst.LastSchedStat1 = MyUtilities.IsTrue(_cells.GetCell(15, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value) : null;
+                    mst.LastPerfStat1 = MyUtilities.IsTrue(_cells.GetCell(16, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value) : null;
                     //Solo se trabaja con una estadística. Cuando se considere trabajar con dos, hay que reevaluar esta sección
                     mst.StatType2 = null;
                     mst.LastSchedStat2 = null;
                     mst.SchedFreq2 = null;
                     mst.LastPerfStat2 = null;
 
-                    mst.LastSchedDate = _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value2);
-                    mst.LastPerfDate = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value2);
+                    mst.LastSchedDate = MyUtilities.IsTrue(_cells.GetCell(17, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value) : null;
+                    mst.LastPerfDate = MyUtilities.IsTrue(_cells.GetCell(18, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value) : null;
 
                     mst.StatutoryFlg = "N";
 
-                    //MstActions.CreateMaintenanceScheduleTaskPost(_eFunctions, mst);
-                    var replySheet = MstActions.CreateMaintenanceScheduleTask(urlService, opSheet, mst);
+                    var indicator = Convert.ToInt16(mst.SchedInd);
+                    var frequency = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
+                    var nextSchedStat = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
+                    var nextSchedValue = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
+                    var nextSchedDate = MyUtilities.IsTrue(_cells.GetCell(24, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value) : null;
+                    var occurrenceType = MyUtilities.IsTrue(_cells.GetCell(25, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value) : null;
+                    var dayOfWeek = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null;
+                    string dayOfMonth = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null;
 
-                    _cells.GetCell(ResultColumn01, i).Value = "CREADA " + replySheet.equipmentNo + " " + replySheet.maintenanceSchTask;
+                    var startMonth = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
+                    var startYear = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
+
+
+                    if (indicator >= 1 && indicator <= 4)
+                    {
+                        mst.SchedFreq1 = frequency;
+                        mst.NextSchedStat = nextSchedStat;
+                        mst.NextSchedValue = nextSchedValue;
+                        mst.NextSchedDate = nextSchedDate;
+
+                        MstActions.CreateMaintenanceScheduleTaskPost(_eFunctions, mst);
+                        //var replySheet = MstActions.CreateMaintenanceScheduleTask(urlService, opSheet, mst);
+                    }
+                    else if (indicator >= 7 && indicator <= 8)
+                    {
+                        mst.OccurrenceType = occurrenceType;
+                        mst.DayOfWeek = dayOfWeek;
+                        mst.DayOfMonth = dayOfMonth;
+                        mst.SchedFreq1 = frequency;
+                        mst.StartMonth = startMonth?.PadLeft(2, '0') ?? "";
+                        mst.StartYear = startYear;
+
+                        MstActions.CreateMaintenanceScheduleTaskPost(_eFunctions, mst);
+                        //var replySheet = MstActions.CreateMaintenanceScheduleTask(urlService, opSheet, mst);
+                    }
+                    else
+                    {
+                        throw new Exception("Indicador de Programación No Válido");
+                    }
+                    
+
+                    _cells.GetCell(ResultColumn01, i).Value = "CREADA " + mst.EquipmentNo + " " + mst.MaintenanceSchTask;
                     _cells.GetCell(6, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
                 }
@@ -786,7 +808,6 @@ namespace EllipseMstExcelAddIn
                     mst.StatutoryFlg = "N";
 
                     var indicator = Convert.ToInt16(mst.SchedInd);
-
                     var frequency = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
                     var nextSchedStat = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
                     var nextSchedValue = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
@@ -795,9 +816,8 @@ namespace EllipseMstExcelAddIn
                     var dayOfWeek = MyUtilities.IsTrue(_cells.GetCell(26, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(26, i).Value) : null;
                     string dayOfMonth = MyUtilities.IsTrue(_cells.GetCell(27, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(27, i).Value) : null;
 
-                    var startMonth = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
-                    var startYear = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
-                    dayOfMonth = dayOfMonth.PadLeft(2, '0');
+                    var startMonth = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
+                    var startYear = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
 
                     if (indicator >= 1 && indicator <= 4)
                     {
@@ -813,7 +833,7 @@ namespace EllipseMstExcelAddIn
                         mst.DayOfWeek = dayOfWeek;
                         mst.DayOfMonth = dayOfMonth;
                         mst.SchedFreq1 = frequency;
-                        mst.StartMonth = startMonth;
+                        mst.StartMonth = startMonth?.PadLeft(2, '0') ?? "";
                         mst.StartYear = startYear;
 
                         MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
@@ -907,7 +927,7 @@ namespace EllipseMstExcelAddIn
                         mst.StartMonth = startMonth;
                         mst.StartYear = startYear;
 
-                        MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst); 
+                        MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
                     }
                     else
                     {
@@ -1013,5 +1033,5 @@ namespace EllipseMstExcelAddIn
         }
     }
 
-    
+
 }

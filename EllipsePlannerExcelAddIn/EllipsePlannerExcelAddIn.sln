@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseWorkOrdersClassLibra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseStandardJobsClassLibrary", "..\EllipseCommonsClassLibraries\EllipseStandardJobsClassLibrary\EllipseStandardJobsClassLibrary.csproj", "{D83698A3-3B22-4AF7-B92A-26E2A05B1764}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web.Services.Ellipse", "..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj", "{1C5ABABA-126F-424B-932B-A110F3665344}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{D83698A3-3B22-4AF7-B92A-26E2A05B1764}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D83698A3-3B22-4AF7-B92A-26E2A05B1764}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D83698A3-3B22-4AF7-B92A-26E2A05B1764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C5ABABA-126F-424B-932B-A110F3665344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C5ABABA-126F-424B-932B-A110F3665344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
