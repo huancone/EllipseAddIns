@@ -678,7 +678,11 @@ namespace EllipseMstExcelAddIn
 
                     mst.StatutoryFlg = "N";
 
+
                     var indicator = Convert.ToInt16(mst.SchedInd);
+
+                    mst.AllowMultiple = indicator == 4 ? "N" : "Y";
+
                     var frequency = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
                     var nextSchedStat = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
                     var nextSchedValue = MyUtilities.IsTrue(_cells.GetCell(23, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value) : null;
@@ -718,7 +722,6 @@ namespace EllipseMstExcelAddIn
                         throw new Exception("Indicador de Programación No Válido");
                     }
                     
-
                     _cells.GetCell(ResultColumn01, i).Value = "CREADA " + mst.EquipmentNo + " " + mst.MaintenanceSchTask;
                     _cells.GetCell(6, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;

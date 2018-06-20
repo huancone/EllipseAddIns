@@ -5,10 +5,12 @@ using System.Linq;
 using System.Web.Services.Ellipse.Post;
 using System.Xml.Linq;
 using EllipseCommonsClassLibrary;
+using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Constants;
 using EllipseStandardJobsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
+using Screen = EllipseCommonsClassLibrary.ScreenService; //si es screen service
 
 namespace EllipseJobsClassLibrary
 {
@@ -136,9 +138,9 @@ namespace EllipseJobsClassLibrary
                 MaintType = (string)dto.Element("maintType"),
                 MstReference = (string)dto.Element("mstReference"),
                 OrigPriority = (string)dto.Element("origPriority"),
-                OriginalPlannedStartDate = DateTime.ParseExact((string)dto.Element("originalPlannedStartDate"), "yyyyMMdd", CultureInfo.InvariantCulture),
+                OriginalPlannedStartDate = (string)dto.Element("originalPlannedStartDate"),
                 PlanPriority = (string)dto.Element("planPriority"),
-                PlanStrDate = DateTime.ParseExact((string)dto.Element("planStrDate"), "yyyyMMdd", CultureInfo.InvariantCulture),
+                PlanStrDate = (string)dto.Element("planStrDate"),
                 RaisedDate = (string)dto.Element("raisedDate"),
                 Reference = (string)dto.Element("reference"),
                 StdJobNo = (string)dto.Element("stdJobNo"),
@@ -201,6 +203,32 @@ namespace EllipseJobsClassLibrary
             return jobs;
         }
 
+        public static List<LabourResources> GetEllipseResources(string district, int primakeryKey, string primaryValue, string startDate, string endDate)
+        {
+            var ef = new EllipseFunctions();
+            ef.SetDBSettings(Environments.SigcorProductivo);
+            var sqlQuery = Queries.GetEllipseResourcesQuery(ef.dbReference, ef.dbLink, district, primakeryKey, primaryValue, startDate, endDate);
+            var drResources = ef.GetQueryResult(sqlQuery);
+            var list = new List<LabourResources>();
+
+            if (drResources == null || drResources.IsClosed || !drResources.HasRows) return list;
+            while (drResources.Read())
+            {
+                var res = new LabourResources
+                {
+                    WorkGroup = drResources["GRUPO"].ToString().Trim(),
+                    ResourceCode = drResources["RECURSO"].ToString().Trim(),
+                    Date = drResources["FECHA"].ToString().Trim(),
+                    Quantity = Convert.ToDouble(drResources["CANTIDAD"].ToString().Trim()),
+                    AvailableLabourHours = Convert.ToDouble(drResources["HORAS"].ToString().Trim())
+                };
+                list.Add(res);
+            }
+
+            return list;
+        }
+
+
         public static List<LabourResources> GetPsoftResources(string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
             var ef = new EllipseFunctions();
@@ -215,14 +243,14 @@ namespace EllipseJobsClassLibrary
                 var res = new LabourResources
                 {
                     WorkGroup = drResources["GRUPO"].ToString().Trim(),
+                    Date = drResources["FECHA"].ToString().Trim(),
                     ResourceCode = drResources["RECURSO"].ToString().Trim(),
-                    Date = DateTime.ParseExact(drResources["FECHA"].ToString().Trim(), "yyyyMMdd", CultureInfo.InvariantCulture),
-                    Quantity = Convert.ToDouble(drResources["CANTIDAD"].ToString().Trim()),
+                    EmployeeId = drResources["EMPLID"].ToString().Trim(),
+                    EmployeeName = drResources["NOMBRE"].ToString().Trim(),
                     AvailableLabourHours = Convert.ToDouble(drResources["HORAS"].ToString().Trim())
                 };
                 list.Add(res);
             }
-
             return list;
         }
 
@@ -245,10 +273,117 @@ namespace EllipseJobsClassLibrary
                 ef.GetQueryResult(sqlQuery);
             }
         }
+
+        public static ReplyMessage UpdateEllipseResources(EllipseFunctions eFunctions, string urlService, Screen.OperationContext opContext, LabourResources resourcesToSave)
+        {
+            var proxySheet = new Screen.ScreenService { Url = urlService };
+            var replyMessage = new ReplyMessage();
+            var arrayFields = new ArrayScreenNameValue();
+
+
+            eFunctions.RevertOperation(opContext, proxySheet);
+            var replySheet = proxySheet.executeScreen(opContext, "MSO720");
+
+            if (replySheet.mapName != "MSM720A")
+                throw new Exception("NO SE PUEDE INGRESAR AL PROGRAMA MSO720");
+
+            arrayFields.Add("OPTION1I", "3");
+            arrayFields.Add("WORK_GROUP1I", resourcesToSave.WorkGroup);
+
+            var requestSheet = new Screen.ScreenSubmitRequestDTO
+            {
+                screenFields = arrayFields.ToArray(),
+                screenKey = "1"
+            };
+            replySheet = proxySheet.submit(opContext, requestSheet);
+
+            if (replySheet == null)
+                throw new Exception("No se pudo entrar al MSO720 Opcion 3");
+            if (eFunctions.CheckReplyError(replySheet) || eFunctions.CheckReplyWarning(replySheet))
+                throw new Exception(replySheet.message);
+            if (replySheet.mapName != "MSM72AA")
+                throw new Exception("No se pudo ingresar a la pantalla MSM72AA");
+
+            var replyArrayFields = new ArrayScreenNameValue(replySheet.screenFields);
+            
+            var screenIndex = 1;
+            while (!string.IsNullOrWhiteSpace(replyArrayFields.GetField("RES_CODE1I" + screenIndex).value))
+            {
+                if (screenIndex > 12)
+                {
+                    //enviar Screen
+                    requestSheet.screenFields = arrayFields.ToArray();
+                    requestSheet.screenKey = "1";
+                    replySheet = proxySheet.submit(opContext, requestSheet);
+                    arrayFields = new ArrayScreenNameValue();
+                    //
+                    if (replySheet != null && replySheet.mapName != "MSM72AA")
+                        break;
+                    screenIndex = 1;
+                }
+                if (resourcesToSave.ResourceCode == replyArrayFields.GetField("RES_CLASS1I" + screenIndex).value + replyArrayFields.GetField("RES_CODE1I" + screenIndex).value)
+                {
+                    break;
+                }
+                screenIndex++;
+            }
+            arrayFields = new ArrayScreenNameValue();
+            arrayFields.Add("RES_CLASS1I" + screenIndex, resourcesToSave.ResourceCode.Substring(0, 1));
+            arrayFields.Add("RES_CODE1I" + screenIndex, resourcesToSave.ResourceCode.Substring(1, 3));
+            arrayFields.Add("MAND_IND1I" + screenIndex, "N");
+            arrayFields.Add("REQMT_TYPE1I" + screenIndex, "E");
+            arrayFields.Add("RESRC_NO1I" + screenIndex, "" + resourcesToSave.Quantity);
+
+            requestSheet.screenFields = arrayFields.ToArray();
+            requestSheet.screenKey = "1";
+            replySheet = proxySheet.submit(opContext, requestSheet);
+
+            eFunctions.CheckReplyWarning(replySheet);//si hay debug activo muestra el warning de lo contrario depende del proceso del OP
+
+            if (replySheet != null && !eFunctions.CheckReplyError(replySheet) && replySheet.mapName == "MSM720A")
+                replyMessage.Message = "Ok";
+            if (replySheet != null && eFunctions.CheckReplyError(replySheet))
+                replyMessage.Errors = new[] { replyMessage.Message };
+            return replyMessage;
+        }
     }
 
     public static class Queries
     {
+        public static string GetEllipseResourcesQuery(string dbReference, string dbLink, string district, int primakeryKey, string primaryValue, string startDate, string endDate)
+        {
+            var groupList = new List<string>();
+
+            if (primakeryKey == SearchFieldCriteriaType.WorkGroup.Key && !string.IsNullOrWhiteSpace(primaryValue))
+                groupList.Add(primaryValue);
+            else if (primakeryKey == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(primaryValue))
+                groupList = Groups.GetWorkGroupList().Where(g => g.Area == primaryValue).Select(g => g.Name).ToList();
+            else
+                groupList = Groups.GetWorkGroupList().Where(g => g.Details == primaryValue).Select(g => g.Name).ToList();
+
+            var query = "WITH CTE_DATES ( CTE_DATE ) AS ( " +
+                        "    SELECT CAST(TO_DATE('" + startDate + "','YYYYMMDD') AS DATE) CTE_DATE FROM DUAL " +
+                        "    UNION ALL " +
+                        "    SELECT CAST( (CTE_DATE + 1) AS DATE) CTE_DATE FROM CTE_DATES WHERE TRUNC(CTE_DATE) + 1 <= TO_DATE('" + endDate + "','YYYYMMDD') " +
+                        "),FECHAS AS ( " +
+                        "    SELECT TO_CHAR(CTE_DATE,'YYYYMMDD') FECHA FROM CTE_DATES " +
+                        ") SELECT " +
+                        "    ELL.WORK_GROUP GRUPO, " +
+                        "    FECHAS.FECHA FECHA, " +
+                        "    ELL.RESOURCE_TYPE RECURSO, " +
+                        "    ELL.REQ_RESRC_NO CANTIDAD, " +
+                        "    CEIL( (TO_DATE(FECHAS.FECHA || ' ' || DEF_STOP_TIME,'YYYYMMDD HH24MISS') - TO_DATE(FECHAS.FECHA || ' ' || DEF_STR_TIME,'YYYYMMDD HH24MISS') ) * 24 * ELL.REQ_RESRC_NO * (1 - ( (WG.BDOWN_ALLOW_PC + ASSIGN_OTH_PC) / 100) ) ) HORAS " +
+                        "  FROM " +
+                        "    " + dbReference + ".MSF730_RESRC_REQ" + dbLink + " ELL " +
+                        "    INNER JOIN " + dbReference + ".MSF720" + dbLink + " WG " +
+                        "    ON ELL.WORK_GROUP = WG.WORK_GROUP, " +
+                        "    FECHAS " +
+                        "  WHERE " +
+                        "    ELL.WORK_GROUP IN (" + groupList.Aggregate("", (current, g) => current + "'" + g + "'") + ") ";
+
+            return query;
+        }
+
         public static string GetPsoftResourcesQuery(string dbReference, string dbLink, string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
             var groupList = new List<string>();
@@ -261,117 +396,76 @@ namespace EllipseJobsClassLibrary
                 groupList = Groups.GetWorkGroupList().Where(g => g.Details == primaryValue).Select(g => g.Name).ToList();
 
             var query = "WITH CTE_DATES ( CTE_DATE ) AS ( " +
-                        "	SELECT CAST(TO_DATE('" + startDate + "','YYYYMMDD') AS DATE) CTE_DATE FROM DUAL " +
-                        "	UNION ALL " +
-                        "	SELECT CAST( (CTE_DATE + 1) AS DATE) CTE_DATE FROM CTE_DATES WHERE TRUNC(CTE_DATE) + 1 <= TO_DATE('" + endDate + "','YYYYMMDD') " +
+                        "    SELECT CAST(TO_DATE('" + startDate + "','YYYYMMDD') AS DATE) CTE_DATE FROM DUAL " +
+                        "    UNION ALL " +
+                        "    SELECT CAST( (CTE_DATE + 1) AS DATE) CTE_DATE FROM CTE_DATES WHERE TRUNC(CTE_DATE) + 1 <= TO_DATE('" + endDate + "','YYYYMMDD') " +
                         "),FECHAS AS ( " +
-                        "	SELECT TO_CHAR(CTE_DATE,'YYYYMMDD') FECHA FROM CTE_DATES " +
-                        "),PSOFT AS ( " +
-                        "	SELECT " +
-                        "		WE.WORK_GROUP, " +
-                        "		EMP.RESOURCE_TYPE, " +
-                        "		FECHAS.FECHA, " +
-                        "		COUNT(DISTINCT TURNOS.EMPLID) CANTIDAD, " +
-                        "		SUM(TURNOS.HORAS) HORAS " +
-                        "	FROM " +
-                        "		" + dbReference + ".MSF810" + dbLink + " EMP " +
-                        "		INNER JOIN " + dbReference + ".MSF723" + dbLink + " WE " +
-                        "		ON EMP.EMPLOYEE_ID = WE.EMPLOYEE_ID " +
-                        "		INNER JOIN SIGMDC.MDC_EXPLOTACION TURNOS " +
-                        "		ON LPAD(EMP.EMPLOYEE_ID,11,'0') = LPAD(TURNOS.EMPLID,11,'0'), " +
-                        "		FECHAS " +
-                        "	WHERE " +
-                        "		WE.WORK_GROUP IN (" + groupList.Aggregate("", (current, g) => current + "'" + g + "'") + ") " +
-                        "		AND   WE.STOP_DT_REVSD = '00000000' " +
-                        "		AND   TRIM(EMP.RESOURCE_TYPE) IS NOT NULL " +
-                        "		AND   TRIM(EMP.RESOURCE_TYPE) NOT IN ('SMPT','SSUP') " +
-                        "		AND   TO_CHAR(TURNOS.FEC_JORND,'YYYYMMDD') = FECHAS.FECHA " +
-                        "	GROUP BY " +
-                        "		WE.WORK_GROUP, EMP.RESOURCE_TYPE, FECHAS.FECHA " +
-                        "),ELL AS ( " +
-                        "	SELECT " +
-                        "		EST.WORK_GROUP, " +
-                        "		EST.RESOURCE_TYPE, " +
-                        "		EST.REQ_RESRC_NO, " +
-                        "		FECHAS.FECHA " +
-                        "	FROM " +
-                        "		" + dbReference + ".MSF730_RESRC_REQ" + dbLink + " EST, " +
-                        "		FECHAS " +
-                        "	WHERE " +
-                        "		EST.WORK_GROUP IN (" + groupList.Aggregate("", (current, g) => current + "'" + g + "'") + ") " +
-                        "),RESOURCES AS ( " +
-                        "	SELECT " +
-                        "		DECODE(PSOFT.WORK_GROUP,NULL,ELL.WORK_GROUP,PSOFT.WORK_GROUP) GRUPO, " +
-                        "		DECODE(PSOFT.RESOURCE_TYPE,NULL,ELL.RESOURCE_TYPE,PSOFT.RESOURCE_TYPE) RECURSO, " +
-                        "		DECODE(PSOFT.CANTIDAD,NULL,ELL.REQ_RESRC_NO,PSOFT.CANTIDAD) CANTIDAD, " +
-                        "		PSOFT.HORAS, " +
-                        "		1 - (( WG.BDOWN_ALLOW_PC + ASSIGN_OTH_PC ) / 100) BDOWN, " +
-                        "		DECODE(PSOFT.FECHA,NULL,ELL.FECHA,PSOFT.FECHA) FECHA, " +
-                        "		TO_DATE(DECODE(PSOFT.FECHA,NULL,ELL.FECHA,PSOFT.FECHA) || ' ' || DEF_STR_TIME,'YYYYMMDD HH24MISS') INICIO_TURNO, " +
-                        "		TO_DATE(DECODE(PSOFT.FECHA,NULL,ELL.FECHA,PSOFT.FECHA) || ' ' || DEF_STOP_TIME,'YYYYMMDD HH24MISS') FIN_TURNO " +
-                        "	FROM " +
-                        "		ELL " +
-                        "		FULL JOIN PSOFT " +
-                        "		ON ELL.WORK_GROUP = PSOFT.WORK_GROUP " +
-                        "		   AND ELL.RESOURCE_TYPE = PSOFT.RESOURCE_TYPE " +
-                        "		   AND ELL.FECHA = PSOFT.FECHA " +
-                        "		INNER JOIN " + dbReference + ".MSF720" + dbLink + " WG " +
-                        "		ON ( ELL.WORK_GROUP = WG.WORK_GROUP OR PSOFT.WORK_GROUP = WG.WORK_GROUP ) " +
-                        ") " +
-                        "SELECT " +
-                        "	GRUPO, " +
-                        "	RECURSO, " +
-                        "	FECHA, " +
-                        "	CANTIDAD, " +
-                        "	CEIL(DECODE(HORAS, NULL, (FIN_TURNO - INICIO_TURNO)* 24 * CANTIDAD, HORAS) * BDOWN) HORAS " +
-                        "FROM " +
-                        "	RESOURCES ";
+                        "    SELECT TO_CHAR(CTE_DATE,'YYYYMMDD') FECHA FROM CTE_DATES " +
+                        ") SELECT " +
+                        "    WE.WORK_GROUP GRUPO, " +
+                        "    FECHAS.FECHA, " +
+                        "    EMP.RESOURCE_TYPE RECURSO, " +
+                        "    TURNOS.EMPLID, " +
+                        "    TRIM(EMP.FIRST_NAME) || ' ' || TRIM(EMP.SURNAME) NOMBRE, " +
+                        "    TURNOS.HORAS HORAS " +
+                        "  FROM " +
+                        "    " + dbReference + ".MSF810" + dbLink + " EMP " +
+                        "    INNER JOIN " + dbReference + ".MSF723" + dbLink + " WE " +
+                        "    ON EMP.EMPLOYEE_ID = WE.EMPLOYEE_ID " +
+                        "    AND   WE.STOP_DT_REVSD = '00000000' " +
+                        "    AND WE.WORK_GROUP IN (" + groupList.Aggregate("", (current, g) => current + "'" + g + "'") + ") " +
+                        "    LEFT JOIN SIGMDC.MDC_EXPLOTACION TURNOS " +
+                        "    ON LPAD(EMP.EMPLOYEE_ID,11,'0') = LPAD(TURNOS.EMPLID,11,'0') " +
+                        "    AND   TURNOS.TIPO_NOVDD = 'T' " +
+                        "    INNER JOIN FECHAS " +
+                        "    ON   TO_CHAR(TURNOS.FEC_JORND,'YYYYMMDD') = FECHAS.FECHA " +
+                        "  WHERE " +
+                        "    TRIM(EMP.RESOURCE_TYPE) IS NOT NULL  " +
+                        "    AND   TRIM(EMP.RESOURCE_TYPE) NOT IN ('SMPT','SSUP') " +
+                        "ORDER BY WE.WORK_GROUP, " +
+                        "    FECHAS.FECHA, " +
+                        "    EMP.RESOURCE_TYPE, " +
+                        "    TURNOS.EMPLID ";
             return query;
         }
 
         public static string SaveResourcesQuery(string dbReference, LabourResources l)
         {
-            var query = "MERGE INTO SIGMDC.RECURSOS_PROGRAMACION T USING                  " +
-                        "(SELECT                                                                      " +
-                        "    '" + l.WorkGroup + "' GRUPO,                                             " +
-                        "    '" + l.ResourceCode + "' RECURSO,                                        " +
-                        "    '" + l.Date.ToString("yyyyMMdd") + "' FECHA,                             " +
-                        "    '" + l.EstimatedLabourHours + "' HORAS_PRO,                              " +
-                        "    '" + l.AvailableLabourHours + "' HORAS_DISPO                             " +
-                        "    FROM                                                                     " +
-                        "    DUAL                                                                     " +
-                        ")S ON (                                                                      " +
-                        "    T.GRUPO = S.GRUPO                                                        " +
-                        "    AND T.RECURSO = S.RECURSO                                                " +
-                        "    AND T.FECHA = S.FECHA                                                    " +
-                        ")                                                                            " +
-                        "WHEN MATCHED THEN UPDATE SET T.HORAS_PRO = S.HORAS_PRO                       " +
-                        "WHEN NOT MATCHED THEN INSERT(GRUPO, RECURSO, FECHA, HORAS_PRO, HORAS_DISPO)  " +
-                        "VALUES(S.GRUPO, S.RECURSO, S.FECHA, S.HORAS_PRO, S.HORAS_DISPO);             ";
+            var query = "MERGE INTO SIGMDC.RECURSOS_PROGRAMACION T USING " +
+                         "(SELECT " +
+                         " '" + l.WorkGroup + "' GRUPO, " +
+                         " '" + l.ResourceCode + "' RECURSO, " +
+                         " '" + l.Date + "' FECHA, " +
+                         " '" + l.EstimatedLabourHours + "' HORAS_PRO, " +
+                         " '" + l.AvailableLabourHours + "' HORAS_DISPO " +
+                         " FROM DUAL)S ON ( " +
+                         " T.GRUPO = S.GRUPO " +
+                         " AND T.RECURSO = S.RECURSO " +
+                         " AND T.FECHA = S.FECHA " +
+                         ") " +
+                         "WHEN MATCHED THEN UPDATE SET T.HORAS_PRO = S.HORAS_PRO " +
+                         "WHEN NOT MATCHED THEN INSERT(GRUPO, RECURSO, FECHA, HORAS_PRO, HORAS_DISPO) " +
+                         "VALUES(S.GRUPO, S.RECURSO, S.FECHA, S.HORAS_PRO, S.HORAS_DISPO) ";
 
             return query;
         }
 
         public static string SaveTaskQuery(string dbReference, Jobs t)
         {
-            var query = "MERGE INTO SIGMDC.SEG_PROGRAMACION T USING                                " +
-                        "(SELECT                                                                   " +
-                        "    '" + t.WorkGroup + "' WORK_GROUP,                                                 " +
-                        "    '" + t.PlanStrDate + "' FECHA,                                                     " +
-                        "    '" + t.WorkOrder + "' WORK_ORDER,                                                " +
-                        "    '" + t.WoTaskNo + "' WO_TASK_NO                                                      " +
-                        " FROM                                                                     " +
-                        "                                                                          " +
-                        "    DUAL                                                                  " +
-                        ")                                                                         " +
-                        "S ON (                                                                    " +
-                        "    T.WORK_GROUP = S.WORK_GROUP                                           " +
-                        "    AND T.FECHA = S.FECHA                                                 " +
-                        "    AND T.WORK_ORDER = S.WORK_ORDER                                       " +
-                        "    AND T.WO_TASK_NO = S.WO_TASK_NO                                       " +
-                        ")                                                                         " +
-                        "WHEN NOT MATCHED THEN INSERT(WORK_GROUP, FECHA, WORK_ORDER, WO_TASK_NO)   " +
-                        "VALUES(S.WORK_GROUP, S.FECHA, S.WORK_ORDER, S.WO_TASK_NO);                ";
+            var query = "MERGE INTO SIGMDC.SEG_PROGRAMACION T USING " +
+                         "(SELECT " +
+                         " '" + t.WorkGroup + "' WORK_GROUP, " +
+                         " '" + t.PlanStrDate + "' FECHA, " +
+                         " '" + t.WorkOrder + "' WORK_ORDER, " +
+                         " '" + t.WoTaskNo + "' WO_TASK_NO " +
+                         " FROM DUAL)S ON ( " +
+                         " T.WORK_GROUP = S.WORK_GROUP " +
+                         " AND T.FECHA = S.FECHA " +
+                         " AND T.WORK_ORDER = S.WORK_ORDER " +
+                         " AND T.WO_TASK_NO = S.WO_TASK_NO " +
+                         ") " +
+                         "WHEN NOT MATCHED THEN INSERT(WORK_GROUP, FECHA, WORK_ORDER, WO_TASK_NO) " +
+                         "VALUES(S.WORK_GROUP, S.FECHA, S.WORK_ORDER, S.WO_TASK_NO) ";
             return query;
         }
     }

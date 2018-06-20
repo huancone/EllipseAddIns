@@ -39,13 +39,15 @@
             this.box1 = this.Factory.CreateRibbonBox();
             this.menuFormats = this.Factory.CreateRibbonMenu();
             this.btnChangeAccounts = this.Factory.CreateRibbonButton();
-            this.btnFormatInactiveBusiness = this.Factory.CreateRibbonButton();
             this.btnInactivateSupplier = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.ValidateAccounts = this.Factory.CreateRibbonButton();
-            this.btnLoad = this.Factory.CreateRibbonButton();
+            this.btnLoadAccounts = this.Factory.CreateRibbonButton();
+            this.btnInactivateBussiness = this.Factory.CreateRibbonButton();
+            this.btnInactivareAddress = this.Factory.CreateRibbonButton();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO200.SuspendLayout();
             this.box1.SuspendLayout();
@@ -75,7 +77,6 @@
             // menuFormats
             // 
             this.menuFormats.Items.Add(this.btnChangeAccounts);
-            this.menuFormats.Items.Add(this.btnFormatInactiveBusiness);
             this.menuFormats.Items.Add(this.btnInactivateSupplier);
             this.menuFormats.Label = "Formatos";
             this.menuFormats.Name = "menuFormats";
@@ -86,13 +87,6 @@
             this.btnChangeAccounts.Name = "btnChangeAccounts";
             this.btnChangeAccounts.ShowImage = true;
             this.btnChangeAccounts.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnChangeAccounts_Click);
-            // 
-            // btnFormatInactiveBusiness
-            // 
-            this.btnFormatInactiveBusiness.Label = "Formato Inactivar Supplier Business";
-            this.btnFormatInactiveBusiness.Name = "btnFormatInactiveBusiness";
-            this.btnFormatInactiveBusiness.ShowImage = true;
-            this.btnFormatInactiveBusiness.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatInactiveBusiness_Click);
             // 
             // btnInactivateSupplier
             // 
@@ -115,7 +109,10 @@
             // menuActions
             // 
             this.menuActions.Items.Add(this.ValidateAccounts);
-            this.menuActions.Items.Add(this.btnLoad);
+            this.menuActions.Items.Add(this.btnLoadAccounts);
+            this.menuActions.Items.Add(this.btnInactivateBussiness);
+            this.menuActions.Items.Add(this.btnInactivareAddress);
+            this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
             // 
@@ -126,12 +123,33 @@
             this.ValidateAccounts.ShowImage = true;
             this.ValidateAccounts.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ValidateAccounts_Click);
             // 
-            // btnLoad
+            // btnLoadAccounts
             // 
-            this.btnLoad.Label = "Cargar a Ellipse";
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.ShowImage = true;
-            this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
+            this.btnLoadAccounts.Label = "Cambiar Cuentas";
+            this.btnLoadAccounts.Name = "btnLoadAccounts";
+            this.btnLoadAccounts.ShowImage = true;
+            this.btnLoadAccounts.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
+            // 
+            // btnInactivateBussiness
+            // 
+            this.btnInactivateBussiness.Label = "Inactivar Supplier Bussiness";
+            this.btnInactivateBussiness.Name = "btnInactivateBussiness";
+            this.btnInactivateBussiness.ShowImage = true;
+            this.btnInactivateBussiness.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnInactivateBussiness_Click);
+            // 
+            // btnInactivareAddress
+            // 
+            this.btnInactivareAddress.Label = "Inactivar Supplier Address";
+            this.btnInactivareAddress.Name = "btnInactivareAddress";
+            this.btnInactivareAddress.ShowImage = true;
+            this.btnInactivareAddress.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnInactivareAddress_Click);
+            // 
+            // btnStopThread
+            // 
+            this.btnStopThread.Label = "Detener Proceso";
+            this.btnStopThread.Name = "btnStopThread";
+            this.btnStopThread.ShowImage = true;
+            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
             // RibbonEllipse
             // 
@@ -158,12 +176,14 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ValidateAccounts;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoad;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadAccounts;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatInactivateSupplierBusiness;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatInactiveBusiness;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnInactivateSupplier;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnInactivateBussiness;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnInactivareAddress;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
     }
 
     partial class ThisRibbonCollection

@@ -57,6 +57,7 @@ namespace EllipseMaintSchedTaskClassLibrary
         public string DayOfMonth;
         public string StartMonth;
         public string StartYear;
+        public string AllowMultiple;
     }
     public static class MstType
     {

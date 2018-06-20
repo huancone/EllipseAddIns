@@ -104,7 +104,7 @@ namespace EllipseLabourCostingExcelAddIn
                     if (MessageBox.Show(@"El separador de decimales configurado actualmente no es el punto. Usar un separador de decimales diferente puede generar errores al momento de cargar valores numéricos. ¿Está seguro que desea continuar?", @"ALERTA DE SEPARADOR DE DECIMALES", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
                 //si si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
-                
+
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                 _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -382,7 +382,7 @@ namespace EllipseLabourCostingExcelAddIn
 
                 _cells.GetCell(Mse850ResultColumn, Mse850TitleRow).Value = "RESULTADO";
                 _cells.GetCell(Mse850ResultColumn, Mse850TitleRow).Style = StyleConstants.TitleResult;
-                _cells.FormatAsTable(_cells.GetRange(1, Mse850TitleRow, Mse850ResultColumn, Mse850TitleRow + 1),TableNameMse850);
+                _cells.FormatAsTable(_cells.GetRange(1, Mse850TitleRow, Mse850ResultColumn, Mse850TitleRow + 1), TableNameMse850);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
             }
@@ -575,7 +575,6 @@ namespace EllipseLabourCostingExcelAddIn
                 _cells.GetRange(ElecsaTitleColumn - 1, ElecsaTitleRow - 2, ElecsaResultColumn - 1, ElecsaTitleRow - 1).ColumnWidth = 3.57;
                 _cells.GetRange(ElecsaTitleColumn - 1, ElecsaTitleRow - 2, ElecsaResultColumn - 1, ElecsaTitleRow - 1).Orientation = 90;
 
-
                 _cells.GetCell(ElecsaResultColumn, ElecsaTitleRow).Value = "RESULTADO";
                 _cells.GetCell(ElecsaResultColumn, ElecsaTitleRow).Style = StyleConstants.TitleResult;
 
@@ -590,7 +589,6 @@ namespace EllipseLabourCostingExcelAddIn
                 _cells.GetCell(ElecsaResultColumn + 4, ElecsaTitleRow).Value = "COMENTARIO";
                 _cells.GetCell(ElecsaResultColumn + 4, ElecsaTitleRow).AddComment("No modifica el comentario de cierre, solo adiciona al comentario existente");
                 _cells.GetCell(ElecsaResultColumn + 4, ElecsaTitleRow + 1).NumberFormat = NumberFormatConstants.Text;
-
 
                 _cells.GetRange(ElecsaResultColumn + 1, ElecsaTitleRow, ElecsaResultColumn + 4, ElecsaTitleRow).Style = StyleConstants.TitleRequired;
 
@@ -726,7 +724,7 @@ namespace EllipseLabourCostingExcelAddIn
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
-                
+
                 var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new OperationContext
@@ -791,11 +789,20 @@ namespace EllipseLabourCostingExcelAddIn
                                 employee.WorkOrderTask = employee.WorkOrderTask.PadLeft(3, '0');
                         }
 
+                        var reply = LoadEmployeeMse(urlService, opSheet, employee, cbReplaceExisting.Checked);
 
-                        LoadEmployeeMse(urlService, opSheet, employee, cbReplaceExisting.Checked);
-                        _cells.GetCell(Mse850ResultColumn, i).Value = "SUCCESS";
-                        _cells.GetCell(Mse850ResultColumn, i).Style = StyleConstants.Success;
-                        _cells.GetCell(Mse850ResultColumn, i).Select();
+                        if (reply.errors.Length == 0)
+                        {
+                            _cells.GetCell(Mse850ResultColumn, i).Value = "SUCCESS";
+                            _cells.GetCell(Mse850ResultColumn, i).Style = StyleConstants.Success;
+                            _cells.GetCell(Mse850ResultColumn, i).Select();
+                        }
+                        else
+                        {
+                            _cells.GetCell(Mse850ResultColumn, i).Value = string.Join(",", reply.errors.Select(p => p.ToString()).ToArray());
+                            _cells.GetCell(Mse850ResultColumn, i).Style = StyleConstants.Error;
+                            _cells.GetCell(Mse850ResultColumn, i).Select();
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -894,6 +901,7 @@ namespace EllipseLabourCostingExcelAddIn
 
 
                         LoadEmployeeMso(opSheet, employee, cbReplaceExisting.Checked);
+
                         _cells.GetCell(Mso850ResultColumn, i).Value = "SUCCESS";
                         _cells.GetCell(Mso850ResultColumn, i).Style = StyleConstants.Success;
                         _cells.GetCell(Mso850ResultColumn, i).Select();
@@ -1005,7 +1013,8 @@ namespace EllipseLabourCostingExcelAddIn
                                     LabourClass = laborClass
                                 };
 
-                                LoadEmployeeMse(urlService, opSheet, employee, false);
+                                var replay = LoadEmployeeMse(urlService, opSheet, employee, false);
+
                                 _cells.GetCell(j, i).ClearComments();
                                 _cells.GetCell(j, i).Style = StyleConstants.Success;
                                 _cells.GetCell(j, i).Select();
@@ -1140,7 +1149,7 @@ namespace EllipseLabourCostingExcelAddIn
 
             requestLt.transactionDate = new DateTime(int.Parse(labourEmployee.TransactionDate.Substring(0, 4)), int.Parse(labourEmployee.TransactionDate.Substring(4, 2)), int.Parse(labourEmployee.TransactionDate.Substring(6, 2)));
             requestLt.transactionDateSpecified = true;
-            
+
             requestLt.labourCostingHours = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingHours) ? Convert.ToDecimal(labourEmployee.LabourCostingHours) : default(decimal);
             requestLt.labourCostingHoursSpecified = !string.IsNullOrEmpty(labourEmployee.LabourCostingHours);
             requestLt.labourCostingValue = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingValue) ? Convert.ToDecimal(labourEmployee.LabourCostingValue) : default(decimal);
@@ -1204,7 +1213,7 @@ namespace EllipseLabourCostingExcelAddIn
 
 
         }
-        
+
         /// <summary>
         /// Carga un registro de labor para el empleado asignado
         /// </summary>
@@ -1248,10 +1257,10 @@ namespace EllipseLabourCostingExcelAddIn
                 var replyFields = new ArrayScreenNameValue(replySheet.screenFields);
                 //son variables para determinar el cambio de screen real
                 //reajustamos el valor de la tarea a un numérico ###
-                if (string.IsNullOrWhiteSpace(labourEmployee.WorkOrderTask)) 
+                if (string.IsNullOrWhiteSpace(labourEmployee.WorkOrderTask))
                     if (!string.IsNullOrWhiteSpace(labourEmployee.WorkOrder))
                         labourEmployee.WorkOrderTask = labourEmployee.WorkOrderTask == "" ? "" : "001";
-                
+
 
                 //iniciamos el recorrido
                 while (!labourFoundFlag)
@@ -1594,7 +1603,7 @@ namespace EllipseLabourCostingExcelAddIn
             " ORDER BY CEDULA";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-            
+
             return query;
         }
     }

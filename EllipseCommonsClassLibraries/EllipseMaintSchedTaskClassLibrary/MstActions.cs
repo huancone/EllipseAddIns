@@ -257,7 +257,7 @@ namespace EllipseMaintSchedTaskClassLibrary
             var requestXml = "";
 
             requestXml = requestXml + "<interaction>";
-            requestXml = requestXml + " <actions>";
+            requestXml = requestXml + "<actions>";
             requestXml = requestXml + "     <action>";
             requestXml = requestXml + "         <name>service</name>";
             requestXml = requestXml + "         <data>";
@@ -278,7 +278,7 @@ namespace EllipseMaintSchedTaskClassLibrary
             requestXml = requestXml + "                 <maintSchTask>" + mst.MaintenanceSchTask + "</maintSchTask>";
             requestXml = requestXml + "                 <displayInd>2</displayInd>";
             requestXml = requestXml + "                 <schedDesc1>" + mst.SchedDescription1 + "</schedDesc1>";
-            requestXml = requestXml + "                 <schedDesc2>" + mst.SchedDescription2 + " </schedDesc2>";
+            requestXml = requestXml + "                 <schedDesc2>" + mst.SchedDescription2 + "</schedDesc2>";
             requestXml = requestXml + "                 <workGroup>" + mst.WorkGroup + "</workGroup>";
             requestXml = requestXml + "                 <assignPerson>" + mst.AssignPerson + "</assignPerson>";
             requestXml = requestXml + "                 <stdJobNo>" + mst.StdJobNo + "</stdJobNo>";
@@ -286,23 +286,23 @@ namespace EllipseMaintSchedTaskClassLibrary
             requestXml = requestXml + "                 <dstrctCode>" + mst.DistrictCode + "</dstrctCode>";
             requestXml = requestXml + "                 <schedInd700>" + mst.SchedInd + "</schedInd700>";
             requestXml = requestXml + "                 <statType1>" + mst.StatType1 + "</statType1>";
-            requestXml = requestXml + "                 <lastSchStat1>" + (!string.IsNullOrWhiteSpace(mst.LastSchedStat1) ? Convert.ToString(mst.LastSchedStat1) : "") + "</lastSchStat1>";
-            requestXml = requestXml + "                 <lastPerfStat1>" + (!string.IsNullOrWhiteSpace(mst.LastPerfStat1) ? Convert.ToString(mst.LastPerfStat1) : "") + "</lastPerfStat1>";
+            requestXml = requestXml + "                 <lastSchStat1>" + (!string.IsNullOrWhiteSpace(mst.LastSchedStat1) ? Convert.ToString(mst.LastSchedStat1) : "").Trim() + "</lastSchStat1>";
+            requestXml = requestXml + "                 <lastPerfStat1>" + (!string.IsNullOrWhiteSpace(mst.LastPerfStat1) ? Convert.ToString(mst.LastPerfStat1) : "").Trim() + "</lastPerfStat1>";
             requestXml = requestXml + "                 <dayMonth>" + mst.DayOfMonth + "</dayMonth>";
             requestXml = requestXml + "                 <startYear>" + mst.StartYear + "</startYear>"; ;
             requestXml = requestXml + "                 <schedFreq1>" + mst.SchedFreq1 + "</schedFreq1>";
             requestXml = requestXml + "                 <statType2>" + mst.StatType2 + "</statType2>";
             requestXml = requestXml + "                 <schedFreq2>" + mst.SchedFreq2 + "</schedFreq2>";
-            requestXml = requestXml + "                 <lastSchStat2>" + (!string.IsNullOrWhiteSpace(mst.LastSchedStat2) ? Convert.ToString(mst.LastSchedStat2) : "") + "</lastSchStat2>";
-            requestXml = requestXml + "                 <lastPerfStat2>" + (!string.IsNullOrWhiteSpace(mst.LastSchedStat2) ? Convert.ToString(mst.LastSchedStat2) : "") + "</lastPerfStat2>";
-            requestXml = requestXml + "                 <lastSchDate>" + (!string.IsNullOrWhiteSpace(mst.LastSchedDate) ? Convert.ToString(mst.LastSchedStat2) : "") + " </lastSchDate> ";
-            requestXml = requestXml + "                 <lastPerfDate>" + (!string.IsNullOrWhiteSpace(mst.LastPerfDate) ? Convert.ToString(mst.LastSchedStat2) : "") + " </lastPerfDate> ";
-            requestXml = requestXml + "                 <nextSchDate>" + (!string.IsNullOrWhiteSpace(mst.NextSchedDate) ? Convert.ToString(mst.LastSchedStat2) : "") + " </nextSchDate> ";
-            requestXml = requestXml + "                 <nextSchStat>" + (!string.IsNullOrWhiteSpace(mst.NextSchedStat) ? Convert.ToString(mst.LastSchedStat2) : "") + " </nextSchStat> ";
-            requestXml = requestXml + "                 <nextSchValue>" + (!string.IsNullOrWhiteSpace(mst.NextSchedValue) ? Convert.ToString(mst.LastSchedStat2) : "") + " </nextSchValue> ";
+            requestXml = requestXml + "                 <lastSchStat2>" + (!string.IsNullOrWhiteSpace(mst.LastSchedStat2) ? Convert.ToString(mst.LastSchedStat2).Trim() : "") + "</lastSchStat2>";
+            requestXml = requestXml + "                 <lastPerfStat2>" + (!string.IsNullOrWhiteSpace(mst.LastPerfStat2) ? Convert.ToString(mst.LastPerfStat2).Trim() : "") + "</lastPerfStat2>";
+            requestXml = requestXml + "                 <lastSchDate>" + (!string.IsNullOrWhiteSpace(mst.LastSchedDate) ? Convert.ToString(mst.LastSchedDate).Trim() : "") + "</lastSchDate> ";
+            requestXml = requestXml + "                 <lastPerfDate>" + (!string.IsNullOrWhiteSpace(mst.LastPerfDate) ? Convert.ToString(mst.LastPerfDate).Trim() : "") + "</lastPerfDate> ";
+            requestXml = requestXml + "                 <nextSchDate>" + (!string.IsNullOrWhiteSpace(mst.NextSchedDate) ? Convert.ToString(mst.NextSchedDate).Trim() : "") + "</nextSchDate> ";
+            requestXml = requestXml + "                 <nextSchStat>" + (!string.IsNullOrWhiteSpace(mst.NextSchedStat) ? Convert.ToString(mst.NextSchedStat).Trim() : "") + "</nextSchStat> ";
+            requestXml = requestXml + "                 <nextSchValue>" + (!string.IsNullOrWhiteSpace(mst.NextSchedValue) ? Convert.ToString(mst.NextSchedValue).Trim() : "") + "</nextSchValue> ";
             requestXml = requestXml + "                 <statutoryFlg>" + mst.StatutoryFlg + "</statutoryFlg>";
             requestXml = requestXml + "                 <fixedScheduling>N</fixedScheduling>";
-            requestXml = requestXml + "                 <allowMultiple>Y</allowMultiple>";
+            requestXml = requestXml + "                 <allowMultiple>" + mst.AllowMultiple + "</allowMultiple>";
             requestXml = requestXml + "                 <isInSeries>N</isInSeries>";
             requestXml = requestXml + "                 <isInSuppressionSeries>N</isInSuppressionSeries>";
             requestXml = requestXml + "                 <hideSuppressed>Y</hideSuppressed>";
@@ -310,12 +310,12 @@ namespace EllipseMaintSchedTaskClassLibrary
             requestXml = requestXml + "         </data>";
             requestXml = requestXml + "         <id>" + Util.GetNewOperationId() + "</id>";
             requestXml = requestXml + "     </action>";
-            requestXml = requestXml + " </actions>";
-            requestXml = requestXml + " <chains/>";
-            requestXml = requestXml + " <connectionId>" + ef.PostServiceProxy.ConnectionId + "</connectionId>";
-            requestXml = requestXml + " <application>msemst</application>";
-            requestXml = requestXml + " <applicationPage>create</applicationPage>";
-            requestXml = requestXml + " <transaction>true</transaction>";
+            requestXml = requestXml + "</actions>";
+            requestXml = requestXml + "<chains/>";
+            requestXml = requestXml + "<connectionId>" + ef.PostServiceProxy.ConnectionId + "</connectionId>";
+            requestXml = requestXml + "<application>msemst</application>";
+            requestXml = requestXml + "<applicationPage>create</applicationPage>";
+            requestXml = requestXml + "<transaction>true</transaction>";
             requestXml = requestXml + "</interaction>";
 
 
@@ -346,13 +346,13 @@ namespace EllipseMaintSchedTaskClassLibrary
             requestXml = requestXml + "				<className>mfui.actions.detail::UpdateAction</className>";
             requestXml = requestXml + "				<returnWarnings>true</returnWarnings>";
             requestXml = requestXml + "				<dto    uuid=\"" + Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
-            requestXml = requestXml + "					<allowMultiple>Y</allowMultiple>";
+            requestXml = requestXml + "					<allowMultiple>" + mst.AllowMultiple + "</allowMultiple>";
             requestXml = requestXml + "					<conAstSegFr>0</conAstSegFr>";
-            requestXml = requestXml + "					<conAstSegFrNumeric>" + mst.ConAstSegFr + "</conAstSegFrNumeric>";
+            requestXml = requestXml + "					<conAstSegFrNumeric>0</conAstSegFrNumeric>";
             requestXml = requestXml + "					<conAstSegTo>0</conAstSegTo>";
-            requestXml = requestXml + "					<conAstSegToNumeric>" + mst.ConAstSegTo + "</conAstSegToNumeric>";
+            requestXml = requestXml + "					<conAstSegToNumeric>0</conAstSegToNumeric>";
             requestXml = requestXml + "					<dayMonth>" + mst.DayOfMonth + "</dayMonth>";
-            requestXml = requestXml + "					<dayWeek> " + mst.DayOfWeek + " </dayWeek>";
+            requestXml = requestXml + "					<dayWeek> " + mst.DayOfWeek + "</dayWeek>";
             requestXml = requestXml + "					<dstrctCode>" + mst.DistrictCode + "</dstrctCode>";
             requestXml = requestXml + "					<equipEntity>" + mst.EquipmentNo + "</equipEntity>";
             requestXml = requestXml + "					<equipNo>" + mst.EquipmentNo + "</equipNo>";

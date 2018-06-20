@@ -146,6 +146,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
+
         public void StartCreateLogSheet()
         {
             try

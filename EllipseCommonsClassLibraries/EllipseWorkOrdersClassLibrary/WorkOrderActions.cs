@@ -134,8 +134,6 @@ namespace EllipseWorkOrdersClassLibrary
             return list;
         }
 
-
-
         public static List<string> FetchOrigDocNo(EllipseFunctions ef, string districtCode, string workGroup,
             string origDocType, string origDocNo)
         {
@@ -1430,9 +1428,9 @@ namespace EllipseWorkOrdersClassLibrary
                 resourceClass = taskReq.ReqCode.Substring(0, 1),
                 resourceCode = taskReq.ReqCode.Substring(1),
                 quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
-                quantityRequiredSpecified = true,
+                quantityRequiredSpecified = taskReq.QtyReq != null,
                 hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal),
-                hrsReqdSpecified = true,
+                hrsReqdSpecified = taskReq.HrsReq != null,
                 classType = "WT",
                 enteredInd = "S"
             };
@@ -1546,12 +1544,10 @@ namespace EllipseWorkOrdersClassLibrary
                 workOrderTask = !string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? taskReq.WoTaskNo : null,
                 resourceClass = taskReq.ReqCode.Substring(0, 1),
                 resourceCode = taskReq.ReqCode.Substring(1),
-                quantityRequired = taskReq.QtyReq != null
-                    ? Convert.ToDecimal(taskReq.QtyReq)
-                    : default(decimal),
-                quantityRequiredSpecified = true,
+                quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                quantityRequiredSpecified = taskReq.QtyReq != null,
                 hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal),
-                hrsReqdSpecified = true,
+                hrsReqdSpecified = taskReq.HrsReq != null,
                 classType = "WT",
                 enteredInd = "S"
             };

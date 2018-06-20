@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
@@ -13,12 +14,15 @@ using Microsoft.Office.Tools.Ribbon;
 
 using Application = Microsoft.Office.Interop.Excel.Application;
 using screen = EllipseCommonsClassLibrary.ScreenService;
+// ReSharper disable UseIndexedProperty
 
 namespace EllipseMSO200ExcelAddIn
 {
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     public partial class RibbonEllipse
     {
+
+        private Thread _thread;
         private const int TittleRow = 5;
         private static int _resultColumn = 13;
         private EllipseFunctions _eFunctions = new EllipseFunctions();
@@ -44,51 +48,10 @@ namespace EllipseMSO200ExcelAddIn
 
         private void btnInactivateSupplier_Click(object sender, RibbonControlEventArgs e)
         {
-            FormatInactivateSupplier();
+            FormatInactivateSupplierAddress();
         }
 
-        private void btnFormatInactiveBusiness_Click(object sender, RibbonControlEventArgs e)
-        {
-            FormatInactivateSupplierBusiness();
-        }
-
-        private void FormatInactivateSupplierBusiness()
-        {
-            _excelApp = Globals.ThisAddIn.Application;
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            var excelBook = _excelApp.Workbooks.Add();
-            Worksheet excelSheet = excelBook.ActiveSheet;
-            _sheetName01 = "Inactivar Supplier Business";
-            excelSheet.Name = _sheetName01;
-            _resultColumn = 4;
-
-            _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange,
-                _cells.GetRange(1, TittleRow, _resultColumn, TittleRow + 1), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
-
-
-            _cells.GetCell(1, 1).Value = "CERREJÓN";
-            _cells.GetCell(1, 1).Style = _cells.GetStyle(StyleConstants.HeaderDefault);
-            _cells.MergeCells(1, 1, 1, 2);
-            _cells.GetCell("B1").Value = "Inactivar Supplier Business";
-            _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderSize17);
-            _cells.MergeCells(2, 1, 7, 2);
-
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "@";
-
-            _cells.GetCell(1, TittleRow).Value = "Distrito";
-            _cells.GetCell(2, TittleRow).Value = "Supplier";
-            _cells.GetCell(3, TittleRow).Value = "Nombre";
-            _cells.GetCell(_resultColumn, TittleRow).Value = "Resultado";
-
-            _cells.GetRange(1, TittleRow, _resultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-
-            excelSheet.Cells.Columns.AutoFit();
-            excelSheet.Cells.Rows.AutoFit();
-        }
-
-        private void FormatInactivateSupplier()
+        private void FormatInactivateSupplierAddress()
         {
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
@@ -313,37 +276,72 @@ namespace EllipseMSO200ExcelAddIn
 
         private void btnLoad_Click(object sender, RibbonControlEventArgs e)
         {
-            LoadData();
+            try
+            {
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                _thread = new Thread(LoadCambioCuentas);
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:btnLoadData()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
-        private void LoadData()
+
+        private void btnInactivateBussiness_Click(object sender, RibbonControlEventArgs e)
         {
-            var excelBook = _excelApp.ActiveWorkbook;
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            Worksheet excelSheet = excelBook.ActiveSheet;
-            _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-            _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-            if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-            switch (excelSheet.Name)
+            try
             {
-                case "MSO200 Cambio Cuentas":
-                    //LoadCesantias();
-                    LoadCambioCuentas();
-                    break;
-                case "Inactivar Supplier Business":
-                    //LoadCesantias();
-                    LoadInactivarSupplierBusiness();
-                    break;
-                case "Inactivar Supplier":
-                    //LoadCesantias();
-                    LoadInactivarSupplier();
-                    break;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                _thread = new Thread(LoadInactivarSupplierBusiness);
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:btnLoadData()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+
+        private void btnInactivareAddress_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                _thread = new Thread(LoadInactivarSupplierAddress);
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:btnLoadData()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
 
         private void LoadInactivarSupplierBusiness()
         {
+
+            _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
@@ -428,8 +426,9 @@ namespace EllipseMSO200ExcelAddIn
             }
         }
 
-        private void LoadInactivarSupplier()
+        private void LoadInactivarSupplierAddress()
         {
+            _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
@@ -459,7 +458,6 @@ namespace EllipseMSO200ExcelAddIn
                     {
                         if (replySheet.mapName != "MSM200A") return;
                         var arrayFields = new ArrayScreenNameValue();
-                        arrayFields.Add("DSTRCT_CODE1I", _frmAuth.EllipseDsct);
                         arrayFields.Add("OPTION1I", "5");
                         arrayFields.Add("SUPPLIER_NO1I",_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
                         requestSheet.screenFields = arrayFields.ToArray();
@@ -516,6 +514,8 @@ namespace EllipseMSO200ExcelAddIn
 
         private void LoadCambioCuentas()
         {
+
+            _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
@@ -663,8 +663,7 @@ namespace EllipseMSO200ExcelAddIn
                                 }
                                 else
                                 {
-                                    _cells.GetCell(_resultColumn, currentRow).Style =
-                                        _cells.GetStyle(StyleConstants.Error);
+                                    _cells.GetCell(_resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                     _cells.GetCell(_resultColumn, currentRow).Value = "No se Actualizo";
                                 }
                             }
@@ -695,7 +694,7 @@ namespace EllipseMSO200ExcelAddIn
             public string NombreInstitucion { get; set; }
         }
 
-        public class EmployeeInfo
+        private class EmployeeInfo
         {
             public string Supplier { get; set; }
             public string Nombre { get; set; }
@@ -711,7 +710,7 @@ namespace EllipseMSO200ExcelAddIn
             public string DefaultBankAccountName { get; set; }
         }
 
-        public static class Queries
+        private static class Queries
         {
             public static string GetSupplierInvoiceInfo(string districtCode, string cedula, string dbReference, string dbLink)
             {
@@ -721,7 +720,7 @@ namespace EllipseMSO200ExcelAddIn
                                "  TRIM(BI.SUPPLIER_NO) SUPPLIER_NO, " +
                                "  COUNT(BI.SUPPLIER_NO) OVER(PARTITION BY BI.TAX_FILE_NO) CANTIDAD_REGISTROS " +
                                "FROM " +
-                               "  ELLIPSE.MSF203 BI " +
+                               "  "+ dbReference + ".MSF203"+ dbLink + " BI " +
                                "WHERE " +
                                "  BI.TAX_FILE_NO = '" + cedula + "' " +
                                "  AND BI.DSTRCT_CODE = '" + districtCode + "' ";
@@ -733,5 +732,23 @@ namespace EllipseMSO200ExcelAddIn
         {
             new AboutBoxExcelAddIn().ShowDialog();
         }
+
+        private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_thread != null && _thread.IsAlive)
+                    _thread.Abort();
+            }
+            catch (ThreadAbortException ex)
+            {
+                MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
+            }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
+            }
+        }
+
     }
 }

@@ -18,9 +18,9 @@ namespace EllipseJobsClassLibrary
         public string MaintType{ get; set; }
         public string MstReference{ get; set; }
         public string OrigPriority{ get; set; }
-        public DateTime OriginalPlannedStartDate{ get; set; }
+        public string OriginalPlannedStartDate{ get; set; }
         public string PlanPriority{ get; set; }
-        public DateTime PlanStrDate{ get; set; }
+        public string PlanStrDate{ get; set; }
         public string RaisedDate{ get; set; }
         public string Reference{ get; set; }
         public string StdJobNo{ get; set; }
@@ -43,10 +43,12 @@ namespace EllipseJobsClassLibrary
 
         public string WorkGroup { get; set; }
         public string ResourceCode { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         public double Quantity { get; set; }
         public double AvailableLabourHours { get; set; }
         public double EstimatedLabourHours { get; set; }
         public double RealLabourHours { get; set; }
+        public string EmployeeId { get;  set; }
+        public string EmployeeName { get; set; }
     }
 }

@@ -35,7 +35,7 @@
     <PublishUrl>D:\Projects\Release\EllipsePlannerExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.3</ApplicationVersion>
+    <ApplicationVersion>1.0.0.11</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -138,6 +138,10 @@
   <ItemGroup>
     <Reference Include="EllipseJobsClassLibrary">
       <HintPath>..\..\EllipseCommonsClassLibraries\EllipseJobsClassLibrary\bin\Debug\EllipseJobsClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="EllipseWorkOrdersClassLibrary, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EllipseCommonsClassLibraries\EllipseWorkOrdersClassLibrary\bin\Debug\EllipseWorkOrdersClassLibrary.dll</HintPath>
     </Reference>
     <Reference Include="LINQtoCSV, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>

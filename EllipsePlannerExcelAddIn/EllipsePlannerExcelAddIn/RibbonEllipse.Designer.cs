@@ -36,12 +36,13 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpProyecto = this.Factory.CreateRibbonGroup();
-            this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReviewJobs = this.Factory.CreateRibbonButton();
             this.btnLoadData = this.Factory.CreateRibbonButton();
+            this.btnUpdateEllipse = this.Factory.CreateRibbonButton();
+            this.btnUpdateOrder = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
@@ -57,18 +58,12 @@
             // 
             // grpProyecto
             // 
-            this.grpProyecto.Items.Add(this.menuFormat);
+            this.grpProyecto.Items.Add(this.btnFormatSheet);
             this.grpProyecto.Items.Add(this.drpEnviroment);
             this.grpProyecto.Items.Add(this.menuActions);
             this.grpProyecto.Items.Add(this.btnAbout);
             this.grpProyecto.Label = "Job Planner";
             this.grpProyecto.Name = "grpProyecto";
-            // 
-            // menuFormat
-            // 
-            this.menuFormat.Items.Add(this.btnFormatSheet);
-            this.menuFormat.Label = "&Formatear";
-            this.menuFormat.Name = "menuFormat";
             // 
             // btnFormatSheet
             // 
@@ -86,6 +81,8 @@
             // 
             this.menuActions.Items.Add(this.btnReviewJobs);
             this.menuActions.Items.Add(this.btnLoadData);
+            this.menuActions.Items.Add(this.btnUpdateEllipse);
+            this.menuActions.Items.Add(this.btnUpdateOrder);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "&Acciones";
             this.menuActions.Name = "menuActions";
@@ -99,10 +96,24 @@
             // 
             // btnLoadData
             // 
-            this.btnLoadData.Label = "Cargar Información";
+            this.btnLoadData.Label = "Cargar Planes";
             this.btnLoadData.Name = "btnLoadData";
             this.btnLoadData.ShowImage = true;
             this.btnLoadData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadData_Click);
+            // 
+            // btnUpdateEllipse
+            // 
+            this.btnUpdateEllipse.Label = "Actualizar Disponibilidad";
+            this.btnUpdateEllipse.Name = "btnUpdateEllipse";
+            this.btnUpdateEllipse.ShowImage = true;
+            this.btnUpdateEllipse.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateEllipse_Click);
+            // 
+            // btnUpdateOrder
+            // 
+            this.btnUpdateOrder.Label = "Actualizar Recursos Estimados";
+            this.btnUpdateOrder.Name = "btnUpdateOrder";
+            this.btnUpdateOrder.ShowImage = true;
+            this.btnUpdateOrder.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateOrder_Click);
             // 
             // btnStopThread
             // 
@@ -135,7 +146,6 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpProyecto;
-        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
@@ -143,6 +153,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadData;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateEllipse;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateOrder;
     }
 
     partial class ThisRibbonCollection

@@ -2502,7 +2502,6 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-
         private void ReReviewWoList()
         {
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -3230,7 +3229,6 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-
         private void ReviewCloseText()
         {
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -3275,7 +3273,6 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-
         private void UpdateCloseText()
         {
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -3287,7 +3284,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var i = TitleRow05 + 1;
 
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -3329,8 +3326,6 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-
-
         private void GetDurationWoList()
         {
             if (_cells == null)
@@ -3403,7 +3398,6 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-
         private void ExecuteDurationWoActions()
         {
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -3480,7 +3474,6 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void ReviewRefCodesList()
         {
-
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
 
@@ -4062,7 +4055,6 @@ namespace EllipseWorkOrderExcelAddIn
                 var controlList = new List<CriticalControl>();
                 while (!string.IsNullOrWhiteSpace(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value)))
                 {
-
                     var cc = new CriticalControl
                     {
                         WorkOrder = "" + _cells.GetCell(1, i).Value,
@@ -4278,18 +4270,31 @@ namespace EllipseWorkOrderExcelAddIn
             var j = TitleRow02 + 1;//itera según cada tarea
             var i = TitleRow03 + 1;//itera la celda para cada requerimiento
 
+            var list = new List<TaskRequirement>();
+
             while (!string.IsNullOrEmpty("" + taskCells.GetCell(3, j).Value) && !string.IsNullOrEmpty("" + taskCells.GetCell(6, j).Value))
+            {
+                list.Add(new TaskRequirement
+                {
+                    DistrictCode = _cells.GetEmptyIfNull(taskCells.GetCell(1, j).Value2),
+                    WorkGroup = _cells.GetEmptyIfNull(taskCells.GetCell(2, j).Value2),
+                    WorkOrder = _cells.GetEmptyIfNull(taskCells.GetCell(3, j).Value2),
+                    WoTaskNo = _cells.GetEmptyIfNull(taskCells.GetCell(6, j).Value2)
+                });
+                j++;
+            }
+
+            var distinctItems = list.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo} ).Select(y => y.First());
+
+            foreach (var d in distinctItems)
             {
                 try
                 {
-                    var districtCode = _cells.GetEmptyIfNull(taskCells.GetCell(1, j).Value2);
-                    var workGroup = _cells.GetEmptyIfNull(taskCells.GetCell(2, j).Value2);
-                    var stdJobNo = _cells.GetEmptyIfNull(taskCells.GetCell(3, j).Value2);
-                    var taskNo = _cells.GetEmptyIfNull(taskCells.GetCell(6, j).Value2);
+                    var reqList = WorkOrderActions.FetchTaskRequirements(_eFunctions, d.DistrictCode, d.WorkGroup, d.WorkOrder, d.WoTaskNo);
 
-                    var reqList = WorkOrderActions.FetchTaskRequirements(_eFunctions, districtCode, workGroup, stdJobNo, taskNo);
+                    var distinctReqList = reqList.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo }).Select(y => y.First());
 
-                    foreach (var req in reqList)
+                    foreach (var req in distinctReqList)
                     {
                         //GENERAL
                         _cells.GetCell(1, i).Value = "" + req.DistrictCode; //DistrictCode
@@ -4307,26 +4312,21 @@ namespace EllipseWorkOrderExcelAddIn
                         _cells.GetCell(13, i).Value = "" + req.QtyIss;      //QtyIss
                         _cells.GetCell(14, i).Value = "" + req.HrsReq;      //HrsReq
                         _cells.GetCell(15, i).Value = "" + req.HrsReal;     //HrsReal
-
                         _cells.GetCell(ResultColumn03, i).Select();
-                        i++;//aumenta req
+                        i++;
                     }
                 }
                 catch (Exception ex)
                 {
                     _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(1, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(1, j).Value2);
-                    _cells.GetCell(2, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(2, j).Value2);
-                    _cells.GetCell(3, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(3, j).Value2);
-                    _cells.GetCell(4, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(6, j).Value2);
+                    _cells.GetCell(1, i).Value = d.DistrictCode;
+                    _cells.GetCell(2, i).Value = d.WorkGroup;
+                    _cells.GetCell(3, i).Value = d.WorkOrder;
+                    _cells.GetCell(4, i).Value = d.WoTaskNo;
                     _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn03, i).Select();
                     Debugger.LogError("RibbonEllipse.cs:ReviewRequirements()", ex.Message);
                     i++;
-                }
-                finally
-                {
-                    j++;//aumenta task
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
@@ -4566,8 +4566,6 @@ namespace EllipseWorkOrderExcelAddIn
                         else if (taskReq.ReqType.Equals("EQU"))
                             WorkOrderActions.DeleteTaskEquipment(urlService, opSheetEquipment, taskReq);
                     }
-
-
                     _cells.GetCell(ResultColumn03, i).Value = "OK";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;

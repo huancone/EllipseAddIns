@@ -12,6 +12,11 @@ using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using screen = EllipseCommonsClassLibrary.ScreenService;
 using Util = System.Web.Services.Ellipse.Post.Util;
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable LocalizableElement
+// ReSharper disable UnusedMember.Local
 
 namespace EllipseMSO265ExcelAddIn
 {
@@ -371,7 +376,7 @@ namespace EllipseMSO265ExcelAddIn
                     _cells.GetCell(14, currentRow).Select();
 
                     _cells.GetCell(17, currentRow).Value = supplierInfo.SupplierNo;
-                    _cells.GetCell(18, currentRow).Value = supplierInfo.AccountName.Substring(2, 4) ?? "";
+                    _cells.GetCell(18, currentRow).Value = supplierInfo.AccountName.Substring(2, 4);
                     _cells.GetCell(19, currentRow).Value = supplierInfo.AccountNo;
                     _cells.GetCell(20, currentRow).Value = supplierInfo.StAdress;
                     _cells.GetCell(21, currentRow).Value = supplierInfo.StBusiness;
@@ -422,8 +427,8 @@ namespace EllipseMSO265ExcelAddIn
             switch (excelSheet.Name)
             {
                 case "MSO265 Cesantias":
-                    //LoadCesantias();
-                    LoadCesantiasPost();
+                    LoadCesantias();
+                    //LoadCesantiasPost();
                     break;
                 case "MSO265 Nomina":
                     LoadNomina();
@@ -758,8 +763,7 @@ namespace EllipseMSO265ExcelAddIn
                     };
 
                     var urlEnviroment = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
-                    EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost,
-                        _frmAuth.EllipseDsct, urlEnviroment);
+                    EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
                     var responseDto = EFunctions.InitiatePostConnection();
 
                     if (responseDto.GotErrorMessages()) return;
@@ -968,7 +972,7 @@ namespace EllipseMSO265ExcelAddIn
 
         private void LoadCesantias()
         {
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
 
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
@@ -1087,7 +1091,7 @@ namespace EllipseMSO265ExcelAddIn
             }
         }
 
-        public class Nomina
+        private class Nomina
         {
             public string CodigoBanco { get; set; }
             public string CuentaBanco { get; set; }
@@ -1291,34 +1295,34 @@ namespace EllipseMSO265ExcelAddIn
             public string PosicionAprobador { get; set; }
 
             [CsvColumn(FieldIndex = 16)]
-            public string value01 { get; set; }
+            public string Value01 { get; set; }
 
             [CsvColumn(FieldIndex = 17)]
-            public string value02 { get; set; }
+            public string Value02 { get; set; }
 
             [CsvColumn(FieldIndex = 18)]
-            public string value03 { get; set; }
+            public string Value03 { get; set; }
 
             [CsvColumn(FieldIndex = 19)]
-            public string value04 { get; set; }
+            public string Value04 { get; set; }
 
             [CsvColumn(FieldIndex = 20)]
-            public string value05 { get; set; }
+            public string Value05 { get; set; }
 
             [CsvColumn(FieldIndex = 21)]
-            public string value06 { get; set; }
+            public string Value06 { get; set; }
 
             [CsvColumn(FieldIndex = 22)]
-            public string value07 { get; set; }
+            public string Value07 { get; set; }
 
             [CsvColumn(FieldIndex = 23)]
-            public string value08 { get; set; }
+            public string Value08 { get; set; }
 
             [CsvColumn(FieldIndex = 24)]
-            public string value09 { get; set; }
+            public string Value09 { get; set; }
 
             [CsvColumn(FieldIndex = 25)]
-            public string value10 { get; set; }
+            public string Value10 { get; set; }
         }
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)

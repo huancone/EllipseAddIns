@@ -46,8 +46,8 @@ namespace EllipseMSO010ExcelAddIn
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
             this.btnCreate = this.Factory.CreateRibbonButton();
-            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.btnModify = this.Factory.CreateRibbonButton();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO010.SuspendLayout();
             this.box1.SuspendLayout();
@@ -115,19 +115,19 @@ namespace EllipseMSO010ExcelAddIn
             this.btnCreate.ShowImage = true;
             this.btnCreate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreate_Click);
             // 
-            // btnStopThread
-            // 
-            this.btnStopThread.Label = "&Detener Proceso";
-            this.btnStopThread.Name = "btnStopThread";
-            this.btnStopThread.ShowImage = true;
-            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
             // btnModify
             // 
             this.btnModify.Label = "Modificar Registro";
             this.btnModify.Name = "btnModify";
             this.btnModify.ShowImage = true;
             this.btnModify.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnModify_Click);
+            // 
+            // btnStopThread
+            // 
+            this.btnStopThread.Label = "&Detener Proceso";
+            this.btnStopThread.Name = "btnStopThread";
+            this.btnStopThread.ShowImage = true;
+            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
             // RibbonEllipse
             // 
