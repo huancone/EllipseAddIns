@@ -20,16 +20,17 @@ using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
 using ResourceReqmntsService = EllipseWorkOrdersClassLibrary.ResourceReqmntsService;
 using MaterialReqmntsService = EllipseWorkOrdersClassLibrary.MaterialReqmntsService;
 using EquipmentReqmntsService = EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
+// ReSharper disable UseIndexedProperty
 
 namespace EllipseWorkOrderExcelAddIn
 {
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     public partial class RibbonEllipse
     {
-        ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
-        Application _excelApp;
+        private ExcelStyleCells _cells;
+        private EllipseFunctions _eFunctions = new EllipseFunctions();
+        private FormAuthenticate _frmAuth = new FormAuthenticate();
+        private Application _excelApp;
 
         private const string SheetName01 = "WorkOrders";
         private const string SheetName02 = "Tasks";
@@ -1037,7 +1038,6 @@ namespace EllipseWorkOrderExcelAddIn
                 #endregion
 
                 #region CONSTRUYO LA HOJA 2
-                // ReSharper disable once UseIndexedProperty
                 _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName02;
 
@@ -1133,7 +1133,6 @@ namespace EllipseWorkOrderExcelAddIn
                 #endregion
 
                 #region CONSTRUYO LA HOJA 3
-                // ReSharper disable once UseIndexedProperty
                 _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName03;
 
@@ -1510,6 +1509,7 @@ namespace EllipseWorkOrderExcelAddIn
                 var woTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetWoTypeList());
                 var mtTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetMtTypeList());
                 var usTypeCodes = MyUtilities.GetCodeList(WorkOrderActions.GetUserStatusCodeList(_eFunctions).ToList());
+                var contactMethod = MyUtilities.GetCodeList(_eFunctions.GetItemCodes("MTCO"));
 
 
                 _cells.GetCell(8, TitleRowD01).Value = "WO_TYPE";
@@ -1689,6 +1689,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(31, TitleRowD04).Value = "Departamento";
                 _cells.GetCell(32, TitleRowD04).Value = "Localización";
                 _cells.GetCell(33, TitleRowD04).Value = "Metodo de Contacto";
+                _cells.SetValidationList(_cells.GetCell(33, TitleRowD04 + 1), contactMethod);
                 _cells.GetCell(34, TitleRowD04).Value = "Detalle de Contacto";
 
 
@@ -3625,7 +3626,7 @@ namespace EllipseWorkOrderExcelAddIn
                         RelacionarEv = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
                         Departamento = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
                         Localizacion = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
-                        MetodoContacto = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
+                        MetodoContacto = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(33, i).Value)) : null,
                         MetodoContactoText = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null
                     };
 
@@ -3638,7 +3639,8 @@ namespace EllipseWorkOrderExcelAddIn
                         // ReSharper disable once LoopCanBeConvertedToQuery
                         foreach (var error in replyRefCode.Errors)
                             errorList = errorList + "\nError: " + error;
-                        _cells.GetCell(ResultColumnD04, i).Value = "ACTUALIZADO" + errorList;
+
+                        _cells.GetCell(ResultColumnD04, i).Value = replyRefCode.Message + errorList;
                         _cells.GetCell(1, i).Style = StyleConstants.Warning;
                         _cells.GetCell(ResultColumnD04, i).Style = StyleConstants.Warning;
                     }
@@ -4284,7 +4286,7 @@ namespace EllipseWorkOrderExcelAddIn
                 j++;
             }
 
-            var distinctItems = list.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo} ).Select(y => y.First());
+            var distinctItems = list.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo }).Select(y => y.First());
 
             foreach (var d in distinctItems)
             {

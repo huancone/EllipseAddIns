@@ -212,6 +212,8 @@ namespace EllipseEquipmentExcelAddIn
 
                 _cells.CreateNewWorksheet(ValidationSheetName);
 
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
                 #region Hoja 1 - Equipment
                 ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name = SheetName01;
                 _cells.GetCell("A1").Value = "CERREJÓN";

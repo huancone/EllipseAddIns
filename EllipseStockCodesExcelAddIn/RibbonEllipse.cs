@@ -10,7 +10,10 @@ using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService; 
+using screen = EllipseCommonsClassLibrary.ScreenService;
+using EllipseCommonsClassLibrary.AuthenticatorService;
+using System.Web.Services.Ellipse;
+using Oracle.ManagedDataAccess.Client;
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 
 namespace EllipseStockCodesExcelAddIn
@@ -55,7 +58,9 @@ namespace EllipseStockCodesExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01) || _excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName02))
             {
                 //si ya hay un thread corriendo que no se ha detenido
-                if (_thread != null && _thread.IsAlive) return;
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK || _thread != null && _thread.IsAlive) return;
                 _thread = new Thread(GetReviewResult);
 
                 _thread.SetApartmentState(ApartmentState.STA);
@@ -64,8 +69,7 @@ namespace EllipseStockCodesExcelAddIn
             else
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
         }
-        
-        
+
         public void FormatSheet()
         {
             try
@@ -79,7 +83,7 @@ namespace EllipseStockCodesExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
                 _cells.CreateNewWorksheet(ValidationSheetName);//hoja de validación
-                
+
                 //CONSTRUYO LA HOJA 0101
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -226,8 +230,13 @@ namespace EllipseStockCodesExcelAddIn
                             for (var k = 0; k < dataReader.FieldCount; k++)
                                 cr.GetCell(k + 1, TitleRow02).Value2 = "'" + dataReader.GetName(k);
 
-                            _cells.FormatAsTable(cr.GetRange(1, TitleRow02, dataReader.FieldCount, TitleRow02 + 1),
-                                TableName02);
+                            cr.GetCell(dataReader.FieldCount + 1, TitleRow02).Value2 = "Inventory Lead Time";
+                            cr.GetCell(dataReader.FieldCount + 2, TitleRow02).Value2 = "Purchase Lead Time";
+                            cr.GetCell(dataReader.FieldCount + 3, TitleRow02).Value2 = "Supplier Lead Time";
+                            cr.GetCell(dataReader.FieldCount + 4, TitleRow02).Value2 = "Freight Lead Time";
+                            cr.GetCell(dataReader.FieldCount + 5, TitleRow02).Value2 = "Total Lead Time";
+
+                            _cells.FormatAsTable(cr.GetRange(1, TitleRow02, dataReader.FieldCount + 5, TitleRow02 + 1), TableName02);
                         }
                         //cargo los datos de cada consulta
                         if (dataReader.IsClosed || !dataReader.HasRows)
@@ -240,14 +249,16 @@ namespace EllipseStockCodesExcelAddIn
                             while (dataReader.Read())
                             {
                                 for (var k = 0; k < dataReader.FieldCount; k++)
+                                {
                                     cr.GetCell(k + 1, rowResult).Value2 = "'" + dataReader[k].ToString().Trim();
+                                }
+                                GetLeadTime(searchCriteriaValue, cr, dataReader.FieldCount, rowResult);
                                 rowResult++;
                             }
                             cp.GetCell(ResultColumn01, rowParam).Style = StyleConstants.Success;
                             cp.GetCell(2, rowParam).Value = "Consulta";
-                            cp.GetCell(ResultColumn01, rowParam).Value = "OK";                          
+                            cp.GetCell(ResultColumn01, rowParam).Value = "OK";
                         }
-  
                     }
                     catch (Exception ex)
                     {
@@ -262,9 +273,6 @@ namespace EllipseStockCodesExcelAddIn
                         _eFunctions.CloseConnection();
                     }
                 }
-
-                
-
             }
             catch (Exception ex)
             {
@@ -278,7 +286,6 @@ namespace EllipseStockCodesExcelAddIn
             }
         }
 
-        
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -298,9 +305,53 @@ namespace EllipseStockCodesExcelAddIn
             new AboutBoxExcelAddIn().ShowDialog();
         }
 
+        private void GetLeadTime(string searchCriteriaValue, ExcelStyleCells cr, int column, int rowResult)
+        {
+            var requestSheet = new screen.ScreenSubmitRequestDTO();
+            var proxySheet = new screen.ScreenService();
 
-        
-        
+            var opContext = new screen.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = true,
+                returnWarningsSpecified = true
+            };
+
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            _eFunctions.RevertOperation(opContext, proxySheet);
+
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+
+            var replySheet = proxySheet.executeScreen(opContext, "MSO179");
+
+            if (replySheet.mapName != "MSM179A")
+                throw new Exception("NO SE PUEDE INGRESAR AL PROGRAMA MSO179");
+
+            var arrayFields = new ArrayScreenNameValue();
+            arrayFields.Add("STOCK_CODE1I", searchCriteriaValue.PadLeft(9, '0'));
+            requestSheet.screenFields = arrayFields.ToArray();
+
+            requestSheet.screenKey = "1";
+
+            replySheet = proxySheet.submit(opContext, requestSheet);
+
+            if (replySheet == null)
+                throw new Exception("SE HA PRODUCIDO UN ERROR AL INTENTAR CREAR EL CÓDIGO " + searchCriteriaValue.PadLeft(9, '0'));
+            if (_eFunctions.CheckReplyError(replySheet) || _eFunctions.CheckReplyWarning(replySheet))
+                throw new Exception(replySheet.message);
+            if (replySheet.mapName != "MSM179A")
+                throw new Exception("NO SE HA PODIDO CONTINUAR CON EL SIGUIENTE PASO MSM179A");
+
+            var arrayScreenNameValue2 = new ArrayScreenNameValue(replySheet.screenFields);
+            cr.GetCell(column + 1, rowResult).Value2 = "'" + arrayScreenNameValue2.GetField("INV_LEAD_DAY_C1I").value;
+            cr.GetCell(column + 2, rowResult).Value2 = "'" + arrayScreenNameValue2.GetField("PUR_LEAD_DAY_C1I").value;
+            cr.GetCell(column + 3, rowResult).Value2 = "'" + arrayScreenNameValue2.GetField("LEAD_TIME_B1I").value;
+            cr.GetCell(column + 4, rowResult).Value2 = "'" + arrayScreenNameValue2.GetField("LEAD_TIME_D1I").value;
+            cr.GetCell(column + 5, rowResult).Value2 = "'" + arrayScreenNameValue2.GetField("LEAD_TIME_A1I").value;
+        }
     }
 
     public class PurchaseOrder
@@ -324,7 +375,6 @@ namespace EllipseStockCodesExcelAddIn
 
         public List<PurchaseOrderItem> Items;
     }
-
     public static class SearchCriteriaType
     {
         public static KeyValuePair<int, string> None = new KeyValuePair<int, string>(0, "None");
@@ -334,7 +384,7 @@ namespace EllipseStockCodesExcelAddIn
 
         public static List<KeyValuePair<int, string>> GetSearchCriteriaTypes(bool keyOrder = true)
         {
-            var list = new List<KeyValuePair<int, string>> {None, StockCode, PartNumber, ItemCode};
+            var list = new List<KeyValuePair<int, string>> { None, StockCode, PartNumber, ItemCode };
 
             return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
         }
@@ -347,7 +397,7 @@ namespace EllipseStockCodesExcelAddIn
 
         public static List<KeyValuePair<int, string>> GetSearchCriteriaIssues(bool keyOrder = true)
         {
-            var list = new List<KeyValuePair<int, string>> { Inventory, PurchaseOrder, Requisition};
+            var list = new List<KeyValuePair<int, string>> { Inventory, PurchaseOrder, Requisition };
 
             return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
         }
@@ -369,10 +419,10 @@ namespace EllipseStockCodesExcelAddIn
         public static List<KeyValuePair<int, string>> GetSearchDateCriteriaTypes(bool keyOrder = true)
         {
             //var list = new List<KeyValuePair<int, string>> { None, Raised, Closed, PlannedStart, PlannedFinnish, RequiredStart, RequiredBy, Modified, NotFinalized };
-            var list = new List<KeyValuePair<int, string>> { None, Raised};
+            var list = new List<KeyValuePair<int, string>> { None, Raised };
             return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
         }
-    }  
+    }
     public class PurchaseOrderItem
     {
         public string Index;
@@ -387,7 +437,6 @@ namespace EllipseStockCodesExcelAddIn
         public string UnitOfPurchase;
         public string ConversionFactor;
     }
-
     public static class PurchaseOrderActions
     {
         public static class OrderStatus
@@ -443,7 +492,7 @@ namespace EllipseStockCodesExcelAddIn
                 paramDistrict = " AND (PN.DSTRCT_CODE = '" + districtCode + "' OR TRIM(PN.DSTRCT_CODE) IS NULL)";
             string paramSearch;
             if (searchCriteriaKey.Equals(SearchCriteriaType.StockCode.Value))
-                paramSearch = " AND SC.STOCK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') +"'";
+                paramSearch = " AND SC.STOCK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') + "'";
             else if (searchCriteriaKey.Equals(SearchCriteriaType.PartNumber.Value))
                 paramSearch = " AND TRIM(PN.PART_NO) = '" + searchCriteriaValue + "'";
             else
@@ -596,6 +645,4 @@ namespace EllipseStockCodesExcelAddIn
             return query;
         }
     }
-
-
 }

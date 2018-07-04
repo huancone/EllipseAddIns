@@ -203,10 +203,8 @@ namespace EllipseJobsClassLibrary
             return jobs;
         }
 
-        public static List<LabourResources> GetEllipseResources(string district, int primakeryKey, string primaryValue, string startDate, string endDate)
+        public static List<LabourResources> GetEllipseResources(EllipseFunctions ef, string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
-            var ef = new EllipseFunctions();
-            ef.SetDBSettings(Environments.SigcorProductivo);
             var sqlQuery = Queries.GetEllipseResourcesQuery(ef.dbReference, ef.dbLink, district, primakeryKey, primaryValue, startDate, endDate);
             var drResources = ef.GetQueryResult(sqlQuery);
             var list = new List<LabourResources>();
@@ -219,8 +217,8 @@ namespace EllipseJobsClassLibrary
                     WorkGroup = drResources["GRUPO"].ToString().Trim(),
                     ResourceCode = drResources["RECURSO"].ToString().Trim(),
                     Date = drResources["FECHA"].ToString().Trim(),
-                    Quantity = Convert.ToDouble(drResources["CANTIDAD"].ToString().Trim()),
-                    AvailableLabourHours = Convert.ToDouble(drResources["HORAS"].ToString().Trim())
+                    Quantity = !string.IsNullOrEmpty(drResources["CANTIDAD"].ToString().Trim()) ? Convert.ToDouble(drResources["CANTIDAD"].ToString().Trim()):0,
+                    AvailableLabourHours = !string.IsNullOrEmpty(drResources["HORAS"].ToString().Trim()) ? Convert.ToDouble(drResources["HORAS"].ToString().Trim()):0
                 };
                 list.Add(res);
             }
@@ -247,7 +245,7 @@ namespace EllipseJobsClassLibrary
                     ResourceCode = drResources["RECURSO"].ToString().Trim(),
                     EmployeeId = drResources["EMPLID"].ToString().Trim(),
                     EmployeeName = drResources["NOMBRE"].ToString().Trim(),
-                    AvailableLabourHours = Convert.ToDouble(drResources["HORAS"].ToString().Trim())
+                    AvailableLabourHours = !string.IsNullOrEmpty(drResources["HORAS"].ToString().Trim())? Convert.ToDouble(drResources["HORAS"].ToString().Trim()):0
                 };
                 list.Add(res);
             }
@@ -372,7 +370,7 @@ namespace EllipseJobsClassLibrary
                         "    FECHAS.FECHA FECHA, " +
                         "    ELL.RESOURCE_TYPE RECURSO, " +
                         "    ELL.REQ_RESRC_NO CANTIDAD, " +
-                        "    CEIL( (TO_DATE(FECHAS.FECHA || ' ' || DEF_STOP_TIME,'YYYYMMDD HH24MISS') - TO_DATE(FECHAS.FECHA || ' ' || DEF_STR_TIME,'YYYYMMDD HH24MISS') ) * 24 * ELL.REQ_RESRC_NO * (1 - ( (WG.BDOWN_ALLOW_PC + ASSIGN_OTH_PC) / 100) ) ) HORAS " +
+                        "    ROUND( (TO_DATE(FECHAS.FECHA || ' ' || DEF_STOP_TIME,'YYYYMMDD HH24MISS') - TO_DATE(FECHAS.FECHA || ' ' || DEF_STR_TIME,'YYYYMMDD HH24MISS') ) * 24 * ELL.REQ_RESRC_NO * (1 - ( (WG.BDOWN_ALLOW_PC + ASSIGN_OTH_PC) / 100) ),2) HORAS " +
                         "  FROM " +
                         "    " + dbReference + ".MSF730_RESRC_REQ" + dbLink + " ELL " +
                         "    INNER JOIN " + dbReference + ".MSF720" + dbLink + " WG " +

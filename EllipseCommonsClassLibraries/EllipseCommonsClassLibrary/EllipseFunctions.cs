@@ -188,6 +188,7 @@ namespace EllipseCommonsClassLibrary
             _sqlOracleComm = new OracleCommand();
 
             _queryAttempt++;
+
             try
             {
                 if (_sqlOracleConn.State != ConnectionState.Open)

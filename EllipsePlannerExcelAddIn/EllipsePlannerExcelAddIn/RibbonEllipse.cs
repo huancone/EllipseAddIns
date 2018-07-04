@@ -406,6 +406,9 @@ namespace EllipsePlannerExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
+                ////hoja de Tareas
+                _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
+
                 var urlServicePost = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, ServiceType.PostService);
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
                 var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
@@ -417,13 +420,13 @@ namespace EllipsePlannerExcelAddIn
                 var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
 
                 _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
-
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
                 //consumo de servicio de msewts
                 List<Jobs> ellipseJobs = JobActions.FetchJobsPost(_eFunctions, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
 
                 //consulta sobre tabla de Ellipse mso720
-                List<LabourResources> ellipseResources = JobActions.GetEllipseResources(district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
+                List<LabourResources> ellipseResources = JobActions.GetEllipseResources(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
 
                 //consulta sobre tabla de Ellipse mso720
                 List<LabourResources> pSoftResources = JobActions.GetPsoftResources(district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
@@ -477,9 +480,6 @@ namespace EllipsePlannerExcelAddIn
 
                 //LLenado de tablas
 
-
-                //hoja de Tareas
-                _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
                 _cells.ClearTableRange(TableJobResources);
                 var i = TitleRowResources + 1;
                 foreach (var j in ellipseJobs)
@@ -591,8 +591,7 @@ namespace EllipsePlannerExcelAddIn
                     _cells.GetCell(6, i).Value = r.AvailableLabourHours;
                     i++;
                 }
-
-                _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
             }
             catch (Exception ex)
             {

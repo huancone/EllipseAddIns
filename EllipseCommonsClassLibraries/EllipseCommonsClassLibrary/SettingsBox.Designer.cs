@@ -41,7 +41,6 @@
             this.btnRestoreLocalPath = new System.Windows.Forms.Button();
             this.cbForceRegionConfig = new System.Windows.Forms.CheckBox();
             this.gbEllipseSettings = new System.Windows.Forms.GroupBox();
-            this.cbForceServerList = new System.Windows.Forms.CheckBox();
             this.btnOpenServicesPath = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.btnRestoreServiceFile = new System.Windows.Forms.Button();
@@ -49,16 +48,17 @@
             this.btnGenerateServiceFileFromUrl = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tbServiceFileNetworkUrl = new System.Windows.Forms.TextBox();
+            this.cbForceServerList = new System.Windows.Forms.CheckBox();
             this.btnOpenTnsnamesPath = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.tbTnsNameUrl = new System.Windows.Forms.TextBox();
             this.btnGenerateTnsnamesFile = new System.Windows.Forms.Button();
             this.gbDatabaseSettings = new System.Windows.Forms.GroupBox();
+            this.btnRestoreTnsnamesUrl = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.btnDeleteCustomDb = new System.Windows.Forms.Button();
             this.btnGenerateCustomDb = new System.Windows.Forms.Button();
-            this.btnRestoreTnsnamesUrl = new System.Windows.Forms.Button();
             this.ttSettings = new System.Windows.Forms.ToolTip(this.components);
             this.gbServiceDatabaseRelation = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -212,16 +212,6 @@
             this.gbEllipseSettings.TabStop = false;
             this.gbEllipseSettings.Text = "Servicios Ellipse:";
             // 
-            // cbForceServerList
-            // 
-            this.cbForceServerList.AutoSize = true;
-            this.cbForceServerList.Location = new System.Drawing.Point(6, 32);
-            this.cbForceServerList.Name = "cbForceServerList";
-            this.cbForceServerList.Size = new System.Drawing.Size(290, 17);
-            this.cbForceServerList.TabIndex = 17;
-            this.cbForceServerList.Text = "Forzar lista de &servidores/Databases de los archivos xml";
-            this.cbForceServerList.UseVisualStyleBackColor = true;
-            // 
             // btnOpenServicesPath
             // 
             this.btnOpenServicesPath.Location = new System.Drawing.Point(278, 34);
@@ -288,6 +278,16 @@
             this.tbServiceFileNetworkUrl.Size = new System.Drawing.Size(266, 20);
             this.tbServiceFileNetworkUrl.TabIndex = 0;
             // 
+            // cbForceServerList
+            // 
+            this.cbForceServerList.AutoSize = true;
+            this.cbForceServerList.Location = new System.Drawing.Point(6, 32);
+            this.cbForceServerList.Name = "cbForceServerList";
+            this.cbForceServerList.Size = new System.Drawing.Size(290, 17);
+            this.cbForceServerList.TabIndex = 17;
+            this.cbForceServerList.Text = "Forzar lista de &servidores/Databases de los archivos xml";
+            this.cbForceServerList.UseVisualStyleBackColor = true;
+            // 
             // btnOpenTnsnamesPath
             // 
             this.btnOpenTnsnamesPath.Location = new System.Drawing.Point(278, 32);
@@ -339,6 +339,16 @@
             this.gbDatabaseSettings.TabStop = false;
             this.gbDatabaseSettings.Text = "Bases de Datos:";
             // 
+            // btnRestoreTnsnamesUrl
+            // 
+            this.btnRestoreTnsnamesUrl.Location = new System.Drawing.Point(6, 58);
+            this.btnRestoreTnsnamesUrl.Name = "btnRestoreTnsnamesUrl";
+            this.btnRestoreTnsnamesUrl.Size = new System.Drawing.Size(75, 23);
+            this.btnRestoreTnsnamesUrl.TabIndex = 16;
+            this.btnRestoreTnsnamesUrl.Text = "Restaurar";
+            this.btnRestoreTnsnamesUrl.UseVisualStyleBackColor = true;
+            this.btnRestoreTnsnamesUrl.Click += new System.EventHandler(this.btnRestoreTnsnamesUrl_Click);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -376,16 +386,6 @@
             this.btnGenerateCustomDb.Text = "Predeterminado";
             this.btnGenerateCustomDb.UseVisualStyleBackColor = true;
             this.btnGenerateCustomDb.Click += new System.EventHandler(this.btnGenerateCustomDb_Click);
-            // 
-            // btnRestoreTnsnamesUrl
-            // 
-            this.btnRestoreTnsnamesUrl.Location = new System.Drawing.Point(6, 58);
-            this.btnRestoreTnsnamesUrl.Name = "btnRestoreTnsnamesUrl";
-            this.btnRestoreTnsnamesUrl.Size = new System.Drawing.Size(75, 23);
-            this.btnRestoreTnsnamesUrl.TabIndex = 16;
-            this.btnRestoreTnsnamesUrl.Text = "Restaurar";
-            this.btnRestoreTnsnamesUrl.UseVisualStyleBackColor = true;
-            this.btnRestoreTnsnamesUrl.Click += new System.EventHandler(this.btnRestoreTnsnamesUrl_Click);
             // 
             // gbServiceDatabaseRelation
             // 

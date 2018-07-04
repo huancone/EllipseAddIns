@@ -14,6 +14,7 @@ using EllipseWorkOrdersClassLibrary.MaterialReqmntsService;
 using EllipseWorkOrdersClassLibrary.ResourceReqmntsService;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
+using ErrorMessageDTO = EllipseWorkOrdersClassLibrary.EquipmentReqmntsService.ErrorMessageDTO;
 using OperationContext = EllipseWorkOrdersClassLibrary.WorkOrderService.OperationContext;
 using WorkOrderDTO = EllipseWorkOrdersClassLibrary.WorkOrderService.WorkOrderDTO;
 // ReSharper disable UseStringInterpolation
@@ -1024,6 +1025,7 @@ namespace EllipseWorkOrdersClassLibrary
         {
             var reply = new ReplyMessage();
             var error = new List<string>();
+            var message = new List<string>();
 
             const string entityType = "WKO";
             var entityValue = "1" + district + workOrder;
@@ -1099,6 +1101,7 @@ namespace EllipseWorkOrdersClassLibrary
                     var stdTextId = replyRefCode.stdTxtKey;
                     if (string.IsNullOrWhiteSpace(stdTextId))
                         throw new Exception("No se recibió respuesta");
+                    message.Add("Actualizado " + item.ShortName);
                 }
                 catch (Exception ex)
                 {
@@ -1107,6 +1110,7 @@ namespace EllipseWorkOrdersClassLibrary
             }
 
             reply.Errors = error.ToArray();
+            reply.Message = message.Aggregate((i, j) => i + ", " + j);
             return reply;
         }
 
@@ -1267,8 +1271,7 @@ namespace EllipseWorkOrdersClassLibrary
         public static List<TaskRequirement> FetchTaskRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string taskNo = null)
         {
             var sqlQuery = Queries.GetFetchWoTaskRealRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, stdJob, string.IsNullOrWhiteSpace(taskNo) ? null : taskNo.PadLeft(3, '0'));
-            var woTaskDataReader =
-                ef.GetQueryResult(sqlQuery);
+            var woTaskDataReader = ef.GetQueryResult(sqlQuery);
 
             var list = new List<TaskRequirement>();
 

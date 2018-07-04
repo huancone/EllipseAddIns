@@ -17,6 +17,7 @@ using EllipseWorkOrdersClassLibrary;
 using EllipseStdTextClassLibrary;
 using System.Threading;
 using EllipseLabourCostingExcelAddIn.LabourCostingTransService;
+using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using OperationContext = EllipseLabourCostingExcelAddIn.LabourCostingTransService.OperationContext;
 // ReSharper disable LoopCanBeConvertedToQuery
 namespace EllipseLabourCostingExcelAddIn
@@ -1071,31 +1072,39 @@ namespace EllipseLabourCostingExcelAddIn
                     try
                     {
                         var workOrder = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value2);
+                        var wo = new WorkOrderDTO();
+                        long number1;
+
                         var durationCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(ElecsaResultColumn + 1, i).Value2);
                         var startHour = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(ElecsaResultColumn + 2, i).Value2);
                         var endHour = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(ElecsaResultColumn + 3, i).Value2);
-                        var wo = WorkOrderActions.GetNewWorkOrderDto(workOrder);
-                        var completeCommentToAppend =
-                            _cells.GetNullIfTrimmedEmpty(_cells.GetCell(ElecsaResultColumn + 4, i).Value2);
+                        if (long.TryParse("" + workOrder, out number1))
+                            wo = WorkOrderActions.GetNewWorkOrderDto(("" + workOrder).PadLeft(8, '0'));
+                        var completeCommentToAppend = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(ElecsaResultColumn + 4, i).Value2);
 
-                        var duration = new WorkOrderDuration
+                        if (_cells.GetNullIfTrimmedEmpty(durationCode) != null)
                         {
-                            jobDurationsDate = transDate,
-                            jobDurationsCode = durationCode,
-                            jobDurationsStart = startHour,
-                            jobDurationsFinish = endHour
-                        };
+                            var duration = new WorkOrderDuration
+                            {
+                                jobDurationsDate = transDate,
+                                jobDurationsCode = durationCode,
+                                jobDurationsStart = startHour,
+                                jobDurationsFinish = endHour
+                            };
 
-                        WorkOrderActions.CreateWorkOrderDuration(urlService, opWo, districtCode, wo, duration);
+                            WorkOrderActions.CreateWorkOrderDuration(urlService, opWo, districtCode, wo, duration);
+                        }
 
-                        var stdTextId = "CW" + districtCode + workOrder;
+                        if (_cells.GetNullIfTrimmedEmpty(completeCommentToAppend) != null)
+                        {
+                            var stdTextId = "CW" + districtCode + wo.prefix + wo.no;
 
-                        var stdTextCopc = StdText.GetCustomOpContext(opWo.district, opWo.position, opWo.maxInstances,
-                            opWo.returnWarnings);
-                        var woCompleteComment = StdText.GetText(urlService, stdTextCopc, stdTextId);
+                            var stdTextCopc = StdText.GetCustomOpContext(opWo.district, opWo.position, opWo.maxInstances, opWo.returnWarnings);
+                            var woCompleteComment = StdText.GetText(urlService, stdTextCopc, stdTextId);
 
-                        StdText.SetText(urlService, stdTextCopc, stdTextId,
-                            woCompleteComment + "\n" + completeCommentToAppend);
+                            StdText.SetText(urlService, stdTextCopc, stdTextId, woCompleteComment + "\n" + completeCommentToAppend);
+                        }
+
 
                         _cells.GetCell(ElecsaResultColumn + 5, i).Value = "OK";
                         _cells.GetCell(ElecsaResultColumn + 5, i).Style = StyleConstants.Success;
