@@ -822,7 +822,7 @@ namespace EllipseMstExcelAddIn
                     var startMonth = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
                     var startYear = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
 
-                    if (indicator >= 1 && indicator <= 4)
+                    if ( (indicator >= 1 && indicator <= 4) || indicator == 9 ) 
                     {
                         mst.NextSchedStat = nextSchedStat;
                         mst.NextSchedValue = nextSchedValue;

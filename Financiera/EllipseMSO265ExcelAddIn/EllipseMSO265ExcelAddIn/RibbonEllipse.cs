@@ -78,8 +78,7 @@ namespace EllipseMSO265ExcelAddIn
 
             #region Encabezados
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "@";
+            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "@";
 
             _cells.GetCell(1, TittleRow).Value = "Codigo Banco";
             _cells.GetCell(2, TittleRow).Value = "Cuenta Banco";
@@ -100,10 +99,8 @@ namespace EllipseMSO265ExcelAddIn
 
             _cells.GetRange(1, TittleRow, _resultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
 
-            _cells.GetRange(10, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "$ #,##0.00";
-            _cells.GetRange(13, TittleRow + 1, 13, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "$ #,##0.00";
+            _cells.GetRange(10, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
+            _cells.GetRange(13, TittleRow + 1, 13, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
@@ -175,12 +172,9 @@ namespace EllipseMSO265ExcelAddIn
                 }
             }
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "@";
-            _cells.GetRange(10, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "$ #,##0.00";
-            _cells.GetRange(13, TittleRow + 1, 13, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "$ #,##0.00";
+            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="@";
+            _cells.GetRange(10, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="$ #,##0.00";
+            _cells.GetRange(13, TittleRow + 1, 13, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="$ #,##0.00";
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
@@ -198,14 +192,10 @@ namespace EllipseMSO265ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             var excelBook = _excelApp.Workbooks.Add();
             Worksheet excelSheet = excelBook.ActiveSheet;
-
-
-            _sheetName01 = "MSO265 Cesantias";
             excelSheet.Name = _sheetName01;
+            _cells.SetCursorWait();
 
-
-            _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange,
-                _cells.GetRange(1, TittleRow, _resultColumn, TittleRow + 1), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
+            _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange, _cells.GetRange(1, TittleRow, _resultColumn, TittleRow + 1), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
 
             #region Instructions
 
@@ -220,8 +210,7 @@ namespace EllipseMSO265ExcelAddIn
 
             #region Datos
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "@";
+            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="@";
 
             _cells.GetCell(1, TittleRow).Value = "Cedula";
             _cells.GetCell(2, TittleRow).Value = "Nombre";
@@ -250,14 +239,13 @@ namespace EllipseMSO265ExcelAddIn
             _cells.GetRange(1, TittleRow, _resultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
 
 
-            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "$ #,##0.00";
+            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="$ #,##0.00";
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
 
             ImportFileCesantias();
-
+            _cells.SetCursorDefault();
             #endregion
         }
 
@@ -327,15 +315,15 @@ namespace EllipseMSO265ExcelAddIn
                 }
             }
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "@";
-            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
-                "$ #,##0.00";
+            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="@";
+            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="$ #,##0.00";
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
 
             ValidateCesantias();
+            
+            _cells.SetCursorDefault();
         }
 
         private void btnValidate_Click(object sender, RibbonControlEventArgs e)
@@ -343,12 +331,7 @@ namespace EllipseMSO265ExcelAddIn
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
 
-            switch (excelSheet.Name)
-            {
-                case "MSO265 Cesantias":
-                    ValidateCesantias();
-                    break;
-            }
+            if (excelSheet.Name == "MSO265 Cesantias") ValidateCesantias();
         }
 
         private void ValidateCesantias()
@@ -405,6 +388,7 @@ namespace EllipseMSO265ExcelAddIn
                     currentRow++;
                 }
             }
+            _cells.SetCursorDefault();
         }
 
         private void btnReloadParameters_Click(object sender, RibbonControlEventArgs e)
@@ -424,16 +408,11 @@ namespace EllipseMSO265ExcelAddIn
             _frmAuth.StartPosition = FormStartPosition.CenterScreen;
             _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
             if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-            switch (excelSheet.Name)
-            {
-                case "MSO265 Cesantias":
-                    LoadCesantias();
-                    //LoadCesantiasPost();
-                    break;
-                case "MSO265 Nomina":
-                    LoadNomina();
-                    break;
-            }
+            if (excelSheet.Name == "MSO265 Cesantias")
+                LoadCesantias();
+            else if (excelSheet.Name == "MSO265 Nomina")
+                LoadNomina();
+            
         }
 
         private void LoadNomina()
@@ -727,6 +706,7 @@ namespace EllipseMSO265ExcelAddIn
                     currentRow++;
                 }
             }
+            _cells.SetCursorDefault();
         }
 
         private void LoadCesantiasPost()
@@ -875,7 +855,7 @@ namespace EllipseMSO265ExcelAddIn
 
                         requestXml = requestXml.Replace("&", "&amp;");
                         responseDto = EFunctions.ExecutePostRequest(requestXml);
-                        errorMessage = responseDto.Errors.Aggregate("",(current, msg) => current + (msg.Field + " " + msg.Text));
+                        errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                         if (errorMessage.Equals(""))
                         {
@@ -918,13 +898,13 @@ namespace EllipseMSO265ExcelAddIn
                                 requestXml = requestXml + "</interaction>";
 
                                 responseDto = EFunctions.ExecutePostRequest(requestXml);
-                                errorMessage = responseDto.Errors.Aggregate("",(current, msg) => current + (msg.Field + " " + msg.Text));
+                                errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                                 if (errorMessage.Equals(""))
                                 {
                                     _cells.GetCell(_resultColumn, currentRow).Select();
                                     _cells.GetCell(_resultColumn, currentRow).Value = "Creado";
-                                    _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =_cells.GetStyle(StyleConstants.Success);
+                                    _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
                                 }
                                 else
                                 {
@@ -968,6 +948,7 @@ namespace EllipseMSO265ExcelAddIn
                     currentRow++;
                 }
             }
+            _cells.SetCursorDefault();
         }
 
         private void LoadCesantias()
@@ -1089,6 +1070,7 @@ namespace EllipseMSO265ExcelAddIn
                     currentRow++;
                 }
             }
+            _cells.SetCursorDefault();
         }
 
         private class Nomina

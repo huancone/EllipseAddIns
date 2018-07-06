@@ -40,12 +40,14 @@
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatGeneral = this.Factory.CreateRibbonButton();
             this.btnFormatMntto = this.Factory.CreateRibbonButton();
+            this.btnFormatPolines = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.btnCreate = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpCondMonit.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -72,22 +74,30 @@
             // 
             this.menuFormat.Items.Add(this.btnFormatGeneral);
             this.menuFormat.Items.Add(this.btnFormatMntto);
+            this.menuFormat.Items.Add(this.btnFormatPolines);
             this.menuFormat.Label = "Formatear";
             this.menuFormat.Name = "menuFormat";
             // 
             // btnFormatGeneral
             // 
-            this.btnFormatGeneral.Label = "Formato Estandar";
+            this.btnFormatGeneral.Label = "Estandar";
             this.btnFormatGeneral.Name = "btnFormatGeneral";
             this.btnFormatGeneral.ShowImage = true;
             this.btnFormatGeneral.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatGeneral_Click);
             // 
             // btnFormatMntto
             // 
-            this.btnFormatMntto.Label = "Formato Mantto";
+            this.btnFormatMntto.Label = "Mantto";
             this.btnFormatMntto.Name = "btnFormatMntto";
             this.btnFormatMntto.ShowImage = true;
             this.btnFormatMntto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatMntto_Click);
+            // 
+            // btnFormatPolines
+            // 
+            this.btnFormatPolines.Label = "Polines";
+            this.btnFormatPolines.Name = "btnFormatPolines";
+            this.btnFormatPolines.ShowImage = true;
+            this.btnFormatPolines.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatPolines_Click);
             // 
             // btnAbout
             // 
@@ -118,6 +128,7 @@
             this.grpCondMonit.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
@@ -132,6 +143,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatMntto;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatPolines;
     }
 
     partial class ThisRibbonCollection

@@ -349,9 +349,9 @@ namespace EllipseWorkOrdersClassLibrary
                 var stdTextOpContext = StdText.GetCustomOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
                 var stdTextId = "WO" + district + workOrder;
                 bool headerReply = true, bodyReply = true;
-                if (!string.IsNullOrEmpty(headerText))
+                if (!string.IsNullOrWhiteSpace(headerText))
                     headerReply = StdText.SetHeader(urlService, stdTextOpContext, stdTextId, headerText);
-                if (!string.IsNullOrEmpty(bodyText))
+                if (!string.IsNullOrWhiteSpace(bodyText))
                     bodyReply = StdText.SetText(urlService, stdTextOpContext, stdTextId, bodyText);
 
                 if (headerReply && bodyReply)
@@ -432,7 +432,7 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.planFinTime = wo.planFinTime ?? requestWo.planFinTime;
             requestWo.unitOfWork = wo.unitOfWork ?? requestWo.unitOfWork;
             requestWo.unitsRequired = !string.IsNullOrWhiteSpace(wo.unitsRequired) ? Convert.ToDecimal(wo.unitsRequired) : default(decimal);
-            requestWo.unitsRequiredSpecified = !string.IsNullOrEmpty(wo.unitsRequired);
+            requestWo.unitsRequiredSpecified = !string.IsNullOrWhiteSpace(wo.unitsRequired);
             requestWo.accountCode = wo.accountCode ?? requestWo.accountCode;
             requestWo.projectNo = wo.projectNo ?? requestWo.projectNo;
             requestWo.parentWo = wo.parentWo ?? requestWo.parentWo;
@@ -524,7 +524,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             requestWo.unitOfWork = wo.unitOfWork ?? requestWo.unitOfWork;
             requestWo.unitsRequired = !string.IsNullOrWhiteSpace(wo.unitsRequired) ? Convert.ToDecimal(wo.unitsRequired) : default(decimal);
-            requestWo.unitsRequiredSpecified = !string.IsNullOrEmpty(wo.unitsRequired);
+            requestWo.unitsRequiredSpecified = !string.IsNullOrWhiteSpace(wo.unitsRequired);
 
             requestWo.accountCode = wo.accountCode ?? requestWo.accountCode;
             requestWo.projectNo = wo.projectNo ?? requestWo.projectNo;
@@ -1137,11 +1137,11 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.districtCode = districtCode;
             requestWo.workOrder = workOrder;
             requestWo.pcComplete = !string.IsNullOrWhiteSpace(percentComplete) ? Convert.ToDecimal(percentComplete) : default(decimal);
-            requestWo.pcCompleteSpecified = !string.IsNullOrEmpty(percentComplete);
+            requestWo.pcCompleteSpecified = !string.IsNullOrWhiteSpace(percentComplete);
             requestWo.unitsComplete = !string.IsNullOrWhiteSpace(unitsComplete) ? Convert.ToDecimal(unitsComplete) : default(decimal);
-            requestWo.unitsCompleteSpecified = !string.IsNullOrEmpty(unitsComplete);
+            requestWo.unitsCompleteSpecified = !string.IsNullOrWhiteSpace(unitsComplete);
             requestWo.unitsRequired = !string.IsNullOrWhiteSpace(unitsRequired) ? Convert.ToDecimal(unitsRequired) : default(decimal);
-            requestWo.unitsRequiredSpecified = !string.IsNullOrEmpty(unitsRequired);
+            requestWo.unitsRequiredSpecified = !string.IsNullOrWhiteSpace(unitsRequired);
             //se envía la acción
             var replyWo = proxyWo.recordWorkProgress(opContext, requestWo);
             //
@@ -1324,10 +1324,10 @@ namespace EllipseWorkOrdersClassLibrary
             requestWoTask.completeInstr = woTask.CompleteInstr ?? requestWoTask.completeInstr;
             requestWoTask.complTextCode = woTask.ComplTextCode ?? requestWoTask.complTextCode;
             requestWoTask.assignPerson = woTask.AssignPerson ?? requestWoTask.assignPerson;
-            requestWoTask.estimatedMachHrs = !string.IsNullOrEmpty(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
-            requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrEmpty(woTask.EstimatedMachHrs);
-            requestWoTask.tskDurationsHrs = !string.IsNullOrEmpty(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
-            requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrEmpty(woTask.EstimatedDurationsHrs);
+            requestWoTask.estimatedMachHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
+            requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs);
+            requestWoTask.tskDurationsHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
+            requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs);
             requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
             requestWoTask.APLType = woTask.AplType ?? requestWoTask.APLType;
             requestWoTask.APLCompCode = woTask.AplCompCode ?? requestWoTask.APLCompCode;
@@ -1357,10 +1357,10 @@ namespace EllipseWorkOrdersClassLibrary
             requestWoTask.completeInstr = woTask.CompleteInstr ?? requestWoTask.completeInstr;
             requestWoTask.complTextCode = woTask.ComplTextCode ?? requestWoTask.complTextCode;
             requestWoTask.assignPerson = woTask.AssignPerson ?? requestWoTask.assignPerson;
-            requestWoTask.estimatedMachHrs = woTask.EstimatedMachHrs != null ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
-            requestWoTask.estimatedMachHrsSpecified = woTask.EstimatedMachHrs != null;
-            requestWoTask.tskDurationsHrs = woTask.EstimatedDurationsHrs != null ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
-            requestWoTask.tskDurationsHrsSpecified = woTask.EstimatedDurationsHrs != null;
+            requestWoTask.estimatedMachHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
+            requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs);
+            requestWoTask.tskDurationsHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
+            requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs);
             requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
             requestWoTask.APLType = woTask.AplType ?? requestWoTask.APLType;
             requestWoTask.APLCompCode = woTask.AplCompCode ?? requestWoTask.APLCompCode;
@@ -1430,10 +1430,10 @@ namespace EllipseWorkOrdersClassLibrary
                 workOrderTask = taskReq.WoTaskNo,
                 resourceClass = taskReq.ReqCode.Substring(0, 1),
                 resourceCode = taskReq.ReqCode.Substring(1),
-                quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
-                quantityRequiredSpecified = taskReq.QtyReq != null,
-                hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal),
-                hrsReqdSpecified = taskReq.HrsReq != null,
+                quantityRequired = !string.IsNullOrWhiteSpace(taskReq.QtyReq) ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                quantityRequiredSpecified = !string.IsNullOrWhiteSpace(taskReq.QtyReq) ,
+                hrsReqd = !string.IsNullOrWhiteSpace(taskReq.HrsReq) ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal),
+                hrsReqdSpecified = !string.IsNullOrWhiteSpace(taskReq.HrsReq),
                 classType = "WT",
                 enteredInd = "S"
             };
@@ -1477,7 +1477,7 @@ namespace EllipseWorkOrdersClassLibrary
                 JEItemNoSpecified = false,
                 fixedAmountSpecified = false,
                 rateAmountSpecified = false,
-                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.QtyReq)  ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
             };
             proxyTaskReq.create(opContext, requestTaskReq);
         }
@@ -1504,9 +1504,7 @@ namespace EllipseWorkOrdersClassLibrary
                 workOrderTask = taskReq.WoTaskNo,
                 seqNo = taskReq.SeqNo,
                 eqptType = taskReq.ReqCode.Substring(1),
-                unitQuantityReqd = taskReq.QtyReq != null ?
-                Convert.ToDecimal(taskReq.QtyReq) :
-                default(decimal),
+                unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.QtyReq)  ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
                 unitQuantityReqdSpecified = true,
                 UOM = taskReq.UoM,
                 contestibleFlg = false,
@@ -1549,7 +1547,7 @@ namespace EllipseWorkOrdersClassLibrary
                 resourceCode = taskReq.ReqCode.Substring(1),
                 quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
                 quantityRequiredSpecified = taskReq.QtyReq != null,
-                hrsReqd = taskReq.HrsReq != null ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal),
+                hrsReqd = !string.IsNullOrWhiteSpace(taskReq.HrsReq)  ? Convert.ToDecimal(taskReq.HrsReq) : default(decimal),
                 hrsReqdSpecified = taskReq.HrsReq != null,
                 classType = "WT",
                 enteredInd = "S"
@@ -1623,7 +1621,7 @@ namespace EllipseWorkOrdersClassLibrary
                 workOrderTask = !string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? taskReq.WoTaskNo : null,
                 seqNo = taskReq.SeqNo,
                 eqptType = taskReq.ReqCode.Substring(1),
-                unitQuantityReqd = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
+                unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.QtyReq) ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
                 unitQuantityReqdSpecified = true,
                 UOM = taskReq.UoM,
                 contestibleFlg = false,
@@ -1754,7 +1752,7 @@ namespace EllipseWorkOrdersClassLibrary
             public static string GetFetchWoQuery(string dbReference, string dbLink, string districtCode, int searchCriteriaKey1, string searchCriteriaValue1, int searchCriteriaKey2, string searchCriteriaValue2, int dateCriteriaKey, string startDate, string endDate, string woStatus)
             {
                 //establecemos los parámetrode de distrito
-                if (string.IsNullOrEmpty(districtCode))
+                if (string.IsNullOrWhiteSpace(districtCode))
                     districtCode = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtCode = " = '" + districtCode + "'";
@@ -1847,7 +1845,7 @@ namespace EllipseWorkOrdersClassLibrary
 
                 //establecemos los parámetros de estado de orden
                 string statusRequirement;
-                if (string.IsNullOrEmpty(woStatus))
+                if (string.IsNullOrWhiteSpace(woStatus))
                     statusRequirement = "";
                 else if (woStatus == WoStatusList.Uncompleted)
                     statusRequirement = " AND WO.WO_STATUS_M IN (" + MyUtilities.GetListInSeparator(WoStatusList.GetUncompletedStatusCodes(), ",", "'") + ")";
@@ -1858,9 +1856,9 @@ namespace EllipseWorkOrdersClassLibrary
 
                 //establecemos los parámetros para el rango de fechas
                 string dateParameters;
-                if (string.IsNullOrEmpty(startDate))
+                if (string.IsNullOrWhiteSpace(startDate))
                     startDate = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
-                if (string.IsNullOrEmpty(endDate))
+                if (string.IsNullOrWhiteSpace(endDate))
                     endDate = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
 
                 if (dateCriteriaKey == SearchDateCriteriaType.Raised.Key)
@@ -1929,7 +1927,7 @@ namespace EllipseWorkOrdersClassLibrary
             public static string GetFetchWoQuery(string dbReference, string dbLink, string districtCode, string workOrder)
             {
                 //establecemos los parámetrode de distrito
-                if (string.IsNullOrEmpty(districtCode))
+                if (string.IsNullOrWhiteSpace(districtCode))
                     districtCode = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtCode = " = '" + districtCode + "'";
