@@ -79,13 +79,14 @@ namespace EllipseCommonsClassLibrary.Connections
             }
             throw new NullReferenceException("No se ha encontrado el servidor seleccionado");
         }
+
         public static List<string> GetEnviromentList()
         {
             var enviromentList = new List<string>();
             if (Configuration.IsServiceListForced)
             {
                 var xmlDoc = new XmlDocument();
-                var urlPath = Configuration.ServiceFilePath + "\\" + Configuration.ConfigXmlFileName;
+                var urlPath = Configuration.ServiceFilePath + Configuration.ConfigXmlFileName;
                 xmlDoc.Load(urlPath);
 
                 const string fullNode = "//ellipse/url";

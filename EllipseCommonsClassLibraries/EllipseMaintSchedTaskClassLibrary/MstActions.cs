@@ -190,7 +190,11 @@ namespace EllipseMaintSchedTaskClassLibrary
                 dayOfWeek = mst.DayOfWeek,
                 dayOfMonth = mst.DayOfMonth,
                 startMonth = mst.StartMonth,
-                startYear = mst.StartYear
+                startYear = mst.StartYear,
+                conAstSegFr = default(decimal),
+                conAstSegFrSpecified = true,
+                conAstSegTo = default(decimal),
+                conAstSegToSpecified = true
             };
 
             return proxyEquip.create(opContext, request);
@@ -241,7 +245,11 @@ namespace EllipseMaintSchedTaskClassLibrary
                 dayOfWeek = mst.DayOfWeek,
                 dayOfMonth = mst.DayOfMonth,
                 startMonth = mst.StartMonth,
-                startYear = mst.StartYear
+                startYear = mst.StartYear,
+                conAstSegFr = default(decimal),
+                conAstSegFrSpecified = true,
+                conAstSegTo = default(decimal),
+                conAstSegToSpecified = true
             };
 
             proxyEquip.Url = urlService + "/MaintSchedTskService";

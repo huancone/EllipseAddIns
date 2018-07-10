@@ -172,9 +172,9 @@ namespace EllipseMSO265ExcelAddIn
                 }
             }
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="@";
-            _cells.GetRange(10, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="$ #,##0.00";
-            _cells.GetRange(13, TittleRow + 1, 13, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="$ #,##0.00";
+            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "@";
+            _cells.GetRange(10, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
+            _cells.GetRange(13, TittleRow + 1, 13, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
@@ -192,6 +192,7 @@ namespace EllipseMSO265ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             var excelBook = _excelApp.Workbooks.Add();
             Worksheet excelSheet = excelBook.ActiveSheet;
+            _sheetName01 = "MSO265 Cesantias";
             excelSheet.Name = _sheetName01;
             _cells.SetCursorWait();
 
@@ -210,7 +211,7 @@ namespace EllipseMSO265ExcelAddIn
 
             #region Datos
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="@";
+            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "@";
 
             _cells.GetCell(1, TittleRow).Value = "Cedula";
             _cells.GetCell(2, TittleRow).Value = "Nombre";
@@ -239,7 +240,7 @@ namespace EllipseMSO265ExcelAddIn
             _cells.GetRange(1, TittleRow, _resultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
 
 
-            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="$ #,##0.00";
+            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
@@ -315,14 +316,14 @@ namespace EllipseMSO265ExcelAddIn
                 }
             }
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="@";
-            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat ="$ #,##0.00";
+            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "@";
+            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
 
             ValidateCesantias();
-            
+
             _cells.SetCursorDefault();
         }
 
@@ -409,10 +410,10 @@ namespace EllipseMSO265ExcelAddIn
             _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
             if (_frmAuth.ShowDialog() != DialogResult.OK) return;
             if (excelSheet.Name == "MSO265 Cesantias")
-                LoadCesantias();
+                LoadCesantiasPost();
             else if (excelSheet.Name == "MSO265 Nomina")
                 LoadNomina();
-            
+
         }
 
         private void LoadNomina()
@@ -602,8 +603,7 @@ namespace EllipseMSO265ExcelAddIn
 
                             requestXml = requestXml.Replace("&", "&amp;");
                             responseDto = EFunctions.ExecutePostRequest(requestXml);
-                            errorMessage = responseDto.Errors.Aggregate("",
-                                (current, msg) => current + (msg.Field + " " + msg.Text));
+                            errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                             if (errorMessage.Equals(""))
                             {
@@ -624,8 +624,7 @@ namespace EllipseMSO265ExcelAddIn
                                 requestXml = requestXml + "</interaction>";
 
                                 responseDto = EFunctions.ExecutePostRequest(requestXml);
-                                errorMessage = responseDto.Errors.Aggregate("",
-                                    (current, msg) => current + (msg.Field + " " + msg.Text));
+                                errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                                 if (errorMessage.Equals(""))
                                 {
@@ -646,54 +645,47 @@ namespace EllipseMSO265ExcelAddIn
                                     requestXml = requestXml + "</interaction>";
 
                                     responseDto = EFunctions.ExecutePostRequest(requestXml);
-                                    errorMessage = responseDto.Errors.Aggregate("",
-                                        (current, msg) => current + (msg.Field + " " + msg.Text));
+                                    errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                                     if (errorMessage.Equals(""))
                                     {
                                         _cells.GetCell(_resultColumn, currentRow).Select();
                                         _cells.GetCell(_resultColumn, currentRow).Value = "Creado";
-                                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
-                                            _cells.GetStyle(StyleConstants.Success);
+                                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
                                     }
                                     else
                                     {
                                         _cells.GetCell(_resultColumn, currentRow).Select();
                                         _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
-                                            _cells.GetStyle(StyleConstants.Error);
+                                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                     }
                                 }
                                 else
                                 {
                                     _cells.GetCell(_resultColumn, currentRow).Select();
                                     _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                                    _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
-                                        _cells.GetStyle(StyleConstants.Error);
+                                    _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                 }
                             }
                             else
                             {
                                 _cells.GetCell(_resultColumn, currentRow).Select();
                                 _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                                _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
-                                    _cells.GetStyle(StyleConstants.Error);
+                                _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                             }
                         }
                         else
                         {
                             _cells.GetCell(_resultColumn, currentRow).Select();
                             _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                            _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
-                                _cells.GetStyle(StyleConstants.Error);
+                            _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                         }
                     }
                     else
                     {
                         _cells.GetCell(_resultColumn, currentRow).Select();
                         _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
-                            _cells.GetStyle(StyleConstants.Error);
+                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                     }
                 }
                 catch (Exception ex)
@@ -711,7 +703,7 @@ namespace EllipseMSO265ExcelAddIn
 
         private void LoadCesantiasPost()
         {
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
 
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
@@ -765,8 +757,7 @@ namespace EllipseMSO265ExcelAddIn
 
                     responseDto = EFunctions.ExecutePostRequest(requestXml);
 
-                    var errorMessage = responseDto.Errors.Aggregate("",
-                        (current, msg) => current + (msg.Field + " " + msg.Text));
+                    var errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                     if (errorMessage.Equals(""))
                     {
@@ -876,8 +867,7 @@ namespace EllipseMSO265ExcelAddIn
                             requestXml = requestXml + "</interaction>";
 
                             responseDto = EFunctions.ExecutePostRequest(requestXml);
-                            errorMessage = responseDto.Errors.Aggregate("",
-                                (current, msg) => current + (msg.Field + " " + msg.Text));
+                            errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                             if (errorMessage.Equals(""))
                             {
@@ -1035,14 +1025,45 @@ namespace EllipseMSO265ExcelAddIn
                         arrayFields.Add("BRANCH_CODE1I", supplierInfo.BranchCode);
                         arrayFields.Add("BANK_ACCT_NO1I", supplierInfo.BankAccount);
                         arrayFields.Add("ACCT_DSTRCT1I1", _frmAuth.EllipseDsct);
-
                         requestSheet.screenFields = arrayFields.ToArray();
 
                         requestSheet.screenKey = "1";
                         replySheet = proxySheet.submit(opSheet, requestSheet);
 
+                        var replyFields = new ArrayScreenNameValue(replySheet.screenFields);
+
                         while (EFunctions.CheckReplyWarning(replySheet))
+                        {
+                            if (replySheet.message.Contains("W2:2287"))
+                            {
+                                supplierInfo.BranchCode = replyFields.GetField("BRANCH_CODE1I").value;
+                                supplierInfo.BankAccount = replyFields.GetField("BANK_ACCT_NO1I").value;
+
+                                _cells.GetCell(14, currentRow).Value = supplierInfo.BranchCode;
+                                _cells.GetCell(15, currentRow).Value = supplierInfo.BankAccount;
+
+                                arrayFields = new ArrayScreenNameValue();
+
+                                arrayFields.Add("DSTRCT_CODE1I", _frmAuth.EllipseDsct);
+                                arrayFields.Add("SUPPLIER_NO1I", supplierInfo.SupplierNo);
+                                arrayFields.Add("ACCOUNTANT1I", supplierInfo.Accountant);
+                                arrayFields.Add("INV_NO1I", supplierInfo.InvNo);
+                                arrayFields.Add("INV_DATE1I", supplierInfo.InvDate);
+                                arrayFields.Add("DUE_DATE1I", supplierInfo.DueDate);
+                                arrayFields.Add("CURRENCY_TYPE1I", supplierInfo.CurrencyType);
+                                arrayFields.Add("HANDLE_CDE1I", "PN");
+                                arrayFields.Add("INV_AMT1I", supplierInfo.InvAmount);
+                                arrayFields.Add("INV_ITEM_DESC1I1", supplierInfo.InvItemDesc);
+                                arrayFields.Add("INV_ITEM_VALUE1I1", supplierInfo.InvItemValue);
+                                arrayFields.Add("AUTH_BY1I1", supplierInfo.AuthBy);
+                                arrayFields.Add("ACCOUNT1I1", supplierInfo.Account);
+                                arrayFields.Add("BRANCH_CODE1I", supplierInfo.BranchCode);
+                                arrayFields.Add("BANK_ACCT_NO1I", supplierInfo.BankAccount);
+                                arrayFields.Add("ACCT_DSTRCT1I1", _frmAuth.EllipseDsct);
+                                requestSheet.screenFields = arrayFields.ToArray();
+                            }
                             replySheet = proxySheet.submit(opSheet, requestSheet);
+                        }
 
                         if (replySheet.message.Contains("Confirm"))
                             replySheet = proxySheet.submit(opSheet, requestSheet);
@@ -1056,7 +1077,7 @@ namespace EllipseMSO265ExcelAddIn
                         else
                         {
                             _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Success;
-                            _cells.GetCell(_resultColumn, currentRow).Value = "Success";
+                            _cells.GetCell(_resultColumn, currentRow).Value = "Success " + replySheet.message;
                         }
                     }
                 }

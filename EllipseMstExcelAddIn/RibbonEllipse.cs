@@ -33,7 +33,7 @@ namespace EllipseMstExcelAddIn
         private const string SheetName02 = "ReScheduleMSTs";
         private const int TitleRow01 = 9;
         private const int TitleRow02 = 9;
-        private const int ResultColumn01 = 31;
+        private const int ResultColumn01 = 30;
         private const int ResultColumn02 = 16;
         private const string TableName01 = "MstTable";
         private const string TableName02 = "ReScheduleTable";
@@ -651,8 +651,8 @@ namespace EllipseMstExcelAddIn
                     mst.SchedDescription1 = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
                     mst.SchedDescription2 = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null;
 
-                    mst.ConAstSegFr = "0";
-                    mst.ConAstSegTo = "0";
+                    //mst.ConAstSegFr = "0";
+                    //mst.ConAstSegTo = "0";
 
                     mst.StdJobNo = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null;
 
@@ -695,13 +695,13 @@ namespace EllipseMstExcelAddIn
                     var startYear = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null;
 
 
-                    if (indicator >= 1 && indicator <= 4)
+                    if (indicator >= 1 && indicator <= 4 || indicator == 9)
                     {
                         mst.SchedFreq1 = frequency;
                         mst.NextSchedStat = nextSchedStat;
                         mst.NextSchedValue = nextSchedValue;
                         mst.NextSchedDate = nextSchedDate;
-
+                        mst.SchedFreq1 = frequency;
                         MstActions.CreateMaintenanceScheduleTaskPost(_eFunctions, mst);
                         //var replySheet = MstActions.CreateMaintenanceScheduleTask(urlService, opSheet, mst);
                     }
@@ -742,6 +742,7 @@ namespace EllipseMstExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         public void UpdateMstList()
         {
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -783,8 +784,8 @@ namespace EllipseMstExcelAddIn
                     mst.SchedDescription1 = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
                     mst.SchedDescription2 = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null;
 
-                    mst.ConAstSegFr = "0";
-                    mst.ConAstSegTo = "0";
+                    //mst.ConAstSegFr = "0";
+                    //mst.ConAstSegTo = "0";
 
                     mst.StdJobNo = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null;
 
@@ -827,7 +828,7 @@ namespace EllipseMstExcelAddIn
                         mst.NextSchedStat = nextSchedStat;
                         mst.NextSchedValue = nextSchedValue;
                         mst.NextSchedDate = nextSchedDate;
-
+                        mst.SchedFreq1 = frequency;
                         MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
                     }
                     else if (indicator >= 7 && indicator <= 8)
