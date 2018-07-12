@@ -705,7 +705,7 @@ namespace EllipseWorkRequestClassLibrary
                 else if (searchCriteria2Key == SearchFieldCriteriaType.EquipmentReference.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                     paramCriteria2 = " AND WR.EQUIP_NO = '" + searchCriteria2Value + "'";//Falta buscar el equip ref //to do
                 else if (searchCriteria2Key == SearchFieldCriteriaType.ProductiveUnit.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NP FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteria2Value + "')";
+                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteria2Value + "')";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Originator.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                     paramCriteria2 = " AND WR.CREATION_USER = '" + searchCriteria2Value + "'";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.CompletedBy.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))

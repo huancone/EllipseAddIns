@@ -172,8 +172,9 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse">
-      <HintPath>..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.dll</HintPath>
+    <Reference Include="System.Web.Services.Ellipse, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\bin\Debug\System.Web.Services.Ellipse.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
       <HintPath>..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>

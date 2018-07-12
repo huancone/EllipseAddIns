@@ -674,14 +674,17 @@ namespace EllipsePlannerExcelAddIn
                 _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
                 var i = TitleRowResources + 1;
                 var tasksToSave = new List<Jobs>();
-                while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value) != null)
+                while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value) != null &
+                       _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value.ToString()) != null &
+                       _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value.ToString()) != null &
+                       _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value.ToString()) != null)
                 {
                     tasksToSave.Add(new Jobs
                     {
-                        WorkGroup = _cells.GetCell(1, i).Value.ToString(),
-                        PlanStrDate = _cells.GetCell(12, i).Value.ToString(),
-                        WorkOrder = _cells.GetCell(5, i).Value.ToString(),
-                        WoTaskNo = _cells.GetCell(6, i).Value.ToString()
+                        WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value.ToString()),
+                        PlanStrDate = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value.ToString()),
+                        WorkOrder = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value.ToString()),
+                        WoTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value.ToString())
                     });
                     i += 1;
                 }
