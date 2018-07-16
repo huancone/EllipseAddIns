@@ -1065,21 +1065,17 @@ namespace EllipseLabourCostingExcelAddIn
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
                 //recorro la lista de tareas de forma vertical para duración
-                while (
-                    !(_cells.GetEmptyIfNull(_cells.GetCell(1, i).Value2).Equals("") &&
-                      _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value2).Equals("")))
+                while (!(_cells.GetEmptyIfNull(_cells.GetCell(1, i).Value2).Equals("") && _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value2).Equals("")))
                 {
                     try
                     {
                         var workOrder = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value2);
-                        var wo = new WorkOrderDTO();
                         long number1;
 
                         var durationCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(ElecsaResultColumn + 1, i).Value2);
                         var startHour = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(ElecsaResultColumn + 2, i).Value2);
                         var endHour = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(ElecsaResultColumn + 3, i).Value2);
-                        if (long.TryParse("" + workOrder, out number1))
-                            wo = WorkOrderActions.GetNewWorkOrderDto(("" + workOrder).PadLeft(8, '0'));
+                        var wo = WorkOrderActions.GetNewWorkOrderDto(long.TryParse("" + workOrder, out number1) ? ("" + workOrder).PadLeft(8, '0') : workOrder);
                         var completeCommentToAppend = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(ElecsaResultColumn + 4, i).Value2);
 
                         if (_cells.GetNullIfTrimmedEmpty(durationCode) != null)
@@ -1147,74 +1143,77 @@ namespace EllipseLabourCostingExcelAddIn
 
         }
 
-        [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
         public LabourCostingTransServiceResult LoadEmployeeMse(string urlService, OperationContext opContext, LabourEmployee labourEmployee, bool replaceExisting = true)
         {
-            var proxyLt = new LabourCostingTransService.LabourCostingTransService();
-            proxyLt.Url = urlService + "/LabourCostingTrans";
+            var proxyLt = new LabourCostingTransService.LabourCostingTransService { Url = urlService + "/LabourCostingTrans" };
 
-            var requestLt = new LabourCostingTransDTO();
-
-
-            requestLt.transactionDate = new DateTime(int.Parse(labourEmployee.TransactionDate.Substring(0, 4)), int.Parse(labourEmployee.TransactionDate.Substring(4, 2)), int.Parse(labourEmployee.TransactionDate.Substring(6, 2)));
-            requestLt.transactionDateSpecified = true;
-
-            requestLt.labourCostingHours = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingHours) ? Convert.ToDecimal(labourEmployee.LabourCostingHours) : default(decimal);
-            requestLt.labourCostingHoursSpecified = !string.IsNullOrEmpty(labourEmployee.LabourCostingHours);
-            requestLt.labourCostingValue = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingValue) ? Convert.ToDecimal(labourEmployee.LabourCostingValue) : default(decimal);
-            requestLt.labourCostingValueSpecified = !string.IsNullOrEmpty(labourEmployee.LabourCostingValue);
-            requestLt.interDistrictCode = labourEmployee.InterDistrictCode;
-            requestLt.accountCode = labourEmployee.AccountCode;
-            requestLt.postingStatus = labourEmployee.PostingStatus;
-            requestLt.project = labourEmployee.Project;
-            requestLt.workOrder = labourEmployee.WorkOrder;
-            requestLt.workOrderTask = labourEmployee.WorkOrderTask;
-
-            requestLt.employee = labourEmployee.Employee;
-            requestLt.equipmentNo = labourEmployee.EquipmentNo;
-            requestLt.equipmentReference = labourEmployee.EquipmentRef;
-            requestLt.percentComplete = !string.IsNullOrWhiteSpace(labourEmployee.PercentComplete) ? Convert.ToDecimal(labourEmployee.PercentComplete) : default(decimal);
-            requestLt.percentCompleteSpecified = !string.IsNullOrEmpty(labourEmployee.PercentComplete);
-            requestLt.earnCode = labourEmployee.EarnCode;
-            requestLt.labourClass = labourEmployee.LabourClass;
-
-            requestLt.overtimeInd = labourEmployee.OvertimeInd;
-            requestLt.overtimeIndSpecified = true;
-            requestLt.unitsComplete = !string.IsNullOrWhiteSpace(labourEmployee.UnitsComplete) ? Convert.ToDecimal(labourEmployee.UnitsComplete) : default(decimal);
-            requestLt.unitsCompleteSpecified = !string.IsNullOrEmpty(labourEmployee.UnitsComplete);
-            requestLt.completedCode = labourEmployee.CompletedCode;
+            var requestLt = new LabourCostingTransDTO
+            {
+                transactionDate = new DateTime(int.Parse(labourEmployee.TransactionDate.Substring(0, 4)), int.Parse(labourEmployee.TransactionDate.Substring(4, 2)), int.Parse(labourEmployee.TransactionDate.Substring(6, 2))),
+                transactionDateSpecified = true,
+                labourCostingHours = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingHours)
+                    ? Convert.ToDecimal(labourEmployee.LabourCostingHours)
+                    : default(decimal),
+                labourCostingHoursSpecified = !string.IsNullOrEmpty(labourEmployee.LabourCostingHours),
+                labourCostingValue = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingValue)
+                    ? Convert.ToDecimal(labourEmployee.LabourCostingValue)
+                    : default(decimal),
+                labourCostingValueSpecified = !string.IsNullOrEmpty(labourEmployee.LabourCostingValue),
+                interDistrictCode = labourEmployee.InterDistrictCode,
+                accountCode = labourEmployee.AccountCode,
+                postingStatus = labourEmployee.PostingStatus,
+                project = labourEmployee.Project,
+                workOrder = labourEmployee.WorkOrder,
+                workOrderTask = labourEmployee.WorkOrderTask,
+                employee = labourEmployee.Employee,
+                equipmentNo = labourEmployee.EquipmentNo,
+                equipmentReference = labourEmployee.EquipmentRef,
+                percentComplete = !string.IsNullOrWhiteSpace(labourEmployee.PercentComplete)
+                    ? Convert.ToDecimal(labourEmployee.PercentComplete)
+                    : default(decimal),
+                percentCompleteSpecified = !string.IsNullOrEmpty(labourEmployee.PercentComplete),
+                earnCode = labourEmployee.EarnCode,
+                labourClass = labourEmployee.LabourClass,
+                overtimeInd = labourEmployee.OvertimeInd,
+                overtimeIndSpecified = true,
+                unitsComplete = !string.IsNullOrWhiteSpace(labourEmployee.UnitsComplete)
+                    ? Convert.ToDecimal(labourEmployee.UnitsComplete)
+                    : default(decimal),
+                unitsCompleteSpecified = !string.IsNullOrEmpty(labourEmployee.UnitsComplete),
+                completedCode = labourEmployee.CompletedCode
+            };
 
             //Search Existing
-            if (replaceExisting)
+            if (!replaceExisting) return proxyLt.create(opContext, requestLt);
+            var requestSearch = new LabourCostingTransSearchParam
             {
-                var requestSearch = new LabourCostingTransSearchParam();
-                requestSearch.transactionDate = new DateTime(int.Parse(labourEmployee.TransactionDate.Substring(0, 4)), int.Parse(labourEmployee.TransactionDate.Substring(4, 2)), int.Parse(labourEmployee.TransactionDate.Substring(6, 2)));
-                requestSearch.transactionDateSpecified = true;
-                requestSearch.employee = labourEmployee.Employee;
-                requestSearch.project = labourEmployee.Project;
-                requestSearch.workOrder = labourEmployee.WorkOrder;
-                requestSearch.workOrderTask = labourEmployee.WorkOrderTask;
-                var searchRestartDto = new LabourCostingTransDTO();
-                //La búsqueda solo toma en cuenta la fecha de transacción y el employee id
-                var replySearch = proxyLt.search(opContext, requestSearch, searchRestartDto);
-                //Existe un elemento
-                if (replySearch != null && replySearch.Length >= 1)
-                {
-                    foreach (var replyItem in replySearch)
-                    {
-                        //Las comparaciones deben hacerse con LPAD para poder establecer bien las comparaciones númericas que trae ellipse en su información
-                        var equalTranDate = replyItem.labourCostingTransDTO.transactionDate.Equals(requestSearch.transactionDate);
-                        var equalEmployee = replyItem.labourCostingTransDTO.employee.PadLeft(20, '0').Equals(requestSearch.employee.PadLeft(20, '0'));
-                        //posibles nulos de WorkOrders y/o Projects
-                        var equalWo = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrder) && replyItem.labourCostingTransDTO.workOrder.PadLeft(20, '0').Equals(requestSearch.workOrder.PadLeft(20, '0'));
-                        var equalTask = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrderTask) && replyItem.labourCostingTransDTO.workOrderTask.PadLeft(3, '0').Equals(requestSearch.workOrderTask.PadLeft(3, '0'));
-                        var equalProject = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.project) && replyItem.labourCostingTransDTO.project.PadLeft(20, '0').Equals(requestSearch.project.PadLeft(20, '0'));
+                transactionDate = new DateTime(int.Parse(labourEmployee.TransactionDate.Substring(0, 4)),
+                    int.Parse(labourEmployee.TransactionDate.Substring(4, 2)),
+                    int.Parse(labourEmployee.TransactionDate.Substring(6, 2))),
+                transactionDateSpecified = true,
+                employee = labourEmployee.Employee,
+                project = labourEmployee.Project,
+                workOrder = labourEmployee.WorkOrder,
+                workOrderTask = labourEmployee.WorkOrderTask
+            };
+            var searchRestartDto = new LabourCostingTransDTO();
+            //La búsqueda solo toma en cuenta la fecha de transacción y el employee id
+            var replySearch = proxyLt.search(opContext, requestSearch, searchRestartDto);
+            //Existe un elemento
+            if (replySearch == null || replySearch.Length < 1) return proxyLt.create(opContext, requestLt);
+            foreach (var replyItem in replySearch)
+            {
+                //Las comparaciones deben hacerse con LPAD para poder establecer bien las comparaciones númericas que trae ellipse en su información
+                var equalTranDate = replyItem.labourCostingTransDTO.transactionDate.Equals(requestSearch.transactionDate);
+                var equalEmployee = replyItem.labourCostingTransDTO.employee.PadLeft(20, '0').Equals(requestSearch.employee.PadLeft(20, '0'));
+                //posibles nulos de WorkOrders y/o Projects
+                var equalWo = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrder) && replyItem.labourCostingTransDTO.workOrder.PadLeft(20, '0').Equals(requestSearch.workOrder.PadLeft(20, '0'));
+                var equalTask = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrderTask) && replyItem.labourCostingTransDTO.workOrderTask.PadLeft(3, '0').Equals(requestSearch.workOrderTask.PadLeft(3, '0'));
+                var equalProject = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.project) && replyItem.labourCostingTransDTO.project.PadLeft(20, '0').Equals(requestSearch.project.PadLeft(20, '0'));
 
-                        if (!equalTranDate || !equalEmployee || ((!equalWo || !equalTask) && !equalProject)) continue;
-                        proxyLt.delete(opContext, replySearch[0].labourCostingTransDTO);
-                        break;
-                    }
-                }
+                if (!equalTranDate || !equalEmployee || ((!equalWo || !equalTask) && !equalProject)) continue;
+                proxyLt.delete(opContext, replySearch[0].labourCostingTransDTO);
+                break;
             }
             //se envía la acción
             //return proxyLt.multipleCreate(opContext, multipleRequestLt);
