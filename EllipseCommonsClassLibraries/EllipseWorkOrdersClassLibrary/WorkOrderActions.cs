@@ -1251,7 +1251,7 @@ namespace EllipseWorkOrdersClassLibrary
                 task.AssignPerson = "" + stdDataReader["ASSIGN_PERSON"].ToString().Trim();
                 task.EstimatedMachHrs = "" + stdDataReader["EST_MACH_HRS"].ToString().Trim();
 
-                //task.EstimatedDurationsHrs = "" + stdDataReader["EST_DUR_HRS"].ToString().Trim();
+                task.EstimatedDurationsHrs = "" + stdDataReader["EST_DUR_HRS"].ToString().Trim();
                 task.NoLabor = "" + stdDataReader["NO_REC_LABOR"].ToString().Trim();
                 task.NoMaterial = "" + stdDataReader["NO_REC_MATERIAL"].ToString().Trim();
 

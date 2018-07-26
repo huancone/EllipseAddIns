@@ -70,10 +70,13 @@ namespace EllipseStdTextClassLibrary
             try
             {
                 // ReSharper disable once UseObjectOrCollectionInitializer
-                var proxySt = new StdTextCustomService.StdTextCustomService(); //ejecuta las acciones del servicio
-                //se cargan los parámetros de la orden
+                // ejecuta las acciones del servicio
+                var proxySt = new StdTextCustomService.StdTextCustomService();
+
+                // se cargan los parámetros de la orden
                 proxySt.Url = urlService + "/StdTextCustom";
-                //se envía la acción
+
+                // se envía la acción
                 var replySt = proxySt.getExtendedText(opContext, stdTextId);
 
                 return replySt;

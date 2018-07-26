@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
@@ -675,17 +676,16 @@ namespace EllipsePlannerExcelAddIn
                 var i = TitleRowResources + 1;
                 var tasksToSave = new List<Jobs>();
                 while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value) != null &
-                       _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value.ToString()) != null &
-                       _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value.ToString()) != null &
-                       _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value.ToString()) != null)
+                       _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value) != null &
+                       _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value) != null &
+                       _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value) != null)
                 {
-                    tasksToSave.Add(new Jobs
-                    {
-                        WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value.ToString()),
-                        PlanStrDate = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value.ToString()),
-                        WorkOrder = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value.ToString()),
-                        WoTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value.ToString())
-                    });
+                    var j = new Jobs();
+                    j.WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value.ToString());
+                    j.PlanStrDate = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value.ToString());
+                    j.WorkOrder = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value.ToString());
+                    j.WoTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value.ToString());
+                    tasksToSave.Add(j);
                     i += 1;
                 }
                 JobActions.SaveTasks(tasksToSave);
@@ -697,15 +697,14 @@ namespace EllipsePlannerExcelAddIn
                 var resourcesToSave = new List<LabourResources>();
                 while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value) != null)
                 {
-                    resourcesToSave.Add(new LabourResources
-                    {
-                        WorkGroup = _cells.GetCell(13, i).Value.ToString(),
-                        Date = _cells.GetCell(14, i).Value.ToString(),
-                        ResourceCode = _cells.GetCell(15, i).Value.ToString(),
-                        Quantity = Convert.ToDouble(_cells.GetCell(16, i).Value),
-                        EstimatedLabourHours = Convert.ToDouble(_cells.GetCell(17, i).Value),
-                        AvailableLabourHours = Convert.ToDouble(_cells.GetCell(18, i).Value)
-                    });
+                    var l = new LabourResources();
+                    l.WorkGroup = _cells.GetCell(13, i).Value.ToString();
+                    l.Date = _cells.GetCell(14, i).Value.ToString();
+                    l.ResourceCode = _cells.GetCell(15, i).Value.ToString();
+                    l.Quantity = Convert.ToDouble(_cells.GetCell(16, i).Value);
+                    l.EstimatedLabourHours = Convert.ToDouble(_cells.GetCell(17, i).Value);
+                    l.AvailableLabourHours = Convert.ToDouble(_cells.GetCell(18, i).Value);
+                    resourcesToSave.Add(l);
                     i += 1;
                 }
                 JobActions.SaveResources(resourcesToSave);

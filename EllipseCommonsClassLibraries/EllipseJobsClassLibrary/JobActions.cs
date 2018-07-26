@@ -441,7 +441,7 @@ namespace EllipseJobsClassLibrary
                          " AND T.RECURSO = S.RECURSO " +
                          " AND T.FECHA = S.FECHA " +
                          ") " +
-                         "WHEN MATCHED THEN UPDATE SET T.HORAS_PRO = S.HORAS_PRO " +
+                         "WHEN MATCHED THEN UPDATE SET T.HORAS_PRO = S.HORAS_PRO, T.HORAS_DISPO = S.HORAS_DISPO " +
                          "WHEN NOT MATCHED THEN INSERT(GRUPO, RECURSO, FECHA, HORAS_PRO, HORAS_DISPO) " +
                          "VALUES(S.GRUPO, S.RECURSO, S.FECHA, S.HORAS_PRO, S.HORAS_DISPO) ";
 

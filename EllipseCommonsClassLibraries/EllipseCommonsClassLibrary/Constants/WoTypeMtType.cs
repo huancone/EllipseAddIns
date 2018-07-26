@@ -3,6 +3,8 @@ using System.Linq;
 
 namespace EllipseCommonsClassLibrary.Constants
 {
+    using System.Diagnostics.CodeAnalysis;
+
     public static class WoTypeMtType
     {
         /// <summary>
@@ -90,6 +92,7 @@ namespace EllipseCommonsClassLibrary.Constants
         /// Obtiene arreglo Dictionary{key, value} con listado de los códigos de Tipo de Orden admitidos {codigo, descripcion}
         /// </summary>
         /// <returns></returns>
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Reviewed. Suppression is OK here.")]
         public static Dictionary<string, string> GetWoTypeList()
         {
             var listType = GetWoTypeMtTypeList();
