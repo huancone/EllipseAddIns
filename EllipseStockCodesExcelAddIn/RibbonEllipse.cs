@@ -214,6 +214,8 @@ namespace EllipseStockCodesExcelAddIn
                             sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey, searchCriteriaValue, searchDateCriteriaKey, startDate, endDate, validOnly, preferedOnly);
                         else if (searchIssueKey.Equals(SearchCriteriaIssues.Requisition.Value))
                             sqlQuery = Queries.GetFetchRequisitionQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey, searchCriteriaValue, searchDateCriteriaKey, startDate, endDate, validOnly, preferedOnly);
+                        else if (searchIssueKey.Equals(SearchCriteriaIssues.RequisitionDetailed.Value))
+                            sqlQuery = Queries.GetFetchRequisitioneDetailedQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey, searchCriteriaValue, searchDateCriteriaKey, startDate, endDate, validOnly, preferedOnly);
                         else
                         {
                             throw new Exception("Debe seleccionar una opción de búsqueda válida");
@@ -394,10 +396,11 @@ namespace EllipseStockCodesExcelAddIn
         public static KeyValuePair<int, string> Inventory = new KeyValuePair<int, string>(0, "Inventory");
         public static KeyValuePair<int, string> PurchaseOrder = new KeyValuePair<int, string>(1, "PurchaseOrder");
         public static KeyValuePair<int, string> Requisition = new KeyValuePair<int, string>(2, "Requisition");
+        public static KeyValuePair<int, string> RequisitionDetailed = new KeyValuePair<int, string>(3, "Requisition Detailed");
 
         public static List<KeyValuePair<int, string>> GetSearchCriteriaIssues(bool keyOrder = true)
         {
-            var list = new List<KeyValuePair<int, string>> { Inventory, PurchaseOrder, Requisition };
+            var list = new List<KeyValuePair<int, string>> { Inventory, PurchaseOrder, Requisition, RequisitionDetailed };
 
             return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
         }
@@ -557,7 +560,7 @@ namespace EllipseStockCodesExcelAddIn
                            "   RQI.DSTRCT_CODE, RQI.IREQ_NO, RQ.IREQ_TYPE, RQ.ISS_TRAN_TYPE, RQI.STOCK_CODE, SC.ITEM_NAME, SC.STK_DESC, SC.UNIT_OF_ISSUE, PN.PART_NO, PN.MNEMONIC, RQI.IREQ_ITEM," +
                            "   RQ.AUTHSD_STATUS, RQ.HDR_140_STATUS, RQI.ITEM_141_STAT," +
                            "   RQ.PRIORITY_CODE, RQI.WHOUSE_ID, RQ.REQUESTED_BY, RQ.CREATION_DATE, RQ.REQ_BY_DATE, RQ.DELIV_INSTR_A, RQ.DELIV_INSTR_B," +
-                           "   RQI.QTY_REQ, RQI.PO_ITEM_NO," +
+                           "   RQI.QTY_REQ, RQI.QTY_ISSUED, RQI.PO_ITEM_NO," +
                            "   PN.PREF_PART_IND, PN.STATUS_CODES," +
                            "   MIN(PN.PREF_PART_IND) OVER (PARTITION BY RQI.STOCK_CODE) MINPPI, ROW_NUMBER() OVER (PARTITION BY RQI.IREQ_NO, RQI.IREQ_ITEM, RQI.STOCK_CODE ORDER BY RQI.STOCK_CODE, PN.PREF_PART_IND ASC) ROWPPI" +
                            " FROM ELLIPSE.MSF141 RQI" +
@@ -573,6 +576,73 @@ namespace EllipseStockCodesExcelAddIn
                            " " + finishDate +
                            ")" +
                            "SELECT * FROM REQSC" +
+                           " " + paramPreferedOnly;
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+
+            return query;
+        }
+
+        public static string GetFetchRequisitioneDetailedQuery(string dbReference, string dbLink, string districtCode, string searchCriteriaKey, string searchCriteriaValue, string dateCriteria, string startDate, string finishDate, bool validOnly, bool preferedOnly)
+        {
+            var paramDistrict = "";
+            if (!string.IsNullOrWhiteSpace(districtCode))//muchos stockcodes no tienen registrado distrito en los parte número
+                paramDistrict = " AND RQ.DSTRCT_CODE = '" + districtCode + "'";// + " AND PN.DSTRCT_CODE = '" + districtCode + "'";
+            if (dateCriteria.Equals(SearchDateCriteriaType.Raised.Value))
+            {
+                if (!string.IsNullOrWhiteSpace(startDate))
+                    startDate = " AND RQ.CREATION_DATE >= " + startDate;
+                if (!string.IsNullOrWhiteSpace(finishDate))
+                    finishDate = " AND RQ.CREATION_DATE <= " + finishDate;
+            }
+
+            var paramReqNo = "";
+            var paramStockCode = "";
+            if (searchCriteriaKey.Equals(SearchCriteriaType.ItemCode.Value))
+            {
+                paramReqNo = " AND RQI.IREQ_NO = '" + searchCriteriaValue + "'";
+            }
+            else if (searchCriteriaKey.Equals(SearchCriteriaType.StockCode.Value))
+            {
+                paramStockCode = " AND RQI.STOCK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') + "'";
+            }
+            else
+                paramStockCode = " AND RQI.STOCK_CODE = '" + searchCriteriaValue.PadLeft(9, '0') + "'";
+
+            var paramValidOnly = validOnly ? " AND PN.STATUS_CODES = 'V'" : "";
+            var paramPreferedOnly = preferedOnly ? " WHERE PREF_PART_IND = MINPPI AND ROWPPI = 1" : "";
+
+            var query = "" +
+                           "WITH REQSC AS (" +
+                           " SELECT " +
+                           "   RQI.DSTRCT_CODE, RQR.EQUIP_NO, EQ.EQUIP_GRP_ID, RQR.GL_ACCOUNT, RQR.WORK_ORDER, WO.WO_DESC," +
+                           "   RQI.IREQ_NO, RQ.IREQ_TYPE, RQ.ISS_TRAN_TYPE, RQI.STOCK_CODE, SC.ITEM_NAME, SC.STK_DESC, SC.UNIT_OF_ISSUE, PN.PART_NO, PN.MNEMONIC, RQI.IREQ_ITEM," +
+                           "   RQ.AUTHSD_STATUS, RQ.HDR_140_STATUS, RQI.ITEM_141_STAT," +
+                           "   RQ.PRIORITY_CODE, RQI.WHOUSE_ID, RQ.REQUESTED_BY, RQ.CREATION_DATE, RQ.REQ_BY_DATE, RQ.DELIV_INSTR_A, RQ.DELIV_INSTR_B," +
+                           "   RQI.QTY_REQ, RQI.QTY_ISSUED, RQI.PO_ITEM_NO," +
+                           "   PN.PREF_PART_IND, PN.STATUS_CODES," +
+                           "   MIN(PN.PREF_PART_IND) OVER (PARTITION BY RQI.STOCK_CODE) MINPPI, ROW_NUMBER() OVER (PARTITION BY RQI.IREQ_NO, RQI.IREQ_ITEM, RQI.STOCK_CODE ORDER BY RQI.STOCK_CODE, PN.PREF_PART_IND ASC) ROWPPI" +
+                           " FROM ELLIPSE.MSF141 RQI" +
+                           " JOIN ELLIPSE.MSF140 RQ ON RQI.IREQ_NO = RQ.IREQ_NO" +
+                           " LEFT JOIN ELLIPSE.MSF232 RQR ON RQ.IREQ_NO||' '||' 0000' = RQR.REQUISITION_NO" +
+                           " LEFT JOIN ELLIPSE.MSF600 EQ ON RQR.EQUIP_NO = EQ.EQUIP_NO" +
+                           " LEFT JOIN ELLIPSE.MSF620 WO ON (RQR.WORK_ORDER = WO.WORK_ORDER AND RQ.DSTRCT_CODE = WO.DSTRCT_CODE)" +
+                           " LEFT JOIN ELLIPSE.MSF100 SC ON RQI.STOCK_CODE = SC.STOCK_CODE" +
+                           " LEFT JOIN ELLIPSE.MSF110 PN ON RQI.STOCK_CODE = PN.STOCK_CODE" +
+                           " WHERE" +
+                           " " + paramValidOnly +
+                           " " + paramReqNo +
+                           " " + paramStockCode +
+                           " " + paramDistrict +
+                           " " + startDate +
+                           " " + finishDate +
+                           " )" +
+                           " SELECT " +
+                           "   DSTRCT_CODE DISTRITO, EQUIP_NO EQUIP, EQUIP_GRP_ID FLOTA_EGI, GL_ACCOUNT CENTRO_COSTO, WORK_ORDER OT, WO_DESC DESC_OT," +
+                           "   IREQ_NO NRO_VALE, IREQ_ITEM NRO_ITEM, QTY_REQ CANT_REQ, QTY_ISSUED CANT_DESP, IREQ_TYPE TIPO_VALE, ISS_TRAN_TYPE TIPO_TRAN, STOCK_CODE, "+
+                           "   ITEM_NAME, STK_DESC, UNIT_OF_ISSUE, PART_NO, MNEMONIC," +
+                           "   PRIORITY_CODE COD_PRIORIDAD, WHOUSE_ID BODEGA," +
+                           "   REQUESTED_BY REQUERIDO_POR, CREATION_DATE FECHA_CREACION, REQ_BY_DATE FECHA_REQUERIDO, DELIV_INSTR_A||DELIV_INSTR_B INSTRUCCIONES_ENTREGA"+
+                           " FROM REQSC" +
                            " " + paramPreferedOnly;
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
