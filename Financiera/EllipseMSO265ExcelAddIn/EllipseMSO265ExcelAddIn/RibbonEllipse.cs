@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Threading;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Web.Services.Ellipse;
@@ -17,19 +18,28 @@ using Util = System.Web.Services.Ellipse.Post.Util;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable LocalizableElement
 // ReSharper disable UnusedMember.Local
+// ReSharper disable UseNullPropagation
 
 namespace EllipseMSO265ExcelAddIn
 {
     public partial class RibbonEllipse
     {
-        private const int TittleRow = 5;
-        private static int _resultColumn = 23;
-        public static EllipseFunctions EFunctions = new EllipseFunctions();
+        private const int TitleRow01 = 5;
+        private const int TitleRow02 = 5;
+        private const int ResultColumn01C = 23;
+        private const int ResultColumn01N = 16;
+        private const int ResultColumn02 = 4;
+        private static EllipseFunctions _eFunctions = new EllipseFunctions();
         private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
         private ExcelStyleCells _cells;
         private Application _excelApp;
         private ListObject _excelSheetItems;
-        private string _sheetName01 = "MSO265 Cesantias";
+        private const string SheetName01C = "MSO265 Cesantias";
+        private const string SheetName01N = "MSO265 Nomina";
+        private const string SheetName02 = "Comentarios";
+        private const string TableName02 = "TablaComentarios";
+
+        private Thread _thread;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
@@ -55,15 +65,16 @@ namespace EllipseMSO265ExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             var excelBook = _excelApp.Workbooks.Add();
+            while (_excelApp.ActiveWorkbook.Sheets.Count < 2)
+                _excelApp.ActiveWorkbook.Worksheets.Add();
+
             Worksheet excelSheet = excelBook.ActiveSheet;
 
 
-            _sheetName01 = "MSO265 Nomina";
-            excelSheet.Name = _sheetName01;
-            _resultColumn = 16;
+            excelSheet.Name = SheetName01N;
 
             _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange,
-                _cells.GetRange(1, TittleRow, _resultColumn, TittleRow + 1), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
+                _cells.GetRange(1, TitleRow01, ResultColumn01N, TitleRow01 + 1), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
 
             #region Titulo
 
@@ -78,29 +89,29 @@ namespace EllipseMSO265ExcelAddIn
 
             #region Encabezados
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "@";
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01N, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "@";
 
-            _cells.GetCell(1, TittleRow).Value = "Codigo Banco";
-            _cells.GetCell(2, TittleRow).Value = "Cuenta Banco";
-            _cells.GetCell(3, TittleRow).Value = "Analista";
-            _cells.GetCell(4, TittleRow).Value = "Supplier";
-            _cells.GetCell(5, TittleRow).Value = "Cedula";
-            _cells.GetCell(6, TittleRow).Value = "Moneda";
-            _cells.GetCell(7, TittleRow).Value = "NumFcatura";
-            _cells.GetCell(8, TittleRow).Value = "Fecha Factura";
-            _cells.GetCell(9, TittleRow).Value = "Fecha Pago";
-            _cells.GetCell(10, TittleRow).Value = "Valor Total";
-            _cells.GetCell(11, TittleRow).Value = "DESCRIPCION";
-            _cells.GetCell(12, TittleRow).Value = "REF";
-            _cells.GetCell(13, TittleRow).Value = "Valor Item";
-            _cells.GetCell(14, TittleRow).Value = "Cuenta";
-            _cells.GetCell(15, TittleRow).Value = "Posicion Aprobador";
-            _cells.GetCell(_resultColumn, TittleRow).Value = "Result";
+            _cells.GetCell(1, TitleRow01).Value = "Codigo Banco";
+            _cells.GetCell(2, TitleRow01).Value = "Cuenta Banco";
+            _cells.GetCell(3, TitleRow01).Value = "Analista";
+            _cells.GetCell(4, TitleRow01).Value = "Supplier";
+            _cells.GetCell(5, TitleRow01).Value = "Cedula";
+            _cells.GetCell(6, TitleRow01).Value = "Moneda";
+            _cells.GetCell(7, TitleRow01).Value = "NumFcatura";
+            _cells.GetCell(8, TitleRow01).Value = "Fecha Factura";
+            _cells.GetCell(9, TitleRow01).Value = "Fecha Pago";
+            _cells.GetCell(10, TitleRow01).Value = "Valor Total";
+            _cells.GetCell(11, TitleRow01).Value = "DESCRIPCION";
+            _cells.GetCell(12, TitleRow01).Value = "REF";
+            _cells.GetCell(13, TitleRow01).Value = "Valor Item";
+            _cells.GetCell(14, TitleRow01).Value = "Cuenta";
+            _cells.GetCell(15, TitleRow01).Value = "Posicion Aprobador";
+            _cells.GetCell(ResultColumn01N, TitleRow01).Value = "Result";
 
-            _cells.GetRange(1, TittleRow, _resultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+            _cells.GetRange(1, TitleRow01, ResultColumn01N, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
 
-            _cells.GetRange(10, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
-            _cells.GetRange(13, TittleRow + 1, 13, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
+            _cells.GetRange(10, TitleRow01 + 1, 10, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "$ #,##0.00";
+            _cells.GetRange(13, TitleRow01 + 1, 13, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "$ #,##0.00";
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
@@ -108,6 +119,45 @@ namespace EllipseMSO265ExcelAddIn
             ImportFileNomina();
 
             #endregion
+            #region Comentarios
+            _excelApp.ActiveWorkbook.Sheets[2].Select(Type.Missing);
+            _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName02;
+
+            _cells.GetCell("A1").Value = "CERREJÓN";
+            _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+            _cells.MergeCells("A1", "B2");
+            _cells.GetCell("C1").Value = "COMENTARIOS";
+            _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+            _cells.MergeCells("C1", "J2");
+
+            _cells.GetCell("K1").Value = "OBLIGATORIO";
+            _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+            _cells.GetCell("K2").Value = "OPCIONAL";
+            _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+            _cells.GetCell("K3").Value = "INFORMATIVO";
+            _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+
+            _cells.GetCell("A3").Value = "DISTRITO";
+            _cells.GetCell("B3").Value = "ICOR";
+            _cells.GetCell("A3").Style = _cells.GetStyle(StyleConstants.Option);
+            _cells.GetCell("B3").Style = _cells.GetStyle(StyleConstants.Select);
+
+            _cells.GetRange(1, TitleRow02, ResultColumn02 - 1, TitleRow02).Style = StyleConstants.TitleRequired;
+            _cells.GetCell(1, TitleRow02).Value = "SUPPLIER";
+            _cells.GetCell(2, TitleRow02).Value = "REFERENCIA";
+            _cells.GetCell(3, TitleRow02).Value = "COMENTARIO";
+            _cells.GetCell(3, TitleRow02 + 1).WrapText = true;
+            _cells.GetCell(3, TitleRow02 + 1).ColumnWidth = 60;
+
+            _cells.GetCell(ResultColumn02, TitleRow02 + 1).ColumnWidth = 36;
+            _cells.GetCell(ResultColumn02, TitleRow02).Value = "RESULTADO";
+            _cells.GetCell(ResultColumn02, TitleRow02).Style = StyleConstants.TitleResult;
+            _cells.GetRange(1, TitleRow02 + 1, ResultColumn02, TitleRow02 + 1).NumberFormat = NumberFormatConstants.Text;
+            _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            #endregion
+
+            _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
         }
 
         private void ImportFileNomina()
@@ -115,9 +165,9 @@ namespace EllipseMSO265ExcelAddIn
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
 
-            if (excelSheet.Name != _sheetName01) return;
+            if (excelSheet.Name != SheetName01N) return;
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).Delete();
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01N, _excelSheetItems.ListRows.Count + TitleRow01).Delete();
 
             var openFileDialog2 = new OpenFileDialog
             {
@@ -141,7 +191,7 @@ namespace EllipseMSO265ExcelAddIn
             var cc = new CsvContext();
 
             var nominaParameters = cc.Read<NominaParameters>(filePath, inputFileDescription);
-            var currentRow = TittleRow + 1;
+            var currentRow = TitleRow01 + 1;
             foreach (var c in nominaParameters)
             {
                 try
@@ -172,9 +222,9 @@ namespace EllipseMSO265ExcelAddIn
                 }
             }
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "@";
-            _cells.GetRange(10, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
-            _cells.GetRange(13, TittleRow + 1, 13, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01N, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "@";
+            _cells.GetRange(10, TitleRow01 + 1, 10, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "$ #,##0.00";
+            _cells.GetRange(13, TitleRow01 + 1, 13, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "$ #,##0.00";
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
@@ -191,12 +241,15 @@ namespace EllipseMSO265ExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             var excelBook = _excelApp.Workbooks.Add();
+            while (_excelApp.ActiveWorkbook.Sheets.Count < 2)
+                _excelApp.ActiveWorkbook.Worksheets.Add();
+
             Worksheet excelSheet = excelBook.ActiveSheet;
-            _sheetName01 = "MSO265 Cesantias";
-            excelSheet.Name = _sheetName01;
+
+            excelSheet.Name = SheetName01C;
             _cells.SetCursorWait();
 
-            _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange, _cells.GetRange(1, TittleRow, _resultColumn, TittleRow + 1), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
+            _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange, _cells.GetRange(1, TitleRow01, ResultColumn01C, TitleRow01 + 1), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
 
             #region Instructions
 
@@ -211,36 +264,36 @@ namespace EllipseMSO265ExcelAddIn
 
             #region Datos
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "@";
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01C, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "@";
 
-            _cells.GetCell(1, TittleRow).Value = "Cedula";
-            _cells.GetCell(2, TittleRow).Value = "Nombre";
-            _cells.GetCell(3, TittleRow).Value = "Referencia";
-            _cells.GetCell(4, TittleRow).Value = "Descripcion";
-            _cells.GetCell(5, TittleRow).Value = "Fecha Factura";
-            _cells.GetCell(6, TittleRow).Value = "Fecha Pago";
-            _cells.GetCell(7, TittleRow).Value = "Cuenta";
-            _cells.GetCell(8, TittleRow).Value = "Moneda";
-            _cells.GetCell(9, TittleRow).Value = "Valor Item";
-            _cells.GetCell(10, TittleRow).Value = "Valor Total";
-            _cells.GetCell(11, TittleRow).Value = "Posicion Aprobador";
-            _cells.GetCell(12, TittleRow).Value = "Codigo Banco";
-            _cells.GetCell(13, TittleRow).Value = "Cuenta Banco";
-            _cells.GetCell(14, TittleRow).Value = "Banco";
-            _cells.GetCell(15, TittleRow).Value = "Sucursal Banco";
-            _cells.GetCell(16, TittleRow).Value = "Analista";
-            _cells.GetCell(17, TittleRow).Value = "Supplier";
-            _cells.GetCell(18, TittleRow).Value = "Sucursal Banco Ellipse";
-            _cells.GetCell(19, TittleRow).Value = "Cuenta Banco Ellipse";
-            _cells.GetCell(20, TittleRow).Value = "ST Adress";
-            _cells.GetCell(21, TittleRow).Value = "ST Business";
-            _cells.GetCell(22, TittleRow).Value = "ST Status";
-            _cells.GetCell(_resultColumn, TittleRow).Value = "Result";
+            _cells.GetCell(1, TitleRow01).Value = "Cedula";
+            _cells.GetCell(2, TitleRow01).Value = "Nombre";
+            _cells.GetCell(3, TitleRow01).Value = "Referencia";
+            _cells.GetCell(4, TitleRow01).Value = "Descripcion";
+            _cells.GetCell(5, TitleRow01).Value = "Fecha Factura";
+            _cells.GetCell(6, TitleRow01).Value = "Fecha Pago";
+            _cells.GetCell(7, TitleRow01).Value = "Cuenta";
+            _cells.GetCell(8, TitleRow01).Value = "Moneda";
+            _cells.GetCell(9, TitleRow01).Value = "Valor Item";
+            _cells.GetCell(10, TitleRow01).Value = "Valor Total";
+            _cells.GetCell(11, TitleRow01).Value = "Posicion Aprobador";
+            _cells.GetCell(12, TitleRow01).Value = "Codigo Banco";
+            _cells.GetCell(13, TitleRow01).Value = "Cuenta Banco";
+            _cells.GetCell(14, TitleRow01).Value = "Banco";
+            _cells.GetCell(15, TitleRow01).Value = "Sucursal Banco";
+            _cells.GetCell(16, TitleRow01).Value = "Analista";
+            _cells.GetCell(17, TitleRow01).Value = "Supplier";
+            _cells.GetCell(18, TitleRow01).Value = "Sucursal Banco Ellipse";
+            _cells.GetCell(19, TitleRow01).Value = "Cuenta Banco Ellipse";
+            _cells.GetCell(20, TitleRow01).Value = "ST Adress";
+            _cells.GetCell(21, TitleRow01).Value = "ST Business";
+            _cells.GetCell(22, TitleRow01).Value = "ST Status";
+            _cells.GetCell(ResultColumn01C, TitleRow01).Value = "Result";
 
-            _cells.GetRange(1, TittleRow, _resultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+            _cells.GetRange(1, TitleRow01, ResultColumn01C, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
 
 
-            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
+            _cells.GetRange(9, TitleRow01 + 1, 10, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "$ #,##0.00";
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
@@ -248,22 +301,179 @@ namespace EllipseMSO265ExcelAddIn
             ImportFileCesantias();
             _cells.SetCursorDefault();
             #endregion
+
+            #region Comentarios
+            _excelApp.ActiveWorkbook.Sheets[2].Select(Type.Missing);
+            _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName02;
+
+            _cells.GetCell("A1").Value = "CERREJÓN";
+            _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+            _cells.MergeCells("A1", "B2");
+            _cells.GetCell("C1").Value = "COMENTARIOS";
+            _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+            _cells.MergeCells("C1", "J2");
+
+            _cells.GetCell("K1").Value = "OBLIGATORIO";
+            _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+            _cells.GetCell("K2").Value = "OPCIONAL";
+            _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+            _cells.GetCell("K3").Value = "INFORMATIVO";
+            _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+
+            _cells.GetCell("A3").Value = "DISTRITO";
+            _cells.GetCell("B3").Value = "ICOR";
+            _cells.GetCell("A3").Style = _cells.GetStyle(StyleConstants.Option);
+            _cells.GetCell("B3").Style = _cells.GetStyle(StyleConstants.Select);
+
+            _cells.GetRange(1, TitleRow02, ResultColumn02 - 1, TitleRow02).Style = StyleConstants.TitleRequired;
+            _cells.GetCell(1, TitleRow02).Value = "SUPPLIER";
+            _cells.GetCell(2, TitleRow02).Value = "REFERENCIA";
+            _cells.GetCell(3, TitleRow02).Value = "COMENTARIO";
+            _cells.GetCell(3, TitleRow02 + 1).WrapText = true;
+            _cells.GetCell(3, TitleRow02 + 1).ColumnWidth = 60;
+
+            _cells.GetCell(ResultColumn02, TitleRow02 + 1).ColumnWidth = 36;
+            _cells.GetCell(ResultColumn02, TitleRow02).Value = "RESULTADO";
+            _cells.GetCell(ResultColumn02, TitleRow02).Style = StyleConstants.TitleResult;
+            _cells.GetRange(1, TitleRow02 + 1, ResultColumn02, TitleRow02 + 1).NumberFormat = NumberFormatConstants.Text;
+            _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            #endregion
+
+            _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
+        }
+
+        private void ReviewInternalText()
+        {
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
+
+            var i = TitleRow02 + 1;
+
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var opContext = EllipseStdTextClassLibrary.StdText.GetCustomOpContext(districtCode, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
+            {
+                try
+                {
+                    //GENERAL
+                    var supplier = "" + _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
+                    var extendedInvoice = "" + _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
+
+                    var sqlQuery = "SELECT INV_NO FROM ELLIPSE.MSF260 WHERE SUPPLIER_NO = '" + supplier + "' AND EXT_INV_NO = '" + extendedInvoice + "'";
+                    var dataReader = _eFunctions.GetQueryResult(sqlQuery);
+
+                    if (dataReader == null || dataReader.IsClosed || !dataReader.HasRows)
+                        throw new Exception("No se ha encontrado una combinación válida para el supplier y la referencia ingresada");
+
+                    dataReader.Read();
+
+                    var invoice = dataReader["INV_NO"].ToString();
+
+                    var stdTextId = "II" + districtCode + supplier + invoice;
+                    var internalText = EllipseStdTextClassLibrary.StdText.GetText(urlService, opContext, stdTextId);
+
+
+                    _cells.GetCell(3, i).Value = internalText;
+                    _cells.GetCell(ResultColumn02, i).Value = "CONSULTADO SystemInvoice: " + invoice;
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn02 - 1, i).Value = "";
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReviewInternalText()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(3, i).WrapText = true;
+                    _cells.GetCell(3, i).ColumnWidth = 60;
+                    _cells.GetCell(ResultColumn02, i).ColumnWidth = 36;
+
+                    _cells.GetCell(1, i).Select();
+                    i++;
+                }
+            }
+            //_excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void UpdateInternalText()
+        {
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
+
+            var i = TitleRow02 + 1;
+
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var opContext = EllipseStdTextClassLibrary.StdText.GetCustomOpContext(districtCode, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
+            {
+                try
+                {
+                    //GENERAL
+                    var supplier = "" + _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
+                    var extendedInvoice = "" + _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
+                    var newInternalText = "" + _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value);
+                    var sqlQuery = "SELECT INV_NO FROM ELLIPSE.MSF260 WHERE SUPPLIER_NO = '" + supplier + "' AND EXT_INV_NO = '" + extendedInvoice + "'";
+                    var dataReader = _eFunctions.GetQueryResult(sqlQuery);
+
+                    if (dataReader == null || dataReader.IsClosed || !dataReader.HasRows)
+                        throw new Exception("No se ha encontrado una combinación válida para el supplier y la referencia ingresada");
+
+                    dataReader.Read();
+
+                    var invoice = dataReader["INV_NO"].ToString();
+
+                    var stdTextId = "II" + districtCode + supplier + invoice;
+                    EllipseStdTextClassLibrary.StdText.SetText(urlService, opContext, stdTextId, newInternalText);
+                    
+                    _cells.GetCell(ResultColumn02, i).Value = "ACTUALIZADO SystemInvoice: " + invoice;
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ReviewInternalText()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(3, i).WrapText = true;
+                    _cells.GetCell(3, i).ColumnWidth = 60;
+                    _cells.GetCell(ResultColumn02, i).ColumnWidth = 36;
+
+                    _cells.GetCell(1, i).Select();
+                    i++;
+                }
+            }
+            //_excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         private void ImportFileCesantias()
         {
-            var excelBook = _excelApp.ActiveWorkbook;
-            Worksheet excelSheet = excelBook.ActiveSheet;
-
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-
-            if (excelSheet.Name != _sheetName01) return;
-
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).Delete();
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01C, _excelSheetItems.ListRows.Count + TitleRow01).Delete();
 
             var openFileDialog1 = new OpenFileDialog
             {
@@ -287,7 +497,7 @@ namespace EllipseMSO265ExcelAddIn
             var cc = new CsvContext();
 
             var cesantiasParameters = cc.Read<CesantiasParameters>(filePath, inputFileDescription);
-            var currentRow = TittleRow + 1;
+            var currentRow = TitleRow01 + 1;
             foreach (var c in cesantiasParameters)
             {
                 try
@@ -316,11 +526,11 @@ namespace EllipseMSO265ExcelAddIn
                 }
             }
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "@";
-            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01C, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "@";
+            _cells.GetRange(9, TitleRow01 + 1, 10, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "$ #,##0.00";
 
-            excelSheet.Cells.Columns.AutoFit();
-            excelSheet.Cells.Rows.AutoFit();
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Rows.AutoFit();
 
             ValidateCesantias();
 
@@ -329,15 +539,30 @@ namespace EllipseMSO265ExcelAddIn
 
         private void btnValidate_Click(object sender, RibbonControlEventArgs e)
         {
-            var excelBook = _excelApp.ActiveWorkbook;
-            Worksheet excelSheet = excelBook.ActiveSheet;
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C)
+                {
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ValidateCesantias);
 
-            if (excelSheet.Name == "MSO265 Cesantias") ValidateCesantias();
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ValidateCesantias()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private void ValidateCesantias()
         {
-            var currentRow = TittleRow + 1;
+            var currentRow = TitleRow01 + 1;
             var supplierInfo = new SupplierInfo();
 
             _excelApp = Globals.ThisAddIn.Application;
@@ -345,11 +570,11 @@ namespace EllipseMSO265ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            _cells.GetRange(12, TittleRow + 1, 13, _excelSheetItems.ListRows.Count + TittleRow).Style = _cells.GetStyle(StyleConstants.Normal);
-            _cells.GetRange(18, TittleRow + 1, 19, _excelSheetItems.ListRows.Count + TittleRow).Style = _cells.GetStyle(StyleConstants.Normal);
+            _cells.GetRange(12, TitleRow01 + 1, 13, _excelSheetItems.ListRows.Count + TitleRow01).Style = _cells.GetStyle(StyleConstants.Normal);
+            _cells.GetRange(18, TitleRow01 + 1, 19, _excelSheetItems.ListRows.Count + TitleRow01).Style = _cells.GetStyle(StyleConstants.Normal);
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "@";
-            _cells.GetRange(9, TittleRow + 1, 10, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat = "$ #,##0.00";
+            _cells.GetRange(1, TitleRow01 + 1, ResultColumn01C, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "@";
+            _cells.GetRange(9, TitleRow01 + 1, 10, _excelSheetItems.ListRows.Count + TitleRow01).NumberFormat = "$ #,##0.00";
 
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
             {
@@ -378,7 +603,7 @@ namespace EllipseMSO265ExcelAddIn
                             _cells.GetStyle(supplierInfo.AccountNo == _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value)
                                 ? StyleConstants.Success
                                 : StyleConstants.Error);
-                    _cells.GetCell(_resultColumn, currentRow).Value = supplierInfo.Error;
+                    _cells.GetCell(ResultColumn01C, currentRow).Value = supplierInfo.Error;
                 }
                 catch (Exception ex)
                 {
@@ -394,26 +619,56 @@ namespace EllipseMSO265ExcelAddIn
 
         private void btnReloadParameters_Click(object sender, RibbonControlEventArgs e)
         {
-            ImportFileCesantias();
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C)
+                {
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ImportFileCesantias);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReloadParameters()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private void btnLoad_Click(object sender, RibbonControlEventArgs e)
         {
-            LoadData();
-        }
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01N)
+                {
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
 
-        private void LoadData()
-        {
-            var excelBook = _excelApp.ActiveWorkbook;
-            Worksheet excelSheet = excelBook.ActiveSheet;
-            _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-            _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-            if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-            if (excelSheet.Name == "MSO265 Cesantias")
-                LoadCesantiasPost();
-            else if (excelSheet.Name == "MSO265 Nomina")
-                LoadNomina();
-
+                    if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C)
+                        _thread = new Thread(LoadCesantiasPost);
+                    else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01N)
+                        _thread = new Thread(LoadNomina);
+                    else
+                        throw new Exception("@La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:Load()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private void LoadNomina()
@@ -425,7 +680,7 @@ namespace EllipseMSO265ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            var currentRow = TittleRow + 1;
+            var currentRow = TitleRow01 + 1;
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
             {
                 try
@@ -455,11 +710,11 @@ namespace EllipseMSO265ExcelAddIn
                         PosicionAprobador = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value)
                     };
 
-                    var urlEnviroment = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
+                    var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
 
-                    EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
+                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
 
-                    var responseDto = EFunctions.InitiatePostConnection();
+                    var responseDto = _eFunctions.InitiatePostConnection();
 
                     if (responseDto.GotErrorMessages()) return;
 
@@ -473,12 +728,12 @@ namespace EllipseMSO265ExcelAddIn
                                      "           <id>" + Util.GetNewOperationId() + "</id>" +
                                      "           </action>" +
                                      "   </actions>" +
-                                     "   <connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>" +
+                                     "   <connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>" +
                                      "   <application>ServiceInteraction</application>" +
                                      "   <applicationPage>unknown</applicationPage>" +
                                      "</interaction>";
 
-                    responseDto = EFunctions.ExecutePostRequest(requestXml);
+                    responseDto = _eFunctions.ExecutePostRequest(requestXml);
 
                     var errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
@@ -562,13 +817,13 @@ namespace EllipseMSO265ExcelAddIn
                         requestXml = requestXml + "		</action>";
                         requestXml = requestXml + "	</actions>                                                       ";
                         requestXml = requestXml + "	<chains/>                                                        ";
-                        requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                        requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                         requestXml = requestXml + "	<application>ServiceInteraction</application>                    ";
                         requestXml = requestXml + "	<applicationPage>unknown</applicationPage>                       ";
                         requestXml = requestXml + "</interaction>                                                    ";
 
                         requestXml = requestXml.Replace("&", "&amp;");
-                        responseDto = EFunctions.ExecutePostRequest(requestXml);
+                        responseDto = _eFunctions.ExecutePostRequest(requestXml);
                         errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                         if (errorMessage.Equals(""))
@@ -596,13 +851,13 @@ namespace EllipseMSO265ExcelAddIn
                             requestXml = requestXml + "		</action> ";
                             requestXml = requestXml + "	</actions> ";
                             requestXml = requestXml + "	<chains/> ";
-                            requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
+                            requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
                             requestXml = requestXml + "	<application>ServiceInteraction</application> ";
                             requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
                             requestXml = requestXml + "</interaction> ";
 
                             requestXml = requestXml.Replace("&", "&amp;");
-                            responseDto = EFunctions.ExecutePostRequest(requestXml);
+                            responseDto = _eFunctions.ExecutePostRequest(requestXml);
                             errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                             if (errorMessage.Equals(""))
@@ -618,12 +873,12 @@ namespace EllipseMSO265ExcelAddIn
                                 requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
                                 requestXml = requestXml + "		</action>";
                                 requestXml = requestXml + "	</actions>";
-                                requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                                requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                                 requestXml = requestXml + "	<application>ServiceInteraction</application>";
                                 requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
                                 requestXml = requestXml + "</interaction>";
 
-                                responseDto = EFunctions.ExecutePostRequest(requestXml);
+                                responseDto = _eFunctions.ExecutePostRequest(requestXml);
                                 errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                                 if (errorMessage.Equals(""))
@@ -639,59 +894,59 @@ namespace EllipseMSO265ExcelAddIn
                                     requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
                                     requestXml = requestXml + "		</action>";
                                     requestXml = requestXml + "	</actions>";
-                                    requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                                    requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                                     requestXml = requestXml + "	<application>ServiceInteraction</application>";
                                     requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
                                     requestXml = requestXml + "</interaction>";
 
-                                    responseDto = EFunctions.ExecutePostRequest(requestXml);
+                                    responseDto = _eFunctions.ExecutePostRequest(requestXml);
                                     errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                                     if (errorMessage.Equals(""))
                                     {
-                                        _cells.GetCell(_resultColumn, currentRow).Select();
-                                        _cells.GetCell(_resultColumn, currentRow).Value = "Creado";
-                                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
+                                        _cells.GetCell(ResultColumn01N, currentRow).Select();
+                                        _cells.GetCell(ResultColumn01N, currentRow).Value = "Creado";
+                                        _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
                                     }
                                     else
                                     {
-                                        _cells.GetCell(_resultColumn, currentRow).Select();
-                                        _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                                        _cells.GetCell(ResultColumn01N, currentRow).Select();
+                                        _cells.GetCell(ResultColumn01N, currentRow).Value = errorMessage;
+                                        _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                     }
                                 }
                                 else
                                 {
-                                    _cells.GetCell(_resultColumn, currentRow).Select();
-                                    _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                                    _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                                    _cells.GetCell(ResultColumn01N, currentRow).Select();
+                                    _cells.GetCell(ResultColumn01N, currentRow).Value = errorMessage;
+                                    _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                                 }
                             }
                             else
                             {
-                                _cells.GetCell(_resultColumn, currentRow).Select();
-                                _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                                _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                                _cells.GetCell(ResultColumn01N, currentRow).Select();
+                                _cells.GetCell(ResultColumn01N, currentRow).Value = errorMessage;
+                                _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                             }
                         }
                         else
                         {
-                            _cells.GetCell(_resultColumn, currentRow).Select();
-                            _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                            _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                            _cells.GetCell(ResultColumn01N, currentRow).Select();
+                            _cells.GetCell(ResultColumn01N, currentRow).Value = errorMessage;
+                            _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                         }
                     }
                     else
                     {
-                        _cells.GetCell(_resultColumn, currentRow).Select();
-                        _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                        _cells.GetCell(ResultColumn01N, currentRow).Select();
+                        _cells.GetCell(ResultColumn01N, currentRow).Value = errorMessage;
+                        _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
-                    _cells.GetCell(_resultColumn, currentRow).Value = ex.Message;
+                    _cells.GetCell(ResultColumn01N, currentRow).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01N, currentRow).Value = ex.Message;
                 }
                 finally
                 {
@@ -710,7 +965,7 @@ namespace EllipseMSO265ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            var currentRow = TittleRow + 1;
+            var currentRow = TitleRow01 + 1;
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
             {
                 try
@@ -734,9 +989,9 @@ namespace EllipseMSO265ExcelAddIn
                         BankAccount = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value)
                     };
 
-                    var urlEnviroment = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
-                    EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
-                    var responseDto = EFunctions.InitiatePostConnection();
+                    var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
+                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
+                    var responseDto = _eFunctions.InitiatePostConnection();
 
                     if (responseDto.GotErrorMessages()) return;
 
@@ -750,12 +1005,12 @@ namespace EllipseMSO265ExcelAddIn
                                      "           <id>" + Util.GetNewOperationId() + "</id>" +
                                      "           </action>" +
                                      "   </actions>" +
-                                     "   <connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>" +
+                                     "   <connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>" +
                                      "   <application>ServiceInteraction</application>" +
                                      "   <applicationPage>unknown</applicationPage>" +
                                      "</interaction>";
 
-                    responseDto = EFunctions.ExecutePostRequest(requestXml);
+                    responseDto = _eFunctions.ExecutePostRequest(requestXml);
 
                     var errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
@@ -839,13 +1094,13 @@ namespace EllipseMSO265ExcelAddIn
                         requestXml = requestXml + "		</action>";
                         requestXml = requestXml + "	</actions>                                                       ";
                         requestXml = requestXml + "	<chains/>                                                        ";
-                        requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                        requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                         requestXml = requestXml + "	<application>ServiceInteraction</application>                    ";
                         requestXml = requestXml + "	<applicationPage>unknown</applicationPage>                       ";
                         requestXml = requestXml + "</interaction>                                                    ";
 
                         requestXml = requestXml.Replace("&", "&amp;");
-                        responseDto = EFunctions.ExecutePostRequest(requestXml);
+                        responseDto = _eFunctions.ExecutePostRequest(requestXml);
                         errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                         if (errorMessage.Equals(""))
@@ -861,12 +1116,12 @@ namespace EllipseMSO265ExcelAddIn
                             requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
                             requestXml = requestXml + "		</action>";
                             requestXml = requestXml + "	</actions>";
-                            requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                            requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                             requestXml = requestXml + "	<application>ServiceInteraction</application>";
                             requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
                             requestXml = requestXml + "</interaction>";
 
-                            responseDto = EFunctions.ExecutePostRequest(requestXml);
+                            responseDto = _eFunctions.ExecutePostRequest(requestXml);
                             errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                             if (errorMessage.Equals(""))
@@ -882,56 +1137,56 @@ namespace EllipseMSO265ExcelAddIn
                                 requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
                                 requestXml = requestXml + "		</action>";
                                 requestXml = requestXml + "	</actions>";
-                                requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                                requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                                 requestXml = requestXml + "	<application>ServiceInteraction</application>";
                                 requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
                                 requestXml = requestXml + "</interaction>";
 
-                                responseDto = EFunctions.ExecutePostRequest(requestXml);
+                                responseDto = _eFunctions.ExecutePostRequest(requestXml);
                                 errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
 
                                 if (errorMessage.Equals(""))
                                 {
-                                    _cells.GetCell(_resultColumn, currentRow).Select();
-                                    _cells.GetCell(_resultColumn, currentRow).Value = "Creado";
-                                    _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
+                                    _cells.GetCell(ResultColumn01C, currentRow).Select();
+                                    _cells.GetCell(ResultColumn01C, currentRow).Value = "Creado";
+                                    _cells.GetRange(1, currentRow, ResultColumn01C, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
                                 }
                                 else
                                 {
-                                    _cells.GetCell(_resultColumn, currentRow).Select();
-                                    _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                                    _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
+                                    _cells.GetCell(ResultColumn01C, currentRow).Select();
+                                    _cells.GetCell(ResultColumn01C, currentRow).Value = errorMessage;
+                                    _cells.GetRange(1, currentRow, ResultColumn01C, currentRow).Style =
                                         _cells.GetStyle(StyleConstants.Error);
                                 }
                             }
                             else
                             {
-                                _cells.GetCell(_resultColumn, currentRow).Select();
-                                _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                                _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
+                                _cells.GetCell(ResultColumn01C, currentRow).Select();
+                                _cells.GetCell(ResultColumn01C, currentRow).Value = errorMessage;
+                                _cells.GetRange(1, currentRow, ResultColumn01C, currentRow).Style =
                                     _cells.GetStyle(StyleConstants.Error);
                             }
                         }
                         else
                         {
-                            _cells.GetCell(_resultColumn, currentRow).Select();
-                            _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                            _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
+                            _cells.GetCell(ResultColumn01C, currentRow).Select();
+                            _cells.GetCell(ResultColumn01C, currentRow).Value = errorMessage;
+                            _cells.GetRange(1, currentRow, ResultColumn01C, currentRow).Style =
                                 _cells.GetStyle(StyleConstants.Error);
                         }
                     }
                     else
                     {
-                        _cells.GetCell(_resultColumn, currentRow).Select();
-                        _cells.GetCell(_resultColumn, currentRow).Value = errorMessage;
-                        _cells.GetRange(1, currentRow, _resultColumn, currentRow).Style =
+                        _cells.GetCell(ResultColumn01C, currentRow).Select();
+                        _cells.GetCell(ResultColumn01C, currentRow).Value = errorMessage;
+                        _cells.GetRange(1, currentRow, ResultColumn01C, currentRow).Style =
                             _cells.GetStyle(StyleConstants.Error);
                     }
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
-                    _cells.GetCell(_resultColumn, currentRow).Value = ex.Message;
+                    _cells.GetCell(ResultColumn01C, currentRow).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01C, currentRow).Value = ex.Message;
                 }
                 finally
                 {
@@ -950,15 +1205,15 @@ namespace EllipseMSO265ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            var currentRow = TittleRow + 1;
+            var currentRow = TitleRow01 + 1;
 
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
 
-            _cells.GetRange(_resultColumn, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).ClearContents();
-            _cells.GetRange(_resultColumn, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).Style = _cells.GetStyle(StyleConstants.Normal);
+            _cells.GetRange(ResultColumn01C, TitleRow01 + 1, ResultColumn01C, _excelSheetItems.ListRows.Count + TitleRow01).ClearContents();
+            _cells.GetRange(ResultColumn01C, TitleRow01 + 1, ResultColumn01C, _excelSheetItems.ListRows.Count + TitleRow01).Style = _cells.GetStyle(StyleConstants.Normal);
 
-            proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
 
             var opSheet = new screen.OperationContext
             {
@@ -995,14 +1250,14 @@ namespace EllipseMSO265ExcelAddIn
                     };
 
 
-                    EFunctions.RevertOperation(opSheet, proxySheet);
+                    _eFunctions.RevertOperation(opSheet, proxySheet);
 
                     var replySheet = proxySheet.executeScreen(opSheet, "MSO265");
 
-                    if (EFunctions.CheckReplyError(replySheet))
+                    if (_eFunctions.CheckReplyError(replySheet))
                     {
-                        _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
-                        _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
+                        _cells.GetCell(ResultColumn01C, currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn01C, currentRow).Value = replySheet.message;
                     }
                     else
                     {
@@ -1032,7 +1287,7 @@ namespace EllipseMSO265ExcelAddIn
 
                         var replyFields = new ArrayScreenNameValue(replySheet.screenFields);
 
-                        while (EFunctions.CheckReplyWarning(replySheet))
+                        while (_eFunctions.CheckReplyWarning(replySheet))
                         {
                             if (replySheet.message.Contains("W2:2287"))
                             {
@@ -1069,22 +1324,22 @@ namespace EllipseMSO265ExcelAddIn
                             replySheet = proxySheet.submit(opSheet, requestSheet);
 
 
-                        if (EFunctions.CheckReplyError(replySheet))
+                        if (_eFunctions.CheckReplyError(replySheet))
                         {
-                            _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
-                            _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
+                            _cells.GetCell(ResultColumn01C, currentRow).Style = StyleConstants.Error;
+                            _cells.GetCell(ResultColumn01C, currentRow).Value = replySheet.message;
                         }
                         else
                         {
-                            _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Success;
-                            _cells.GetCell(_resultColumn, currentRow).Value = "Success " + replySheet.message;
+                            _cells.GetCell(ResultColumn01C, currentRow).Style = StyleConstants.Success;
+                            _cells.GetCell(ResultColumn01C, currentRow).Value = "Success " + replySheet.message;
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
-                    _cells.GetCell(_resultColumn, currentRow).Value = ex.Message;
+                    _cells.GetCell(ResultColumn01C, currentRow).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01C, currentRow).Value = ex.Message;
                 }
                 finally
                 {
@@ -1121,11 +1376,11 @@ namespace EllipseMSO265ExcelAddIn
 
             public SupplierInfo(string supplier, string enviroment)
             {
-                var sqlQuery = Queries.GetSupplierInvoiceInfo("ICOR", supplier, EFunctions.dbReference,
-                    EFunctions.dbLink);
-                EFunctions.SetDBSettings(enviroment);
+                var sqlQuery = Queries.GetSupplierInvoiceInfo("ICOR", supplier, _eFunctions.dbReference,
+                    _eFunctions.dbLink);
+                _eFunctions.SetDBSettings(enviroment);
 
-                var drSupplierInfo = EFunctions.GetQueryResult(sqlQuery);
+                var drSupplierInfo = _eFunctions.GetQueryResult(sqlQuery);
 
                 if (!drSupplierInfo.Read())
                 {
@@ -1331,6 +1586,72 @@ namespace EllipseMSO265ExcelAddIn
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();
+        }
+
+        private void btnReviewInternalComments_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+                {
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(ReviewInternalText);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewInternalText()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void btnUpdateInternalComments_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+                {
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(UpdateInternalText);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewInternalText()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_thread != null && _thread.IsAlive)
+                    _thread.Abort();
+                if (_cells != null) _cells.SetCursorDefault();
+            }
+            catch (ThreadAbortException ex)
+            {
+                MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
+            }
         }
     }
 }

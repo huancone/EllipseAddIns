@@ -232,6 +232,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -249,6 +250,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Certificate-cerrejon-hhernand.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -302,6 +304,10 @@
       <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
       <Name>EllipseCommonsClassLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\EllipseCommonsClassLibraries\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
+      <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
+      <Name>EllipseStdTextClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -311,11 +317,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>Certificate-cerrejon-hhernand.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>34704A5AFB986320480A679A4A40DEE73DB1C96F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B2DDE50D1D45435AE9711235AAC21F7754FFA65C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

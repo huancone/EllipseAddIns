@@ -49,10 +49,13 @@ namespace EllipseMSO265ExcelAddIn
             this.btnReloadParameters = this.Factory.CreateRibbonButton();
             this.btnValidate = this.Factory.CreateRibbonButton();
             this.btnLoad = this.Factory.CreateRibbonButton();
+            this.menuComments = this.Factory.CreateRibbonMenu();
+            this.btnReviewInternalComments = this.Factory.CreateRibbonButton();
+            this.btnUpdateInternalComments = this.Factory.CreateRibbonButton();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO265.SuspendLayout();
             this.box1.SuspendLayout();
-            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -109,9 +112,11 @@ namespace EllipseMSO265ExcelAddIn
             // 
             // menuActions
             // 
+            this.menuActions.Items.Add(this.menuComments);
             this.menuActions.Items.Add(this.btnReloadParameters);
             this.menuActions.Items.Add(this.btnValidate);
             this.menuActions.Items.Add(this.btnLoad);
+            this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
             // 
@@ -136,6 +141,35 @@ namespace EllipseMSO265ExcelAddIn
             this.btnLoad.ShowImage = true;
             this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
             // 
+            // menuComments
+            // 
+            this.menuComments.Items.Add(this.btnReviewInternalComments);
+            this.menuComments.Items.Add(this.btnUpdateInternalComments);
+            this.menuComments.Label = "Co&mentarios";
+            this.menuComments.Name = "menuComments";
+            this.menuComments.ShowImage = true;
+            // 
+            // btnReviewInternalComments
+            // 
+            this.btnReviewInternalComments.Label = "&Consultar Comentarios Internos";
+            this.btnReviewInternalComments.Name = "btnReviewInternalComments";
+            this.btnReviewInternalComments.ShowImage = true;
+            this.btnReviewInternalComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewInternalComments_Click);
+            // 
+            // btnUpdateInternalComments
+            // 
+            this.btnUpdateInternalComments.Label = "&Actualizar Comentarios Internos";
+            this.btnUpdateInternalComments.Name = "btnUpdateInternalComments";
+            this.btnUpdateInternalComments.ShowImage = true;
+            this.btnUpdateInternalComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateInternalComments_Click);
+            // 
+            // btnStopThread
+            // 
+            this.btnStopThread.Label = "&Detener Proceso";
+            this.btnStopThread.Name = "btnStopThread";
+            this.btnStopThread.ShowImage = true;
+            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -148,7 +182,6 @@ namespace EllipseMSO265ExcelAddIn
             this.grpMSO265.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
-            this.ResumeLayout(false);
 
         }
 
@@ -166,6 +199,10 @@ namespace EllipseMSO265ExcelAddIn
         internal RibbonButton btnNomina;
         internal RibbonBox box1;
         internal RibbonButton btnAbout;
+        internal RibbonMenu menuComments;
+        internal RibbonButton btnReviewInternalComments;
+        internal RibbonButton btnUpdateInternalComments;
+        internal RibbonButton btnStopThread;
     }
 
     partial class ThisRibbonCollection
