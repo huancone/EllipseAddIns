@@ -185,10 +185,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\bin\Debug\System.Web.Services.Ellipse.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
       <HintPath>..\..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
     </Reference>
@@ -307,6 +303,10 @@
     <ProjectReference Include="..\..\..\EllipseCommonsClassLibraries\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
       <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
       <Name>EllipseStdTextClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
+      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
+      <Name>System.Web.Services.Ellipse</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

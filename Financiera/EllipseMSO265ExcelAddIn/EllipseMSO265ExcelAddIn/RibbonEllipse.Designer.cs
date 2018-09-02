@@ -46,12 +46,12 @@ namespace EllipseMSO265ExcelAddIn
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
-            this.btnReloadParameters = this.Factory.CreateRibbonButton();
-            this.btnValidate = this.Factory.CreateRibbonButton();
-            this.btnLoad = this.Factory.CreateRibbonButton();
             this.menuComments = this.Factory.CreateRibbonMenu();
             this.btnReviewInternalComments = this.Factory.CreateRibbonButton();
             this.btnUpdateInternalComments = this.Factory.CreateRibbonButton();
+            this.btnReloadParameters = this.Factory.CreateRibbonButton();
+            this.btnValidate = this.Factory.CreateRibbonButton();
+            this.btnLoad = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO265.SuspendLayout();
@@ -120,27 +120,6 @@ namespace EllipseMSO265ExcelAddIn
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
             // 
-            // btnReloadParameters
-            // 
-            this.btnReloadParameters.Label = "Recargar Parametros";
-            this.btnReloadParameters.Name = "btnReloadParameters";
-            this.btnReloadParameters.ShowImage = true;
-            this.btnReloadParameters.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReloadParameters_Click);
-            // 
-            // btnValidate
-            // 
-            this.btnValidate.Label = "Validar";
-            this.btnValidate.Name = "btnValidate";
-            this.btnValidate.ShowImage = true;
-            this.btnValidate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnValidate_Click);
-            // 
-            // btnLoad
-            // 
-            this.btnLoad.Label = "Cargar Datos";
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.ShowImage = true;
-            this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
-            // 
             // menuComments
             // 
             this.menuComments.Items.Add(this.btnReviewInternalComments);
@@ -162,6 +141,27 @@ namespace EllipseMSO265ExcelAddIn
             this.btnUpdateInternalComments.Name = "btnUpdateInternalComments";
             this.btnUpdateInternalComments.ShowImage = true;
             this.btnUpdateInternalComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateInternalComments_Click);
+            // 
+            // btnReloadParameters
+            // 
+            this.btnReloadParameters.Label = "Recargar Parametros";
+            this.btnReloadParameters.Name = "btnReloadParameters";
+            this.btnReloadParameters.ShowImage = true;
+            this.btnReloadParameters.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReloadParameters_Click);
+            // 
+            // btnValidate
+            // 
+            this.btnValidate.Label = "Validar";
+            this.btnValidate.Name = "btnValidate";
+            this.btnValidate.ShowImage = true;
+            this.btnValidate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnValidate_Click);
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Label = "Cargar Datos";
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.ShowImage = true;
+            this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
             // 
             // btnStopThread
             // 
