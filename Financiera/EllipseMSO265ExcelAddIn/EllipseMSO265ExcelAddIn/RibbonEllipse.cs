@@ -15,6 +15,7 @@ using Application = Microsoft.Office.Interop.Excel.Application;
 using screen = EllipseCommonsClassLibrary.ScreenService;
 using Util = System.Web.Services.Ellipse.Post.Util;
 using EllipseCommonsClassLibrary.Utilities;
+using Screen = EllipseCommonsClassLibrary.ScreenService;
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -672,7 +673,7 @@ namespace EllipseMSO265ExcelAddIn
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C)
                         _thread = new Thread(LoadCesantiasPost);
                     else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01N)
-                        _thread = new Thread(LoadNomina);
+                        _thread = new Thread(LoadNominaPost);
                     else
                         throw new Exception("@La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
                     _thread.SetApartmentState(ApartmentState.STA);
@@ -688,7 +689,7 @@ namespace EllipseMSO265ExcelAddIn
             }
         }
 
-        private void LoadNomina()
+        private void LoadNominaPost()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -924,72 +925,7 @@ namespace EllipseMSO265ExcelAddIn
 
                     if (!errorMessage.Equals(""))
                         throw new Exception(errorMessage);
-                    //
-
-                    //Pantalla de confirmación post supplier
-                    requestXml = "<interaction>";
-                    requestXml = requestXml + "	<actions>";
-                    requestXml = requestXml + "		<action>";
-                    requestXml = requestXml + "			<name>submitScreen</name>";
-                    requestXml = requestXml + "			<data>";
-                    if (listTaxes != null && listTaxes.Count > 0)
-                    {
-                        requestXml = requestXml + "				<inputs>";
-                        requestXml = requestXml + "					<screenField>";
-                        requestXml = requestXml + "						<name>PROCESS1I</name>";
-                        requestXml = requestXml + "						<value>T</value>";
-                        requestXml = requestXml + "					</screenField>";
-                        requestXml = requestXml + "				</inputs>";
-                    }
-
-                    requestXml = requestXml + "				<screenName>MSM265A</screenName>";
-                    requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
-                    requestXml = requestXml + "			</data>";
-                    requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
-                    requestXml = requestXml + "		</action>";
-                    requestXml = requestXml + "	</actions>";
-                    requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
-                    requestXml = requestXml + "	<application>ServiceInteraction</application>";
-                    requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
-                    requestXml = requestXml + "</interaction>";
-
-                    responseDto = _eFunctions.ExecutePostRequest(requestXml);
-                    errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
-
-                    if (!errorMessage.Equals(""))
-                        throw new Exception(errorMessage);
-                    //
-
-                    requestXml = "<interaction>";
-                    requestXml = requestXml + "	<actions>";
-                    requestXml = requestXml + "		<action>";
-                    requestXml = requestXml + "			<name>submitScreen</name>";
-                    requestXml = requestXml + "			<data>";
-                    if (listTaxes != null && listTaxes.Count > 0)
-                    {
-                        requestXml = requestXml + "				<inputs>";
-                        requestXml = requestXml + "					<screenField>";
-                        requestXml = requestXml + "						<name>PROCESS1I</name>";
-                        requestXml = requestXml + "						<value>T</value>";
-                        requestXml = requestXml + "					</screenField>";
-                        requestXml = requestXml + "				</inputs>";
-                    }
-                    requestXml = requestXml + "				<screenName>MSM265A</screenName>";
-                    requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
-                    requestXml = requestXml + "			</data>";
-                    requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
-                    requestXml = requestXml + "		</action>";
-                    requestXml = requestXml + "	</actions>";
-                    requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
-                    requestXml = requestXml + "	<application>ServiceInteraction</application>";
-                    requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
-                    requestXml = requestXml + "</interaction>";
-
-                    responseDto = _eFunctions.ExecutePostRequest(requestXml);
-                    errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
-
-                    if (!errorMessage.Equals(""))
-                        throw new Exception(errorMessage);
+                    // - supplier selection
 
                     //Pantalla de Impuestos
                     if (listTaxes != null && listTaxes.Count > 0)
@@ -1020,8 +956,8 @@ namespace EllipseMSO265ExcelAddIn
                         }
 
                         requestXml = requestXml + "				</inputs> ";
-                        requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
-                        requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
+                        //requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
+                        //requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
                         requestXml = requestXml + "			</data> ";
                         requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
                         requestXml = requestXml + "		</action> ";
