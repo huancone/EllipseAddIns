@@ -153,10 +153,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.Services.Ellipse">
-      <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.dll</HintPath>
+      <HintPath>..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\bin\Debug\System.Web.Services.Ellipse.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute, Version=1.0.5.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
       <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
@@ -270,7 +269,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>5A6DA371E3DE9A6CB6063AD85D1097904478253C</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>34704A5AFB986320480A679A4A40DEE73DB1C96F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

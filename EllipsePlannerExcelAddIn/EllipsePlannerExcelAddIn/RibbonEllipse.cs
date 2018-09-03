@@ -10,13 +10,14 @@ using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Constants;
+using EllipseCommonsClassLibrary.Utilities;
 using EllipseJobsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
-using EllipseWorkOrdersClassLibrary.ResourceReqmntsService;
+using EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
-
+using OperationContext = EllipseWorkOrdersClassLibrary.ResourceReqmntsService.OperationContext;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using SearchFieldCriteriaType = EllipseJobsClassLibrary.SearchFieldCriteriaType;
 
@@ -55,7 +56,7 @@ namespace EllipsePlannerExcelAddIn
         private const int TitleRowEllipse = 6;
 
         //Columnas de Resultado
-        private const int ResultColumnResources = 14;
+        private const int ResultColumnResources = 16;
         private const int ResultColumnEllipse = 5;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
@@ -286,12 +287,18 @@ namespace EllipsePlannerExcelAddIn
                 _cells.GetCell(11, TitleRowResources).Value = "Horas restantes";
                 _cells.GetCell(12, TitleRowResources).Value = "Fecha Planeada";
                 _cells.GetCell(13, TitleRowResources).Value = "Accion";
-                _cells.GetCell(14, TitleRowResources).Value = "Resultado";
+                _cells.GetCell(14, TitleRowResources).Value = "Codigo de Cierre";
+                _cells.GetCell(15, TitleRowResources).Value = "Fecha de Cierre";
+                _cells.GetCell(16, TitleRowResources).Value = "Resultado";
 
 
                 _cells.GetCell(13, TitleRowResources).Style = StyleConstants.TitleAction;
-                _cells.SetValidationList(_cells.GetCell(13, TitleRowResources + 1), new List<string> { "M", "C", "D" });
-                _cells.GetCell(13, TitleRowResources).AddComment("C: Crear Requerimiento \nM: Modificar Requerimiento \nD: Eliminar Requerimiento");
+                _cells.SetValidationList(_cells.GetCell(13, TitleRowResources + 1), new List<string> { "M", "C", "D", "Close Task" });
+                _cells.GetCell(13, TitleRowResources).AddComment("C: Crear Requerimiento \nM: Modificar Requerimiento \nD: Eliminar Requerimiento \nClose Task: Cerrar Tarea");
+
+
+                var completeCodeList = _eFunctions.GetItemCodes("SC").Select(item => item.code + " - " + item.description).ToList();
+                _cells.SetValidationList(_cells.GetCell(14, TitleRowResources + 1), completeCodeList, ValidationSheetName, 10, false);
 
                 _cells.GetRange(1, TitleRowResources, ResultColumnResources - 1, TitleRowResources).Style = StyleConstants.TitleInformation;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRowResources, ResultColumnResources, TitleRowResources + 1), TableJobResources);
@@ -752,6 +759,7 @@ namespace EllipsePlannerExcelAddIn
                 try
                 {
                     string action = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value);
+
                     var taskReq = new TaskRequirement
                     {
                         DistrictCode = _frmAuth.EllipseDsct,
@@ -776,14 +784,37 @@ namespace EllipsePlannerExcelAddIn
                     {
                         WorkOrderActions.DeleteTaskResource(urlService, opContext, taskReq);
                     }
+                    else if (action.Equals("Close Task"))
+                    {
+                        var taskOpContext = new EllipseWorkOrdersClassLibrary.WorkOrderTaskService.OperationContext
+                        {
+                            district = opContext.district,
+                            position = opContext.position,
+                            maxInstances = opContext.maxInstances,
+                            maxInstancesSpecified = opContext.maxInstancesSpecified,
+                            returnWarnings = opContext.returnWarnings,
+                            returnWarningsSpecified = opContext.returnWarningsSpecified
+                        };
+                        var woTask = new WorkOrderTask
+                        {
+                            DistrictCode = _frmAuth.EllipseDsct,
+                            WorkOrder = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
+                            WoTaskNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value),
+                            CompletedBy = _frmAuth.EllipseUser,
+                            CompletedCode = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, i).Value)),
+                            ClosedDate = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, i).Value))
+                        };
+
+                        WorkOrderActions.CompleteWorkOrderTask(urlService, taskOpContext, woTask);
+                    }
                     _cells.GetCell(ResultColumnResources, i).Value = "OK";
                     _cells.GetCell(ResultColumnResources, i).Style = StyleConstants.Success;
 
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(13, i).Style = StyleConstants.Error;
-                    _cells.GetCell(13, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumnResources, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumnResources, i).Value = "ERROR: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:ExecuteRequirementActions()", ex.Message);
                 }
                 finally

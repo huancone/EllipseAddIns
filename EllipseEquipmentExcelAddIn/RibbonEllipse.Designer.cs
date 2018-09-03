@@ -49,6 +49,7 @@
             this.btnReReview = this.Factory.CreateRibbonButton();
             this.btnUpdateEquipmentData = this.Factory.CreateRibbonButton();
             this.btnUpdateEquipmentStatus = this.Factory.CreateRibbonButton();
+            this.btnDisposal = this.Factory.CreateRibbonButton();
             this.btnDeleteEquipment = this.Factory.CreateRibbonButton();
             this.menuListEquipment = this.Factory.CreateRibbonMenu();
             this.btnReviewListEquips = this.Factory.CreateRibbonButton();
@@ -132,6 +133,7 @@
             this.menuEquipments.Items.Add(this.btnReReview);
             this.menuEquipments.Items.Add(this.btnUpdateEquipmentData);
             this.menuEquipments.Items.Add(this.btnUpdateEquipmentStatus);
+            this.menuEquipments.Items.Add(this.btnDisposal);
             this.menuEquipments.Items.Add(this.btnDeleteEquipment);
             this.menuEquipments.Label = "&Equipos";
             this.menuEquipments.Name = "menuEquipments";
@@ -171,6 +173,13 @@
             this.btnUpdateEquipmentStatus.Name = "btnUpdateEquipmentStatus";
             this.btnUpdateEquipmentStatus.ShowImage = true;
             this.btnUpdateEquipmentStatus.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateEquipmentStatus_Click);
+            // 
+            // btnDisposal
+            // 
+            this.btnDisposal.Label = "Disposal";
+            this.btnDisposal.Name = "btnDisposal";
+            this.btnDisposal.ShowImage = true;
+            this.btnDisposal.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDisposal_Click);
             // 
             // btnDeleteEquipment
             // 
@@ -291,6 +300,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewFromEquipmentList;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAddEquipToList;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDeleteEquipFromList;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDisposal;
     }
 
     partial class ThisRibbonCollection

@@ -163,6 +163,28 @@ namespace EllipseEquipmentExcelAddIn
             else
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
         }
+
+
+
+        private void btnDisposal_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(DisposalEquipment);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+
         private void btnDeleteEquipment_Click(object sender, RibbonControlEventArgs e)
         {
             if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
@@ -197,7 +219,7 @@ namespace EllipseEquipmentExcelAddIn
             }
             else
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
-            
+
         }
         public void FormatSheet()
         {
@@ -249,8 +271,8 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetRange("A3", "A6").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B6").Style = _cells.GetStyle(StyleConstants.Select);
 
-                _cells.GetRange(1, TitleRow01-2, ResultColumn01 - 1, TitleRow01-2).Style = StyleConstants.Select;
-                _cells.GetRange(1, TitleRow01, ResultColumn01-1, TitleRow01).Style = StyleConstants.TitleOptional;
+                _cells.GetRange(1, TitleRow01 - 2, ResultColumn01 - 1, TitleRow01 - 2).Style = StyleConstants.Select;
+                _cells.GetRange(1, TitleRow01, ResultColumn01 - 1, TitleRow01).Style = StyleConstants.TitleOptional;
                 for (var i = 2; i < ResultColumn01; i++)
                 {
                     _cells.GetCell(i, TitleRow01 - 1).Style = StyleConstants.ItalicSmall;
@@ -429,7 +451,7 @@ namespace EllipseEquipmentExcelAddIn
 
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1), TableName01);
                 //búsquedas especiales de tabla
-                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit(); 
+                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
                 #endregion
 
                 #region Hoja 2 - Tracing Actions
@@ -567,7 +589,7 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _cells.ClearTableRange(TableName01);
 
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -680,12 +702,12 @@ namespace EllipseEquipmentExcelAddIn
                 }
                 finally
                 {
-					_cells.GetCell(2, i).Select();
+                    _cells.GetCell(2, i).Select();
                     i++;
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
 
         }
         public void ReReviewEquipmentList()
@@ -705,6 +727,7 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     var equipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
                     var eq = EquipmentActions.FetchEquipmentData(_eFunctions, equipmentNo);
+                    if (eq == null) continue;
                     //Para resetear el estilo
                     _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
                     //GENERAL
@@ -798,7 +821,7 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
         public void CreateEquipment()
         {
@@ -928,7 +951,7 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         public void UpdateEquipment()
@@ -1064,7 +1087,7 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         public void UpdateEquipmentStatus()
@@ -1090,7 +1113,7 @@ namespace EllipseEquipmentExcelAddIn
                 try
                 {
                     var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
-                    
+
                     var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
                     var equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, equipmentRef);
@@ -1101,7 +1124,7 @@ namespace EllipseEquipmentExcelAddIn
                     };
                     var newStatus = EquipmentActions.UpdateEquipmentStatus(opSheet, urlService, equipment.EquipmentNo, equipment.EquipmentStatus);
 
-                    if(equipment.EquipmentStatus != null && !equipment.EquipmentStatus.Equals(newStatus))
+                    if (equipment.EquipmentStatus != null && !equipment.EquipmentStatus.Equals(newStatus))
                         throw new Exception("No se ha podido establecer el estado especificado " + equipment.EquipmentStatus + ". Estado actual " + newStatus);
                     _cells.GetCell(ResultColumn01, i).Value = "ACTUALIZADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1124,7 +1147,60 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+
+        public void DisposalEquipment()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
+            var i = TitleRow01 + 1;
+
+            var opSheet = new EquipmentService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                returnWarnings = Debugger.DebugWarnings
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+
+                    var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+
+                    EquipmentActions.DisposalEquipment(opSheet, urlService, equipmentRef);
+
+                    _cells.GetCell(ResultColumn01, i).Value = "ACTUALIZADO";
+                    _cells.GetCell(1, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn01, i).Select();
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn01, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn01, i).Select();
+                    i++;
+                    _eFunctions.CloseConnection();
+                }
+            }
+            ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         public void DeleteEquipment()
@@ -1150,21 +1226,21 @@ namespace EllipseEquipmentExcelAddIn
             //{
             //    try
             //    {
-                    //var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            //var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
 
-                    //var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+            //var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
-                    //var equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, equipmentRef);
-                    //var equipment = new Equipment
-                    //{
-                    //    EquipmentNo = equipmentList.Any() ? equipmentList.First() : equipmentRef,
-                    //    EquipmentStatus = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value))
-                    //};
+            //var equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, equipmentRef);
+            //var equipment = new Equipment
+            //{
+            //    EquipmentNo = equipmentList.Any() ? equipmentList.First() : equipmentRef,
+            //    EquipmentStatus = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value))
+            //};
 
-                    //_cells.GetCell(ResultColumn01, i).Value = "ELIMINADO";
-                    //_cells.GetCell(1, i).Style = StyleConstants.Success;
-                    //_cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
-                    //_cells.GetCell(ResultColumn01, i).Select();
+            //_cells.GetCell(ResultColumn01, i).Value = "ELIMINADO";
+            //_cells.GetCell(1, i).Style = StyleConstants.Success;
+            //_cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
+            //_cells.GetCell(ResultColumn01, i).Select();
             //    }
             //    catch (Exception ex)
             //    {
@@ -1218,15 +1294,15 @@ namespace EllipseEquipmentExcelAddIn
                     var fitDate = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);
                     var refType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
                     var refNumber = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
-                    
+
                     List<string> instEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, instEquipmentRef);
                     List<string> fitEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, fitEquipmentRef);
-                    
+
                     var instEquipmentNo = instEquipmentList.Any() ? instEquipmentList.First() : instEquipmentRef;
                     var fitEquipmentNo = fitEquipmentList.Any() ? fitEquipmentList.First() : fitEquipmentRef;
 
                     bool result;
-                    if(action.ToUpper().Equals("F"))
+                    if (action.ToUpper().Equals("F"))
                         result = TracingActions.Fitment(opSheet, urlService, instEquipmentNo, compCode, compModCode, fitEquipmentNo, fitDate, refType, refNumber);
                     else if (action.ToUpper().Equals("D"))
                         result = TracingActions.Defitment(opSheet, urlService, instEquipmentNo, compCode, compModCode, fitEquipmentNo, fitDate, refType, refNumber);
@@ -1257,7 +1333,7 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
@@ -1266,7 +1342,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                if(_cells != null) _cells.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {
@@ -1303,7 +1379,7 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            
+
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
             var i = TitleRow02 + 1;
@@ -1323,10 +1399,10 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell(9, i).Value = listeq;
                 i++;
             }
-            
-            
+
+
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
@@ -1433,7 +1509,7 @@ namespace EllipseEquipmentExcelAddIn
                 Debugger.LogError("RibbonEllipse:ReviewListEquipmentsList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
-            
+
         }
 
         private void ReviewFromEquipmentList()
@@ -1501,7 +1577,7 @@ namespace EllipseEquipmentExcelAddIn
                         cellli.GetCell(1, i).Value = "'" + equipmentNo;
                         cellli.GetCell(1, i).Style = StyleConstants.Warning;
                         cellli.GetCell(ResultColumn03, i).Value = "Equipo no existe en ninguna lista ";
-                        
+
                         if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
                             cellli.GetCell(2, i).Select();
                         i++;
@@ -1515,19 +1591,19 @@ namespace EllipseEquipmentExcelAddIn
                 }
                 finally
                 {
-                    if(((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+                    if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
                         celleq.GetCell(1, k).Select();
                     k++;
                 }
             }
 
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
 
         }
 
-       
-        
+
+
 
         private void btnAddEquipToList_Click(object sender, RibbonControlEventArgs e)
         {

@@ -1600,15 +1600,18 @@ namespace EllipseLabourCostingExcelAddIn
     {
         public static string GetGroupEmployeesQuery(string workGroup, string dbReference, string dbLink)
         {
-            var query = " SELECT DISTINCT (TRIM(EMP.SURNAME) || ' ' || TRIM(EMP.FIRST_NAME)) NOMBRE ,GEMP.EMPLOYEE_ID CEDULA" +
-            " FROM " + dbReference + ".MSF723" + dbLink + " GEMP" +
-            "     JOIN " + dbReference + ".MSF810" + dbLink + " EMP ON GEMP.EMPLOYEE_ID = EMP.EMPLOYEE_ID" +
-            "     JOIN " + dbReference + ".MSF826" + dbLink + " LEMP ON GEMP.EMPLOYEE_ID = LEMP.EMPLOYEE_ID" +
-            "     JOIN " + dbReference + ".MSF855" + dbLink + " LCOST ON LEMP.LAB_COST_CLASS = LCOST.LAB_COST_CLASS" +
-            " WHERE GEMP.WORK_GROUP = '" + workGroup + "'" +
-            "     AND (GEMP.STOP_DT_REVSD  = '00000000' OR (99999999 - GEMP.STOP_DT_REVSD) >= TO_CHAR(SYSDATE, 'YYYYMMDD'))" +
-            "     AND GEMP.REC_723_TYPE = 'W'" +
-            " ORDER BY CEDULA";
+            var query = "SELECT "+
+                        "     EMP.EMPLOYEE_ID   CEDULA, "+
+                        "     EMP.FIRST_NAME || ' ' || EMP.SURNAME NOMBRE "+
+                        " FROM "+
+                        "     " + dbReference + ".MSF723" + dbLink + " WE "+
+                        "     INNER JOIN " + dbReference + ".MSF810" + dbLink + " EMP "+
+                        "     ON EMP.EMPLOYEE_ID   = WE.EMPLOYEE_ID "+
+                        " WHERE "+
+                        "     WE.WORK_GROUP = '" + workGroup + "' "+
+                        "     AND ( WE.STOP_DT_REVSD   = '00000000' "+
+                        "           OR ( 99999999 - WE.STOP_DT_REVSD ) >= TO_CHAR( SYSDATE, 'YYYYMMDD' ) ) "+
+                        "     AND WE.REC_723_TYPE    = 'W'";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 

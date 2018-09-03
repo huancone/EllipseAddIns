@@ -11,24 +11,18 @@ using EllipseCommonsClassLibrary.Constants;
 using EllipseRequisitionClassLibrary;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService; 
-// ReSharper disable FieldCanBeMadeReadOnly.Local
+using Screen = EllipseCommonsClassLibrary.ScreenService;
 
 namespace EllipseTransaccionesStockCodesExcelAddIn
 {
     public partial class RibbonEllipse
     {
-        ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
-        Application _excelApp;
-
-        private const string SheetName0101 = "ListaStockCodes";//Format Requisition
+        private const string SheetName0101 = "ListaStockCodes"; //Format Requisition
         private const string SheetName0102 = "ResultadosStockCodes";
-        private const string SheetName0201 = "ListaPurchaseOrders";//Format PO
+        private const string SheetName0201 = "ListaPurchaseOrders"; //Format PO
         private const string SheetName0202 = "ResultadosPurchaseOrders";
         private const string SheetName0203 = "ModificarPurchaseOrders";
-        private const string SheetName0301 = "ListaPOExtended";//Format PO Extended
+        private const string SheetName0301 = "ListaPOExtended"; //Format PO Extended
         private const string SheetName0302 = "ResultadosPOExtended";
         private const string SheetName0303 = "ModificarPOExtended";
         private const string ValidationSheetName01 = "ValidationSheetSC";
@@ -44,12 +38,12 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         private const int TitleRow0302 = TitleRow0202;
         private const int TitleRow0303 = TitleRow0203;
         private const int ResultColumn0101 = 3;
-        private const int ResultColumn0102 = 15;//aplica como indicador de ultimo registro
+        private const int ResultColumn0102 = 15; //aplica como indicador de ultimo registro
         private const int ResultColumn0201 = 3;
-        private const int ResultColumn0202 = 23;//aplica como indicador de ultimo registro
+        private const int ResultColumn0202 = 23; //aplica como indicador de ultimo registro
         private const int ResultColumn0203 = 12;
         private const int ResultColumn0301 = 3;
-        private const int ResultColumn0302 = 26;//aplica como indicador de ultimo registro
+        private const int ResultColumn0302 = 26; //aplica como indicador de ultimo registro
         private const int ResultColumn0303 = 15;
         private const string TableName0101 = "StockCodesTable";
         private const string TableName0102 = "ReviewReqSCTable";
@@ -59,6 +53,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         private const string TableName0301 = "PurchaseOrdersExtTable";
         private const string TableName0302 = "ReviewPOExtTable";
         private const string TableName0303 = "ModifyPOExtTable";
+        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
+        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private ExcelStyleCells _cells;
+        private Application _excelApp;
 
         private Thread _thread;
 
@@ -74,6 +72,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 drpEnviroment.Items.Add(item);
             }
         }
+
         private void btnFormatRequisitions_Click(object sender, RibbonControlEventArgs e)
         {
             FormatRequisitionSheet();
@@ -83,13 +82,16 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         {
             FormatPurchaseOrderSheet();
         }
+
         private void btnFormatPurchaseOrdersExtended_Click(object sender, RibbonControlEventArgs e)
         {
             FormatPurchaseOrderExtendedSheet();
         }
+
         private void btnReviewStockCodesRequisitions_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0101) || _excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0102))
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0101) ||
+                _excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0102))
             {
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -99,9 +101,11 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _thread.Start();
             }
             else
+            {
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
         }
-        
+
         private void btnReviewPurchaseOrders_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -125,13 +129,17 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                {
+                    MessageBox.Show(
+                        @"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
         private void btnModifyPurchaseOrders_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -141,7 +149,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
                 _cells.SetCursorWait();
                 if (!_cells.IsDecimalDotSeparator())
-                    if (MessageBox.Show(@"El separador de decimales configurado actualmente no es el punto. Usar un separador de decimales diferente puede generar errores al momento de cargar valores numéricos. ¿Está seguro que desea continuar?", @"ALERTA DE SEPARADOR DE DECIMALES", MessageBoxButtons.OKCancel) != DialogResult.OK) return;
+                    if (MessageBox.Show(
+                            @"El separador de decimales configurado actualmente no es el punto. Usar un separador de decimales diferente puede generar errores al momento de cargar valores numéricos. ¿Está seguro que desea continuar?",
+                            @"ALERTA DE SEPARADOR DE DECIMALES", MessageBoxButtons.OKCancel) != DialogResult.OK)
+                        return;
 
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0203))
                 {
@@ -168,21 +179,25 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                {
+                    MessageBox.Show(
+                        @"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            
         }
 
         private void btnDeletePurchaseOrders_Click(object sender, RibbonControlEventArgs e)
         {
-
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0201) || _excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0203))
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0201) ||
+                _excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0203))
             {
-                var dr = MessageBox.Show(@"Esta acción eliminará las Órdenes de Compra existentes. ¿Está seguro que desea continuar?", @"ELIMINAR PURCHASE ORDERS", MessageBoxButtons.YesNo);
+                var dr = MessageBox.Show(
+                    @"Esta acción eliminará las Órdenes de Compra existentes. ¿Está seguro que desea continuar?",
+                    @"ELIMINAR PURCHASE ORDERS", MessageBoxButtons.YesNo);
                 if (dr != DialogResult.Yes) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                 _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
@@ -194,13 +209,16 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _thread.SetApartmentState(ApartmentState.STA);
                 _thread.Start();
             }
-            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0301) || _excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0303))
+            else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0301) ||
+                     _excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0303))
             {
-                var dr = MessageBox.Show(@"Esta acción eliminará las Órdenes de Compra existentes. ¿Está seguro que desea continuar?", @"ELIMINAR PURCHASE ORDERS", MessageBoxButtons.YesNo);
+                var dr = MessageBox.Show(
+                    @"Esta acción eliminará las Órdenes de Compra existentes. ¿Está seguro que desea continuar?",
+                    @"ELIMINAR PURCHASE ORDERS", MessageBoxButtons.YesNo);
                 if (dr != DialogResult.Yes) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                 _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() == DialogResult.OK) return;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 _thread = new Thread(DeletePurchaseOrderListExtended);
@@ -209,18 +227,22 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _thread.Start();
             }
             else
+            {
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
-            
+            }
         }
+
         private void btnDeletePurchaseOrderItem_Click(object sender, RibbonControlEventArgs e)
         {
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0203))
             {
-                var dr = MessageBox.Show(@"Esta acción eliminará los Ítems de las Órdenes de Compra existentes. ¿Está seguro que desea continuar?", @"ELIMINAR PURCHASE ORDERS ITEMS", MessageBoxButtons.YesNo);
+                var dr = MessageBox.Show(
+                    @"Esta acción eliminará los Ítems de las Órdenes de Compra existentes. ¿Está seguro que desea continuar?",
+                    @"ELIMINAR PURCHASE ORDERS ITEMS", MessageBoxButtons.YesNo);
                 if (dr != DialogResult.Yes) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                 _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() == DialogResult.OK) return;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 _thread = new Thread(DeletePurchaseOrderItemList);
@@ -230,11 +252,13 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0303))
             {
-                var dr = MessageBox.Show(@"Esta acción eliminará los Ítems de las Órdenes de Compra existentes. ¿Está seguro que desea continuar?", @"ELIMINAR PURCHASE ORDERS ITEMS", MessageBoxButtons.YesNo);
+                var dr = MessageBox.Show(
+                    @"Esta acción eliminará los Ítems de las Órdenes de Compra existentes. ¿Está seguro que desea continuar?",
+                    @"ELIMINAR PURCHASE ORDERS ITEMS", MessageBoxButtons.YesNo);
                 if (dr != DialogResult.Yes) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                 _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() == DialogResult.OK) return;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 _thread = new Thread(DeletePurchaseOrderItemListExtended);
@@ -243,8 +267,11 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _thread.Start();
             }
             else
+            {
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
         }
+
         public void FormatRequisitionSheet()
         {
             try
@@ -257,7 +284,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.CreateNewWorksheet(ValidationSheetName01);
-                
+
                 //CONSTRUYO LA HOJA 0101
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -292,29 +319,33 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("E3").Value = "TIPO REQ.";
                 _cells.GetCell("E3").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetCell("F3").Style = _cells.GetStyle(StyleConstants.Select);
-                _cells.GetCell("E4").Value = "TIPO TRANS.";//TABLE_TYPE 'IT'
+                _cells.GetCell("E4").Value = "TIPO TRANS."; //TABLE_TYPE 'IT'
                 _cells.GetCell("E4").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetCell("F4").Style = _cells.GetStyle(StyleConstants.Select);
-                _cells.GetCell("G3").Value = "PRIORIDAD";//TABLE_TYPE 'PI'
+                _cells.GetCell("G3").Value = "PRIORIDAD"; //TABLE_TYPE 'PI'
                 _cells.GetCell("G3").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetCell("H3").Style = _cells.GetStyle(StyleConstants.Select);
 
                 //adicionamos las listas de validación
                 _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName01, 1);
 
-                var reqStatusList = Requisition.RequisitionStatus.GetRequisitionStatusList().Select(status => status.Value).ToList();
+                var reqStatusList = Requisition.RequisitionStatus.GetRequisitionStatusList()
+                    .Select(status => status.Value).ToList();
                 reqStatusList.Add("UNCOMPLETED");
                 _cells.SetValidationList(_cells.GetCell("B4"), reqStatusList, ValidationSheetName01, 2);
 
-                var reqTypeList = Requisition.RequisitionType.GetRequisitionTypeList().Select(type => type.Key + " - " + type.Value).ToList();
+                var reqTypeList = Requisition.RequisitionType.GetRequisitionTypeList()
+                    .Select(type => type.Key + " - " + type.Value).ToList();
                 reqTypeList.Sort();
                 _cells.SetValidationList(_cells.GetCell("F3"), reqTypeList, ValidationSheetName01, 3);
 
-                var transTypeList = Requisition.TransactionType.GetTransactionTypeList(_eFunctions).Select(type => type.Key + " - " + type.Value).ToList();
+                var transTypeList = Requisition.TransactionType.GetTransactionTypeList(_eFunctions)
+                    .Select(type => type.Key + " - " + type.Value).ToList();
                 transTypeList.Sort();
                 _cells.SetValidationList(_cells.GetCell("F4"), transTypeList, ValidationSheetName01, 4);
 
-                var reqPriorityList = Requisition.PriorityCodes.GetPrioriyCodesList(_eFunctions).Select(type => type.Key + " - " + type.Value).ToList();
+                var reqPriorityList = Requisition.PriorityCodes.GetPrioriyCodesList(_eFunctions)
+                    .Select(type => type.Key + " - " + type.Value).ToList();
                 reqPriorityList.Sort();
                 _cells.SetValidationList(_cells.GetCell("H3"), reqPriorityList, ValidationSheetName01, 5);
 
@@ -328,7 +359,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell(ResultColumn0101, TitleRow0101).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
 
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0101, ResultColumn0101, TitleRow0101 + 1), TableName0101);
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0101, ResultColumn0101, TitleRow0101 + 1),
+                    TableName0101);
                 //búsquedas especiales de tabla
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
@@ -345,7 +377,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.MergeCells("C1", "J2");
 
                 //GENERAL
-                _cells.GetRange(1, TitleRow0102, ResultColumn0102 - 1, TitleRow0102).Style = StyleConstants.TitleRequired;
+                _cells.GetRange(1, TitleRow0102, ResultColumn0102 - 1, TitleRow0102).Style =
+                    StyleConstants.TitleRequired;
                 _cells.GetCell(1, TitleRow0102).Value = "STOCK CODE";
                 _cells.GetCell(2, TitleRow0102).Value = "DISTRITO";
                 _cells.GetCell(3, TitleRow0102).Value = "REQ. NO";
@@ -365,7 +398,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     NumberFormatConstants.Text;
 
 
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0102, ResultColumn0102, TitleRow0102 + 1), TableName0102);
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0102, ResultColumn0102, TitleRow0102 + 1),
+                    TableName0102);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
                 // ReSharper disable once UseIndexedProperty
@@ -373,10 +407,12 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
+
         public void FormatPurchaseOrderSheet()
         {
             try
@@ -432,7 +468,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
                 //adicionamos las listas de validación
                 _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName02, 1);
-                var searchType = new List<string> { "PURCHASE ORDER", "STOCK CODE", "CONSULTAR TODO"};
+                var searchType = new List<string> {"PURCHASE ORDER", "STOCK CODE", "CONSULTAR TODO"};
                 _cells.SetValidationList(_cells.GetCell("B4"), searchType, ValidationSheetName02, 2);
                 //listas de validación
                 var itemList1 = PurchaseOrderActions.OrderStatus.GetStatusList();
@@ -449,7 +485,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell(ResultColumn0201, TitleRow0201).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
 
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0201, ResultColumn0201, TitleRow0201 + 1), TableName0201);
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0201, ResultColumn0201, TitleRow0201 + 1),
+                    TableName0201);
                 //búsquedas especiales de tabla
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
@@ -465,7 +502,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
-                _cells.GetRange(1, TitleRow0202, ResultColumn0202 - 1, TitleRow0202).Style = StyleConstants.TitleRequired;
+                _cells.GetRange(1, TitleRow0202, ResultColumn0202 - 1, TitleRow0202).Style =
+                    StyleConstants.TitleRequired;
                 _cells.GetCell(1, TitleRow0202).Value = "PO_NO";
                 _cells.GetCell(2, TitleRow0202).Value = "PO_ITEM_NO";
                 _cells.GetCell(3, TitleRow0202).Value = "PREQ_STK_CODE";
@@ -498,7 +536,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     NumberFormatConstants.Text;
 
 
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0202, ResultColumn0202, TitleRow0202 + 1), TableName0202);
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0202, ResultColumn0202, TitleRow0202 + 1),
+                    TableName0202);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
                 //CONSTRUYO HOJA 0203
@@ -513,7 +552,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
-                _cells.GetRange(1, TitleRow0203, ResultColumn0203 - 1, TitleRow0203).Style = StyleConstants.TitleRequired;
+                _cells.GetRange(1, TitleRow0203, ResultColumn0203 - 1, TitleRow0203).Style =
+                    StyleConstants.TitleRequired;
                 _cells.GetCell(1, TitleRow0203).Value = "PO_NO";
                 _cells.GetCell(2, TitleRow0203).Value = "ITEM";
                 _cells.GetCell(2, TitleRow0203).AddComment("Índice de posición en la orden");
@@ -534,7 +574,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     NumberFormatConstants.Text;
 
 
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0203, ResultColumn0203, TitleRow0203 + 1), TableName0203);
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0203, ResultColumn0203, TitleRow0203 + 1),
+                    TableName0203);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
                 // ReSharper disable once UseIndexedProperty
@@ -542,10 +583,12 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
+
         public void FormatPurchaseOrderExtendedSheet()
         {
             try
@@ -601,7 +644,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
                 //adicionamos las listas de validación
                 _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName03, 1);
-                var searchType = new List<string> { "PURCHASE ORDER", "STOCK CODE", "CONSULTAR TODO" };
+                var searchType = new List<string> {"PURCHASE ORDER", "STOCK CODE", "CONSULTAR TODO"};
                 _cells.SetValidationList(_cells.GetCell("B4"), searchType, ValidationSheetName03, 2);
                 //listas de validación
                 var itemList1 = PurchaseOrderActions.OrderStatus.GetStatusList();
@@ -618,7 +661,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell(ResultColumn0301, TitleRow0301).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
 
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0301, ResultColumn0301, TitleRow0301 + 1), TableName0301);
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0301, ResultColumn0301, TitleRow0301 + 1),
+                    TableName0301);
                 //búsquedas especiales de tabla
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
@@ -634,7 +678,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
-                _cells.GetRange(1, TitleRow0302, ResultColumn0302 - 1, TitleRow0302).Style = StyleConstants.TitleRequired;
+                _cells.GetRange(1, TitleRow0302, ResultColumn0302 - 1, TitleRow0302).Style =
+                    StyleConstants.TitleRequired;
                 _cells.GetCell(1, TitleRow0302).Value = "PO_NO";
                 _cells.GetCell(2, TitleRow0302).Value = "PO_ITEM_NO";
                 _cells.GetCell(3, TitleRow0302).Value = "PREQ_STK_CODE";
@@ -670,7 +715,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     NumberFormatConstants.Text;
 
 
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0302, ResultColumn0302, TitleRow0302 + 1), TableName0302);
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0302, ResultColumn0302, TitleRow0302 + 1),
+                    TableName0302);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
                 //CONSTRUYO HOJA 0303
@@ -685,7 +731,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
-                _cells.GetRange(1, TitleRow0303, ResultColumn0303 - 1, TitleRow0303).Style = StyleConstants.TitleRequired;
+                _cells.GetRange(1, TitleRow0303, ResultColumn0303 - 1, TitleRow0303).Style =
+                    StyleConstants.TitleRequired;
                 _cells.GetCell(1, TitleRow0303).Value = "PO_NO";
                 _cells.GetCell(2, TitleRow0303).Value = "ITEM";
                 _cells.GetCell(2, TitleRow0303).AddComment("Índice de posición en la orden");
@@ -709,7 +756,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     NumberFormatConstants.Text;
 
 
-                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0303, ResultColumn0303, TitleRow0303 + 1), TableName0303);
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow0303, ResultColumn0303, TitleRow0303 + 1),
+                    TableName0303);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
                 // ReSharper disable once UseIndexedProperty
@@ -717,7 +765,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:setSheetHeaderData()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja." + ex.Message);
             }
         }
@@ -750,26 +799,26 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 transType = transType.Substring(0, transType.IndexOf(" - ", StringComparison.Ordinal));
             if (priorityCode != null && priorityCode.Contains(" - "))
                 priorityCode = priorityCode.Substring(0, priorityCode.IndexOf(" - ", StringComparison.Ordinal));
-            var j = TitleRow0101 + 1;//itera según cada stock code
-            var i = TitleRow0102 + 1;//itera la celda para cada req-sc
+            var j = TitleRow0101 + 1; //itera según cada stock code
+            var i = TitleRow0102 + 1; //itera la celda para cada req-sc
 
             while (!string.IsNullOrEmpty("" + scCells.GetCell(1, j).Value))
-            {
                 try
                 {
                     var stockCode = _cells.GetEmptyIfNull(scCells.GetCell(1, j).Value2);
-                    stockCode = (stockCode != null && stockCode.Length < 9) ? stockCode.PadLeft(9, '0') : stockCode;
+                    stockCode = stockCode != null && stockCode.Length < 9 ? stockCode.PadLeft(9, '0') : stockCode;
 
                     if (!string.IsNullOrWhiteSpace(scStatus) && !scStatus.Equals("UNCOMPLETED"))
                         scStatus = Requisition.ItemStatus.GetStatusCode(scStatus);
 
-                    var sqlQuery = Queries.GetFetchRequisitionStockCodeQuery(_eFunctions.dbReference, _eFunctions.dbLink, districtCode, stockCode, scStatus, startDate, endDate, reqType, transType, priorityCode);
+                    var sqlQuery = Queries.GetFetchRequisitionStockCodeQuery(_eFunctions.dbReference,
+                        _eFunctions.dbLink, districtCode, stockCode, scStatus, startDate, endDate, reqType, transType,
+                        priorityCode);
 
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
 
                     while (odr.Read())
                     {
-
                         resultCells.GetCell(1, i).Value = "" + odr["STOCK_CODE"];
                         resultCells.GetCell(2, i).Value = "" + odr["DSTRCT_CODE"];
                         resultCells.GetCell(3, i).Value = "" + odr["IREQ_NO"];
@@ -779,16 +828,17 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                         resultCells.GetCell(7, i).Value = "" + odr["PRIORITY_CODE"];
                         resultCells.GetCell(8, i).Value = "" + odr["WHOUSE_ID"];
                         resultCells.GetCell(9, i).Value = "" + odr["REQUESTED_BY"];
-                        resultCells.GetCell(10,i).Value = "" + odr["REQ_BY_DATE"];
-                        resultCells.GetCell(11,i).Value = "" + odr["QTY_REQ"];
-                        resultCells.GetCell(12,i).Value = "" + odr["PO_ITEM_NO"];
-                        resultCells.GetCell(13,i).Value = "" + odr["ITEM_141_STAT"];
+                        resultCells.GetCell(10, i).Value = "" + odr["REQ_BY_DATE"];
+                        resultCells.GetCell(11, i).Value = "" + odr["QTY_REQ"];
+                        resultCells.GetCell(12, i).Value = "" + odr["PO_ITEM_NO"];
+                        resultCells.GetCell(13, i).Value = "" + odr["ITEM_141_STAT"];
                         resultCells.GetCell(14, i).Value = "" + odr["CREATION_DATE"];
-                        resultCells.GetCell(15,i).Value = "" + odr["DELIV_INSTR_A"] + odr["DELIV_INSTR_B"];
+                        resultCells.GetCell(15, i).Value = "" + odr["DELIV_INSTR_A"] + odr["DELIV_INSTR_B"];
                         i++;
                         if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0102))
                             resultCells.GetCell(3, i).Select();
                     }
+
                     scCells.GetCell(ResultColumn0101, j).Style = StyleConstants.Success;
                     scCells.GetCell(ResultColumn0101, j).Value = "SUCCESS";
                 }
@@ -804,12 +854,13 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0101))
                         scCells.GetCell(1, j).Select();
                     _eFunctions.CloseConnection();
-                    j++;//aumenta SC
+                    j++; //aumenta SC
                 }
-            }
+
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             _cells.SetCursorDefault();
         }
+
         public void ReviewPurchaseOrderList()
         {
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -824,7 +875,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             resultCells.SetAlwaysActiveSheet(false);
             resultCells.ClearTableRange(TableName0202);
 
-            var fullSearch = false;//para realizar búsquedas completas que no dependan de un PO dado
+            var fullSearch = false; //para realizar búsquedas completas que no dependan de un PO dado
             var districtCode = _cells.GetEmptyIfNull(poCells.GetCell(2, 3).Value2);
             var searchType = _cells.GetEmptyIfNull(poCells.GetCell(2, 4).Value2);
             var startDate = _cells.GetEmptyIfNull(poCells.GetCell(4, 3).Value2);
@@ -834,36 +885,36 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             if (poStatus != null && poStatus.Contains(" - "))
                 poStatus = poStatus.Substring(0, poStatus.IndexOf(" - ", StringComparison.Ordinal));
 
-            var j = TitleRow0201 + 1;//itera según cada stock code
-            var i = TitleRow0202 + 1;//itera la celda para cada req-sc
+            var j = TitleRow0201 + 1; //itera según cada stock code
+            var i = TitleRow0202 + 1; //itera la celda para cada req-sc
 
-            if (string.IsNullOrWhiteSpace(searchType) || searchType.Equals("CONSULTAR TODO"))
+            if (searchType != null && (string.IsNullOrWhiteSpace(searchType) || searchType.Equals("CONSULTAR TODO")))
             {
                 if (string.IsNullOrWhiteSpace(startDate) && string.IsNullOrWhiteSpace(poStatus)) //TO DO
-                    throw new NullReferenceException("Debe seleccionar una fecha inicial o un estado de orden para esta búsqueda");
+                    throw new NullReferenceException(
+                        "Debe seleccionar una fecha inicial o un estado de orden para esta búsqueda");
                 fullSearch = true;
             }
 
             while (!string.IsNullOrEmpty("" + poCells.GetCell(1, j).Value) || fullSearch)
-            {
                 try
                 {
                     string purchaseOrder = null;
                     string stockCode = null;
-                    if(searchType.Equals("PURCHASE ORDER"))
+                    if (searchType.Equals("PURCHASE ORDER"))
                         purchaseOrder = _cells.GetEmptyIfNull(poCells.GetCell(1, j).Value2);
                     if (searchType.Equals("STOCK CODE"))
                         stockCode = _cells.GetEmptyIfNull(poCells.GetCell(1, j).Value2);
-                    
-                    stockCode = (stockCode != null && stockCode.Length < 9) ? stockCode.PadLeft(9, '0') : stockCode;
 
-                    var sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.dbReference, _eFunctions.dbLink, districtCode, purchaseOrder, stockCode, startDate, endDate, poStatus);
+                    stockCode = stockCode != null && stockCode.Length < 9 ? stockCode.PadLeft(9, '0') : stockCode;
+
+                    var sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.dbReference, _eFunctions.dbLink,
+                        districtCode, purchaseOrder, stockCode, startDate, endDate, poStatus);
 
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
 
                     while (odr.Read())
                     {
-
                         resultCells.GetCell(01, i).Value = "" + odr["PO_NO"];
                         resultCells.GetCell(02, i).Value = "" + odr["PO_ITEM_NO"];
                         resultCells.GetCell(03, i).Value = "" + odr["PREQ_STK_CODE"];
@@ -871,9 +922,9 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                         resultCells.GetCell(05, i).Value = "" + odr["MNEMONIC"];
                         resultCells.GetCell(06, i).Value = "" + odr["ITEM_NAME"];
                         resultCells.GetCell(07, i).Value = "" + resultCells.GetEmptyIfNull(odr["DESC_LINEX1"]) +
-                            resultCells.GetEmptyIfNull(odr["DESC_LINEX2"]) +
-                            resultCells.GetEmptyIfNull(odr["DESC_LINEX3"]) +
-                            resultCells.GetEmptyIfNull(odr["DESC_LINEX4"]);
+                                                           resultCells.GetEmptyIfNull(odr["DESC_LINEX2"]) +
+                                                           resultCells.GetEmptyIfNull(odr["DESC_LINEX3"]) +
+                                                           resultCells.GetEmptyIfNull(odr["DESC_LINEX4"]);
                         resultCells.GetCell(08, i).Value = "" + odr["CREATION_DATE"];
                         resultCells.GetCell(09, i).Value = "" + odr["ORDER_DATE"];
                         resultCells.GetCell(10, i).Value = "" + odr["ORIG_DUE_DATE"];
@@ -895,6 +946,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                         if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0202))
                             resultCells.GetCell(3, i).Select();
                     }
+
                     poCells.GetCell(ResultColumn0201, j).Style = StyleConstants.Success;
                     poCells.GetCell(ResultColumn0201, j).Value = "SUCCESS";
                 }
@@ -909,14 +961,15 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     poCells.GetCell(2, j).Value = "CONSULTA DE PO-ITEMS";
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0201))
                         poCells.GetCell(1, j).Select();
-                    j++;//aumenta SC
+                    j++; //aumenta SC
                     if (fullSearch)
                         fullSearch = false;
                 }
-            }
+
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             _cells.SetCursorDefault();
         }
+
         public void ReviewPurchaseOrderExtendedList()
         {
             if (_cells == null)
@@ -932,7 +985,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             resultCells.SetAlwaysActiveSheet(false);
             resultCells.ClearTableRange(TableName0302);
 
-            var fullSearch = false;//para realizar búsquedas completas que no dependan de un PO dado
+            var fullSearch = false; //para realizar búsquedas completas que no dependan de un PO dado
             var districtCode = _cells.GetEmptyIfNull(poCells.GetCell(2, 3).Value2);
             var searchType = _cells.GetEmptyIfNull(poCells.GetCell(2, 4).Value2);
             var startDate = _cells.GetEmptyIfNull(poCells.GetCell(4, 3).Value2);
@@ -942,18 +995,18 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             if (poStatus != null && poStatus.Contains(" - "))
                 poStatus = poStatus.Substring(0, poStatus.IndexOf(" - ", StringComparison.Ordinal));
 
-            var j = TitleRow0301 + 1;//itera según cada stock code
-            var i = TitleRow0302 + 1;//itera la celda para cada req-sc
+            var j = TitleRow0301 + 1; //itera según cada stock code
+            var i = TitleRow0302 + 1; //itera la celda para cada req-sc
 
-            if (string.IsNullOrWhiteSpace(searchType) || searchType.Equals("CONSULTAR TODO"))
+            if (searchType != null && (string.IsNullOrWhiteSpace(searchType) || searchType.Equals("CONSULTAR TODO")))
             {
                 if (string.IsNullOrWhiteSpace(startDate) && string.IsNullOrWhiteSpace(poStatus)) //TO DO
-                    throw new NullReferenceException("Debe seleccionar una fecha inicial o un estado de orden para esta búsqueda");
+                    throw new NullReferenceException(
+                        "Debe seleccionar una fecha inicial o un estado de orden para esta búsqueda");
                 fullSearch = true;
             }
 
             while (!string.IsNullOrEmpty("" + poCells.GetCell(1, j).Value) || fullSearch)
-            {
                 try
                 {
                     string purchaseOrder = null;
@@ -963,15 +1016,15 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     if (searchType.Equals("STOCK CODE"))
                         stockCode = _cells.GetEmptyIfNull(poCells.GetCell(1, j).Value2);
 
-                    stockCode = (stockCode != null && stockCode.Length < 9) ? stockCode.PadLeft(9, '0') : stockCode;
+                    stockCode = stockCode != null && stockCode.Length < 9 ? stockCode.PadLeft(9, '0') : stockCode;
 
-                    var sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.dbReference, _eFunctions.dbLink, districtCode, purchaseOrder, stockCode, startDate, endDate, poStatus);
+                    var sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.dbReference, _eFunctions.dbLink,
+                        districtCode, purchaseOrder, stockCode, startDate, endDate, poStatus);
 
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
 
                     while (odr.Read())
                     {
-
                         resultCells.GetCell(01, i).Value = "" + odr["PO_NO"];
                         resultCells.GetCell(02, i).Value = "" + odr["PO_ITEM_NO"];
                         resultCells.GetCell(03, i).Value = "" + odr["PREQ_STK_CODE"];
@@ -979,9 +1032,9 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                         resultCells.GetCell(05, i).Value = "" + odr["MNEMONIC"];
                         resultCells.GetCell(06, i).Value = "" + odr["ITEM_NAME"];
                         resultCells.GetCell(07, i).Value = "" + resultCells.GetEmptyIfNull(odr["DESC_LINEX1"]) +
-                            resultCells.GetEmptyIfNull(odr["DESC_LINEX2"]) +
-                            resultCells.GetEmptyIfNull(odr["DESC_LINEX3"]) +
-                            resultCells.GetEmptyIfNull(odr["DESC_LINEX4"]);
+                                                           resultCells.GetEmptyIfNull(odr["DESC_LINEX2"]) +
+                                                           resultCells.GetEmptyIfNull(odr["DESC_LINEX3"]) +
+                                                           resultCells.GetEmptyIfNull(odr["DESC_LINEX4"]);
                         resultCells.GetCell(08, i).Value = "" + odr["CREATION_DATE"];
                         resultCells.GetCell(09, i).Value = "" + odr["ORDER_DATE"];
                         resultCells.GetCell(10, i).Value = "" + odr["ORIG_DUE_DATE"];
@@ -1006,6 +1059,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                         if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0302))
                             resultCells.GetCell(3, i).Select();
                     }
+
                     poCells.GetCell(ResultColumn0301, j).Style = StyleConstants.Success;
                     poCells.GetCell(ResultColumn0301, j).Value = "SUCCESS";
                 }
@@ -1020,18 +1074,17 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     poCells.GetCell(2, j).Value = "CONSULTA DE PO-ITEMS";
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0301))
                         poCells.GetCell(1, j).Select();
-                    j++;//aumenta SC
+                    j++; //aumenta SC
                     if (fullSearch)
                         fullSearch = false;
                 }
-            }
+
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             _cells.SetCursorDefault();
-
         }
+
         public void DeletePurchaseOrderList()
         {
-            
             try
             {
                 if (_cells == null)
@@ -1055,11 +1108,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     }
 
                     while ("" + _cells.GetCell(1, i).Value != "")
-                    {
-
                         try
                         {
-
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
@@ -1086,7 +1136,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                                     _cells.GetCell(2, i).Value = "ELIMINAR ORDEN DE COMPRA";
                                 }
                                 else
+                                {
                                     _cells.GetCell(resultC, i).Value = "ORDEN ELIMINADA";
+                                }
+
                                 _cells.GetCell(resultC, i).Style = StyleConstants.Success;
                             }
                             else
@@ -1112,7 +1165,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(resultC, i).Select();
                             i++;
                         }
-                    }
                 }
                 else
                 {
@@ -1128,12 +1180,12 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             finally
             {
-                if(_cells!=null) _cells.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
         }
+
         public void DeletePurchaseOrderListExtended()
         {
-            
             try
             {
                 if (_cells == null)
@@ -1146,7 +1198,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
                 if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
                 {
-
                     var i = TitleRow0301 + 1;
                     var resultC = ResultColumn0301;
                     var firstSheetActive = true;
@@ -1158,11 +1209,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     }
 
                     while ("" + _cells.GetCell(1, i).Value != "")
-                    {
-
                         try
                         {
-
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
@@ -1189,7 +1237,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                                     _cells.GetCell(2, i).Value = "ELIMINAR ORDEN DE COMPRA";
                                 }
                                 else
+                                {
                                     _cells.GetCell(resultC, i).Value = "ORDEN ELIMINADA";
+                                }
+
                                 _cells.GetCell(resultC, i).Style = StyleConstants.Success;
                             }
                             else
@@ -1215,7 +1266,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(resultC, i).Select();
                             i++;
                         }
-                    }
                 }
                 else
                 {
@@ -1231,9 +1281,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             finally
             {
-                if(_cells != null) _cells.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
         }
+
         public void DeletePurchaseOrderItemList()
         {
             try
@@ -1250,11 +1301,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     var i = TitleRow0203 + 1;
 
                     while ("" + _cells.GetCell(1, i).Value != "")
-                    {
-
                         try
                         {
-
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
@@ -1302,7 +1350,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(ResultColumn0203, i).Select();
                             i++;
                         }
-                    }
                 }
                 else
                 {
@@ -1318,9 +1365,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             finally
             {
-                if(_cells != null) _cells.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
         }
+
         public void DeletePurchaseOrderItemListExtended()
         {
             try
@@ -1337,11 +1385,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     var i = TitleRow0303 + 1;
 
                     while ("" + _cells.GetCell(1, i).Value != "")
-                    {
-
                         try
                         {
-
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
@@ -1389,7 +1434,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(ResultColumn0303, i).Select();
                             i++;
                         }
-                    }
                 }
                 else
                 {
@@ -1405,11 +1449,12 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             finally
             {
-                if(_cells != null) _cells.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
         }
 
-        public bool DeletePurchaseOrder(Screen.OperationContext opContext, Screen.ScreenService proxySheet, PurchaseOrder purchaseOrder)
+        public bool DeletePurchaseOrder(Screen.OperationContext opContext, Screen.ScreenService proxySheet,
+            PurchaseOrder purchaseOrder)
         {
             proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
@@ -1446,18 +1491,23 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             request.screenKey = "1";
             reply = proxySheet.submit(opContext, request);
 
-            while (reply != null && !_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM220B" && (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" || reply.functionKeys.StartsWith("XMIT-WARNING")))
+            while (reply != null && !_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM220B" &&
+                   (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" ||
+                    reply.functionKeys.StartsWith("XMIT-WARNING")))
             {
                 request.screenFields = arrayFields.ToArray();
                 request.screenKey = "1";
                 reply = proxySheet.submit(opContext, request);
             }
+
             if (!_eFunctions.CheckReplyError(reply) && !_eFunctions.CheckReplyWarning(reply)) return true;
             if (reply != null)
                 throw new ArgumentException(reply.message);
             throw new Exception(@"No se ha podido obtener respuesta del servidor");
         }
-        public bool DeletePurchaseOrderItem(Screen.OperationContext opContext, Screen.ScreenService proxySheet, PurchaseOrder purchaseOrder, PurchaseOrderItem item)
+
+        public bool DeletePurchaseOrderItem(Screen.OperationContext opContext, Screen.ScreenService proxySheet,
+            PurchaseOrder purchaseOrder, PurchaseOrderItem item)
         {
             if (item == null || string.IsNullOrWhiteSpace(item.Index))
                 throw new NullReferenceException("Debe ingresar el índice del item del vale que desea eliminar");
@@ -1497,17 +1547,21 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             request.screenKey = "1";
             reply = proxySheet.submit(opContext, request);
 
-            while (reply != null && !_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM22CA" && (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" || reply.functionKeys.StartsWith("XMIT-WARNING")))
+            while (reply != null && !_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM22CA" &&
+                   (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" ||
+                    reply.functionKeys.StartsWith("XMIT-WARNING")))
             {
                 request.screenFields = arrayFields.ToArray();
                 request.screenKey = "1";
                 reply = proxySheet.submit(opContext, request);
             }
+
             if (!_eFunctions.CheckReplyError(reply) && !_eFunctions.CheckReplyWarning(reply)) return true;
             if (reply != null)
                 throw new ArgumentException(reply.message);
             throw new Exception(@"No se ha podido obtener respuesta del servidor");
         }
+
         public void ModifyPurchaseOrderList()
         {
             if (_cells == null)
@@ -1523,10 +1577,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 {
                     var i = TitleRow0203 + 1;
                     while ("" + _cells.GetCell(1, i).Value != "")
-                    {
                         try
                         {
-
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
@@ -1587,7 +1639,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(ResultColumn0203, i).Select();
                             i++;
                         }
-                    }
                 }
                 else
                 {
@@ -1603,9 +1654,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             finally
             {
-                if(_cells != null) _cells.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
         }
+
         public void ModifyPurchaseOrderListExtended()
         {
             try
@@ -1621,10 +1673,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 {
                     var i = TitleRow0303 + 1;
                     while ("" + _cells.GetCell(1, i).Value != "")
-                    {
                         try
                         {
-
                             //ScreenService Opción en reemplazo de los servicios
                             var opSheet = new Screen.OperationContext
                             {
@@ -1688,7 +1738,6 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                             _cells.GetCell(ResultColumn0303, i).Select();
                             i++;
                         }
-                    }
                 }
                 else
                 {
@@ -1704,10 +1753,12 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
             finally
             {
-                if(_cells != null) _cells.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
         }
-        public bool ModifyPurchaseOrder(Screen.OperationContext opContext, Screen.ScreenService proxySheet, PurchaseOrder purchaseOrder, PurchaseOrderItem item)
+
+        public bool ModifyPurchaseOrder(Screen.OperationContext opContext, Screen.ScreenService proxySheet,
+            PurchaseOrder purchaseOrder, PurchaseOrderItem item)
         {
             proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
@@ -1751,7 +1802,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 if (item.UnitOfPurchase != null) arrayFields.Add("UNIT_OF_PURCH1I", item.UnitOfPurchase);
                 if (item.ConversionFactor != null) arrayFields.Add("CONV_FACTOR1I", item.ConversionFactor);
                 if (purchaseOrder.FreightCode != null) arrayFields.Add("FREIGHT_CODE1I", purchaseOrder.FreightCode);
-                if (purchaseOrder.DeliveryLocation != null) arrayFields.Add("DELIV_LOCATION1I", purchaseOrder.DeliveryLocation);
+                if (purchaseOrder.DeliveryLocation != null)
+                    arrayFields.Add("DELIV_LOCATION1I", purchaseOrder.DeliveryLocation);
                 if (item.ExpediteCode != null) arrayFields.Add("EXPEDITE_CODE1I", item.ExpediteCode);
                 if (item.Discount1 != null) arrayFields.Add("DISCOUNT_A1I", item.Discount1);
                 if (item.Surcharge1 != null) arrayFields.Add("SURCHARGE_A1I", item.Surcharge1);
@@ -1766,12 +1818,15 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             };
             reply = proxySheet.submit(opContext, request);
 
-            while (reply != null && !_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM22CA" && (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" || reply.functionKeys.StartsWith("XMIT-WARNING")))
+            while (reply != null && !_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM22CA" &&
+                   (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" ||
+                    reply.functionKeys.StartsWith("XMIT-WARNING")))
             {
                 request.screenFields = arrayFields.ToArray();
                 request.screenKey = "1";
                 reply = proxySheet.submit(opContext, request);
             }
+
             if (!_eFunctions.CheckReplyError(reply) && !_eFunctions.CheckReplyWarning(reply)) return true;
             if (reply != null)
                 throw new ArgumentException(reply.message);
@@ -1796,44 +1851,43 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         {
             new AboutBoxExcelAddIn().ShowDialog();
         }
-        
     }
 
     public class PurchaseOrder
     {
-        public string PurchaseNumber;
-        public string OrderType;
-        public string NumberOfItems;
-        public string OrderStatus;
-        public string TotalEstimatedValue;
         public string AuthorizedStatus;
-        public string SupplierNumber;
-        public string SupplierName;
+        public string Currency;
         public string DeliveryLocation;
         public string FreightCode;
-        public string OrderDate;
-        public string PurchaseOfficer;
-        public string PurchaseTeam;
-        public string Medium;
-        public string OriginCode;
-        public string Currency;
 
         public List<PurchaseOrderItem> Items;
+        public string Medium;
+        public string NumberOfItems;
+        public string OrderDate;
+        public string OrderStatus;
+        public string OrderType;
+        public string OriginCode;
+        public string PurchaseNumber;
+        public string PurchaseOfficer;
+        public string PurchaseTeam;
+        public string SupplierName;
+        public string SupplierNumber;
+        public string TotalEstimatedValue;
     }
 
     public class PurchaseOrderItem
     {
-        public string Index;
-        public string Quantity;
-        public string DueDate;
-        public string ExpediteCode;
+        public string ConversionFactor;
         public string Discount1;
         public string Discount2;
+        public string DueDate;
+        public string ExpediteCode;
+        public string GrossPrice;
+        public string Index;
+        public string Quantity;
         public string Surcharge1;
         public string Surcharge2;
-        public string GrossPrice;
         public string UnitOfPurchase;
-        public string ConversionFactor;
     }
 
     public static class PurchaseOrderActions
@@ -1871,7 +1925,9 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             public static string GetStatusCode(string statusName)
             {
                 var statusDictionary = GetStatusList();
-                return statusDictionary.ContainsValue(statusName) ? statusDictionary.FirstOrDefault(x => x.Value == statusName).Key : null;
+                return statusDictionary.ContainsValue(statusName)
+                    ? statusDictionary.FirstOrDefault(x => x.Value == statusName).Key
+                    : null;
             }
 
             public static string GetStatusName(string statusCode)
@@ -1881,9 +1937,12 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             }
         }
     }
+
     public static class Queries
     {
-        public static string GetFetchRequisitionStockCodeQuery(string dbReference, string dbLink, string districtCode, string stockCode, string scStatus, string startDate, string finishDate, string reqType, string transType, string priorityCode)
+        public static string GetFetchRequisitionStockCodeQuery(string dbReference, string dbLink, string districtCode,
+            string stockCode, string scStatus, string startDate, string finishDate, string reqType, string transType,
+            string priorityCode)
         {
             if (!string.IsNullOrWhiteSpace(districtCode))
                 districtCode = " AND SC.DSTRCT_CODE = '" + districtCode + "'";
@@ -1894,6 +1953,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 else
                     scStatus = " AND SC.ITEM_141_STAT = '" + scStatus + "'";
             }
+
             if (!string.IsNullOrWhiteSpace(startDate))
                 startDate = " AND RQ.CREATION_DATE >= " + startDate;
             if (!string.IsNullOrWhiteSpace(finishDate))
@@ -1925,22 +1985,26 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             return sqlQuery;
         }
 
-        public static string GetFetchPurchaseOrderQuery(string dbReference, string dbLink, string districtCode, string purchaseOrder, string stockCode, string startDate, string finishDate, string poStatus)
+        public static string GetFetchPurchaseOrderQuery(string dbReference, string dbLink, string districtCode,
+            string purchaseOrder, string stockCode, string startDate, string finishDate, string poStatus)
         {
-            if (!string.IsNullOrWhiteSpace(districtCode))//muchos stockcodes no tienen registrado distrito en los parte número
-                districtCode = " AND PO.DSTRCT_CODE = '" + districtCode + "'";// + " AND PN.DSTRCT_CODE = '" + districtCode + "'";
+            if (!string.IsNullOrWhiteSpace(districtCode)
+            ) //muchos stockcodes no tienen registrado distrito en los parte número
+                districtCode =
+                    " AND PO.DSTRCT_CODE = '" + districtCode + "'"; // + " AND PN.DSTRCT_CODE = '" + districtCode + "'";
             if (!string.IsNullOrWhiteSpace(startDate))
                 startDate = " AND PO.CREATION_DATE >= " + startDate;
             if (!string.IsNullOrWhiteSpace(finishDate))
                 finishDate = " AND PO.CREATION_DATE <= " + finishDate;
-            if(!string.IsNullOrWhiteSpace(purchaseOrder))
-                purchaseOrder =  " PO.PO_NO = '" + purchaseOrder + "'";
+            if (!string.IsNullOrWhiteSpace(purchaseOrder))
+                purchaseOrder = " PO.PO_NO = '" + purchaseOrder + "'";
             if (!string.IsNullOrWhiteSpace(stockCode))
             {
                 stockCode = " POI.PREQ_STK_CODE = '" + stockCode + "'";
                 if (!string.IsNullOrWhiteSpace(purchaseOrder))
                     stockCode = " AND " + stockCode;
             }
+
             if (!string.IsNullOrWhiteSpace(poStatus))
             {
                 if (poStatus.Equals("U"))
@@ -1953,8 +2017,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             var sqlQuery = "" +
                            " WITH POITEMS AS(" +
                            "  SELECT" +
-                           "    POI.PO_NO, POI.PO_ITEM_NO, POI.PREQ_STK_CODE, SC.ITEM_NAME, SC.DESC_LINEX1, SC.DESC_LINEX2, SC.DESC_LINEX3, SC.DESC_LINEX4, PN.PART_NO, PN.MNEMONIC, "+
-                           "    POI.GROSS_PRICE_P, POI.UNIT_OF_PURCH, POI.CONV_FACTOR, "+
+                           "    POI.PO_NO, POI.PO_ITEM_NO, POI.PREQ_STK_CODE, SC.ITEM_NAME, SC.DESC_LINEX1, SC.DESC_LINEX2, SC.DESC_LINEX3, SC.DESC_LINEX4, PN.PART_NO, PN.MNEMONIC, " +
+                           "    POI.GROSS_PRICE_P, POI.UNIT_OF_PURCH, POI.CONV_FACTOR, " +
                            "    PN.PREF_PART_IND, MIN(PN.PREF_PART_IND) OVER (PARTITION BY POI.PREQ_STK_CODE) MINPPI, ROW_NUMBER() OVER (PARTITION BY POI.PO_NO, POI.PO_ITEM_NO, POI.PREQ_STK_CODE ORDER BY POI.PREQ_STK_CODE, PN.PREF_PART_IND ASC) ROWPPI, " +
                            "    PO.STATUS_220, PO.CREATION_DATE, PO.ORDER_DATE, POI.ORIG_DUE_DATE, POI.ORIG_NET_PR_I, POI.CURR_NET_PR_I, POI.ORIG_QTY_I, POI.CURR_QTY_I, POI.QTY_RCV_OFST_I, POI.OFST_RCPT_DATE, POI.QTY_RCV_DIR_I, POI.ONST_RCPT_DATE, PO.FREIGHT_CODE, PO.DELIV_LOCATION, POI.EXPEDITE_CODE, PO.SUPPLIER_NO, SUP.SUPPLIER_NAME, PO.PO_MEDIUM_IND, PO.ORIGIN_CODE, PO.PURCH_OFFICER, PO.TEAM_ID" +
                            "  FROM" +
@@ -1975,6 +2039,4 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             return sqlQuery;
         }
     }
-
-
 }

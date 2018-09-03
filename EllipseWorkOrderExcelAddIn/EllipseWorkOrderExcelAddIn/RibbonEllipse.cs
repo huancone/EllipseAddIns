@@ -3334,7 +3334,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
 
             var woCell = new ExcelStyleCells(_excelApp, SheetName01);
-            string districtCode = woCell.GetEmptyIfNull(woCell.GetCell("B3").Value);
+            var districtCode = woCell.GetEmptyIfNull(woCell.GetCell("B3").Value);
             _cells.ClearTableRange(TableName06);
 
             if (_cells.GetNullIfTrimmedEmpty(districtCode) != null)
@@ -3361,7 +3361,7 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     try
                     {
-                        WorkOrderService.WorkOrderDTO wo = WorkOrderActions.GetNewWorkOrderDto(woCell.GetEmptyIfNull(woCell.GetCell(2, i).Value));
+                        var wo = WorkOrderActions.GetNewWorkOrderDto(woCell.GetEmptyIfNull(woCell.GetCell(2, i).Value));
                         var durations = WorkOrderActions.GetWorkOrderDurations(urlService, opSheet, districtCode, wo);
 
                         foreach (var dur in durations)
@@ -4294,7 +4294,7 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     var reqList = WorkOrderActions.FetchTaskRequirements(_eFunctions, d.DistrictCode, d.WorkGroup, d.WorkOrder, d.WoTaskNo);
 
-                    var distinctReqList = reqList.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo }).Select(y => y.First());
+                    var distinctReqList = reqList.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo, x.ReqCode}).Select(y => y.First());
 
                     foreach (var req in distinctReqList)
                     {

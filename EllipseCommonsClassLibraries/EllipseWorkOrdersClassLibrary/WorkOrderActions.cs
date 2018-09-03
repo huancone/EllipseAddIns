@@ -892,29 +892,18 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.workOrder = workOrder;
             var replyWo = proxyWo.retrieveWorkOrderDuration(opContext, requestWo);
 
-            var durationList = new List<WorkOrderDuration>();
-
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            for (var i = 0; i < replyWo.durations.Length; i++)
-            {
-                if (replyWo.durations[i].jobDurationsDate == "")
-                    break;
-                var dur = new WorkOrderDuration
+            return replyWo.durations.TakeWhile(t => t.jobDurationsDate != "")
+                .Select(t => new WorkOrderDuration
                 {
-                    jobDurationsCode = replyWo.durations[i].jobDurationsCode,
-                    jobDurationsDate = replyWo.durations[i].jobDurationsDate,
-                    jobDurationsStart = replyWo.durations[i].jobDurationsStart,
-                    jobDurationsFinish = replyWo.durations[i].jobDurationsFinish,
-                    jobDurationsSeqNo = replyWo.durations[i].jobDurationsSeqNo,
-                    jobDurationsSeqNoSpecified = replyWo.durations[i].jobDurationsSeqNoSpecified,
-                    jobDurationsHours = replyWo.durations[i].jobDurationsHours,
-                    jobDurationsHoursSpecified = replyWo.durations[i].jobDurationsHoursSpecified
-                };
-                durationList.Add(dur);
-            }
-
-
-            return durationList.ToArray();
+                    jobDurationsCode = t.jobDurationsCode,
+                    jobDurationsDate = t.jobDurationsDate,
+                    jobDurationsStart = t.jobDurationsStart,
+                    jobDurationsFinish = t.jobDurationsFinish,
+                    jobDurationsSeqNo = t.jobDurationsSeqNo,
+                    jobDurationsSeqNoSpecified = t.jobDurationsSeqNoSpecified,
+                    jobDurationsHours = t.jobDurationsHours,
+                    jobDurationsHoursSpecified = t.jobDurationsHoursSpecified
+                }).ToArray();
         }
 
         /// <summary>
@@ -1251,7 +1240,7 @@ namespace EllipseWorkOrdersClassLibrary
                 task.AssignPerson = "" + stdDataReader["ASSIGN_PERSON"].ToString().Trim();
                 task.EstimatedMachHrs = "" + stdDataReader["EST_MACH_HRS"].ToString().Trim();
 
-                task.EstimatedDurationsHrs = "" + stdDataReader["EST_DUR_HRS"].ToString().Trim();
+                task.EstimatedDurationsHrs = "" + stdDataReader["TSK_DUR_HOURS"].ToString().Trim();
                 task.NoLabor = "" + stdDataReader["NO_REC_LABOR"].ToString().Trim();
                 task.NoMaterial = "" + stdDataReader["NO_REC_MATERIAL"].ToString().Trim();
 
@@ -1376,7 +1365,7 @@ namespace EllipseWorkOrdersClassLibrary
             var proxywoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
             var requestWoTask = new WorkOrderTaskServiceDeleteRequestDTO();
             var requestWoTaskList = new List<WorkOrderTaskServiceDeleteRequestDTO>();
-
+            
             //se cargan los parámetros de la orden
             proxywoTask.Url = urlService + "/WorkOrderTaskService";
 
@@ -1388,6 +1377,27 @@ namespace EllipseWorkOrdersClassLibrary
             requestWoTaskList.Add(requestWoTask);
 
             proxywoTask.multipleDelete(opContext, requestWoTaskList.ToArray());
+        }
+
+        public static void CompleteWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
+        {
+            var proxywoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
+            var requestWoTask = new WorkOrderTaskServiceCompleteRequestDTO();
+            var requestWoTaskList = new List<WorkOrderTaskServiceCompleteRequestDTO>();
+            
+            //se cargan los parámetros de la orden
+            proxywoTask.Url = urlService + "/WorkOrderTaskService";
+
+            //se cargan los parámetros de la orden
+            requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
+            requestWoTask.workOrder = woTask.SetWorkOrderDto(woTask.WorkOrder);
+            requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
+            requestWoTask.completedCode = woTask.CompletedCode;
+            requestWoTask.completedBy = woTask.CompletedBy;
+            requestWoTask.closedDt = woTask.ClosedDate;
+
+            requestWoTaskList.Add(requestWoTask);
+            proxywoTask.multipleComplete(opContext, requestWoTaskList.ToArray());
         }
 
         public static void SetWorkOrderTaskText(string urlService, string districtCode, string position, bool returnWarnings, WorkOrderTask woTask)
@@ -1980,6 +1990,7 @@ namespace EllipseWorkOrdersClassLibrary
                             "	WT.COMPL_TEXT_CDE, " +
                             "	WT.ASSIGN_PERSON, " +
                             "	WT.EST_MACH_HRS, " +
+                            "	WT.TSK_DUR_HOURS, " +
                             "	WT.EQUIP_GRP_ID, " +
                             "	WT.APL_TYPE, " +
                             "	WT.COMP_CODE, " +

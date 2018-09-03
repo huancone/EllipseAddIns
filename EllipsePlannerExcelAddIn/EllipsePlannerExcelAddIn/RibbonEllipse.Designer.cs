@@ -110,7 +110,7 @@
             // 
             // btnUpdateOrder
             // 
-            this.btnUpdateOrder.Label = "Actualizar Recursos Estimados";
+            this.btnUpdateOrder.Label = "Actualizar Tareas";
             this.btnUpdateOrder.Name = "btnUpdateOrder";
             this.btnUpdateOrder.ShowImage = true;
             this.btnUpdateOrder.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateOrder_Click);

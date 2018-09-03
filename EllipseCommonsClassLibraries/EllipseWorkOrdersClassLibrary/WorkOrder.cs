@@ -296,25 +296,25 @@ namespace EllipseWorkOrdersClassLibrary
         public static List<string> GetStatusNames(bool uncompletedCustom = false)
         {
             if (uncompletedCustom)
-                return new List<string> {Open, Authorized, Closed, Cancelled, InWork, Estimated, Uncompleted};
-            return new List<string> {Open, Authorized, Closed, Cancelled, InWork, Estimated};
+                return new List<string> { Open, Authorized, Closed, Cancelled, InWork, Estimated, Uncompleted };
+            return new List<string> { Open, Authorized, Closed, Cancelled, InWork, Estimated };
         }
 
         public static List<string> GetStatusCodes()
         {
-            var list = new List<string> {OpenCode, AuthorizedCode, ClosedCode, CancelledCode, InWorkCode, EstimatedCode};
+            var list = new List<string> { OpenCode, AuthorizedCode, ClosedCode, CancelledCode, InWorkCode, EstimatedCode };
             return list;
         }
 
         public static List<string> GetUncompletedStatusNames()
         {
-            var list = new List<string> {Open, Authorized, InWork, Estimated};
+            var list = new List<string> { Open, Authorized, InWork, Estimated };
             return list;
         }
 
         public static List<string> GetUncompletedStatusCodes()
         {
-            var list = new List<string> {OpenCode, AuthorizedCode, InWorkCode, EstimatedCode};
+            var list = new List<string> { OpenCode, AuthorizedCode, InWorkCode, EstimatedCode };
             return list;
         }
 
@@ -351,6 +351,9 @@ namespace EllipseWorkOrdersClassLibrary
         public string EstimatedDurationsHrsSpecified;
         public string ExtTaskText;
         public string ClosedStatus;
+        public string CompletedCode;
+        public string CompletedBy;
+        public string ClosedDate;
 
         public WorkOrderTaskService.WorkOrderDTO WorkOrderDto { get; private set; }
 

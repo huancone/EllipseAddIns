@@ -52,8 +52,6 @@ namespace EllipseBulkMaterialExcelAddIn
                 drpItem.Label = item;
                 drpEnviroment.Items.Add(drpItem);
             }
-
-            drpEnviroment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_Productivo;
         }
 
         private void btnLoad_Click(object sender, RibbonControlEventArgs e)
@@ -640,7 +638,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var profile = GetFuelCapacity(requestItem.equipmentReference, requestItem.bulkMaterialTypeId);
 
-                if (requestItem.bulkMaterialTypeId == profile.FuelType && requestItem.quantity > profile.capacity)
+                if (requestItem.bulkMaterialTypeId == profile.FuelType && requestItem.quantity > profile.Capacity)
                 {
                     _cells.GetCell(ResultColumn01, currentRow).Value = "Este valor supera la capacidad del Equipo!";
                     _cells.GetRange(8, currentRow, 13, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
@@ -744,10 +742,10 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 if (!drEquipCapacity.IsClosed && drEquipCapacity.HasRows)
                 {
-                    profile.equipo = drEquipCapacity["EQUIP_NO"].ToString();
-                    profile.egi = drEquipCapacity["EQUIP_GRP_ID"].ToString();
+                    profile.Equipo = drEquipCapacity["EQUIP_NO"].ToString();
+                    profile.Egi = drEquipCapacity["EQUIP_GRP_ID"].ToString();
                     profile.FuelType = drEquipCapacity["FUEL_OIL_TYPE"].ToString();
-                    profile.capacity = Convert.ToDecimal(drEquipCapacity["FUEL_CAPACITY"].ToString());
+                    profile.Capacity = Convert.ToDecimal(drEquipCapacity["FUEL_CAPACITY"].ToString());
                     return profile;
                 }
                 else
@@ -1151,10 +1149,10 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private class Profile
         {
-            public string equipo { get; set; }
-            public string egi { get; set; }
+            public string Equipo { get; set; }
+            public string Egi { get; set; }
             public string FuelType { get; set; }
-            public decimal capacity { get; set; }
+            public decimal Capacity { get; set; }
             public static string Error { get; set; }
         }
 

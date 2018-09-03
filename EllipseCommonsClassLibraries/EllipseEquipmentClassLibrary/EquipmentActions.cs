@@ -11,7 +11,7 @@ namespace EllipseEquipmentClassLibrary
     public static class EquipmentActions
     {
         /// <summary>
-        /// Obtiene el listado de equipos que coincidan con la referencia de equipo ingresada
+        ///     Obtiene el listado de equipos que coincidan con la referencia de equipo ingresada
         /// </summary>
         /// <param name="ef"></param>
         /// <param name="districtCode"></param>
@@ -21,7 +21,9 @@ namespace EllipseEquipmentClassLibrary
         {
             var equipmentList = new List<string>();
 
-            var drEquipments = ef.GetQueryResult(Queries.GetEquipReferencesQuery(ef.dbReference, ef.dbLink, districtCode, equipmentRef));
+            var drEquipments =
+                ef.GetQueryResult(
+                    Queries.GetEquipReferencesQuery(ef.dbReference, ef.dbLink, districtCode, equipmentRef));
             // ReSharper disable once InvertIf
             if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
                 while (drEquipments.Read())
@@ -30,7 +32,7 @@ namespace EllipseEquipmentClassLibrary
         }
 
         /// <summary>
-        /// Obtiene el listado de equipos pertenecientes a un EGI dado
+        ///     Obtiene el listado de equipos pertenecientes a un EGI dado
         /// </summary>
         /// <param name="ef"></param>
         /// <param name="egi"></param>
@@ -48,7 +50,7 @@ namespace EllipseEquipmentClassLibrary
         }
 
         /// <summary>
-        /// Obtiene el listado de equipo pertenecientes a una lista (tipo lista, id lista) dada
+        ///     Obtiene el listado de equipo pertenecientes a una lista (tipo lista, id lista) dada
         /// </summary>
         /// <param name="ef"></param>
         /// <param name="listType"></param>
@@ -58,7 +60,8 @@ namespace EllipseEquipmentClassLibrary
         {
             var equipmentList = new List<string>();
 
-            var drEquipments = ef.GetQueryResult(Queries.GetListEquipmentsQuery(ef.dbReference, ef.dbLink, listType, listId));
+            var drEquipments =
+                ef.GetQueryResult(Queries.GetListEquipmentsQuery(ef.dbReference, ef.dbLink, listType, listId));
             // ReSharper disable once InvertIf
             if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
                 while (drEquipments.Read())
@@ -68,32 +71,37 @@ namespace EllipseEquipmentClassLibrary
 
 
         /// <summary>
-        /// Obtiene el listado de equipos pertenecientes a una unidad productiva
+        ///     Obtiene el listado de equipos pertenecientes a una unidad productiva
         /// </summary>
         /// <param name="ef"></param>
         /// <param name="district"></param>
         /// <param name="productiveUnit"></param>
         /// <returns></returns>
-        public static List<string> GetProductiveUnitEquipments(EllipseFunctions ef, string district, string productiveUnit)
+        public static List<string> GetProductiveUnitEquipments(EllipseFunctions ef, string district,
+            string productiveUnit)
         {
             var equipmentList = new List<string>();
 
-            var drEquipments = ef.GetQueryResult(Queries.GetProductiveUnitEquipmentsQuery(ef.dbReference, ef.dbLink, district, productiveUnit));
+            var drEquipments =
+                ef.GetQueryResult(
+                    Queries.GetProductiveUnitEquipmentsQuery(ef.dbReference, ef.dbLink, district, productiveUnit));
             // ReSharper disable once InvertIf
             if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
                 while (drEquipments.Read())
                     equipmentList.Add(drEquipments["EQUIP_NO"].ToString().Trim());
             return equipmentList;
         }
+
         /// <summary>
-        /// Actualiza el estado del equipo a un estado especificado
+        ///     Actualiza el estado del equipo a un estado especificado
         /// </summary>
         /// <param name="operationContext"></param>
         /// <param name="urlService"></param>
         /// <param name="equipmentNo"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public static string UpdateEquipmentStatus(EquipmentService.OperationContext operationContext, string urlService, string equipmentNo, string status)
+        public static string UpdateEquipmentStatus(OperationContext operationContext, string urlService,
+            string equipmentNo, string status)
         {
             var proxyEquip = new EquipmentService.EquipmentService();
             var request = new EquipmentServiceModifyRequestDTO
@@ -106,9 +114,12 @@ namespace EllipseEquipmentClassLibrary
             var reply = proxyEquip.modify(operationContext, request);
             return reply.equipmentStatus;
         }
-        public static List<Equipment> FetchEquipmentDataList(EllipseFunctions ef, string district, int primakeryKey, string primaryValue, int secondarykey, string secondaryValue, string eqStatus)
+
+        public static List<Equipment> FetchEquipmentDataList(EllipseFunctions ef, string district, int primakeryKey,
+            string primaryValue, int secondarykey, string secondaryValue, string eqStatus)
         {
-            var sqlQuery = Queries.GetFetchEquipmentDataQuery(ef.dbReference, ef.dbLink, district, primakeryKey, primaryValue, secondarykey, secondaryValue, eqStatus);
+            var sqlQuery = Queries.GetFetchEquipmentDataQuery(ef.dbReference, ef.dbLink, district, primakeryKey,
+                primaryValue, secondarykey, secondaryValue, eqStatus);
             var drEquipments = ef.GetQueryResult(sqlQuery);
             var list = new List<Equipment>();
 
@@ -195,13 +206,13 @@ namespace EllipseEquipmentClassLibrary
                         EquipmentClassif19 = drEquipments["EQUIP_CLASSIFX20"].ToString().Trim()
                     },
                     LinkOne = new Equipment.LinkOneBook()
-
                 };
                 list.Add(equipment);
             }
 
             return list;
         }
+
         public static Equipment FetchEquipmentData(EllipseFunctions ef, string equipmentNo)
         {
             var sqlQuery = Queries.GetFetchEquipmentDataQuery(ef.dbReference, ef.dbLink, equipmentNo);
@@ -289,19 +300,20 @@ namespace EllipseEquipmentClassLibrary
                     EquipmentClassif19 = drEquipments["EQUIP_CLASSIFX20"].ToString().Trim()
                 },
                 LinkOne = new Equipment.LinkOneBook()
-
             };
 
             return equipment;
         }
+
         /// <summary>
-        /// Elimina un equipo especificado
+        ///     Elimina un equipo especificado
         /// </summary>
         /// <param name="operationContext"></param>
         /// <param name="urlService"></param>
         /// <param name="equipment"></param>
         /// <returns></returns>
-        public static EquipmentServiceDeleteReplyDTO DeleteEquipment(EquipmentService.OperationContext operationContext, string urlService, Equipment equipment)
+        public static EquipmentServiceDeleteReplyDTO DeleteEquipment(OperationContext operationContext,
+            string urlService, Equipment equipment)
         {
             var proxyEquip = new EquipmentService.EquipmentService();
             var request = new EquipmentServiceDeleteRequestDTO
@@ -313,14 +325,31 @@ namespace EllipseEquipmentClassLibrary
 
             return proxyEquip.delete(operationContext, request);
         }
+
+
+        public static void DisposalEquipment(OperationContext opSheet, string urlService, string equipment)
+        {
+            var proxyEquip = new EquipmentService.EquipmentService {Url = urlService + "/Equipment"};
+
+            var dto = new EquipmentServiceModifyDisposalRequestDTO
+            {
+                disposalDate = "20180807",
+                equipmentNo = equipment
+            };
+
+
+            proxyEquip.modifyDisposal(opSheet, dto);
+        }
+
         /// <summary>
-        /// Crea un nuevo equipo con la información especificada
+        ///     Crea un nuevo equipo con la información especificada
         /// </summary>
         /// <param name="operationContext"></param>
         /// <param name="urlService"></param>
         /// <param name="equipment"></param>
         /// <returns></returns>
-        public static EquipmentServiceCreateReplyDTO CreateEquipment(EquipmentService.OperationContext operationContext, string urlService, Equipment equipment)
+        public static EquipmentServiceCreateReplyDTO CreateEquipment(OperationContext operationContext,
+            string urlService, Equipment equipment)
         {
             var proxyEquip = new EquipmentService.EquipmentService();
             var request = new EquipmentServiceCreateRequestDTO
@@ -331,17 +360,25 @@ namespace EllipseEquipmentClassLibrary
                 assocEquipmentItemSwitch = MyUtilities.IsTrue(equipment.AssocEquipmentItemSwitch),
                 assocEquipmentItemSwitchSpecified = equipment.AssocEquipmentItemSwitch != null,
                 compCode = equipment.CompCode,
-                conAstSegEn = !string.IsNullOrWhiteSpace(equipment.ConAstSegEn) ? Convert.ToDecimal(equipment.ConAstSegEn) : default(decimal),
+                conAstSegEn = !string.IsNullOrWhiteSpace(equipment.ConAstSegEn)
+                    ? Convert.ToDecimal(equipment.ConAstSegEn)
+                    : default(decimal),
                 conAstSegEnSpecified = equipment.ConAstSegEn != null,
-                conAstSegSt = !string.IsNullOrWhiteSpace(equipment.ConAstSegSt) ? Convert.ToDecimal(equipment.ConAstSegSt) : default(decimal),
+                conAstSegSt = !string.IsNullOrWhiteSpace(equipment.ConAstSegSt)
+                    ? Convert.ToDecimal(equipment.ConAstSegSt)
+                    : default(decimal),
                 conAstSegStSpecified = equipment.ConAstSegSt != null,
-                conditionRating = !string.IsNullOrWhiteSpace(equipment.ConditionRating) ? Convert.ToDecimal(equipment.ConditionRating) : default(decimal),
+                conditionRating = !string.IsNullOrWhiteSpace(equipment.ConditionRating)
+                    ? Convert.ToDecimal(equipment.ConditionRating)
+                    : default(decimal),
                 conditionRatingSpecified = equipment.ConditionRating != null,
                 conditionStandard = equipment.ConditionStandard,
                 copyEquipment = equipment.CopyEquipment,
                 copyNameplateValues = MyUtilities.IsTrue(equipment.CopyNameplateValues),
                 copyNameplateValuesSpecified = equipment.CopyNameplateValues != null,
-                costSegLgth = !string.IsNullOrWhiteSpace(equipment.CostSegLgth) ? Convert.ToDecimal(equipment.CostSegLgth) : default(decimal),
+                costSegLgth = !string.IsNullOrWhiteSpace(equipment.CostSegLgth)
+                    ? Convert.ToDecimal(equipment.CostSegLgth)
+                    : default(decimal),
                 costSegLgthSpecified = equipment.CostSegLgth != null,
                 costingFlag = equipment.CostingFlag,
                 ctaxCode = equipment.CtaxCode,
@@ -392,11 +429,15 @@ namespace EllipseEquipmentClassLibrary
                 primaryFunction = equipment.PrimaryFunction,
                 prodUnitItem = equipment.ProdUnitItem,
                 purchaseDate = equipment.PurchaseDate,
-                purchasePrice = !string.IsNullOrWhiteSpace(equipment.PurchasePrice) ? Convert.ToDecimal(equipment.PurchasePrice) : default(decimal),
+                purchasePrice = !string.IsNullOrWhiteSpace(equipment.PurchasePrice)
+                    ? Convert.ToDecimal(equipment.PurchasePrice)
+                    : default(decimal),
                 purchasePriceSpecified = equipment.PurchasePrice != null,
                 rcmAnalysisSw = MyUtilities.IsTrue(equipment.RcmAnalysisSw),
                 rcmAnalysisSwSpecified = equipment.RcmAnalysisSw != null,
-                replaceValue = !string.IsNullOrWhiteSpace(equipment.ReplaceValue) ? Convert.ToDecimal(equipment.ReplaceValue) : default(decimal),
+                replaceValue = !string.IsNullOrWhiteSpace(equipment.ReplaceValue)
+                    ? Convert.ToDecimal(equipment.ReplaceValue)
+                    : default(decimal),
                 replaceValueSpecified = equipment.ReplaceValue != null,
                 segmentUom = equipment.SegmentUom,
                 serialNumber = equipment.SerialNumber,
@@ -407,7 +448,9 @@ namespace EllipseEquipmentClassLibrary
                 traceableFlgSpecified = equipment.TraceableFlg != null,
                 valuationDate = equipment.ValuationDate,
                 warrStatType = equipment.WarrStatType,
-                warrStatVal = !string.IsNullOrWhiteSpace(equipment.WarrStatVal) ? Convert.ToDecimal(equipment.WarrStatVal) : default(decimal),
+                warrStatVal = !string.IsNullOrWhiteSpace(equipment.WarrStatVal)
+                    ? Convert.ToDecimal(equipment.WarrStatVal)
+                    : default(decimal),
                 warrStatValSpecified = equipment.WarrStatVal != null,
                 warrantyDate = equipment.WarrantyDate,
                 equipmentClassif = equipment.ClassCodes.EquipmentClassif,
@@ -430,20 +473,21 @@ namespace EllipseEquipmentClassLibrary
                 equipmentClassif16 = equipment.ClassCodes.EquipmentClassif16,
                 equipmentClassif17 = equipment.ClassCodes.EquipmentClassif17,
                 equipmentClassif18 = equipment.ClassCodes.EquipmentClassif18,
-                equipmentClassif19 = equipment.ClassCodes.EquipmentClassif19,
+                equipmentClassif19 = equipment.ClassCodes.EquipmentClassif19
             };
             proxyEquip.Url = urlService + "/Equipment";
             return proxyEquip.create(operationContext, request);
         }
 
         /// <summary>
-        /// Actualiza el estado del equipo a un estado especificado
+        ///     Actualiza el estado del equipo a un estado especificado
         /// </summary>
         /// <param name="operationContext"></param>
         /// <param name="urlService"></param>
         /// <param name="equipment"></param>
         /// <returns></returns>
-        public static void UpdateEquipmentData(EquipmentService.OperationContext operationContext, string urlService, Equipment equipment)
+        public static void UpdateEquipmentData(OperationContext operationContext, string urlService,
+            Equipment equipment)
         {
             var proxyEquip = new EquipmentService.EquipmentService();
 
@@ -457,17 +501,25 @@ namespace EllipseEquipmentClassLibrary
                 assocEquipmentItemSwitch = MyUtilities.IsTrue(equipment.AssocEquipmentItemSwitch),
                 assocEquipmentItemSwitchSpecified = equipment.AssocEquipmentItemSwitch != null,
                 compCode = equipment.CompCode,
-                conAstSegEn = !string.IsNullOrWhiteSpace(equipment.ConAstSegEn) ? Convert.ToDecimal(equipment.ConAstSegEn) : default(decimal),
+                conAstSegEn = !string.IsNullOrWhiteSpace(equipment.ConAstSegEn)
+                    ? Convert.ToDecimal(equipment.ConAstSegEn)
+                    : default(decimal),
                 conAstSegEnSpecified = equipment.ConAstSegEn != null,
-                conAstSegSt = !string.IsNullOrWhiteSpace(equipment.ConAstSegSt) ? Convert.ToDecimal(equipment.ConAstSegSt) : default(decimal),
+                conAstSegSt = !string.IsNullOrWhiteSpace(equipment.ConAstSegSt)
+                    ? Convert.ToDecimal(equipment.ConAstSegSt)
+                    : default(decimal),
                 conAstSegStSpecified = equipment.ConAstSegSt != null,
-                conditionRating = !string.IsNullOrWhiteSpace(equipment.ConditionRating) ? Convert.ToDecimal(equipment.ConditionRating) : default(decimal),
+                conditionRating = !string.IsNullOrWhiteSpace(equipment.ConditionRating)
+                    ? Convert.ToDecimal(equipment.ConditionRating)
+                    : default(decimal),
                 conditionRatingSpecified = equipment.ConditionRating != null,
                 conditionStandard = equipment.ConditionStandard,
                 //copyEquipment = equipment.CopyEquipment,
                 //copyNameplateValues = MyUtilities.IsTrue(equipment.CopyNameplateValues),
                 //copyNameplateValuesSpecified = equipment.CopyNameplateValues != null,
-                costSegLgth = !string.IsNullOrWhiteSpace(equipment.CostSegLgth) ? Convert.ToDecimal(equipment.CostSegLgth) : default(decimal),
+                costSegLgth = !string.IsNullOrWhiteSpace(equipment.CostSegLgth)
+                    ? Convert.ToDecimal(equipment.CostSegLgth)
+                    : default(decimal),
                 costSegLgthSpecified = equipment.CostSegLgth != null,
                 costingFlag = equipment.CostingFlag,
                 ctaxCode = equipment.CtaxCode,
@@ -518,11 +570,15 @@ namespace EllipseEquipmentClassLibrary
                 primaryFunction = equipment.PrimaryFunction,
                 prodUnitItem = equipment.ProdUnitItem,
                 purchaseDate = equipment.PurchaseDate,
-                purchasePrice = !string.IsNullOrWhiteSpace(equipment.PurchasePrice) ? Convert.ToDecimal(equipment.PurchasePrice) : default(decimal),
+                purchasePrice = !string.IsNullOrWhiteSpace(equipment.PurchasePrice)
+                    ? Convert.ToDecimal(equipment.PurchasePrice)
+                    : default(decimal),
                 purchasePriceSpecified = equipment.PurchasePrice != null,
                 rcmAnalysisSw = MyUtilities.IsTrue(equipment.RcmAnalysisSw),
                 rcmAnalysisSwSpecified = equipment.RcmAnalysisSw != null,
-                replaceValue = !string.IsNullOrWhiteSpace(equipment.ReplaceValue) ? Convert.ToDecimal(equipment.ReplaceValue) : default(decimal),
+                replaceValue = !string.IsNullOrWhiteSpace(equipment.ReplaceValue)
+                    ? Convert.ToDecimal(equipment.ReplaceValue)
+                    : default(decimal),
                 replaceValueSpecified = equipment.ReplaceValue != null,
                 segmentUom = equipment.SegmentUom,
                 serialNumber = equipment.SerialNumber,
@@ -533,7 +589,9 @@ namespace EllipseEquipmentClassLibrary
                 traceableFlgSpecified = equipment.TraceableFlg != null,
                 valuationDate = equipment.ValuationDate,
                 warrStatType = equipment.WarrStatType,
-                warrStatVal = !string.IsNullOrWhiteSpace(equipment.WarrStatVal) ? Convert.ToDecimal(equipment.WarrStatVal) : default(decimal),
+                warrStatVal = !string.IsNullOrWhiteSpace(equipment.WarrStatVal)
+                    ? Convert.ToDecimal(equipment.WarrStatVal)
+                    : default(decimal),
                 warrStatValSpecified = equipment.WarrStatVal != null,
                 warrantyDate = equipment.WarrantyDate,
                 equipmentClassif = equipment.ClassCodes.EquipmentClassif,
@@ -556,14 +614,14 @@ namespace EllipseEquipmentClassLibrary
                 equipmentClassif16 = equipment.ClassCodes.EquipmentClassif16,
                 equipmentClassif17 = equipment.ClassCodes.EquipmentClassif17,
                 equipmentClassif18 = equipment.ClassCodes.EquipmentClassif18,
-                equipmentClassif19 = equipment.ClassCodes.EquipmentClassif19,
+                equipmentClassif19 = equipment.ClassCodes.EquipmentClassif19
             };
             proxyEquip.Url = urlService + "/Equipment";
             proxyEquip.modify(operationContext, request);
         }
 
         /// <summary>
-        /// Obtiene el listado de códigos de estado de equipo
+        ///     Obtiene el listado de códigos de estado de equipo
         /// </summary>
         /// <param name="ellipseFunctions"></param>
         /// <returns></returns>
@@ -572,76 +630,90 @@ namespace EllipseEquipmentClassLibrary
             return ellipseFunctions.GetItemCodes("ES");
         }
 
-        public static string GetFetchLastInstallation(EllipseFunctions ef, string district, string equipmentNo, string component, string position)
+        public static string GetFetchLastInstallation(EllipseFunctions ef, string district, string equipmentNo,
+            string component, string position)
         {
-            var sqlQuery = Queries.GetFetchLastInstallationQuery(ef.dbReference, ef.dbLink, district, equipmentNo, component, position);
+            var sqlQuery = Queries.GetFetchLastInstallationQuery(ef.dbReference, ef.dbLink, district, equipmentNo,
+                component, position);
             var drLastInstallation = ef.GetQueryResult(sqlQuery);
 
             if (drLastInstallation == null || drLastInstallation.IsClosed || !drLastInstallation.HasRows) return null;
             var installedcomponent = "";
             while (drLastInstallation.Read())
-            {
                 installedcomponent = installedcomponent + " " + drLastInstallation["COMPONENTE"].ToString().Trim();
-            }
             return installedcomponent;
         }
 
         public static class Queries
         {
-            public static string GetEquipReferencesQuery(string dbReference, string dbLink, string districtCode, string equipmentRef)
+            public static string GetEquipReferencesQuery(string dbReference, string dbLink, string districtCode,
+                string equipmentRef)
             {
                 string districtParam;
                 //establecemos los parámetrode de distrito
                 if (string.IsNullOrEmpty(districtCode))
-                    districtParam = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
+                    districtParam = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") +
+                                    ")";
                 else
                     districtParam = " = '" + districtCode + "'";
 
                 var query = "" +
-                    " SELECT DISTINCT(EQUIP_NO)" +
-                    " FROM (" +
-                    "   SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO " +
-                    "     FROM  " + dbReference + ".MSF600" + dbLink + " EQ " +
-                    "     WHERE TRIM(EQ.EQUIP_NO) = '" + equipmentRef + "' AND EQ.DSTRCT_CODE " + districtParam +
-                    "   UNION ALL" +
-                    "   SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO" +
-                    "     FROM " + dbReference + ".MSF600" + dbLink + " EQ" +
-                    "     WHERE LPAD(TRIM(EQ.EQUIP_NO), 12, '0') = LPAD('" + equipmentRef + "',12,'0') AND EQ.DSTRCT_CODE " + districtParam +
-                    "   UNION ALL" +
-                    "   SELECT REQ.EQUIP_NO" +
-                    "     FROM " + dbReference + ".MSF600" + dbLink + " REQ JOIN  " + dbReference + ".MSF601" + dbLink + " RAL ON REQ.EQUIP_NO = RAL.ALT_REF_CODE" +
-                    "     WHERE REQ.DSTRCT_CODE " + districtParam + " AND TRIM(RAL.ALTERNATE_REF) = '" + equipmentRef + "'" +
-                    " )";
+                            " SELECT DISTINCT(EQUIP_NO)" +
+                            " FROM (" +
+                            "   SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO " +
+                            "     FROM  " + dbReference + ".MSF600" + dbLink + " EQ " +
+                            "     WHERE TRIM(EQ.EQUIP_NO) = '" + equipmentRef + "' AND EQ.DSTRCT_CODE " +
+                            districtParam +
+                            "   UNION ALL" +
+                            "   SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO" +
+                            "     FROM " + dbReference + ".MSF600" + dbLink + " EQ" +
+                            "     WHERE LPAD(TRIM(EQ.EQUIP_NO), 12, '0') = LPAD('" + equipmentRef +
+                            "',12,'0') AND EQ.DSTRCT_CODE " + districtParam +
+                            "   UNION ALL" +
+                            "   SELECT REQ.EQUIP_NO" +
+                            "     FROM " + dbReference + ".MSF600" + dbLink + " REQ JOIN  " + dbReference + ".MSF601" +
+                            dbLink + " RAL ON REQ.EQUIP_NO = RAL.ALT_REF_CODE" +
+                            "     WHERE REQ.DSTRCT_CODE " + districtParam + " AND TRIM(RAL.ALTERNATE_REF) = '" +
+                            equipmentRef + "'" +
+                            " )";
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
+
             public static string GetEgiEquipmentsQuery(string dbReference, string dbLink, string egi)
             {
                 var query = "" +
-                    "SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE TRIM(EQ.EQUIP_GRP_ID) = '" + egi + "'";
+                            "SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink +
+                            " EQ WHERE TRIM(EQ.EQUIP_GRP_ID) = '" + egi + "'";
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
-            public static string GetListEquipmentsQuery(string dbReference, string dbLink, string listType, string listId)
+
+            public static string GetListEquipmentsQuery(string dbReference, string dbLink, string listType,
+                string listId)
             {
                 var query = "" +
-                    "SELECT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + listType + "' AND TRIM(LI.LIST_ID) = '" + listId + "'";
+                            "SELECT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink +
+                            " LI WHERE TRIM(LI.LIST_TYP) = '" + listType + "' AND TRIM(LI.LIST_ID) = '" + listId + "'";
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
-            public static string GetProductiveUnitEquipmentsQuery(string dbReference, string dbLink, string district, string productiveUnit)
+
+            public static string GetProductiveUnitEquipmentsQuery(string dbReference, string dbLink, string district,
+                string productiveUnit)
             {
                 var query = "" +
-                    " SELECT DISTINCT(EQ.EQUIP_NO)" +
-                    " FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.DSTRCT_CODE = '" + district + "'" +
-                    "   START WITH EQ.EQUIP_NO       = '" + productiveUnit + "'" +
-                    "   CONNECT BY PRIOR EQ.EQUIP_NO = EQ.PARENT_EQUIP";
+                            " SELECT DISTINCT(EQ.EQUIP_NO)" +
+                            " FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.DSTRCT_CODE = '" + district +
+                            "'" +
+                            "   START WITH EQ.EQUIP_NO       = '" + productiveUnit + "'" +
+                            "   CONNECT BY PRIOR EQ.EQUIP_NO = EQ.PARENT_EQUIP";
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
@@ -650,15 +722,19 @@ namespace EllipseEquipmentClassLibrary
 
             public static string GetFetchEquipmentDataQuery(string dbReference, string dbLink, string equipmentNo)
             {
-                return GetFetchEquipmentDataQuery(dbReference, dbLink, null, SearchFieldCriteria.EquipmentNo.Key, equipmentNo, SearchFieldCriteria.None.Key, null);
+                return GetFetchEquipmentDataQuery(dbReference, dbLink, null, SearchFieldCriteria.EquipmentNo.Key,
+                    equipmentNo, SearchFieldCriteria.None.Key, null);
             }
 
-            public static string GetFetchEquipmentDataQuery(string dbReference, string dbLink, string districtCode, int searchCriteriaKey1, string searchCriteriaValue1, int searchCriteriaKey2, string searchCriteriaValue2, string eqStatus = null)
+            public static string GetFetchEquipmentDataQuery(string dbReference, string dbLink, string districtCode,
+                int searchCriteriaKey1, string searchCriteriaValue1, int searchCriteriaKey2,
+                string searchCriteriaValue2, string eqStatus = null)
             {
                 //establecemos los parámetrode de distrito
                 string districtParam;
                 if (string.IsNullOrEmpty(districtCode))
-                    districtParam = " AND EQ.DSTRCT_CODE IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
+                    districtParam = " AND EQ.DSTRCT_CODE IN (" +
+                                    MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") + ")";
                 else
                     districtParam = " AND EQ.DSTRCT_CODE = '" + districtCode + "'";
 
@@ -671,170 +747,270 @@ namespace EllipseEquipmentClassLibrary
 
                 var queryCriteria1 = "";
                 //establecemos los parámetros del criterio 1
-                if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentNo.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
-                    queryCriteria1 = " AND EQ.EQUIP_NO = '" + searchCriteriaValue1 + "'";
-                else if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentReference.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentNo.Key &&
+                    !string.IsNullOrWhiteSpace(searchCriteriaValue1))
                 {
-                    var equipParamsQuery = GetEquipReferencesQuery(dbReference, dbLink, districtCode, searchCriteriaValue1);
+                    queryCriteria1 = " AND EQ.EQUIP_NO = '" + searchCriteriaValue1 + "'";
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentReference.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
+                    var equipParamsQuery =
+                        GetEquipReferencesQuery(dbReference, dbLink, districtCode, searchCriteriaValue1);
                     queryCriteria1 = " AND EQ.EQUIP_NO IN (" + equipParamsQuery + ")";
                 }
-                else if (searchCriteriaKey1 == SearchFieldCriteria.ProductiveUnit.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                else if (searchCriteriaKey1 == SearchFieldCriteria.ProductiveUnit.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
                     queryCriteria1 = " AND EQ.PARENT_EQUIP = '" + searchCriteriaValue1 + "'";
-                else if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentDescription.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentDescription.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
                     queryCriteria1 = " AND EQ.ITEM_NAME_1||EQ.ITEM_NAME_2 LIKE '%" + searchCriteriaValue1 + "%'";
-                else if (searchCriteriaKey1 == SearchFieldCriteria.CreationUser.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteria.CreationUser.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
                     queryCriteria1 = " AND EQ.INPUT_BY = '" + searchCriteriaValue1 + "'";
-                else if (searchCriteriaKey1 == SearchFieldCriteria.AccountCode.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteria.AccountCode.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
                     queryCriteria1 = " AND EQ.ACCOUNT_CODE = '" + searchCriteriaValue1 + "'";
-                else if (searchCriteriaKey1 == SearchFieldCriteria.Custodian.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteria.Custodian.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
                     queryCriteria1 = " AND EQ.CUSTODIAN = '" + searchCriteriaValue1 + "'";
-                else if (searchCriteriaKey1 == SearchFieldCriteria.CustodianPosition.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteria.CustodianPosition.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
                     queryCriteria1 = " AND EQ.CUSTODIAN_POSN = '" + searchCriteriaValue1 + "'";
-                else if (searchCriteriaKey1 == SearchFieldCriteria.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
-                {
-                    if (searchCriteriaKey2 == SearchFieldCriteria.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                        queryCriteria1 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue1 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue2 + "')";
-                    else if (searchCriteriaKey2 != SearchFieldCriteria.ListId.Key || string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                        queryCriteria1 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue1 + "')";
                 }
-                else if (searchCriteriaKey1 == SearchFieldCriteria.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                else if (searchCriteriaKey1 == SearchFieldCriteria.ListType.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
                 {
-                    if (searchCriteriaKey2 == SearchFieldCriteria.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                        queryCriteria1 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue2 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue1 + "')";
-                    else if (searchCriteriaKey2 != SearchFieldCriteria.ListType.Key || string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                        queryCriteria1 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteriaValue1 + "')";
+                    if (searchCriteriaKey2 == SearchFieldCriteria.ListId.Key &&
+                        !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                        queryCriteria1 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " +
+                                         dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" +
+                                         searchCriteriaValue1 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue2 +
+                                         "')";
+                    else if (searchCriteriaKey2 != SearchFieldCriteria.ListId.Key ||
+                             string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                        queryCriteria1 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " +
+                                         dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" +
+                                         searchCriteriaValue1 + "')";
                 }
-                else if (searchCriteriaKey1 == SearchFieldCriteria.Egi.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                else if (searchCriteriaKey1 == SearchFieldCriteria.ListId.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
+                    if (searchCriteriaKey2 == SearchFieldCriteria.ListType.Key &&
+                        !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                        queryCriteria1 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " +
+                                         dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" +
+                                         searchCriteriaValue2 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue1 +
+                                         "')";
+                    else if (searchCriteriaKey2 != SearchFieldCriteria.ListType.Key ||
+                             string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                        queryCriteria1 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " +
+                                         dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" +
+                                         searchCriteriaValue1 + "')";
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteria.Egi.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
                     queryCriteria1 = " AND EQ.EQUIP_GRP_ID = '" + searchCriteriaValue1 + "'";
-                else if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentClass.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
                     queryCriteria1 = " AND EQ.EQUIP_CLASS = '" + searchCriteriaValue1 + "'";
-                else if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentType.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
                     queryCriteria1 = " AND EQ.EQPT_TYPE = '" + searchCriteriaValue1 + "'";
-                else if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentLocation.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                }
+                else if (searchCriteriaKey1 == SearchFieldCriteria.EquipmentLocation.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                {
                     queryCriteria1 = " AND EQ.LOCATION = '" + searchCriteriaValue1 + "'";
+                }
 
                 var queryCriteria2 = "";
                 //establecemos los parámetros del criterio 1
-                if (searchCriteriaKey2 == SearchFieldCriteria.EquipmentReference.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                if (searchCriteriaKey2 == SearchFieldCriteria.EquipmentReference.Key &&
+                    !string.IsNullOrWhiteSpace(searchCriteriaValue2))
                 {
-                    var equipParamsQuery = GetEquipReferencesQuery(dbReference, dbLink, districtCode, searchCriteriaValue2);
+                    var equipParamsQuery =
+                        GetEquipReferencesQuery(dbReference, dbLink, districtCode, searchCriteriaValue2);
                     queryCriteria2 = " AND EQ.EQUIP_NO IN (" + equipParamsQuery + ")";
                 }
-                else if (searchCriteriaKey2 == SearchFieldCriteria.ProductiveUnit.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                else if (searchCriteriaKey2 == SearchFieldCriteria.ProductiveUnit.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
                     queryCriteria2 = " AND EQ.PARENT_EQUIP = '" + searchCriteriaValue2 + "'";
-                else if (searchCriteriaKey2 == SearchFieldCriteria.EquipmentDescription.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteria.EquipmentDescription.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
                     queryCriteria2 = " AND EQ.ITEM_NAME_1||EQ.ITEM_NAME_2 LIKE '%" + searchCriteriaValue2 + "%'";
-                else if (searchCriteriaKey2 == SearchFieldCriteria.CreationUser.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteria.CreationUser.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
                     queryCriteria2 = " AND EQ.INPUT_BY = '" + searchCriteriaValue2 + "'";
-                else if (searchCriteriaKey2 == SearchFieldCriteria.AccountCode.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteria.AccountCode.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
                     queryCriteria2 = " AND EQ.ACCOUNT_CODE = '" + searchCriteriaValue2 + "'";
-                else if (searchCriteriaKey2 == SearchFieldCriteria.Custodian.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteria.Custodian.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
                     queryCriteria2 = " AND EQ.CUSTODIAN = '" + searchCriteriaValue2 + "'";
-                else if (searchCriteriaKey2 == SearchFieldCriteria.CustodianPosition.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteria.CustodianPosition.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
                     queryCriteria2 = " AND EQ.CUSTODIAN_POSN = '" + searchCriteriaValue2 + "'";
-                else if (searchCriteriaKey2 == SearchFieldCriteria.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
-                {
-                    if (searchCriteriaKey1 == SearchFieldCriteria.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
-                        queryCriteria2 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue2 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue1 + "')";
-                    else if (searchCriteriaKey1 != SearchFieldCriteria.ListId.Key || string.IsNullOrWhiteSpace(searchCriteriaValue1))
-                        queryCriteria2 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue2 + "')";
                 }
-                else if (searchCriteriaKey2 == SearchFieldCriteria.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                else if (searchCriteriaKey2 == SearchFieldCriteria.ListType.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
                 {
-                    if (searchCriteriaKey1 == SearchFieldCriteria.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
-                        queryCriteria2 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteriaValue1 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue2 + "')";
-                    else if (searchCriteriaKey1 != SearchFieldCriteria.ListType.Key || string.IsNullOrWhiteSpace(searchCriteriaValue1))
-                        queryCriteria2 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteriaValue2 + "')";
+                    if (searchCriteriaKey1 == SearchFieldCriteria.ListId.Key &&
+                        !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                        queryCriteria2 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " +
+                                         dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" +
+                                         searchCriteriaValue2 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue1 +
+                                         "')";
+                    else if (searchCriteriaKey1 != SearchFieldCriteria.ListId.Key ||
+                             string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                        queryCriteria2 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " +
+                                         dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" +
+                                         searchCriteriaValue2 + "')";
                 }
-                else if (searchCriteriaKey2 == SearchFieldCriteria.Egi.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                else if (searchCriteriaKey2 == SearchFieldCriteria.ListId.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
+                    if (searchCriteriaKey1 == SearchFieldCriteria.ListType.Key &&
+                        !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                        queryCriteria2 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " +
+                                         dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" +
+                                         searchCriteriaValue1 + "' AND TRIM(LI.LIST_ID) = '" + searchCriteriaValue2 +
+                                         "')";
+                    else if (searchCriteriaKey1 != SearchFieldCriteria.ListType.Key ||
+                             string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                        queryCriteria2 = "AND EQ.EQUIP_NO IN (SELECT DISTINCT LI.MEM_EQUIP_GRP EQUIP_NO FROM " +
+                                         dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" +
+                                         searchCriteriaValue2 + "')";
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteria.Egi.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
                     queryCriteria2 = " AND EQ.EQUIP_GRP_ID = '" + searchCriteriaValue2 + "'";
-                else if (searchCriteriaKey2 == SearchFieldCriteria.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteria.EquipmentClass.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
                     queryCriteria2 = " AND EQ.EQUIP_CLASS = '" + searchCriteriaValue2 + "'";
-                else if (searchCriteriaKey2 == SearchFieldCriteria.EquipmentType.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteria.EquipmentType.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
                     queryCriteria2 = " AND EQ.EQPT_TYPE = '" + searchCriteriaValue2 + "'";
-                else if (searchCriteriaKey2 == SearchFieldCriteria.EquipmentLocation.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                }
+                else if (searchCriteriaKey2 == SearchFieldCriteria.EquipmentLocation.Key &&
+                         !string.IsNullOrWhiteSpace(searchCriteriaValue2))
+                {
                     queryCriteria2 = " AND EQ.LOCATION = '" + searchCriteriaValue2 + "'";
+                }
                 //
 
 
                 var query = "" +
-                    " SELECT " +
-                    "   EQ.EQUIP_NO, EQ.ACCOUNT_CODE, EQ.ACTIVE_FLG, EQ.ASSOC_EQUIP_SW, EQ.COMP_CODE," +
-                    "   EQ.CON_AST_SEG_EN, EQ.CON_AST_SEG_ST," +
-                    "   EQ.COND_RATING, EQ.COND_STANDARD," +
-                    "   EQ.COST_SEG_LGTH, EQ.COSTING_FLG, EQ.CTAX_CODE, EQ.CUSTODIAN, EQ.CUSTODIAN_POSN," +
-                    "   EQ.CUST_NO," +
-                    "   EQ.DSTRCT_CODE, EQ.DRAWING_NO, EQ.EQUIP_CLASS, EQ.EQUIP_CRITICALITY, EQ.EQUIP_GRP_ID, EQ.EQUIP_LOCATION," +
-                    "   EQ.ITEM_NAME_1, EQ.ITEM_NAME_2, EQ.EQUIP_NO EQUIP_REF, EQ.EQUIP_STATUS, EQ.EQPT_TYPE, EQ.EXP_ELEMENT," +
-                    "   EQ.IAA_ASSET_IND, EQ.INPUT_BY, EQ.ITEM_NAME_CODE, EQ.LATEST_COND_DATE, EQ.LOCATION, EQ.MNEMONIC, EQ.MSSS_STATUS_IND," +
-                    "   EQ.OPERATING_STD, EQ.OPERATOR_ID, EQ.OPERATOR_POSN, EQ.ORIGINAL_DOC," +
-                    "   EQ.PARENT_EQUIP, EQ.PARENT_EQUIP PARENT_EQUIP_REF, EQ.PART_NO, EQ.PERMIT_REQD_SW," +
-                    "   EQ.PLANT_NO, EQ.PO_NO, EQ.PRIMARY_FUNCTION, EQ.PROD_UNIT_ITEM, EQ.PURCHASE_DATE, EQ.PURCHASE_PRICE, EQ.RCM_ANALYSIS_SW, EQ.REPLACE_VALUE," +
-                    "   EQ.SEGMENT_UOM, EQ.SERIAL_NUMBER, EQ.SHUTDOWN_EQUIP, EQ.STOCK_CODE, EQ.TAX_CODE, EQ.TRACEABLE_FLG," +
-                    "   EQ.VALUATION_DATE, EQ.WARR_STAT_TYPE, EQ.WARR_STAT_VAL," +
-                    "   EQ.EQUIP_CLASSIFX1, EQ.EQUIP_CLASSIFX2, EQ.EQUIP_CLASSIFX3, EQ.EQUIP_CLASSIFX4, EQ.EQUIP_CLASSIFX5," +
-                    "   EQ.EQUIP_CLASSIFX6, EQ.EQUIP_CLASSIFX7, EQ.EQUIP_CLASSIFX8, EQ.EQUIP_CLASSIFX9, EQ.EQUIP_CLASSIFX10," +
-                    "   EQ.EQUIP_CLASSIFX11, EQ.EQUIP_CLASSIFX12, EQ.EQUIP_CLASSIFX13, EQ.EQUIP_CLASSIFX14, EQ.EQUIP_CLASSIFX15," +
-                    "   EQ.EQUIP_CLASSIFX16, EQ.EQUIP_CLASSIFX17, EQ.EQUIP_CLASSIFX18, EQ.EQUIP_CLASSIFX19, EQ.EQUIP_CLASSIFX20" +
-                    " FROM " + dbReference + ".MSF600" + dbLink + " EQ" +
-                    " WHERE" +
-                    " " + districtParam +
-                    " " + queryCriteria1 +
-                    " " + queryCriteria2 +
-                    " " + statusRequirement +
-                    "";
+                            " SELECT " +
+                            "   EQ.EQUIP_NO, EQ.ACCOUNT_CODE, EQ.ACTIVE_FLG, EQ.ASSOC_EQUIP_SW, EQ.COMP_CODE," +
+                            "   EQ.CON_AST_SEG_EN, EQ.CON_AST_SEG_ST," +
+                            "   EQ.COND_RATING, EQ.COND_STANDARD," +
+                            "   EQ.COST_SEG_LGTH, EQ.COSTING_FLG, EQ.CTAX_CODE, EQ.CUSTODIAN, EQ.CUSTODIAN_POSN," +
+                            "   EQ.CUST_NO," +
+                            "   EQ.DSTRCT_CODE, EQ.DRAWING_NO, EQ.EQUIP_CLASS, EQ.EQUIP_CRITICALITY, EQ.EQUIP_GRP_ID, EQ.EQUIP_LOCATION," +
+                            "   EQ.ITEM_NAME_1, EQ.ITEM_NAME_2, EQ.EQUIP_NO EQUIP_REF, EQ.EQUIP_STATUS, EQ.EQPT_TYPE, EQ.EXP_ELEMENT," +
+                            "   EQ.IAA_ASSET_IND, EQ.INPUT_BY, EQ.ITEM_NAME_CODE, EQ.LATEST_COND_DATE, EQ.LOCATION, EQ.MNEMONIC, EQ.MSSS_STATUS_IND," +
+                            "   EQ.OPERATING_STD, EQ.OPERATOR_ID, EQ.OPERATOR_POSN, EQ.ORIGINAL_DOC," +
+                            "   EQ.PARENT_EQUIP, EQ.PARENT_EQUIP PARENT_EQUIP_REF, EQ.PART_NO, EQ.PERMIT_REQD_SW," +
+                            "   EQ.PLANT_NO, EQ.PO_NO, EQ.PRIMARY_FUNCTION, EQ.PROD_UNIT_ITEM, EQ.PURCHASE_DATE, EQ.PURCHASE_PRICE, EQ.RCM_ANALYSIS_SW, EQ.REPLACE_VALUE," +
+                            "   EQ.SEGMENT_UOM, EQ.SERIAL_NUMBER, EQ.SHUTDOWN_EQUIP, EQ.STOCK_CODE, EQ.TAX_CODE, EQ.TRACEABLE_FLG," +
+                            "   EQ.VALUATION_DATE, EQ.WARR_STAT_TYPE, EQ.WARR_STAT_VAL," +
+                            "   EQ.EQUIP_CLASSIFX1, EQ.EQUIP_CLASSIFX2, EQ.EQUIP_CLASSIFX3, EQ.EQUIP_CLASSIFX4, EQ.EQUIP_CLASSIFX5," +
+                            "   EQ.EQUIP_CLASSIFX6, EQ.EQUIP_CLASSIFX7, EQ.EQUIP_CLASSIFX8, EQ.EQUIP_CLASSIFX9, EQ.EQUIP_CLASSIFX10," +
+                            "   EQ.EQUIP_CLASSIFX11, EQ.EQUIP_CLASSIFX12, EQ.EQUIP_CLASSIFX13, EQ.EQUIP_CLASSIFX14, EQ.EQUIP_CLASSIFX15," +
+                            "   EQ.EQUIP_CLASSIFX16, EQ.EQUIP_CLASSIFX17, EQ.EQUIP_CLASSIFX18, EQ.EQUIP_CLASSIFX19, EQ.EQUIP_CLASSIFX20" +
+                            " FROM " + dbReference + ".MSF600" + dbLink + " EQ" +
+                            " WHERE" +
+                            " " + districtParam +
+                            " " + queryCriteria1 +
+                            " " + queryCriteria2 +
+                            " " + statusRequirement +
+                            "";
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
 
-            public static string GetFetchLastInstallationQuery(string dbReference, string dbLink, string district, string equipmentNo, string component, string position)
+            public static string GetFetchLastInstallationQuery(string dbReference, string dbLink, string district,
+                string equipmentNo, string component, string position)
             {
-                var positionString = position == "" ? "    AND TRIM ( SUBSTR ( CO.INSTALL_POSN, 17, 2 ) ) is null" : "    AND TRIM ( SUBSTR ( CO.INSTALL_POSN, 17, 2 ) ) = '" + position + "'";
+                var positionString = position == ""
+                    ? "    AND TRIM ( SUBSTR ( CO.INSTALL_POSN, 17, 2 ) ) is null"
+                    : "    AND TRIM ( SUBSTR ( CO.INSTALL_POSN, 17, 2 ) ) = '" + position + "'";
 
                 var query = "" +
-                    "WITH " +
-                    "  MOV AS " +
-                    "  ( " +
-                    "    SELECT " +
-                    "      TRIM ( SUBSTR ( CO.INSTALL_POSN, 1, 12 ) ) EQUIPO_PADRE, " +
-                    "      TRIM ( SUBSTR ( CO.INSTALL_POSN, 13, 4 ) ) COMPONENTE, " +
-                    "      TRIM ( SUBSTR ( CO.INSTALL_POSN, 17, 2 ) ) POSICION, " +
-                    "      CO.INSTALL_POSN, " +
-                    "      ( 99999999 - CO.REVSD_ET_DATE ) FECHA, " +
-                    "      CO.DATE_SEQ, " +
-                    "      LEAD ( ( 99999999 - CO.REVSD_ET_DATE ) ) OVER ( PARTITION BY CO.INSTALL_POSN ORDER BY CO.REVSD_ET_DATE DESC, CO.DATE_SEQ, CO.TRACING_ACTN DESC ) LEAD_FECHA, " +
-                    "      LEAD ( CO.TRACING_ACTN ) OVER ( PARTITION BY CO.INSTALL_POSN ORDER BY CO.REVSD_ET_DATE DESC, CO.DATE_SEQ, CO.TRACING_ACTN DESC ) LEAD_ACTN, " +
-                    "      MAX ( ( 99999999 - CO.REVSD_ET_DATE ) ) OVER ( PARTITION BY CO.INSTALL_POSN ) MAX_FECHA, " +
-                    "      CO.TRACING_ACTN, " +
-                    "      TRIM ( CO.FIT_EQUIP_NO ) EQUIPO " +
-                    "    FROM " +
-                    "      ELLIPSE.MSF650 CO " +
-                    "    WHERE " +
-                    "      CO.DSTRCT_CODE = '" + district + "' " +
-                    "    AND CO.TRACING_ACTN IN ( 'B', 'C' ) " +
-                    "    AND CO.REVSD_ET_DATE IS NOT NULL " +
-                    "    AND CO.REVSD_ET_DATE <> '00000000' " +
-                    "    AND TRIM ( SUBSTR ( CO.INSTALL_POSN, 1, 12 ) ) = '" + equipmentNo + "' " +
-                    "    AND TRIM ( SUBSTR ( CO.INSTALL_POSN, 13, 4 ) ) = '" + component + "' " +
-                    positionString +
-                    "    ORDER BY " +
-                    "      CO.REVSD_ET_DATE DESC, " +
-                    "      CO.DATE_SEQ, " +
-                    "      CO.TRACING_ACTN DESC " +
-                    "  ) " +
-                    "SELECT " +
-                    "  DECODE ( TRACING_ACTN, 'B', DECODE(TRIM(EQUIPO), NULL, 'EQUIPADO', EQUIPO), 'C', '' ) COMPONENTE " +
-                    "FROM " +
-                    "  MOV " +
-                    "WHERE " +
-                    "  FECHA = MAX_FECHA";
+                            "WITH " +
+                            "  MOV AS " +
+                            "  ( " +
+                            "    SELECT " +
+                            "      TRIM ( SUBSTR ( CO.INSTALL_POSN, 1, 12 ) ) EQUIPO_PADRE, " +
+                            "      TRIM ( SUBSTR ( CO.INSTALL_POSN, 13, 4 ) ) COMPONENTE, " +
+                            "      TRIM ( SUBSTR ( CO.INSTALL_POSN, 17, 2 ) ) POSICION, " +
+                            "      CO.INSTALL_POSN, " +
+                            "      ( 99999999 - CO.REVSD_ET_DATE ) FECHA, " +
+                            "      CO.DATE_SEQ, " +
+                            "      LEAD ( ( 99999999 - CO.REVSD_ET_DATE ) ) OVER ( PARTITION BY CO.INSTALL_POSN ORDER BY CO.REVSD_ET_DATE DESC, CO.DATE_SEQ, CO.TRACING_ACTN DESC ) LEAD_FECHA, " +
+                            "      LEAD ( CO.TRACING_ACTN ) OVER ( PARTITION BY CO.INSTALL_POSN ORDER BY CO.REVSD_ET_DATE DESC, CO.DATE_SEQ, CO.TRACING_ACTN DESC ) LEAD_ACTN, " +
+                            "      MAX ( ( 99999999 - CO.REVSD_ET_DATE ) ) OVER ( PARTITION BY CO.INSTALL_POSN ) MAX_FECHA, " +
+                            "      CO.TRACING_ACTN, " +
+                            "      TRIM ( CO.FIT_EQUIP_NO ) EQUIPO " +
+                            "    FROM " +
+                            "      ELLIPSE.MSF650 CO " +
+                            "    WHERE " +
+                            "      CO.DSTRCT_CODE = '" + district + "' " +
+                            "    AND CO.TRACING_ACTN IN ( 'B', 'C' ) " +
+                            "    AND CO.REVSD_ET_DATE IS NOT NULL " +
+                            "    AND CO.REVSD_ET_DATE <> '00000000' " +
+                            "    AND TRIM ( SUBSTR ( CO.INSTALL_POSN, 1, 12 ) ) = '" + equipmentNo + "' " +
+                            "    AND TRIM ( SUBSTR ( CO.INSTALL_POSN, 13, 4 ) ) = '" + component + "' " +
+                            positionString +
+                            "    ORDER BY " +
+                            "      CO.REVSD_ET_DATE DESC, " +
+                            "      CO.DATE_SEQ, " +
+                            "      CO.TRACING_ACTN DESC " +
+                            "  ) " +
+                            "SELECT " +
+                            "  DECODE ( TRACING_ACTN, 'B', DECODE(TRIM(EQUIPO), NULL, 'EQUIPADO', EQUIPO), 'C', '' ) COMPONENTE " +
+                            "FROM " +
+                            "  MOV " +
+                            "WHERE " +
+                            "  FECHA = MAX_FECHA";
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
                 return query;
             }
         }
-
     }
-
 }

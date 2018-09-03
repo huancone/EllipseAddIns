@@ -20,10 +20,10 @@ namespace EllipseMsssEquipmentExcelAddIn
         private const int TittleRow = 6;
         private const int ResultColumn = 23;
         private const int MaxRows = 10000;
-        static readonly EllipseFunctions EFunctions = new EllipseFunctions();
-        readonly FormAuthenticate _frmAuth = new FormAuthenticate();
-        ExcelStyleCells _cells;
-        Excel.Application _excelApp;
+        private static readonly EllipseFunctions EFunctions = new EllipseFunctions();
+        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private ExcelStyleCells _cells;
+        private Excel.Application _excelApp;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {

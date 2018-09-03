@@ -40,7 +40,6 @@
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatGeneral = this.Factory.CreateRibbonButton();
             this.btnFormatMntto = this.Factory.CreateRibbonButton();
-            this.btnFormatPolines = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.btnCreate = this.Factory.CreateRibbonButton();
@@ -74,7 +73,6 @@
             // 
             this.menuFormat.Items.Add(this.btnFormatGeneral);
             this.menuFormat.Items.Add(this.btnFormatMntto);
-            this.menuFormat.Items.Add(this.btnFormatPolines);
             this.menuFormat.Label = "Formatear";
             this.menuFormat.Name = "menuFormat";
             // 
@@ -91,13 +89,6 @@
             this.btnFormatMntto.Name = "btnFormatMntto";
             this.btnFormatMntto.ShowImage = true;
             this.btnFormatMntto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatMntto_Click);
-            // 
-            // btnFormatPolines
-            // 
-            this.btnFormatPolines.Label = "Polines";
-            this.btnFormatPolines.Name = "btnFormatPolines";
-            this.btnFormatPolines.ShowImage = true;
-            this.btnFormatPolines.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatPolines_Click);
             // 
             // btnAbout
             // 
@@ -143,7 +134,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatMntto;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatPolines;
     }
 
     partial class ThisRibbonCollection
