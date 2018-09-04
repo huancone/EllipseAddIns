@@ -37,6 +37,8 @@
             this.tab1 = this.Factory.CreateRibbonTab();
             this.grpVariaciones = this.Factory.CreateRibbonGroup();
             this.btnImportFile = this.Factory.CreateRibbonButton();
+            this.drpYear = this.Factory.CreateRibbonDropDown();
+            this.drpPeriodo = this.Factory.CreateRibbonDropDown();
             this.tab1.SuspendLayout();
             this.grpVariaciones.SuspendLayout();
             this.SuspendLayout();
@@ -51,6 +53,8 @@
             // grpVariaciones
             // 
             this.grpVariaciones.Items.Add(this.btnImportFile);
+            this.grpVariaciones.Items.Add(this.drpYear);
+            this.grpVariaciones.Items.Add(this.drpPeriodo);
             this.grpVariaciones.Label = "Variaciones";
             this.grpVariaciones.Name = "grpVariaciones";
             // 
@@ -59,6 +63,16 @@
             this.btnImportFile.Label = "Importar Archivo de Cognos";
             this.btnImportFile.Name = "btnImportFile";
             this.btnImportFile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnImportFile_Click);
+            // 
+            // drpYear
+            // 
+            this.drpYear.Label = "Año";
+            this.drpYear.Name = "drpYear";
+            // 
+            // drpPeriodo
+            // 
+            this.drpPeriodo.Label = "Mes";
+            this.drpPeriodo.Name = "drpPeriodo";
             // 
             // RibbonEllipse
             // 
@@ -79,6 +93,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpVariaciones;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnImportFile;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpYear;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpPeriodo;
     }
 
     partial class ThisRibbonCollection

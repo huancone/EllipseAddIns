@@ -22,7 +22,7 @@ namespace VariacionesExcelAddIn
         private Application _excelApp;
         private ListObject _excelSheetItems;
         private ExcelStyleCells _cells;
-        private EllipseFunctions _eFunctions = new EllipseFunctions();
+        private readonly EllipseFunctions _ef = new EllipseFunctions();
 
 
         private const string SheetName = "por centro detalle";
@@ -33,6 +33,24 @@ namespace VariacionesExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
+            var yearList = new List<string>(new string[] { "2018" });
+            var periodList = new List<string>(new string[] { "01", "02", "03" , "04", "05", "06", "07", "08", "09", "10", "11", "12"});
+            
+            _ef.SetDBSettings(Environments.SigcorProductivo);
+
+            foreach (var y in yearList)
+            {
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = y;
+                drpYear.Items.Add(item);
+            }
+
+            foreach (var y in periodList)
+            {
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = y;
+                drpPeriodo.Items.Add(item);
+            }
         }
 
         private void btnImportFile_Click(object sender, RibbonControlEventArgs e)
@@ -60,7 +78,11 @@ namespace VariacionesExcelAddIn
                 InitialDirectory = @"D:\"
             };
 
-            if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
+            if (openFileDialog1.ShowDialog() != DialogResult.OK)
+            {
+                _cells.SetCursorDefault();
+                return;
+            }
 
             var filePath = openFileDialog1.FileName;
 
@@ -73,8 +95,8 @@ namespace VariacionesExcelAddIn
             {
                 AccountCode = a[0],
                 ExpElement = a[1],
-                Year = "2018",
-                Month = "07",
+                Year = drpYear.SelectedItem.Label,
+                Month = drpPeriodo.SelectedItem.Label,
                 Budget = a[2],
                 Actual = a[3],
                 Variation = a[4],
@@ -90,10 +112,10 @@ namespace VariacionesExcelAddIn
             var mdcAccounts = GetMdcAccounts("PUERTO BOLIVAR");
 
             var expelements = GetExpElements();
-            
+
             var accounts = allAccounts.Where(x => mdcAccounts.Any(y => y.AccountCode == x.AccountCode));
             accounts = accounts.Where(x => expelements.Any(y => y == x.ExpElement));
-
+            var i = 5;
             foreach (var a in accounts)
             {
                 try
@@ -102,8 +124,11 @@ namespace VariacionesExcelAddIn
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
-                    throw;
+                    _cells.GetCell(1,i).Value = e.Message;
+                }
+                finally
+                {
+                    i++;
                 }
             }
 
@@ -114,10 +139,8 @@ namespace VariacionesExcelAddIn
 
         public void SetAccountInfo(Account account)
         {
-            var ef = new EllipseFunctions();
-            ef.SetDBSettings(Environments.SigcorProductivo);
-            var sqlQuery = Queries.SetMdcAccountsInfoQuery(ef.dbReference, ef.dbLink, account);
-            ef.GetQueryResult(sqlQuery);
+            var sqlQuery = Queries.SetMdcAccountsInfoQuery(_ef.dbReference, _ef.dbLink, account);
+            _ef.GetQueryResult(sqlQuery);
         }
 
         private static IEnumerable<string> GetExpElements()
@@ -153,7 +176,7 @@ namespace VariacionesExcelAddIn
                     AccountCode = drResources["CENTRO_RESP"].ToString().Trim()
                 };
                 list.Add(a);
-            }   
+            }
             return list;
         }
 
