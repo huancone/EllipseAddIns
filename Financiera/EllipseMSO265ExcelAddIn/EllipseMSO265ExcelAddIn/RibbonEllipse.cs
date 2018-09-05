@@ -22,6 +22,7 @@ using Screen = EllipseCommonsClassLibrary.ScreenService;
 // ReSharper disable LocalizableElement
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UseNullPropagation
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace EllipseMSO265ExcelAddIn
 {
@@ -30,7 +31,7 @@ namespace EllipseMSO265ExcelAddIn
         private const int TitleRow01 = 5;
         private const int TitleRow02 = 5;
         private const int ResultColumn01C = 24;
-        private const int ResultColumn01N = 22;
+        private const int ResultColumn01N = 19;
         private const int ResultColumn02 = 4;
         private static EllipseFunctions _eFunctions = new EllipseFunctions();
         private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
@@ -66,7 +67,6 @@ namespace EllipseMSO265ExcelAddIn
 
         private void FormatNomina()
         {
-            _excelApp = Globals.ThisAddIn.Application;
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
             if (_cells == null)
@@ -108,18 +108,14 @@ namespace EllipseMSO265ExcelAddIn
             _cells.GetCell(14, TitleRow01).Value = "Cuenta";
             _cells.GetCell(15, TitleRow01).Value = "Posicion Aprobador";
             _cells.GetCell(16, TitleRow01).Value = "Valor Impuesto";
-            _cells.GetCell(17, TitleRow01).Value = "Impuesto 1";
-            _cells.GetCell(18, TitleRow01).Value = "Impuesto 2";
-            _cells.GetCell(19, TitleRow01).Value = "Impuesto 3";
-            _cells.GetCell(20, TitleRow01).Value = "Impuesto 4";
-            _cells.GetCell(21, TitleRow01).Value = "Impuesto 5";
+            _cells.GetCell(17, TitleRow01).Value = "Grupo Impuesto";
+            _cells.GetCell(18, TitleRow01).Value = "Adicional Impuesto";
+
+            var taxGroupCodeList = GetTaxGroupCodeList().Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
+            _cells.SetValidationList(_cells.GetCell(17, TitleRow01 + 1), taxGroupCodeList, ValidationSheetName, 1, false);
 
             var taxCodeList = GetTaxCodeList().Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
-            _cells.SetValidationList(_cells.GetCell(17, TitleRow01 + 1), taxCodeList, ValidationSheetName, 1, false);
-            _cells.SetValidationList(_cells.GetCell(18, TitleRow01 + 1), ValidationSheetName, 1, false);
-            _cells.SetValidationList(_cells.GetCell(19, TitleRow01 + 1), ValidationSheetName, 1, false);
-            _cells.SetValidationList(_cells.GetCell(20, TitleRow01 + 1), ValidationSheetName, 1, false);
-            _cells.SetValidationList(_cells.GetCell(21, TitleRow01 + 1), ValidationSheetName, 1, false);
+            _cells.SetValidationList(_cells.GetCell(18, TitleRow01 + 1), taxCodeList, ValidationSheetName, 2, false);
 
             _cells.GetCell(ResultColumn01N, TitleRow01).Value = "Result";
 
@@ -692,7 +688,7 @@ namespace EllipseMSO265ExcelAddIn
         private void LoadNominaPost()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -728,39 +724,57 @@ namespace EllipseMSO265ExcelAddIn
                         PosicionAprobador = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value)
                     };
 
-                    var valorImpuesto = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value);
-                   
-                    var impuesto1 = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, currentRow).Value));
-                    var impuesto2 = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(18, currentRow).Value));
-                    var impuesto3 = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(19, currentRow).Value));
-                    var impuesto4 = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(20, currentRow).Value));
-                    var impuesto5 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(21, currentRow).Value);
+                    var valorItemString = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value);
+                    var valorItem = !string.IsNullOrWhiteSpace(valorItemString) ? Convert.ToDecimal(valorItemString) : default(decimal);
+                    var valorImpuestoString = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value);
+                    var valorImpuesto = !string.IsNullOrWhiteSpace(valorImpuestoString) ? Convert.ToDecimal(valorImpuestoString) : default(decimal);
 
                     var listTaxes = new List<string>();
-                    if (!string.IsNullOrWhiteSpace(impuesto1))
-                        listTaxes.Add(impuesto1);
-                    if (!string.IsNullOrWhiteSpace(impuesto2))
-                        listTaxes.Add(impuesto2);
-                    if (!string.IsNullOrWhiteSpace(impuesto3))
-                        listTaxes.Add(impuesto3);
-                    if (!string.IsNullOrWhiteSpace(impuesto4))
-                        listTaxes.Add(impuesto4);
+                    var groupTaxCode = "" + MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, currentRow).Value));
 
-                    if (!string.IsNullOrWhiteSpace(impuesto5) && impuesto5.Contains(";"))
+                    var groupTaxCodeList = GetTaxCodeList(groupTaxCode);
+                    foreach (var taxItem in groupTaxCodeList)
+                        listTaxes.Add(taxItem.TaxCode);
+
+                    //additional taxes
+                    var taxCodeList = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(18, currentRow).Value);
+
+                    if (!string.IsNullOrWhiteSpace(taxCodeList) && taxCodeList.Contains(";"))
                     {
-                        var splitArray = impuesto5.Split(';');
+                        var splitArray = taxCodeList.Split(';');
                         foreach (var item in splitArray)
                             listTaxes.Add(item);
                     }
-                    else if (!string.IsNullOrWhiteSpace(impuesto5))
+                    else if (!string.IsNullOrWhiteSpace(taxCodeList))
                     {
-                        impuesto5 = MyUtilities.GetCodeKey(impuesto5);
-                        listTaxes.Add(impuesto5);
+                        taxCodeList = MyUtilities.GetCodeKey(taxCodeList);
+                        listTaxes.Add(taxCodeList);
                     }
-
+                    //
                     if (listTaxes.Count != listTaxes.Distinct().Count())
                         throw new Exception("Impuesto Duplicado");
 
+                    var listTaxItems = GetTaxCodeList(listTaxes);
+
+                    decimal calculatedTaxValue = 0;
+                    foreach (var tax in listTaxItems)
+                    {
+
+                        decimal taxValueItem = valorItem * (tax.TaxRatePerc / 100);
+                        if (MyUtilities.IsTrue(tax.Deduct))
+                            taxValueItem = taxValueItem * -1;
+
+                        calculatedTaxValue += taxValueItem;
+                    }
+
+                    if (valorImpuesto != 0 && valorImpuesto != calculatedTaxValue)
+                        _cells.GetCell(16, currentRow).Style = StyleConstants.Warning;
+                    if (valorImpuesto == 0 && calculatedTaxValue != 0)
+                    {
+                        valorImpuesto = calculatedTaxValue;
+                        _cells.GetCell(16, currentRow).Value = valorImpuesto;
+                        _cells.GetCell(16, currentRow).Style = StyleConstants.Warning;
+                    }
                     var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
 
                     _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
@@ -793,6 +807,8 @@ namespace EllipseMSO265ExcelAddIn
                         throw new Exception(errorMessage);
 
                     //Ingresamos la información principal
+                    if (!responseDto.ResponseString.Contains("MSM265A"))
+                        throw new Exception("No se ha podido ingresar al programa MSO265");
                     requestXml = "<interaction>                                                     ";
                     requestXml = requestXml + "	<actions>";
                     requestXml = requestXml + "		<action>";
@@ -863,10 +879,17 @@ namespace EllipseMSO265ExcelAddIn
                     requestXml = requestXml + "						<name>ACCOUNT1I1</name>";
                     requestXml = requestXml + "						<value>" + nominaInfo.Cuenta + "</value>";
                     requestXml = requestXml + "					</screenField>";
+                    if (valorImpuesto > 0)
+                    {
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>ADD_TAX_AMOUNT1I</name>";
+                        requestXml = requestXml + "						<value>" + valorImpuesto + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                    }
                     if (listTaxes != null && listTaxes.Count > 0)
                     {
                         requestXml = requestXml + "					<screenField>";
-                        requestXml = requestXml + "						<name>PROCESS1I</name>";
+                        requestXml = requestXml + "						<name>ACTION1I1</name>";
                         requestXml = requestXml + "						<value>T</value>";
                         requestXml = requestXml + "					</screenField>";
                     }
@@ -891,7 +914,8 @@ namespace EllipseMSO265ExcelAddIn
                         throw new Exception(errorMessage);
                     
                     //Pantalla de información del proveedor a la que ingresa internamente
-                    if (!responseDto.ResponseString.Contains("MSM202A")) continue;
+                    if (!responseDto.ResponseString.Contains("MSM202A"))
+                        throw new Exception("Se ha producido un error al intentar validar la información del Supplier");
                     requestXml = requestXml + "<interaction> ";
                     requestXml = requestXml + "	<actions> ";
                     requestXml = requestXml + "		<action> ";
@@ -930,7 +954,8 @@ namespace EllipseMSO265ExcelAddIn
                     //Pantalla de Impuestos
                     if (listTaxes != null && listTaxes.Count > 0)
                     {
-                        if (!responseDto.ResponseString.Contains("MSM26JA")) continue;
+                        if (!responseDto.ResponseString.Contains("MSM26JA"))
+                            throw new Exception("Se ha producido un error al intentar añadir los códigos de Impuestos");
                         requestXml = requestXml + "<interaction> ";
                         requestXml = requestXml + "	<actions> ";
                         requestXml = requestXml + "		<action> ";
@@ -956,8 +981,8 @@ namespace EllipseMSO265ExcelAddIn
                         }
 
                         requestXml = requestXml + "				</inputs> ";
-                        //requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
-                        //requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
+                        requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
+                        requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
                         requestXml = requestXml + "			</data> ";
                         requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
                         requestXml = requestXml + "		</action> ";
@@ -974,11 +999,34 @@ namespace EllipseMSO265ExcelAddIn
 
                         if (!errorMessage.Equals(""))
                             throw new Exception(errorMessage);
-
-                        _cells.GetCell(16, currentRow).Value = ""; //TO DO
                     }
                     //
-                        
+
+                    //Pantalla de confirmación final
+                    if (!responseDto.ResponseString.Contains("MSM265A"))
+                        throw new Exception("Se ha producido un error al intentar completar el proceso");
+                    requestXml = "<interaction>";
+                    requestXml = requestXml + "	<actions>";
+                    requestXml = requestXml + "		<action>";
+                    requestXml = requestXml + "			<name>submitScreen</name>";
+                    requestXml = requestXml + "				<inputs> ";
+                    requestXml = requestXml + "			<data>";
+                    requestXml = requestXml + "				<screenName>MSM265A</screenName>";
+                    requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
+                    requestXml = requestXml + "			</data>";
+                    requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
+                    requestXml = requestXml + "		</action>";
+                    requestXml = requestXml + "	</actions>";
+                    requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                    requestXml = requestXml + "	<application>ServiceInteraction</application>";
+                    requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
+                    requestXml = requestXml + "</interaction>";
+
+                    responseDto = _eFunctions.ExecutePostRequest(requestXml);
+                    errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
+                    if (!errorMessage.Equals(""))
+                        throw new Exception(errorMessage);
+
                     _cells.GetCell(ResultColumn01N, currentRow).Select();
                     _cells.GetCell(ResultColumn01N, currentRow).Value = "Creado";
                     _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
@@ -986,7 +1034,7 @@ namespace EllipseMSO265ExcelAddIn
                 catch (Exception ex)
                 {
                     _cells.GetCell(ResultColumn01N, currentRow).Select();
-                    _cells.GetCell(ResultColumn01N, currentRow).Value = ex;
+                    _cells.GetCell(ResultColumn01N, currentRow).Value = ex.Message;
                     _cells.GetCell(ResultColumn01N, currentRow).Style = StyleConstants.Error;
                     _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = StyleConstants.Error;
                 }
@@ -998,6 +1046,93 @@ namespace EllipseMSO265ExcelAddIn
             _cells.SetCursorDefault();
         }
 
+        private void CalculateTaxesNomina()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
+            var currentRow = TitleRow01 + 1;
+            while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
+            {
+                try
+                {
+                    _cells.GetCell(1, currentRow).Select();
+
+                    var valorItemString = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value);
+                    var valorItem = !string.IsNullOrWhiteSpace(valorItemString) ? Convert.ToDecimal(valorItemString) : default(decimal);
+                    var valorImpuestoString = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value);
+                    var valorImpuesto = !string.IsNullOrWhiteSpace(valorImpuestoString) ? Convert.ToDecimal(valorImpuestoString) : default(decimal);
+
+                    var listTaxes = new List<string>();
+                    var groupTaxCode = "" + MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, currentRow).Value));
+
+                    var groupTaxCodeList = GetTaxCodeList(groupTaxCode);
+                    foreach (var taxItem in groupTaxCodeList)asdsa
+                        listTaxes.Add(taxItem.TaxCode);
+
+                    //additional taxes
+                    var taxCodeList = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(18, currentRow).Value);
+
+                    if (!string.IsNullOrWhiteSpace(taxCodeList) && taxCodeList.Contains(";"))
+                    {
+                        var splitArray = taxCodeList.Split(';');
+                        foreach (var item in splitArray)
+                            listTaxes.Add(item);
+                    }
+                    else if (!string.IsNullOrWhiteSpace(taxCodeList))
+                    {
+                        taxCodeList = MyUtilities.GetCodeKey(taxCodeList);
+                        listTaxes.Add(taxCodeList);
+                    }
+                    //
+                    if (listTaxes.Count != listTaxes.Distinct().Count())
+                        throw new Exception("Impuesto Duplicado");
+
+                    var listTaxItems = GetTaxCodeList(listTaxes);
+
+                    decimal calculatedTaxValue = 0;
+                    foreach (var tax in listTaxItems)
+                    {
+
+                        decimal taxValueItem = valorItem * (tax.TaxRatePerc / 100);
+                        if (MyUtilities.IsTrue(tax.Deduct))
+                            taxValueItem = taxValueItem * -1;
+
+                        calculatedTaxValue += taxValueItem;
+                    }
+                    //Comparo los valores de impuesto ingresados (si existe)
+                    if (string.IsNullOrWhiteSpace(valorImpuestoString) || valorImpuesto == calculatedTaxValue)
+                    {
+                        _cells.GetCell(16, currentRow).Value = calculatedTaxValue;
+                        _cells.GetCell(ResultColumn01N, currentRow).Value = "Impuesto Calculado " + calculatedTaxValue;
+                        _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
+                    }
+                    else if(valorImpuesto != calculatedTaxValue)
+                    {
+                        _cells.GetCell(16, currentRow).Value = calculatedTaxValue;
+                        _cells.GetCell(ResultColumn01N, currentRow).Value = "Impuesto Calculado no coincide con el ingresado: " + calculatedTaxValue;
+                        _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = _cells.GetStyle(StyleConstants.Warning);
+                    }
+                    _cells.GetCell(ResultColumn01N, currentRow).Select();
+                    //
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn01N, currentRow).Select();
+                    _cells.GetCell(ResultColumn01N, currentRow).Value = ex.Message;
+                    _cells.GetCell(ResultColumn01N, currentRow).Style = StyleConstants.Error;
+                    _cells.GetRange(1, currentRow, ResultColumn01N, currentRow).Style = StyleConstants.Error;
+                }
+                finally
+                {
+                    currentRow++;
+                }
+            }
+            _eFunctions.CloseConnection();
+            _cells.SetCursorDefault();
+        }
         private void LoadCesantiasPost()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
@@ -1694,14 +1829,47 @@ namespace EllipseMSO265ExcelAddIn
                 MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
             }
         }
-
         private List<TaxCodeItem> GetTaxCodeList()
         {
-            var taxList = new List<TaxCodeItem>();
-            var sqlQuery = "SELECT TABLE_CODE, TABLE_DESC, ATAX_CODE, DESCRIPTION, TAX_REF" +
-                " FROM ELLIPSE.MSF010 TC JOIN ELLIPSE.MSF013 TXC ON TC.TABLE_CODE = TXC.ATAX_CODE" +
-                " WHERE TABLE_TYPE = '+ADD'";
+            return GetTaxCodeList(null, false, null);
+        }
+        private List<TaxCodeItem> GetTaxCodeList(List<string> taxCodeParamList)
+        {
+            return GetTaxCodeList(taxCodeParamList, false, null);
+        }
+        private List<TaxCodeItem> GetTaxCodeList(string taxGroupCode)
+        {
+            if (string.IsNullOrWhiteSpace(taxGroupCode))
+                return null;
+            return GetTaxCodeList(null, false, taxGroupCode);
+        }
 
+        private List<TaxCodeItem> GetTaxCodeList(List<string> taxCodesParamList, bool groupLevelIndicator, string taxGroupCode)
+        {
+            var taxList = new List<TaxCodeItem>();
+
+            var paramTaxes = "";
+            if (taxCodesParamList != null && taxCodesParamList.Count > 0)
+                paramTaxes = " AND TXC.ATAX_CODE IN (" + MyUtilities.GetListInSeparator(taxCodesParamList, ",", "'") + ")";
+
+            var paramGroupLevel = "";
+            paramGroupLevel = groupLevelIndicator ? " AND TRIM(GRP_LEVEL_IND) = 'Y'" : " AND (TRIM(GRP_LEVEL_IND) IS NULL OR TRIM(GRP_LEVEL_IND) = 'N')";
+
+            var conditionalGroup = "";
+            var paramGroupCode = "";
+            if (!string.IsNullOrWhiteSpace(taxGroupCode))
+            {
+                conditionalGroup = " JOIN ELLIPSE.MSF014 TXG ON TXG.REL_ATAX_CODE = TXC.ATAX_CODE";
+                paramGroupCode = " AND TXG.ATAX_CODE = '" + taxGroupCode + "'";
+            }
+            var sqlQuery = "SELECT TC.TABLE_CODE, TC.TABLE_DESC, TXC.ATAX_CODE, TXC.DESCRIPTION, TXC.TAX_REF, TXC.ATAX_RATE_9, TXC.DEFAULTED_IND, TXC.DEDUCT_SW" +
+                           " FROM ELLIPSE.MSF010 TC JOIN ELLIPSE.MSF013 TXC ON TC.TABLE_CODE = TXC.ATAX_CODE" + conditionalGroup +
+                           " WHERE TC.TABLE_TYPE = '+ADD' " +
+                           paramGroupLevel +
+                           paramTaxes +
+                           paramGroupCode;
+
+            sqlQuery = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(sqlQuery, "WHERE AND", "WHERE ");
             var dataReader = _eFunctions.GetQueryResult(sqlQuery);
 
             if (dataReader == null || dataReader.IsClosed || !dataReader.HasRows)
@@ -1718,12 +1886,65 @@ namespace EllipseMSO265ExcelAddIn
                 tax.TaxCode = dataReader["ATAX_CODE"].ToString().Trim();
                 tax.TaxDescription = dataReader["DESCRIPTION"].ToString().Trim();
                 tax.TaxReference = dataReader["TAX_REF"].ToString().Trim();
+                var taxPercentage = dataReader["ATAX_RATE_9"];
+                tax.TaxRatePerc = Convert.ToDecimal(taxPercentage);//!string.IsNullOrWhiteSpace(taxPercentage) ? Convert.ToDecimal(taxPercentage) : default(decimal);
+                tax.DefaultToInvoiceItem = dataReader["DEFAULTED_IND"].ToString().Trim();
+                tax.Deduct = dataReader["DEDUCT_SW"].ToString().Trim();
 
                 taxList.Add(tax);
             }
 
             _eFunctions.CloseConnection();
             return taxList;
+        }
+
+        private List<TaxCodeItem> GetTaxGroupCodeList(List<string> taxGroupCodeParamList = null)
+        {
+            var taxList = new List<TaxCodeItem>();
+
+            var paramTaxes = "";
+            if (taxGroupCodeParamList != null && taxGroupCodeParamList.Count > 0)
+                paramTaxes = " AND TXC.ATAX_CODE IN (" + MyUtilities.GetListInSeparator(taxGroupCodeParamList, ",", "'") + ")";
+
+            var paramGroupLevel = " AND TRIM(GRP_LEVEL_IND) = 'Y'";
+
+            var sqlQuery = "SELECT TXC.ATAX_CODE, TXC.DESCRIPTION, TXC.TAX_REF, TXC.ATAX_RATE_9, TXC.DEFAULTED_IND, TXC.DEDUCT_SW" +
+                           " FROM ELLIPSE.MSF013 TXC " +
+                           " WHERE " +
+                           paramGroupLevel +
+                           paramTaxes;
+
+            sqlQuery = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(sqlQuery, "WHERE AND", "WHERE ");
+            var dataReader = _eFunctions.GetQueryResult(sqlQuery);
+
+            if (dataReader == null || dataReader.IsClosed || !dataReader.HasRows)
+            {
+                _eFunctions.CloseConnection();
+                return taxList;
+            }
+
+            while (dataReader.Read())
+            {
+
+                // ReSharper disable once UseObjectOrCollectionInitializer
+                var tax = new TaxCodeItem();
+                tax.TaxCode = dataReader["ATAX_CODE"].ToString().Trim();
+                tax.TaxDescription = dataReader["DESCRIPTION"].ToString().Trim();
+                tax.TaxReference = dataReader["TAX_REF"].ToString().Trim();
+                var taxPercentage = dataReader["ATAX_RATE_9"];
+                tax.TaxRatePerc = Convert.ToDecimal(taxPercentage);//!string.IsNullOrWhiteSpace(taxPercentage) ? Convert.ToDecimal(taxPercentage) : default(decimal);
+                tax.DefaultToInvoiceItem = dataReader["DEFAULTED_IND"].ToString().Trim();
+                tax.Deduct = dataReader["DEDUCT_SW"].ToString().Trim();
+
+                taxList.Add(tax);
+            }
+
+            _eFunctions.CloseConnection();
+            return taxList;
+        }
+        private void btnCalculateTaxes_Click(object sender, RibbonControlEventArgs e)
+        {
+            CalculateTaxesNomina();
         }
     }
 
@@ -1732,5 +1953,8 @@ namespace EllipseMSO265ExcelAddIn
         public string TaxCode;
         public string TaxDescription;
         public string TaxReference;
+        public decimal TaxRatePerc;
+        public string DefaultToInvoiceItem;
+        public string Deduct;
     }
 }
