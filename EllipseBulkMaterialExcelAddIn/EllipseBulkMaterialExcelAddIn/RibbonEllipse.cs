@@ -432,142 +432,155 @@ namespace EllipseBulkMaterialExcelAddIn
 
                     while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
                     {
-                        var currentHeader = currentRow;
-
-                        var requestSheet = new BMUSheet.BulkMaterialUsageSheetDTO();
-                        var requestItemList = new List<BMUSheetItem.BulkMaterialUsageSheetItemDTO>();
-                        var allRequestItemList = new List<BMUSheetItem.BulkMaterialUsageSheetItemDTO>();
-
-                        _cells.GetCell(1, currentRow).Select();
-
-                        //llenado de variables del encabezado de la hoja
-                        requestSheet.bulkMaterialUsageSheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) : null;
-                        requestSheet.districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) ?? "ICOR";
-                        requestSheet.warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                        requestSheet.defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
-                        requestSheet.defaultAccountCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null;
-                        requestSheet.defaultAccountCode = requestSheet.defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
-                        //Crea el encabezado
-                        var replySheet = proxySheet.create(opSheet, requestSheet);
-
-
-                        //valida si el encabezado tiene errores
-                        if (replySheet.errors.Length > 0)
+                        DateTime usageDate;
+                        if (DateTime.TryParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, out usageDate))
                         {
-                            foreach (var t in replySheet.errors)
-                                _cells.GetCell(ResultColumn01, currentRow).Value += " - " + t.messageText;
 
-                            _cells.GetRange(1, currentHeader, 6, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                            _cells.GetRange(1, currentHeader, 6, currentRow).Select();
-                            currentRow++;
-                        }
-                        else
-                        {
-                            //si el encabezado no tiene errores empueza a agregar los items a la coleccion.
-                            requestSheet.bulkMaterialUsageSheetId = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
-                            _cells.GetCell(1, currentRow).Value = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
+                            var currentHeader = currentRow;
+                            var requestSheet = new BMUSheet.BulkMaterialUsageSheetDTO();
+                            var requestItemList = new List<BMUSheetItem.BulkMaterialUsageSheetItemDTO>();
+                            var allRequestItemList = new List<BMUSheetItem.BulkMaterialUsageSheetItemDTO>();
 
-                            //mientras que el encabezado sea el mismo, llene la lista de items
-                            var sheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
-                            var warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                            var defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
-                            var defaultAccountCode = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null);
-                            defaultAccountCode = defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
+                            _cells.GetCell(1, currentRow).Select();
 
-                            while (
-                                    (
-                                        requestSheet.bulkMaterialUsageSheetId == sheetId ||
-                                        (
-                                            sheetId == null &&
-                                            requestSheet.warehouseId == warehouseId &&
-                                            requestSheet.defaultUsageDate == defaultUsageDate &&
-                                            requestSheet.defaultAccountCode == defaultAccountCode
-                                        )
-                                    )
-                                  )
+                            //llenado de variables del encabezado de la hoja
+                            requestSheet.bulkMaterialUsageSheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) : null;
+                            requestSheet.districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) ?? "ICOR";
+                            requestSheet.warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+
+
+                            requestSheet.defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
+                            requestSheet.defaultAccountCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null;
+                            requestSheet.defaultAccountCode = requestSheet.defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
+                            //Crea el encabezado
+                            var replySheet = proxySheet.create(opSheet, requestSheet);
+
+
+                            //valida si el encabezado tiene errores
+                            if (replySheet.errors.Length > 0)
                             {
-                                ItemListAdd(currentRow, requestSheet, requestItemList, allRequestItemList, excelSheet);
+                                foreach (var t in replySheet.errors)
+                                    _cells.GetCell(ResultColumn01, currentRow).Value += " - " + t.messageText;
+
+                                _cells.GetRange(1, currentHeader, 6, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                                _cells.GetRange(1, currentHeader, 6, currentRow).Select();
                                 currentRow++;
-
-                                sheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
-                                warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                                defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
-                                defaultAccountCode = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null);
-                                defaultAccountCode = defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
                             }
-
-                            try
+                            else
                             {
-                                if (requestItemList.Count > 0)
+                                //si el encabezado no tiene errores empueza a agregar los items a la coleccion.
+                                requestSheet.bulkMaterialUsageSheetId = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
+                                _cells.GetCell(1, currentRow).Value = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
+
+                                //mientras que el encabezado sea el mismo, llene la lista de items
+                                var sheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
+                                var warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+                                var defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
+                                var defaultAccountCode = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null);
+                                defaultAccountCode = defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
+
+                                while (
+                                        (
+                                            requestSheet.bulkMaterialUsageSheetId == sheetId ||
+                                            (
+                                                sheetId == null &&
+                                                requestSheet.warehouseId == warehouseId &&
+                                                requestSheet.defaultUsageDate == defaultUsageDate &&
+                                                requestSheet.defaultAccountCode == defaultAccountCode
+                                            )
+                                        )
+                                      )
                                 {
-                                    //esta operacion agrega la lista de items al encabezado
-                                    var replyItem = proxyItem.multipleCreate(opItem, requestItemList.ToArray());
+                                    ItemListAdd(currentRow, requestSheet, requestItemList, allRequestItemList, excelSheet);
+                                    currentRow++;
 
-                                    //recorre el resultado de la ejecucion de la operacion multipleCreate donde hubo errores.
-                                    var errorCounter = 0;
+                                    sheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
+                                    warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+                                    defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
+                                    defaultAccountCode = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null);
+                                    defaultAccountCode = defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
+                                }
 
-                                    foreach (var rItem in replyItem.Where(rItem => rItem.errors.Length > 0))
+                                try
+                                {
+                                    if (requestItemList.Count > 0)
                                     {
-                                        errorCounter++;
-                                        var errorMessage = rItem.errors.Aggregate("", (current, error) => current + (error.messageText + ", "));
+                                        //esta operacion agrega la lista de items al encabezado
+                                        var replyItem = proxyItem.multipleCreate(opItem, requestItemList.ToArray());
 
-                                        var currentItem = 0;
-                                        foreach (var item in allRequestItemList)
+                                        //recorre el resultado de la ejecucion de la operacion multipleCreate donde hubo errores.
+                                        var errorCounter = 0;
+
+                                        foreach (var rItem in replyItem.Where(rItem => rItem.errors.Length > 0))
                                         {
-                                            if (_cells.GetEmptyIfNull(item.bulkMaterialUsageSheetId).ToUpper() == _cells.GetEmptyIfNull(rItem.bulkMaterialUsageSheetItemDTO.bulkMaterialUsageSheetId) &
-                                                _cells.GetEmptyIfNull(item.bulkMaterialUsageSheetItemId).ToUpper() == _cells.GetEmptyIfNull(rItem.bulkMaterialUsageSheetItemDTO.bulkMaterialUsageSheetItemId)
-                                                )
+                                            errorCounter++;
+                                            var errorMessage = rItem.errors.Aggregate("", (current, error) => current + (error.messageText + ", "));
+
+                                            var currentItem = 0;
+                                            foreach (var item in allRequestItemList)
                                             {
-                                                requestItemList.Remove(item);
-                                                _cells.GetRange(8, currentHeader + currentItem, 13, currentHeader + currentItem).Style = _cells.GetStyle(StyleConstants.Error);
-                                                _cells.GetCell(ResultColumn01, currentHeader + currentItem).Value += errorMessage;
-                                                _cells.GetCell(ResultColumn01, currentHeader + currentItem).Select();
+                                                if (_cells.GetEmptyIfNull(item.bulkMaterialUsageSheetId).ToUpper() == _cells.GetEmptyIfNull(rItem.bulkMaterialUsageSheetItemDTO.bulkMaterialUsageSheetId) &
+                                                    _cells.GetEmptyIfNull(item.bulkMaterialUsageSheetItemId).ToUpper() == _cells.GetEmptyIfNull(rItem.bulkMaterialUsageSheetItemDTO.bulkMaterialUsageSheetItemId)
+                                                    )
+                                                {
+                                                    requestItemList.Remove(item);
+                                                    _cells.GetRange(8, currentHeader + currentItem, 13, currentHeader + currentItem).Style = _cells.GetStyle(StyleConstants.Error);
+                                                    _cells.GetCell(ResultColumn01, currentHeader + currentItem).Value += errorMessage;
+                                                    _cells.GetCell(ResultColumn01, currentHeader + currentItem).Select();
+                                                }
+                                                currentItem++;
                                             }
-                                            currentItem++;
                                         }
-                                    }
 
-                                    if (errorCounter > 0 & requestItemList.Count > 0)
-                                    {
-                                        try
+                                        if (errorCounter > 0 & requestItemList.Count > 0)
                                         {
-                                            var deleteHeader = false;
-                                            replyItem = proxyItem.multipleCreate(opItem, requestItemList.ToArray());
-                                            foreach (var rItem in replyItem.Where(item => item.errors.Length > 0)) { deleteHeader = true; }
-                                            if (deleteHeader)
+                                            try
                                             {
+                                                var deleteHeader = false;
+                                                replyItem = proxyItem.multipleCreate(opItem, requestItemList.ToArray());
+                                                foreach (var rItem in replyItem.Where(item => item.errors.Length > 0)) { deleteHeader = true; }
+                                                if (deleteHeader)
+                                                {
+                                                    DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
+                                                }
+                                                else
+                                                {
+                                                    ApplyHeader(proxySheet, opSheet, requestSheet, currentRow - 1, currentHeader);
+                                                }
+                                            }
+                                            catch (Exception error)
+                                            {
+                                                MessageBox.Show(error.Message);
                                                 DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
                                             }
-                                            else
-                                            {
-                                                ApplyHeader(proxySheet, opSheet, requestSheet, currentRow - 1, currentHeader);
-                                            }
                                         }
-                                        catch (Exception error)
+                                        else if (errorCounter == 0 & requestItemList.Count > 0)
                                         {
-                                            MessageBox.Show(error.Message);
+                                            ApplyHeader(proxySheet, opSheet, requestSheet, currentRow - 1, currentHeader);
+                                        }
+                                        else
+                                        {
                                             DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
                                         }
                                     }
-                                    else if (errorCounter == 0 & requestItemList.Count > 0)
-                                    {
-                                        ApplyHeader(proxySheet, opSheet, requestSheet, currentRow - 1, currentHeader);
-                                    }
                                     else
                                     {
+                                        _cells.GetCell(ResultColumn01, currentRow - 1).Value += "No hay Items para Aplicar en esta hoja!";
                                         DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
                                     }
                                 }
-                                else
+                                catch (Exception error)
                                 {
-                                    _cells.GetCell(ResultColumn01, currentRow - 1).Value += "No hay Items para Aplicar en esta hoja!";
-                                    DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
+                                    MessageBox.Show(error.Message);
                                 }
                             }
-                            catch (Exception error)
-                            {
-                                MessageBox.Show(error.Message);
-                            }
+                        }
+                        else
+                        {
+                            _cells.GetCell(4, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                            _cells.GetCell(ResultColumn01, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                            _cells.GetCell(ResultColumn01, currentRow).Value += "Fecha Errada";
+                            currentRow++;
                         }
                     }
                 }

@@ -195,7 +195,7 @@ namespace VariacionesExcelAddIn
 
             public static string SetMdcAccountsInfoQuery(string efDbReference, string efDbLink, Account a)
             {
-                var query = "MERGE INTO CONSULBO.MDC_PRESUPUESTO T USING ( " +
+                var query = "MERGE INTO SIGMDC.MDC_PRESUPUESTO T USING ( " +
                             "                                                 SELECT " +
                             "                                                     '" + a.AccountCode + "' ACCOUNT, " +
                             "                                                     '" + a.ExpElement + "' EXPELEMENT, " +
@@ -262,7 +262,7 @@ namespace VariacionesExcelAddIn
 
             public static string GetExpElements(string efDbReference, string efDbLink)
             {
-                const string query = "SELECT EXPELEMENT FROM MDC_PRESUPUESTO_DETALLE";
+                const string query = "SELECT EXPELEMENT FROM SIGMDC.MDC_PRESUPUESTO_DETALLE";
                 return query;
             }
         }
