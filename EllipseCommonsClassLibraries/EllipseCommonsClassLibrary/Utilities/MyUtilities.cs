@@ -88,7 +88,13 @@ namespace EllipseCommonsClassLibrary.Utilities
         /// <returns></returns>
         public static string GetListInSeparator<T>(IEnumerable<T> listValues, string separator, string quotation = null)
         {
-            var stringList = listValues.Aggregate("", (current, value) => current + quotation + value + quotation + separator);
+            if (listValues == null)
+                return null;
+            var enumerable = listValues as IList<T> ?? listValues.ToList();
+            
+            if (!enumerable.Any())
+                return null;
+            var stringList = enumerable.Aggregate("", (current, value) => current + quotation + value + quotation + separator);
 
             return stringList.Substring(0, stringList.Length - 1);
         }
