@@ -115,8 +115,8 @@ namespace EllipseMSO265ExcelAddIn
             // 
             this.menuActions.Items.Add(this.menuComments);
             this.menuActions.Items.Add(this.btnReloadParameters);
-            this.menuActions.Items.Add(this.btnValidate);
             this.menuActions.Items.Add(this.btnCalculateTaxes);
+            this.menuActions.Items.Add(this.btnValidate);
             this.menuActions.Items.Add(this.btnLoad);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
