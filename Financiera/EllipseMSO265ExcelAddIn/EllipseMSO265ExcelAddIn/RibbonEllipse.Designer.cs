@@ -46,12 +46,13 @@ namespace EllipseMSO265ExcelAddIn
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
-            this.btnReloadParameters = this.Factory.CreateRibbonButton();
-            this.btnValidate = this.Factory.CreateRibbonButton();
-            this.btnLoad = this.Factory.CreateRibbonButton();
             this.menuComments = this.Factory.CreateRibbonMenu();
             this.btnReviewInternalComments = this.Factory.CreateRibbonButton();
             this.btnUpdateInternalComments = this.Factory.CreateRibbonButton();
+            this.btnReloadParameters = this.Factory.CreateRibbonButton();
+            this.btnValidate = this.Factory.CreateRibbonButton();
+            this.btnCalculateTaxes = this.Factory.CreateRibbonButton();
+            this.btnLoad = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO265.SuspendLayout();
@@ -114,32 +115,12 @@ namespace EllipseMSO265ExcelAddIn
             // 
             this.menuActions.Items.Add(this.menuComments);
             this.menuActions.Items.Add(this.btnReloadParameters);
+            this.menuActions.Items.Add(this.btnCalculateTaxes);
             this.menuActions.Items.Add(this.btnValidate);
             this.menuActions.Items.Add(this.btnLoad);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
-            // 
-            // btnReloadParameters
-            // 
-            this.btnReloadParameters.Label = "Recargar Parametros";
-            this.btnReloadParameters.Name = "btnReloadParameters";
-            this.btnReloadParameters.ShowImage = true;
-            this.btnReloadParameters.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReloadParameters_Click);
-            // 
-            // btnValidate
-            // 
-            this.btnValidate.Label = "Validar";
-            this.btnValidate.Name = "btnValidate";
-            this.btnValidate.ShowImage = true;
-            this.btnValidate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnValidate_Click);
-            // 
-            // btnLoad
-            // 
-            this.btnLoad.Label = "Cargar Datos";
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.ShowImage = true;
-            this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
             // 
             // menuComments
             // 
@@ -162,6 +143,34 @@ namespace EllipseMSO265ExcelAddIn
             this.btnUpdateInternalComments.Name = "btnUpdateInternalComments";
             this.btnUpdateInternalComments.ShowImage = true;
             this.btnUpdateInternalComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateInternalComments_Click);
+            // 
+            // btnReloadParameters
+            // 
+            this.btnReloadParameters.Label = "Recargar Parametros";
+            this.btnReloadParameters.Name = "btnReloadParameters";
+            this.btnReloadParameters.ShowImage = true;
+            this.btnReloadParameters.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReloadParameters_Click);
+            // 
+            // btnValidate
+            // 
+            this.btnValidate.Label = "Validar";
+            this.btnValidate.Name = "btnValidate";
+            this.btnValidate.ShowImage = true;
+            this.btnValidate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnValidate_Click);
+            // 
+            // btnCalculateTaxes
+            // 
+            this.btnCalculateTaxes.Label = "Calcular Impues&tos";
+            this.btnCalculateTaxes.Name = "btnCalculateTaxes";
+            this.btnCalculateTaxes.ShowImage = true;
+            this.btnCalculateTaxes.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCalculateTaxes_Click);
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Label = "Cargar Datos";
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.ShowImage = true;
+            this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
             // 
             // btnStopThread
             // 
@@ -203,6 +212,7 @@ namespace EllipseMSO265ExcelAddIn
         internal RibbonButton btnReviewInternalComments;
         internal RibbonButton btnUpdateInternalComments;
         internal RibbonButton btnStopThread;
+        internal RibbonButton btnCalculateTaxes;
     }
 
     partial class ThisRibbonCollection
