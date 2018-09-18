@@ -78,6 +78,8 @@ namespace MSO627BombasExcelAddIn
 
             _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
             _cells.CreateNewWorksheet(ValidationSheetName);
+            
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
             _cells.GetCell("A1").Value = "CERREJÓN";
             _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);

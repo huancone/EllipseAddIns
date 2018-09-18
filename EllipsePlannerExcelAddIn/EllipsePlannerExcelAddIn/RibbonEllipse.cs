@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Resources;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
@@ -13,7 +12,6 @@ using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
 using EllipseJobsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
-using EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -502,7 +500,7 @@ namespace EllipsePlannerExcelAddIn
                             _cells.GetCell(4, i).Value = j.MaintSchTask;
                             _cells.GetCell(5, i).Value = j.WorkOrder ?? j.StdJobNo;
                             _cells.GetCell(6, i).Value = j.WoTaskNo ?? j.StdJobTask;
-                            _cells.GetCell(7, i).Value = j.WoDesc;
+                            _cells.GetCell(7, i).Value = j.WoTaskDesc;
                             _cells.GetCell(8, i).Value = r.ResourceCode;
                             _cells.GetCell(9, i).Value = r.EstimatedLabourHours;
                             _cells.GetCell(10, i).Value = r.RealLabourHours;

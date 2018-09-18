@@ -35,12 +35,7 @@ namespace EllipseEquipmentClassLibrary
             return list;
         }
 
-        public static List<EquipListItem> FetchListEquipmentsList(EllipseFunctions ef, string equipmentNo)
-        {
-            return FetchListEquipmentsList(ef, EquipListSearchFieldCriteria.EquipmentNo.Key, equipmentNo, EquipListSearchFieldCriteria.None.Key, null, null);
-        }
-
-        public static EquipmentListServiceCreateEquipItemReplyDTO AddEquipmentToList(OperationContext operationContext, string urlService, EquipListItem equipListItem)
+       public static EquipmentListServiceCreateEquipItemReplyDTO AddEquipmentToList(OperationContext operationContext, string urlService, EquipListItem equipListItem)
         {
             var proxyEquip = new EquipmentListService.EquipmentListService();
             var request = new EquipmentListServiceCreateEquipItemRequestDTO()

@@ -11,10 +11,12 @@ namespace EllipseCommonsClassLibrary.Connections
     public static class Configuration
     {
         public static string DefaultServiceFilePath = @"\\lmnoas02\SideLine\EllipsePopups\Ellipse8\";
+        public static string SecondaryServiceFilePath = @"\\pbvshr01\SideLine\EllipsePopups\Ellipse8\";
         public static string DefaultTnsnamesFilePath = @"c:\oracle\product\11.2.0\client\network\ADMIN\";
         public static string DefaultLocalDataPath = @"c:\ellipse\";
         private const string EllipseHomeEnvironmentVariable = "EllipseAddInsHome";
         private const string EllipseServicesEnvironmentVariable = "EllipseServiceUrlFile";
+        private const string EllipseSecondaryServicesEnvironmentVariable = "EllipseSecondaryServiceUrlFile";
         private const string EllipseServicesForcedList = "EllipseServiceForcedList";
 
         public const string ConfigXmlFileName = "EllipseConfiguration.xml";
@@ -58,6 +60,31 @@ namespace EllipseCommonsClassLibrary.Connections
                 //existe y es diferente a environment -> actualiza
                 if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
                     Environment.SetEnvironmentVariable(EllipseHomeEnvironmentVariable, value, EnvironmentVariableTarget.User);
+            }
+        }
+        public static string BackUpServiceFilePath
+        {
+            get
+            {
+                var varService = "" + Environment.GetEnvironmentVariable(EllipseSecondaryServicesEnvironmentVariable, EnvironmentVariableTarget.User);
+                var varServiceExpanded = Environment.ExpandEnvironmentVariables(varService);
+                return string.IsNullOrWhiteSpace(varServiceExpanded) ? SecondaryServiceFilePath : varServiceExpanded;
+            }
+            set
+            {
+                var currentVar = Environment.GetEnvironmentVariable(EllipseSecondaryServicesEnvironmentVariable, EnvironmentVariableTarget.User);
+                //no existe y es igual a _origen -> no hace nada
+                if (string.IsNullOrWhiteSpace(currentVar) && value.Equals(SecondaryServiceFilePath))
+                    return;
+                //no existe y es diferente a _origen -> actualiza
+                if (string.IsNullOrWhiteSpace(currentVar) && !value.Equals(SecondaryServiceFilePath))
+                    Environment.SetEnvironmentVariable(EllipseSecondaryServicesEnvironmentVariable, value, EnvironmentVariableTarget.User);
+                //existe y es igual a environment -> no hace nada
+                if (!string.IsNullOrWhiteSpace(currentVar) && value.Equals(currentVar))
+                    return;
+                //existe y es diferente a environment -> actualiza
+                if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
+                    Environment.SetEnvironmentVariable(EllipseSecondaryServicesEnvironmentVariable, value, EnvironmentVariableTarget.User);
             }
         }
         public static string ServiceFilePath

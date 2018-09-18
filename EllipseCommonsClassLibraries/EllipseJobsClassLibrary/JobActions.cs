@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web.Services.Ellipse.Post;
 using System.Xml.Linq;
@@ -151,7 +150,8 @@ namespace EllipseJobsClassLibrary
                 WoType = (string)dto.Element("woType"),
                 WorkGroup = (string)dto.Element("workGroup"),
                 WorkOrder = (string)dto.Element("workOrder"),
-                WoTaskNo = (string)dto.Element("wOTaskNo")
+                WoTaskNo = (string)dto.Element("wOTaskNo"),
+                WoTaskDesc = (string)dto.Element("taskDescription")
             }).ToList();
 
             foreach (var job in jobs)
@@ -243,7 +243,7 @@ namespace EllipseJobsClassLibrary
                     WorkGroup = drResources["GRUPO"].ToString().Trim(),
                     Date = drResources["FECHA"].ToString().Trim(),
                     ResourceCode = drResources["RECURSO"].ToString().Trim(),
-                    EmployeeId = drResources["EMPLID"].ToString().Trim(),
+                    EmployeeId = drResources["CEDULA"].ToString().Trim(),
                     EmployeeName = drResources["NOMBRE"].ToString().Trim(),
                     AvailableLabourHours = !string.IsNullOrEmpty(drResources["HORAS"].ToString().Trim())? Convert.ToDouble(drResources["HORAS"].ToString().Trim()):0
                 };
@@ -403,27 +403,26 @@ namespace EllipseJobsClassLibrary
                         "    WE.WORK_GROUP GRUPO, " +
                         "    FECHAS.FECHA, " +
                         "    EMP.RESOURCE_TYPE RECURSO, " +
-                        "    TURNOS.EMPLID, " +
+                        "    TURNOS.CEDULA, " +
                         "    TRIM(EMP.FIRST_NAME) || ' ' || TRIM(EMP.SURNAME) NOMBRE, " +
-                        "    TURNOS.HORAS HORAS " +
+                        "    TURNOS.HORAS " +
                         "  FROM " +
                         "    " + dbReference + ".MSF810" + dbLink + " EMP " +
                         "    INNER JOIN " + dbReference + ".MSF723" + dbLink + " WE " +
                         "    ON EMP.EMPLOYEE_ID = WE.EMPLOYEE_ID " +
                         "    AND   WE.STOP_DT_REVSD = '00000000' " +
                         "    AND WE.WORK_GROUP IN (" + groupList.Aggregate("", (current, g) => current + "'" + g + "'") + ") " +
-                        "    LEFT JOIN SIGMDC.MDC_EXPLOTACION TURNOS " +
-                        "    ON LPAD(EMP.EMPLOYEE_ID,11,'0') = LPAD(TURNOS.EMPLID,11,'0') " +
-                        "    AND   TURNOS.TIPO_NOVDD = 'T' " +
+                        "    LEFT JOIN SIGMAN.ASISTENCIA TURNOS " +
+                        "    ON LPAD(EMP.EMPLOYEE_ID,11,'0') = LPAD(TURNOS.CEDULA,11,'0') " +
                         "    INNER JOIN FECHAS " +
-                        "    ON   TO_CHAR(TURNOS.FEC_JORND,'YYYYMMDD') = FECHAS.FECHA " +
+                        "    ON   TURNOS.FECHAP = FECHAS.FECHA " +
                         "  WHERE " +
                         "    TRIM(EMP.RESOURCE_TYPE) IS NOT NULL  " +
                         "    AND   TRIM(EMP.RESOURCE_TYPE) NOT IN ('SMPT','SSUP') " +
                         "ORDER BY WE.WORK_GROUP, " +
                         "    FECHAS.FECHA, " +
                         "    EMP.RESOURCE_TYPE, " +
-                        "    TURNOS.EMPLID ";
+                        "    TURNOS.CEDULA ";
             return query;
         }
 

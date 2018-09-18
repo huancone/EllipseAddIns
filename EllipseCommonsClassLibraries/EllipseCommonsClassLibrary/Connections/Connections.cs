@@ -41,10 +41,22 @@ namespace EllipseCommonsClassLibrary.Connections
                 serviceType = ServiceType.EwsService;
 
             var serviceFile = Configuration.ServiceFilePath + "\\" + Configuration.ConfigXmlFileName;
-            if (!File.Exists(serviceFile))
-                throw new Exception("No se puede leer el archivo de configuración de servicios de Ellipse. Asegúrese de que el archivo exista o cree un archivo local.");
+            var serviceFileBackUp = Configuration.BackUpServiceFilePath + "\\" + Configuration.ConfigXmlFileName;
 
-            var xmlDoc = XDocument.Load(serviceFile);
+            XDocument xmlDoc;
+            if (File.Exists(serviceFile))
+            {
+                xmlDoc = XDocument.Load(serviceFile);
+            }
+            else if (File.Exists(serviceFileBackUp))
+            {
+                xmlDoc = XDocument.Load(serviceFileBackUp);
+            }
+            else
+            {
+                throw new Exception("No se puede leer el archivo de configuración de servicios de Ellipse. Asegúrese de que el archivo exista o cree un archivo local.");
+            }
+
             string urlServer;
             if (serviceType.Equals(ServiceType.EwsService))
             {
@@ -87,13 +99,24 @@ namespace EllipseCommonsClassLibrary.Connections
             {
                 var xmlDoc = new XmlDocument();
                 var urlPath = Configuration.ServiceFilePath + Configuration.ConfigXmlFileName;
-                xmlDoc.Load(urlPath);
+                var urlPathBackUp = Configuration.SecondaryServiceFilePath + Configuration.ConfigXmlFileName;
 
-                const string fullNode = "//ellipse/url";
-                var nodeItemList = xmlDoc.SelectSingleNode(fullNode).ChildNodes;
+                if (File.Exists(urlPath))
+                {
+                    xmlDoc.Load(urlPath);
+                }
+                else if (File.Exists(urlPathBackUp))
+                {
+                    xmlDoc.Load(urlPathBackUp);
+                }
+                else
+                {
+                    throw new Exception("No se puede leer el archivo de configuración de servicios de Ellipse. Asegúrese de que el archivo exista o cree un archivo local.");
+                }const string fullNode = "//ellipse/url";
+                    var nodeItemList = xmlDoc.SelectSingleNode(fullNode).ChildNodes;
 
-                foreach (XmlNode item in nodeItemList)
-                    enviromentList.Add(item.Name);
+                    foreach (XmlNode item in nodeItemList)
+                        enviromentList.Add(item.Name);
             }
             else
             {
