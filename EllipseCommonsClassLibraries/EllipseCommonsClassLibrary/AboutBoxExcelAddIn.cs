@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using EllipseCommonsClassLibrary.Connections;
+
 // ReSharper disable ConvertPropertyToExpressionBody
 
 namespace EllipseCommonsClassLibrary
@@ -23,6 +26,21 @@ namespace EllipseCommonsClassLibrary
             this.textBoxDescription.Text = AssemblyDescription;
             this.labelDeveloper1.Text = AssemblyDeveloper1;
             this.labelDeveloper2.Text = AssemblyDeveloper2;
+        }
+
+        public AboutBoxExcelAddIn(string developerName1, string developerName2)
+        {
+            _addInAssembly = Assembly.GetCallingAssembly();
+
+            InitializeComponent();
+            this.Text = string.Format("About {0}", AssemblyTitle);
+            this.labelProductName.Text = AssemblyProduct;
+            this.labelVersion.Text = string.Format("Version {0}", AssemblyVersion);
+            this.labelCopyright.Text = AssemblyCopyright;
+            this.labelCompanyName.Text = AssemblyCompany;
+            this.textBoxDescription.Text = AssemblyDescription;
+            this.labelDeveloper1.Text = developerName1;
+            this.labelDeveloper2.Text = developerName2;
         }
 
         #region Assembly Attribute Accessors
@@ -124,6 +142,18 @@ namespace EllipseCommonsClassLibrary
             if (_indexSettings > 3)
             {
                 new SettingsBox(AssemblyProduct).ShowDialog();
+            }
+        }
+
+        private void btnRepository_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(Configuration.DefaultRepositoryFilePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"No se puede abrir la ruta especificada. Asegúrese que la ruta es correcta e intente de nuevo." + ex.Message, @"Abrir directorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

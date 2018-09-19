@@ -38,6 +38,7 @@
             this.labelDeveloper1 = new System.Windows.Forms.Label();
             this.labelDeveloper2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.btnRepository = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.tableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
@@ -168,6 +169,7 @@
             this.tableLayoutPanel.Controls.Add(this.labelCopyright, 1, 2);
             this.tableLayoutPanel.Controls.Add(this.labelCompanyName, 1, 3);
             this.tableLayoutPanel.Controls.Add(this.okButton, 1, 7);
+            this.tableLayoutPanel.Controls.Add(this.btnRepository, 0, 7);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(9, 9);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -186,6 +188,16 @@
             this.tableLayoutPanel.Size = new System.Drawing.Size(417, 243);
             this.tableLayoutPanel.TabIndex = 0;
             this.tableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Paint);
+            // 
+            // btnRepository
+            // 
+            this.btnRepository.Location = new System.Drawing.Point(3, 212);
+            this.btnRepository.Name = "btnRepository";
+            this.btnRepository.Size = new System.Drawing.Size(131, 23);
+            this.btnRepository.TabIndex = 28;
+            this.btnRepository.Text = "Ir al &Repositorio";
+            this.btnRepository.UseVisualStyleBackColor = true;
+            this.btnRepository.Click += new System.EventHandler(this.btnRepository_Click);
             // 
             // AboutBoxExcelAddIn
             // 
@@ -222,6 +234,7 @@
         private System.Windows.Forms.Label labelDeveloper2;
         private System.Windows.Forms.Label labelDeveloper1;
         private System.Windows.Forms.TextBox textBoxDescription;
+        private System.Windows.Forms.Button btnRepository;
 
     }
 }

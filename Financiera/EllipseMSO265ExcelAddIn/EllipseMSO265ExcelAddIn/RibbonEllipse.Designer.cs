@@ -43,6 +43,7 @@ namespace EllipseMSO265ExcelAddIn
             this.menuFormats = this.Factory.CreateRibbonMenu();
             this.btnFormatCesantias = this.Factory.CreateRibbonButton();
             this.btnNomina = this.Factory.CreateRibbonButton();
+            this.btnFormatNonOrderInvoice = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
@@ -50,8 +51,8 @@ namespace EllipseMSO265ExcelAddIn
             this.btnReviewInternalComments = this.Factory.CreateRibbonButton();
             this.btnUpdateInternalComments = this.Factory.CreateRibbonButton();
             this.btnReloadParameters = this.Factory.CreateRibbonButton();
-            this.btnValidate = this.Factory.CreateRibbonButton();
             this.btnCalculateTaxes = this.Factory.CreateRibbonButton();
+            this.btnValidate = this.Factory.CreateRibbonButton();
             this.btnLoad = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
@@ -83,6 +84,7 @@ namespace EllipseMSO265ExcelAddIn
             // 
             this.menuFormats.Items.Add(this.btnFormatCesantias);
             this.menuFormats.Items.Add(this.btnNomina);
+            this.menuFormats.Items.Add(this.btnFormatNonOrderInvoice);
             this.menuFormats.Label = "Formatos";
             this.menuFormats.Name = "menuFormats";
             // 
@@ -99,6 +101,13 @@ namespace EllipseMSO265ExcelAddIn
             this.btnNomina.Name = "btnNomina";
             this.btnNomina.ShowImage = true;
             this.btnNomina.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnNomina_Click);
+            // 
+            // btnFormatNonOrderInvoice
+            // 
+            this.btnFormatNonOrderInvoice.Label = "Formato NonOrderInvoice";
+            this.btnFormatNonOrderInvoice.Name = "btnFormatNonOrderInvoice";
+            this.btnFormatNonOrderInvoice.ShowImage = true;
+            this.btnFormatNonOrderInvoice.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatNonOrderInvoice_Click);
             // 
             // btnAbout
             // 
@@ -151,19 +160,19 @@ namespace EllipseMSO265ExcelAddIn
             this.btnReloadParameters.ShowImage = true;
             this.btnReloadParameters.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReloadParameters_Click);
             // 
-            // btnValidate
-            // 
-            this.btnValidate.Label = "Validar";
-            this.btnValidate.Name = "btnValidate";
-            this.btnValidate.ShowImage = true;
-            this.btnValidate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnValidate_Click);
-            // 
             // btnCalculateTaxes
             // 
             this.btnCalculateTaxes.Label = "Calcular Impues&tos";
             this.btnCalculateTaxes.Name = "btnCalculateTaxes";
             this.btnCalculateTaxes.ShowImage = true;
             this.btnCalculateTaxes.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCalculateTaxes_Click);
+            // 
+            // btnValidate
+            // 
+            this.btnValidate.Label = "Validar";
+            this.btnValidate.Name = "btnValidate";
+            this.btnValidate.ShowImage = true;
+            this.btnValidate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnValidate_Click);
             // 
             // btnLoad
             // 
@@ -213,6 +222,7 @@ namespace EllipseMSO265ExcelAddIn
         internal RibbonButton btnUpdateInternalComments;
         internal RibbonButton btnStopThread;
         internal RibbonButton btnCalculateTaxes;
+        internal RibbonButton btnFormatNonOrderInvoice;
     }
 
     partial class ThisRibbonCollection

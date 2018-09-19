@@ -10,6 +10,7 @@ namespace EllipseCommonsClassLibrary.Connections
 {
     public static class Configuration
     {
+        public const string DefaultRepositoryFilePath = @"\\lmnoas02\Shared\Sistemas\Mina\Proyecto Ellipse\Ellipse 8\ExcelAddIn_E8 (Loaders)\";
         public static string DefaultServiceFilePath = @"\\lmnoas02\SideLine\EllipsePopups\Ellipse8\";
         public static string SecondaryServiceFilePath = @"\\pbvshr01\SideLine\EllipsePopups\Ellipse8\";
         public static string DefaultTnsnamesFilePath = @"c:\oracle\product\11.2.0\client\network\ADMIN\";
