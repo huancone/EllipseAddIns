@@ -3,33 +3,33 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Services.Ellipse;
-using Microsoft.Office.Tools.Ribbon;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
 using EllipseWorkOrdersClassLibrary;
-using Excel = Microsoft.Office.Interop.Excel;
-using System.Windows.Forms;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Excel;
+using Microsoft.Office.Tools.Ribbon;
+using Application = Microsoft.Office.Interop.Excel.Application;
+using Screen = EllipseCommonsClassLibrary.ScreenService;
 
 namespace EllipseInstFinalizarInterventoriaExcelAddIn
 {
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     public partial class RibbonEllipse
     {
-        ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate(); 
-        Excel.Application _excelApp;
-
         private const string SheetName01 = "FinalizarInterventoria";
         private const int TitleRow01 = 5;
         private const int ResultColumn01 = 12;
         private const string TableName01 = "FinalizarInterTable";
         private const string DistrictCode = "INST";
         private const string WorkGroup = "CALLCEN";
+        private ExcelStyleCells _cells;
+        private EllipseFunctions _eFunctions = new EllipseFunctions();
+        private Application _excelApp;
+        private FormAuthenticate _frmAuth = new FormAuthenticate();
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
@@ -39,15 +39,16 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
-                item.Label = env; 
+                item.Label = env;
                 drpEnviroment.Items.Add(item);
-            }   
+            }
         }
 
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
         }
+
         private void btnClearSheet_Click(object sender, RibbonControlEventArgs e)
         {
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName01))
@@ -75,7 +76,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                
+
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
@@ -132,16 +133,17 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                 _cells.GetRange(11, TitleRow01, 12, TitleRow01).Style = StyleConstants.TitleResult;
 
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-                
-                var table = _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1), TableName01);
 
-                ListObject tableObject = Globals.Factory.GetVstoObject(table);
+                var table = _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1),
+                    TableName01);
+
+                var tableObject = Globals.Factory.GetVstoObject(table);
                 tableObject.Change += GetWorkOrderStatusDataChangedValue;
-                
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:FormatSheet()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
@@ -180,7 +182,6 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
 
                 var i = TitleRow01 + 1;
                 while ("" + _cells.GetCell(1, i).Value != "")
-                {
                     try
                     {
                         var wo = new WorkOrder();
@@ -195,10 +196,13 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                         }
                         catch (Exception ex)
                         {
-                            Debugger.LogError("RibbonEllipse:UpdateData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                            Debugger.LogError("RibbonEllipse:UpdateData()",
+                                "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
+                                ex.StackTrace);
                             _cells.GetCell(ResultColumn01 - 1, i).Value2 = ex.Message;
                             _cells.GetCell(ResultColumn01 - 1, i).Style = StyleConstants.Error;
                         }
+
                         try //finalizo la orden
                         {
                             WorkOrderActions.FinalizeWorkOrder(urlService, opSheet, wo);
@@ -207,26 +211,30 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                         }
                         catch (Exception ex)
                         {
-                            Debugger.LogError("RibbonEllipse:UpdateData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                            Debugger.LogError("RibbonEllipse:UpdateData()",
+                                "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
+                                ex.StackTrace);
                             _cells.GetCell(ResultColumn01, i).Value2 = ex.Message;
                             _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
                         }
                     }
                     catch (Exception ex)
                     {
-                        Debugger.LogError("RibbonEllipse:UpdateData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                        Debugger.LogError("RibbonEllipse:UpdateData()",
+                            "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
+                            ex.StackTrace);
                         _cells.GetCell(ResultColumn01, i).Value2 = ex.Message;
                     }
                     finally
                     {
                         i++;
                     }
-                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Debugger.LogError("RibbonEllipse:UpdateDate()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:UpdateDate()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
             }
             finally
             {
@@ -234,7 +242,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
             }
         }
 
-        void GetWorkOrderStatusDataChangedValue(Excel.Range target, ListRanges changedRanges)//Excel.Range target)
+        private void GetWorkOrderStatusDataChangedValue(Range target, ListRanges changedRanges) //Excel.Range target)
         {
             try
             {
@@ -248,14 +256,14 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
 
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
                 var workOrderData =
-                    _eFunctions.GetQueryResult(Queries.GetWorkOrderStatusQuery(_eFunctions.dbReference, _eFunctions.dbLink,
+                    _eFunctions.GetQueryResult(Queries.GetWorkOrderStatusQuery(_eFunctions.dbReference,
+                        _eFunctions.dbLink,
                         DistrictCode, new List<string>(GetCompleteCodeList().Keys), WorkGroup,
                         target.Text));
-
-                if (workOrderData != null && !workOrderData.IsClosed && workOrderData.HasRows)
+                if (workOrderData == null) return;
+                if (!workOrderData.IsClosed && workOrderData.HasRows)
                 {
                     workOrderData.Read();
-
                     _cells.GetCell(3, target.Row).Value = workOrderData["CLIENTE"].ToString().Trim();
                     _cells.GetCell(4, target.Row).Value = workOrderData["CODESTADO"].ToString().Trim();
                     _cells.GetCell(5, target.Row).Value = workOrderData["ESTADOOT"].ToString().Trim();
@@ -265,8 +273,10 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                     _cells.GetCell(9, target.Row).Value = workOrderData["VALESABIERTOS"].ToString().Trim();
                     _cells.GetCell(10, target.Row).Value = workOrderData["DEMORASABIERTAS"].ToString().Trim();
                     _cells.GetCell(11, target.Row).Value = workOrderData["REQ_BY_DATE"].ToString().Trim();
-                    _cells.GetCell(12, target.Row).Value = (workOrderData["FINAL_COSTS"].ToString().Trim().Equals("Y") ? "FINALIZADA" : "");
-
+                    _cells.GetCell(12, target.Row).Value =
+                        workOrderData["FINAL_COSTS"].ToString().Trim().Equals("Y")
+                            ? "FINALIZADA"
+                            : "";
                 }
                 else
                 {
@@ -277,12 +287,11 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                     _cells.GetCell(7, target.Row).Value = "";
                     _cells.GetCell(8, target.Row).Value = "";
                     _cells.GetCell(9, target.Row).Value = "";
-                    _cells.GetCell(10, target.Row).Value =  "";
+                    _cells.GetCell(10, target.Row).Value = "";
                     _cells.GetCell(11, target.Row).Value = "";
                     _cells.GetCell(12, target.Row).Value = "";
                     _cells.GetCell(2, target.Row).Value = "ORDEN NO ENCONTRADA";
                 }
-
             }
             catch (NullReferenceException)
             {
@@ -340,9 +349,9 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
 
     public static class Queries
     {
-        public static string GetWorkOrderStatusQuery(string dbReference, string dbLink, string districtCode, List<string> jobDurCodesList, string workGroup, string workOrder)
+        public static string GetWorkOrderStatusQuery(string dbReference, string dbLink, string districtCode,
+            List<string> jobDurCodesList, string workGroup, string workOrder)
         {
-
             var jobCodes = jobDurCodesList.Aggregate("", (current, jc) => current + "'" + jc + "', ");
 
             jobCodes = jobCodes.Substring(0, jobCodes.Length - 2);

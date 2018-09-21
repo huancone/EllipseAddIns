@@ -23,6 +23,7 @@ using Screen = EllipseCommonsClassLibrary.ScreenService;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UseNullPropagation
 // ReSharper disable LoopCanBeConvertedToQuery
+// ReSharper disable SuggestVarOrType_BuiltInTypes
 
 namespace EllipseMSO265ExcelAddIn
 {
@@ -72,7 +73,7 @@ namespace EllipseMSO265ExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01N)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01N ||  _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01X)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -161,7 +162,6 @@ namespace EllipseMSO265ExcelAddIn
 
             _cells.GetRange(1, TitleRow01 + 1, ResultColumn01X, TitleRow01 + 1).NumberFormat = NumberFormatConstants.Text;
             _cells.GetCell(5, TitleRow01 + 1).NumberFormat = "$ #,##0.00";
-            _cells.GetCell(10, TitleRow01 + 1).NumberFormat = "$ #,##0.00";
             _cells.GetCell(16, TitleRow01 + 1).NumberFormat = "$ #,##0.00";
             _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01X, TitleRow01 + 1), TableName01X);
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
@@ -807,7 +807,7 @@ namespace EllipseMSO265ExcelAddIn
         {
             try
             {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01N)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01N || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01X)
                 {
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -1163,11 +1163,11 @@ namespace EllipseMSO265ExcelAddIn
                     requestXml = requestXml + "					</screenField>";
                     requestXml = requestXml + "					<screenField>";
                     requestXml = requestXml + "						<name>WORK_ORDER1I1</name>";
-                    requestXml = requestXml + "						<value>" + nominaInfo.Account + "</value>";
+                    requestXml = requestXml + "						<value>" + nominaInfo.WorkOrderProjectNo + "</value>";
                     requestXml = requestXml + "					</screenField>";
                     requestXml = requestXml + "					<screenField>";
                     requestXml = requestXml + "						<name>WORK_PROJ_IND1</name>";
-                    requestXml = requestXml + "						<value>" + nominaInfo.Account + "</value>";
+                    requestXml = requestXml + "						<value>" + nominaInfo.WorkOrderProjectIndicator + "</value>";
                     requestXml = requestXml + "					</screenField>";
                     if (valorImpuesto > 0)
                     {
