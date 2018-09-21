@@ -847,7 +847,6 @@ namespace EllipseMSO265ExcelAddIn
             //selección de acción hoja
             int resultColumn = 0;
             int itemIndexValue = 0;
-            int totalIndexValue = 0;
             int taxIndexValue = 0;
             int groupTaxIndexValue = 0;
             int additionalTaxIndexValue = 0;
@@ -931,13 +930,13 @@ namespace EllipseMSO265ExcelAddIn
                     if (string.IsNullOrWhiteSpace(valorImpuestoString) || valorImpuesto == calculatedTaxValue)
                     {
                         _cells.GetCell(taxIndexValue, currentRow).Value = calculatedTaxValue;
-                        _cells.GetCell(resultColumn, currentRow).Value = "Impuesto Calculado " + calculatedTaxValue;
+                        _cells.GetCell(resultColumn, currentRow).Value = "Impuesto Calculado: " + calculatedTaxValue;
                         _cells.GetCell(resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
                     }
                     else if (valorImpuesto != calculatedTaxValue)
                     {
                         _cells.GetCell(taxIndexValue, currentRow).Value = calculatedTaxValue;
-                        _cells.GetCell(resultColumn, currentRow).Value = "Impuesto Calculado. Valor anterior: " + valorImpuesto;
+                        _cells.GetCell(resultColumn, currentRow).Value = "Impuesto Calculado: " + calculatedTaxValue + ". Valor anterior: " + valorImpuesto;
                         _cells.GetCell(resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Warning);
                     }
                     _cells.GetCell(resultColumn, currentRow).Select();
@@ -1101,10 +1100,13 @@ namespace EllipseMSO265ExcelAddIn
                     requestXml = requestXml + "						<name>SUPPLIER_NO1I</name>";
                     requestXml = requestXml + "						<value>" + nominaInfo.SupplierNo + "</value>";
                     requestXml = requestXml + "					</screenField>";
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>MNEMONIC1I</name>";
-                    requestXml = requestXml + "						<value>" + nominaInfo.SupplierMnemonic + "</value>";
-                    requestXml = requestXml + "					</screenField>";
+                    if (string.IsNullOrWhiteSpace(nominaInfo.SupplierNo) && !string.IsNullOrWhiteSpace(nominaInfo.SupplierMnemonic))
+                    {
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>MNEMONIC1I</name>";
+                        requestXml = requestXml + "						<value>" + nominaInfo.SupplierMnemonic + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                    }
                     requestXml = requestXml + "					<screenField>";
                     requestXml = requestXml + "						<name>INV_NO1I</name>";
                     requestXml = requestXml + "						<value>" + nominaInfo.InvoiceNo + "</value>";
@@ -1203,41 +1205,43 @@ namespace EllipseMSO265ExcelAddIn
                         throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
                     
                     //Pantalla de información del proveedor a la que ingresa internamente por el MNEMONIC / Cedula
-                    if (!responseDto.ResponseString.Contains("MSM202A"))
-                        throw new Exception("Se ha producido un error al intentar validar la información del Supplier");
-                    requestXml = "<interaction> ";
-                    requestXml = requestXml + "	<actions> ";
-                    requestXml = requestXml + "		<action> ";
-                    requestXml = requestXml + "			<name>submitScreen</name> ";
-                    requestXml = requestXml + "			<data> ";
-                    requestXml = requestXml + "				<inputs> ";
-                    requestXml = requestXml + "					<screenField> ";
-                    requestXml = requestXml + "						<name>SUP_MNEMONIC1I</name> ";
-                    requestXml = requestXml + "						<value>" + nominaInfo.SupplierMnemonic + "</value> ";
-                    requestXml = requestXml + "					</screenField> ";
-                    requestXml = requestXml + "					<screenField> ";
-                    requestXml = requestXml + "						<name>SUP_STATUS_IND1I</name> ";
-                    requestXml = requestXml + "						<value>A</value> ";
-                    requestXml = requestXml + "					</screenField> ";
-                    requestXml = requestXml + "				</inputs> ";
-                    requestXml = requestXml + "				<screenName>MSM202A</screenName> ";
-                    requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
-                    requestXml = requestXml + "			</data> ";
-                    requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
-                    requestXml = requestXml + "		</action> ";
-                    requestXml = requestXml + "	</actions> ";
-                    requestXml = requestXml + "	<chains/> ";
-                    requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
-                    requestXml = requestXml + "	<application>ServiceInteraction</application> ";
-                    requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
-                    requestXml = requestXml + "</interaction> ";
+                    if (string.IsNullOrWhiteSpace(nominaInfo.SupplierNo) && !string.IsNullOrWhiteSpace(nominaInfo.SupplierMnemonic))
+                    {
+                        if (!responseDto.ResponseString.Contains("MSM202A"))
+                            throw new Exception("Se ha producido un error al intentar validar la información del Supplier");
+                        requestXml = "<interaction> ";
+                        requestXml = requestXml + "	<actions> ";
+                        requestXml = requestXml + "		<action> ";
+                        requestXml = requestXml + "			<name>submitScreen</name> ";
+                        requestXml = requestXml + "			<data> ";
+                        requestXml = requestXml + "				<inputs> ";
+                        requestXml = requestXml + "					<screenField> ";
+                        requestXml = requestXml + "						<name>SUP_MNEMONIC1I</name> ";
+                        requestXml = requestXml + "						<value>" + nominaInfo.SupplierMnemonic + "</value> ";
+                        requestXml = requestXml + "					</screenField> ";
+                        requestXml = requestXml + "					<screenField> ";
+                        requestXml = requestXml + "						<name>SUP_STATUS_IND1I</name> ";
+                        requestXml = requestXml + "						<value>A</value> ";
+                        requestXml = requestXml + "					</screenField> ";
+                        requestXml = requestXml + "				</inputs> ";
+                        requestXml = requestXml + "				<screenName>MSM202A</screenName> ";
+                        requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
+                        requestXml = requestXml + "			</data> ";
+                        requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
+                        requestXml = requestXml + "		</action> ";
+                        requestXml = requestXml + "	</actions> ";
+                        requestXml = requestXml + "	<chains/> ";
+                        requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
+                        requestXml = requestXml + "	<application>ServiceInteraction</application> ";
+                        requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
+                        requestXml = requestXml + "</interaction> ";
 
-                    requestXml = requestXml.Replace("&", "&amp;");
-                    responseDto = _eFunctions.ExecutePostRequest(requestXml);
+                        requestXml = requestXml.Replace("&", "&amp;");
+                        responseDto = _eFunctions.ExecutePostRequest(requestXml);
 
-                    if (responseDto.GotErrorMessages())
-                        throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
-
+                        if (responseDto.GotErrorMessages())
+                            throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                    }
                     // - supplier selection
 
                     //Pantalla de Impuestos
@@ -1520,9 +1524,16 @@ namespace EllipseMSO265ExcelAddIn
                     requestXml = requestXml + "						<value>" + _frmAuth.EllipseDsct + "</value>";
                     requestXml = requestXml + "					</screenField>";
                     requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>MNEMONIC1I</name>";
-                    requestXml = requestXml + "						<value>" + nominaInfo.SupplierMnemonic + "</value>";
+                    requestXml = requestXml + "						<name>SUPPLIER_NO1I</name>";
+                    requestXml = requestXml + "						<value>" + nominaInfo.SupplierNo + "</value>";
                     requestXml = requestXml + "					</screenField>";
+                    if (string.IsNullOrWhiteSpace(nominaInfo.SupplierNo) && !string.IsNullOrWhiteSpace(nominaInfo.SupplierMnemonic))
+                    {
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>MNEMONIC1I</name>";
+                        requestXml = requestXml + "						<value>" + nominaInfo.SupplierMnemonic + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                    }
                     requestXml = requestXml + "					<screenField>";
                     requestXml = requestXml + "						<name>INV_NO1I</name>";
                     requestXml = requestXml + "						<value>" + nominaInfo.InvoiceNo + "</value>";
@@ -1613,41 +1624,43 @@ namespace EllipseMSO265ExcelAddIn
                         throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
 
                     //Pantalla de información del proveedor a la que ingresa internamente por el MNEMONIC / Cedula
-                    if (!responseDto.ResponseString.Contains("MSM202A"))
-                        throw new Exception("Se ha producido un error al intentar validar la información del Supplier");
-                    requestXml = "<interaction> ";
-                    requestXml = requestXml + "	<actions> ";
-                    requestXml = requestXml + "		<action> ";
-                    requestXml = requestXml + "			<name>submitScreen</name> ";
-                    requestXml = requestXml + "			<data> ";
-                    requestXml = requestXml + "				<inputs> ";
-                    requestXml = requestXml + "					<screenField> ";
-                    requestXml = requestXml + "						<name>SUP_MNEMONIC1I</name> ";
-                    requestXml = requestXml + "						<value>" + nominaInfo.SupplierMnemonic + "</value> ";
-                    requestXml = requestXml + "					</screenField> ";
-                    requestXml = requestXml + "					<screenField> ";
-                    requestXml = requestXml + "						<name>SUP_STATUS_IND1I</name> ";
-                    requestXml = requestXml + "						<value>A</value> ";
-                    requestXml = requestXml + "					</screenField> ";
-                    requestXml = requestXml + "				</inputs> ";
-                    requestXml = requestXml + "				<screenName>MSM202A</screenName> ";
-                    requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
-                    requestXml = requestXml + "			</data> ";
-                    requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
-                    requestXml = requestXml + "		</action> ";
-                    requestXml = requestXml + "	</actions> ";
-                    requestXml = requestXml + "	<chains/> ";
-                    requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
-                    requestXml = requestXml + "	<application>ServiceInteraction</application> ";
-                    requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
-                    requestXml = requestXml + "</interaction> ";
+                    if (string.IsNullOrWhiteSpace(nominaInfo.SupplierNo) && !string.IsNullOrWhiteSpace(nominaInfo.SupplierMnemonic))
+                    {
+                        if (!responseDto.ResponseString.Contains("MSM202A"))
+                            throw new Exception("Se ha producido un error al intentar validar la información del Supplier");
+                        requestXml = "<interaction> ";
+                        requestXml = requestXml + "	<actions> ";
+                        requestXml = requestXml + "		<action> ";
+                        requestXml = requestXml + "			<name>submitScreen</name> ";
+                        requestXml = requestXml + "			<data> ";
+                        requestXml = requestXml + "				<inputs> ";
+                        requestXml = requestXml + "					<screenField> ";
+                        requestXml = requestXml + "						<name>SUP_MNEMONIC1I</name> ";
+                        requestXml = requestXml + "						<value>" + nominaInfo.SupplierMnemonic + "</value> ";
+                        requestXml = requestXml + "					</screenField> ";
+                        requestXml = requestXml + "					<screenField> ";
+                        requestXml = requestXml + "						<name>SUP_STATUS_IND1I</name> ";
+                        requestXml = requestXml + "						<value>A</value> ";
+                        requestXml = requestXml + "					</screenField> ";
+                        requestXml = requestXml + "				</inputs> ";
+                        requestXml = requestXml + "				<screenName>MSM202A</screenName> ";
+                        requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
+                        requestXml = requestXml + "			</data> ";
+                        requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
+                        requestXml = requestXml + "		</action> ";
+                        requestXml = requestXml + "	</actions> ";
+                        requestXml = requestXml + "	<chains/> ";
+                        requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
+                        requestXml = requestXml + "	<application>ServiceInteraction</application> ";
+                        requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
+                        requestXml = requestXml + "</interaction> ";
 
-                    requestXml = requestXml.Replace("&", "&amp;");
-                    responseDto = _eFunctions.ExecutePostRequest(requestXml);
+                        requestXml = requestXml.Replace("&", "&amp;");
+                        responseDto = _eFunctions.ExecutePostRequest(requestXml);
 
-                    if (responseDto.GotErrorMessages())
-                        throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
-
+                        if (responseDto.GotErrorMessages())
+                            throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                    }
                     // - supplier selection
 
                     //Pantalla de Impuestos

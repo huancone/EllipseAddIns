@@ -58,7 +58,6 @@ namespace EllipseMSO265ExcelAddIn
             this.tabEllipse.SuspendLayout();
             this.grpMSO265.SuspendLayout();
             this.box1.SuspendLayout();
-            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -201,7 +200,6 @@ namespace EllipseMSO265ExcelAddIn
             this.grpMSO265.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
-            this.ResumeLayout(false);
 
         }
 
