@@ -1087,7 +1087,7 @@ namespace EllipseWorkOrdersClassLibrary
                     if (item.RefCode == null)
                         continue;
                     var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext, item);
-                    var stdTextId = replyRefCode.stdTxtKey;
+                    var stdTextId = replyRefCode.entityValue;
                     if (string.IsNullOrWhiteSpace(stdTextId))
                         throw new Exception("No se recibió respuesta");
                     message.Add("Actualizado " + item.ShortName);
@@ -1239,6 +1239,7 @@ namespace EllipseWorkOrdersClassLibrary
 
                 task.AssignPerson = "" + stdDataReader["ASSIGN_PERSON"].ToString().Trim();
                 task.EstimatedMachHrs = "" + stdDataReader["EST_MACH_HRS"].ToString().Trim();
+                task.PlanStartDate = "" + stdDataReader["PLAN_STR_DATE"].ToString().Trim();
 
                 task.EstimatedDurationsHrs = "" + stdDataReader["TSK_DUR_HOURS"].ToString().Trim();
                 task.NoLabor = "" + stdDataReader["NO_REC_LABOR"].ToString().Trim();
@@ -1315,6 +1316,7 @@ namespace EllipseWorkOrdersClassLibrary
             requestWoTask.assignPerson = woTask.AssignPerson ?? requestWoTask.assignPerson;
             requestWoTask.estimatedMachHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
             requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs);
+            requestWoTask.planStrDate = woTask.PlanStartDate ?? requestWoTask.planStrDate;
             requestWoTask.tskDurationsHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
             requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs);
             requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
@@ -1991,6 +1993,7 @@ namespace EllipseWorkOrdersClassLibrary
                             "	WT.ASSIGN_PERSON, " +
                             "	WT.EST_MACH_HRS, " +
                             "	WT.TSK_DUR_HOURS, " +
+                            "	WT.PLAN_STR_DATE, " +
                             "	WT.EQUIP_GRP_ID, " +
                             "	WT.APL_TYPE, " +
                             "	WT.COMP_CODE, " +

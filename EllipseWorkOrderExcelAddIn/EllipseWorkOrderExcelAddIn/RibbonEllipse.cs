@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
@@ -63,7 +64,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const int TitleRowCc01 = 6;
 
         private const int ResultColumn01 = 54;
-        private const int ResultColumn02 = 23;
+        private const int ResultColumn02 = 24;
         private const int ResultColumn03 = 16;
         private const int ResultColumn04 = 8;
         private const int ResultColumn05 = 3;
@@ -1089,40 +1090,41 @@ namespace EllipseWorkOrderExcelAddIn
 
                 //PLANNING
                 _cells.GetCell(12, TitleRow02 - 1).Value = "PLANNING";
-                _cells.GetRange(12, TitleRow02 - 1, 13, TitleRow02 - 1).Style = StyleConstants.Option;
-                _cells.GetRange(12, TitleRow02 - 1, 13, TitleRow02 - 1).Merge();
+                _cells.GetRange(12, TitleRow02 - 1, 14, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(12, TitleRow02 - 1, 14, TitleRow02 - 1).Merge();
 
                 _cells.GetCell(12, TitleRow02).Value = "ASSIGN_PERSON";
                 _cells.GetCell(13, TitleRow02).Value = "EST_MACH_HRS";
-                _cells.GetRange(12, TitleRow02, 13, TitleRow02).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(14, TitleRow02).Value = "PLAN START DATE";
+                _cells.GetRange(12, TitleRow02, 14, TitleRow02).Style = StyleConstants.TitleOptional;
 
                 //RECURSOS
-                _cells.GetCell(14, TitleRow02 - 1).Value = "RECURSOS";
-                _cells.GetRange(14, TitleRow02 - 1, 16, TitleRow02 - 1).Style = StyleConstants.Option;
-                _cells.GetRange(14, TitleRow02 - 1, 16, TitleRow02 - 1).Merge();
+                _cells.GetCell(15, TitleRow02 - 1).Value = "RECURSOS";
+                _cells.GetRange(15, TitleRow02 - 1, 17, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(15, TitleRow02 - 1, 17, TitleRow02 - 1).Merge();
 
-                _cells.GetCell(14, TitleRow02).Value = "EST_DUR_HRS";
-                _cells.GetCell(14, TitleRow02).Style = StyleConstants.TitleOptional;
-                _cells.GetCell(15, TitleRow02).Value = "LABOR";
-                _cells.GetCell(16, TitleRow02).Value = "MATERIAL";
-                _cells.GetRange(15, TitleRow02, 16, TitleRow02).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(15, TitleRow02).Value = "EST_DUR_HRS";
+                _cells.GetCell(15, TitleRow02).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(16, TitleRow02).Value = "LABOR";
+                _cells.GetCell(17, TitleRow02).Value = "MATERIAL";
+                _cells.GetRange(15, TitleRow02, 17, TitleRow02).Style = StyleConstants.TitleInformation;
 
                 //APL
-                _cells.GetCell(17, TitleRow02 - 1).Value = "APL";
-                _cells.GetRange(17, TitleRow02 - 1, 21, TitleRow02 - 1).Style = StyleConstants.Option;
-                _cells.GetRange(17, TitleRow02 - 1, 21, TitleRow02 - 1).Merge();
+                _cells.GetCell(18, TitleRow02 - 1).Value = "APL";
+                _cells.GetRange(18, TitleRow02 - 1, 22, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(18, TitleRow02 - 1, 22, TitleRow02 - 1).Merge();
 
-                _cells.GetCell(17, TitleRow02).Value = "EQUIP_GRP_ID";
-                _cells.GetCell(18, TitleRow02).Value = "APL_TYPE";
-                _cells.GetCell(19, TitleRow02).Value = "COMP_CODE";
-                _cells.GetCell(20, TitleRow02).Value = "COMP_MOD_CODE";
-                _cells.GetCell(21, TitleRow02).Value = "APL_SEQ_NO";
+                _cells.GetCell(18, TitleRow02).Value = "EQUIP_GRP_ID";
+                _cells.GetCell(19, TitleRow02).Value = "APL_TYPE";
+                _cells.GetCell(20, TitleRow02).Value = "COMP_CODE";
+                _cells.GetCell(21, TitleRow02).Value = "COMP_MOD_CODE";
+                _cells.GetCell(22, TitleRow02).Value = "APL_SEQ_NO";
 
-                _cells.GetRange(17, TitleRow02, 21, TitleRow02).Style = StyleConstants.TitleOptional;
+                _cells.GetRange(18, TitleRow02, 22, TitleRow02).Style = StyleConstants.TitleOptional;
 
 
-                _cells.GetCell(22, TitleRow02).Value = "DESCRIPCION EXTENDIDA";
-                _cells.GetCell(22, TitleRow02).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(23, TitleRow02).Value = "DESCRIPCION EXTENDIDA";
+                _cells.GetCell(23, TitleRow02).Style = StyleConstants.TitleOptional;
                 //RESULTADO
                 _cells.GetCell(ResultColumn02, TitleRow02).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn02, TitleRow02).Style = StyleConstants.TitleResult;
@@ -3033,6 +3035,7 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.planFinTime = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null;
                     wo.unitOfWork = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null;
                     wo.unitsRequired = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null;
+                    
                     //pcComp/ucComp
 
                     //Elemento de control para planning
@@ -4201,23 +4204,24 @@ namespace EllipseWorkOrderExcelAddIn
                         //PLANNING
                         _cells.GetCell(12, i).Value = "" + task.AssignPerson;
                         _cells.GetCell(13, i).Value = "'" + task.EstimatedMachHrs;
+                        _cells.GetCell(14, i).Value = "'" + task.PlanStartDate;
 
                         //RECURSOS
-                        _cells.GetCell(14, i).Value = "" + task.EstimatedDurationsHrs;
-                        _cells.GetCell(15, i).Value = "" + task.NoLabor;
-                        _cells.GetCell(16, i).Value = "" + task.NoMaterial;
+                        _cells.GetCell(15, i).Value = "" + task.EstimatedDurationsHrs;
+                        _cells.GetCell(16, i).Value = "" + task.NoLabor;
+                        _cells.GetCell(17, i).Value = "" + task.NoMaterial;
                         //APL
-                        _cells.GetCell(17, i).Value = "'" + task.AplEquipmentGrpId;
-                        _cells.GetCell(18, i).Value = "'" + task.AplType;
-                        _cells.GetCell(19, i).Value = "'" + task.AplCompCode;
-                        _cells.GetCell(20, i).Value = "'" + task.AplCompModCode;
-                        _cells.GetCell(21, i).Value = "'" + task.AplSeqNo;
-                        _cells.GetRange(17, i, 21, i).Style = !string.IsNullOrWhiteSpace(task.AplType)
+                        _cells.GetCell(18, i).Value = "'" + task.AplEquipmentGrpId;
+                        _cells.GetCell(19, i).Value = "'" + task.AplType;
+                        _cells.GetCell(20, i).Value = "'" + task.AplCompCode;
+                        _cells.GetCell(21, i).Value = "'" + task.AplCompModCode;
+                        _cells.GetCell(22, i).Value = "'" + task.AplSeqNo;
+                        _cells.GetRange(17, i, 22, i).Style = !string.IsNullOrWhiteSpace(task.AplType)
                             ? StyleConstants.Error : StyleConstants.Normal;
 
                         var stdTextId = "WA" + task.DistrictCode + task.WorkOrder + task.WoTaskNo;
-                        _cells.GetCell(22, i).Value = StdText.GetText(urlService, stOpContext, stdTextId);
-                        _cells.GetCell(22, i).WrapText = false;
+                        _cells.GetCell(23, i).Value = StdText.GetText(urlService, stOpContext, stdTextId);
+                        _cells.GetCell(23, i).WrapText = false;
                         _cells.GetCell(3, i).Select();
                         i++;//aumenta tarea
                     }
@@ -4397,16 +4401,16 @@ namespace EllipseWorkOrderExcelAddIn
                         ComplTextCode = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value),
                         AssignPerson = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value),
                         EstimatedMachHrs = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value),
-                        EstimatedDurationsHrs = _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value),
-                        NoLabor = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value),
-                        NoMaterial = _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value),
-                        AplEquipmentGrpId = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
-                        AplType = _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value),
-                        AplCompCode = _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value),
-                        AplCompModCode = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value),
-                        AplSeqNo = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value),
-                        ExtTaskText = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value),
-
+                        PlanStartDate = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value),
+                        EstimatedDurationsHrs = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value),
+                        NoLabor = _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value),
+                        NoMaterial = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
+                        AplEquipmentGrpId = _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value),
+                        AplType = _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value),
+                        AplCompCode = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value),
+                        AplCompModCode = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value),
+                        AplSeqNo = _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value),
+                        ExtTaskText = _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value)
                     };
 
                     woTask.SetWorkOrderDto(woTask.WorkOrder);

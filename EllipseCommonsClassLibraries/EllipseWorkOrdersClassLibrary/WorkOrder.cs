@@ -334,6 +334,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string ComplTextCode;
         public string AssignPerson;
         public string EstMachHrs;
+        public string PlanStartDate;
         public string EquipGrpId;
         public string AplType;
         public string CompCode;

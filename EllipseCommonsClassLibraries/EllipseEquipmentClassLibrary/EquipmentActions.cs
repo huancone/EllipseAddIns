@@ -333,7 +333,7 @@ namespace EllipseEquipmentClassLibrary
 
             var dto = new EquipmentServiceModifyDisposalRequestDTO
             {
-                disposalDate = "20180807",
+                disposalDate = DateTime.Now.ToString("yyyyMMdd"),
                 equipmentNo = equipment
             };
 

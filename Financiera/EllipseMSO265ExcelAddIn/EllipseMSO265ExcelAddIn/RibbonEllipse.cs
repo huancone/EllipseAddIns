@@ -153,7 +153,7 @@ namespace EllipseMSO265ExcelAddIn
             _cells.SetValidationList(_cells.GetCell(8, TitleRow01 + 1), taxCodeList, ValidationSheetName, 2, false);
 
             var workProjectIndicatorList = new List<string> {"W - WorkOrder", "P - Project"};
-            _cells.SetValidationList(_cells.GetCell(8, TitleRow01 + 1), workProjectIndicatorList, ValidationSheetName, 3, false);
+            _cells.SetValidationList(_cells.GetCell(19, TitleRow01 + 1), workProjectIndicatorList, ValidationSheetName, 3, false);
 
             _cells.GetCell(ResultColumn01X, TitleRow01).Value = "Result";
 

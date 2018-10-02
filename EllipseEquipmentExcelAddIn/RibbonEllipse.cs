@@ -1179,7 +1179,7 @@ namespace EllipseEquipmentExcelAddIn
 
                     EquipmentActions.DisposalEquipment(opSheet, urlService, equipmentRef);
 
-                    _cells.GetCell(ResultColumn01, i).Value = "ACTUALIZADO";
+                    _cells.GetCell(ResultColumn01, i).Value = "DISPOSAL COMPLETO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, i).Select();
@@ -1524,6 +1524,18 @@ namespace EllipseEquipmentExcelAddIn
 
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
+            
+            var searchCriteriaList = EquipListSearchFieldCriteria.GetSearchFieldCriteriaTypes();
+
+            //Obtengo los valores de las opciones de búsqueda
+            var searchCriteriaKey1Text = _cells.GetEmptyIfNull(_cells.GetCell("A3").Value);
+            var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            var searchCriteriaKey2Text = _cells.GetEmptyIfNull(_cells.GetCell("A4").Value);
+            var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
+            var statusValue = _cells.GetEmptyIfNull(_cells.GetCell("B5").Value);
+            //Convierto los nombres de las opciones a llaves
+            var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
+            var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
 
             var k = TitleRow01 + 1;
             var i = TitleRow03 + 1;
@@ -1533,7 +1545,7 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     var equipmentNo = _cells.GetEmptyIfNull(celleq.GetCell(1, k).Value);
 
-                    var listeq = ListActions.FetchListEquipmentsList(_eFunctions, equipmentNo);
+                    var listeq = ListActions.FetchListEquipmentsList(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, statusValue);
 
                     if (listeq != null && listeq.Count > 0)
                     {
