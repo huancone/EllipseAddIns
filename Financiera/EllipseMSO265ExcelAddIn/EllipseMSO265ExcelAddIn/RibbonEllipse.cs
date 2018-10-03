@@ -1601,7 +1601,7 @@ namespace EllipseMSO265ExcelAddIn
                     requestXml = requestXml + "						<name>ACCOUNT1I1</name>";
                     requestXml = requestXml + "						<value>" + nominaInfo.Account + "</value>";
                     requestXml = requestXml + "					</screenField>";
-                    if (valorImpuesto > 0)
+                    if (valorImpuesto != 0)
                     {
                         requestXml = requestXml + "					<screenField>";
                         requestXml = requestXml + "						<name>ADD_TAX_AMOUNT1I</name>";
@@ -2008,7 +2008,7 @@ namespace EllipseMSO265ExcelAddIn
                     requestXml = requestXml + "						<name>ACCOUNT1I1</name>";
                     requestXml = requestXml + "						<value>" + supplierInfo.Account + "</value>";
                     requestXml = requestXml + "					</screenField>";
-                    if (valorImpuesto > 0)
+                    if (valorImpuesto != 0)
                     {
                         requestXml = requestXml + "					<screenField>";
                         requestXml = requestXml + "						<name>ADD_TAX_AMOUNT1I</name>";
