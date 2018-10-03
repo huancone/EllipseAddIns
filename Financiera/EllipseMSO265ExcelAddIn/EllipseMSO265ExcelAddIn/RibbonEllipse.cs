@@ -153,7 +153,7 @@ namespace EllipseMSO265ExcelAddIn
             _cells.SetValidationList(_cells.GetCell(8, TitleRow01 + 1), taxCodeList, ValidationSheetName, 2, false);
 
             var workProjectIndicatorList = new List<string> {"W - WorkOrder", "P - Project"};
-            _cells.SetValidationList(_cells.GetCell(8, TitleRow01 + 1), workProjectIndicatorList, ValidationSheetName, 3, false);
+            _cells.SetValidationList(_cells.GetCell(20, TitleRow01 + 1), workProjectIndicatorList, ValidationSheetName, 3, false);
 
             _cells.GetCell(ResultColumn01X, TitleRow01).Value = "Result";
 
@@ -402,7 +402,7 @@ namespace EllipseMSO265ExcelAddIn
             _excelApp.Workbooks.Add();
             while (_excelApp.ActiveWorkbook.Sheets.Count < 2)
                 _excelApp.ActiveWorkbook.Worksheets.Add();
-
+            _cells.CreateNewWorksheet(ValidationSheetName);//hoja de validación
             _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01C;
             _cells.SetCursorWait();
 
@@ -449,6 +449,13 @@ namespace EllipseMSO265ExcelAddIn
 
             _cells.GetRange(1, TitleRow01, ResultColumn01C - 1, TitleRow01).Style = StyleConstants.TitleRequired;
             _cells.GetCell(ResultColumn01C, TitleRow01).Style = StyleConstants.TitleResult;
+
+
+            var taxGroupCodeList = GetTaxGroupCodeList().Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
+            _cells.SetValidationList(_cells.GetCell(24, TitleRow01 + 1), taxGroupCodeList, ValidationSheetName, 1, false);
+
+            var taxCodeList = GetTaxCodeList().Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
+            _cells.SetValidationList(_cells.GetCell(25, TitleRow01 + 1), taxCodeList, ValidationSheetName, 2, false);
 
             _cells.GetRange(1, TitleRow01 + 1, ResultColumn01C, TitleRow01 + 1).NumberFormat = NumberFormatConstants.Text;
             _cells.GetRange(9, TitleRow01 + 1, 10, TitleRow01 + 1).NumberFormat = "$ #,##0.00";
@@ -926,6 +933,8 @@ namespace EllipseMSO265ExcelAddIn
 
                         calculatedTaxValue += taxValueItem;
                     }
+
+                    calculatedTaxValue = (int)Math.Round(calculatedTaxValue, 0);
                     //Comparo los valores de impuesto ingresados (si existe)
                     if (string.IsNullOrWhiteSpace(valorImpuestoString) || valorImpuesto == calculatedTaxValue)
                     {
@@ -1045,6 +1054,7 @@ namespace EllipseMSO265ExcelAddIn
                         calculatedTaxValue += taxValueItem;
                     }
 
+                    calculatedTaxValue = (int)Math.Round(calculatedTaxValue, 0);
                     if (valorImpuesto != 0 && valorImpuesto != calculatedTaxValue)
                         _cells.GetCell(taxIndexValue, currentRow).Style = StyleConstants.Warning;
                     if (valorImpuesto == 0 && calculatedTaxValue != 0)
@@ -1171,7 +1181,7 @@ namespace EllipseMSO265ExcelAddIn
                     requestXml = requestXml + "						<name>WORK_PROJ_IND1</name>";
                     requestXml = requestXml + "						<value>" + nominaInfo.WorkOrderProjectIndicator + "</value>";
                     requestXml = requestXml + "					</screenField>";
-                    if (valorImpuesto > 0)
+                    if (valorImpuesto != 0)
                     {
                         requestXml = requestXml + "					<screenField>";
                         requestXml = requestXml + "						<name>ADD_TAX_AMOUNT1I</name>";
@@ -1471,6 +1481,7 @@ namespace EllipseMSO265ExcelAddIn
 
                         calculatedTaxValue += taxValueItem;
                     }
+                    calculatedTaxValue = (int)Math.Round(calculatedTaxValue, 0);
 
                     if (valorImpuesto != 0 && valorImpuesto != calculatedTaxValue)
                         _cells.GetCell(taxIndexValue, currentRow).Style = StyleConstants.Warning;
@@ -1884,6 +1895,7 @@ namespace EllipseMSO265ExcelAddIn
 
                         calculatedTaxValue += taxValueItem;
                     }
+                    calculatedTaxValue = (int)Math.Round(calculatedTaxValue, 0);
 
                     if (valorImpuesto != 0 && valorImpuesto != calculatedTaxValue)
                         _cells.GetCell(taxIndexValue, currentRow).Style = StyleConstants.Warning;

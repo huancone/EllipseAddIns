@@ -41,7 +41,7 @@
     <PublishUrl>D:\Projects\Release\Financiera\EllipseMSO265ExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.2.1.2</ApplicationVersion>
+    <ApplicationVersion>1.2.1.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -247,6 +247,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Certificate-cerrejon-hhernand.pfx" />
+    <None Include="certificate-CerrejonCoalIssuingCA1.pfx" />
+    <None Include="Certificate-CerrejonCoalIssuingCA1_exp20200524.pfx" />
+    <None Include="EllipseMSO265ExcelAddIn_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -317,10 +320,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Certificate-cerrejon-hhernand.pfx</ManifestKeyFile>
+    <ManifestKeyFile>EllipseMSO265ExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>B2DDE50D1D45435AE9711235AAC21F7754FFA65C</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>502CF36E39C1AF0F235353CA2C4BDA9F2A1D558D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
