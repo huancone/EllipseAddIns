@@ -21,6 +21,8 @@ namespace EllipseJobsClassLibrary
         public string OriginalPlannedStartDate{ get; set; }
         public string PlanPriority{ get; set; }
         public string PlanStrDate{ get; set; }
+        public string PlanStrTime{ get; set; }
+        public string EstimatedDurationsHrs{ get; set; }
         public string RaisedDate{ get; set; }
         public string Reference{ get; set; }
         public string StdJobNo{ get; set; }
@@ -34,7 +36,6 @@ namespace EllipseJobsClassLibrary
         public string WoTaskNo { get; set; }
         public string WoTaskDesc { get; set; }
         public string EstimatedMachHrs { get; set; }
-        public string EstimatedDurationsHrs { get; set; }
         public List<LabourResources> LabourResourcesList { get; set; }
     }
 

@@ -63,6 +63,7 @@ namespace EllipseJobsClassLibrary
             requestXml = requestXml + "				<dto uuid=\"" + Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
             requestXml = requestXml + "					<taskSearchType>T</taskSearchType>";
             requestXml = requestXml + "					<isTaskSearch>Y</isTaskSearch>";
+            requestXml = requestXml + "                 <workOrderSearchMethod>EM</workOrderSearchMethod>";
             requestXml = requestXml + "					<taskDatePreset>N</taskDatePreset>";
             requestXml = requestXml + "					<taskDateIncrement>1</taskDateIncrement>";
             requestXml = requestXml + "					<taskDateIncrementUnit>D</taskDateIncrementUnit>";
@@ -140,6 +141,8 @@ namespace EllipseJobsClassLibrary
                 OriginalPlannedStartDate = (string)dto.Element("originalPlannedStartDate"),
                 PlanPriority = (string)dto.Element("planPriority"),
                 PlanStrDate = (string)dto.Element("planStrDate"),
+                PlanStrTime = (string)dto.Element("planStrTime"),
+                EstimatedDurationsHrs = (string)dto.Element("estDurHrs"),
                 RaisedDate = (string)dto.Element("raisedDate"),
                 Reference = (string)dto.Element("reference"),
                 StdJobNo = (string)dto.Element("stdJobNo"),
@@ -153,6 +156,8 @@ namespace EllipseJobsClassLibrary
                 WoTaskNo = (string)dto.Element("wOTaskNo"),
                 WoTaskDesc = (string)dto.Element("taskDescription")
             }).ToList();
+
+            jobs = jobs.GroupBy(r => r.Reference).Select(f => f.First()).ToList();
 
             foreach (var job in jobs)
             {

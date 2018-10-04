@@ -54,7 +54,7 @@ namespace EllipsePlannerExcelAddIn
         private const int TitleRowEllipse = 6;
 
         //Columnas de Resultado
-        private const int ResultColumnResources = 16;
+        private const int ResultColumnResources = 18;
         private const int ResultColumnEllipse = 5;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
@@ -284,19 +284,21 @@ namespace EllipsePlannerExcelAddIn
                 _cells.GetCell(10, TitleRowResources).Value = "Horas Reales";
                 _cells.GetCell(11, TitleRowResources).Value = "Horas restantes";
                 _cells.GetCell(12, TitleRowResources).Value = "Fecha Planeada";
-                _cells.GetCell(13, TitleRowResources).Value = "Accion";
-                _cells.GetCell(14, TitleRowResources).Value = "Codigo de Cierre";
-                _cells.GetCell(15, TitleRowResources).Value = "Fecha de Cierre";
-                _cells.GetCell(16, TitleRowResources).Value = "Resultado";
+                _cells.GetCell(13, TitleRowResources).Value = "Hora Planeada";
+                _cells.GetCell(14, TitleRowResources).Value = "Duracion";
+                _cells.GetCell(15, TitleRowResources).Value = "Accion";
+                _cells.GetCell(16, TitleRowResources).Value = "Codigo de Cierre";
+                _cells.GetCell(17, TitleRowResources).Value = "Fecha de Cierre";
+                _cells.GetCell(ResultColumnResources, TitleRowResources).Value = "Resultado";
 
 
-                _cells.GetCell(13, TitleRowResources).Style = StyleConstants.TitleAction;
-                _cells.SetValidationList(_cells.GetCell(13, TitleRowResources + 1), new List<string> { "M", "C", "D", "Close Task" });
-                _cells.GetCell(13, TitleRowResources).AddComment("C: Crear Requerimiento \nM: Modificar Requerimiento \nD: Eliminar Requerimiento \nClose Task: Cerrar Tarea");
+                _cells.GetCell(15, TitleRowResources).Style = StyleConstants.TitleAction;
+                _cells.SetValidationList(_cells.GetCell(15, TitleRowResources + 1), new List<string> { "M", "C", "D", "Close Task" });
+                _cells.GetCell(15, TitleRowResources).AddComment("C: Crear Requerimiento \nM: Modificar Requerimiento \nD: Eliminar Requerimiento \nClose Task: Cerrar Tarea");
 
 
                 var completeCodeList = _eFunctions.GetItemCodes("SC").Select(item => item.code + " - " + item.description).ToList();
-                _cells.SetValidationList(_cells.GetCell(14, TitleRowResources + 1), completeCodeList, ValidationSheetName, 10, false);
+                _cells.SetValidationList(_cells.GetCell(16, TitleRowResources + 1), completeCodeList, ValidationSheetName, 10, false);
 
                 _cells.GetRange(1, TitleRowResources, ResultColumnResources - 1, TitleRowResources).Style = StyleConstants.TitleInformation;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRowResources, ResultColumnResources, TitleRowResources + 1), TableJobResources);
@@ -506,6 +508,8 @@ namespace EllipsePlannerExcelAddIn
                             _cells.GetCell(10, i).Value = r.RealLabourHours;
                             _cells.GetCell(11, i).Value = r.EstimatedLabourHours - r.RealLabourHours;
                             _cells.GetCell(12, i).Value = j.PlanStrDate;
+                            _cells.GetCell(13, i).Value = j.PlanStrTime;
+                            _cells.GetCell(14, i).Value = j.EstimatedDurationsHrs;
                             i++;
                         }
                     }
@@ -519,6 +523,8 @@ namespace EllipsePlannerExcelAddIn
                         _cells.GetCell(6, i).Value = j.WoTaskNo ?? j.StdJobTask;
                         _cells.GetCell(7, i).Value = j.WoDesc;
                         _cells.GetCell(12, i).Value = j.PlanStrDate;
+                        _cells.GetCell(13, i).Value = j.PlanStrTime;
+                        _cells.GetCell(14, i).Value = j.EstimatedDurationsHrs;
                     }
                 }
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();

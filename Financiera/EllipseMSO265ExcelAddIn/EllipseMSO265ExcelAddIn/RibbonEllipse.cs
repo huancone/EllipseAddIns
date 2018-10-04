@@ -2512,8 +2512,7 @@ namespace EllipseMSO265ExcelAddIn
                 paramTaxes = " AND TXC.ATAX_CODE IN (" + MyUtilities.GetListInSeparator(taxCodesParamList, ",", "'") + ")";
 
 
-            var paramGroupIndicator = "";
-            paramGroupIndicator = " AND (TRIM(GRP_LEVEL_IND) IS NULL OR TRIM(GRP_LEVEL_IND) = 'N')";
+            const string paramGroupIndicator = " AND (TRIM(GRP_LEVEL_IND) IS NULL OR TRIM(GRP_LEVEL_IND) = 'N')";
 
             var conditionalGroup = "";
             var paramGroupCode = "";
