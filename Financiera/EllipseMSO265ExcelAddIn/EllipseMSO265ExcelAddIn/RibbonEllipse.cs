@@ -1063,6 +1063,21 @@ namespace EllipseMSO265ExcelAddIn
                         _cells.GetCell(taxIndexValue, currentRow).Value = valorImpuesto;
                         _cells.GetCell(taxIndexValue, currentRow).Style = StyleConstants.Warning;
                     }
+
+                    //Requerido para ajuste manual de impuestos
+                    decimal taxDifference = (int)Math.Abs(calculatedTaxValue - valorImpuesto);
+                    decimal taxItemAdjustment = 0;
+                    if (taxDifference > 0)
+                    {
+                        decimal taxValueItem = valorItem * (listTaxItems[0].TaxRatePerc / 100);
+                        if (MyUtilities.IsTrue(listTaxItems[0].Deduct))
+                            taxValueItem = taxValueItem * -1;
+                        if (calculatedTaxValue > valorImpuesto)
+                            taxItemAdjustment = (int)Math.Round(taxValueItem - taxDifference, 0);
+                        else
+                            taxItemAdjustment = (int)Math.Round(taxValueItem + taxDifference, 0);
+                    }
+                    //
                     var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
 
                     _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
@@ -1282,7 +1297,6 @@ namespace EllipseMSO265ExcelAddIn
                             requestXml = requestXml + "					</screenField> ";
                             taxIndex++;
                         }
-
                         requestXml = requestXml + "				</inputs> ";
                         requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
                         requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
@@ -1312,6 +1326,15 @@ namespace EllipseMSO265ExcelAddIn
                         requestXml = requestXml + "			<data> ";
                         requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
                         requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
+                        if (taxItemAdjustment != 0)
+                        {
+                            requestXml = requestXml + "				<inputs> ";
+                            requestXml = requestXml + "					<screenField> ";
+                            requestXml = requestXml + "						<name>TAX_VALUE1I1</name> ";
+                            requestXml = requestXml + "						<value>" + Math.Abs(taxItemAdjustment) + "</value> ";
+                            requestXml = requestXml + "					</screenField> ";
+                            requestXml = requestXml + "				</inputs> ";
+                        }
                         requestXml = requestXml + "			</data> ";
                         requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
                         requestXml = requestXml + "		</action> ";
@@ -1327,6 +1350,14 @@ namespace EllipseMSO265ExcelAddIn
                         
                         if (responseDto.GotErrorMessages())
                             throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+
+                        if (taxItemAdjustment != 0)
+                        {
+                            responseDto = _eFunctions.ExecutePostRequest(requestXml);
+
+                            if (responseDto.GotErrorMessages())
+                                throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                        }
                     }
                     //
 
@@ -1394,6 +1425,7 @@ namespace EllipseMSO265ExcelAddIn
             }
             _cells.SetCursorDefault();
         }
+
         private void LoadNominaPost()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -1491,6 +1523,20 @@ namespace EllipseMSO265ExcelAddIn
                         _cells.GetCell(taxIndexValue, currentRow).Value = valorImpuesto;
                         _cells.GetCell(taxIndexValue, currentRow).Style = StyleConstants.Warning;
                     }
+                    //Requerido para ajuste manual de impuestos
+                    decimal taxDifference = (int)Math.Abs(calculatedTaxValue - valorImpuesto);
+                    decimal taxItemAdjustment = 0;
+                    if (taxDifference > 0)
+                    {
+                        decimal taxValueItem = valorItem * (listTaxItems[0].TaxRatePerc / 100);
+                        if (MyUtilities.IsTrue(listTaxItems[0].Deduct))
+                            taxValueItem = taxValueItem * -1;
+                        if (calculatedTaxValue > valorImpuesto)
+                            taxItemAdjustment = (int)Math.Round(taxValueItem - taxDifference, 0);
+                        else
+                            taxItemAdjustment = (int)Math.Round(taxValueItem + taxDifference, 0);
+                    }
+                    //
                     var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
 
                     _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
@@ -1732,6 +1778,15 @@ namespace EllipseMSO265ExcelAddIn
                         requestXml = requestXml + "			<data> ";
                         requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
                         requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
+                        if (taxItemAdjustment != 0)
+                        {
+                            requestXml = requestXml + "				<inputs> ";
+                            requestXml = requestXml + "					<screenField> ";
+                            requestXml = requestXml + "						<name>TAX_VALUE1I1</name> ";
+                            requestXml = requestXml + "						<value>" + Math.Abs(taxItemAdjustment) + "</value> ";
+                            requestXml = requestXml + "					</screenField> ";
+                            requestXml = requestXml + "				</inputs> ";
+                        }
                         requestXml = requestXml + "			</data> ";
                         requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
                         requestXml = requestXml + "		</action> ";
@@ -1747,6 +1802,14 @@ namespace EllipseMSO265ExcelAddIn
 
                         if (responseDto.GotErrorMessages())
                             throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+
+                        if (taxItemAdjustment != 0)
+                        {
+                            responseDto = _eFunctions.ExecutePostRequest(requestXml);
+
+                            if (responseDto.GotErrorMessages())
+                                throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                        }
                     }
                     //
 
@@ -1905,6 +1968,20 @@ namespace EllipseMSO265ExcelAddIn
                         _cells.GetCell(taxIndexValue, currentRow).Value = valorImpuesto;
                         _cells.GetCell(taxIndexValue, currentRow).Style = StyleConstants.Warning;
                     }
+                    //Requerido para ajuste manual de impuestos
+                    decimal taxDifference = (int)Math.Abs(calculatedTaxValue - valorImpuesto);
+                    decimal taxItemAdjustment = 0;
+                    if (taxDifference > 0)
+                    {
+                        decimal taxValueItem = valorItem * (listTaxItems[0].TaxRatePerc / 100);
+                        if (MyUtilities.IsTrue(listTaxItems[0].Deduct))
+                            taxValueItem = taxValueItem * -1;
+                        if (calculatedTaxValue > valorImpuesto)
+                            taxItemAdjustment = (int)Math.Round(taxValueItem - taxDifference, 0);
+                        else
+                            taxItemAdjustment = (int)Math.Round(taxValueItem + taxDifference, 0);
+                    }
+                    //
                     var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
 
                     _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
@@ -2097,6 +2174,15 @@ namespace EllipseMSO265ExcelAddIn
                         requestXml = requestXml + "			<data> ";
                         requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
                         requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
+                        if (taxItemAdjustment != 0)
+                        {
+                            requestXml = requestXml + "				<inputs> ";
+                            requestXml = requestXml + "					<screenField> ";
+                            requestXml = requestXml + "						<name>TAX_VALUE1I1</name> ";
+                            requestXml = requestXml + "						<value>" + Math.Abs(taxItemAdjustment) + "</value> ";
+                            requestXml = requestXml + "					</screenField> ";
+                            requestXml = requestXml + "				</inputs> ";
+                        }
                         requestXml = requestXml + "			</data> ";
                         requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
                         requestXml = requestXml + "		</action> ";
@@ -2111,6 +2197,13 @@ namespace EllipseMSO265ExcelAddIn
                         responseDto = _eFunctions.ExecutePostRequest(requestXml);
                         if (responseDto.GotErrorMessages())
                             throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                        if (taxItemAdjustment != 0)
+                        {
+                            responseDto = _eFunctions.ExecutePostRequest(requestXml);
+
+                            if (responseDto.GotErrorMessages())
+                                throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                        }
                     }
                     //
 
