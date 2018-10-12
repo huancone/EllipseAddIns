@@ -100,6 +100,7 @@ namespace EllipseCommonsClassLibrary.Connections
                 var xmlDoc = new XmlDocument();
                 var urlPath = Configuration.ServiceFilePath + Configuration.ConfigXmlFileName;
                 var urlPathBackUp = Configuration.SecondaryServiceFilePath + Configuration.ConfigXmlFileName;
+                var urlLocalPath = Configuration.DefaultLocalDataPath + Configuration.ConfigXmlFileName;
 
                 if (File.Exists(urlPath))
                 {
@@ -108,6 +109,10 @@ namespace EllipseCommonsClassLibrary.Connections
                 else if (File.Exists(urlPathBackUp))
                 {
                     xmlDoc.Load(urlPathBackUp);
+                }
+                else if (File.Exists(urlLocalPath))
+                {
+                    xmlDoc.Load(urlLocalPath);
                 }
                 else
                 {
