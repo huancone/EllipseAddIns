@@ -42,6 +42,7 @@ namespace EllipseCommonsClassLibrary.Connections
 
             var serviceFile = Configuration.ServiceFilePath + "\\" + Configuration.ConfigXmlFileName;
             var serviceFileBackUp = Configuration.BackUpServiceFilePath + "\\" + Configuration.ConfigXmlFileName;
+            var serviceFileLocal = Configuration.DefaultLocalDataPath + "\\" + Configuration.ConfigXmlFileName;
 
             XDocument xmlDoc;
             if (File.Exists(serviceFile))
@@ -51,6 +52,10 @@ namespace EllipseCommonsClassLibrary.Connections
             else if (File.Exists(serviceFileBackUp))
             {
                 xmlDoc = XDocument.Load(serviceFileBackUp);
+            }
+            else if (File.Exists(serviceFileLocal))
+            {
+                xmlDoc = XDocument.Load(serviceFileLocal);
             }
             else
             {
