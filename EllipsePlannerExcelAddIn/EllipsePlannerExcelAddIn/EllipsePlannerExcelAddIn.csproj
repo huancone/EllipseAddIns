@@ -35,7 +35,7 @@
     <PublishUrl>D:\Projects\Release\EllipsePlannerExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.23</ApplicationVersion>
+    <ApplicationVersion>1.0.0.24</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>

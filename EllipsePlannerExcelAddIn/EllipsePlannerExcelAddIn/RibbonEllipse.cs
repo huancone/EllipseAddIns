@@ -56,6 +56,7 @@ namespace EllipsePlannerExcelAddIn
         //Columnas de Resultado
         private const int ResultColumnResources = 18;
         private const int ResultColumnEllipse = 5;
+        private const int ActionColumn = 15;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
@@ -762,7 +763,7 @@ namespace EllipsePlannerExcelAddIn
 
                 try
                 {
-                    string action = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value);
+                    string action = _cells.GetEmptyIfNull(_cells.GetCell(ActionColumn, i).Value);
 
                     var taskReq = new TaskRequirement
                     {

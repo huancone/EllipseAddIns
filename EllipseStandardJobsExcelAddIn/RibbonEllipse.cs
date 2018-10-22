@@ -1598,12 +1598,23 @@ namespace EllipseStandardJobsExcelAddIn
 
             var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, ServiceType.PostService);
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlService);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
                 try
                 {
                     string action = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
+                    var operationContext = new StandardJobTaskService.OperationContext()
+                    {
+                        district = _frmAuth.EllipseDsct,
+                        position = _frmAuth.EllipsePost,
+                        maxInstances = 100,
+                        maxInstancesSpecified = true,
+                        returnWarnings = Debugger.DebugWarnings,
+                        returnWarningsSpecified = true
+                    };
+
                     var stdTask = new StandardJobTask
                     {
                         DistrictCode = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value),
@@ -1640,16 +1651,6 @@ namespace EllipseStandardJobsExcelAddIn
 
                     if (action.Equals("M"))
                     {
-                        //StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask, true);
-                        //var opC = new StandardJobTaskService.OperationContext()
-                        //{
-                        //    district = _frmAuth.EllipseDsct,
-                        //    position = _frmAuth.EllipsePost,
-                        //    maxInstances = 100,
-                        //    maxInstancesSpecified = true,
-                        //    returnWarnings = Debugger.DebugWarnings,
-                        //    returnWarningsSpecified = true
-                        //};
                         StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask);
                         StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
@@ -1657,6 +1658,10 @@ namespace EllipseStandardJobsExcelAddIn
                     {
                         StandardJobActions.CreateStandardJobTaskPost(_eFunctions, stdTask);
                         StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                    }
+                    else if (action.Equals("D"))
+                    {
+                        StandardJobActions.DeleteStandardJobTaskPost(_eFunctions, stdTask);
                     }
                     else
                         continue;
@@ -1752,6 +1757,10 @@ namespace EllipseStandardJobsExcelAddIn
                     {
                         StandardJobActions.CreateStandardJobTask(urlService, opSheet, stdTask, true);
                         StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                    }
+                    else if (action.Equals("D"))
+                    {
+                        StandardJobActions.DeleteStandardJobTask(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, stdTask);
                     }
                     else
                         continue;

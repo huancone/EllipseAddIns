@@ -885,6 +885,61 @@ namespace EllipseStandardJobsClassLibrary
                 throw new Exception(errorMessage);
         }
 
+        public static void DeleteStandardJobTask(string urlService, StandardJobTaskService.OperationContext opContext, StandardJobTask stdTask)
+        {
+            var proxyStdTask = new StandardJobTaskService.StandardJobTaskService();//ejecuta las acciones del servicio
+            var requestStdTask = new StandardJobTaskServiceDeleteRequestDTO();
+
+            proxyStdTask.Url = urlService + "/StandardJobServiceTask";
+            requestStdTask.districtCode = stdTask.DistrictCode ?? requestStdTask.districtCode;
+            requestStdTask.standardJob = stdTask.StandardJob ?? requestStdTask.standardJob;
+            requestStdTask.SJTaskNo = stdTask.SjTaskNo ?? requestStdTask.SJTaskNo.PadLeft(3, '0');
+            proxyStdTask.delete(opContext, requestStdTask);
+        }
+
+        public static void DeleteStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask)
+        {
+            ef.InitiatePostConnection();
+            if (!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
+                stdTask.SjTaskNo = stdTask.SjTaskNo.PadLeft(3, '0');
+
+            var requestXml = "";
+            requestXml = requestXml + "<interaction>";
+            requestXml = requestXml + "    <actions>";
+            requestXml = requestXml + "        <action>";
+            requestXml = requestXml + "            <name>service</name>";
+            requestXml = requestXml + "            <data>";
+            requestXml = requestXml + "                <name>com.mincom.enterpriseservice.ellipse.standardjobtask.StandardJobTaskService</name>";
+            requestXml = requestXml + "                <operation>delete</operation>";
+            requestXml = requestXml + "                <className>mfui.actions.tree.node::TreeNodeDeleteAction</className>";
+            requestXml = requestXml + "                <returnWarnings>true</returnWarnings>";
+            requestXml = requestXml + "                <dto uuid=\"" + Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
+            requestXml = requestXml + "                    <standardJob>" + stdTask.StandardJob + "</standardJob>";
+            requestXml = requestXml + "                    <sJTaskNo>" + stdTask.SjTaskNo + "</sJTaskNo>";
+            requestXml = requestXml + "                </dto>";
+            requestXml = requestXml + "            </data>";
+            requestXml = requestXml + "            <id>" + Util.GetNewOperationId() + "</id>";
+            requestXml = requestXml + "        </action>";
+            requestXml = requestXml + "    </actions>";
+            requestXml = requestXml + "    <chains/>";
+            requestXml = requestXml + "    <connectionId>" + ef.PostServiceProxy.ConnectionId + "</connectionId>";
+            requestXml = requestXml + "    <application>mse690</application>";
+            requestXml = requestXml + "    <applicationPage>read</applicationPage>";
+            requestXml = requestXml + "</interaction>";
+
+            requestXml = requestXml.Replace("&", "&amp;");
+
+
+            var responseDto = ef.ExecutePostRequest(requestXml);
+
+            if (!responseDto.GotErrorMessages()) return;
+            var errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
+            if (!errorMessage.Equals(""))
+                throw new Exception(errorMessage);
+
+        }
+
+
         public static void SetStandardJobTaskText(string urlService, string districtCode, string position, bool returnWarnings, StandardJobTask stdTask)
         {
             if (!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
