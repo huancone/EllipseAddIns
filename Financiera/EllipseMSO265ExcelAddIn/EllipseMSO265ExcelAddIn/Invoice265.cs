@@ -840,6 +840,7 @@ namespace EllipseMSO265ExcelAddIn
                 var paramDistrict = districtCode;
                 if (string.IsNullOrWhiteSpace(paramDistrict))
                     paramDistrict = "ICOR";
+
                 var paramSupplierNo = supplierNo;
                 if (!string.IsNullOrWhiteSpace(paramSupplierNo))
                     paramSupplierNo = " AND SUP.SUPPLIER_NO = '" + paramSupplierNo + "'";
@@ -868,7 +869,6 @@ namespace EllipseMSO265ExcelAddIn
                                " WHERE" +
                                " BNK.DSTRCT_CODE = '" + paramDistrict + "'" +
                                paramSupplierNo +
-                               paramSupplierTaxFileNo +
                                " AND BNK.SUP_STATUS <> 9";
                 return sqlQuery;
             }
