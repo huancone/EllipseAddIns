@@ -386,9 +386,10 @@ namespace EllipseMSO265ExcelAddIn
                     _cells.GetCell(14, currentRow).Value = c.Account;
                     _cells.GetCell(15, currentRow).Value = c.AuthorizedBy;
                 }
-                catch (Exception error)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Error: " + error.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ImportFileNomina()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                    MessageBox.Show("Error: " + ex.Message);
                 }
                 finally
                 {
@@ -570,7 +571,7 @@ namespace EllipseMSO265ExcelAddIn
                     _cells.GetCell(ResultColumn02 - 1, i).Value = "";
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewInternalText()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewInternalText()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 }
                 finally
                 {
@@ -631,7 +632,7 @@ namespace EllipseMSO265ExcelAddIn
                 {
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
-                    Debugger.LogError("RibbonEllipse.cs:ReviewInternalText()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:UpdateInternalText()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 }
                 finally
                 {
@@ -701,9 +702,10 @@ namespace EllipseMSO265ExcelAddIn
                     _cells.GetCell(12, currentRow).Value = c.BranchCode;
                     _cells.GetCell(13, currentRow).Value = c.BankAccount;
                 }
-                catch (Exception error)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Error: " + error.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ImportFileCesantias()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                    MessageBox.Show("Error: " + ex.Message);
                 }
                 finally
                 {
@@ -802,6 +804,7 @@ namespace EllipseMSO265ExcelAddIn
                 }
                 catch (Exception ex)
                 {
+                    Debugger.LogError("RibbonEllipse.cs:ValidateCesantias()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                     _cells.GetCell(ResultColumn01C, currentRow).Value = ex.Message;
                 }
                 finally
@@ -945,6 +948,7 @@ namespace EllipseMSO265ExcelAddIn
                 }
                 catch (Exception ex)
                 {
+                    Debugger.LogError("RibbonEllipse.cs:CalculateTaxes()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                     _cells.GetCell(resultColumn, currentRow).Select();
                     _cells.GetCell(resultColumn, currentRow).Value = ex.Message;
                     _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
@@ -1065,10 +1069,16 @@ namespace EllipseMSO265ExcelAddIn
                         _cells.GetCell(ResultColumn01X, i).Select();
                         _cells.GetCell(ResultColumn01X, i).Value = "Creado";
                         _cells.GetRange(1, i, ResultColumn01X, i).Style = _cells.GetStyle(StyleConstants.Success);
+
+                        //Escribe el branch code y bank account si está en blanco
+                        if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value) != null && _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value) != null) continue;
+                        _cells.GetCell(13, i).Value = invoice.BankBranchCode;
+                        _cells.GetCell(14, i).Value = invoice.BankAccountNo;
                     }
                 }
                 catch (Exception ex)
                 {
+                    Debugger.LogError("RibbonEllipse.cs:LoadNonInvoiceOrder()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                     for (int i = startRow; i <= currentRow; i++)
                     {
                         _cells.GetCell(ResultColumn01X, i).Select();
@@ -1201,10 +1211,16 @@ namespace EllipseMSO265ExcelAddIn
                         _cells.GetCell(ResultColumn01N, i).Select();
                         _cells.GetCell(ResultColumn01N, i).Value = "Creado";
                         _cells.GetRange(1, i, ResultColumn01N, i).Style = _cells.GetStyle(StyleConstants.Success);
+
+                        //Escribe el branch code y bank account si está en blanco
+                        if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null && _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) != null) continue;
+                        _cells.GetCell(1, i).Value = invoice.BankBranchCode;
+                        _cells.GetCell(2, i).Value = invoice.BankAccountNo;
                     }
                 }
                 catch (Exception ex)
                 {
+                    Debugger.LogError("RibbonEllipse.cs:LoadNominaPost()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                     for (int i = startRow; i <= currentRow; i++)
                     {
                         _cells.GetCell(ResultColumn01N, i).Select();
@@ -1323,10 +1339,16 @@ namespace EllipseMSO265ExcelAddIn
                         _cells.GetCell(ResultColumn01C, i).Select();
                         _cells.GetCell(ResultColumn01C, i).Value = "Creado";
                         _cells.GetRange(1, i, ResultColumn01C, i).Style = _cells.GetStyle(StyleConstants.Success);
+
+                        //Escribe el branch code y bank account si está en blanco
+                        if (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value) != null && _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value) != null) continue;
+                        _cells.GetCell(14, i).Value = invoice.BankBranchCode;
+                        _cells.GetCell(15, i).Value = invoice.BankAccountNo;
                     }
                 }
                 catch (Exception ex)
                 {
+                    Debugger.LogError("RibbonEllipse.cs:LoadCesantiasPost()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                     for (int i = startRow; i <= currentRow; i++)
                     {
                         _cells.GetCell(ResultColumn01C, i).Select();

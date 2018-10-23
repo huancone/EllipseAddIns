@@ -189,23 +189,30 @@ namespace EllipseMSO265ExcelAddIn
                 var drSupplierInfo = eFunctions.GetQueryResult(sqlQuery);
 
                 if (!drSupplierInfo.Read())
+                {
+                    eFunctions.CloseConnection();
                     throw new Exception("No se han econtrado datos para el Supplier Ingresado");
+                }
 
                 var cant = Convert.ToInt16(drSupplierInfo["CANTIDAD_REGISTROS"].ToString());
                 if (cant > 1)
+                {
+                    eFunctions.CloseConnection();
                     throw new Exception("Se ha encontrado más de un registro activo para el Supplier Ingresado");
+                }
+                SupplierNo = drSupplierInfo["SUPPLIER_NO"].ToString();
+                TaxFileNo = drSupplierInfo["TAX_FILE_NO"].ToString();
+                StAdress = drSupplierInfo["ST_ADRESS"].ToString();
+                StBusiness = drSupplierInfo["ST_BUSINESS"].ToString();
+                SupplierName = drSupplierInfo["SUPPLIER_NAME"].ToString();
+                CurrencyType = drSupplierInfo["CURRENCY_TYPE"].ToString();
+                AccountName = drSupplierInfo["BANK_ACCT_NAME"].ToString();
+                AccountNo = drSupplierInfo["BANK_ACCT_NO"].ToString();
+                BankBranchCode = drSupplierInfo["DEF_BRANCH_CODE"].ToString();
+                BankBranchAccountNo = drSupplierInfo["DEF_BANK_ACCT_NO"].ToString();
+                Status = drSupplierInfo["SUP_STATUS"].ToString();
 
-                    SupplierNo = drSupplierInfo["SUPPLIER_NO"].ToString();
-                    TaxFileNo = drSupplierInfo["TAX_FILE_NO"].ToString();
-                    StAdress = drSupplierInfo["ST_ADRESS"].ToString();
-                    StBusiness = drSupplierInfo["ST_BUSINESS"].ToString();
-                    SupplierName = drSupplierInfo["SUPPLIER_NAME"].ToString();
-                    CurrencyType = drSupplierInfo["CURRENCY_TYPE"].ToString();
-                    AccountName = drSupplierInfo["BANK_ACCT_NAME"].ToString();
-                    AccountNo = drSupplierInfo["BANK_ACCT_NO"].ToString();
-                    BankBranchCode = drSupplierInfo["DEF_BRANCH_CODE"].ToString();
-                    BankBranchAccountNo = drSupplierInfo["DEF_BANK_ACCT_NO"].ToString();
-                    Status = drSupplierInfo["SUP_STATUS"].ToString();
+                eFunctions.CloseConnection();
             }
 
             public string SupplierNo;
@@ -465,261 +472,224 @@ namespace EllipseMSO265ExcelAddIn
 
 
                 //Ingresamos la información principal
-                if (!responseDto.ResponseString.Contains("MSM265A"))
-                    throw new Exception("No se ha podido ingresar al programa MSO265");
-                requestXml = "<interaction>                                                     ";
-                requestXml = requestXml + "	<actions>";
-                requestXml = requestXml + "		<action>";
-                requestXml = requestXml + "			<name>submitScreen</name>";
-                requestXml = requestXml + "			<data>";
-                requestXml = requestXml + "				<inputs>";
-                requestXml = requestXml + "					<screenField>";
-                requestXml = requestXml + "						<name>DSTRCT_CODE1I</name>";
-                requestXml = requestXml + "						<value>" + invoice.District + "</value>";
-                requestXml = requestXml + "					</screenField>";
-                requestXml = requestXml + "					<screenField>";
-                requestXml = requestXml + "						<name>SUPPLIER_NO1I</name>";
-                requestXml = requestXml + "						<value>" + invoice.SupplierNo + "</value>";
-                requestXml = requestXml + "					</screenField>";
-                if (string.IsNullOrWhiteSpace(invoice.SupplierNo) && !string.IsNullOrWhiteSpace(invoice.SupplierMnemonic))
-                {
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>MNEMONIC1I</name>";
-                    requestXml = requestXml + "						<value>" + invoice.SupplierMnemonic + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                }
-                if (!string.IsNullOrWhiteSpace(invoice.GovernmentId))
-                {
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>GOVT_ID1I</name>";
-                    requestXml = requestXml + "						<value>" + invoice.GovernmentId + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                }
 
-                requestXml = requestXml + "					<screenField>";
-                requestXml = requestXml + "						<name>INV_NO1I</name>";
-                requestXml = requestXml + "						<value>" + invoice.InvoiceNo + "</value>";
-                requestXml = requestXml + "					</screenField>";
-                requestXml = requestXml + "                 <screenField>";
-                requestXml = requestXml + "                 	<name>INV_AMT1I</name>";
-                requestXml = requestXml + "                 	<value>" + invoice.InvoiceAmount + "</value>";
-                requestXml = requestXml + "                 </screenField>";
-                if (invoice.TaxAmount != 0)
-                {
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>ADD_TAX_AMOUNT1I</name>";
-                    requestXml = requestXml + "						<value>" + invoice.TaxAmount + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                }
+                //La pantalla tiene un límite de registro de 3 ítems. Por lo que se debe procesar en la primera pantalla 3 ítems y posteriormente repetir el ejercicio
+                var currentItemLimit = 3;
+                var currentItemIndex = 0;
 
-                if (!string.IsNullOrWhiteSpace(invoice.Accountant))
+                while (currentItemIndex < invoiceItemList.Count)
                 {
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>ACCOUNTANT1I</name>";
-                    requestXml = requestXml + "						<value>" + invoice.Accountant + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                }
-                if (!string.IsNullOrWhiteSpace(invoice.OriginalInvoiceNo))
-                {
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>ORG_INV_NO1I</name>";
-                    requestXml = requestXml + "						<value>" + invoice.OriginalInvoiceNo + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                }
-                requestXml = requestXml + "					<screenField>";
-                requestXml = requestXml + "						<name>CURRENCY_TYPE1I</name>";
-                requestXml = requestXml + "						<value>" + invoice.Currency + "</value>";
-                requestXml = requestXml + "					</screenField>";
-                requestXml = requestXml + "					<screenField>";
-                requestXml = requestXml + "						<name>HANDLE_CDE1I</name>";
-                requestXml = requestXml + "						<value>" + invoice.HandlingCode + "</value>";
-                requestXml = requestXml + "					</screenField>";
-                if (!string.IsNullOrWhiteSpace(invoice.ControlAccountGroupCode))
-                {
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>ACCT_GRP_CODE1I</name>";
-                    requestXml = requestXml + "						<value>" + invoice.ControlAccountGroupCode + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                }
-                requestXml = requestXml + "					<screenField>";
-                requestXml = requestXml + "						<name>INV_DATE1I</name>";
-                requestXml = requestXml + "						<value>" + invoice.InvoiceDate + "</value>";
-                requestXml = requestXml + "					</screenField>";
-                requestXml = requestXml + "					<screenField>";
-                requestXml = requestXml + "						<name>INV_RCPT_DATE1I</name>";
-                requestXml = requestXml + "						<value>" + invoice.InvoiceReceivedDate + "</value>";
-                requestXml = requestXml + "					</screenField>";
-                requestXml = requestXml + "					<screenField>";
-                requestXml = requestXml + "						<name>DUE_DATE1I</name>";
-                requestXml = requestXml + "						<value>" + invoice.DueDate + "</value>";
-                requestXml = requestXml + "					</screenField>";
-                if (!string.IsNullOrWhiteSpace(invoice.SettlementDiscount))
-                {
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>SD_AMOUNT1I</name>";
-                    requestXml = requestXml + "						<value>" + invoice.SettlementDiscount + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                }
-                if (!string.IsNullOrWhiteSpace(invoice.DiscountDate))
-                {
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>SD_DATE1I</name>";
-                    requestXml = requestXml + "						<value>" + invoice.DiscountDate + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                }
-                requestXml = requestXml + "					<screenField>";
-                requestXml = requestXml + "						<name>BRANCH_CODE1I</name>";
-                requestXml = requestXml + "						<value>" + invoice.BankBranchCode + "</value>";
-                requestXml = requestXml + "					</screenField>";
-                requestXml = requestXml + "					<screenField>";
-                requestXml = requestXml + "						<name>BANK_ACCT_NO1I</name>";
-                requestXml = requestXml + "						<value>" + invoice.BankAccountNo + "</value>";
-                requestXml = requestXml + "					</screenField>";
+                    if (!responseDto.ResponseString.Contains("MSM265A"))
+                        throw new Exception("No se ha podido ingresar al programa MSO265");
+                    requestXml = "<interaction>                                                     ";
+                    requestXml = requestXml + "	<actions>";
+                    requestXml = requestXml + "		<action>";
+                    requestXml = requestXml + "			<name>submitScreen</name>";
+                    requestXml = requestXml + "			<data>";
+                    requestXml = requestXml + "				<inputs>";
 
-                var itemIndex = 1;
-                foreach (var invoiceItem in invoiceItemList)
-                {
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>INV_ITEM_DESC1I" + itemIndex + "</name>";
-                    requestXml = requestXml + "						<value>" + invoiceItem.Description + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "					    <name>INV_ITEM_VALUE1I" + itemIndex + "</name>";
-                    requestXml = requestXml + "					    <value>" + invoiceItem.ItemValue + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "					 	<name>ACCT_DSTRCT1I" + itemIndex + "</name>";
-                    requestXml = requestXml + "					   	<value>" + invoiceItem.ItemDistrict + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>AUTH_BY1I" + itemIndex + "</name>";
-                    requestXml = requestXml + "						<value>" + invoiceItem.AuthorizedBy + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                    requestXml = requestXml + "					<screenField>";
-                    requestXml = requestXml + "						<name>ACCOUNT1I" + itemIndex + "</name>";
-                    requestXml = requestXml + "						<value>" + invoiceItem.Account + "</value>";
-                    requestXml = requestXml + "					</screenField>";
-                    if (!string.IsNullOrWhiteSpace(invoiceItem.WorkOrderProjectNo))
+                    //Solo se envían estos datos la primera vez
+                    if (currentItemIndex < 3)
                     {
                         requestXml = requestXml + "					<screenField>";
-                        requestXml = requestXml + "						<name>WORK_ORDER1I" + itemIndex + "</name>";
-                        requestXml = requestXml + "						<value>" + invoiceItem.WorkOrderProjectNo + "</value>";
+                        requestXml = requestXml + "						<name>DSTRCT_CODE1I</name>";
+                        requestXml = requestXml + "						<value>" + invoice.District + "</value>";
                         requestXml = requestXml + "					</screenField>";
-                    }
-                    if (!string.IsNullOrWhiteSpace(invoiceItem.WorkOrderProjectIndicator))
-                    {
                         requestXml = requestXml + "					<screenField>";
-                        requestXml = requestXml + "						<name>WORK_PROJ_IND" + itemIndex + "</name>";
-                        requestXml = requestXml + "						<value>" + invoiceItem.WorkOrderProjectIndicator + "</value>";
+                        requestXml = requestXml + "						<name>SUPPLIER_NO1I</name>";
+                        requestXml = requestXml + "						<value>" + invoice.SupplierNo + "</value>";
                         requestXml = requestXml + "					</screenField>";
-                    }
-                    if (!string.IsNullOrWhiteSpace(invoiceItem.EquipNo))
-                    {
+                        if (string.IsNullOrWhiteSpace(invoice.SupplierNo) && !string.IsNullOrWhiteSpace(invoice.SupplierMnemonic))
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>MNEMONIC1I</name>";
+                            requestXml = requestXml + "						<value>" + invoice.SupplierMnemonic + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+                        if (!string.IsNullOrWhiteSpace(invoice.GovernmentId))
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>GOVT_ID1I</name>";
+                            requestXml = requestXml + "						<value>" + invoice.GovernmentId + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+
                         requestXml = requestXml + "					<screenField>";
-                        requestXml = requestXml + "						<name>PLANT_NO1I" + itemIndex + "</name>";
-                        requestXml = requestXml + "						<value>" + invoiceItem.EquipNo + "</value>";
+                        requestXml = requestXml + "						<name>INV_NO1I</name>";
+                        requestXml = requestXml + "						<value>" + invoice.InvoiceNo + "</value>";
                         requestXml = requestXml + "					</screenField>";
-                    }
-                    if (invoiceItem.TaxList != null && invoiceItem.TaxList.Count > 0)
-                    {
+                        requestXml = requestXml + "                 <screenField>";
+                        requestXml = requestXml + "                 	<name>INV_AMT1I</name>";
+                        requestXml = requestXml + "                 	<value>" + invoice.InvoiceAmount + "</value>";
+                        requestXml = requestXml + "                 </screenField>";
+                        if (invoice.TaxAmount != 0)
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>ADD_TAX_AMOUNT1I</name>";
+                            requestXml = requestXml + "						<value>" + invoice.TaxAmount + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(invoice.Accountant))
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>ACCOUNTANT1I</name>";
+                            requestXml = requestXml + "						<value>" + invoice.Accountant + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+                        if (!string.IsNullOrWhiteSpace(invoice.OriginalInvoiceNo))
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>ORG_INV_NO1I</name>";
+                            requestXml = requestXml + "						<value>" + invoice.OriginalInvoiceNo + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
                         requestXml = requestXml + "					<screenField>";
-                        requestXml = requestXml + "						<name>ACTION1I" + itemIndex + "</name>";
-                        requestXml = requestXml + "						<value>T</value>";
+                        requestXml = requestXml + "						<name>CURRENCY_TYPE1I</name>";
+                        requestXml = requestXml + "						<value>" + invoice.Currency + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>HANDLE_CDE1I</name>";
+                        requestXml = requestXml + "						<value>" + invoice.HandlingCode + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        if (!string.IsNullOrWhiteSpace(invoice.ControlAccountGroupCode))
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>ACCT_GRP_CODE1I</name>";
+                            requestXml = requestXml + "						<value>" + invoice.ControlAccountGroupCode + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>INV_DATE1I</name>";
+                        requestXml = requestXml + "						<value>" + invoice.InvoiceDate + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>INV_RCPT_DATE1I</name>";
+                        requestXml = requestXml + "						<value>" + invoice.InvoiceReceivedDate + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>DUE_DATE1I</name>";
+                        requestXml = requestXml + "						<value>" + invoice.DueDate + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        if (!string.IsNullOrWhiteSpace(invoice.SettlementDiscount))
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>SD_AMOUNT1I</name>";
+                            requestXml = requestXml + "						<value>" + invoice.SettlementDiscount + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+                        if (!string.IsNullOrWhiteSpace(invoice.DiscountDate))
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>SD_DATE1I</name>";
+                            requestXml = requestXml + "						<value>" + invoice.DiscountDate + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>BRANCH_CODE1I</name>";
+                        requestXml = requestXml + "						<value>" + invoice.BankBranchCode + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>BANK_ACCT_NO1I</name>";
+                        requestXml = requestXml + "						<value>" + invoice.BankAccountNo + "</value>";
                         requestXml = requestXml + "					</screenField>";
                     }
-                    itemIndex++;
-                }
-                requestXml = requestXml + "				</inputs>";
-                requestXml = requestXml + "				<screenName>MSM265A</screenName>";
-                requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
-                requestXml = requestXml + "			</data>";
-                requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
-                requestXml = requestXml + "		</action>";
-                requestXml = requestXml + "	</actions>                                                       ";
-                requestXml = requestXml + "	<chains/>                                                        ";
-                requestXml = requestXml + "	<connectionId>" + eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
-                requestXml = requestXml + "	<application>ServiceInteraction</application>                    ";
-                requestXml = requestXml + "	<applicationPage>unknown</applicationPage>                       ";
-                requestXml = requestXml + "</interaction>                                                    ";
 
-                requestXml = requestXml.Replace("&", "&amp;");
-                responseDto = eFunctions.ExecutePostRequest(requestXml);
-
-                if (responseDto.GotErrorMessages())
-                    throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
-
-                //Pantalla de información del proveedor a la que ingresa internamente por el MNEMONIC / Cedula
-                if (string.IsNullOrWhiteSpace(invoice.SupplierNo) && !string.IsNullOrWhiteSpace(invoice.SupplierMnemonic))
-                {
-                    if (!responseDto.ResponseString.Contains("MSM202A"))
-                        throw new Exception("Se ha producido un error al intentar validar la información del Supplier");
-                    requestXml = "<interaction> ";
-                    requestXml = requestXml + "	<actions> ";
-                    requestXml = requestXml + "		<action> ";
-                    requestXml = requestXml + "			<name>submitScreen</name> ";
-                    requestXml = requestXml + "			<data> ";
-                    requestXml = requestXml + "				<inputs> ";
-                    requestXml = requestXml + "					<screenField> ";
-                    requestXml = requestXml + "						<name>SUP_MNEMONIC1I</name> ";
-                    requestXml = requestXml + "						<value>" + invoice.SupplierMnemonic + "</value> ";
-                    requestXml = requestXml + "					</screenField> ";
-                    requestXml = requestXml + "					<screenField> ";
-                    requestXml = requestXml + "						<name>SUP_STATUS_IND1I</name> ";
-                    requestXml = requestXml + "						<value>A</value> ";
-                    requestXml = requestXml + "					</screenField> ";
-                    requestXml = requestXml + "				</inputs> ";
-                    requestXml = requestXml + "				<screenName>MSM202A</screenName> ";
-                    requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
-                    requestXml = requestXml + "			</data> ";
-                    requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
-                    requestXml = requestXml + "		</action> ";
-                    requestXml = requestXml + "	</actions> ";
-                    requestXml = requestXml + "	<chains/> ";
-                    requestXml = requestXml + "	<connectionId>" + eFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
-                    requestXml = requestXml + "	<application>ServiceInteraction</application> ";
-                    requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
-                    requestXml = requestXml + "</interaction> ";
+                    for (var i = currentItemLimit - 3; i < currentItemLimit; i++)
+                    {
+                        currentItemIndex++;
+                        var iItem = currentItemIndex - (currentItemLimit - 3);
+                        if (invoiceItemList == null || currentItemIndex > invoiceItemList.Count)
+                            break;
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>INV_ITEM_DESC1I" + iItem + "</name>";
+                        requestXml = requestXml + "						<value>" + invoiceItemList[i].Description + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "					    <name>INV_ITEM_VALUE1I" + iItem + "</name>";
+                        requestXml = requestXml + "					    <value>" + invoiceItemList[i].ItemValue + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "					 	<name>ACCT_DSTRCT1I" + iItem + "</name>";
+                        requestXml = requestXml + "					   	<value>" + invoiceItemList[i].ItemDistrict + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>AUTH_BY1I" + iItem + "</name>";
+                        requestXml = requestXml + "						<value>" + invoiceItemList[i].AuthorizedBy + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        requestXml = requestXml + "					<screenField>";
+                        requestXml = requestXml + "						<name>ACCOUNT1I" + iItem + "</name>";
+                        requestXml = requestXml + "						<value>" + invoiceItemList[i].Account + "</value>";
+                        requestXml = requestXml + "					</screenField>";
+                        if (!string.IsNullOrWhiteSpace(invoiceItemList[i].WorkOrderProjectNo))
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>WORK_ORDER1I" + iItem + "</name>";
+                            requestXml = requestXml + "						<value>" + invoiceItemList[i].WorkOrderProjectNo + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+                        if (!string.IsNullOrWhiteSpace(invoiceItemList[i].WorkOrderProjectIndicator))
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>WORK_PROJ_IND" + iItem + "</name>";
+                            requestXml = requestXml + "						<value>" + invoiceItemList[i].WorkOrderProjectIndicator + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+                        if (!string.IsNullOrWhiteSpace(invoiceItemList[i].EquipNo))
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>PLANT_NO1I" + iItem + "</name>";
+                            requestXml = requestXml + "						<value>" + invoiceItemList[i].EquipNo + "</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+                        if (invoiceItemList[i].TaxList != null && invoiceItemList[i].TaxList.Count > 0)
+                        {
+                            requestXml = requestXml + "					<screenField>";
+                            requestXml = requestXml + "						<name>ACTION1I" + iItem + "</name>";
+                            requestXml = requestXml + "						<value>T</value>";
+                            requestXml = requestXml + "					</screenField>";
+                        }
+                    }
+                    requestXml = requestXml + "				</inputs>";
+                    requestXml = requestXml + "				<screenName>MSM265A</screenName>";
+                    requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
+                    requestXml = requestXml + "			</data>";
+                    requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
+                    requestXml = requestXml + "		</action>";
+                    requestXml = requestXml + "	</actions>                                                       ";
+                    requestXml = requestXml + "	<chains/>                                                        ";
+                    requestXml = requestXml + "	<connectionId>" + eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                    requestXml = requestXml + "	<application>ServiceInteraction</application>                    ";
+                    requestXml = requestXml + "	<applicationPage>unknown</applicationPage>                       ";
+                    requestXml = requestXml + "</interaction>                                                    ";
 
                     requestXml = requestXml.Replace("&", "&amp;");
                     responseDto = eFunctions.ExecutePostRequest(requestXml);
 
                     if (responseDto.GotErrorMessages())
                         throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
-                }
-                // - supplier selection
 
-                //Pantalla de Impuestos
-                foreach (var invoiceItem in invoiceItemList)
-                {
-                    if (invoiceItem.TaxList != null && invoiceItem.TaxList.Count > 0)
+                    //Pantalla de información del proveedor a la que ingresa internamente por el MNEMONIC / Cedula. Aquí es <4 porque el contador es válido para los tres primeros ítems
+                    if (currentItemIndex < 4 && string.IsNullOrWhiteSpace(invoice.SupplierNo) && !string.IsNullOrWhiteSpace(invoice.SupplierMnemonic))
                     {
-                        if (!responseDto.ResponseString.Contains("MSM26JA"))
-                            throw new Exception("Se ha producido un error al intentar añadir los códigos de Impuestos");
+                        if (!responseDto.ResponseString.Contains("MSM202A"))
+                            throw new Exception("Se ha producido un error al intentar validar la información del Supplier");
                         requestXml = "<interaction> ";
                         requestXml = requestXml + "	<actions> ";
                         requestXml = requestXml + "		<action> ";
                         requestXml = requestXml + "			<name>submitScreen</name> ";
                         requestXml = requestXml + "			<data> ";
                         requestXml = requestXml + "				<inputs> ";
-                        var taxIndex = 1;
-                        foreach (var tax in invoiceItem.TaxList)
-                        {
-                            requestXml = requestXml + "					<screenField> ";
-                            requestXml = requestXml + "						<name>ATAX_CODE1I" + taxIndex + "</name> ";
-                            requestXml = requestXml + "						<value>" + tax.TaxCode + "</value> ";
-                            requestXml = requestXml + "					</screenField> ";
-                            taxIndex++;
-                        }
-                        while (taxIndex <= 12)
-                        {
-                            requestXml = requestXml + "					<screenField> ";
-                            requestXml = requestXml + "						<name>ATAX_CODE1I" + taxIndex + "</name> ";
-                            requestXml = requestXml + "						<value/> ";
-                            requestXml = requestXml + "					</screenField> ";
-                            taxIndex++;
-                        }
+                        requestXml = requestXml + "					<screenField> ";
+                        requestXml = requestXml + "						<name>SUP_MNEMONIC1I</name> ";
+                        requestXml = requestXml + "						<value>" + invoice.SupplierMnemonic + "</value> ";
+                        requestXml = requestXml + "					</screenField> ";
+                        requestXml = requestXml + "					<screenField> ";
+                        requestXml = requestXml + "						<name>SUP_STATUS_IND1I</name> ";
+                        requestXml = requestXml + "						<value>A</value> ";
+                        requestXml = requestXml + "					</screenField> ";
                         requestXml = requestXml + "				</inputs> ";
-                        requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
+                        requestXml = requestXml + "				<screenName>MSM202A</screenName> ";
                         requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
                         requestXml = requestXml + "			</data> ";
                         requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
@@ -736,98 +706,157 @@ namespace EllipseMSO265ExcelAddIn
 
                         if (responseDto.GotErrorMessages())
                             throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                    }
+                    // - supplier selection
 
-                        //confirmación impuestos
-                        if (!responseDto.ResponseString.Contains("MSM26JA"))
-                            throw new Exception("Se ha producido un error al intentar añadir los códigos de Impuestos");
-                        requestXml = "<interaction> ";
-                        requestXml = requestXml + "	<actions> ";
-                        requestXml = requestXml + "		<action> ";
-                        requestXml = requestXml + "			<name>submitScreen</name> ";
-                        requestXml = requestXml + "			<data> ";
-                        requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
-                        requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
-                        if (invoiceItem.FirstTaxAdjustment != 0)
+                    //Pantalla de Impuestos
+                    for (var i = currentItemLimit - 3; i < currentItemLimit; i++)
+                    {
+                        if (invoiceItemList == null || i >= invoiceItemList.Count)
+                            break;
+                        if (invoiceItemList[i].TaxList != null && invoiceItemList[i].TaxList.Count > 0)
                         {
+                            if (!responseDto.ResponseString.Contains("MSM26JA"))
+                                throw new Exception("Se ha producido un error al intentar añadir los códigos de Impuestos");
+                            requestXml = "<interaction> ";
+                            requestXml = requestXml + "	<actions> ";
+                            requestXml = requestXml + "		<action> ";
+                            requestXml = requestXml + "			<name>submitScreen</name> ";
+                            requestXml = requestXml + "			<data> ";
                             requestXml = requestXml + "				<inputs> ";
-                            requestXml = requestXml + "					<screenField> ";
-                            requestXml = requestXml + "						<name>TAX_VALUE1I1</name> ";
-                            requestXml = requestXml + "						<value>" + Math.Abs(invoiceItem.FirstTaxAdjustment) + "</value> ";
-                            requestXml = requestXml + "					</screenField> ";
+                            var taxIndex = 1;
+                            foreach (var tax in invoiceItemList[i].TaxList)
+                            {
+                                requestXml = requestXml + "					<screenField> ";
+                                requestXml = requestXml + "						<name>ATAX_CODE1I" + taxIndex + "</name> ";
+                                requestXml = requestXml + "						<value>" + tax.TaxCode + "</value> ";
+                                requestXml = requestXml + "					</screenField> ";
+                                taxIndex++;
+                            }
+                            while (taxIndex <= 12)
+                            {
+                                requestXml = requestXml + "					<screenField> ";
+                                requestXml = requestXml + "						<name>ATAX_CODE1I" + taxIndex + "</name> ";
+                                requestXml = requestXml + "						<value/> ";
+                                requestXml = requestXml + "					</screenField> ";
+                                taxIndex++;
+                            }
                             requestXml = requestXml + "				</inputs> ";
-                        }
-                        requestXml = requestXml + "			</data> ";
-                        requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
-                        requestXml = requestXml + "		</action> ";
-                        requestXml = requestXml + "	</actions> ";
-                        requestXml = requestXml + "	<chains/> ";
-                        requestXml = requestXml + "	<connectionId>" + eFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
-                        requestXml = requestXml + "	<application>ServiceInteraction</application> ";
-                        requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
-                        requestXml = requestXml + "</interaction> ";
+                            requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
+                            requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
+                            requestXml = requestXml + "			</data> ";
+                            requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
+                            requestXml = requestXml + "		</action> ";
+                            requestXml = requestXml + "	</actions> ";
+                            requestXml = requestXml + "	<chains/> ";
+                            requestXml = requestXml + "	<connectionId>" + eFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
+                            requestXml = requestXml + "	<application>ServiceInteraction</application> ";
+                            requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
+                            requestXml = requestXml + "</interaction> ";
 
-                        requestXml = requestXml.Replace("&", "&amp;");
-                        responseDto = eFunctions.ExecutePostRequest(requestXml);
-
-                        if (responseDto.GotErrorMessages())
-                            throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
-
-                        if (invoiceItem.FirstTaxAdjustment != 0)
-                        {
+                            requestXml = requestXml.Replace("&", "&amp;");
                             responseDto = eFunctions.ExecutePostRequest(requestXml);
 
                             if (responseDto.GotErrorMessages())
                                 throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+
+                            //confirmación impuestos
+                            if (!responseDto.ResponseString.Contains("MSM26JA"))
+                                throw new Exception("Se ha producido un error al intentar añadir los códigos de Impuestos");
+                            requestXml = "<interaction> ";
+                            requestXml = requestXml + "	<actions> ";
+                            requestXml = requestXml + "		<action> ";
+                            requestXml = requestXml + "			<name>submitScreen</name> ";
+                            requestXml = requestXml + "			<data> ";
+                            requestXml = requestXml + "				<screenName>MSM26JA</screenName> ";
+                            requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction> ";
+                            if (invoiceItemList[i].FirstTaxAdjustment != 0)
+                            {
+                                requestXml = requestXml + "				<inputs> ";
+                                requestXml = requestXml + "					<screenField> ";
+                                requestXml = requestXml + "						<name>TAX_VALUE1I1</name> ";
+                                requestXml = requestXml + "						<value>" + Math.Abs(invoiceItemList[i].FirstTaxAdjustment) + "</value> ";
+                                requestXml = requestXml + "					</screenField> ";
+                                requestXml = requestXml + "				</inputs> ";
+                            }
+                            requestXml = requestXml + "			</data> ";
+                            requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id> ";
+                            requestXml = requestXml + "		</action> ";
+                            requestXml = requestXml + "	</actions> ";
+                            requestXml = requestXml + "	<chains/> ";
+                            requestXml = requestXml + "	<connectionId>" + eFunctions.PostServiceProxy.ConnectionId + "</connectionId> ";
+                            requestXml = requestXml + "	<application>ServiceInteraction</application> ";
+                            requestXml = requestXml + "	<applicationPage>unknown</applicationPage> ";
+                            requestXml = requestXml + "</interaction> ";
+
+                            requestXml = requestXml.Replace("&", "&amp;");
+                            responseDto = eFunctions.ExecutePostRequest(requestXml);
+
+                            if (responseDto.GotErrorMessages())
+                                throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+
+                            if (invoiceItemList[i].FirstTaxAdjustment != 0)
+                            {
+                                responseDto = eFunctions.ExecutePostRequest(requestXml);
+
+                                if (responseDto.GotErrorMessages())
+                                    throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                            }
                         }
                     }
+                    //
+
+                    //Pantalla de confirmación por ítems
+                    do
+                    {
+                        if (!responseDto.ResponseString.Contains("MSM265A"))
+                            throw new Exception("Se ha producido un error al intentar completar el proceso");
+                        requestXml = "<interaction>";
+                        requestXml = requestXml + "	<actions>";
+                        requestXml = requestXml + "		<action>";
+                        requestXml = requestXml + "			<name>submitScreen</name>";
+                        requestXml = requestXml + "			<data>";
+                        requestXml = requestXml + "				<screenName>MSM265A</screenName>";
+                        requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
+                        requestXml = requestXml + "			</data>";
+                        requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
+                        requestXml = requestXml + "		</action>";
+                        requestXml = requestXml + "	</actions>";
+                        requestXml = requestXml + "	<connectionId>" + eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                        requestXml = requestXml + "	<application>ServiceInteraction</application>";
+                        requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
+                        requestXml = requestXml + "</interaction>";
+
+                        responseDto = eFunctions.ExecutePostRequest(requestXml);
+                        if (responseDto.GotErrorMessages())
+                            throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                    } while (responseDto.GotWarningMessages() || responseDto.ResponseString.Contains("4493: ALL AMOUNTS ARE IN THE CURRENCY DISPLAYED ABOVE"));
+                    currentItemLimit = currentItemLimit + 3;
                 }
-                //
 
-                //Pantalla de confirmación inicial
-                if (!responseDto.ResponseString.Contains("MSM265A"))
-                    throw new Exception("Se ha producido un error al intentar completar el proceso");
-                requestXml = "<interaction>";
-                requestXml = requestXml + "	<actions>";
-                requestXml = requestXml + "		<action>";
-                requestXml = requestXml + "			<name>submitScreen</name>";
-                requestXml = requestXml + "			<data>";
-                requestXml = requestXml + "				<screenName>MSM265A</screenName>";
-                requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
-                requestXml = requestXml + "			</data>";
-                requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
-                requestXml = requestXml + "		</action>";
-                requestXml = requestXml + "	</actions>";
-                requestXml = requestXml + "	<connectionId>" + eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
-                requestXml = requestXml + "	<application>ServiceInteraction</application>";
-                requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
-                requestXml = requestXml + "</interaction>";
+                //Si es múltiplo de 3 ítems debe volver a confirmar porque presenta una pantalla de nuevos ítems vacía y no repetirá el ciclo
+                if (currentItemIndex == invoiceItemList.Count && (currentItemIndex % 3) == 0)
+                {
+                    requestXml = "<interaction>";
+                    requestXml = requestXml + "	<actions>";
+                    requestXml = requestXml + "		<action>";
+                    requestXml = requestXml + "			<name>submitScreen</name>";
+                    requestXml = requestXml + "			<data>";
+                    requestXml = requestXml + "				<screenName>MSM265A</screenName>";
+                    requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
+                    requestXml = requestXml + "			</data>";
+                    requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
+                    requestXml = requestXml + "		</action>";
+                    requestXml = requestXml + "	</actions>";
+                    requestXml = requestXml + "	<connectionId>" + eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                    requestXml = requestXml + "	<application>ServiceInteraction</application>";
+                    requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
+                    requestXml = requestXml + "</interaction>";
 
-                responseDto = eFunctions.ExecutePostRequest(requestXml);
-                if (responseDto.GotErrorMessages())
-                    throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
-
-                //Pantalla de confirmación final
-                if (!responseDto.ResponseString.Contains("MSM265A"))
-                    throw new Exception("Se ha producido un error al intentar completar el proceso");
-                requestXml = "<interaction>";
-                requestXml = requestXml + "	<actions>";
-                requestXml = requestXml + "		<action>";
-                requestXml = requestXml + "			<name>submitScreen</name>";
-                requestXml = requestXml + "			<data>";
-                requestXml = requestXml + "				<screenName>MSM265A</screenName>";
-                requestXml = requestXml + "				<screenAction>TRANSMIT</screenAction>";
-                requestXml = requestXml + "			</data>";
-                requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
-                requestXml = requestXml + "		</action>";
-                requestXml = requestXml + "	</actions>";
-                requestXml = requestXml + "	<connectionId>" + eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
-                requestXml = requestXml + "	<application>ServiceInteraction</application>";
-                requestXml = requestXml + "	<applicationPage>unknown</applicationPage>";
-                requestXml = requestXml + "</interaction>";
-
-                responseDto = eFunctions.ExecutePostRequest(requestXml);
-                if (responseDto.GotErrorMessages())
-                    throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                    responseDto = eFunctions.ExecutePostRequest(requestXml);
+                    if (responseDto.GotErrorMessages())
+                        throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+                }
 
                 return responseDto;
             }
@@ -847,7 +876,7 @@ namespace EllipseMSO265ExcelAddIn
 
                 var paramSupplierTaxFileNo = supplierTaxFileNo;
                 if (!string.IsNullOrWhiteSpace(paramSupplierTaxFileNo))
-                    paramSupplierNo = " AND BNK.TAX_FILE_NO = '" + paramSupplierTaxFileNo + "'";
+                    paramSupplierTaxFileNo = " AND BNK.TAX_FILE_NO = '" + paramSupplierTaxFileNo + "'";
 
                 var sqlQuery = "SELECT " +
                                "   BNK.DSTRCT_CODE," +
@@ -869,7 +898,10 @@ namespace EllipseMSO265ExcelAddIn
                                " WHERE" +
                                " BNK.DSTRCT_CODE = '" + paramDistrict + "'" +
                                paramSupplierNo +
+                               paramSupplierTaxFileNo +
                                " AND BNK.SUP_STATUS <> 9";
+                
+                sqlQuery = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(sqlQuery, "WHERE AND", "WHERE ");
                 return sqlQuery;
             }
 
