@@ -362,9 +362,9 @@ namespace EllipseMSO265ExcelAddIn
                     if (MyUtilities.IsTrue(taxList[0].Deduct))
                         taxValueItem = taxValueItem * -1;
                     if (calculatedTaxValue > manualTaxValue)
-                        taxAdjustment = (int)Math.Round(taxValueItem - taxDifference, 0);
+                        taxAdjustment = (int)Math.Round(taxValueItem - taxDifference, MidpointRounding.AwayFromZero);
                     else
-                        taxAdjustment = (int)Math.Round(taxValueItem + taxDifference, 0);
+                        taxAdjustment = (int)Math.Round(taxValueItem + taxDifference, MidpointRounding.AwayFromZero);
                 }
 
                 return taxAdjustment;
@@ -404,13 +404,15 @@ namespace EllipseMSO265ExcelAddIn
                 {
 
                     decimal taxValueItem = itemValue * (tax.TaxRatePerc / 100);
+                    taxValueItem = (int)Math.Round(taxValueItem, MidpointRounding.AwayFromZero);
+
                     if (MyUtilities.IsTrue(tax.Deduct))
                         taxValueItem = taxValueItem * -1;
 
-                    calculatedTaxValue += (int)Math.Round(taxValueItem, 0);
+                    calculatedTaxValue += taxValueItem;
                 }
 
-                return (int)Math.Round(calculatedTaxValue, 0);
+                return (int)Math.Round(calculatedTaxValue, MidpointRounding.AwayFromZero);
             }
             public static ResponseDTO LoadNonInvoice(EllipseFunctions eFunctions, Invoice invoice, List<InvoiceItem> invoiceItemList)
             {

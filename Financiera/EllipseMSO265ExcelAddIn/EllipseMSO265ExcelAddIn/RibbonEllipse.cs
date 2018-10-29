@@ -1016,7 +1016,7 @@ namespace EllipseMSO265ExcelAddIn
                             AuthorizedBy = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(17, currentRow).Value),
                             Account = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(18, currentRow).Value),
                             WorkOrderProjectNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(19, currentRow).Value),
-                            WorkOrderProjectIndicator = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(20, currentRow).Value)
+                            WorkOrderProjectIndicator = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(20, currentRow).Value))
                         };
 
                         var groupTaxCode = "" + MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(groupTaxIndexValue, currentRow).Value));
