@@ -449,7 +449,7 @@ namespace EllipseBulkMaterialExcelAddIn
                             requestSheet.warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
 
 
-                            requestSheet.defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
+                            requestSheet.defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);//DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture);
                             requestSheet.defaultAccountCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null;
                             requestSheet.defaultAccountCode = requestSheet.defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
                             //Crea el encabezado
@@ -475,7 +475,7 @@ namespace EllipseBulkMaterialExcelAddIn
                                 //mientras que el encabezado sea el mismo, llene la lista de items
                                 var sheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
                                 var warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                                var defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
+                                var defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value); //DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture);
                                 var defaultAccountCode = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null);
                                 defaultAccountCode = defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
 
@@ -496,7 +496,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                                     sheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
                                     warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                                    defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
+                                    defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value); //DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture);
                                     defaultAccountCode = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null);
                                     defaultAccountCode = defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
                                 }
@@ -635,7 +635,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 conditionMonitoringAction = (_cells.GetEmptyIfNull(_cells.GetCell(12, currentRow).Value) == "Fuel/Diesel") || (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, currentRow).Value) == null) ? null : _cells.GetCell(12, currentRow).Value.ToString().Substring(0, 1),
                 quantity = decimal.Round(Convert.ToDecimal(_cells.GetCell(13, currentRow).Value)),
                 quantitySpecified = (_cells.GetNullIfTrimmedEmpty(_cells.GetEmptyIfNull(_cells.GetCell(13, currentRow).Value)) != null),
-                usageDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value),
+                usageDate = _cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value), //DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture),
                 usageTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value),
                 operationStatisticType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value),
                 meterReading = Convert.ToDecimal(_cells.GetCell(17, currentRow).Value),
@@ -1327,10 +1327,17 @@ namespace EllipseBulkMaterialExcelAddIn
             while (!string.IsNullOrEmpty("" + celleq.GetCell(8, k).Value))
             {
                 var equipmentNo = _cells.GetEmptyIfNull(celleq.GetCell(8, k).Value);
+                var searchCriteriaKey1 = EquipListSearchFieldCriteria.ListType.Key;
+                var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+                var searchCriteriaKey2 = EquipListSearchFieldCriteria.ListId.Key;
+                var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
+                var previousEquipment = new Equipment { EquipmentNo = "" };
+
                 try
                 {
                     var eq = EquipmentActions.FetchEquipmentData(_eFunctions, equipmentNo);
-                    var listeq = ListActions.FetchListEquipmentsList(_eFunctions, equipmentNo);
+                    var listeq = ListActions.FetchListEquipmentsList(_eFunctions, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, null);
+                
 
                     if (listeq != null && listeq.Count > 0)
                     {

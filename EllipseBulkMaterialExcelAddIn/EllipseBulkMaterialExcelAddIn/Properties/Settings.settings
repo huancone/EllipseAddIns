@@ -14,11 +14,11 @@
     <Setting Name="EllipseTest" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://ews-el8test.lmnerp03.cerrejon.com/ews/services</Value>
     </Setting>
-    <Setting Name="EllipseBulkMaterialExcelAddIn_BulkMaterialUsageSheetItemService_BulkMaterialUsageSheetItemService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/BulkMaterialUsageSheetItemService</Value>
-    </Setting>
     <Setting Name="EllipseBulkMaterialExcelAddIn_BulkMaterialUsageSheetService_BulkMaterialUsageSheetService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/BulkMaterialUsageSheetService</Value>
+      <Value Profile="(Default)">http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/BulkMaterialUsageSheetService</Value>
+    </Setting>
+    <Setting Name="EllipseBulkMaterialExcelAddIn_BulkMaterialUsageSheetItemService_BulkMaterialUsageSheetItemService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/BulkMaterialUsageSheetItemService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

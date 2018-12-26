@@ -663,7 +663,6 @@ namespace EllipseStandardJobsClassLibrary
                 taskReq.DistrictCode = "" + stdDataReader["DSTRCT_CODE"].ToString().Trim();
                 taskReq.WorkGroup = "" + stdDataReader["WORK_GROUP"].ToString().Trim();
                 taskReq.StandardJob = "" + stdDataReader["STD_JOB_NO"].ToString().Trim();
-
                 taskReq.SJTaskNo = "" + stdDataReader["STD_JOB_TASK"].ToString().Trim();
                 taskReq.SJTaskDesc = "" + stdDataReader["SJ_TASK_DESC"].ToString().Trim();
                 taskReq.ReqType = "" + stdDataReader["REQ_TYPE"].ToString().Trim();

@@ -35,7 +35,7 @@ namespace EllipseWorkRequestExcelAddIn
         private const int ResultColumn03 = 29;
         private const int TitleRowM01 = 9;
         private const int TitleRowM02 = 6;
-        private const int ResultColumnM01 = 46+10;
+        private const int ResultColumnM01 = 46 + 10;
         private const int ResultColumnM02 = 5;
         //private const int ResultColumnM03 = 14;
         private const int TitleRowV01 = 5;
@@ -3348,7 +3348,30 @@ namespace EllipseWorkRequestExcelAddIn
                     "03 - SISTEMA DE APERTURA",
                     "07 - SISTEMA ESTRUCTURAL",
                     "04 - SISTEMA ELECTRICO",
-                    "13 - SISTEMA NEUMATICO"
+                    "13 - SISTEMA NEUMATICO",
+                    "VA - TAG",
+                    "VB - BASE TAG",
+                    "VC - ELECTROVALVULA",
+                    "VD - CAJA ELECTROVALVULA",
+                    "VE - COMPUERTAS",
+                    "VF - ZAPATAS",
+                    "VG - VIGA DE COMPUERTA",
+                    "VH - APLANADURA",
+                    "VI - CEJA DELGADA/ALTA",
+                    "VJ - INCOMUNICADO FRENOS",
+                    "VK - INCOMUNICADO COMPUERTAS",
+                    "VL - RUIDO RODAMIENTO",
+                    "VM - CILINDRO DE COMPUERTA",
+                    "VN - VALVULA DRENAJE",
+                    "VO - TUBERIA COMPUERTA",
+                    "VP - TUBERIA AIRE",
+                    "VQ - MANGUERAS",
+                    "VR - FRENO DE MANO",
+                    "VS - MUELA",
+                    "VT - PIN DE MUELA",
+                    "VU - SOPORTE DE COMPUERTA",
+                    "VW - RESORTES",
+                    "1A - OTROS"
                 };
                 _cells.SetValidationList(_cells.GetCell(08, TitleRowV01 + 1), failureList, ValidationSheetName, 5, false);
 
@@ -3491,7 +3514,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
                 _cells.GetCell("A3").Value = WorkRequestActions.SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("B3").Value = "PLANFC";
-                var workGroupList = new List<string> { "PLANFC"};
+                var workGroupList = new List<string> { "PLANFC" };
                 _cells.SetValidationList(_cells.GetCell("B3"), workGroupList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = WorkRequestActions.SearchFieldCriteriaType.Originator.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2, false);

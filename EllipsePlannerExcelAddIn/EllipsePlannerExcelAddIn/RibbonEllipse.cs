@@ -41,6 +41,7 @@ namespace EllipsePlannerExcelAddIn
         private const string ResourcesSheetName = "Planeados";
         private const string EllipseResourcesSheetName = "Estimados";
         private const string PeopleSoftResourcesSheetName = "PeopleSoft";
+        private const string DailySheetName = "Plan Diario";
 
         //Tablas
         private const string TableJobResources = "JobResources";
@@ -48,6 +49,7 @@ namespace EllipsePlannerExcelAddIn
         private const string TableIndicator = "Indicator";
         private const string TableDailyEllipseResources = "DailyEllipseResources";
         private const string TablePsoftResources = "PsoftResources";
+        private const string TableDaily = "DailyResources";
 
         //Titulos
         private const int TitleRowResources = 8;
@@ -194,7 +196,7 @@ namespace EllipsePlannerExcelAddIn
                 _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
                 _excelApp.Workbooks.Add();
-                while (_excelApp.ActiveWorkbook.Sheets.Count < 4)
+                while (_excelApp.ActiveWorkbook.Sheets.Count < 5)
                     _excelApp.ActiveWorkbook.Worksheets.Add();
 
                 if (_cells == null)
@@ -206,7 +208,7 @@ namespace EllipsePlannerExcelAddIn
                 _cells.CreateNewWorksheet(ValidationSheetName);
 
 
-                //hoja 1
+                #region hoja 1
                 _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = ResourcesSheetName;
                 var districtList = Districts.GetDistrictList();
@@ -309,8 +311,10 @@ namespace EllipsePlannerExcelAddIn
 
 
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                #endregion
 
-                //hoja 2
+                #region hoja 2
+
                 _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = EllipseResourcesSheetName;
 
@@ -363,8 +367,9 @@ namespace EllipsePlannerExcelAddIn
                 _cells.FormatAsTable(_cells.GetRange(13, TitleRowEllipse, 19, TitleRowEllipse + 1), TableDailyEllipseResources);
                 _cells.GetRange(13, TitleRowEllipse, 19, TitleRowEllipse + 1).NumberFormat = NumberFormatConstants.Text;
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                #endregion
 
-                //hoja 3
+                #region hoja 3
                 _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = PeopleSoftResourcesSheetName;
 
@@ -393,6 +398,48 @@ namespace EllipsePlannerExcelAddIn
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRowEllipse, 6, TitleRowEllipse + 1), TablePsoftResources);
                 _cells.GetRange(1, TitleRowEllipse, 6, TitleRowEllipse + 1).NumberFormat = NumberFormatConstants.Text;
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                #endregion
+
+                #region hoja 4
+                _excelApp.ActiveWorkbook.Sheets.get_Item(4).Activate();
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = DailySheetName;
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
+                _cells.MergeCells("A1", "B2");
+                _cells.GetCell("C1").Value = "RECURSOS DIARIOS - ELLIPSE 8";
+                _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
+                _cells.MergeCells("C1", "J2");
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = StyleConstants.TitleRequired;
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = StyleConstants.TitleOptional;
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = StyleConstants.TitleInformation;
+                _cells.GetCell("K4").Value = "ACCIÓN A REALIZAR";
+                _cells.GetCell("K4").Style = StyleConstants.TitleAction;
+
+                _cells.GetCell(1, TitleRowEllipse).Value = "Grupo";
+                _cells.GetCell(2, TitleRowEllipse).Value = "Equipo";
+                _cells.GetCell(3, TitleRowEllipse).Value = "Eq Desc";
+                _cells.GetCell(4, TitleRowEllipse).Value = "MST";
+                _cells.GetCell(5, TitleRowEllipse).Value = "Referencia";
+                _cells.GetCell(6, TitleRowEllipse).Value = "Ref Desc";
+                _cells.GetCell(7, TitleRowEllipse).Value = "Tarea";
+                _cells.GetCell(8, TitleRowEllipse).Value = "Turno";
+                _cells.GetCell(9, TitleRowEllipse).Value = "Hora Inicio";
+                _cells.GetCell(10, TitleRowEllipse).Value = "Hora Fin";
+                _cells.GetCell(11, TitleRowEllipse).Value = "Duracion Turno";
+                _cells.GetCell(12, TitleRowEllipse).Value = "Recurso";
+                _cells.GetCell(13, TitleRowEllipse).Value = "Horas Requeridas";
+
+                _cells.GetRange(1, TitleRowEllipse, 13 - 1, TitleRowEllipse).Style = StyleConstants.TitleInformation;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRowEllipse, 13, TitleRowEllipse + 1), TableJobResources);
+                _cells.GetRange(1, TitleRowEllipse, 13, TitleRowEllipse + 1).NumberFormat = NumberFormatConstants.Text;
+
+
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                #endregion
 
                 _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
             }
@@ -439,6 +486,10 @@ namespace EllipsePlannerExcelAddIn
 
                 //consulta sobre tabla de Ellipse mso720
                 List<LabourResources> pSoftResources = JobActions.GetPsoftResources(district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
+
+                //jobs sin repetirse
+                //var singlejobs = ellipseJobs.GroupBy(a=> new { a.WorkGroup, a.MstReference, a.Reference })
+
 
                 //recursos planeados ellipse agrupados por grupo/fecha/recurso
                 var ellipseTotalresource = (from jobs in ellipseJobs from resources in jobs.LabourResourcesList select resources).GroupBy(l => new { l.WorkGroup, l.Date, l.ResourceCode })
@@ -604,7 +655,34 @@ namespace EllipsePlannerExcelAddIn
                     _cells.GetCell(6, i).Value = r.AvailableLabourHours;
                     i++;
                 }
-                _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
+                _excelApp.ActiveWorkbook.Sheets.get_Item(4).Activate();
+
+                i = TitleRowEllipse + 1;
+                foreach (var j in ellipseJobs)
+                {
+                    if (j.LabourResourcesList.Count <= 0) continue;
+                    foreach (var r in j.LabourResourcesList)
+                    {
+                        List<DailyJobs> singleTask = JobActions.GetEllipseSingleTask(_eFunctions, district, j.WorkOrder ?? j.StdJobNo, j.WoTaskNo ?? j.StdJobTask, j.PlanStrDate, j.PlanStrTime, j.PlanFinDate, j.PlanFinTime, startDate, endDate, r.ResourceCode);
+                        foreach (var k in singleTask)
+                        {
+                            _cells.GetCell(1, i).Value = k.WorkGroup;                       //"Grupo"
+                            _cells.GetCell(2, i).Value = j.EquipNo;                         //"Equipo"
+                            _cells.GetCell(3, i).Value = j.ItemName1;                       //"Eq Desc"
+                            _cells.GetCell(4, i).Value = j.MaintSchTask;                    //"MST"
+                            _cells.GetCell(5, i).Value = k.WorkOrder;                       //"Referencia"
+                            _cells.GetCell(6, i).Value = k.WoTaskNo;                        //"Ref Desc"
+                            _cells.GetCell(7, i).Value = k.WoTaskDesc;                      //"Tarea"
+                            _cells.GetCell(8, i).Value = k.Shift;                           //"Turno"
+                            _cells.GetCell(9, i).Value = k.PlanStrDate;                     //"Hora Inicio"
+                            _cells.GetCell(10, i).Value = k.PlanFinDate;                    //"Hora Fin"
+                            _cells.GetCell(11, i).Value = k.EstimatedShiftDurationsHrs;     //"Duracion Turno"
+                            _cells.GetCell(12, i).Value = k.ResourceCode;                   //"Recurso"
+                            _cells.GetCell(13, i).Value = k.ShiftLabourHours;               //"Horas Requeridas"
+                            i++;
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

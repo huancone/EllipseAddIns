@@ -42,31 +42,32 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
     // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
     // CODEGEN: The optional WSDL extension element 'PolicyReference' from namespace 'http://www.w3.org/ns/ws-policy' was not handled.
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="BulkMaterialUsageSheetItemServiceHttpBinding", Namespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com")]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(BaseServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Base))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Attribute[]))]
     public partial class BulkMaterialUsageSheetItemService : System.Web.Services.Protocols.SoapHttpClientProtocol {
-        
-        private System.Threading.SendOrPostCallback updateOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleDeleteOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleCreateOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
         
         private System.Threading.SendOrPostCallback searchOperationCompleted;
         
+        private System.Threading.SendOrPostCallback readOperationCompleted;
+        
         private System.Threading.SendOrPostCallback multipleUpdateOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleDeleteOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback createOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback updateOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
         
         private System.Threading.SendOrPostCallback deleteOperationCompleted;
         
-        private System.Threading.SendOrPostCallback readOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback createOperationCompleted;
+        private System.Threading.SendOrPostCallback multipleCreateOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -107,162 +108,31 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
         }
         
         /// <remarks/>
-        public event updateCompletedEventHandler updateCompleted;
-        
-        /// <remarks/>
-        public event multipleDeleteCompletedEventHandler multipleDeleteCompleted;
-        
-        /// <remarks/>
-        public event multipleCreateCompletedEventHandler multipleCreateCompleted;
-        
-        /// <remarks/>
-        public event multipleReadCompletedEventHandler multipleReadCompleted;
-        
-        /// <remarks/>
         public event searchCompletedEventHandler searchCompleted;
-        
-        /// <remarks/>
-        public event multipleUpdateCompletedEventHandler multipleUpdateCompleted;
-        
-        /// <remarks/>
-        public event deleteCompletedEventHandler deleteCompleted;
         
         /// <remarks/>
         public event readCompletedEventHandler readCompleted;
         
         /// <remarks/>
+        public event multipleUpdateCompletedEventHandler multipleUpdateCompleted;
+        
+        /// <remarks/>
+        public event multipleDeleteCompletedEventHandler multipleDeleteCompleted;
+        
+        /// <remarks/>
         public event createCompletedEventHandler createCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public BulkMaterialUsageSheetItemServiceResult update([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] BulkMaterialUsageSheetItemDTO serviceDTO) {
-            object[] results = this.Invoke("update", new object[] {
-                        context,
-                        serviceDTO});
-            return ((BulkMaterialUsageSheetItemServiceResult)(results[0]));
-        }
+        public event updateCompletedEventHandler updateCompleted;
         
         /// <remarks/>
-        public void updateAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO) {
-            this.updateAsync(context, serviceDTO, null);
-        }
+        public event multipleReadCompletedEventHandler multipleReadCompleted;
         
         /// <remarks/>
-        public void updateAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO, object userState) {
-            if ((this.updateOperationCompleted == null)) {
-                this.updateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnupdateOperationCompleted);
-            }
-            this.InvokeAsync("update", new object[] {
-                        context,
-                        serviceDTO}, this.updateOperationCompleted, userState);
-        }
-        
-        private void OnupdateOperationCompleted(object arg) {
-            if ((this.updateCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.updateCompleted(this, new updateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
+        public event deleteCompletedEventHandler deleteCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")]
-        public BulkMaterialUsageSheetItemServiceResult[] multipleDelete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")] BulkMaterialUsageSheetItemDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleDelete", new object[] {
-                        context,
-                        inputDtos});
-            return ((BulkMaterialUsageSheetItemServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleDeleteAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos) {
-            this.multipleDeleteAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleDeleteAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos, object userState) {
-            if ((this.multipleDeleteOperationCompleted == null)) {
-                this.multipleDeleteOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleDeleteOperationCompleted);
-            }
-            this.InvokeAsync("multipleDelete", new object[] {
-                        context,
-                        inputDtos}, this.multipleDeleteOperationCompleted, userState);
-        }
-        
-        private void OnmultipleDeleteOperationCompleted(object arg) {
-            if ((this.multipleDeleteCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleDeleteCompleted(this, new multipleDeleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")]
-        public BulkMaterialUsageSheetItemServiceResult[] multipleCreate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")] BulkMaterialUsageSheetItemDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleCreate", new object[] {
-                        context,
-                        inputDtos});
-            return ((BulkMaterialUsageSheetItemServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleCreateAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos) {
-            this.multipleCreateAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleCreateAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos, object userState) {
-            if ((this.multipleCreateOperationCompleted == null)) {
-                this.multipleCreateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateOperationCompleted);
-            }
-            this.InvokeAsync("multipleCreate", new object[] {
-                        context,
-                        inputDtos}, this.multipleCreateOperationCompleted, userState);
-        }
-        
-        private void OnmultipleCreateOperationCompleted(object arg) {
-            if ((this.multipleCreateCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleCreateCompleted(this, new multipleCreateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")]
-        public BulkMaterialUsageSheetItemServiceResult[] multipleRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")] BulkMaterialUsageSheetItemDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleRead", new object[] {
-                        context,
-                        inputDtos});
-            return ((BulkMaterialUsageSheetItemServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleReadAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos) {
-            this.multipleReadAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleReadAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos, object userState) {
-            if ((this.multipleReadOperationCompleted == null)) {
-                this.multipleReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadOperationCompleted);
-            }
-            this.InvokeAsync("multipleRead", new object[] {
-                        context,
-                        inputDtos}, this.multipleReadOperationCompleted, userState);
-        }
-        
-        private void OnmultipleReadOperationCompleted(object arg) {
-            if ((this.multipleReadCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleReadCompleted(this, new multipleReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
+        public event multipleCreateCompletedEventHandler multipleCreateCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -301,6 +171,38 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public BulkMaterialUsageSheetItemServiceResult read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] BulkMaterialUsageSheetItemDTO serviceDTO) {
+            object[] results = this.Invoke("read", new object[] {
+                        context,
+                        serviceDTO});
+            return ((BulkMaterialUsageSheetItemServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void readAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO) {
+            this.readAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void readAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO, object userState) {
+            if ((this.readOperationCompleted == null)) {
+                this.readOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreadOperationCompleted);
+            }
+            this.InvokeAsync("read", new object[] {
+                        context,
+                        serviceDTO}, this.readOperationCompleted, userState);
+        }
+        
+        private void OnreadOperationCompleted(object arg) {
+            if ((this.readCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
         [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")]
         public BulkMaterialUsageSheetItemServiceResult[] multipleUpdate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")] BulkMaterialUsageSheetItemDTO[] inputDtos) {
@@ -329,6 +231,136 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
             if ((this.multipleUpdateCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.multipleUpdateCompleted(this, new multipleUpdateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")]
+        public BulkMaterialUsageSheetItemServiceResult[] multipleDelete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")] BulkMaterialUsageSheetItemDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleDelete", new object[] {
+                        context,
+                        inputDtos});
+            return ((BulkMaterialUsageSheetItemServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleDeleteAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos) {
+            this.multipleDeleteAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleDeleteAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos, object userState) {
+            if ((this.multipleDeleteOperationCompleted == null)) {
+                this.multipleDeleteOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleDeleteOperationCompleted);
+            }
+            this.InvokeAsync("multipleDelete", new object[] {
+                        context,
+                        inputDtos}, this.multipleDeleteOperationCompleted, userState);
+        }
+        
+        private void OnmultipleDeleteOperationCompleted(object arg) {
+            if ((this.multipleDeleteCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleDeleteCompleted(this, new multipleDeleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public BulkMaterialUsageSheetItemServiceResult create([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] BulkMaterialUsageSheetItemDTO serviceDTO) {
+            object[] results = this.Invoke("create", new object[] {
+                        context,
+                        serviceDTO});
+            return ((BulkMaterialUsageSheetItemServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void createAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO) {
+            this.createAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void createAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO, object userState) {
+            if ((this.createOperationCompleted == null)) {
+                this.createOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateOperationCompleted);
+            }
+            this.InvokeAsync("create", new object[] {
+                        context,
+                        serviceDTO}, this.createOperationCompleted, userState);
+        }
+        
+        private void OncreateOperationCompleted(object arg) {
+            if ((this.createCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.createCompleted(this, new createCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public BulkMaterialUsageSheetItemServiceResult update([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] BulkMaterialUsageSheetItemDTO serviceDTO) {
+            object[] results = this.Invoke("update", new object[] {
+                        context,
+                        serviceDTO});
+            return ((BulkMaterialUsageSheetItemServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void updateAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO) {
+            this.updateAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void updateAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO, object userState) {
+            if ((this.updateOperationCompleted == null)) {
+                this.updateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnupdateOperationCompleted);
+            }
+            this.InvokeAsync("update", new object[] {
+                        context,
+                        serviceDTO}, this.updateOperationCompleted, userState);
+        }
+        
+        private void OnupdateOperationCompleted(object arg) {
+            if ((this.updateCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.updateCompleted(this, new updateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")]
+        public BulkMaterialUsageSheetItemServiceResult[] multipleRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")] BulkMaterialUsageSheetItemDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleRead", new object[] {
+                        context,
+                        inputDtos});
+            return ((BulkMaterialUsageSheetItemServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleReadAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos) {
+            this.multipleReadAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleReadAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos, object userState) {
+            if ((this.multipleReadOperationCompleted == null)) {
+                this.multipleReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadOperationCompleted);
+            }
+            this.InvokeAsync("multipleRead", new object[] {
+                        context,
+                        inputDtos}, this.multipleReadOperationCompleted, userState);
+        }
+        
+        private void OnmultipleReadOperationCompleted(object arg) {
+            if ((this.multipleReadCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleReadCompleted(this, new multipleReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -366,65 +398,34 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public BulkMaterialUsageSheetItemServiceResult read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] BulkMaterialUsageSheetItemDTO serviceDTO) {
-            object[] results = this.Invoke("read", new object[] {
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")]
+        public BulkMaterialUsageSheetItemServiceResult[] multipleCreate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3301.types.ellipse.mincom.com")] BulkMaterialUsageSheetItemDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleCreate", new object[] {
                         context,
-                        serviceDTO});
-            return ((BulkMaterialUsageSheetItemServiceResult)(results[0]));
+                        inputDtos});
+            return ((BulkMaterialUsageSheetItemServiceResult[])(results[0]));
         }
         
         /// <remarks/>
-        public void readAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO) {
-            this.readAsync(context, serviceDTO, null);
+        public void multipleCreateAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos) {
+            this.multipleCreateAsync(context, inputDtos, null);
         }
         
         /// <remarks/>
-        public void readAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO, object userState) {
-            if ((this.readOperationCompleted == null)) {
-                this.readOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreadOperationCompleted);
+        public void multipleCreateAsync(OperationContext context, BulkMaterialUsageSheetItemDTO[] inputDtos, object userState) {
+            if ((this.multipleCreateOperationCompleted == null)) {
+                this.multipleCreateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateOperationCompleted);
             }
-            this.InvokeAsync("read", new object[] {
+            this.InvokeAsync("multipleCreate", new object[] {
                         context,
-                        serviceDTO}, this.readOperationCompleted, userState);
+                        inputDtos}, this.multipleCreateOperationCompleted, userState);
         }
         
-        private void OnreadOperationCompleted(object arg) {
-            if ((this.readCompleted != null)) {
+        private void OnmultipleCreateOperationCompleted(object arg) {
+            if ((this.multipleCreateCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", ResponseNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public BulkMaterialUsageSheetItemServiceResult create([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] BulkMaterialUsageSheetItemDTO serviceDTO) {
-            object[] results = this.Invoke("create", new object[] {
-                        context,
-                        serviceDTO});
-            return ((BulkMaterialUsageSheetItemServiceResult)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void createAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO) {
-            this.createAsync(context, serviceDTO, null);
-        }
-        
-        /// <remarks/>
-        public void createAsync(OperationContext context, BulkMaterialUsageSheetItemDTO serviceDTO, object userState) {
-            if ((this.createOperationCompleted == null)) {
-                this.createOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateOperationCompleted);
-            }
-            this.InvokeAsync("create", new object[] {
-                        context,
-                        serviceDTO}, this.createOperationCompleted, userState);
-        }
-        
-        private void OncreateOperationCompleted(object arg) {
-            if ((this.createCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.createCompleted(this, new createCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.multipleCreateCompleted(this, new multipleCreateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -448,14 +449,20 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://connectivity.service.ews.mincom.com")]
     public partial class OperationContext {
         
+        private string applicationClientIdField;
+        
         private string districtField;
+        
+        private bool eventDisableField;
+        
+        private bool eventDisableFieldSpecified;
         
         private int maxInstancesField;
         
@@ -469,11 +476,23 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
         
         private RunAs runAsField;
         
+        private string tenantIdField;
+        
         private bool traceField;
         
         private bool traceFieldSpecified;
         
         private string transactionField;
+        
+        /// <remarks/>
+        public string applicationClientId {
+            get {
+                return this.applicationClientIdField;
+            }
+            set {
+                this.applicationClientIdField = value;
+            }
+        }
         
         /// <remarks/>
         public string district {
@@ -482,6 +501,27 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
             }
             set {
                 this.districtField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool eventDisable {
+            get {
+                return this.eventDisableField;
+            }
+            set {
+                this.eventDisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool eventDisableSpecified {
+            get {
+                return this.eventDisableFieldSpecified;
+            }
+            set {
+                this.eventDisableFieldSpecified = value;
             }
         }
         
@@ -548,6 +588,16 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
         }
         
         /// <remarks/>
+        public string tenantId {
+            get {
+                return this.tenantIdField;
+            }
+            set {
+                this.tenantIdField = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool trace {
             get {
                 return this.traceField;
@@ -580,7 +630,7 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -625,9 +675,68 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(BulkMaterialUsageSheetItemServiceResult))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
+    public abstract partial class BaseServiceResult {
+        
+        private Error[] errorsField;
+        
+        private Message[] informationalMessagesField;
+        
+        private Warning[] warningsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Error[] errors {
+            get {
+                return this.errorsField;
+            }
+            set {
+                this.errorsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Message[] informationalMessages {
+            get {
+                return this.informationalMessagesField;
+            }
+            set {
+                this.informationalMessagesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Warning[] warnings {
+            get {
+                return this.warningsField;
+            }
+            set {
+                this.warningsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://errors.ellipse.mincom.com")]
+    public partial class Error : Message {
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Error))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Warning))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -639,6 +748,10 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
         private int fieldIndexField;
         
         private bool fieldIndexFieldSpecified;
+        
+        private bool localisableField;
+        
+        private bool localisableFieldSpecified;
         
         private string messageIdField;
         
@@ -678,6 +791,27 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
             }
             set {
                 this.fieldIndexFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool localisable {
+            get {
+                return this.localisableField;
+            }
+            set {
+                this.localisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool localisableSpecified {
+            get {
+                return this.localisableFieldSpecified;
+            }
+            set {
+                this.localisableFieldSpecified = value;
             }
         }
         
@@ -733,16 +867,7 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://errors.ellipse.mincom.com")]
-    public partial class Error : Message {
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -751,58 +876,8 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(BulkMaterialUsageSheetItemServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
-    public abstract partial class BaseServiceResult {
-        
-        private Error[] errorsField;
-        
-        private Message[] informationalMessagesField;
-        
-        private Warning[] warningsField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Error[] errors {
-            get {
-                return this.errorsField;
-            }
-            set {
-                this.errorsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Message[] informationalMessages {
-            get {
-                return this.informationalMessagesField;
-            }
-            set {
-                this.informationalMessagesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Warning[] warnings {
-            get {
-                return this.warningsField;
-            }
-            set {
-                this.warningsField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(BulkMaterialUsageSheetItemServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -811,7 +886,7 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -832,7 +907,7 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1168,10 +1243,10 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(BulkMaterialUsageSheetItemDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(BulkMaterialUsageSheetItemSearchParam))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(BulkMaterialUsageSheetItemDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1193,7 +1268,7 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1201,6 +1276,10 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     public partial class Attribute {
         
         private string nameField;
+        
+        private string namespaceField;
+        
+        private anyType2anyTypeMapEntry[] propertiesField;
         
         private string valueField;
         
@@ -1211,6 +1290,27 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
             }
             set {
                 this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string @namespace {
+            get {
+                return this.namespaceField;
+            }
+            set {
+                this.namespaceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("entry", Namespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com", IsNullable=false)]
+        public anyType2anyTypeMapEntry[] properties {
+            get {
+                return this.propertiesField;
+            }
+            set {
+                this.propertiesField = value;
             }
         }
         
@@ -1226,11 +1326,44 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com")]
+    public partial class anyType2anyTypeMapEntry {
+        
+        private object keyField;
+        
+        private object valueField;
+        
+        /// <remarks/>
+        public object key {
+            get {
+                return this.keyField;
+            }
+            set {
+                this.keyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public object value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(BulkMaterialUsageSheetItemDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(BulkMaterialUsageSheetItemSearchParam))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(BulkMaterialUsageSheetItemDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1240,16 +1373,37 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(BulkMaterialUsageSheetItemSearchParam))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
     public abstract partial class AbstractSearchParam : ServiceDTO {
+        
+        private ServiceRequiredAttributes serviceRequiredAttributesField;
+        
+        /// <remarks/>
+        public ServiceRequiredAttributes serviceRequiredAttributes {
+            get {
+                return this.serviceRequiredAttributesField;
+            }
+            set {
+                this.serviceRequiredAttributesField = value;
+            }
+        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
+    public partial class ServiceRequiredAttributes {
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1282,115 +1436,11 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void updateCompletedEventHandler(object sender, updateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class updateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal updateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public BulkMaterialUsageSheetItemServiceResult Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((BulkMaterialUsageSheetItemServiceResult)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleDeleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public BulkMaterialUsageSheetItemServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((BulkMaterialUsageSheetItemServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleCreateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public BulkMaterialUsageSheetItemServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((BulkMaterialUsageSheetItemServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public BulkMaterialUsageSheetItemServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((BulkMaterialUsageSheetItemServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
     public delegate void searchCompletedEventHandler(object sender, searchCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class searchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1412,63 +1462,11 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void multipleUpdateCompletedEventHandler(object sender, multipleUpdateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleUpdateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public BulkMaterialUsageSheetItemServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((BulkMaterialUsageSheetItemServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal deleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public BulkMaterialUsageSheetItemServiceResult Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((BulkMaterialUsageSheetItemServiceResult)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
     public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1490,11 +1488,63 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    public delegate void multipleUpdateCompletedEventHandler(object sender, multipleUpdateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleUpdateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public BulkMaterialUsageSheetItemServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((BulkMaterialUsageSheetItemServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleDeleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public BulkMaterialUsageSheetItemServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((BulkMaterialUsageSheetItemServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
     public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1511,6 +1561,110 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((BulkMaterialUsageSheetItemServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    public delegate void updateCompletedEventHandler(object sender, updateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class updateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal updateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public BulkMaterialUsageSheetItemServiceResult Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((BulkMaterialUsageSheetItemServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public BulkMaterialUsageSheetItemServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((BulkMaterialUsageSheetItemServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal deleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public BulkMaterialUsageSheetItemServiceResult Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((BulkMaterialUsageSheetItemServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.3190.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleCreateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public BulkMaterialUsageSheetItemServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((BulkMaterialUsageSheetItemServiceResult[])(this.results[0]));
             }
         }
     }

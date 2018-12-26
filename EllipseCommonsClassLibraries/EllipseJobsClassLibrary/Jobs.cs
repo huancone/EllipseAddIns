@@ -22,6 +22,8 @@ namespace EllipseJobsClassLibrary
         public string PlanPriority{ get; set; }
         public string PlanStrDate{ get; set; }
         public string PlanStrTime{ get; set; }
+        public string PlanFinDate { get; set; }
+        public string PlanFinTime { get; set; }
         public string EstimatedDurationsHrs{ get; set; }
         public string RaisedDate{ get; set; }
         public string Reference{ get; set; }
@@ -36,12 +38,12 @@ namespace EllipseJobsClassLibrary
         public string WoTaskNo { get; set; }
         public string WoTaskDesc { get; set; }
         public string EstimatedMachHrs { get; set; }
+        public string Shift { get; set; }
         public List<LabourResources> LabourResourcesList { get; set; }
     }
 
     public class LabourResources
     {
-
         public string WorkGroup { get; set; }
         public string ResourceCode { get; set; }
         public string Date { get; set; }
@@ -51,5 +53,25 @@ namespace EllipseJobsClassLibrary
         public double RealLabourHours { get; set; }
         public string EmployeeId { get;  set; }
         public string EmployeeName { get; set; }
+    }
+
+    public class DailyJobs
+    {
+        public string WorkGroup { get; set; }
+        public string WorkOrder { get; set; }
+        public string WoTaskNo { get; set; }
+        public string WoTaskDesc { get; set; }
+        public string Shift { get; set; }
+        public string PlanStrDate { get; set; }
+        public string PlanStrTime { get; set; }
+        public string PlanFinDate { get; set; }
+        public string PlanFinTime { get; set; }
+        public string EstimatedDurationsHrs { get; set; }
+        public string EstimatedShiftDurationsHrs { get; set; }
+        public string ResourceCode { get; set; }
+        public string QuantityRequired { get; set; }
+        public string EstimatedResourceHours { get; set; }
+        public string ActualResourceHours { get; set; }
+        public string ShiftLabourHours { get; set; }
     }
 }

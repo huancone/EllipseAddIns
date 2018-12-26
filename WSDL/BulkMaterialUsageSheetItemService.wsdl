@@ -1,0 +1,695 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="http://service.ellipse.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:ns3="http://instances.m3301.types.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:tns="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" targetNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+			<xsd:complexType name="OperationContext">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="applicationClientId" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="district" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" name="maxInstances" type="xsd:int"/>
+					<xsd:element minOccurs="0" name="position" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" name="runAs" type="ns1:RunAs"/>
+					<xsd:element minOccurs="0" name="tenantId" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="trace" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" name="transaction" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="RunAs">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="district" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="position" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="user" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.m3301.types.ellipse.mincom.com">
+			<xsd:import namespace="http://service.ellipse.mincom.com"/>
+			<xsd:simpleType name="bulkMaterialUsageSheetId">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="32"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="bulkMaterialTypeId">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="6"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="BulkMaterialUsageSheetItemSearchParam">
+				<xsd:complexContent>
+					<xsd:extension base="ns2:AbstractSearchParam">
+						<xsd:sequence>
+							<xsd:element minOccurs="0" name="bulkMaterialTypeId" type="ns3:bulkMaterialTypeId"/>
+							<xsd:element minOccurs="0" name="bulkMaterialUsageSheetId" type="ns3:bulkMaterialUsageSheetId"/>
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:simpleType name="supplierReference">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="80"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="unitPrice">
+				<xsd:restriction base="xsd:decimal">
+					<xsd:maxInclusive value="100000000000000000"/>
+					<xsd:minInclusive value="0"/>
+					<xsd:fractionDigits value="6"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="useByDate">
+				<xsd:restriction base="xsd:string"/>
+			</xsd:simpleType>
+			<xsd:simpleType name="accountCode">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="24"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="lastModifiedTime">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="6"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="quantity">
+				<xsd:restriction base="xsd:decimal">
+					<xsd:maxInclusive value="999999999.99"/>
+					<xsd:minInclusive value="0"/>
+					<xsd:fractionDigits value="2"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="componentCode">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="4"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="lastModifiedDate">
+				<xsd:restriction base="xsd:string"/>
+			</xsd:simpleType>
+			<xsd:simpleType name="inventoryCategory">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="2"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="modifier">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="2"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="binCode">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="12"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="meterReading">
+				<xsd:restriction base="xsd:decimal">
+					<xsd:maxInclusive value="999999999.99"/>
+					<xsd:minInclusive value="0"/>
+					<xsd:fractionDigits value="2"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="usageTime">
+				<xsd:restriction base="xsd:string"/>
+			</xsd:simpleType>
+			<xsd:simpleType name="bulkMaterialUsageSheetItemId">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="32"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="equipmentNumber">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="12"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="equipmentReference">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="30"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="conditionCode">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="2"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="subLedger">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="12"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="usageDate">
+				<xsd:restriction base="xsd:string"/>
+			</xsd:simpleType>
+			<xsd:simpleType name="conditionMonitoringAction">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="batchLotNumber">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="10"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType name="operationStatisticType">
+				<xsd:restriction base="xsd:string">
+					<xsd:minLength value="0"/>
+					<xsd:maxLength value="2"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="BulkMaterialUsageSheetItemDTO">
+				<xsd:complexContent>
+					<xsd:extension base="ns2:ServiceDTO">
+						<xsd:sequence>
+							<xsd:element minOccurs="0" name="accountCode" type="ns3:accountCode"/>
+							<xsd:element minOccurs="0" name="batchLotNumber" type="ns3:batchLotNumber"/>
+							<xsd:element minOccurs="0" name="binCode" type="ns3:binCode"/>
+							<xsd:element minOccurs="0" name="bulkMaterialTypeId" type="ns3:bulkMaterialTypeId"/>
+							<xsd:element minOccurs="0" name="bulkMaterialUsageSheetId" type="ns3:bulkMaterialUsageSheetId"/>
+							<xsd:element minOccurs="0" name="bulkMaterialUsageSheetItemId" type="ns3:bulkMaterialUsageSheetItemId"/>
+							<xsd:element minOccurs="0" name="componentCode" type="ns3:componentCode"/>
+							<xsd:element minOccurs="0" name="conditionCode" type="ns3:conditionCode"/>
+							<xsd:element minOccurs="0" name="conditionMonitoringAction" type="ns3:conditionMonitoringAction"/>
+							<xsd:element minOccurs="0" name="equipmentNumber" type="ns3:equipmentNumber"/>
+							<xsd:element minOccurs="0" name="equipmentReference" type="ns3:equipmentReference"/>
+							<xsd:element minOccurs="0" name="inventoryCategory" type="ns3:inventoryCategory"/>
+							<xsd:element minOccurs="0" name="lastModifiedDate" type="ns3:lastModifiedDate"/>
+							<xsd:element minOccurs="0" name="lastModifiedTime" type="ns3:lastModifiedTime"/>
+							<xsd:element minOccurs="0" name="meterReading" type="ns3:meterReading"/>
+							<xsd:element minOccurs="0" name="modifier" type="ns3:modifier"/>
+							<xsd:element minOccurs="0" name="operationStatisticType" type="ns3:operationStatisticType"/>
+							<xsd:element minOccurs="0" name="quantity" type="ns3:quantity"/>
+							<xsd:element minOccurs="0" name="subLedger" type="ns3:subLedger"/>
+							<xsd:element minOccurs="0" name="supplierReference" type="ns3:supplierReference"/>
+							<xsd:element minOccurs="0" name="unitPrice" type="ns3:unitPrice"/>
+							<xsd:element minOccurs="0" name="usageDate" type="ns3:usageDate"/>
+							<xsd:element minOccurs="0" name="usageTime" type="ns3:usageTime"/>
+							<xsd:element minOccurs="0" name="useByDate" type="ns3:useByDate"/>
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOfBulkMaterialUsageSheetItemServiceResult">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="BulkMaterialUsageSheetItemServiceResult" nillable="true" type="ns3:BulkMaterialUsageSheetItemServiceResult"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="BulkMaterialUsageSheetItemServiceResult">
+				<xsd:complexContent>
+					<xsd:extension base="ns2:ServiceResult">
+						<xsd:sequence>
+							<xsd:element minOccurs="0" name="bulkMaterialUsageSheetItemDTO" type="ns3:BulkMaterialUsageSheetItemDTO"/>
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOfBulkMaterialUsageSheetItemDTO">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="BulkMaterialUsageSheetItemDTO" nillable="true" type="ns3:BulkMaterialUsageSheetItemDTO"/>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.ellipse.mincom.com">
+			<xsd:import namespace="http://errors.ellipse.mincom.com"/>
+			<xsd:import namespace="http://instances.base.types.ellipse.mincom.com"/>
+			<xsd:import namespace="http://attribute.ellipse.mincom.com"/>
+			<xsd:complexType abstract="true" name="AbstractSearchParam">
+				<xsd:complexContent>
+					<xsd:extension base="ns2:ServiceDTO">
+						<xsd:sequence>
+							<xsd:element minOccurs="0" name="serviceRequiredAttributes" type="ns2:ServiceRequiredAttributes"/>
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType abstract="true" name="ServiceDTO">
+				<xsd:complexContent>
+					<xsd:extension base="ns4:Base">
+						<xsd:sequence>
+							<xsd:element minOccurs="0" name="customAttributes" type="ns5:ArrayOfAttribute"/>
+						</xsd:sequence>
+					</xsd:extension>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="ServiceRequiredAttributes"/>
+			<xsd:complexType name="ServiceResult">
+				<xsd:complexContent>
+					<xsd:extension base="ns2:BaseServiceResult"/>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType abstract="true" name="BaseServiceResult">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="errors" type="ns6:ArrayOfError"/>
+					<xsd:element minOccurs="0" name="informationalMessages" type="ns6:ArrayOfMessage"/>
+					<xsd:element minOccurs="0" name="warnings" type="ns6:ArrayOfWarning"/>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+			<xsd:import namespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com"/>
+			<xsd:complexType name="ArrayOfAttribute">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="Attribute" nillable="true" type="ns5:Attribute"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Attribute">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="name" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="namespace" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap"/>
+					<xsd:element minOccurs="0" name="value" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://bulkmaterialusagesheetitem.m3301.service.ellipse.mincom.com">
+			<xsd:import namespace="http://connectivity.service.ews.mincom.com"/>
+			<xsd:import namespace="http://instances.m3301.types.ellipse.mincom.com"/>
+			<xsd:complexType name="anyType2anyTypeMap">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="entry">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element maxOccurs="1" minOccurs="0" name="key" type="xsd:anyType"/>
+								<xsd:element maxOccurs="1" minOccurs="0" name="value" type="xsd:anyType"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:element name="search">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="searchParams" nillable="true" type="ns3:BulkMaterialUsageSheetItemSearchParam"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="restart" nillable="true" type="ns3:BulkMaterialUsageSheetItemDTO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="searchResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns3:ArrayOfBulkMaterialUsageSheetItemServiceResult"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="read">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="serviceDTO" nillable="true" type="ns3:BulkMaterialUsageSheetItemDTO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="readResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns3:BulkMaterialUsageSheetItemServiceResult"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="multipleUpdate">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfBulkMaterialUsageSheetItemDTO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="multipleUpdateResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns3:ArrayOfBulkMaterialUsageSheetItemServiceResult"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="multipleDelete">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfBulkMaterialUsageSheetItemDTO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="multipleDeleteResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns3:ArrayOfBulkMaterialUsageSheetItemServiceResult"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="create">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="serviceDTO" nillable="true" type="ns3:BulkMaterialUsageSheetItemDTO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="createResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns3:BulkMaterialUsageSheetItemServiceResult"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="update">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="serviceDTO" nillable="true" type="ns3:BulkMaterialUsageSheetItemDTO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="updateResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns3:BulkMaterialUsageSheetItemServiceResult"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="multipleRead">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfBulkMaterialUsageSheetItemDTO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="multipleReadResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns3:ArrayOfBulkMaterialUsageSheetItemServiceResult"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="delete">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="serviceDTO" nillable="true" type="ns3:BulkMaterialUsageSheetItemDTO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="deleteResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns3:BulkMaterialUsageSheetItemServiceResult"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="multipleCreate">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="context" nillable="true" type="ns1:OperationContext"/>
+						<xsd:element maxOccurs="1" minOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfBulkMaterialUsageSheetItemDTO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="multipleCreateResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element maxOccurs="1" minOccurs="1" name="out" nillable="true" type="ns3:ArrayOfBulkMaterialUsageSheetItemServiceResult"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
+			<xsd:complexType abstract="true" name="Base"/>
+		</xsd:schema>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
+			<xsd:complexType name="ArrayOfMessage">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="Message" nillable="true" type="ns6:Message"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Message">
+				<xsd:sequence>
+					<xsd:element minOccurs="0" name="fieldId" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="fieldIndex" type="xsd:int"/>
+					<xsd:element minOccurs="0" name="localisable" type="xsd:boolean"/>
+					<xsd:element minOccurs="0" name="messageId" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="messageInstance" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="messageText" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="parentInstance" type="xsd:string"/>
+					<xsd:element minOccurs="0" name="user" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOfWarning">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="Warning" nillable="true" type="ns6:Warning"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Warning">
+				<xsd:complexContent>
+					<xsd:extension base="ns6:Message"/>
+				</xsd:complexContent>
+			</xsd:complexType>
+			<xsd:complexType name="ArrayOfError">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="Error" nillable="true" type="ns6:Error"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Error">
+				<xsd:complexContent>
+					<xsd:extension base="ns6:Message"/>
+				</xsd:complexContent>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="updateResponse">
+		<wsdl:part name="parameters" element="tns:updateResponse"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteRequest">
+		<wsdl:part name="parameters" element="tns:delete"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteResponse">
+		<wsdl:part name="parameters" element="tns:deleteResponse"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="multipleCreateRequest">
+		<wsdl:part name="parameters" element="tns:multipleCreate"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="searchResponse">
+		<wsdl:part name="parameters" element="tns:searchResponse"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="multipleUpdateRequest">
+		<wsdl:part name="parameters" element="tns:multipleUpdate"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="multipleDeleteRequest">
+		<wsdl:part name="parameters" element="tns:multipleDelete"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="multipleDeleteResponse">
+		<wsdl:part name="parameters" element="tns:multipleDeleteResponse"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createResponse">
+		<wsdl:part name="parameters" element="tns:createResponse"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="multipleUpdateResponse">
+		<wsdl:part name="parameters" element="tns:multipleUpdateResponse"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="multipleReadRequest">
+		<wsdl:part name="parameters" element="tns:multipleRead"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="readRequest">
+		<wsdl:part name="parameters" element="tns:read"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="createRequest">
+		<wsdl:part name="parameters" element="tns:create"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="multipleReadResponse">
+		<wsdl:part name="parameters" element="tns:multipleReadResponse"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="searchRequest">
+		<wsdl:part name="parameters" element="tns:search"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="readResponse">
+		<wsdl:part name="parameters" element="tns:readResponse"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateRequest">
+		<wsdl:part name="parameters" element="tns:update"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="multipleCreateResponse">
+		<wsdl:part name="parameters" element="tns:multipleCreateResponse"> </wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="BulkMaterialUsageSheetItem">
+		<wsdl:operation name="search">
+			<wsdl:input name="searchRequest" message="tns:searchRequest"> </wsdl:input>
+			<wsdl:output name="searchResponse" message="tns:searchResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="read">
+			<wsdl:input name="readRequest" message="tns:readRequest"> </wsdl:input>
+			<wsdl:output name="readResponse" message="tns:readResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="multipleUpdate">
+			<wsdl:input name="multipleUpdateRequest" message="tns:multipleUpdateRequest"> </wsdl:input>
+			<wsdl:output name="multipleUpdateResponse" message="tns:multipleUpdateResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="multipleDelete">
+			<wsdl:input name="multipleDeleteRequest" message="tns:multipleDeleteRequest"> </wsdl:input>
+			<wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="create">
+			<wsdl:input name="createRequest" message="tns:createRequest"> </wsdl:input>
+			<wsdl:output name="createResponse" message="tns:createResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="update">
+			<wsdl:input name="updateRequest" message="tns:updateRequest"> </wsdl:input>
+			<wsdl:output name="updateResponse" message="tns:updateResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="multipleRead">
+			<wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest"> </wsdl:input>
+			<wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<wsdl:input name="deleteRequest" message="tns:deleteRequest"> </wsdl:input>
+			<wsdl:output name="deleteResponse" message="tns:deleteResponse"> </wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="multipleCreate">
+			<wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest"> </wsdl:input>
+			<wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse"> </wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="BulkMaterialUsageSheetItemServiceHttpBinding" type="tns:BulkMaterialUsageSheetItem">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBindingPolicy"/>
+		<wsdl:operation name="search">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="searchRequest">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:input>
+			<wsdl:output name="searchResponse">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="read">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="readRequest">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:input>
+			<wsdl:output name="readResponse">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="multipleUpdate">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="multipleUpdateRequest">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:input>
+			<wsdl:output name="multipleUpdateResponse">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="multipleDelete">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="multipleDeleteRequest">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:input>
+			<wsdl:output name="multipleDeleteResponse">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="create">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="createRequest">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:input>
+			<wsdl:output name="createResponse">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="update">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="updateRequest">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:input>
+			<wsdl:output name="updateResponse">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="multipleRead">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="multipleReadRequest">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:input>
+			<wsdl:output name="multipleReadResponse">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="deleteRequest">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:input>
+			<wsdl:output name="deleteResponse">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="multipleCreate">
+			<wsdlsoap:operation soapAction=""/>
+			<wsdl:input name="multipleCreateRequest">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:input>
+			<wsdl:output name="multipleCreateResponse">
+				<wsdlsoap:body use="literal"/>
+				<wsp:PolicyReference URI="#BulkMaterialUsageSheetItemServiceHttpBinding_Policy"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="BulkMaterialUsageSheetItemService">
+		<wsdl:port name="BulkMaterialUsageSheetItemServiceHttpPort" binding="tns:BulkMaterialUsageSheetItemServiceHttpBinding">
+			<wsdlsoap:address location="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/BulkMaterialUsageSheetItemService"/>
+		</wsdl:port>
+	</wsdl:service>
+	<wsp:Policy wsu:Id="BulkMaterialUsageSheetItemServiceHttpBindingPolicy">
+		<wsp:ExactlyOne>
+			<wsp:All>
+				<sp:SymmetricBinding>
+					<wsp:Policy/>
+				</sp:SymmetricBinding>
+				<sp:EncryptedSupportingTokens>
+					<wsp:Policy>
+						<sp:UsernameToken sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
+							<wsp:Policy>
+								<sp:WssUsernameToken10/>
+							</wsp:Policy>
+						</sp:UsernameToken>
+					</wsp:Policy>
+				</sp:EncryptedSupportingTokens>
+			</wsp:All>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
+	<wsp:Policy wsu:Id="BulkMaterialUsageSheetItemServiceHttpBinding_Policy">
+		<wsp:ExactlyOne>
+			<wsp:All/>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
+</wsdl:definitions>

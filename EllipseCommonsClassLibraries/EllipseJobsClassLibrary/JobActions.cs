@@ -9,7 +9,11 @@ using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Constants;
 using EllipseStandardJobsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
-using Screen = EllipseCommonsClassLibrary.ScreenService; //si es screen service
+using Screen = EllipseCommonsClassLibrary.ScreenService;
+using TaskRequirement = EllipseStandardJobsClassLibrary.TaskRequirement;
+using System.Diagnostics;
+
+//si es screen service
 
 namespace EllipseJobsClassLibrary
 {
@@ -142,17 +146,19 @@ namespace EllipseJobsClassLibrary
                 PlanPriority = (string)dto.Element("planPriority"),
                 PlanStrDate = (string)dto.Element("planStrDate"),
                 PlanStrTime = (string)dto.Element("planStrTime"),
+                PlanFinDate = (string)dto.Element("planFinDate"),
+                PlanFinTime = (string)dto.Element("planFinTime"),
                 EstimatedDurationsHrs = (string)dto.Element("estDurHrs"),
                 RaisedDate = (string)dto.Element("raisedDate"),
                 Reference = (string)dto.Element("reference"),
                 StdJobNo = (string)dto.Element("stdJobNo"),
                 StdJobTask = (string)dto.Element("wOTaskNo"),
-                WoDesc = (string)dto.Element("woDesc"),
                 WoStatusM = (string)dto.Element("woStatusM"),
                 WoStatusU = (string)dto.Element("woStatusU"),
                 WoType = (string)dto.Element("woType"),
                 WorkGroup = (string)dto.Element("workGroup"),
                 WorkOrder = (string)dto.Element("workOrder"),
+                WoDesc = (string)dto.Element("woDesc"),
                 WoTaskNo = (string)dto.Element("wOTaskNo"),
                 WoTaskDesc = (string)dto.Element("taskDescription")
             }).ToList();
@@ -188,19 +194,19 @@ namespace EllipseJobsClassLibrary
                     //obtengo la lista de tareas de la orden de trabajo
                     var reqList = StandardJobActions.FetchTaskRequirements(ef, job.DstrctCode, job.WorkGroup, job.StdJobNo);
 
-                    foreach (var requirement in from req in reqList
-                                                let requirement = new LabourResources
-                                                {
-                                                    WorkGroup = req.WorkGroup,
-                                                    ResourceCode = req.ReqCode,
-                                                    Date = job.PlanStrDate,
-                                                    EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDouble(req.HrsReq) : 0,
-                                                    RealLabourHours = 0
-                                                }
-                                                where req.ReqType == "LAB"
-                                                select requirement)
+                    foreach (var req in reqList)
                     {
-                        job.LabourResourcesList.Add(requirement);
+                        job.StdJobTask = req.SJTaskNo;
+                        var requirement = new LabourResources
+                        {
+                            WorkGroup = req.WorkGroup,
+                            ResourceCode = req.ReqCode,
+                            Date = job.PlanStrDate,
+                            EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDouble(req.HrsReq) : 0,
+                            RealLabourHours = 0
+                        };
+                        if (req.ReqType == "LAB")
+                            job.LabourResourcesList.Add(requirement);
                     }
                 }
             }
@@ -222,8 +228,8 @@ namespace EllipseJobsClassLibrary
                     WorkGroup = drResources["GRUPO"].ToString().Trim(),
                     ResourceCode = drResources["RECURSO"].ToString().Trim(),
                     Date = drResources["FECHA"].ToString().Trim(),
-                    Quantity = !string.IsNullOrEmpty(drResources["CANTIDAD"].ToString().Trim()) ? Convert.ToDouble(drResources["CANTIDAD"].ToString().Trim()):0,
-                    AvailableLabourHours = !string.IsNullOrEmpty(drResources["HORAS"].ToString().Trim()) ? Convert.ToDouble(drResources["HORAS"].ToString().Trim()):0
+                    Quantity = !string.IsNullOrEmpty(drResources["CANTIDAD"].ToString().Trim()) ? Convert.ToDouble(drResources["CANTIDAD"].ToString().Trim()) : 0,
+                    AvailableLabourHours = !string.IsNullOrEmpty(drResources["HORAS"].ToString().Trim()) ? Convert.ToDouble(drResources["HORAS"].ToString().Trim()) : 0
                 };
                 list.Add(res);
             }
@@ -250,10 +256,40 @@ namespace EllipseJobsClassLibrary
                     ResourceCode = drResources["RECURSO"].ToString().Trim(),
                     EmployeeId = drResources["CEDULA"].ToString().Trim(),
                     EmployeeName = drResources["NOMBRE"].ToString().Trim(),
-                    AvailableLabourHours = !string.IsNullOrEmpty(drResources["HORAS"].ToString().Trim())? Convert.ToDouble(drResources["HORAS"].ToString().Trim()):0
+                    AvailableLabourHours = !string.IsNullOrEmpty(drResources["HORAS"].ToString().Trim()) ? Convert.ToDouble(drResources["HORAS"].ToString().Trim()) : 0
                 };
                 list.Add(res);
             }
+            return list;
+        }
+
+        public static List<DailyJobs> GetEllipseSingleTask(EllipseFunctions ef, string district, string reference, string referenceTask, string referenceStartDate, string referenceStartHour, string referenceFinDate, string referenceFinHour, string startDate, string finDate, string resourceCode)
+        {
+            var sqlQuery = Queries.GetEllipseSingleTaskQuery(ef.dbReference, ef.dbLink, district, reference, referenceTask, referenceStartDate, referenceStartHour, referenceFinDate, referenceFinHour, startDate, finDate, resourceCode);
+
+            var drResources = ef.GetQueryResult(sqlQuery);
+            var list = new List<DailyJobs>();
+
+            if (drResources == null || drResources.IsClosed || !drResources.HasRows) return list;
+            while (drResources.Read())
+            {
+                var res = new DailyJobs()
+                {
+                    WorkGroup = drResources["WORK_GROUP"].ToString().Trim(),
+                    WorkOrder = drResources["WORK_ORDER"].ToString().Trim(),
+                    WoTaskNo = drResources["WO_TASK_NO"].ToString().Trim(),
+                    WoTaskDesc = drResources["WO_TASK_DESC"].ToString().Trim(),
+                    Shift = drResources["SHIFT"].ToString().Trim(),
+                    PlanStrDate = drResources["PLAN_STR_DATE"].ToString().Trim(),
+                    PlanFinDate = drResources["PLAN_FIN_DATE"].ToString().Trim(),
+                    EstimatedDurationsHrs = drResources["TSK_DUR_HOURS"].ToString().Trim(),
+                    EstimatedShiftDurationsHrs = drResources["SHIFT_TSK_DUR_HOURS"].ToString().Trim(),
+                    ResourceCode = drResources["RES_CODE"].ToString().Trim(),
+                    ShiftLabourHours = drResources["SHIFT_LAB_HOURS"].ToString().Trim()
+                };
+                list.Add(res);
+            }
+
             return list;
         }
 
@@ -308,7 +344,7 @@ namespace EllipseJobsClassLibrary
                 throw new Exception("No se pudo ingresar a la pantalla MSM72AA");
 
             var replyArrayFields = new ArrayScreenNameValue(replySheet.screenFields);
-            
+
             var screenIndex = 1;
             while (!string.IsNullOrWhiteSpace(replyArrayFields.GetField("RES_CODE1I" + screenIndex).value))
             {
@@ -410,7 +446,7 @@ namespace EllipseJobsClassLibrary
                         "    EMP.RESOURCE_TYPE RECURSO, " +
                         "    TURNOS.CEDULA, " +
                         "    TRIM(EMP.FIRST_NAME) || ' ' || TRIM(EMP.SURNAME) NOMBRE, " +
-                        "    TURNOS.HORAS " +
+                        "    ROUND(TURNOS.HORAS,2) HORAS " +
                         "  FROM " +
                         "    " + dbReference + ".MSF810" + dbLink + " EMP " +
                         "    INNER JOIN " + dbReference + ".MSF723" + dbLink + " WE " +
@@ -470,5 +506,175 @@ namespace EllipseJobsClassLibrary
                          "VALUES(S.WORK_GROUP, S.FECHA, S.WORK_ORDER, S.WO_TASK_NO) ";
             return query;
         }
+
+        public static string GetEllipseSingleTaskQuery(string dbReference, string dbLink, string district, string reference, string referenceTask, string referenceStartDate, string referenceStartHour, string referenceFinDate, string referenceFinHour, string startDate, string finDate, string resourceCode)
+        {
+            var query = "WITH CTE_DATES ( " +
+                        "     STARTDATE, " +
+                        "     ENDDATE " +
+                        " ) AS ( " +
+                        "     SELECT " +
+                        "         CAST(TO_DATE('" + startDate + " 060000','YYYYMMDD HH24MISS') AS DATE) STARTDATE, " +
+                        "         CAST(TO_DATE('" + startDate + " 180000','YYYYMMDD HH24MISS') AS DATE) ENDDATE " +
+                        "     FROM " +
+                        "         DUAL " +
+                        "     UNION ALL " +
+                        "     SELECT " +
+                        "         CAST( (CTE_DATES.STARTDATE + 0.5) AS DATE) STARTDATE, " +
+                        "         CAST( (CTE_DATES.ENDDATE + 0.5) AS DATE) ENDDATE " +
+                        "     FROM " +
+                        "         CTE_DATES " +
+                        "     WHERE " +
+                        "         TRUNC(CTE_DATES.ENDDATE) + 0.5 <= TO_DATE('" + finDate +
+                        " 180000','YYYYMMDD HH24MISS') " +
+                        " ),TASKS AS ( " +
+                        "     SELECT " +
+                        "         'WT' TASK_TYPE, " +
+                        "         WT.DSTRCT_CODE, " +
+                        "         WT.WORK_GROUP, " +
+                        "         WT.WORK_ORDER, " +
+                        "         WT.WO_TASK_NO, " +
+                        "         WT.WO_TASK_DESC, " +
+                        "         TO_DATE(WT.PLAN_STR_DATE || WT.PLAN_STR_TIME,'YYYYMMDD HH24MISS') PLAN_STR_DATE, " +
+                        "         TO_DATE(WT.PLAN_STR_DATE || WT.PLAN_STR_TIME,'YYYYMMDD HH24MISS') + WT.TSK_DUR_HOURS / 24 PLAN_FIN_DATE, " +
+                        "         WT.TSK_DUR_HOURS, " +
+                        "         WT.CALC_LAB_HRS " +
+                        "     FROM " +
+                        "         ELLIPSE.MSF623 WT " +
+                        "     WHERE " +
+                        "         WT.DSTRCT_CODE = 'ICOR' " +
+                        "         AND WT.WORK_ORDER = '" + reference + "' " +
+                        "         AND WT.WO_TASK_NO = '" + referenceTask + "' " +
+                        "     UNION ALL " +
+                        "     SELECT " +
+                        "         'ST' TASK_TYPE, " +
+                        "         ST.DSTRCT_CODE, " +
+                        "         ST.WORK_GROUP, " +
+                        "         ST.STD_JOB_NO, " +
+                        "         ST.STD_JOB_TASK, " +
+                        "         ST.SJ_TASK_DESC, " +
+                        "         TO_DATE('" + referenceStartDate + "' || '" + referenceStartHour + "','YYYYMMDD HH24MISS') PLAN_STR_DATE, " +
+                        "         TO_DATE('" + referenceStartDate + "' || '" + referenceStartHour + "','YYYYMMDD HH24MISS') + ST.TSK_DUR_HOURS / 24 PLAN_FIN_DATE, " +
+                        "         ST.TSK_DUR_HOURS, " +
+                        "         ST.CALC_LAB_HRS " +
+                        "     FROM " +
+                        "         ELLIPSE.MSF693 ST " +
+                        "     WHERE " +
+                        "         ST.DSTRCT_CODE = 'ICOR' " +
+                        "         AND ST.STD_JOB_NO = '" + reference + "' " +
+                        " ),SHIFT_TASKS AS ( " +
+                        "     SELECT " +
+                        "         TASKS.DSTRCT_CODE, " +
+                        "         TASKS.WORK_GROUP, " +
+                        "         TASKS.WORK_ORDER, " +
+                        "         TASKS.WO_TASK_NO, " +
+                        "         TASKS.WO_TASK_DESC, " +
+                        "         CTE_DATES.STARTDATE   SHIFT, " +
+                        "         CASE " +
+                        "             WHEN TASKS.PLAN_STR_DATE >= CTE_DATES.STARTDATE THEN " +
+                        "                 TASKS.PLAN_STR_DATE " +
+                        "             ELSE " +
+                        "                 CTE_DATES.STARTDATE " +
+                        "         END PLAN_STR_DATE, " +
+                        "         CASE " +
+                        "             WHEN TASKS.PLAN_FIN_DATE <= CTE_DATES.ENDDATE THEN " +
+                        "                 TASKS.PLAN_FIN_DATE " +
+                        "             ELSE " +
+                        "                 CTE_DATES.ENDDATE " +
+                        "         END PLAN_FIN_DATE, " +
+                        "         TASKS.TSK_DUR_HOURS " +
+                        "     FROM " +
+                        "         TASKS " +
+                        "         INNER JOIN CTE_DATES " +
+                        "         ON TASKS.PLAN_STR_DATE < CTE_DATES.ENDDATE " +
+                        "            AND TASKS.PLAN_FIN_DATE > CTE_DATES.STARTDATE " +
+                        " ),RES_REAL AS ( " +
+                        "     SELECT " +
+                        "         TR.DSTRCT_CODE, " +
+                        "         TR.WORK_ORDER, " +
+                        "         TR.WO_TASK_NO, " +
+                        "         TR.RESOURCE_TYPE   RES_CODE, " +
+                        "         SUM(TR.NO_OF_HOURS) ACT_RESRCE_HRS " +
+                        "     FROM " +
+                        "         ELLIPSE.MSFX99 TX " +
+                        "         INNER JOIN ELLIPSE.MSF900 TR " +
+                        "         ON TR.FULL_PERIOD = TX.FULL_PERIOD " +
+                        "            AND TR.WORK_ORDER = TX.WORK_ORDER " +
+                        "            AND TR.USERNO = TX.USERNO " +
+                        "            AND TR.TRANSACTION_NO = TX.TRANSACTION_NO " +
+                        "            AND TR.ACCOUNT_CODE = TX.ACCOUNT_CODE " +
+                        "            AND TR.REC900_TYPE = TX.REC900_TYPE " +
+                        "            AND TR.PROCESS_DATE = TX.PROCESS_DATE " +
+                        "            AND TR.DSTRCT_CODE = TX.DSTRCT_CODE " +
+                        "            AND TR.DSTRCT_CODE = 'ICOR' " +
+                        "            AND TR.WORK_ORDER = '" + reference + "' " +
+                        "            AND TR.WO_TASK_NO = '" + referenceTask + "' " +
+                        "            AND TR.RESOURCE_TYPE = '" + resourceCode + "' " +
+                        "     GROUP BY " +
+                        "         TR.DSTRCT_CODE, " +
+                        "         TR.WORK_ORDER, " +
+                        "         TR.WO_TASK_NO, " +
+                        "         TR.RESOURCE_TYPE " +
+                        " ),RES_EST AS ( " +
+                        "     SELECT " +
+                        "         TASKS.DSTRCT_CODE, " +
+                        "         TASKS.WORK_ORDER, " +
+                        "         TASKS.WO_TASK_NO, " +
+                        "         RS.RESOURCE_TYPE   RES_CODE, " +
+                        "         TT.TABLE_DESC      RES_DESC, " +
+                        "         TO_NUMBER(RS.CREW_SIZE) QTY_REQ, " +
+                        "         RS.EST_RESRCE_HRS " +
+                        "     FROM " +
+                        "         TASKS " +
+                        "         INNER JOIN ELLIPSE.MSF735 RS " +
+                        "         ON RS.KEY_735_ID LIKE 'ICOR" + reference + referenceTask + "%' " +
+                        "         INNER JOIN ELLIPSE.MSF010 TT " +
+                        "         ON TT.TABLE_CODE = RS.RESOURCE_TYPE " +
+                        "            AND TT.TABLE_TYPE = 'TT' " +
+                        "     WHERE " +
+                        "         TASKS.DSTRCT_CODE = 'ICOR' " +
+                        "         AND RS.RESOURCE_TYPE = '" + resourceCode + "' " +
+                        "         AND RS.REC_735_TYPE IN ('WT', 'ST') " +
+                        " ),TABLA_REC AS ( " +
+                        "     SELECT " +
+                        "         RES_EST.DSTRCT_CODE, " +
+                        "         DECODE(RES_EST.WORK_ORDER,NULL,RES_REAL.WORK_ORDER,RES_EST.WORK_ORDER) WORK_ORDER, " +
+                        "         DECODE(RES_EST.WO_TASK_NO,NULL,RES_REAL.WO_TASK_NO,RES_EST.WO_TASK_NO) WO_TASK_NO, " +
+                        "         DECODE(RES_EST.RES_CODE,NULL,RES_REAL.RES_CODE,RES_EST.RES_CODE) RES_CODE, " +
+                        "         RES_EST.QTY_REQ, " +
+                        "         DECODE(RES_EST.EST_RESRCE_HRS,NULL,0,RES_EST.EST_RESRCE_HRS) EST_RESRCE_HRS, " +
+                        "         DECODE(RES_REAL.ACT_RESRCE_HRS,NULL,0,RES_REAL.ACT_RESRCE_HRS) ACT_RESRCE_HRS " +
+                        "     FROM " +
+                        "         RES_REAL " +
+                        "         FULL JOIN RES_EST " +
+                        "         ON RES_REAL.DSTRCT_CODE = RES_EST.DSTRCT_CODE " +
+                        "            AND RES_REAL.WORK_ORDER = RES_EST.WORK_ORDER " +
+                        "            AND RES_REAL.WO_TASK_NO = RES_EST.WO_TASK_NO " +
+                        "            AND RES_REAL.RES_CODE = RES_EST.RES_CODE " +
+                        " )SELECT " +
+                        "     SHIFT_TASKS.WORK_GROUP, " +
+                        "     SHIFT_TASKS.WORK_ORDER, " +
+                        "     SHIFT_TASKS.WO_TASK_NO, " +
+                        "     SHIFT_TASKS.WO_TASK_DESC, " +
+                        "     SHIFT_TASKS.SHIFT, " +
+                        "     SHIFT_TASKS.PLAN_STR_DATE, " +
+                        "     SHIFT_TASKS.PLAN_FIN_DATE, " +
+                        "     SHIFT_TASKS.TSK_DUR_HOURS, " +
+                        "     ROUND(24 * ( SHIFT_TASKS.PLAN_FIN_DATE - SHIFT_TASKS.PLAN_STR_DATE ),2) SHIFT_TSK_DUR_HOURS, " +
+                        "     TABLA_REC.RES_CODE, " +
+                        "     TABLA_REC.QTY_REQ, " +
+                        "     TABLA_REC.EST_RESRCE_HRS, " +
+                        "     TABLA_REC.ACT_RESRCE_HRS, " +
+                        "     DECODE(SHIFT_TASKS.TSK_DUR_HOURS, 0, 0, ROUND(TABLA_REC.EST_RESRCE_HRS * ( 24 * ( SHIFT_TASKS.PLAN_FIN_DATE - SHIFT_TASKS.PLAN_STR_DATE ) / SHIFT_TASKS.TSK_DUR_HOURS ),2)) SHIFT_LAB_HOURS " +
+                        " FROM " +
+                        "     SHIFT_TASKS " +
+                        "     INNER JOIN TABLA_REC " +
+                        "     ON SHIFT_TASKS.WORK_ORDER = TABLA_REC.WORK_ORDER " +
+                        "        AND SHIFT_TASKS.WO_TASK_NO = TABLA_REC.WO_TASK_NO " +
+                        "        AND SHIFT_TASKS.DSTRCT_CODE = TABLA_REC.DSTRCT_CODE ";
+
+            return query;
+        }
+
     }
 }

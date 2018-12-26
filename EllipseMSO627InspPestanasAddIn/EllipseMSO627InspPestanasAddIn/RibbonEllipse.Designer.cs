@@ -48,6 +48,7 @@
             this.tabEllipse.SuspendLayout();
             this.grpInspPestanas.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -135,6 +136,7 @@
             this.grpInspPestanas.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

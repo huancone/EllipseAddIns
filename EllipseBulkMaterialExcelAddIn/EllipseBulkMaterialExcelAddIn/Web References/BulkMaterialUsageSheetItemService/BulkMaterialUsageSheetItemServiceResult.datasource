@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="BulkMaterialUsageSheetItemServiceResult" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService.BulkMaterialUsageSheetItemServiceResult, Web References.BulkMaterialUsageSheetItemService.Reference.cs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService.BulkMaterialUsageSheetItemServiceResult, Web References.BulkMaterialUsageSheetItemService.Reference.cs.dll, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

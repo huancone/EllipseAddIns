@@ -61,6 +61,26 @@ namespace EllipseEquipmentClassLibrary
 
             throw new Exception(information.Aggregate("", (current, info) => current + (current + " " + info.fieldName + ". ")));
         }
+
+        public static bool Delete(EquipTraceService.OperationContext operationContext, string urlService, string instEquipmentRef, string compCode, string modCode, string fitEquipmentRef, string defitDate, string refType, string refNumber, decimal seqNum)
+        {
+            var proxyEquip = new EquipTraceService.EquipTraceService();
+
+            var request = new EquipTraceServiceDeleteTracingActionRequestDTO();
+            request.fitEquipmentRef = fitEquipmentRef;
+            request.fitEquipmentNo = instEquipmentRef;
+            request.ETDate = defitDate;
+            request.seqNum = seqNum;
+
+
+            proxyEquip.Url = urlService + "/EquipTrace";
+
+            var reply = proxyEquip.deleteTracingAction(operationContext, request);
+            
+            var information = reply.warningsAndInformation;
+
+            throw new Exception(information.Aggregate("", (current, info) => current + (current + " " + info.fieldName + ". ")));
+        }
     }
 
 }

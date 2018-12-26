@@ -179,6 +179,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.Services.Ellipse, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -291,30 +293,6 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="D:\Projects\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\ews-wsdl\BulkMaterialUsageSheetItemService.wsdl">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\BulkMaterialUsageSheetItemService\</RelPath>
-      <UpdateFromURL>D:\Projects\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\ews-wsdl\BulkMaterialUsageSheetItemService.wsdl</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseBulkMaterialExcelAddIn_BulkMaterialUsageSheetItemService_BulkMaterialUsageSheetItemService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="D:\Projects\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\ews-wsdl\BulkMaterialUsageSheetService.wsdl">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\BulkMaterialUsageSheetService\</RelPath>
-      <UpdateFromURL>D:\Projects\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\ews-wsdl\BulkMaterialUsageSheetService.wsdl</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseBulkMaterialExcelAddIn_BulkMaterialUsageSheetService_BulkMaterialUsageSheetService</CachedSettingsPropName>
-    </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
       <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
       <Name>EllipseCommonsClassLibrary</Name>
@@ -323,6 +301,30 @@
       <Project>{864f90d8-5073-4f1c-83f6-e1b8b28b0a33}</Project>
       <Name>EllipseEquipmentClassLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="D:\Projects\WSDL\BulkMaterialUsageSheetItemService.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\BulkMaterialUsageSheetItemService\</RelPath>
+      <UpdateFromURL>D:\Projects\WSDL\BulkMaterialUsageSheetItemService.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseBulkMaterialExcelAddIn_BulkMaterialUsageSheetItemService_BulkMaterialUsageSheetItemService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="D:\Projects\WSDL\BulkMaterialUsageSheetService.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\BulkMaterialUsageSheetService\</RelPath>
+      <UpdateFromURL>D:\Projects\WSDL\BulkMaterialUsageSheetService.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseBulkMaterialExcelAddIn_BulkMaterialUsageSheetService_BulkMaterialUsageSheetService</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -336,7 +338,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>34704A5AFB986320480A679A4A40DEE73DB1C96F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>1A92E1647894A27A607A937CD9F4A3111E823B95</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

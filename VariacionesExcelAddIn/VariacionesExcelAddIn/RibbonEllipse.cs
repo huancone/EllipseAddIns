@@ -115,12 +115,30 @@ namespace VariacionesExcelAddIn
 
             var accounts = allAccounts.Where(x => mdcAccounts.Any(y => y.AccountCode == x.AccountCode));
             accounts = accounts.Where(x => expelements.Any(y => y == x.ExpElement));
+            accounts = accounts.Where(x =>
+                x.Actual != "0" || x.Budget != "0" || x.Forex != "0" || x.InputPrice != "0" || x.OtherEff != "0" ||
+                x.OtherOver != "0" || x.Timing != "0" || x.Sustainable != "0" || x.Variation != "0" || x.Volume != "0");
+
             var i = 5;
+            _cells.GetCell(1, i-1).Value  = "Year";
+            _cells.GetCell(2, i-1).Value  = "Month";
+            _cells.GetCell(3, i-1).Value  = "AccountCode";
+            _cells.GetCell(4, i-1).Value  = "ExpElement";
+            _cells.GetCell(5, i-1).Value  = "Budget";
+            _cells.GetCell(6, i-1).Value  = "Actual";
+
             foreach (var a in accounts)
             {
                 try
                 {
                     SetAccountInfo(a);
+                    _cells.GetCell(1, i).Select();
+                    _cells.GetCell(1, i).Value = a.Year;
+                    _cells.GetCell(2, i).Value = a.Month;
+                    _cells.GetCell(3, i).Value = a.AccountCode;
+                    _cells.GetCell(4, i).Value = a.ExpElement;
+                    _cells.GetCell(5, i).Value = a.Budget;
+                    _cells.GetCell(6, i).Value = a.Actual;
                 }
                 catch (Exception e)
                 {

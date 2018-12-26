@@ -436,6 +436,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
                 _cells.ClearRange("A6", "AZ65536");
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
                 var modelCode = "" + _cells.GetCell("B4").Value;
                 //encabezados
                 var sqlQuery1 = Queries.GetDefaultHeaderData(modelCode, _eFunctions.dbReference, _eFunctions.dbLink);
@@ -449,7 +450,6 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     _cells.GetCell("M1").Value = sqlQuery2;
                 }
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
                 var drHeaders = _eFunctions.GetQueryResult(sqlQuery1);
                 var headerValues = new List<ModelHeaderNameValue>();
 

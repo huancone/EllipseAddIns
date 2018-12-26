@@ -285,6 +285,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.CreateNewWorksheet(ValidationSheetName01);
 
+                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+
                 //CONSTRUYO LA HOJA 0101
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -731,8 +733,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
-                _cells.GetRange(1, TitleRow0303, ResultColumn0303 - 1, TitleRow0303).Style =
-                    StyleConstants.TitleRequired;
+                _cells.GetRange(1, TitleRow0303, ResultColumn0303 - 1, TitleRow0303).Style = StyleConstants.TitleRequired;
                 _cells.GetCell(1, TitleRow0303).Value = "PO_NO";
                 _cells.GetCell(2, TitleRow0303).Value = "ITEM";
                 _cells.GetCell(2, TitleRow0303).AddComment("Índice de posición en la orden");
