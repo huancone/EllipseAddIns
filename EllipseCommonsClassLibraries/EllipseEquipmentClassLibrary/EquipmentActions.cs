@@ -272,6 +272,7 @@ namespace EllipseEquipmentClassLibrary
                 PurchasePrice = drEquipments["PURCHASE_PRICE"].ToString().Trim(),
                 RcmAnalysisSw = drEquipments["RCM_ANALYSIS_SW"].ToString().Trim(),
                 ReplaceValue = drEquipments["REPLACE_VALUE"].ToString().Trim(),
+                SerialNumber = drEquipments["SERIAL_NUMBER"].ToString().Trim(),
                 ValuationDate = drEquipments["VALUATION_DATE"].ToString().Trim(),
                 WarrStatType = drEquipments["WARR_STAT_TYPE"].ToString().Trim(),
                 WarrStatVal = drEquipments["WARR_STAT_VAL"].ToString().Trim(),
