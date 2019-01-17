@@ -554,7 +554,7 @@ namespace EllipsePlannerExcelAddIn
                             _cells.GetCell(4, i).Value = j.MaintSchTask;
                             _cells.GetCell(5, i).Value = j.WorkOrder ?? j.StdJobNo;
                             _cells.GetCell(6, i).Value = j.WoTaskNo ?? j.StdJobTask;
-                            _cells.GetCell(7, i).Value = j.WoTaskDesc;
+                            _cells.GetCell(7, i).Value = j.WoTaskDesc ?? j.WoDesc ;
                             _cells.GetCell(8, i).Value = r.ResourceCode;
                             _cells.GetCell(9, i).Value = r.EstimatedLabourHours;
                             _cells.GetCell(10, i).Value = r.RealLabourHours;

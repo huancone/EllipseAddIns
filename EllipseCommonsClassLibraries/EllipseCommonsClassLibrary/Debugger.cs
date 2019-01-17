@@ -34,7 +34,7 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 var errorFilePath = Configuration.LocalDataPath + @"logs\";
-                var errorFileName = @"error" + Utilities.MyDateTime.Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
+                var errorFileName = @"error" + Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
 
                 var lastError = new DebugError
                 {
@@ -101,7 +101,7 @@ namespace EllipseCommonsClassLibrary
                     return;
 
                 var queryFilePath = Configuration.LocalDataPath + @"queries\";
-                var queryFileName = @"queries" + Utilities.MyDateTime.Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
+                var queryFileName = @"queries" + Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
 
                 var dateTime = "" + DateTime.Now;
 

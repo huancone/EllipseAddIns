@@ -22,6 +22,7 @@ using ResourceReqmntsService = EllipseWorkOrdersClassLibrary.ResourceReqmntsServ
 using MaterialReqmntsService = EllipseWorkOrdersClassLibrary.MaterialReqmntsService;
 using EquipmentReqmntsService = EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
 // ReSharper disable UseIndexedProperty
+// ReSharper disable UseNullPropagation
 
 namespace EllipseWorkOrderExcelAddIn
 {

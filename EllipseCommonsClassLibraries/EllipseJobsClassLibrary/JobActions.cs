@@ -7,6 +7,7 @@ using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Constants;
+using EllipseCommonsClassLibrary.Utilities;
 using EllipseStandardJobsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
@@ -266,7 +267,7 @@ namespace EllipseJobsClassLibrary
         public static List<DailyJobs> GetEllipseSingleTask(EllipseFunctions ef, string district, string reference, string referenceTask, string referenceStartDate, string referenceStartHour, string referenceFinDate, string referenceFinHour, string startDate, string finDate, string resourceCode)
         {
             var sqlQuery = Queries.GetEllipseSingleTaskQuery(ef.dbReference, ef.dbLink, district, reference, referenceTask, referenceStartDate, referenceStartHour, referenceFinDate, referenceFinHour, startDate, finDate, resourceCode);
-
+            
             var drResources = ef.GetQueryResult(sqlQuery);
             var list = new List<DailyJobs>();
 
@@ -525,8 +526,7 @@ namespace EllipseJobsClassLibrary
                         "     FROM " +
                         "         CTE_DATES " +
                         "     WHERE " +
-                        "         TRUNC(CTE_DATES.ENDDATE) + 0.5 <= TO_DATE('" + finDate +
-                        " 180000','YYYYMMDD HH24MISS') " +
+                        "         TRUNC(CTE_DATES.ENDDATE) + 0.5 <= TO_DATE('" + finDate + " 180000','YYYYMMDD HH24MISS') " +
                         " ),TASKS AS ( " +
                         "     SELECT " +
                         "         'WT' TASK_TYPE, " +
@@ -545,6 +545,10 @@ namespace EllipseJobsClassLibrary
                         "         WT.DSTRCT_CODE = 'ICOR' " +
                         "         AND WT.WORK_ORDER = '" + reference + "' " +
                         "         AND WT.WO_TASK_NO = '" + referenceTask + "' " +
+
+                        "         AND TRIM(WT.TSK_DUR_HOURS) IS NOT NULL " +
+                        "         AND TRIM(WT.PLAN_STR_DATE) IS NOT NULL " +
+                        "         AND TRIM(WT.PLAN_STR_DATE) <> '00000000' " +
                         "     UNION ALL " +
                         "     SELECT " +
                         "         'ST' TASK_TYPE, " +
