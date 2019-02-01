@@ -37,10 +37,10 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpRequisitionService = this.Factory.CreateRibbonGroup();
             this.box1 = this.Factory.CreateRibbonBox();
-            this.btnAbout = this.Factory.CreateRibbonButton();
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatNewSheet = this.Factory.CreateRibbonButton();
             this.btnFormatExtended = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuAction = this.Factory.CreateRibbonMenu();
             this.btnExcecuteRequisitionService = this.Factory.CreateRibbonButton();
@@ -72,15 +72,9 @@
             // 
             // box1
             // 
-            this.box1.Items.Add(this.btnAbout);
             this.box1.Items.Add(this.menuFormat);
+            this.box1.Items.Add(this.btnAbout);
             this.box1.Name = "box1";
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // menuFormat
             // 
@@ -102,6 +96,12 @@
             this.btnFormatExtended.Name = "btnFormatExtended";
             this.btnFormatExtended.ShowImage = true;
             this.btnFormatExtended.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatExtended_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnviroment
             // 

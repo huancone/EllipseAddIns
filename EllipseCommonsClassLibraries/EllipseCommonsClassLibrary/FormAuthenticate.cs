@@ -52,12 +52,26 @@ namespace EllipseCommonsClassLibrary
                 ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDsct, EllipsePost);
                 authSer.authenticate(opAuth);
 
+                #region Form Population
+                var positions = authSer.getPositions(opAuth);
+                drpPosition.Items.Clear();
+                foreach (var nvp in positions)
+                    drpPosition.Items.Add(nvp.name + " - " + nvp.value);
+
+                if (string.IsNullOrWhiteSpace(EllipsePost))
+                    EllipsePost = positions[0].name.ToUpper();
+
+                drpPosition.SelectedIndex = drpPosition.FindString(EllipsePost);
+
+                var districts = authSer.getDistricts(opAuth);
+                if (districts != null && districts.Length > 0)
+                    txtDistrict.Text = EllipseDsct = districts[0].name;
+                #endregion
                 DialogResult = DialogResult.OK;
                 txtPassword.Text = "";
                 //clearForm();
                 Close();
             }
-            //para cualquier error que ocurra
             catch(Exception ex)
             {
                 try
@@ -66,6 +80,10 @@ namespace EllipseCommonsClassLibrary
                     drpPosition.Items.Clear();
                     foreach (var nvp in positions)
                         drpPosition.Items.Add(nvp.name + " - " + nvp.value);
+
+                    var districts = authSer.getDistricts(opAuth);
+                    if (districts != null && districts.Length > 0)
+                        txtDistrict.Text = EllipseDsct = districts[0].name;
                 }
                 catch(Exception exx)
                 {
@@ -73,7 +91,7 @@ namespace EllipseCommonsClassLibrary
                 }
                 finally
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(@"Se ha producido un error al intentar realizar la autenticación. Asegúrese que los datos ingresados sean correctos e intente nuevamente. \n\n" + ex.Message);
                 }
             }
         }
