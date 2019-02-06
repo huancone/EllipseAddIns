@@ -331,23 +331,19 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 //adicionamos las listas de validación
                 _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName01, 1);
 
-                var reqStatusList = Requisition.RequisitionStatus.GetRequisitionStatusList()
-                    .Select(status => status.Value).ToList();
+                var reqStatusList = Requisition.RequisitionStatus.GetRequisitionStatusList().Select(status => status.Value).ToList();
                 reqStatusList.Add("UNCOMPLETED");
                 _cells.SetValidationList(_cells.GetCell("B4"), reqStatusList, ValidationSheetName01, 2);
 
-                var reqTypeList = Requisition.RequisitionType.GetRequisitionTypeList()
-                    .Select(type => type.Key + " - " + type.Value).ToList();
+                var reqTypeList = Requisition.RequisitionType.GetRequisitionTypeList().Select(type => type.Key + " - " + type.Value).ToList();
                 reqTypeList.Sort();
                 _cells.SetValidationList(_cells.GetCell("F3"), reqTypeList, ValidationSheetName01, 3);
 
-                var transTypeList = Requisition.TransactionType.GetTransactionTypeList(_eFunctions)
-                    .Select(type => type.Key + " - " + type.Value).ToList();
+                var transTypeList = Requisition.TransactionType.GetTransactionTypeList(_eFunctions).Select(type => type.Key + " - " + type.Value).ToList();
                 transTypeList.Sort();
                 _cells.SetValidationList(_cells.GetCell("F4"), transTypeList, ValidationSheetName01, 4);
 
-                var reqPriorityList = Requisition.PriorityCodes.GetPrioriyCodesList(_eFunctions)
-                    .Select(type => type.Key + " - " + type.Value).ToList();
+                var reqPriorityList = Requisition.PriorityCodes.GetPrioriyCodesList(_eFunctions).Select(type => type.Key + " - " + type.Value).ToList();
                 reqPriorityList.Sort();
                 _cells.SetValidationList(_cells.GetCell("H3"), reqPriorityList, ValidationSheetName01, 5);
 

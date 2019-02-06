@@ -4403,15 +4403,15 @@ namespace EllipseWorkOrderExcelAddIn
                         AssignPerson = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value),
                         EstimatedMachHrs = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value),
                         PlanStartDate = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value),
-                        EstimatedDurationsHrs = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value),
-                        NoLabor = _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value),
-                        NoMaterial = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
-                        AplEquipmentGrpId = _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value),
-                        AplType = _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value),
-                        AplCompCode = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value),
-                        AplCompModCode = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value),
-                        AplSeqNo = _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value),
-                        ExtTaskText = _cells.GetEmptyIfNull(_cells.GetCell(25, i).Value)
+                        EstimatedDurationsHrs = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value),
+                        NoLabor = _cells.GetEmptyIfNull(_cells.GetCell(16, i).Value),
+                        NoMaterial = _cells.GetEmptyIfNull(_cells.GetCell(17, i).Value),
+                        AplEquipmentGrpId = _cells.GetEmptyIfNull(_cells.GetCell(18, i).Value),
+                        AplType = _cells.GetEmptyIfNull(_cells.GetCell(19, i).Value),
+                        AplCompCode = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
+                        AplCompModCode = _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value),
+                        AplSeqNo = _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value),
+                        ExtTaskText = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value)
                     };
 
                     woTask.SetWorkOrderDto(woTask.WorkOrder);

@@ -80,7 +80,7 @@
             // 
             // btnFormat
             // 
-            this.btnFormat.Label = "Inspeccion Pestañas";
+            this.btnFormat.Label = "Inspeccion Pestañas / Compuertas";
             this.btnFormat.Name = "btnFormat";
             this.btnFormat.ShowImage = true;
             this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);

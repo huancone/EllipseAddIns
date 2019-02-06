@@ -142,6 +142,7 @@ namespace EllipseWorkRequestClassLibrary
         public string FechaEjecucionInicial;//014_001
         public string FechaEjecucionFinal;//015_001
         public string CalificacionEncuesta;//016_001
+        public string NumeroComponente;
     }
 
     public static class WorkRequestActions
@@ -1094,13 +1095,14 @@ namespace EllipseWorkRequestClassLibrary
             //Esto implica mayor tiempo de ejecución pero evita la excepción por el desbordamiento y tiempo de espera
             var newef = new EllipseFunctions(eFunctions);
             newef.SetConnectionPoolingType(false);
-            //
+            
             var item001_01 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "001");
             var item001_02 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "002");
             var item001_03 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "003");
             var item001_04 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "004");
             var item001_05 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "005");
 
+            var item002 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "002", "001");
             var item006 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "006", "001");
             var item007 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "007", "001");
             var item008 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "008", "001");
@@ -1116,30 +1118,30 @@ namespace EllipseWorkRequestClassLibrary
             var item016 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "016", "001");
             var item017 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "017", "001");
 
-            wrRefCodes.StockCode1 = item001_01.RefCode;
-            wrRefCodes.StockCode1Qty = item001_01.StdText;
-            wrRefCodes.StockCode2 = item001_02.RefCode;
-            wrRefCodes.StockCode2Qty = item001_02.StdText;
-            wrRefCodes.StockCode3 = item001_03.RefCode;
-            wrRefCodes.StockCode3Qty = item001_03.StdText;
-            wrRefCodes.StockCode4 = item001_04.RefCode;
-            wrRefCodes.StockCode4Qty = item001_04.StdText;
-            wrRefCodes.StockCode5 = item001_05.RefCode;
-            wrRefCodes.StockCode5Qty = item001_05.StdText;
-            wrRefCodes.HorasHombre = item006.RefCode;
-            wrRefCodes.HorasQty = item006.StdText;
-            wrRefCodes.DuracionTarea = item007.StdText;
-            wrRefCodes.EquipoDetenido = item008.StdText;
-            wrRefCodes.WorkOrderOrigen = item009.StdText;
-            wrRefCodes.RaisedReprogramada = item010.StdText;
-            wrRefCodes.CambioHora = item011.StdText;
-
-            wrRefCodes.FechaPlanInicial = item012.StdText;
-            wrRefCodes.FechaPlanFinal = item013.StdText;
-            wrRefCodes.FechaEjecucionInicial = item014.StdText;
-            wrRefCodes.FechaEjecucionFinal = item015.StdText;
-            wrRefCodes.CalificacionEncuesta = item016.StdText;
-            wrRefCodes.WorkOrderReparacion = item017.StdText;
+            wrRefCodes.StockCode1 = item001_01.RefCode;            /*    wrRefCodes.StockCode1;             //001_9001  */
+            wrRefCodes.StockCode1Qty = item001_01.StdText;         /*    wrRefCodes.StockCode1Qty;          //001_001   */
+            wrRefCodes.StockCode2 = item001_02.RefCode;            /*    wrRefCodes.StockCode2;             //001_9002  */
+            wrRefCodes.StockCode2Qty = item001_02.StdText;         /*    wrRefCodes.StockCode2Qty;          //001_002   */
+            wrRefCodes.StockCode3 = item001_03.RefCode;            /*    wrRefCodes.StockCode3;             //001_9003  */
+            wrRefCodes.StockCode3Qty = item001_03.StdText;         /*    wrRefCodes.StockCode3Qty;          //001_003   */
+            wrRefCodes.StockCode4 = item001_04.RefCode;            /*    wrRefCodes.StockCode4;             //001_9004  */
+            wrRefCodes.StockCode4Qty = item001_04.StdText;         /*    wrRefCodes.StockCode4Qty;          //001_004   */
+            wrRefCodes.StockCode5 = item001_05.RefCode;            /*    wrRefCodes.StockCode5;             //001_9005  */
+            wrRefCodes.StockCode5Qty = item001_05.StdText;         /*    wrRefCodes.StockCode5Qty;          //001_005   */
+            wrRefCodes.NumeroComponente = item002.RefCode;         /*    wrRefCodes.NumeroComponente;       //002_001   */
+            wrRefCodes.HorasHombre = item006.RefCode;              /*    wrRefCodes.HorasHombre;            //006_9001  */
+            wrRefCodes.HorasQty = item006.StdText;                 /*    wrRefCodes.HorasQty;               //006_001   */
+            wrRefCodes.DuracionTarea = item007.RefCode;            /*    wrRefCodes.DuracionTarea;          //007_001   */
+            wrRefCodes.EquipoDetenido = item008.RefCode;           /*    wrRefCodes.EquipoDetenido;         //008_001   */
+            wrRefCodes.WorkOrderOrigen = item009.RefCode;          /*    wrRefCodes.WorkOrderOrigen;        //009_001   */
+            wrRefCodes.RaisedReprogramada = item010.RefCode;       /*    wrRefCodes.RaisedReprogramada;     //010_001   */
+            wrRefCodes.CambioHora = item011.RefCode;               /*    wrRefCodes.CambioHora;             //011_001   */
+            wrRefCodes.FechaPlanInicial = item012.RefCode;         /*    wrRefCodes.FechaPlanInicial;       //012_001   */
+            wrRefCodes.FechaPlanFinal = item013.RefCode;           /*    wrRefCodes.FechaPlanFinal;         //013_001   */
+            wrRefCodes.FechaEjecucionInicial = item014.RefCode;    /*    wrRefCodes.FechaEjecucionInicial;  //014_001   */
+            wrRefCodes.FechaEjecucionFinal = item015.RefCode;      /*    wrRefCodes.FechaEjecucionFinal;    //015_001   */
+            wrRefCodes.CalificacionEncuesta = item016.RefCode;     /*    wrRefCodes.CalificacionEncuesta;   //016_001   */
+            wrRefCodes.WorkOrderReparacion = item017.RefCode;      /*    wrRefCodes.WorkOrderReparacion;    //017_001   */
 
             newef.CloseConnection();
             return wrRefCodes;

@@ -32,10 +32,10 @@ namespace EllipseWorkRequestExcelAddIn
         private const int TitleRowPfc01 = 9;
         private const int ResultColumn01 = 38;
         private const int ResultColumn02 = 5;
-        private const int ResultColumn03 = 29;
+        private const int ResultColumn03 = 30;
         private const int TitleRowM01 = 9;
         private const int TitleRowM02 = 6;
-        private const int ResultColumnM01 = 46 + 10;
+        private const int ResultColumnM01 = 63;
         private const int ResultColumnM02 = 5;
         //private const int ResultColumnM03 = 14;
         private const int TitleRowV01 = 5;
@@ -1093,6 +1093,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(26, TitleRow03).Value = "Fecha Ejec. Inicial";
                 _cells.GetCell(27, TitleRow03).Value = "Fecha Ejec. Final";
                 _cells.GetCell(28, TitleRow03).Value = "Calificación Encuesta";
+                _cells.GetCell(29, TitleRow03).Value = "Numero de Componente";
                 _cells.GetCell(ResultColumn03, TitleRow03).Value = "Resultado";
                 _cells.GetCell(ResultColumn03, TitleRow03).Style = StyleConstants.TitleResult;
 
@@ -1151,11 +1152,7 @@ namespace EllipseWorkRequestExcelAddIn
 
                 var dateCriteriaList = WorkRequestActions.SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
-                _cells.GetCell("A3").AddComment("--ÁREA/SUPERINTENDENCIA--\n" +
-                                                "INST: IMIS, MINA\n" +
-                                                "MDC: FFCC, PBV, PTAS\n" +
-                                                "MNTTO: MINA\n" +
-                                                "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                _cells.GetCell("A3").AddComment("--ÁREA/SUPERINTENDENCIA--\n" + "INST: IMIS, MINA\n" + "MDC: FFCC, PBV, PTAS\n" + "MNTTO: MINA\n" + "SOP: ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
                 _cells.GetCell("A3").Value = WorkRequestActions.SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.SetValidationList(_cells.GetCell("A3"), searchCriteriaList, ValidationSheetName, 1, false);
@@ -1174,9 +1171,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D4").AddComment("YYYYMMDD");
                 _cells.GetCell("C5").Value = "HASTA";
-                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) +
-                                             string.Format("{0:00}", DateTime.Now.Month) +
-                                             string.Format("{0:00}", DateTime.Now.Day);
+                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
                 _cells.GetCell("D5").AddComment("YYYYMMDD");
                 _cells.GetRange("C3", "C5").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("D3", "D5").Style = _cells.GetStyle(StyleConstants.Select);
@@ -1184,7 +1179,7 @@ namespace EllipseWorkRequestExcelAddIn
 
                 _cells.GetRange(2, TitleRowM01 - 2, ResultColumnM01 - 1, TitleRowM01 - 2).Style = StyleConstants.Select;
                 _cells.GetRange(1, TitleRowM01, ResultColumnM01 - 1, TitleRowM01).Style = StyleConstants.TitleRequired;
-                for (var i = 2; i <= 46; i++)//hasta la primera celda de los SLAs
+                for (var i = 2; i <= ResultColumnM01 - 1; i++)//hasta la primera celda de los SLAs
                 {
                     _cells.GetCell(i, TitleRowM01 - 1).Style = StyleConstants.ItalicSmall;
                     _cells.GetCell(i, TitleRowM01 - 1).AddComment("Solo se modificará este campo si es verdadero (VERDADERO, TRUE, Y, 1)");
@@ -1284,55 +1279,65 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell(26, TitleRowM01).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(27, TitleRowM01).Value = "SJ DISTRICT";
                 _cells.GetCell(27, TitleRowM01).Style = StyleConstants.TitleOptional;
+
+                //EXTENDED DESCRIPCION
+                _cells.GetCell(28, TitleRowM01).Value = "Ext Description Header";
+                _cells.GetCell(29, TitleRowM01).Value = "Ext Description Body";
+
                 //REFERENCES CODES
-                _cells.GetCell(28, TitleRowM01 - 2).Value = "REFERENCES CODE";
-                _cells.MergeCells(28, TitleRowM01 - 2, 45, TitleRowM01 - 2);
+                _cells.GetCell(30, TitleRowM01 - 2).Value = "REFERENCES CODE";
+                _cells.MergeCells(30, TitleRowM01 - 2, 50, TitleRowM01 - 2);
 
-                _cells.GetCell(28, TitleRowM01).Value = "DESC EXTEND HEADER";
-                _cells.GetCell(29, TitleRowM01).Value = "DESC EXTEND BODY";
-                _cells.GetCell(30, TitleRowM01).Value = "OT ORIGEN";
-                _cells.GetCell(31, TitleRowM01).Value = "STOCK CODE 1";
-                _cells.GetCell(32, TitleRowM01).Value = "SC QTY 1";
-                _cells.GetCell(33, TitleRowM01).Value = "STOCK CODE 2";
-                _cells.GetCell(34, TitleRowM01).Value = "SC QTY 2";
-                _cells.GetCell(35, TitleRowM01).Value = "STOCK CODE 3";
-                _cells.GetCell(36, TitleRowM01).Value = "SC QTY 3";
-                _cells.GetCell(37, TitleRowM01).Value = "STOCK CODE 4";
-                _cells.GetCell(38, TitleRowM01).Value = "SC QTY 4";
-                _cells.GetCell(39, TitleRowM01).Value = "STOCK CODE 5";
-                _cells.GetCell(40, TitleRowM01).Value = "SC QTY 5";
-                _cells.GetCell(41, TitleRowM01).Value = "CANT H.HOMBRE";
-                _cells.GetCell(42, TitleRowM01).Value = "DURACIÓN TAREA";
-                _cells.GetCell(43, TitleRowM01).Value = "EQUIPO DETENIDO";
-                _cells.GetCell(44, TitleRowM01).Value = "RAISED REP.";
-                _cells.GetCell(45, TitleRowM01).Value = "CAMBIO HORA";
-                _cells.GetCell(45, TitleRowM01).AddComment("HH:MM");
+                _cells.GetCell(30, TitleRowM01).Value = "Stock Code 1";
+                _cells.GetCell(31, TitleRowM01).Value = "Stock Code QTY 1";
+                _cells.GetCell(32, TitleRowM01).Value = "Stock Code 2";
+                _cells.GetCell(33, TitleRowM01).Value = "Stock Code QTY 2";
+                _cells.GetCell(34, TitleRowM01).Value = "Stock Code 3";
+                _cells.GetCell(35, TitleRowM01).Value = "Stock Code QTY 3";
+                _cells.GetCell(36, TitleRowM01).Value = "Stock Code 4";
+                _cells.GetCell(37, TitleRowM01).Value = "Stock Code QTY 4";
+                _cells.GetCell(38, TitleRowM01).Value = "Stock Code 5";
+                _cells.GetCell(39, TitleRowM01).Value = "Stock Code QTY 5";
+                _cells.GetCell(40, TitleRowM01).Value = "Numero Componente";
+                _cells.GetCell(41, TitleRowM01).Value = "Horas Hombre";
+                _cells.GetCell(42, TitleRowM01).Value = "Duración De La Tarea";
+                _cells.GetCell(43, TitleRowM01).Value = "Equipo Detenido";
+                _cells.GetCell(44, TitleRowM01).Value = "Orden De Inspección";
+                _cells.GetCell(45, TitleRowM01).Value = "Raised Reprogramada";
+                _cells.GetCell(46, TitleRowM01).Value = "Cambio De Hora";
+                _cells.GetCell(47, TitleRowM01).Value = "Fecha Plan Inicial";
+                _cells.GetCell(48, TitleRowM01).Value = "Fecha Plan Final";
+                _cells.GetCell(49, TitleRowM01).Value = "Fecha Ejecución Inicial";
+                _cells.GetCell(50, TitleRowM01).Value = "Fecha De Ejecución Final";
+                _cells.GetCell(51, TitleRowM01).Value = "Calificación Encuesta";
+                _cells.GetCell(52, TitleRowM01).Value = "Orden De Reparación";
+
                 //SERVICE LEVEL AGREEMENT
-                _cells.GetCell(46, TitleRowM01 - 2).Value = "SERVICE LEVEL AGREEMENT";
-                _cells.GetCell(46, TitleRowM01 - 2).AddComment("Las acciones de actualizar establecen el SLA siempre y cuando el encabezado esté activo. Las acciones del menú de SLA realizan este proceso sin importar el encabezado");
-                _cells.MergeCells(46, TitleRowM01 - 2, ResultColumnM01 - 1, TitleRowM01 - 2);
-                _cells.MergeCells(46, TitleRowM01 - 1, ResultColumnM01 - 1, TitleRowM01 - 1);
+                _cells.GetCell(53, TitleRowM01 - 2).Value = "SERVICE LEVEL AGREEMENT";
+                _cells.GetCell(53, TitleRowM01 - 2).AddComment("Las acciones de actualizar establecen el SLA siempre y cuando el encabezado esté activo. Las acciones del menú de SLA realizan este proceso sin importar el encabezado");
+                _cells.MergeCells(53, TitleRowM01 - 2, ResultColumnM01 - 1, TitleRowM01 - 2);
 
-                _cells.GetCell(46, TitleRowM01).Value = "SL_AGREEMENT";
-                _cells.GetCell(47, TitleRowM01).Value = "SLA_FAILURE_CODE";
-                _cells.GetCell(48, TitleRowM01).Value = "SLA_START_DATE";
-                _cells.GetCell(49, TitleRowM01).Value = "SLA_START_TIME";
-                _cells.GetCell(50, TitleRowM01).Value = "SLA_DUE_DATE";
-                _cells.GetCell(51, TitleRowM01).Value = "SLA_DUE_TIME";
-                _cells.GetCell(52, TitleRowM01).Value = "SLA_DUE_DAYS";
-                _cells.GetCell(53, TitleRowM01).Value = "SLA_WARN_DATE";
-                _cells.GetCell(54, TitleRowM01).Value = "SLA_WARN_TIME";
-                _cells.GetCell(55, TitleRowM01).Value = "SLA_WARN_DAYS";
+                _cells.GetCell(53, TitleRowM01).Value = "SL_AGREEMENT";
+                _cells.GetCell(54, TitleRowM01).Value = "SLA_FAILURE_CODE";
+                _cells.GetCell(55, TitleRowM01).Value = "SLA_START_DATE";
+                _cells.GetCell(56, TitleRowM01).Value = "SLA_START_TIME";
+                _cells.GetCell(57, TitleRowM01).Value = "SLA_DUE_DATE";
+                _cells.GetCell(58, TitleRowM01).Value = "SLA_DUE_TIME";
+                _cells.GetCell(59, TitleRowM01).Value = "SLA_DUE_DAYS";
+                _cells.GetCell(60, TitleRowM01).Value = "SLA_WARN_DATE";
+                _cells.GetCell(61, TitleRowM01).Value = "SLA_WARN_TIME";
+                _cells.GetCell(62, TitleRowM01).Value = "SLA_WARN_DAYS";
+
 
                 var slaAgreement = _eFunctions.GetItemCodes("RQSL");
                 var slaAgreementListCode = MyUtilities.GetCodeList(slaAgreement);
-                _cells.SetValidationList(_cells.GetCell(46, TitleRowM01 + 1), slaAgreementListCode, ValidationSheetName, 11, false);
+                _cells.SetValidationList(_cells.GetCell(53, TitleRowM01 + 1), slaAgreementListCode, ValidationSheetName, 11, false);
 
                 var slaFailure = _eFunctions.GetItemCodes("RQFC");
                 var slaFailureListCode = MyUtilities.GetCodeList(slaFailure);
-                _cells.SetValidationList(_cells.GetCell(47, TitleRowM01 + 1), slaFailureListCode, ValidationSheetName, 12, false);
+                _cells.SetValidationList(_cells.GetCell(54, TitleRowM01 + 1), slaFailureListCode, ValidationSheetName, 12, false);
                 //
-                _cells.GetRange(28, TitleRowM01, ResultColumnM01 - 1, TitleRowM01).Style = StyleConstants.TitleOptional;
+
                 _cells.GetCell(ResultColumnM01, TitleRowM01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumnM01, TitleRowM01).Style = StyleConstants.TitleResult;
 
@@ -1628,39 +1633,47 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(25, i).Value = "'" + wr.estimateNo;
                     _cells.GetCell(26, i).Value = "'" + wr.standardJob;
                     _cells.GetCell(27, i).Value = "'" + wr.standardJobDistrict;
-
-                    var wrRefCodes = WorkRequestReferenceCodesActions.GetWorkRequestReferenceCodes(_eFunctions, urlService, opContext, wr.requestId);
-                    //REFERENCE CODES    
+                    //EXTENDED DESCRIPTION
                     _cells.GetCell(28, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Header;
                     _cells.GetCell(29, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Body;
                     _cells.GetCell(29, 1).WrapText = false;
-                    _cells.GetCell(30, i).Value = "'" + wrRefCodes.WorkOrderOrigen;
-                    _cells.GetCell(31, i).Value = "'" + wrRefCodes.StockCode1;
-                    _cells.GetCell(32, i).Value = "'" + wrRefCodes.StockCode1Qty;
-                    _cells.GetCell(33, i).Value = "'" + wrRefCodes.StockCode2;
-                    _cells.GetCell(34, i).Value = "'" + wrRefCodes.StockCode2Qty;
-                    _cells.GetCell(35, i).Value = "'" + wrRefCodes.StockCode3;
-                    _cells.GetCell(36, i).Value = "'" + wrRefCodes.StockCode3Qty;
-                    _cells.GetCell(37, i).Value = "'" + wrRefCodes.StockCode4;
-                    _cells.GetCell(38, i).Value = "'" + wrRefCodes.StockCode4Qty;
-                    _cells.GetCell(39, i).Value = "'" + wrRefCodes.StockCode5;
-                    _cells.GetCell(40, i).Value = "'" + wrRefCodes.StockCode5Qty;
-                    _cells.GetCell(41, i).Value = "'" + wrRefCodes.HorasHombre;
-                    _cells.GetCell(42, i).Value = "'" + wrRefCodes.DuracionTarea;
-                    _cells.GetCell(43, i).Value = "'" + wrRefCodes.EquipoDetenido;
-                    _cells.GetCell(44, i).Value = "'" + wrRefCodes.RaisedReprogramada;
-                    _cells.GetCell(45, i).Value = "'" + wrRefCodes.CambioHora;
+                    //REFERENCE CODES  
+                    var wrRefCodes = WorkRequestReferenceCodesActions.GetWorkRequestReferenceCodes(_eFunctions, urlService, opContext, wr.requestId);
+                    _cells.GetCell(30, i).Value = "'" + wrRefCodes.StockCode1;//001_9001
+                    _cells.GetCell(31, i).Value = "'" + wrRefCodes.StockCode1Qty;//001_001
+                    _cells.GetCell(32, i).Value = "'" + wrRefCodes.StockCode2;//001_9002
+                    _cells.GetCell(33, i).Value = "'" + wrRefCodes.StockCode2Qty;//001_002
+                    _cells.GetCell(34, i).Value = "'" + wrRefCodes.StockCode3;//001_9003
+                    _cells.GetCell(35, i).Value = "'" + wrRefCodes.StockCode3Qty;//001_003
+                    _cells.GetCell(36, i).Value = "'" + wrRefCodes.StockCode4;//001_9004
+                    _cells.GetCell(37, i).Value = "'" + wrRefCodes.StockCode4Qty;//001_004
+                    _cells.GetCell(38, i).Value = "'" + wrRefCodes.StockCode5;//001_9005
+                    _cells.GetCell(39, i).Value = "'" + wrRefCodes.StockCode5Qty;//001_005
+                    _cells.GetCell(40, i).Value = "'" + wrRefCodes.NumeroComponente;//002_001
+                    _cells.GetCell(41, i).Value = "'" + wrRefCodes.HorasHombre;//006_9001
+                    _cells.GetCell(42, i).Value = "'" + wrRefCodes.DuracionTarea;//007_001
+                    _cells.GetCell(43, i).Value = "'" + wrRefCodes.EquipoDetenido;//008_001
+                    _cells.GetCell(44, i).Value = "'" + wrRefCodes.WorkOrderOrigen;//009_001
+                    _cells.GetCell(45, i).Value = "'" + wrRefCodes.RaisedReprogramada;//010_001
+                    _cells.GetCell(46, i).Value = "'" + wrRefCodes.CambioHora;//011_001
+                    _cells.GetCell(47, i).Value = "'" + wrRefCodes.FechaPlanInicial;//012_001
+                    _cells.GetCell(48, i).Value = "'" + wrRefCodes.FechaPlanFinal;//013_001
+                    _cells.GetCell(49, i).Value = "'" + wrRefCodes.FechaEjecucionInicial;//014_001
+                    _cells.GetCell(50, i).Value = "'" + wrRefCodes.FechaEjecucionFinal;//015_001
+                    _cells.GetCell(51, i).Value = "'" + wrRefCodes.CalificacionEncuesta;//016_001
+                    _cells.GetCell(52, i).Value = "'" + wrRefCodes.WorkOrderReparacion;//017_001
+
                     //SERVICE LEVEL AGREEMENT     
-                    _cells.GetCell(46, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
-                    _cells.GetCell(47, i).Value = "'" + wr.ServiceLevelAgreement.FailureCode;
-                    _cells.GetCell(48, i).Value = "'" + wr.ServiceLevelAgreement.StartDate;
-                    _cells.GetCell(49, i).Value = "'" + wr.ServiceLevelAgreement.StartTime;
-                    _cells.GetCell(50, i).Value = "'" + wr.ServiceLevelAgreement.DueDate;
-                    _cells.GetCell(51, i).Value = "'" + wr.ServiceLevelAgreement.DueTime;
-                    _cells.GetCell(52, i).Value = "'" + wr.ServiceLevelAgreement.DueDays;
-                    _cells.GetCell(53, i).Value = "'" + wr.ServiceLevelAgreement.WarnDate;
-                    _cells.GetCell(54, i).Value = "'" + wr.ServiceLevelAgreement.WarnTime;
-                    _cells.GetCell(55, i).Value = "'" + wr.ServiceLevelAgreement.WarnDays;
+                    _cells.GetCell(53, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
+                    _cells.GetCell(54, i).Value = "'" + wr.ServiceLevelAgreement.FailureCode;
+                    _cells.GetCell(55, i).Value = "'" + wr.ServiceLevelAgreement.StartDate;
+                    _cells.GetCell(56, i).Value = "'" + wr.ServiceLevelAgreement.StartTime;
+                    _cells.GetCell(57, i).Value = "'" + wr.ServiceLevelAgreement.DueDate;
+                    _cells.GetCell(58, i).Value = "'" + wr.ServiceLevelAgreement.DueTime;
+                    _cells.GetCell(59, i).Value = "'" + wr.ServiceLevelAgreement.DueDays;
+                    _cells.GetCell(60, i).Value = "'" + wr.ServiceLevelAgreement.WarnDate;
+                    _cells.GetCell(61, i).Value = "'" + wr.ServiceLevelAgreement.WarnTime;
+                    _cells.GetCell(62, i).Value = "'" + wr.ServiceLevelAgreement.WarnDays;
                 }
                 catch (Exception ex)
                 {
@@ -1880,38 +1893,47 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(25, i).Value = "'" + wr.estimateNo;
                     _cells.GetCell(26, i).Value = "'" + wr.standardJob;
                     _cells.GetCell(27, i).Value = "'" + wr.standardJobDistrict;
-                    var wrRefCodes = WorkRequestReferenceCodesActions.GetWorkRequestReferenceCodes(_eFunctions, urlService, opContext, wr.requestId);
-                    //REFERENCE CODES    
+                    //EXTENDED DESCRIPTION
                     _cells.GetCell(28, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Header;
                     _cells.GetCell(29, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Body;
-                    _cells.GetCell(29, i).WrapText = false;
-                    _cells.GetCell(30, i).Value = "'" + wrRefCodes.WorkOrderOrigen;
-                    _cells.GetCell(31, i).Value = "'" + wrRefCodes.StockCode1;
-                    _cells.GetCell(32, i).Value = "'" + wrRefCodes.StockCode1Qty;
-                    _cells.GetCell(33, i).Value = "'" + wrRefCodes.StockCode2;
-                    _cells.GetCell(34, i).Value = "'" + wrRefCodes.StockCode2Qty;
-                    _cells.GetCell(35, i).Value = "'" + wrRefCodes.StockCode3;
-                    _cells.GetCell(36, i).Value = "'" + wrRefCodes.StockCode3Qty;
-                    _cells.GetCell(37, i).Value = "'" + wrRefCodes.StockCode4;
-                    _cells.GetCell(38, i).Value = "'" + wrRefCodes.StockCode4Qty;
-                    _cells.GetCell(39, i).Value = "'" + wrRefCodes.StockCode5;
-                    _cells.GetCell(40, i).Value = "'" + wrRefCodes.StockCode5Qty;
-                    _cells.GetCell(41, i).Value = "'" + wrRefCodes.HorasHombre;
-                    _cells.GetCell(42, i).Value = "'" + wrRefCodes.DuracionTarea;
-                    _cells.GetCell(43, i).Value = "'" + wrRefCodes.EquipoDetenido;
-                    _cells.GetCell(44, i).Value = "'" + wrRefCodes.RaisedReprogramada;
-                    _cells.GetCell(45, i).Value = "'" + wrRefCodes.CambioHora;
+                    _cells.GetCell(29, 1).WrapText = false;
+                    //REFERENCE CODES  
+                    var wrRefCodes = WorkRequestReferenceCodesActions.GetWorkRequestReferenceCodes(_eFunctions, urlService, opContext, wr.requestId);
+                    _cells.GetCell(30, i).Value = "'" + wrRefCodes.StockCode1;//001_9001
+                    _cells.GetCell(31, i).Value = "'" + wrRefCodes.StockCode1Qty;//001_001
+                    _cells.GetCell(32, i).Value = "'" + wrRefCodes.StockCode2;//001_9002
+                    _cells.GetCell(33, i).Value = "'" + wrRefCodes.StockCode2Qty;//001_002
+                    _cells.GetCell(34, i).Value = "'" + wrRefCodes.StockCode3;//001_9003
+                    _cells.GetCell(35, i).Value = "'" + wrRefCodes.StockCode3Qty;//001_003
+                    _cells.GetCell(36, i).Value = "'" + wrRefCodes.StockCode4;//001_9004
+                    _cells.GetCell(37, i).Value = "'" + wrRefCodes.StockCode4Qty;//001_004
+                    _cells.GetCell(38, i).Value = "'" + wrRefCodes.StockCode5;//001_9005
+                    _cells.GetCell(39, i).Value = "'" + wrRefCodes.StockCode5Qty;//001_005
+                    _cells.GetCell(40, i).Value = "'" + wrRefCodes.NumeroComponente;//002_001
+                    _cells.GetCell(41, i).Value = "'" + wrRefCodes.HorasHombre;//006_9001
+                    _cells.GetCell(42, i).Value = "'" + wrRefCodes.DuracionTarea;//007_001
+                    _cells.GetCell(43, i).Value = "'" + wrRefCodes.EquipoDetenido;//008_001
+                    _cells.GetCell(44, i).Value = "'" + wrRefCodes.WorkOrderOrigen;//009_001
+                    _cells.GetCell(45, i).Value = "'" + wrRefCodes.RaisedReprogramada;//010_001
+                    _cells.GetCell(46, i).Value = "'" + wrRefCodes.CambioHora;//011_001
+                    _cells.GetCell(47, i).Value = "'" + wrRefCodes.FechaPlanInicial;//012_001
+                    _cells.GetCell(48, i).Value = "'" + wrRefCodes.FechaPlanFinal;//013_001
+                    _cells.GetCell(49, i).Value = "'" + wrRefCodes.FechaEjecucionInicial;//014_001
+                    _cells.GetCell(50, i).Value = "'" + wrRefCodes.FechaEjecucionFinal;//015_001
+                    _cells.GetCell(51, i).Value = "'" + wrRefCodes.CalificacionEncuesta;//016_001
+                    _cells.GetCell(52, i).Value = "'" + wrRefCodes.WorkOrderReparacion;//017_001
+
                     //SERVICE LEVEL AGREEMENT     
-                    _cells.GetCell(46, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
-                    _cells.GetCell(47, i).Value = "'" + wr.ServiceLevelAgreement.FailureCode;
-                    _cells.GetCell(48, i).Value = "'" + wr.ServiceLevelAgreement.StartDate;
-                    _cells.GetCell(49, i).Value = "'" + wr.ServiceLevelAgreement.StartTime;
-                    _cells.GetCell(50, i).Value = "'" + wr.ServiceLevelAgreement.DueDate;
-                    _cells.GetCell(51, i).Value = "'" + wr.ServiceLevelAgreement.DueTime;
-                    _cells.GetCell(52, i).Value = "'" + wr.ServiceLevelAgreement.DueDays;
-                    _cells.GetCell(53, i).Value = "'" + wr.ServiceLevelAgreement.WarnDate;
-                    _cells.GetCell(54, i).Value = "'" + wr.ServiceLevelAgreement.WarnTime;
-                    _cells.GetCell(55, i).Value = "'" + wr.ServiceLevelAgreement.WarnDays;
+                    _cells.GetCell(53, i).Value = "'" + wr.ServiceLevelAgreement.ServiceLevel;
+                    _cells.GetCell(54, i).Value = "'" + wr.ServiceLevelAgreement.FailureCode;
+                    _cells.GetCell(55, i).Value = "'" + wr.ServiceLevelAgreement.StartDate;
+                    _cells.GetCell(56, i).Value = "'" + wr.ServiceLevelAgreement.StartTime;
+                    _cells.GetCell(57, i).Value = "'" + wr.ServiceLevelAgreement.DueDate;
+                    _cells.GetCell(58, i).Value = "'" + wr.ServiceLevelAgreement.DueTime;
+                    _cells.GetCell(59, i).Value = "'" + wr.ServiceLevelAgreement.DueDays;
+                    _cells.GetCell(60, i).Value = "'" + wr.ServiceLevelAgreement.WarnDate;
+                    _cells.GetCell(61, i).Value = "'" + wr.ServiceLevelAgreement.WarnTime;
+                    _cells.GetCell(62, i).Value = "'" + wr.ServiceLevelAgreement.WarnDays;
                 }
                 catch (Exception ex)
                 {
@@ -2006,6 +2028,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(26, i).Value = "'" + wrRefCodes.FechaEjecucionInicial;
                     _cells.GetCell(27, i).Value = "'" + wrRefCodes.FechaEjecucionInicial;
                     _cells.GetCell(28, i).Value = "'" + wrRefCodes.CalificacionEncuesta;
+                    _cells.GetCell(29, i).Value = "'" + wrRefCodes.NumeroComponente;
                 }
                 catch (Exception ex)
                 {
@@ -2258,24 +2281,32 @@ namespace EllipseWorkRequestExcelAddIn
                     var header = _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value);
                     var body = _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value);
                     wr.SetExtendedDescription(header, body);
+
                     var wrRefCodes = new WorkRequestReferenceCodes
                     {
-                        WorkOrderOrigen = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(30, i).Value),
-                        StockCode1 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(31, i).Value),
-                        StockCode1Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(32, i).Value),
-                        StockCode2 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(33, i).Value),
-                        StockCode2Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(34, i).Value),
-                        StockCode3 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(35, i).Value),
-                        StockCode3Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(36, i).Value),
-                        StockCode4 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(37, i).Value),
-                        StockCode4Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(38, i).Value),
-                        StockCode5 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(39, i).Value),
-                        StockCode5Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(40, i).Value),
+                        StockCode1 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(30, i).Value),
+                        StockCode1Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(31, i).Value),
+                        StockCode2 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(32, i).Value),
+                        StockCode2Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(33, i).Value),
+                        StockCode3 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(34, i).Value),
+                        StockCode3Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(35, i).Value),
+                        StockCode4 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(36, i).Value),
+                        StockCode4Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(37, i).Value),
+                        StockCode5 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(38, i).Value),
+                        StockCode5Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(39, i).Value),
+                        NumeroComponente = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(40, i).Value),
                         HorasHombre = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(41, i).Value),
                         DuracionTarea = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(42, i).Value),
                         EquipoDetenido = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(43, i).Value),
-                        RaisedReprogramada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(44, i).Value),
-                        CambioHora = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(45, i).Value)
+                        WorkOrderOrigen = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(44, i).Value),
+                        RaisedReprogramada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(45, i).Value),
+                        CambioHora = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(46, i).Value),
+                        FechaPlanInicial = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(47, i).Value),
+                        FechaPlanFinal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(48, i).Value),
+                        FechaEjecucionInicial = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(49, i).Value),
+                        FechaEjecucionFinal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(50, i).Value),
+                        CalificacionEncuesta = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(51, i).Value),
+                        WorkOrderReparacion = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(52, i).Value)
                     };
 
                     var replySheet = WorkRequestActions.CreateWorkRequest(urlService, opContext, wr);
@@ -2301,18 +2332,18 @@ namespace EllipseWorkRequestExcelAddIn
                     {
                         var serviceLevelAgreement = new ServiceLevelAgreement
                         {
-                            ServiceLevel = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(46, i).Value)),
-                            FailureCode = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(47, i).Value)),
-                            StartDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(48, i).Value),
-                            StartTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(49, i).Value),
-                            DueDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(50, i).Value),
-                            DueTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(51, i).Value),
-                            DueDays = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(52, i).Value),
-                            WarnDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(53, i).Value),
-                            WarnTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(54, i).Value),
-                            WarnDays = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value)
+                            ServiceLevel = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(53, i).Value)),
+                            FailureCode = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(54, i).Value)),
+                            StartDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value),
+                            StartTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(56, i).Value),
+                            DueDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(57, i).Value),
+                            DueTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(58, i).Value),
+                            DueDays = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(59, i).Value),
+                            WarnDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(60, i).Value),
+                            WarnTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(61, i).Value),
+                            WarnDays = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(62, i).Value)
                         };
-                        if (!string.IsNullOrWhiteSpace(serviceLevelAgreement.ServiceLevel) && MyUtilities.IsTrue(_cells.GetCell(46, validationRow).Value))
+                        if (!string.IsNullOrWhiteSpace(serviceLevelAgreement.ServiceLevel) && MyUtilities.IsTrue(_cells.GetCell(53, validationRow).Value))
                             WorkRequestActions.SetWorkRequestSla(urlService, opContext, requestId, serviceLevelAgreement);
                     }
                     catch (Exception ex)
@@ -2581,22 +2612,29 @@ namespace EllipseWorkRequestExcelAddIn
                     wr.SetExtendedDescription(header, body);
                     var wrRefCodes = new WorkRequestReferenceCodes
                     {
-                        WorkOrderOrigen = MyUtilities.IsTrue(_cells.GetCell(30, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value) : null,
-                        StockCode1 = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
-                        StockCode1Qty = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
-                        StockCode2 = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(33, i).Value) : null,
-                        StockCode2Qty = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null,
-                        StockCode3 = MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
-                        StockCode3Qty = MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
-                        StockCode4 = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null,
-                        StockCode4Qty = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null,
-                        StockCode5 = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(39, i).Value) : null,
-                        StockCode5Qty = MyUtilities.IsTrue(_cells.GetCell(40, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(40, i).Value) : null,
-                        HorasHombre = MyUtilities.IsTrue(_cells.GetCell(41, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(41, i).Value) : null,
-                        DuracionTarea = MyUtilities.IsTrue(_cells.GetCell(42, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(42, i).Value) : null,
-                        EquipoDetenido = MyUtilities.IsTrue(_cells.GetCell(43, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(43, i).Value) : null,
-                        RaisedReprogramada = MyUtilities.IsTrue(_cells.GetCell(44, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(44, i).Value) : null,
-                        CambioHora = MyUtilities.IsTrue(_cells.GetCell(45, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(45, i).Value) : null
+                        StockCode1 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(30, i).Value),
+                        StockCode1Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(31, i).Value),
+                        StockCode2 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(32, i).Value),
+                        StockCode2Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(33, i).Value),
+                        StockCode3 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(34, i).Value),
+                        StockCode3Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(35, i).Value),
+                        StockCode4 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(36, i).Value),
+                        StockCode4Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(37, i).Value),
+                        StockCode5 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(38, i).Value),
+                        StockCode5Qty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(39, i).Value),
+                        NumeroComponente = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(40, i).Value),
+                        HorasHombre = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(41, i).Value),
+                        DuracionTarea = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(42, i).Value),
+                        EquipoDetenido = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(43, i).Value),
+                        WorkOrderOrigen = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(44, i).Value),
+                        RaisedReprogramada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(45, i).Value),
+                        CambioHora = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(46, i).Value),
+                        FechaPlanInicial = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(47, i).Value),
+                        FechaPlanFinal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(48, i).Value),
+                        FechaEjecucionInicial = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(49, i).Value),
+                        FechaEjecucionFinal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(50, i).Value),
+                        CalificacionEncuesta = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(51, i).Value),
+                        WorkOrderReparacion = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(52, i).Value)
                     };
 
                     var replySheet = WorkRequestActions.ModifyWorkRequest(urlService, opContext, wr);
@@ -2618,18 +2656,18 @@ namespace EllipseWorkRequestExcelAddIn
                     {
                         var serviceLevelAgreement = new ServiceLevelAgreement
                         {
-                            ServiceLevel = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(46, i).Value)),
-                            FailureCode = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(47, i).Value)),
-                            StartDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(48, i).Value),
-                            StartTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(49, i).Value),
-                            DueDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(50, i).Value),
-                            DueTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(51, i).Value),
-                            DueDays = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(52, i).Value),
-                            WarnDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(53, i).Value),
-                            WarnTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(54, i).Value),
-                            WarnDays = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value)
+                            ServiceLevel = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(53, i).Value)),
+                            FailureCode = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(54, i).Value)),
+                            StartDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value),
+                            StartTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(56, i).Value),
+                            DueDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(57, i).Value),
+                            DueTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(58, i).Value),
+                            DueDays = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(59, i).Value),
+                            WarnDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(60, i).Value),
+                            WarnTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(61, i).Value),
+                            WarnDays = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(62, i).Value)
                         };
-                        if (!string.IsNullOrWhiteSpace(serviceLevelAgreement.ServiceLevel) && MyUtilities.IsTrue(_cells.GetCell(46, validationRow).Value))
+                        if (!string.IsNullOrWhiteSpace(serviceLevelAgreement.ServiceLevel) && MyUtilities.IsTrue(_cells.GetCell(53, validationRow).Value))
                             WorkRequestActions.SetWorkRequestSla(urlService, opContext, requestId, serviceLevelAgreement);
                     }
                     catch (Exception ex)

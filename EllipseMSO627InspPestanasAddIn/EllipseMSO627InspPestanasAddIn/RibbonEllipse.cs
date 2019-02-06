@@ -16,7 +16,7 @@ namespace EllipseMSO627InspPestanasAddIn
     public partial class RibbonEllipse
     {
         private const int TittleRow = 7;
-        private const int ResultColumn = 7;
+        private const int ResultColumn = 8;
         private const int ResultColumnLimpieza = 8;
         private const int MaxRows = 8;
         private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
@@ -151,7 +151,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Clear();
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
-                _cells.GetCell("B1").Value = "REGISTRO DE REVISION DE PESTAÑAS EN VAGONES Y LOCOMOTORAS";
+                _cells.GetCell("B1").Value = "REGISTRO DE REVISION DE PESTAÑAS Y COMPUERTAS EN VAGONES Y LOCOMOTORAS";
                 _cells.GetRange("B1", "D2").Merge();
                 _cells.GetRange("B1", "D2").WrapText = true;
 
@@ -162,6 +162,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 _cells.GetCell(4, TittleRow).Value = "Conformidad";
                 _cells.GetCell(5, TittleRow).Value = "Usuario";
                 _cells.GetCell(6, TittleRow).Value = "Equipo";
+                _cells.GetCell(7, TittleRow).Value = "Componente";
                 _cells.GetCell(ResultColumn, TittleRow).Value = "Resultado";
 
                 #region Instructions
@@ -187,6 +188,7 @@ namespace EllipseMSO627InspPestanasAddIn
                 _cells.GetCell(4, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(5, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(6, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(7, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(ResultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
                 _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).NumberFormat = "@";
 
@@ -206,6 +208,13 @@ namespace EllipseMSO627InspPestanasAddIn
                     "NC - NO CONFORME"
                 };
                 _cells.SetValidationList(_cells.GetRange(4, TittleRow + 1, 4, MaxRows), optionList);
+
+                var optionListComp = new List<string>
+                {
+                    "COER - CONJUNTO DE RUEDAS",
+                    "SCM - SISTEMA DE COMPUERTAS"
+                };
+                _cells.SetValidationList(_cells.GetRange(7, TittleRow + 1, 7, MaxRows), optionList);
 
                 #endregion
 
@@ -423,6 +432,7 @@ namespace EllipseMSO627InspPestanasAddIn
                         : null;
                     var usuario = _cells.GetEmptyIfNull(_cells.GetCell(5, currentRow).Value);
                     var equipo = _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value);
+                    var componente = _cells.GetEmptyIfNull(_cells.GetCell(7, currentRow).Value);
 
                     _eFunctions.RevertOperation(opSheet, proxySheet);
                     var replySheet = proxySheet.executeScreen(opSheet, "MSO627");
@@ -463,6 +473,7 @@ namespace EllipseMSO627InspPestanasAddIn
                                 arrayFields.Add("ORIGINATOR_ID2I1", usuario);
                                 arrayFields.Add("JOB_DUR_FINISH2I1", "00:00");
                                 arrayFields.Add("EQUIP_REF2I1", equipo);
+                                arrayFields.Add("COMP_CODE2I1", componente);
                                 requestSheet.screenFields = arrayFields.ToArray();
 
                                 requestSheet.screenKey = "1";

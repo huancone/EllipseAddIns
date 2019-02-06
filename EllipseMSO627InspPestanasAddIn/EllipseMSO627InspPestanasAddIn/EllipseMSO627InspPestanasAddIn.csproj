@@ -41,8 +41,8 @@
     <PublishUrl>D:\Projects\Release\EllipseMSO627InsPestanasAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.0.0</ApplicationVersion>
-    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
+    <ApplicationVersion>1.1.0.1</ApplicationVersion>
+    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
@@ -176,8 +176,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse">
-      <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.dll</HintPath>
+    <Reference Include="System.Web.Services.Ellipse, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\bin\Debug\System.Web.Services.Ellipse.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services.Ellipse.Post.PostExecute, Version=1.0.5.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -229,7 +230,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="EllipseMSO627InspPestanasAddIn_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -278,7 +278,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>09AE21768682DB113689F8523E3148A3DDF9A9AC</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>1A92E1647894A27A607A937CD9F4A3111E823B95</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
