@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -212,9 +213,10 @@ namespace EllipseMSO627InspPestanasAddIn
                 var optionListComp = new List<string>
                 {
                     "COER - CONJUNTO DE RUEDAS",
-                    "SCM - SISTEMA DE COMPUERTAS"
+                    "SCMP - SISTEMA DE COMPUERTAS",
+                    "SCOM - SISTEMA DE COMUNICACION"
                 };
-                _cells.SetValidationList(_cells.GetRange(7, TittleRow + 1, 7, MaxRows), optionList);
+                _cells.SetValidationList(_cells.GetRange(7, TittleRow + 1, 7, MaxRows), optionListComp);
 
                 #endregion
 
@@ -427,12 +429,10 @@ namespace EllipseMSO627InspPestanasAddIn
                     var fecha = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
                     var grupo = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
                     var descripcion = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                    var conformidad = (_cells.GetEmptyIfNull((_cells.GetCell(4, currentRow).Value)).Length >= 2)
-                        ? _cells.GetNullOrTrimmedValue(_cells.GetCell(4, currentRow).Value).Substring(0, 2)
-                        : null;
+                    var conformidad = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value));
                     var usuario = _cells.GetEmptyIfNull(_cells.GetCell(5, currentRow).Value);
                     var equipo = _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value);
-                    var componente = _cells.GetEmptyIfNull(_cells.GetCell(7, currentRow).Value);
+                    var componente = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(7, currentRow).Value));
 
                     _eFunctions.RevertOperation(opSheet, proxySheet);
                     var replySheet = proxySheet.executeScreen(opSheet, "MSO627");
@@ -489,7 +489,10 @@ namespace EllipseMSO627InspPestanasAddIn
                                     _cells.GetCell(ResultColumn, currentRow).Value = replySheet.message;
                                 }
                                 else
+                                {
                                     _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Success;
+                                    _cells.GetCell(ResultColumn, currentRow).Value = "Creado";
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -530,6 +533,144 @@ namespace EllipseMSO627InspPestanasAddIn
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();
+        }
+
+        private void btnDelete_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == _sheetName01)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                _thread = new Thread(DeletePestanas);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+
+        }
+
+        private void DeletePestanas()
+        {
+            
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+
+            var opSheet = new Screen.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings
+            };
+
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            var proxySheet = new Screen.ScreenService();
+            var requestSheet = new Screen.ScreenSubmitRequestDTO();
+
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+
+            var currentRow = TittleRow + 1;
+            while (_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) != "")
+            {
+                try
+                {
+                    var fecha = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
+                    var grupo = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
+                    var descripcion = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+                    var conformidad = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value));
+                    var usuario = _cells.GetEmptyIfNull(_cells.GetCell(5, currentRow).Value);
+                    var equipo = _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value);
+                    var componente = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(7, currentRow).Value));
+
+                    _eFunctions.RevertOperation(opSheet, proxySheet);
+                    var replySheet = proxySheet.executeScreen(opSheet, "MSO627");
+
+                    if (_eFunctions.CheckReplyError(replySheet))
+                    {
+                        _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn, currentRow).Value = replySheet.message;
+                    }
+                    else
+                    {
+                        var arrayFields = new ArrayScreenNameValue();
+                        arrayFields.Add("OPTION1I", "3");
+                        arrayFields.Add("WORK_GROUP1I", grupo);
+                        arrayFields.Add("RAISED_DATE1I", fecha);
+                        arrayFields.Add("EQUIP_REF1I", equipo);
+                        requestSheet.screenFields = arrayFields.ToArray();
+
+                        requestSheet.screenKey = "1";
+                        replySheet = proxySheet.submit(opSheet, requestSheet);
+
+                        if (_eFunctions.CheckReplyWarning(replySheet))
+                            replySheet = proxySheet.submit(opSheet, requestSheet);
+
+                        if (_eFunctions.CheckReplyError(replySheet))
+                        {
+                            _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
+                            _cells.GetCell(ResultColumn, currentRow).Value = replySheet.message;
+                        }
+                        else if (replySheet.mapName == "MSM627B")
+                        {
+                            try
+                            {
+                                arrayFields = new ArrayScreenNameValue();
+
+                                arrayFields.Add("RAISED_TIME2I1", "00:00");
+                                arrayFields.Add("INCIDENT_DESC2I1", descripcion);
+                                arrayFields.Add("MAINT_TYPE2I1", conformidad);
+                                arrayFields.Add("ORIGINATOR_ID2I1", usuario);
+                                arrayFields.Add("JOB_DUR_FINISH2I1", "00:00");
+                                arrayFields.Add("EQUIP_REF2I1", equipo);
+                                arrayFields.Add("COMP_CODE2I1", componente);
+                                arrayFields.Add("ACTION2I1", "D");
+                                requestSheet.screenFields = arrayFields.ToArray();
+
+                                requestSheet.screenKey = "1";
+                                replySheet = proxySheet.submit(opSheet, requestSheet);
+
+                                while (_eFunctions.CheckReplyWarning(replySheet) ||
+                                       replySheet.functionKeys == "XMIT-Confirm")
+                                    replySheet = proxySheet.submit(opSheet, requestSheet);
+
+                                if (_eFunctions.CheckReplyError(replySheet))
+                                {
+                                    _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
+                                    _cells.GetCell(ResultColumn, currentRow).Value = replySheet.message;
+                                }
+                                else
+                                {
+                                    _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Success;
+                                    _cells.GetCell(ResultColumn, currentRow).Value = "Borrado";
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
+                                _cells.GetCell(ResultColumn, currentRow).Value = "ERROR: " + ex.Message;
+                                Debugger.LogError("RibbonEllipse.cs:MSO627LoadPestanas()", ex.Message);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn, currentRow).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:MSO627Load()", ex.Message);
+                }
+                finally
+                {
+                    currentRow++;
+                }
+            }
         }
     }
 }

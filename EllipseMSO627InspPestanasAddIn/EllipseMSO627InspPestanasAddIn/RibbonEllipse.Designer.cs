@@ -44,6 +44,7 @@
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoad = this.Factory.CreateRibbonButton();
+            this.btnDelete = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpInspPestanas.SuspendLayout();
@@ -106,6 +107,7 @@
             // menuActions
             // 
             this.menuActions.Items.Add(this.btnLoad);
+            this.menuActions.Items.Add(this.btnDelete);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
@@ -116,6 +118,13 @@
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.ShowImage = true;
             this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Label = "Borrar Registros";
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.ShowImage = true;
+            this.btnDelete.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDelete_Click);
             // 
             // btnStopThread
             // 
@@ -153,6 +162,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDelete;
     }
 
     partial class ThisRibbonCollection
