@@ -53,6 +53,9 @@
         //public string DepartamentoText;//030_9001
         public string Localizacion;//031_001
         public string MetodoContacto;//033_001
-        public string MetodoContactoText;
+        public string MetodoContactoText;//033_9001
+        public string CalificacionCalidadOt;//034_001
+        public string CalificacionCalidadPor;//034_001
+        public string SecuenciaOt;//036_001
     }
 }

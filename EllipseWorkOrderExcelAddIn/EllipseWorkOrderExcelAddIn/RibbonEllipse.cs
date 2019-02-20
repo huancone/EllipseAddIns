@@ -75,7 +75,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const int ResultColumnD01 = 56;
         private const int ResultColumnD02 = 8;
         private const int ResultColumnD03 = 3;
-        private const int ResultColumnD04 = 35;
+        private const int ResultColumnD04 = 38;
         private const int ResultColumnQ01 = 36;
         private const int ResultColumnCc01 = 20;
 
@@ -1694,7 +1694,9 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(33, TitleRowD04).Value = "Metodo de Contacto";
                 _cells.SetValidationList(_cells.GetCell(33, TitleRowD04 + 1), contactMethod);
                 _cells.GetCell(34, TitleRowD04).Value = "Detalle de Contacto";
-
+                _cells.GetCell(35, TitleRowD04).Value = "Calificacion Calidad";
+                _cells.GetCell(36, TitleRowD04).Value = "Calificado Por";
+                _cells.GetCell(37, TitleRowD04).Value = "Secuencia OT";
 
                 _cells.GetCell(ResultColumnD04, TitleRowD04).Value = "RESULTADO";
                 _cells.GetCell(ResultColumnD04, TitleRowD04).Style = StyleConstants.TitleResult;
@@ -3477,6 +3479,7 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+        
         private void ReviewRefCodesList()
         {
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
@@ -3545,6 +3548,9 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(32, i).Value = "'" + woRefCodes.Localizacion;
                     _cells.GetCell(33, i).Value = "'" + woRefCodes.MetodoContacto;
                     _cells.GetCell(34, i).Value = "'" + woRefCodes.MetodoContactoText;
+                    _cells.GetCell(35, i).Value = "'" + woRefCodes.CalificacionCalidadOt;
+                    _cells.GetCell(36, i).Value = "'" + woRefCodes.CalificacionCalidadPor;
+                    _cells.GetCell(37, i).Value = "'" + woRefCodes.SecuenciaOt;
 
                     _cells.GetCell(ResultColumnD04, i).Value = "CONSULTADO";
                     _cells.GetCell(ResultColumnD04, i).Style = StyleConstants.Success;
@@ -3631,9 +3637,11 @@ namespace EllipseWorkOrderExcelAddIn
                         Departamento = MyUtilities.IsTrue(_cells.GetCell(31, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(31, i).Value) : null,
                         Localizacion = MyUtilities.IsTrue(_cells.GetCell(32, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(32, i).Value) : null,
                         MetodoContacto = MyUtilities.IsTrue(_cells.GetCell(33, validationRow).Value) ? MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(33, i).Value)) : null,
-                        MetodoContactoText = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null
+                        MetodoContactoText = MyUtilities.IsTrue(_cells.GetCell(34, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(34, i).Value) : null,
+                        CalificacionCalidadOt =  MyUtilities.IsTrue(_cells.GetCell(35, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(35, i).Value) : null,
+                        CalificacionCalidadPor =  MyUtilities.IsTrue(_cells.GetCell(36, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(36, i).Value) : null,
+                        SecuenciaOt =  MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null
                     };
-
 
                     var replyRefCode = WorkOrderActions.UpdateWorkOrderReferenceCodes(_eFunctions, urlService, opSheet, district, workOrder, woRefCodes);
 

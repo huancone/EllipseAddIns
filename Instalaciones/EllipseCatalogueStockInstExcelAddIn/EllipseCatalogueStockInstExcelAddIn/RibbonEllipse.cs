@@ -121,7 +121,7 @@ namespace EllipseCatalogueStockInstExcelAddIn
                 "INP - Instalaciones Puerto",
                 "INM - Instalaciones Mina",
                 "IPA - Aires Puerto",
-                "IMA - Aires Puerto"
+                "IMA - Aires Mina"
             };
             _cells.SetValidationList(_cells.GetRange(7, TittleRow + 1, 7, MaxRows), optionList);
             _cells.SetValidationList(_cells.GetRange(8, TittleRow + 1, 8, MaxRows), optionList);
@@ -154,8 +154,8 @@ namespace EllipseCatalogueStockInstExcelAddIn
             var contractNo = _cells.GetNullOrTrimmedValue(_cells.GetCell(target.Column, target.Row).Value);
 
             if (string.IsNullOrEmpty(contractNo)) return;
-            var sqlQuery = Queries.GetContractData(contractNo, _eFunctions.dbReference, _eFunctions.dbLink);
             _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var sqlQuery = Queries.GetContractData(contractNo, _eFunctions.dbReference, _eFunctions.dbLink);
             _drContractItems = _eFunctions.GetQueryResult(sqlQuery);
 
             if (_drContractItems != null && !_drContractItems.IsClosed && _drContractItems.HasRows)
@@ -163,6 +163,7 @@ namespace EllipseCatalogueStockInstExcelAddIn
                 var currentRow = TittleRow + 1;
                 while (_drContractItems.Read())
                 {
+                    _cells.GetCell(1, currentRow).Select();
                     _cells.GetCell(1, currentRow).Value = _drContractItems["CONTRACT_NO"].ToString();
                     _cells.GetCell(2, currentRow).Value = _drContractItems["PORTION_NO"].ToString();
                     _cells.GetCell(3, currentRow).Value = _drContractItems["ELEMENT_NO"].ToString();
@@ -171,6 +172,7 @@ namespace EllipseCatalogueStockInstExcelAddIn
                     _cells.GetCell(6, currentRow).Value = _drContractItems["CATEG_DESC"].ToString();
                     _cells.GetCell(7, currentRow).Value = _drContractItems["HOME_WHOUSE"].ToString();
                     _cells.GetCell(8, currentRow).Value = _drContractItems["WHOUSE_ID"].ToString();
+
                     currentRow++;
                 }
             }

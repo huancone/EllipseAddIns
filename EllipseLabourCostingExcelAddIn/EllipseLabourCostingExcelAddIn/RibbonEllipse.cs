@@ -800,7 +800,7 @@ namespace EllipseLabourCostingExcelAddIn
                         }
                         else
                         {
-                            _cells.GetCell(Mse850ResultColumn, i).Value = string.Join(",", reply.errors.Select(p => p.ToString()).ToArray());
+                            _cells.GetCell(Mse850ResultColumn, i).Value = string.Join(",", reply.errors.Select(p => p.messageText).ToArray());
                             _cells.GetCell(Mse850ResultColumn, i).Style = StyleConstants.Error;
                             _cells.GetCell(Mse850ResultColumn, i).Select();
                         }
@@ -1014,7 +1014,7 @@ namespace EllipseLabourCostingExcelAddIn
                                     LabourClass = laborClass
                                 };
 
-                                var replay = LoadEmployeeMse(urlService, opSheet, employee, false);
+                                var reply = LoadEmployeeMse(urlService, opSheet, employee, false);
 
                                 _cells.GetCell(j, i).ClearComments();
                                 _cells.GetCell(j, i).Style = StyleConstants.Success;

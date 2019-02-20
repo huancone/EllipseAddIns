@@ -962,6 +962,9 @@ namespace EllipseWorkOrdersClassLibrary
             var item030 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "030", "001");
             var item031 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "031", "001");
             var item033 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "033", "001");
+            var item034 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "034", "001");
+            var item035 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "035", "001");
+            var item036 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "036", "001");
 
             woRefCodes.WorkRequest = item001.RefCode; //001_9001
             woRefCodes.ComentariosDuraciones = item002.RefCode; //002_9001
@@ -994,7 +997,10 @@ namespace EllipseWorkOrdersClassLibrary
             woRefCodes.Departamento = item030.RefCode; //030_9001
             woRefCodes.Localizacion = item031.RefCode; //031_001
             woRefCodes.MetodoContacto = item033.RefCode; //033_001
-            woRefCodes.MetodoContactoText = item033.StdText;//033_001
+            woRefCodes.MetodoContactoText = item033.StdText;//033_9001
+            woRefCodes.CalificacionCalidadOt = item034.RefCode;//034_001
+            woRefCodes.CalificacionCalidadPor = item035.RefCode;//035_001
+            woRefCodes.SecuenciaOt = item036.RefCode;//036_001
 
             newef.CloseConnection();
             return woRefCodes;
@@ -1048,6 +1054,10 @@ namespace EllipseWorkOrdersClassLibrary
             var item030 = new ReferenceCodeItem(entityType, entityValue, "030", "001", woRefCodes.Departamento) { ShortName = "Departamento" };
             var item031 = new ReferenceCodeItem(entityType, entityValue, "031", "001", woRefCodes.Localizacion) { ShortName = "Localizacion" };
             var item033 = new ReferenceCodeItem(entityType, entityValue, "033", "001", woRefCodes.MetodoContacto, null, woRefCodes.MetodoContactoText) { ShortName = "Metodo de Contacto" };
+            var item034 = new ReferenceCodeItem(entityType, entityValue, "034", "001", woRefCodes.CalificacionCalidadOt, null, woRefCodes.CalificacionCalidadOt) { ShortName = "Calificacion Calidad OT" };
+            var item035 = new ReferenceCodeItem(entityType, entityValue, "035", "001", woRefCodes.CalificacionCalidadPor, null, woRefCodes.CalificacionCalidadPor) { ShortName = "Calificado Calidad Por" };
+            var item036 = new ReferenceCodeItem(entityType, entityValue, "036", "001", woRefCodes.SecuenciaOt, null, woRefCodes.SecuenciaOt) { ShortName = "Secuencia OT" };
+            
 
             itemList.Add(item001);
             itemList.Add(item002);
@@ -1077,6 +1087,9 @@ namespace EllipseWorkOrdersClassLibrary
             itemList.Add(item030);
             itemList.Add(item031);
             itemList.Add(item033);
+            itemList.Add(item034);
+            itemList.Add(item035);
+            itemList.Add(item036);
 
             var refCodeOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
 
