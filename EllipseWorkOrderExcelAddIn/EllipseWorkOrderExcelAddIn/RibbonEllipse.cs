@@ -68,7 +68,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const int ResultColumn02 = 24;
         private const int ResultColumn03 = 16;
         private const int ResultColumn04 = 8;
-        private const int ResultColumn05 = 3;
+        private const int ResultColumn05 = 5;
         private const int ResultColumn06 = 8;
         private const int ResultColumn07 = 6;
 
@@ -1298,6 +1298,8 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetRange(1, TitleRow05, ResultColumn05 - 1, TitleRow05).Style = StyleConstants.TitleRequired;
                 _cells.GetCell(1, TitleRow05).Value = "WORK_ORDER";
                 _cells.GetCell(2, TitleRow05).Value = "COMENTARIO";
+                _cells.GetCell(3, TitleRow05).Value = "COMPLETED_DATE";
+                _cells.GetCell(4, TitleRow05).Value = "COMPLETED_BY";
                 _cells.GetCell(2, TitleRow05).Style = StyleConstants.TitleOptional;
 
                 _cells.GetCell(ResultColumn05, TitleRow05).Value = "RESULTADO";
@@ -3257,9 +3259,12 @@ namespace EllipseWorkOrderExcelAddIn
                     var wo = WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
                     string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
                     var closeText = WorkOrderActions.GetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo);
+                    var workOrder = WorkOrderActions.FetchWorkOrder(_eFunctions, districtCode, wo);
 
-                    _cells.GetCell(ResultColumn05 - 1, i).Value = closeText;
-                    _cells.GetCell(ResultColumn05, i).Value = "CONSULTA";
+                    _cells.GetCell(2, i).Value = closeText;
+                    _cells.GetCell(3, i).Value = workOrder.CompletedBy;
+                    _cells.GetCell(4, i).Value = workOrder.closedDate;
+                    _cells.GetCell(ResultColumn05, i).Value = "Ok";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Success;
                 }
