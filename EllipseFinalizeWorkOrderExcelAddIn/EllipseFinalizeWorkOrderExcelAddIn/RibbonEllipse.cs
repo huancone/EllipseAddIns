@@ -141,6 +141,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
 
                 var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
+                var managementAreaList = ManagementArea.GetManagementArea().Select(g => g.Key).ToList();
                 var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
                 var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
 
@@ -149,7 +150,8 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = SearchFieldCriteriaType.Area.Value;
                 _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
-                _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 3, false);
+                _cells.SetValidationList(_cells.GetCell("B4"), managementAreaList, ValidationSheetName, 3, false);
+                _cells.SetValidationList(_cells.GetCell("B5"), workGroupList, ValidationSheetName, 4, false);
                 _cells.GetCell("B4").Value = "MDC";
                 _cells.GetCell("A5").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);

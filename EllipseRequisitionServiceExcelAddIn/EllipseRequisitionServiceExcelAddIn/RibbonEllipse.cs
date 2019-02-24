@@ -28,9 +28,6 @@ namespace EllipseRequisitionServiceExcelAddIn
         private const int TitleRow01Ext = 5;
         private const int ResultColumn01Ext = 21;
 
-
-        Excel.ListObject _excelSheetItems;
-
         private const string SheetName01 = "RequisitionService";
         private const string TableName01 = "RequisitionServiceTable";
         private const string ValidationSheet = "ValidationRequisition";
@@ -704,46 +701,49 @@ namespace EllipseRequisitionServiceExcelAddIn
                     resultColumn = ResultColumn01;
                     titleRow = TitleRow01;
                 }
-                
-                _excelSheetItems = _cells.GetRange(TableName01).ListObject;
-                //Organiza las celdas de forma que se creen la menor cantidad de vales posibles
-                if (_excelSheetItems.Sort.SortFields.Count > 0)
-                {
-                    _excelSheetItems.Sort.SortFields.Clear();
-                }
+
 
                 #region SortFields
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(1, titleRow), Excel.XlSortOn.xlSortOnValues,
-                            Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(2, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(3, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(4, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(5, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(6, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(7, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(8, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(10, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(11, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(12, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(13, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(14, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                //_excelSheetItems.Sort.SortFields.Add(_cells.GetCell(16, TitleRow), Excel.XlSortOn.xlSortOnValues,
-                //    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.Apply(); 
+                if (cbSortItems.Checked)
+                {
+                    Excel.ListObject excelSheetItems = _cells.GetRange(TableName01).ListObject;
+                    //Organiza las celdas de forma que se creen la menor cantidad de vales posibles
+                    if (excelSheetItems.Sort.SortFields.Count > 0)
+                        excelSheetItems.Sort.SortFields.Clear();
+
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(1, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(2, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(3, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(4, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(5, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(6, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(7, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(8, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(10, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(11, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(12, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(13, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(14, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    //_excelSheetItems.Sort.SortFields.Add(_cells.GetCell(16, TitleRow), Excel.XlSortOn.xlSortOnValues,
+                    //    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.Apply();
+                }
+
                 #endregion
 
                 //instancia del Servicio
@@ -1056,43 +1056,46 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.ClearTableRangeColumn(TableName01, 4);
 
                 #region SortItems
-                _excelSheetItems = _cells.GetRange(TableName01).ListObject;
-                //Organiza las celdas de forma que se creen la menor cantidad de vales posibles
-                if (_excelSheetItems.Sort.SortFields.Count > 0)
+
+                if (cbSortItems.Checked)
                 {
-                    _excelSheetItems.Sort.SortFields.Clear();
+                    Excel.ListObject excelSheetItems = _cells.GetRange(TableName01).ListObject;
+                    //Organiza las celdas de forma que se creen la menor cantidad de vales posibles
+                    if (excelSheetItems.Sort.SortFields.Count > 0)
+                        excelSheetItems.Sort.SortFields.Clear();
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(1, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(2, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(3, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(4, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(5, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(6, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(7, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(8, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(10, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(11, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(12, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(13, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(14, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    //_excelSheetItems.Sort.SortFields.Add(_cells.GetCell(16, TitleRow), Excel.XlSortOn.xlSortOnValues,
+                    //    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.Apply();
                 }
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(1, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(2, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(3, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(4, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(5, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(6, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(7, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(8, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(10, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(11, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(12, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(13, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(14, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                //_excelSheetItems.Sort.SortFields.Add(_cells.GetCell(16, TitleRow), Excel.XlSortOn.xlSortOnValues,
-                //    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.Apply();
+
                 #endregion
 
                 #region ScreenService

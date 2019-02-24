@@ -43,11 +43,13 @@
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnviroment = this.Factory.CreateRibbonDropDown();
             this.menuAction = this.Factory.CreateRibbonMenu();
+            this.menuOptions = this.Factory.CreateRibbonMenu();
+            this.cbMaxItems = this.Factory.CreateRibbonCheckBox();
+            this.cbSortItems = this.Factory.CreateRibbonCheckBox();
             this.btnExcecuteRequisitionService = this.Factory.CreateRibbonButton();
             this.btnCreateReqIgError = this.Factory.CreateRibbonButton();
             this.btnCreateReqDirectOrderItems = this.Factory.CreateRibbonButton();
             this.btnManualCreditRequisitionMSE1VR = this.Factory.CreateRibbonButton();
-            this.cbMaxItems = this.Factory.CreateRibbonCheckBox();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
@@ -110,15 +112,33 @@
             // 
             // menuAction
             // 
+            this.menuAction.Items.Add(this.menuOptions);
             this.menuAction.Items.Add(this.btnExcecuteRequisitionService);
             this.menuAction.Items.Add(this.btnCreateReqIgError);
             this.menuAction.Items.Add(this.btnCreateReqDirectOrderItems);
             this.menuAction.Items.Add(this.btnManualCreditRequisitionMSE1VR);
-            this.menuAction.Items.Add(this.cbMaxItems);
             this.menuAction.Items.Add(this.btnCleanSheet);
             this.menuAction.Items.Add(this.btnStopThread);
             this.menuAction.Label = "&Acciones";
             this.menuAction.Name = "menuAction";
+            // 
+            // menuOptions
+            // 
+            this.menuOptions.Items.Add(this.cbMaxItems);
+            this.menuOptions.Items.Add(this.cbSortItems);
+            this.menuOptions.Label = "Opciones";
+            this.menuOptions.Name = "menuOptions";
+            this.menuOptions.ShowImage = true;
+            // 
+            // cbMaxItems
+            // 
+            this.cbMaxItems.Label = "Máximo 100 Items por Pedido";
+            this.cbMaxItems.Name = "cbMaxItems";
+            // 
+            // cbSortItems
+            // 
+            this.cbSortItems.Label = "Auto&Ordenar Elementos";
+            this.cbSortItems.Name = "cbSortItems";
             // 
             // btnExcecuteRequisitionService
             // 
@@ -147,11 +167,6 @@
             this.btnManualCreditRequisitionMSE1VR.Name = "btnManualCreditRequisitionMSE1VR";
             this.btnManualCreditRequisitionMSE1VR.ShowImage = true;
             this.btnManualCreditRequisitionMSE1VR.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnManualCreditRequisitionMSE1VR_Click);
-            // 
-            // cbMaxItems
-            // 
-            this.cbMaxItems.Label = "Max Items";
-            this.cbMaxItems.Name = "cbMaxItems";
             // 
             // btnCleanSheet
             // 
@@ -201,6 +216,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatExtended;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuOptions;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbSortItems;
     }
 
     partial class ThisRibbonCollection

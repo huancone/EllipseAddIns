@@ -91,7 +91,7 @@ namespace EllipseCommonsClassLibrary
                 }
                 finally
                 {
-                    MessageBox.Show(@"Se ha producido un error al intentar realizar la autenticación. Asegúrese que los datos ingresados sean correctos e intente nuevamente. \n\n" + ex.Message);
+                    MessageBox.Show(@"Se ha producido un error al intentar realizar la autenticación. Asegúrese que los datos ingresados sean correctos e intente nuevamente." + "\n\n" + ex.Message);
                 }
             }
         }
