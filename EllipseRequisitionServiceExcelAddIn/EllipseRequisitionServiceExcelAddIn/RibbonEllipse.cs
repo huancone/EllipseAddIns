@@ -592,23 +592,42 @@ namespace EllipseRequisitionServiceExcelAddIn
                 CostCentreA = costCentreAllocation
             };
 
-            //La condición dice: Si la posición no existe en la tabla no tiene restricción.
-            //Si existe en la tabla la posición debe cumplir con la prioridad.
-            //Si existe en la tabla la posición y cumple con la prioridad, debe cumplir con el flag de orden
-            var isPositionRestrictionValid = true;
+            //La condición dice:
+            //Si la posición existe en la tabla debe cumplir con la prioridad
+            //Si la prioridad existe en la tabla debe cumplir con la posición
+            //Si la posición existe en la tabla y cumple con la prioridad, debe cumplir con el flag de orden
+            var isRestricted = false;
+
+            //Valida si existe en la tabla de restricciones
             foreach (var resItem in RestrictionList)
             {
-                if (!resItem.Position.Trim().ToUpper().Equals(_frmAuth.EllipsePost.Trim().ToUpper())) continue;
-                isPositionRestrictionValid = false;
-                if (!resItem.Code.Trim().ToUpper().Equals(requisitionHeader.PriorityCode.Trim().ToUpper())) continue;
-                isPositionRestrictionValid = true;
-                if (resItem.MandatoryWorkOrder && string.IsNullOrWhiteSpace(requisitionHeader.WorkOrderA))
-                    isPositionRestrictionValid = false;
-                break;
+                if (resItem.Position.Trim().ToUpper().Equals(_frmAuth.EllipsePost.Trim().ToUpper()) || resItem.Code.Trim().ToUpper().Equals(requisitionHeader.PriorityCode.Trim().ToUpper()))
+                {
+                    isRestricted = true;
+                    break;
+                }
             }
 
-            if (!isPositionRestrictionValid)
-                throw new Exception(@"UNAUTHORISED PRIORITY CODE FOR LOGGED POSITION");
+            //Si hay restricción valida el tipo
+            if (isRestricted)
+            {
+                var isPositionRestrictionValid = false;
+                var isMandatoryOrder = false;
+                foreach (var resItem in RestrictionList)
+                {
+                    if (resItem.Position.Trim().ToUpper().Equals(_frmAuth.EllipsePost.Trim().ToUpper()) && resItem.Code.Trim().ToUpper().Equals(requisitionHeader.PriorityCode.Trim().ToUpper()))
+                    {
+                        isPositionRestrictionValid = true;
+                        isMandatoryOrder = resItem.MandatoryWorkOrder;
+                        break;
+                    }
+                }
+                if (isMandatoryOrder && string.IsNullOrWhiteSpace(requisitionHeader.WorkOrderA))
+                    throw new Exception(@"MANDATORY WORK ORDER IN PRIORITY CODE " + requisitionHeader.PriorityCode.Trim().ToUpper() + " FOR LOGGED POSITION " + _frmAuth.EllipsePost.Trim().ToUpper());
+                if (!isPositionRestrictionValid)
+                    throw new Exception(@"UNAUTHORISED PRIORITY CODE " + requisitionHeader.PriorityCode.Trim().ToUpper() + " FOR LOGGED POSITION " + _frmAuth.EllipsePost.Trim().ToUpper());
+            }
+
             return requisitionHeader;
         }
 
@@ -1129,6 +1148,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 RequisitionClassLibrary.RequisitionHeader prevReqHeader = null;
                 RequisitionClassLibrary.RequisitionHeader curReqHeader;
+                RestrictionList = RequisitionClassLibrary.SpecialRestriction.GetPositionRestrictions(_eFunctions);
                 while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(itemIndicatorColumn, currentRow).Value) != null || _cells.GetNullIfTrimmedEmpty(_cells.GetCell(seriesIndicatorColumn, currentRow).Value) != null)
                 {
                     try

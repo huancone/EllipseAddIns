@@ -26,11 +26,6 @@ namespace EllipseCommonsClassLibrary
 
         private void btnAuthenticate_Click(object sender, EventArgs e)
         {
-            EllipseDsct = txtDistrict.Text.ToUpper();
-            EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
-            EllipsePswd = txtPassword.Text;
-            EllipseUser = txtUsername.Text.ToUpper();
-
             var authSer = new Authenticator.AuthenticatorService();
             var opAuth = new Authenticator.OperationContext
             {
@@ -39,16 +34,21 @@ namespace EllipseCommonsClassLibrary
                 returnWarnings = true
             };
 
-            //control de selección de entorno en programación
-            if(SelectedEnviroment == null)
-            {
-                MessageBox.Show("Debe seleccionar un entorno de la lista para poder realizar la acción");
-                return;
-            }
-
-            authSer.Url = _eFunctions.GetServicesUrl(SelectedEnviroment) + "/AuthenticatorService";
             try
             {
+                EllipseDsct = txtDistrict.Text.ToUpper();
+                EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
+                EllipsePswd = txtPassword.Text;
+                EllipseUser = txtUsername.Text.ToUpper();
+
+                //control de selección de entorno en programación
+                if (SelectedEnviroment == null)
+                {
+                    MessageBox.Show("Debe seleccionar un entorno de la lista para poder realizar la acción");
+                    return;
+                }
+
+                authSer.Url = _eFunctions.GetServicesUrl(SelectedEnviroment) + "/AuthenticatorService";
                 ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDsct, EllipsePost);
                 authSer.authenticate(opAuth);
 
