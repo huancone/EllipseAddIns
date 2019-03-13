@@ -48,12 +48,12 @@ namespace EllipseMSE345ExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -76,7 +76,7 @@ namespace EllipseMSE345ExcelAddIn
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(LoadInfo);
 
@@ -88,7 +88,7 @@ namespace EllipseMSE345ExcelAddIn
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(LoadInfoMntto);
 
@@ -114,7 +114,7 @@ namespace EllipseMSE345ExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 _excelApp.Workbooks.Add();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
 
@@ -238,7 +238,7 @@ namespace EllipseMSE345ExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 _excelApp.Workbooks.Add();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetNameMtto01;
 
@@ -379,7 +379,7 @@ namespace EllipseMSE345ExcelAddIn
             inspector3 = MyUtilities.GetCodeKey(inspector3);
 
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct,
                 _frmAuth.EllipsePost);
             var proxySheet =
@@ -488,7 +488,7 @@ namespace EllipseMSE345ExcelAddIn
                 return;
             }
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct,
                 _frmAuth.EllipsePost);
             var proxySheet =
@@ -558,7 +558,7 @@ namespace EllipseMSE345ExcelAddIn
 
         private List<string> GetFlotas()
         {
-            var currentEnviroment = _eFunctions.GetCurrentEnviroment();
+            var currentEnvironment = _eFunctions.GetCurrentEnvironment();
             try
             {
                 _eFunctions.SetDBSettings(Environments.SigcorProductivo);
@@ -575,16 +575,16 @@ namespace EllipseMSE345ExcelAddIn
             }
             finally
             {
-                _eFunctions.SetDBSettings(currentEnviroment);
+                _eFunctions.SetDBSettings(currentEnvironment);
             }
         }
 
         private List<string> GetEquipos()
         {
-            var currentEnviroment = _eFunctions.GetCurrentEnviroment();
+            var currentEnvironment = _eFunctions.GetCurrentEnvironment();
             try
             {
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 const string sqlQuery = "SELECT EQUIP_NO FROM ELLIPSE.MSF600 " +
                                         "WHERE EQUIP_NO IN '0220701' AND '0220999' AND EQUIP_NO NOT IN ( '02209       ','02208       ') ORDER BY EQUIP_NO";
@@ -598,7 +598,7 @@ namespace EllipseMSE345ExcelAddIn
             }
             finally
             {
-                _eFunctions.SetDBSettings(currentEnviroment);
+                _eFunctions.SetDBSettings(currentEnvironment);
             }
         }
 
@@ -705,7 +705,7 @@ namespace EllipseMSE345ExcelAddIn
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
-            var currentEnviroment = _eFunctions.GetCurrentEnviroment();
+            var currentEnvironment = _eFunctions.GetCurrentEnvironment();
             try
             {
                 _cells.SetCursorWait();
@@ -734,7 +734,7 @@ namespace EllipseMSE345ExcelAddIn
             }
             finally
             {
-                _eFunctions.SetCurrentEnviroment(currentEnviroment);
+                _eFunctions.SetCurrentEnvironment(currentEnvironment);
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }
@@ -752,7 +752,7 @@ namespace EllipseMSE345ExcelAddIn
 
         private List<MonitoringCondition> GetMonitoringConditionList(string equipment, string monitoringType)
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var monitoringList = new List<MonitoringCondition>();
 
             var sqlQuery = "SELECT" +

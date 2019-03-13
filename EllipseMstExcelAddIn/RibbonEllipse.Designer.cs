@@ -39,7 +39,7 @@
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReviewMsts = this.Factory.CreateRibbonButton();
             this.btnReReviewMst = this.Factory.CreateRibbonButton();
@@ -63,7 +63,7 @@
             // grpMaintenanceScheduleTask
             // 
             this.grpMaintenanceScheduleTask.Items.Add(this.box1);
-            this.grpMaintenanceScheduleTask.Items.Add(this.drpEnviroment);
+            this.grpMaintenanceScheduleTask.Items.Add(this.drpEnvironment);
             this.grpMaintenanceScheduleTask.Items.Add(this.menuActions);
             this.grpMaintenanceScheduleTask.Label = "Maint.Sched.Task";
             this.grpMaintenanceScheduleTask.Name = "grpMaintenanceScheduleTask";
@@ -86,10 +86,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -173,7 +173,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpMaintenanceScheduleTask;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreateMst;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDeleteTask;

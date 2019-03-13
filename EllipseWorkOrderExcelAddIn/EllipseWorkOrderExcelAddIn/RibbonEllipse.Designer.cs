@@ -46,7 +46,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnFormatQuality = this.Factory.CreateRibbonButton();
             this.btnFormatCriticalControls = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuGeneral = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
@@ -106,7 +106,7 @@ namespace EllipseWorkOrderExcelAddIn
             // grpWorkOrder
             // 
             this.grpWorkOrder.Items.Add(this.box2);
-            this.grpWorkOrder.Items.Add(this.drpEnviroment);
+            this.grpWorkOrder.Items.Add(this.drpEnvironment);
             this.grpWorkOrder.Items.Add(this.menuActions);
             this.grpWorkOrder.Label = "WorkOrders";
             this.grpWorkOrder.Name = "grpWorkOrder";
@@ -160,10 +160,10 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -520,7 +520,7 @@ namespace EllipseWorkOrderExcelAddIn
 
         internal RibbonTab tabEllipse;
         internal RibbonGroup grpWorkOrder;
-        internal RibbonDropDown drpEnviroment;
+        internal RibbonDropDown drpEnvironment;
         internal RibbonButton btnReview;
         internal RibbonMenu menuActions;
         internal RibbonButton btnCreate;

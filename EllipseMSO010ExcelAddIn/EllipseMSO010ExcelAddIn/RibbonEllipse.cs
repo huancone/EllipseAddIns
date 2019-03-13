@@ -33,12 +33,12 @@ namespace EllipseMSO010ExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
 
         }
@@ -54,7 +54,7 @@ namespace EllipseMSO010ExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -102,7 +102,7 @@ namespace EllipseMSO010ExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -126,7 +126,7 @@ namespace EllipseMSO010ExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -211,7 +211,7 @@ namespace EllipseMSO010ExcelAddIn
 
             _cells.ClearTableRange(TableName01);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
             var typeCriteriaList = SearchTypeCriteriaType.GetSearchTypeCriteriaTypes();
@@ -265,7 +265,7 @@ namespace EllipseMSO010ExcelAddIn
 
         public void CreateCodeList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -329,7 +329,7 @@ namespace EllipseMSO010ExcelAddIn
 
         public void ModifyCodeList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -393,7 +393,7 @@ namespace EllipseMSO010ExcelAddIn
 
         public void CreateCodeRegister(Screen.OperationContext opContext, Screen.ScreenService proxySheet, ItemCode item)
         {
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO010");
@@ -462,7 +462,7 @@ namespace EllipseMSO010ExcelAddIn
 
         public void ModifyCodeRegister(Screen.OperationContext opContext, Screen.ScreenService proxySheet, ItemCode item)
         {
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO010");

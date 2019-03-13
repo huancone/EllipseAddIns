@@ -9,6 +9,7 @@ namespace EllipseCommonsClassLibrary.Classes
         public string description;
         public string table_type;
         public string assoc_rec;
+        public string active;
         /// <summary>
         /// Inicializa el elemento con su código, descripción, tipo de tabla y registro asociado
         /// </summary>
@@ -16,12 +17,14 @@ namespace EllipseCommonsClassLibrary.Classes
         /// <param name="description"></param>
         /// <param name="table_type"></param>
         /// <param name="assoc_rec"></param>
-        public EllipseCodeItem(string code, string description, string table_type, string assoc_rec)
+        /// <param name="active"></param>
+        public EllipseCodeItem(string code, string description, string table_type, string assoc_rec, string active)
         {
             this.code = code;
             this.description = description;
             this.table_type = table_type;
             this.assoc_rec = assoc_rec;
+            this.active = active;
         }
         /// <summary>
         /// Inicializa el elemento con su código, descripción y tipo de tabla

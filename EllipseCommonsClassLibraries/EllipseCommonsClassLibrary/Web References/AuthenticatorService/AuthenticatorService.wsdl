@@ -167,7 +167,7 @@
   </wsdl:binding>
   <wsdl:service name="AuthenticatorService">
     <wsdl:port name="AuthenticatorServiceHttpPort" binding="tns:AuthenticatorServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/AuthenticatorService" />
+      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/AuthenticatorService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

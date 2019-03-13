@@ -28,12 +28,12 @@ namespace EllipseSAO900AddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -429,7 +429,7 @@ namespace EllipseSAO900AddIn
 
             string sqlQuery;
 
-            EFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             switch (documentType)
             {
                 case "CO":
@@ -495,7 +495,7 @@ namespace EllipseSAO900AddIn
                 var sqlQuery = Queries.GetSupplierName(districtCode, supplierId, EFunctions.dbReference,
                     EFunctions.dbLink);
 
-                EFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 var drSupplierName = EFunctions.GetQueryResult(sqlQuery);
 
@@ -533,7 +533,7 @@ namespace EllipseSAO900AddIn
 
                 var sqlQuery = Queries.GetEmployeeName(employeeId, EFunctions.dbReference, EFunctions.dbLink);
 
-                EFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 var drEmployeeName = EFunctions.GetQueryResult(sqlQuery);
 
@@ -568,7 +568,7 @@ namespace EllipseSAO900AddIn
                 var excelBook = _excelApp.ActiveWorkbook;
                 Worksheet excelSheet = excelBook.ActiveSheet;
 
-                EFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 _cells.GetRange(_resultColumn, _tittleRow + 1, _resultColumn, MaxRows).ClearContents();
                 _cells.GetRange(1, _tittleRow + 1, _resultColumn, MaxRows).ClearComments();
@@ -1182,14 +1182,14 @@ namespace EllipseSAO900AddIn
             var currentRow = _tittleRow + 1;
 
             FrmAuth.StartPosition = FormStartPosition.CenterScreen;
-            FrmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+            FrmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
             if (FrmAuth.ShowDialog() != DialogResult.OK) return;
             ClientConversation.authenticate(FrmAuth.EllipseUser, FrmAuth.EllipsePswd);
 
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var opSheet = new screen.OperationContext
             {

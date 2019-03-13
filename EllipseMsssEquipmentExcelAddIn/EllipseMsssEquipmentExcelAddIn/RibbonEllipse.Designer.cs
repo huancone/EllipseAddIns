@@ -37,7 +37,7 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpMsss = this.Factory.CreateRibbonGroup();
             this.btnFormat = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnLoad = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnAbout = this.Factory.CreateRibbonButton();
@@ -55,7 +55,7 @@
             // grpMsss
             // 
             this.grpMsss.Items.Add(this.box1);
-            this.grpMsss.Items.Add(this.drpEnviroment);
+            this.grpMsss.Items.Add(this.drpEnvironment);
             this.grpMsss.Items.Add(this.btnLoad);
             this.grpMsss.Label = "MSSS";
             this.grpMsss.Name = "grpMsss";
@@ -66,10 +66,10 @@
             this.btnFormat.Name = "btnFormat";
             this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // btnLoad
             // 
@@ -108,7 +108,7 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpMsss;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormat;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoad;
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;

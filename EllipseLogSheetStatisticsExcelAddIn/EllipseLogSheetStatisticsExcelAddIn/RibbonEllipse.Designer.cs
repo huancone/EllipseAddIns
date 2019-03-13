@@ -39,7 +39,7 @@
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatLogSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoadModel = this.Factory.CreateRibbonButton();
             this.btnCreateLogSheetStatistics = this.Factory.CreateRibbonButton();
@@ -58,7 +58,7 @@
             // grpLogSheetStatistics
             // 
             this.grpLogSheetStatistics.Items.Add(this.box1);
-            this.grpLogSheetStatistics.Items.Add(this.drpEnviroment);
+            this.grpLogSheetStatistics.Items.Add(this.drpEnvironment);
             this.grpLogSheetStatistics.Items.Add(this.menuActions);
             this.grpLogSheetStatistics.Label = "LogSheetStatistics";
             this.grpLogSheetStatistics.Name = "grpLogSheetStatistics";
@@ -81,10 +81,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -127,7 +127,7 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpLogSheetStatistics;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreateLogSheetStatistics;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatLogSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadModel;

@@ -36,12 +36,12 @@ namespace EllipseMse81SExcelAddin
         {
             _excelApp = Globals.ThisAddIn.Application;
             
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -55,7 +55,7 @@ namespace EllipseMse81SExcelAddin
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -73,7 +73,7 @@ namespace EllipseMse81SExcelAddin
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -91,7 +91,7 @@ namespace EllipseMse81SExcelAddin
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -244,7 +244,7 @@ namespace EllipseMse81SExcelAddin
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -278,7 +278,7 @@ namespace EllipseMse81SExcelAddin
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             var proxyEmp = new EmployeeService.EmployeeService();
             
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             proxyEmp.Url = urlService + "/EmployeeService";
             
             var i = TitleRow01 + 1;
@@ -417,7 +417,7 @@ namespace EllipseMse81SExcelAddin
 
         public void CreateEmployeeList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -436,7 +436,7 @@ namespace EllipseMse81SExcelAddin
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var proxyEmp = new EmployeeService.EmployeeService();//ejecuta las acciones del servicio
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             proxyEmp.Url = urlService + "/EmployeeService";
 
             var i = TitleRow01 + 1;
@@ -554,7 +554,7 @@ namespace EllipseMse81SExcelAddin
 
         public void UpdateEmployeeList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             _cells.SetCursorWait();
             var opSheet = new OperationContext
@@ -569,7 +569,7 @@ namespace EllipseMse81SExcelAddin
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var proxyEmp = new EmployeeService.EmployeeService();//ejecuta las acciones del servicio
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             proxyEmp.Url = urlService + "/EmployeeService";
             
             var i = TitleRow01 + 1;

@@ -39,7 +39,7 @@
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormat = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuOptions = this.Factory.CreateRibbonMenu();
             this.btnCheckStocks = this.Factory.CreateRibbonButton();
             this.btnLoadData = this.Factory.CreateRibbonButton();
@@ -57,7 +57,7 @@
             // grpMSO17E
             // 
             this.grpMSO17E.Items.Add(this.box1);
-            this.grpMSO17E.Items.Add(this.drpEnviroment);
+            this.grpMSO17E.Items.Add(this.drpEnvironment);
             this.grpMSO17E.Items.Add(this.menuOptions);
             this.grpMSO17E.Label = "MSO17E";
             this.grpMSO17E.Name = "grpMSO17E";
@@ -80,10 +80,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuOptions
             // 
@@ -126,7 +126,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpMSO17E;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormat;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuOptions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCheckStocks;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadData;

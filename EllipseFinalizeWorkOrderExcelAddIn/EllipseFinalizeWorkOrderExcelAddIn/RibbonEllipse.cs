@@ -35,12 +35,12 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
 
         }
@@ -82,7 +82,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -106,7 +106,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -244,7 +244,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
 
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var listwo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var i = TitleRow01 + 1;
             foreach (var wo in listwo)
@@ -296,7 +296,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
         
         public void ReReviewWoList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -358,7 +358,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
         }
         public void FinalizeWoList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -378,7 +378,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            var enviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var environment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
             {
                 try
@@ -389,7 +389,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                     wo.districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
                     wo.SetWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value));
 
-                    var reply = WorkOrderActions.FinalizeWorkOrder(enviroment, opSheet, wo);
+                    var reply = WorkOrderActions.FinalizeWorkOrder(environment, opSheet, wo);
                     if (reply.finalCosts)
                     {
                         _cells.GetCell(ResultColumn01, i).Value = "FINALIZADA";

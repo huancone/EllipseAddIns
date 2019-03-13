@@ -41,7 +41,7 @@
             this.btnFormatGeneral = this.Factory.CreateRibbonButton();
             this.btnFormatMntto = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnCreate = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpCondMonit.SuspendLayout();
@@ -58,7 +58,7 @@
             // grpCondMonit
             // 
             this.grpCondMonit.Items.Add(this.box1);
-            this.grpCondMonit.Items.Add(this.drpEnviroment);
+            this.grpCondMonit.Items.Add(this.drpEnvironment);
             this.grpCondMonit.Items.Add(this.btnCreate);
             this.grpCondMonit.Label = "MSE345";
             this.grpCondMonit.Name = "grpCondMonit";
@@ -96,10 +96,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // btnCreate
             // 
@@ -127,7 +127,7 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpCondMonit;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreate;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatGeneral;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;

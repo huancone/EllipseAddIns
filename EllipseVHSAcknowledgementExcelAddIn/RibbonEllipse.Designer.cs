@@ -37,7 +37,7 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpVHSAcknowledgement = this.Factory.CreateRibbonGroup();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnAction = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnAbout = this.Factory.CreateRibbonButton();
@@ -55,7 +55,7 @@
             // grpVHSAcknowledgement
             // 
             this.grpVHSAcknowledgement.Items.Add(this.box1);
-            this.grpVHSAcknowledgement.Items.Add(this.drpEnviroment);
+            this.grpVHSAcknowledgement.Items.Add(this.drpEnvironment);
             this.grpVHSAcknowledgement.Items.Add(this.btnAction);
             this.grpVHSAcknowledgement.Label = "VHSAcknowledgement";
             this.grpVHSAcknowledgement.Name = "grpVHSAcknowledgement";
@@ -66,10 +66,10 @@
             this.btnFormatSheet.Name = "btnFormatSheet";
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // btnAction
             // 
@@ -109,7 +109,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpVHSAcknowledgement;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAction;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;

@@ -33,12 +33,12 @@ namespace EllipseMSO627InspPestanasAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -233,7 +233,7 @@ namespace EllipseMSO627InspPestanasAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == _sheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -245,7 +245,7 @@ namespace EllipseMSO627InspPestanasAddIn
             else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == _sheetName02)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -277,7 +277,7 @@ namespace EllipseMSO627InspPestanasAddIn
             var proxySheet = new Screen.ScreenService();
             var requestSheet = new Screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow + 1;
             while (_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) != "")
@@ -419,7 +419,7 @@ namespace EllipseMSO627InspPestanasAddIn
             var proxySheet = new Screen.ScreenService();
             var requestSheet = new Screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow + 1;
             while (_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) != "")
@@ -540,7 +540,7 @@ namespace EllipseMSO627InspPestanasAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == _sheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -574,7 +574,7 @@ namespace EllipseMSO627InspPestanasAddIn
             var proxySheet = new Screen.ScreenService();
             var requestSheet = new Screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow + 1;
             while (_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) != "")

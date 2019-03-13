@@ -37,7 +37,7 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpProyecto = this.Factory.CreateRibbonGroup();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReviewJobs = this.Factory.CreateRibbonButton();
             this.btnLoadData = this.Factory.CreateRibbonButton();
@@ -59,7 +59,7 @@
             // grpProyecto
             // 
             this.grpProyecto.Items.Add(this.btnFormatSheet);
-            this.grpProyecto.Items.Add(this.drpEnviroment);
+            this.grpProyecto.Items.Add(this.drpEnvironment);
             this.grpProyecto.Items.Add(this.menuActions);
             this.grpProyecto.Items.Add(this.btnAbout);
             this.grpProyecto.Label = "Job Planner";
@@ -72,10 +72,10 @@
             this.btnFormatSheet.ShowImage = true;
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -147,7 +147,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpProyecto;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewJobs;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;

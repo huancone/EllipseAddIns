@@ -41,7 +41,7 @@
             this.btnFormatNewSheet = this.Factory.CreateRibbonButton();
             this.btnFormatExtended = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuAction = this.Factory.CreateRibbonMenu();
             this.menuOptions = this.Factory.CreateRibbonMenu();
             this.cbMaxItems = this.Factory.CreateRibbonCheckBox();
@@ -67,7 +67,7 @@
             // grpRequisitionService
             // 
             this.grpRequisitionService.Items.Add(this.box1);
-            this.grpRequisitionService.Items.Add(this.drpEnviroment);
+            this.grpRequisitionService.Items.Add(this.drpEnvironment);
             this.grpRequisitionService.Items.Add(this.menuAction);
             this.grpRequisitionService.Label = "Requisition Service";
             this.grpRequisitionService.Name = "grpRequisitionService";
@@ -105,10 +105,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuAction
             // 
@@ -202,7 +202,7 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpRequisitionService;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatNewSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExcecuteRequisitionService;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAction;

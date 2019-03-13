@@ -35,12 +35,12 @@ namespace EllipseStdTextExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
            
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -54,7 +54,7 @@ namespace EllipseStdTextExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 {
                     GetStdText(true, true);
@@ -69,7 +69,7 @@ namespace EllipseStdTextExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 {
                     SetStdText(true, true);
@@ -84,7 +84,7 @@ namespace EllipseStdTextExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 {
                     GetStdText(true, false);
@@ -99,7 +99,7 @@ namespace EllipseStdTextExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment= drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment= drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 {
                     SetStdText(true, false);
@@ -114,7 +114,7 @@ namespace EllipseStdTextExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 {
                     GetStdText(false, true);
@@ -129,7 +129,7 @@ namespace EllipseStdTextExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 {
                     SetStdText(false, true);
@@ -257,14 +257,14 @@ namespace EllipseStdTextExcelAddIn
 
         public void GetStdText(bool getHeader, bool getText)
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
             var districtCode = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var position = _frmAuth.EllipsePost;
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(3, i).Value))
@@ -305,7 +305,7 @@ namespace EllipseStdTextExcelAddIn
         }
         public void SetStdText(bool setHeader, bool setText)
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -313,7 +313,7 @@ namespace EllipseStdTextExcelAddIn
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
             var districtCode = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var position = _frmAuth.EllipsePost;
             var stdTextOpc = StdText.GetStdTextOpContext(districtCode, position, 100, Debugger.DebugWarnings);
             var stdTextCustomOpc = StdText.GetCustomOpContext(districtCode, position, 100, Debugger.DebugWarnings);
@@ -370,8 +370,8 @@ namespace EllipseStdTextExcelAddIn
         public void ReviewRefCodesList()
         {
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -441,8 +441,8 @@ namespace EllipseStdTextExcelAddIn
         public void UpdateRefCodesList()
         {
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -521,7 +521,7 @@ namespace EllipseStdTextExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName02))
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -547,7 +547,7 @@ namespace EllipseStdTextExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName02))
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;

@@ -27,12 +27,12 @@ namespace EllipseReportRequestExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -120,14 +120,14 @@ namespace EllipseReportRequestExcelAddIn
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(drpEnviroment.SelectedItem.Label))
+                if (string.IsNullOrWhiteSpace(drpEnvironment.SelectedItem.Label))
                     throw new Exception("Seleccione un ambiente válido");
 
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
 
@@ -144,7 +144,7 @@ namespace EllipseReportRequestExcelAddIn
 
                 var proxySheet = new Screen.ScreenService
                 {
-                    Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService"
+                    Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService"
                 };
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
                 var i = TitleRow01 + 1;

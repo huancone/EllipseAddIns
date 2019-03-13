@@ -13,7 +13,7 @@ namespace EllipseCommonsClassLibrary
 
         // ReSharper disable once FieldCanBeMadeReadOny.Local
         EllipseFunctions _eFunctions = new EllipseFunctions();
-        public string SelectedEnviroment = null;
+        public string SelectedEnvironment = null;
 
         public FormAuthenticate()
         {
@@ -31,7 +31,8 @@ namespace EllipseCommonsClassLibrary
             {
                 district = EllipseDsct,
                 position = EllipsePost,
-                returnWarnings = true
+                returnWarnings = true,
+                returnWarningsSpecified = true
             };
 
             try
@@ -42,13 +43,13 @@ namespace EllipseCommonsClassLibrary
                 EllipseUser = txtUsername.Text.ToUpper();
 
                 //control de selección de entorno en programación
-                if (SelectedEnviroment == null)
+                if (SelectedEnvironment == null)
                 {
                     MessageBox.Show("Debe seleccionar un entorno de la lista para poder realizar la acción");
                     return;
                 }
 
-                authSer.Url = _eFunctions.GetServicesUrl(SelectedEnviroment) + "/AuthenticatorService";
+                authSer.Url = _eFunctions.GetServicesUrl(SelectedEnvironment) + "/AuthenticatorService";
                 ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDsct, EllipsePost);
                 authSer.authenticate(opAuth);
 

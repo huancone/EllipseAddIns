@@ -41,7 +41,7 @@
             this.menuFormatSheet = this.Factory.CreateRibbonMenu();
             this.btnFormatFull = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuEquipments = this.Factory.CreateRibbonMenu();
             this.btnCreateEquipment = this.Factory.CreateRibbonButton();
@@ -83,7 +83,7 @@
             // 
             this.box1.BoxStyle = Microsoft.Office.Tools.Ribbon.RibbonBoxStyle.Vertical;
             this.box1.Items.Add(this.box5);
-            this.box1.Items.Add(this.drpEnviroment);
+            this.box1.Items.Add(this.drpEnvironment);
             this.box1.Items.Add(this.menuActions);
             this.box1.Name = "box1";
             // 
@@ -112,10 +112,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -278,7 +278,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatFull;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateEquipmentData;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormatSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;

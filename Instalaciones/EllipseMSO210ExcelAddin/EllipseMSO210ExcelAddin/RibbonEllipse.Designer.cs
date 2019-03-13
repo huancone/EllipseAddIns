@@ -37,7 +37,7 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpMSO210 = this.Factory.CreateRibbonGroup();
             this.btnFormat = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnLoad = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnAbout = this.Factory.CreateRibbonButton();
@@ -55,7 +55,7 @@
             // grpMSO210
             // 
             this.grpMSO210.Items.Add(this.box1);
-            this.grpMSO210.Items.Add(this.drpEnviroment);
+            this.grpMSO210.Items.Add(this.drpEnvironment);
             this.grpMSO210.Items.Add(this.btnLoad);
             this.grpMSO210.Label = "MSO210";
             this.grpMSO210.Name = "grpMSO210";
@@ -66,10 +66,10 @@
             this.btnFormat.Name = "btnFormat";
             this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env. ";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env. ";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // btnLoad
             // 
@@ -109,7 +109,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpMSO210;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormat;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoad;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;

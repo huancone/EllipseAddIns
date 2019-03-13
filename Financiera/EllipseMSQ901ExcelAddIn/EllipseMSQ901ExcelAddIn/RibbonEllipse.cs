@@ -21,12 +21,12 @@ namespace EllipseMSQ901ExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
            
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -307,7 +307,7 @@ namespace EllipseMSQ901ExcelAddIn
 
             var sqlQuery = Queries.GetJournalInfo(districtNo, journal, EFunctions.dbReference, EFunctions.dbLink);
 
-            EFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var drinfo = EFunctions.GetQueryResult(sqlQuery);
 
@@ -376,7 +376,7 @@ namespace EllipseMSQ901ExcelAddIn
 
             var sqlQuery = Queries.GetSupplierInvoiceInfo(districtNo, supplier, invoice, EFunctions.dbReference, EFunctions.dbLink);
 
-            EFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var drinfo = EFunctions.GetQueryResult(sqlQuery);
 
@@ -473,7 +473,7 @@ namespace EllipseMSQ901ExcelAddIn
 
             var sqlQuery = Queries.GetCustomerInvoiceInfo(districtNo, customer, invoice, EFunctions.dbReference, EFunctions.dbLink);
 
-            EFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var drinfo = EFunctions.GetQueryResult(sqlQuery);
 

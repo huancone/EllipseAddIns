@@ -32,12 +32,12 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
             
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -193,7 +193,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
 
             if (excelSheet.Name != _sheetName01) return;
 
-            if (drpEnviroment.Label == null || drpEnviroment.Label.Equals("")) return;
+            if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
 
             _cells.GetRange(4, TittleRow + 1, ResultColumn, _excelSheetItems.ListRows.Count + TittleRow).ClearContents();
             _cells.GetRange(4, TittleRow + 1, ResultColumn, _excelSheetItems.ListRows.Count + TittleRow).ClearFormats();
@@ -207,7 +207,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             {
                 try
                 {
-                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnviroment.SelectedItem.Label);
+                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnvironment.SelectedItem.Label);
                     _cells.GetCell(12, currentRow).Select();
 //                    _cells.GetCell(1, currentRow).Value = supplierInfo.Supplier;
 //                    _cells.GetCell(2, currentRow).Value = supplierInfo.Factura;
@@ -233,7 +233,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
                     currentRow++;
                     supplier = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value));
                     factura = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
-                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnviroment.SelectedItem.Label);
+                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnvironment.SelectedItem.Label);
                 }
             }
 
@@ -262,7 +262,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
 
             if (excelSheet.Name != _sheetName01) return;
 
-            if (drpEnviroment.SelectedItem.Label == null || drpEnviroment.SelectedItem.Label.Equals("")) return;
+            if (drpEnvironment.SelectedItem.Label == null || drpEnvironment.SelectedItem.Label.Equals("")) return;
 
             Parameters.Percentage = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 4).Value));
             Parameters.Days = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 5).Value));
@@ -331,7 +331,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == _sheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                     ModifyInvoice();
             }
@@ -354,7 +354,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             _cells.GetRange(ResultColumn, TittleRow + 1, ResultColumn, _excelSheetItems.ListRows.Count + TittleRow).ClearContents();
             _cells.GetRange(ResultColumn, TittleRow + 1, ResultColumn, _excelSheetItems.ListRows.Count + TittleRow).Style = _cells.GetStyle(StyleConstants.Normal);
 
-            proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var opSheet = new screen.OperationContext
             {
@@ -478,7 +478,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
 
             if (excelSheet.Name != _sheetName01) return;
 
-            if (drpEnviroment.Label == null || drpEnviroment.Label.Equals("")) return;
+            if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
 
             _cells.GetRange(13, TittleRow + 1, ResultColumn, _excelSheetItems.ListRows.Count + TittleRow).ClearContents();
 
@@ -491,7 +491,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             {
                 try
                 {
-                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnviroment.SelectedItem.Label);
+                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnvironment.SelectedItem.Label);
                     _cells.GetCell(14, currentRow).Select();
 
                     _cells.GetCell(13, currentRow).Value = SupplierInfo.Vrdescuentoaplicado;
@@ -508,7 +508,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
                     currentRow++;
                     supplier = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value));
                     factura = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
-                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnviroment.SelectedItem.Label);
+                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnvironment.SelectedItem.Label);
                 }
             }
             MessageBox.Show(Resources.RibbonEllipse_VerifyInvoice_Datos_de_Facturas_Consuladas__Favor_Verificar);
@@ -522,10 +522,10 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
 
             }
 
-            public SupplierInvoiceInfo(string supplier, string factura, string enviroment)
+            public SupplierInvoiceInfo(string supplier, string factura, string environment)
             {
                 var sqlQuery = Queries.GetSupplierInvoiceInfo("ICOR", supplier, factura, EFunctions.dbReference, EFunctions.dbLink);
-                EFunctions.SetDBSettings(enviroment);
+                EFunctions.SetDBSettings(environment);
 
                 var drSupplierInvoiceInfo = EFunctions.GetQueryResult(sqlQuery);
 

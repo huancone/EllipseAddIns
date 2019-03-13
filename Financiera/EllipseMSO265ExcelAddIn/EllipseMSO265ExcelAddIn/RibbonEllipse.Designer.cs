@@ -45,7 +45,7 @@ namespace EllipseMSO265ExcelAddIn
             this.btnNomina = this.Factory.CreateRibbonButton();
             this.btnFormatNonOrderInvoice = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuComments = this.Factory.CreateRibbonMenu();
             this.btnReviewInternalComments = this.Factory.CreateRibbonButton();
@@ -69,7 +69,7 @@ namespace EllipseMSO265ExcelAddIn
             // grpMSO265
             // 
             this.grpMSO265.Items.Add(this.box1);
-            this.grpMSO265.Items.Add(this.drpEnviroment);
+            this.grpMSO265.Items.Add(this.drpEnvironment);
             this.grpMSO265.Items.Add(this.menuActions);
             this.grpMSO265.Label = "MSO265";
             this.grpMSO265.Name = "grpMSO265";
@@ -115,10 +115,10 @@ namespace EllipseMSO265ExcelAddIn
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -208,7 +208,7 @@ namespace EllipseMSO265ExcelAddIn
         internal RibbonTab tabEllipse;
         internal RibbonGroup grpMSO265;
         internal RibbonMenu menuFormats;
-        internal RibbonDropDown drpEnviroment;
+        internal RibbonDropDown drpEnvironment;
         internal RibbonMenu menuActions;
         internal RibbonButton btnReloadParameters;
         internal RibbonButton btnFormatCesantias;

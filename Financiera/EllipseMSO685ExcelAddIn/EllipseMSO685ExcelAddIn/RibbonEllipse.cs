@@ -28,12 +28,12 @@ namespace EllipseMSO685ExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -99,7 +99,7 @@ namespace EllipseMSO685ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             Worksheet excelSheet = excelBook.ActiveSheet;
             _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-            _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+            _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
             if (_frmAuth.ShowDialog() != DialogResult.OK) return;
             Accion3();
         }
@@ -109,7 +109,7 @@ namespace EllipseMSO685ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
-            proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,

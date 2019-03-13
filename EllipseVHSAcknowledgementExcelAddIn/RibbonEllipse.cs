@@ -26,10 +26,10 @@ namespace EllipseVHSAcknowledgementExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments) { 
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments) { 
                 var item = Factory.CreateRibbonDropDownItem();
-                item.Label = env; drpEnviroment.Items.Add(item); 
+                item.Label = env; drpEnvironment.Items.Add(item); 
             }   
         }
 
@@ -116,14 +116,14 @@ namespace EllipseVHSAcknowledgementExcelAddIn
         public void ReviewData()
         {
             _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-            _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+            _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
             if (_frmAuth.ShowDialog() == DialogResult.OK)
             {
                 //Variables de gestión
                 string district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
                 string supplier = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B4").Value);
                 string requisition = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B5").Value);
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
                 //Variables de operación del servicio
                 var opSheet = new OperationContext

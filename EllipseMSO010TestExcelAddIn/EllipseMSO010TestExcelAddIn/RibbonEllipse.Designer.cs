@@ -36,7 +36,7 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpMso010 = this.Factory.CreateRibbonGroup();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnReview = this.Factory.CreateRibbonButton();
             this.btnFormat = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
@@ -53,15 +53,15 @@
             // grpMso010
             // 
             this.grpMso010.Items.Add(this.btnFormat);
-            this.grpMso010.Items.Add(this.drpEnviroment);
+            this.grpMso010.Items.Add(this.drpEnvironment);
             this.grpMso010.Items.Add(this.btnReview);
             this.grpMso010.Label = "MSO010";
             this.grpMso010.Name = "grpMso010";
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // btnReview
             // 
@@ -93,7 +93,7 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpMso010;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReview;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormat;
     }

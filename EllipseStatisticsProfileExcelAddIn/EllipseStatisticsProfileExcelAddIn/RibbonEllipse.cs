@@ -28,12 +28,12 @@ namespace EllipseStatisticsProfileExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -47,7 +47,7 @@ namespace EllipseStatisticsProfileExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
@@ -125,7 +125,7 @@ namespace EllipseStatisticsProfileExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
 
             _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-            _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+            _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
             if (_frmAuth.ShowDialog() != DialogResult.OK) return;
             var opSheet = new Screen.OperationContext
@@ -143,7 +143,7 @@ namespace EllipseStatisticsProfileExcelAddIn
             var requestSheet = new Screen.ScreenSubmitRequestDTO();
             var replySheet = new Screen.ScreenDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = 5;
 

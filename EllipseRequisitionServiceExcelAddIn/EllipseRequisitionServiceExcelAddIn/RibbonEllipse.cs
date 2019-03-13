@@ -41,12 +41,12 @@ namespace EllipseRequisitionServiceExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var environmentList = Environments.GetEnviromentList();
+            var environmentList = Environments.GetEnvironmentList();
             foreach (var item in environmentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
                 drpItem.Label = item;
-                drpEnviroment.Items.Add(drpItem);
+                drpEnvironment.Items.Add(drpItem);
             }
         }
 
@@ -74,7 +74,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                         
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 + "Ext")
@@ -103,7 +103,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 + "Ext")
                         _thread = new Thread(CreateRequisitionServiceExtended);
@@ -132,7 +132,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 + "Ext")
                         _thread = new Thread(CreateRequisitionScreenServiceExtended);
@@ -161,7 +161,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     _ignoreItemError = false;
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 + "Ext")
                         _thread = new Thread(ManualCreditRequisitionExtended);
@@ -201,7 +201,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -332,7 +332,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -774,7 +774,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 //Objeto para crear la coleccion de Items
                 //new RequisitionService.RequisitionServiceCreateItemReplyCollectionDTO();
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false);//Se asigna por 'Pooled Connection Request Timed Out'
                 proxyRequisition.Url = urlService + "/RequisitionService";
 
@@ -1118,7 +1118,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 #endregion
 
                 #region ScreenService
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false);//Se asigna por 'Pooled Connection Request Timed Out'
                 
                 //ScreenService Opción en reemplazo de los servicios
@@ -1828,7 +1828,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 //Objeto para crear la coleccion de Items
                 //new RequisitionService.RequisitionServiceCreateItemReplyCollectionDTO();
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
                 proxyRequisition.Url = urlService + "/IssueRequisitionItemStocklessService";
 
@@ -1964,11 +1964,11 @@ namespace EllipseRequisitionServiceExcelAddIn
                 //Objeto para crear la coleccion de Items
                 //new RequisitionService.RequisitionServiceCreateItemReplyCollectionDTO();
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
                 proxyRequisition.Url = urlService + "/IssueRequisitionItemStocklessService";
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 opRequisition.district = _frmAuth.EllipseDsct;

@@ -52,12 +52,12 @@ namespace EllipseDownLostExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -340,7 +340,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetRange("A4", "B4").Style = _cells.GetStyle(StyleConstants.TitleInformation);
                 _cells.FormatAsTable(_cells.GetRange("A4", "B5"), TableName02);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var dr = _eFunctions.GetQueryResult(Queries.GetDownTimeCodeListQuery(_eFunctions.dbReference, _eFunctions.dbLink));
 
                 if (dr != null && !dr.IsClosed && dr.HasRows)
@@ -377,7 +377,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetRange("A4", "B4").Style = _cells.GetStyle(StyleConstants.TitleInformation);
                 _cells.FormatAsTable(_cells.GetRange("A4", "B5"), TableName03);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 dr = _eFunctions.GetQueryResult(Queries.GetLostProdCodeListQuery(_eFunctions.dbReference, _eFunctions.dbLink));
 
                 if (dr != null && !dr.IsClosed && dr.HasRows)
@@ -612,7 +612,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetRange("A4", "B4").Style = _cells.GetStyle(StyleConstants.TitleInformation);
                 _cells.FormatAsTable(_cells.GetRange("A4", "B5"), TableName02);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var dr = _eFunctions.GetQueryResult(Queries.GetDownTimeCodeListQuery(_eFunctions.dbReference, _eFunctions.dbLink));
 
                 if (dr != null && !dr.IsClosed && dr.HasRows)
@@ -649,7 +649,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.GetRange("A4", "B4").Style = _cells.GetStyle(StyleConstants.TitleInformation);
                 _cells.FormatAsTable(_cells.GetRange("A4", "B5"), TableName03);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 dr = _eFunctions.GetQueryResult(Queries.GetLostProdCodeListQuery(_eFunctions.dbReference, _eFunctions.dbLink));
 
                 if (dr != null && !dr.IsClosed && dr.HasRows)
@@ -821,7 +821,7 @@ namespace EllipseDownLostExcelAddIn
 
 
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 var districtCode = cells.GetNullIfTrimmedEmpty(cells.GetCell("B3").Value);
                 var equipType = cells.GetNullIfTrimmedEmpty(cells.GetCell("A4").Value);
@@ -940,13 +940,13 @@ namespace EllipseDownLostExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     if (_cells == null)
                         _cells = new ExcelStyleCells(_excelApp);
                     var cells = new ExcelStyleCells(_excelApp, false);
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                     var cellCollection = new ExcelStyleCells(_excelApp, SheetName04);
 
@@ -1130,13 +1130,13 @@ namespace EllipseDownLostExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     if (_cells == null)
                         _cells = new ExcelStyleCells(_excelApp);
                     var cells = new ExcelStyleCells(_excelApp, false);
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                     var cellCollection = new ExcelStyleCells(_excelApp, SheetName04);
                     var resultColumn01 = (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
@@ -1308,7 +1308,7 @@ namespace EllipseDownLostExcelAddIn
             {
                 try
                 {
-                    proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+                    proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
                     _eFunctions.RevertOperation(opContext, proxySheet);
                     //ejecutamos el programa
                     var reply = proxySheet.executeScreen(opContext, "MSO420");
@@ -1349,7 +1349,7 @@ namespace EllipseDownLostExcelAddIn
 
                         if (down.WoEvent != null && WorkOrderActions.FetchWorkOrder(_eFunctions, "", down.WoEvent) == null)
                         {
-                            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                             var wo = new WorkOrder();
                             var opContextWo = new OperationContext
                             {
@@ -1460,7 +1460,7 @@ namespace EllipseDownLostExcelAddIn
             {
                 try
                 {
-                    proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+                    proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
                     _eFunctions.RevertOperation(opContext, proxySheet);
                     //ejecutamos el programa
                     var reply = proxySheet.executeScreen(opContext, "MSO470");
@@ -1543,7 +1543,7 @@ namespace EllipseDownLostExcelAddIn
 
                         var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
                         stdTextId = "LP" + stdTextId;
-                        var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                        var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
                         var textResult = StdText.SetText(urlService, StdText.GetCustomOpContext(district, _frmAuth.EllipsePost, 100, false), stdTextId, lost.WoComment);
 
@@ -1577,13 +1577,13 @@ namespace EllipseDownLostExcelAddIn
                 _cells.SetCursorWait();
 
                 _cells.SetCursorWait();
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     if (_cells == null)
                         _cells = new ExcelStyleCells(_excelApp);
                     var cells = new ExcelStyleCells(_excelApp, false);
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                     var i = TitleRow01 + 1;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -1697,7 +1697,7 @@ namespace EllipseDownLostExcelAddIn
         /// <returns>true: si se realiza alguna eliminación</returns>
         public bool DeleteDownRegister(Screen.OperationContext opContext, Screen.ScreenService proxySheet, LostDownObject down)
         {
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO420");
@@ -1767,7 +1767,7 @@ namespace EllipseDownLostExcelAddIn
         /// <returns>true: si se realiza alguna eliminación</returns>
         public bool DeleteLostRegister(Screen.OperationContext opContext, Screen.ScreenService proxySheet, LostDownObject lost)
         {
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO470");

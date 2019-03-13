@@ -36,12 +36,12 @@ namespace EllipseCreateStockInstExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviromentList = Environments.GetEnviromentList();
-            foreach (var item in enviromentList)
+            var environmentList = Environments.GetEnvironmentList();
+            foreach (var item in environmentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
                 drpItem.Label = item;
-                drpEnviroment.Items.Add(drpItem);
+                drpEnvironment.Items.Add(drpItem);
             }
         }
 
@@ -64,7 +64,7 @@ namespace EllipseCreateStockInstExcelAddIn
 
             excelSheet.Name = SheetName01;
             
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -134,7 +134,7 @@ namespace EllipseCreateStockInstExcelAddIn
             if (!(!string.IsNullOrEmpty(contractNo) & !string.IsNullOrEmpty(contractPrefix))) return;
             var sqlQuery = Queries.GetContractData(contractNo, contractPrefix, _eFunctions.dbReference,
                 _eFunctions.dbLink);
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _drContractItems = _eFunctions.GetQueryResult(sqlQuery);
 
             if (_drContractItems != null && !_drContractItems.IsClosed && _drContractItems.HasRows)
@@ -160,7 +160,7 @@ namespace EllipseCreateStockInstExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 {
                     CreateStock();
@@ -177,12 +177,12 @@ namespace EllipseCreateStockInstExcelAddIn
         {
             var catalogueServiceProxy = new CatService.CatalogueService();
             var catalogueOp = new CatService.OperationContext();
-            catalogueServiceProxy.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/CatalogueService";
+            catalogueServiceProxy.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/CatalogueService";
 
             var productServiceProxy = new CatProdService.CatalogueProductService();
             var product = new CatProdService.CatalogueProductDTO();
             var productServiceOp = new CatProdService.OperationContext();
-            productServiceProxy.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/CatalogueProductService";
+            productServiceProxy.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/CatalogueProductService";
 
             _cells.GetRange("E6", "E10000").Clear();
             _cells.GetRange("A6", "E10000").NumberFormat = "@";
@@ -387,7 +387,7 @@ namespace EllipseCreateStockInstExcelAddIn
             return catalogueServiceReply;
         }
 
-        private void drpEnviroment_SelectionChanged(object sender, RibbonControlEventArgs e)
+        private void drpEnvironment_SelectionChanged(object sender, RibbonControlEventArgs e)
         {
         }
 

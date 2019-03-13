@@ -60,12 +60,12 @@ namespace EllipseStandardJobsExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -79,7 +79,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
 
@@ -99,7 +99,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
 
@@ -119,7 +119,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -137,7 +137,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -155,7 +155,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -173,7 +173,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -192,7 +192,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -217,7 +217,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -238,7 +238,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -275,7 +275,7 @@ namespace EllipseStandardJobsExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameQualRev)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -313,7 +313,7 @@ namespace EllipseStandardJobsExcelAddIn
             {
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -338,7 +338,7 @@ namespace EllipseStandardJobsExcelAddIn
             {
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -891,8 +891,8 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             _cells.ClearTableRange(TableName01);
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var stOpContext = StdText.GetStdTextOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var districtCode = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value2);
@@ -992,8 +992,8 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var stOpContext = StdText.GetStdTextOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var i = TitleRow01 + 1;
@@ -1098,8 +1098,8 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             _cells.ClearTableRange(TableName02);
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var stdCells = new ExcelStyleCells(_excelApp, SheetName01);
@@ -1189,7 +1189,7 @@ namespace EllipseStandardJobsExcelAddIn
 
         private void QualityReviewStandardJobs()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1264,7 +1264,7 @@ namespace EllipseStandardJobsExcelAddIn
 
         private void CreateStandardJobList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1330,9 +1330,9 @@ namespace EllipseStandardJobsExcelAddIn
                     stdJob.JobCode9 = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
                     stdJob.JobCode10 = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
                     stdJob.ExtText = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
-                    StandardJobActions.CreateStandardJob(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, stdJob);
+                    StandardJobActions.CreateStandardJob(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob);
                     if(!string.IsNullOrWhiteSpace(stdJob.ExtText))
-                        StandardJobActions.SetStandardJobText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
+                        StandardJobActions.SetStandardJobText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
 
                     _cells.GetCell(ResultColumn01, i).Value = "CREADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1356,7 +1356,7 @@ namespace EllipseStandardJobsExcelAddIn
         }
         private void UpdateStandardJobList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1433,8 +1433,8 @@ namespace EllipseStandardJobsExcelAddIn
                     //stdJob.otherUpdateFlag = "true";
                     //
 
-                    StandardJobActions.ModifyStandardJob(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, stdJob, true);
-                    StandardJobActions.SetStandardJobText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
+                    StandardJobActions.ModifyStandardJob(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob, true);
+                    StandardJobActions.SetStandardJobText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
 
                     _cells.GetCell(ResultColumn01, i).Value = "ACTUALIZADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1458,7 +1458,7 @@ namespace EllipseStandardJobsExcelAddIn
         }
         private void UpdateQualityStandardList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1511,7 +1511,7 @@ namespace EllipseStandardJobsExcelAddIn
                     };
 
 
-                    StandardJobActions.ModifyStandardJob(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, stdJob, true);
+                    StandardJobActions.ModifyStandardJob(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob, true);
 
                     _cells.GetCell(ResultColumnQualRev, i).Value = "ACTUALIZADA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1536,7 +1536,7 @@ namespace EllipseStandardJobsExcelAddIn
 
         private void UpdateStandardJobStatus()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1565,7 +1565,7 @@ namespace EllipseStandardJobsExcelAddIn
                         StandardJobNo = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                     };
 
-                    var resultStatus = StandardJobActions.UpdateStandardJobStatus(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, stdJob, _standardStatus);
+                    var resultStatus = StandardJobActions.UpdateStandardJobStatus(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob, _standardStatus);
 
                     _cells.GetCell(ResultColumn01, i).Value = "ESTADO " + resultStatus;
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1596,7 +1596,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
             var i = TitleRow02 + 1;
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, ServiceType.PostService);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlService);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -1652,12 +1652,12 @@ namespace EllipseStandardJobsExcelAddIn
                     if (action.Equals("M"))
                     {
                         StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask);
-                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else if (action.Equals("C"))
                     {
                         StandardJobActions.CreateStandardJobTaskPost(_eFunctions, stdTask);
-                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else if (action.Equals("D"))
                     {
@@ -1710,7 +1710,7 @@ namespace EllipseStandardJobsExcelAddIn
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -1751,16 +1751,16 @@ namespace EllipseStandardJobsExcelAddIn
                     if (action.Equals("M"))
                     {
                         StandardJobActions.ModifyStandardJobTask(urlService, opSheet, stdTask, true);
-                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else if (action.Equals("C"))
                     {
                         StandardJobActions.CreateStandardJobTask(urlService, opSheet, stdTask, true);
-                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else if (action.Equals("D"))
                     {
-                        StandardJobActions.DeleteStandardJobTask(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, stdTask);
+                        StandardJobActions.DeleteStandardJobTask(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdTask);
                     }
                     else
                         continue;
@@ -1788,7 +1788,7 @@ namespace EllipseStandardJobsExcelAddIn
 
         private void ReviewRequirements()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1853,7 +1853,7 @@ namespace EllipseStandardJobsExcelAddIn
 
         private void ExecuteRequirementActions()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1891,7 +1891,7 @@ namespace EllipseStandardJobsExcelAddIn
 
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             while (!string.IsNullOrEmpty("" + _cells.GetCell(3, i).Value) && !string.IsNullOrEmpty("" + _cells.GetCell(4, i).Value))
             {
                 try
@@ -1970,7 +1970,7 @@ namespace EllipseStandardJobsExcelAddIn
 
         public void GetAplTaskRequirements()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -2128,7 +2128,7 @@ namespace EllipseStandardJobsExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName05))
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -2149,8 +2149,8 @@ namespace EllipseStandardJobsExcelAddIn
 
         private void ReviewRefCodesList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -2248,7 +2248,7 @@ namespace EllipseStandardJobsExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName05))
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -2269,8 +2269,8 @@ namespace EllipseStandardJobsExcelAddIn
 
         public void UpdateReferenceCodes()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);

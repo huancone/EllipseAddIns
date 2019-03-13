@@ -27,15 +27,15 @@ namespace EllipseCommonsClassLibrary.Connections
 
         public const string DefaultDbReferenceName = "ELLIPSE";
 
-        public static string GetServiceUrl(string enviroment, string serviceType = null)
+        public static string GetServiceUrl(string environment, string serviceType = null)
         {
-            var urlService = SelectServiceUrl(enviroment, serviceType);
+            var urlService = SelectServiceUrl(environment, serviceType);
             if (!string.IsNullOrWhiteSpace(urlService) && (urlService.EndsWith("/") || urlService.EndsWith("\\")))
                 urlService = urlService.Substring(0, urlService.Length - 1);
             return urlService;
         }
 
-        private static string SelectServiceUrl(string enviroment, string serviceType = null)
+        private static string SelectServiceUrl(string environment, string serviceType = null)
         {
             if (serviceType == null)
                 serviceType = ServiceType.EwsService;
@@ -66,40 +66,40 @@ namespace EllipseCommonsClassLibrary.Connections
             if (serviceType.Equals(ServiceType.EwsService))
             {
 
-                if (enviroment == EllipseProductivo)
+                if (environment == EllipseProductivo)
                     urlServer = WebService.Productivo;
-                else if (enviroment == EllipseContingencia)
+                else if (environment == EllipseContingencia)
                     urlServer = WebService.Contingencia;
-                else if (enviroment == EllipseDesarrollo)
+                else if (environment == EllipseDesarrollo)
                     urlServer = WebService.Desarrollo;
-                else if (enviroment == EllipseTest)
+                else if (environment == EllipseTest)
                     urlServer = WebService.Test;
                 else
-                    urlServer = "/ellipse/webservice/" + enviroment;
+                    urlServer = "/ellipse/webservice/" + environment;
 
                 return xmlDoc.XPathSelectElement(urlServer + "[1]").Value;
             }
             if (serviceType.Equals(ServiceType.PostService))
             {
-                if (enviroment == EllipseProductivo)
+                if (environment == EllipseProductivo)
                     urlServer = UrlPost.Productivo;
-                else if (enviroment == EllipseContingencia)
+                else if (environment == EllipseContingencia)
                     urlServer = UrlPost.Contingencia;
-                else if (enviroment == EllipseDesarrollo)
+                else if (environment == EllipseDesarrollo)
                     urlServer = UrlPost.Desarrollo;
-                else if (enviroment == EllipseTest)
+                else if (environment == EllipseTest)
                     urlServer = UrlPost.Test;
                 else
-                    urlServer = "/ellipse/url/" + enviroment;
+                    urlServer = "/ellipse/url/" + environment;
 
                 return xmlDoc.XPathSelectElement(urlServer + "[1]").Value;
             }
             throw new NullReferenceException("No se ha encontrado el servidor seleccionado");
         }
 
-        public static List<string> GetEnviromentList()
+        public static List<string> GetEnvironmentList()
         {
-            var enviromentList = new List<string>();
+            var environmentList = new List<string>();
             if (Configuration.IsServiceListForced)
             {
                 var xmlDoc = new XmlDocument();
@@ -126,11 +126,11 @@ namespace EllipseCommonsClassLibrary.Connections
                     var nodeItemList = xmlDoc.SelectSingleNode(fullNode).ChildNodes;
 
                     foreach (XmlNode item in nodeItemList)
-                        enviromentList.Add(item.Name);
+                        environmentList.Add(item.Name);
             }
             else
             {
-                enviromentList = new List<string>
+                environmentList = new List<string>
                 {
                     EllipseProductivo,
                     EllipseTest,
@@ -138,10 +138,10 @@ namespace EllipseCommonsClassLibrary.Connections
                     EllipseContingencia
                 };
             }
-            return enviromentList;
+            return environmentList;
         }
 
-        public static DatabaseItem GetDatabaseItem(string enviroment)
+        public static DatabaseItem GetDatabaseItem(string environment)
         {
             var dbItem = new DatabaseItem();
 
@@ -158,7 +158,7 @@ namespace EllipseCommonsClassLibrary.Connections
 
                     foreach (XmlNode item in nodeItemList)
                     {
-                        if (!item.Name.Equals(enviroment)) continue;
+                        if (!item.Name.Equals(environment)) continue;
 
                         var dbPassword = item.Attributes["dbpassword"] != null ? item.Attributes["dbpassword"].Value : null;
                         var dbEncodedPassword = item.Attributes["dbencodedpassword"] != null ? item.Attributes["dbencodedpassword"].Value : null;
@@ -178,7 +178,7 @@ namespace EllipseCommonsClassLibrary.Connections
                 }
                 else
                 {
-                    if (enviroment == EllipseProductivo)
+                    if (environment == EllipseProductivo)
                     {
                         dbItem.Name = EllipseProductivo;
                         dbItem.DbName = "EL8PROD";
@@ -187,7 +187,7 @@ namespace EllipseCommonsClassLibrary.Connections
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
-                    else if (enviroment == EllipseDesarrollo)
+                    else if (environment == EllipseDesarrollo)
                     {
                         dbItem.Name = EllipseDesarrollo;
                         dbItem.DbName = "EL8DESA";
@@ -196,7 +196,7 @@ namespace EllipseCommonsClassLibrary.Connections
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
-                    else if (enviroment == EllipseContingencia)
+                    else if (environment == EllipseContingencia)
                     {
                         dbItem.Name = EllipseContingencia;
                         dbItem.DbName = "EL8PROD";
@@ -205,7 +205,7 @@ namespace EllipseCommonsClassLibrary.Connections
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
-                    else if (enviroment == EllipseTest)
+                    else if (environment == EllipseTest)
                     {
                         dbItem.Name = EllipseTest;
                         dbItem.DbName = "EL8TEST";
@@ -214,7 +214,7 @@ namespace EllipseCommonsClassLibrary.Connections
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
-                    else if (enviroment == SigcorProductivo)
+                    else if (environment == SigcorProductivo)
                     {
                         dbItem.Name = SigcorProductivo;
                         dbItem.DbName = "SIGCOPRD";
@@ -223,7 +223,7 @@ namespace EllipseCommonsClassLibrary.Connections
                         dbItem.DbLink = "@DBLELLIPSE8";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
-                    else if (enviroment == ScadaRdb)
+                    else if (environment == ScadaRdb)
                     {
                         dbItem.Name = ScadaRdb;
                         dbItem.DbName = "PBVFWL01";

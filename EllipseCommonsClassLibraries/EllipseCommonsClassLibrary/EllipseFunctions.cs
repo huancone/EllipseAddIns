@@ -29,7 +29,7 @@ namespace EllipseCommonsClassLibrary
         private OracleConnection _sqlOracleConn;
         private OracleCommand _sqlOracleComm;
         private string _currentConnectionString;
-        private string _currentEnviroment;
+        private string _currentEnvironment;
 
         private int _connectionTimeOut = 30;//default ODP 15
         private bool _poolingDataBase = true;//default ODP true
@@ -47,7 +47,7 @@ namespace EllipseCommonsClassLibrary
 
         public EllipseFunctions(EllipseFunctions ellipseFunctions)
         {
-            SetDBSettings(ellipseFunctions.GetCurrentEnviroment());
+            SetDBSettings(ellipseFunctions.GetCurrentEnvironment());
         }
         /// <summary>
         /// Limpia las variables de referencia a bases de datos
@@ -60,18 +60,18 @@ namespace EllipseCommonsClassLibrary
             _dbpass = null;
             dbLink = null;
             dbReference = null;
-            SetCurrentEnviroment(null);
+            SetCurrentEnvironment(null);
         }
         /// <summary>
         /// Establece un ambiente de producción con el que van a realizarse las consultas/conexiones
         /// </summary>
-        /// <param name="enviroment">Especifica el ambiente con el que va a conectar</param>
+        /// <param name="environment">Especifica el ambiente con el que va a conectar</param>
         /// <returns></returns>
         // ReSharper disable once InconsistentNaming
-        public bool SetDBSettings(string enviroment)
+        public bool SetDBSettings(string environment)
         {
             CleanDbSettings();
-            var dbItem = Connections.Environments.GetDatabaseItem(enviroment);
+            var dbItem = Connections.Environments.GetDatabaseItem(environment);
             if(dbItem == null || dbItem.Name.Equals(null))
                 throw new NullReferenceException("No se puede encontrar la base de datos seleccionada. Verifique que eligió un servidor de ellipse válido y que la base de datos relacionada existe");
 
@@ -82,7 +82,7 @@ namespace EllipseCommonsClassLibrary
             dbReference = dbItem.DbReference;
             _dbcatalog = dbItem.DbCatalog;
 
-            SetCurrentEnviroment(enviroment);
+            SetCurrentEnvironment(environment);
             return true;
         }
 
@@ -104,13 +104,13 @@ namespace EllipseCommonsClassLibrary
         {
             return _poolingDataBase;
         }
-        public string GetCurrentEnviroment()
+        public string GetCurrentEnvironment()
         {
-            return _currentEnviroment;
+            return _currentEnvironment;
         }
-        public void SetCurrentEnviroment(string enviroment)
+        public void SetCurrentEnvironment(string environment)
         {
-            _currentEnviroment = enviroment;
+            _currentEnvironment = environment;
         }
         /// <summary>
         /// Establece la base de datos según la información ingresada
@@ -132,7 +132,7 @@ namespace EllipseCommonsClassLibrary
             _dbpass = dbpass;
             dbLink = dblink;
             dbReference = dbreference;
-            SetCurrentEnviroment(Connections.Environments.CustomDatabase);
+            SetCurrentEnvironment(Connections.Environments.CustomDatabase);
             return true;
         }
 
@@ -154,18 +154,18 @@ namespace EllipseCommonsClassLibrary
             _dbpass = dbpass;
             dbLink = "";
             dbReference = Connections.Environments.DefaultDbReferenceName;
-            SetCurrentEnviroment(Connections.Environments.CustomDatabase);
+            SetCurrentEnvironment(Connections.Environments.CustomDatabase);
             return true;
         }
         /// <summary>
         /// Obtiene la URL de conexión al servicio web de Ellipse
         /// </summary>
-        /// <param name="enviroment">Nombre del ambiente al que se va a conectar (EnvironmentConstants.Ambiente)</param>
-        /// <param name="serviceType">Tipo de conexión a realizar EWS/POST. Localizada en EnviromentConstans.ServiceType</param>
+        /// <param name="environment">Nombre del ambiente al que se va a conectar (EnvironmentConstants.Ambiente)</param>
+        /// <param name="serviceType">Tipo de conexión a realizar EWS/POST. Localizada en EnvironmentConstans.ServiceType</param>
         /// <returns>string: URL de la conexión</returns>
-        public string GetServicesUrl(string enviroment, string serviceType = null)
+        public string GetServicesUrl(string environment, string serviceType = null)
         {
-            return Connections.Environments.GetServiceUrl(enviroment, serviceType);
+            return Connections.Environments.GetServiceUrl(environment, serviceType);
         }
 
         /// <summary>
@@ -474,15 +474,15 @@ namespace EllipseCommonsClassLibrary
         /// <summary>
         /// Verifica si un usuario tiene acceso a una aplicación especificada de Ellipse
         /// </summary>
-        /// <param name="enviroment">Ambiente a verificar</param>
+        /// <param name="environment">Ambiente a verificar</param>
         /// <param name="districtCode">Distrito</param>
         /// <param name="userName">Nombre de usuario</param>
         /// <param name="codeProgram">Código del Programa (Ej. MSEWOT, MSO720)</param>
         /// <param name="accessType">Tipo de acceso a verificar (ProgramAccessType.Full, ProgramAccessType.ReviewObly, etc)</param>
         /// <returns></returns>
-        public bool CheckUserProgramAccess(string enviroment, string districtCode, string userName, string codeProgram, int accessType)
+        public bool CheckUserProgramAccess(string environment, string districtCode, string userName, string codeProgram, int accessType)
         {
-            SetDBSettings(enviroment);
+            SetDBSettings(environment);
             var query = "" +
                            " WITH EPROFILES AS(" +
                            " SELECT" +
@@ -526,10 +526,13 @@ namespace EllipseCommonsClassLibrary
             public static int AnyAccess = 99;
         }
 
-        public List<EllipseCodeItem> GetItemCodes(string tableType, string additionalQueryParameters)
+        public List<EllipseCodeItem> GetItemCodes(string tableType, bool activeOnly, string additionalQueryParameters)
         {
             var listItems = new List<EllipseCodeItem>();
-            var query = "SELECT * FROM " + dbReference + ".MSF010" + dbLink + " WHERE TABLE_TYPE = '" + tableType + "' AND ACTIVE_FLAG = 'Y' " + additionalQueryParameters;
+            var paramActiveOnly = activeOnly ? " AND ACTIVE_FLAG = 'Y'" : "";
+
+            var query = "SELECT * FROM " + dbReference + ".MSF010" + dbLink + " WHERE TABLE_TYPE = '" + tableType + "'" +
+                        paramActiveOnly + " " + additionalQueryParameters;
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             var drItemCodes = GetQueryResult(query);
@@ -537,16 +540,21 @@ namespace EllipseCommonsClassLibrary
             if (drItemCodes == null || drItemCodes.IsClosed || !drItemCodes.HasRows) return listItems;
             while (drItemCodes.Read())
             {
-                var item = new EllipseCodeItem(drItemCodes["TABLE_CODE"].ToString().Trim(), drItemCodes["TABLE_DESC"].ToString().Trim(), drItemCodes["TABLE_TYPE"].ToString().Trim(), drItemCodes["ASSOC_REC"].ToString().Trim());
+                var item = new EllipseCodeItem(
+                    drItemCodes["TABLE_CODE"].ToString().Trim(), 
+                    drItemCodes["TABLE_DESC"].ToString().Trim(), 
+                    drItemCodes["TABLE_TYPE"].ToString().Trim(), 
+                    drItemCodes["ASSOC_REC"].ToString().Trim(), 
+                    drItemCodes["ACTIVE_FLAG"].ToString().Trim());
                 listItems.Add(item);
             }
 
             return listItems;
         }
 
-        public List<EllipseCodeItem> GetItemCodes(string tableType)
+        public List<EllipseCodeItem> GetItemCodes(string tableType, bool activeOnly = true)
         {
-            return GetItemCodes(tableType, null);
+            return GetItemCodes(tableType, activeOnly, null);
         }
 
         public Dictionary<string, string> GetDictionaryItemCodes(string tableType)

@@ -37,7 +37,7 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpProntoPago = this.Factory.CreateRibbonGroup();
             this.btnFormat = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnGetInvoice = this.Factory.CreateRibbonButton();
             this.btnReloadParameters = this.Factory.CreateRibbonButton();
@@ -60,7 +60,7 @@
             // grpProntoPago
             // 
             this.grpProntoPago.Items.Add(this.box1);
-            this.grpProntoPago.Items.Add(this.drpEnviroment);
+            this.grpProntoPago.Items.Add(this.drpEnvironment);
             this.grpProntoPago.Items.Add(this.menuActions);
             this.grpProntoPago.Label = "Pronto Pago";
             this.grpProntoPago.Name = "grpProntoPago";
@@ -71,10 +71,10 @@
             this.btnFormat.Name = "btnFormat";
             this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env. ";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env. ";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -153,7 +153,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpProntoPago;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormat;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetInvoice;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReloadParameters;

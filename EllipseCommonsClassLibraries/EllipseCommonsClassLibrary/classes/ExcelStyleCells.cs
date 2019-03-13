@@ -897,7 +897,7 @@ namespace EllipseCommonsClassLibrary.Classes
         /// <param name="validationSheetName">string: Nombre de la hoja de datos de validación</param>
         /// <param name="validationColumnIndex">int: índice de la columna de datos de la hoja de validación dada</param>
         /// <param name="validationValues">List(string): lista de validación para adicionar al rango</param>
-        public void SetValidationList(List<string> validationValues, string validationSheetName, int validationColumnIndex)
+        public void SetValidationListInValidationSheet(List<string> validationValues, string validationSheetName, int validationColumnIndex)
         {
             Worksheet validationSheet = null;
             foreach (Worksheet sheet in _excelApp.ActiveWorkbook.Sheets)

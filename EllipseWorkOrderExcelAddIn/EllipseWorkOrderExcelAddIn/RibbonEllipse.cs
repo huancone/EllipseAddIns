@@ -101,12 +101,12 @@ namespace EllipseWorkOrderExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
 
         }
@@ -142,7 +142,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(ReviewWoDetailedList);
 
@@ -176,7 +176,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
 
                     _thread = new Thread(ReReviewWoDetailedList);
@@ -202,7 +202,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(CreateWoList);
 
@@ -214,7 +214,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(CreateWoDetailedList);
 
@@ -240,7 +240,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(UpdateWoList);
 
@@ -252,7 +252,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(UpdateWoDetailedList);
 
@@ -278,7 +278,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(CompleteWoList);
 
@@ -303,7 +303,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(ReOpenWoList);
 
@@ -328,7 +328,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(ReviewCloseText);
 
@@ -354,7 +354,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(UpdateCloseText);
 
@@ -379,7 +379,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(GetDurationWoList);
 
@@ -405,7 +405,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(ExecuteDurationWoActions);
 
@@ -453,7 +453,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _progressUpdate = true;
                     _thread = new Thread(UpdateWorkProgress);
@@ -481,7 +481,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _progressUpdate = false;
                     _thread = new Thread(UpdateWorkProgress);
@@ -508,7 +508,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _progressUpdate = false;
                     _thread = new Thread(UpdateRequiredProgress);
@@ -527,7 +527,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void ReviewWorkProgress()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -577,8 +577,8 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -656,8 +656,8 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -734,7 +734,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(ReviewRefCodesList);
 
@@ -759,7 +759,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(UpdateReferenceCodes);
 
@@ -829,7 +829,7 @@ namespace EllipseWorkOrderExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 #region CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -1409,7 +1409,7 @@ namespace EllipseWorkOrderExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -1727,8 +1727,8 @@ namespace EllipseWorkOrderExcelAddIn
 
             _cells.ClearTableRange(TableName01);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -1854,8 +1854,8 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableNameD01, ResultColumnD01);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -1970,8 +1970,8 @@ namespace EllipseWorkOrderExcelAddIn
 
             _cells.ClearTableRangeColumn(TableNameD01, ResultColumnD01);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -1987,11 +1987,11 @@ namespace EllipseWorkOrderExcelAddIn
             var i = TitleRowD01 + 1;
             var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
             var userName = _frmAuth.EllipseUser.ToUpper();
-            var planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
+            var planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
             if (!planValidation)
-                planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWJO", EllipseFunctions.ProgramAccessType.Full);
+                planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWJO", EllipseFunctions.ProgramAccessType.Full);
             //if (!planValidation)
-            //    planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWOT", EllipseFunctions.ProgramAccessType.Full);
+            //    planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWOT", EllipseFunctions.ProgramAccessType.Full);
 
             while (!string.IsNullOrEmpty(_cells.GetNullOrTrimmedValue(_cells.GetCell(1, i).Value2)) || !string.IsNullOrEmpty(_cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value2)))
             {
@@ -2095,7 +2095,7 @@ namespace EllipseWorkOrderExcelAddIn
                     }
 
                     if (ots != null && ots.Count > 0) continue;
-                    var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
+                    var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
                     wo.SetWorkOrderDto(replySheet.workOrder.prefix, replySheet.workOrder.no);
                     ReplyMessage replyExtended = WorkOrderActions.UpdateWorkOrderExtendedDescription(urlService, opSheet, district, wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no, extendedHeader, extendedBody);
 
@@ -2132,8 +2132,8 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableNameD01, ResultColumnD01);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2150,11 +2150,11 @@ namespace EllipseWorkOrderExcelAddIn
 
             var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
             var userName = _frmAuth.EllipseUser.ToUpper();
-            var planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
+            var planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
             if (!planValidation)
-                planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWJO", EllipseFunctions.ProgramAccessType.Full);
+                planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWJO", EllipseFunctions.ProgramAccessType.Full);
             //if (!planValidation)
-            //    planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWOT", EllipseFunctions.ProgramAccessType.Full);
+            //    planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWOT", EllipseFunctions.ProgramAccessType.Full);
 
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -2241,7 +2241,7 @@ namespace EllipseWorkOrderExcelAddIn
                     var extendedBody = MyUtilities.IsTrue(_cells.GetCell(55, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(55, i).Value) : null;
                     wo.SetExtendedDescription(extendedHeader, extendedBody);
 
-                    WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
+                    WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
                     var replyExtended = WorkOrderActions.UpdateWorkOrderExtendedDescription(urlService, opSheet, district, wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no, extendedHeader, extendedBody);
                     var stringErrors = "";
 
@@ -2275,7 +2275,7 @@ namespace EllipseWorkOrderExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -2406,7 +2406,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             _cells.ClearTableRange(TableName01);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
             var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes();
@@ -2512,7 +2512,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void ReReviewWoList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -2618,7 +2618,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             _cells.ClearTableRange(TableNameQ01);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
             var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes();
 
@@ -2727,7 +2727,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void ReReviewQualityList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -2828,7 +2828,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void CreateWoList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -2850,11 +2850,11 @@ namespace EllipseWorkOrderExcelAddIn
 
             var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
             var userName = _frmAuth.EllipseUser.ToUpper();
-            var planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
+            var planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
             if (!planValidation)
-                planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWJO", EllipseFunctions.ProgramAccessType.Full);
+                planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWJO", EllipseFunctions.ProgramAccessType.Full);
             //if (!planValidation)
-            //    planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWOT", EllipseFunctions.ProgramAccessType.Full);
+            //    planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWOT", EllipseFunctions.ProgramAccessType.Full);
 
             while (!string.IsNullOrEmpty(_cells.GetNullOrTrimmedValue(_cells.GetCell(1, i).Value2)) || !string.IsNullOrEmpty(_cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value2)))
             {
@@ -2941,7 +2941,7 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.calculatedLabFlag = "true";
                     wo.calculatedDurationsFlag = "true";//se está forzando porque recientemente en una actualización de E8, si no se envía (se envía nulo) el predeterminado es falso
 
-                    var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
+                    var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
 
                     _cells.GetCell(ResultColumn01, i).Value = "CREADA " + replySheet.workOrder.prefix + replySheet.workOrder.no;
                     _cells.GetCell(2, i).Value = replySheet.workOrder.prefix + replySheet.workOrder.no;
@@ -2966,7 +2966,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void UpdateWoList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -2988,11 +2988,11 @@ namespace EllipseWorkOrderExcelAddIn
 
             var district = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
             var userName = _frmAuth.EllipseUser.ToUpper();
-            var planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
+            var planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWO3", EllipseFunctions.ProgramAccessType.Full);
             if (!planValidation)
-                planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWJO", EllipseFunctions.ProgramAccessType.Full);
+                planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWJO", EllipseFunctions.ProgramAccessType.Full);
             //if (!planValidation)
-            //    planValidation = _eFunctions.CheckUserProgramAccess(drpEnviroment.SelectedItem.Label, district, userName, "MSEWOT", EllipseFunctions.ProgramAccessType.Full);
+            //    planValidation = _eFunctions.CheckUserProgramAccess(drpEnvironment.SelectedItem.Label, district, userName, "MSEWOT", EllipseFunctions.ProgramAccessType.Full);
 
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -3077,7 +3077,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //wo.calculatedLabFlag = "true";
                     //wo.calculatedDurationsFlag = "true";
 
-                    WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
+                    WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
 
                     _cells.GetCell(ResultColumn01, i).Value = "ACTUALIZADA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -3101,7 +3101,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void CompleteWoList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -3144,7 +3144,7 @@ namespace EllipseWorkOrderExcelAddIn
                         if (WoStatusList.ClosedCode.Equals(woData.workOrderStatusM.Trim()) || WoStatusList.CancelledCode.Equals(woData.workOrderStatusM.Trim()))
                             throw new Exception("La orden " + wo.workOrder.prefix + wo.workOrder.no + " ya está cerrada como " + WoStatusList.GetStatusName(woData.workOrderStatusM.Trim()) + " con código " + woData.completedCode);
                     }
-                    var reply = WorkOrderActions.CompleteWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
+                    var reply = WorkOrderActions.CompleteWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
                     if (reply.completedCode.Trim() == wo.completedCode.Trim() && reply.closedDate == wo.closedDate)
                     {
                         _cells.GetCell(ResultColumn04, i).Value = "COMPLETADA";
@@ -3180,7 +3180,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void ReOpenWoList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -3216,7 +3216,7 @@ namespace EllipseWorkOrderExcelAddIn
                         if (!WoStatusList.ClosedCode.Equals(woData.workOrderStatusM.Trim()) && !WoStatusList.CancelledCode.Equals(woData.workOrderStatusM.Trim()))
                             throw new Exception("La orden " + wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no + " ya está abierta como " + WoStatusList.GetStatusName(woData.workOrderStatusM.Trim()));
                     }
-                    WorkOrderActions.ReOpenWorkOrder(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, wo);
+                    WorkOrderActions.ReOpenWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
 
                     _cells.GetCell(ResultColumn04, i).Value = "REABIERTA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -3240,7 +3240,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void ReviewCloseText()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -3258,7 +3258,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //GENERAL
                     var wo = WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
                     string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-                    var closeText = WorkOrderActions.GetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo);
+                    var closeText = WorkOrderActions.GetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo);
                     var workOrder = WorkOrderActions.FetchWorkOrder(_eFunctions, districtCode, wo);
 
                     _cells.GetCell(2, i).Value = closeText;
@@ -3287,7 +3287,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void UpdateCloseText()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -3315,8 +3315,8 @@ namespace EllipseWorkOrderExcelAddIn
                     var wo = WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
                     var closeText = _cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value2);
                     var districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-                    //WorkOrderActions.SetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo, closeText);
-                    WorkOrderActions.AppendTextToCloseComment(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet, districtCode, wo.prefix + wo.no, closeText);
+                    //WorkOrderActions.SetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo, closeText);
+                    WorkOrderActions.AppendTextToCloseComment(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, districtCode, wo.prefix + wo.no, closeText);
 
                     _cells.GetCell(ResultColumn05, i).Value = "ACTUALIZADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -3351,7 +3351,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_cells.GetNullIfTrimmedEmpty(districtCode) != null)
             {
                 _cells.ClearTableRange(TableName06);
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 var opSheet = new WorkOrderService.OperationContext
                 {
@@ -3366,7 +3366,7 @@ namespace EllipseWorkOrderExcelAddIn
 
                 var i = TitleRow01 + 1;
                 var k = TitleRow06 + 1;
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
                 while (!string.IsNullOrWhiteSpace(_cells.GetNullOrTrimmedValue(woCell.GetCell(2, i).Value)))
                 {
@@ -3412,7 +3412,7 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void ExecuteDurationWoActions()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -3431,7 +3431,7 @@ namespace EllipseWorkOrderExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var i = TitleRow06 + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
             while (!string.IsNullOrWhiteSpace(_cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value)))
             {
@@ -3487,8 +3487,8 @@ namespace EllipseWorkOrderExcelAddIn
         
         private void ReviewRefCodesList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -3578,8 +3578,8 @@ namespace EllipseWorkOrderExcelAddIn
         }
         private void UpdateReferenceCodes()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -3712,7 +3712,7 @@ namespace EllipseWorkOrderExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -3791,7 +3791,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(ReviewCriticalControlsList);
 
@@ -3815,8 +3815,8 @@ namespace EllipseWorkOrderExcelAddIn
 
             _cells.ClearTableRange(TableNameCc01);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -3893,7 +3893,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(ReReviewCriticalControlsList);
 
@@ -3915,8 +3915,8 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -4155,7 +4155,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -4177,8 +4177,8 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
             _cells.ClearTableRange(TableName02);
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
@@ -4278,7 +4278,7 @@ namespace EllipseWorkOrderExcelAddIn
 
         private void ReviewRequirements()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -4358,7 +4358,7 @@ namespace EllipseWorkOrderExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -4394,7 +4394,7 @@ namespace EllipseWorkOrderExcelAddIn
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -4435,17 +4435,17 @@ namespace EllipseWorkOrderExcelAddIn
                     if (action.Equals("M"))
                     {
                         WorkOrderActions.ModifyWorkOrderTask(urlService, opSheet, woTask, true);
-                        WorkOrderActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        WorkOrderActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else if (action.Equals("C"))
                     {
                         WorkOrderActions.CreateWorkOrderTask(urlService, opSheet, woTask, true);
-                        WorkOrderActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        WorkOrderActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else if (action.Equals("D"))
                     {
                         WorkOrderActions.DeleteWorkOrderTask(urlService, opSheet, woTask, true);
-                        WorkOrderActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        WorkOrderActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else
                         continue;
@@ -4477,7 +4477,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -4493,7 +4493,7 @@ namespace EllipseWorkOrderExcelAddIn
 
         private void ExecuteRequirementActions()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -4531,7 +4531,7 @@ namespace EllipseWorkOrderExcelAddIn
 
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             while (!string.IsNullOrEmpty("" + _cells.GetCell(3, i).Value) && !string.IsNullOrEmpty("" + _cells.GetCell(4, i).Value))
             {
                 try

@@ -37,7 +37,7 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpStatisticsProfile = this.Factory.CreateRibbonGroup();
             this.btnFormatProfile = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnExecuteProfile = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnAbout = this.Factory.CreateRibbonButton();
@@ -55,7 +55,7 @@
             // grpStatisticsProfile
             // 
             this.grpStatisticsProfile.Items.Add(this.box1);
-            this.grpStatisticsProfile.Items.Add(this.drpEnviroment);
+            this.grpStatisticsProfile.Items.Add(this.drpEnvironment);
             this.grpStatisticsProfile.Items.Add(this.btnExecuteProfile);
             this.grpStatisticsProfile.Label = "Statistics Profile";
             this.grpStatisticsProfile.Name = "grpStatisticsProfile";
@@ -66,10 +66,10 @@
             this.btnFormatProfile.Name = "btnFormatProfile";
             this.btnFormatProfile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatProfile_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env. ";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env. ";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // btnExecuteProfile
             // 
@@ -109,7 +109,7 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpStatisticsProfile;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExecuteProfile;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatProfile;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;

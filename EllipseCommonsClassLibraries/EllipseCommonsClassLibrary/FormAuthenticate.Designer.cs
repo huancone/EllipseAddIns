@@ -31,6 +31,7 @@ namespace EllipseCommonsClassLibrary
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAuthenticate));
             this.lblUsername = new System.Windows.Forms.Label();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.lblPassword = new System.Windows.Forms.Label();
@@ -146,9 +147,10 @@ namespace EllipseCommonsClassLibrary
             this.Controls.Add(this.lblUsername);
             this.Name = "FormAuthenticate";
             this.Text = "Authenticate";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "FormAuthenticate";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

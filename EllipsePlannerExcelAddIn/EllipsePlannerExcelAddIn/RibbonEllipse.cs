@@ -63,12 +63,12 @@ namespace EllipsePlannerExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -106,7 +106,7 @@ namespace EllipsePlannerExcelAddIn
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 if (_thread != null && _thread.IsAlive) return;
                 _thread = new Thread(ReviewJobListPost);
@@ -147,7 +147,7 @@ namespace EllipsePlannerExcelAddIn
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 if (_thread != null && _thread.IsAlive) return;
                 _thread = new Thread(LoadEllipse);
@@ -171,7 +171,7 @@ namespace EllipsePlannerExcelAddIn
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 if (_thread != null && _thread.IsAlive) return;
                 _thread = new Thread(ExecuteRequirementActions);
@@ -193,7 +193,7 @@ namespace EllipsePlannerExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 5)
@@ -465,7 +465,7 @@ namespace EllipsePlannerExcelAddIn
                 ////hoja de Tareas
                 _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
 
-                var urlServicePost = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, ServiceType.PostService);
+                var urlServicePost = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
                 var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
                 var searchCriteriaKey1Text = _cells.GetEmptyIfNull(_cells.GetCell("A4").Value);
@@ -476,7 +476,7 @@ namespace EllipsePlannerExcelAddIn
                 var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
 
                 _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //consumo de servicio de msewts
                 List<Jobs> ellipseJobs = JobActions.FetchJobsPost(_eFunctions, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
@@ -706,8 +706,8 @@ namespace EllipsePlannerExcelAddIn
                 //Hoja de Ellipse
                 _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
                 var opContext = new Screen.OperationContext
                 {
                     district = _frmAuth.EllipseDsct,
@@ -821,8 +821,8 @@ namespace EllipsePlannerExcelAddIn
             //Hoja de jobs
             _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opContext = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,

@@ -45,12 +45,12 @@ namespace EllipseBulkMaterialExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviromentList = Environments.GetEnviromentList();
-            foreach (var item in enviromentList)
+            var environmentList = Environments.GetEnvironmentList();
+            foreach (var item in environmentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
                 drpItem.Label = item;
-                drpEnviroment.Items.Add(drpItem);
+                drpEnvironment.Items.Add(drpItem);
             }
         }
 
@@ -396,10 +396,10 @@ namespace EllipseBulkMaterialExcelAddIn
                 var opItem = new BMUSheetItem.OperationContext();
 
 
-                if (drpEnviroment.Label == null || drpEnviroment.Label.Equals("")) return;
-                proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/BulkMaterialUsageSheet";
-                proxyItem.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/BulkMaterialUsageSheetItem";
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
+                proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/BulkMaterialUsageSheet";
+                proxyItem.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/BulkMaterialUsageSheetItem";
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -705,7 +705,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var sqlQuery = Queries.GetBulkAccountCode(equipNo, _eFunctions.dbReference, _eFunctions.dbLink);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 var drEquipCapacity = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -742,7 +742,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var sqlQuery = Queries.GetFuelCapacity(equipNo, _eFunctions.dbReference, _eFunctions.dbLink);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 var drEquipCapacity = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -807,9 +807,9 @@ namespace EllipseBulkMaterialExcelAddIn
             var opSheet = new BMUSheet.OperationContext();
 
 
-            if (drpEnviroment.Label == null || drpEnviroment.Label.Equals("")) return;
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/BulkMaterialUsageSheet";
-            _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+            if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/BulkMaterialUsageSheet";
+            _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
             _frmAuth.StartPosition = FormStartPosition.CenterScreen;
 
             if (_frmAuth.ShowDialog() != DialogResult.OK) return;
@@ -890,7 +890,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var sqlQuery = Queries.GetLastStatistic(equipNo, statType, statDate, _eFunctions.dbReference, _eFunctions.dbLink);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 var drLastStat = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -920,7 +920,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
             if (excelSheet.Name != SheetName01) return;
 
-            if (drpEnviroment.Label == null || drpEnviroment.Label.Equals("")) return;
+            if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
 
             var currentRow = TitleRow01 + 1;
             while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
@@ -942,7 +942,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private List<string> GetListIdList(string listType)
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var sqlQuery = Queries.GetListIdList(_eFunctions.dbReference, _eFunctions.dbLink, listType);
             var drItem = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -1214,7 +1214,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
             _cells.ClearTableRange(TableName02);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             //Obtengo los valores de las opciones de búsqueda
             var searchCriteriaKey1 = EquipListSearchFieldCriteria.ListType.Key;
@@ -1319,7 +1319,7 @@ namespace EllipseBulkMaterialExcelAddIn
             _cells.SetCursorWait();
             cellli.ClearTableRange(TableName02);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
 
             var k = TitleRow01 + 1;
@@ -1437,7 +1437,7 @@ namespace EllipseBulkMaterialExcelAddIn
             if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -1454,7 +1454,7 @@ namespace EllipseBulkMaterialExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var i = TitleRow02 + 1;
 
@@ -1471,7 +1471,7 @@ namespace EllipseBulkMaterialExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                     var equiplist = new EquipListItem()
                     {
                         EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
@@ -1507,7 +1507,7 @@ namespace EllipseBulkMaterialExcelAddIn
             if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -1524,7 +1524,7 @@ namespace EllipseBulkMaterialExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var i = TitleRow02 + 1;
 
@@ -1541,7 +1541,7 @@ namespace EllipseBulkMaterialExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                     var equiplist = new EquipListItem()
                     {
                         EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),

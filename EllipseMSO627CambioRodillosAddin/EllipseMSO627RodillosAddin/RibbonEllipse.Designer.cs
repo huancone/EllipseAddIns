@@ -39,7 +39,7 @@
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatPbv = this.Factory.CreateRibbonButton();
             this.btnFormatPcservi = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnLoad = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnAbout = this.Factory.CreateRibbonButton();
@@ -57,7 +57,7 @@
             // group1
             // 
             this.group1.Items.Add(this.box1);
-            this.group1.Items.Add(this.drpEnviroment);
+            this.group1.Items.Add(this.drpEnvironment);
             this.group1.Items.Add(this.btnLoad);
             this.group1.Label = "MSO627 Cambio Rodillos";
             this.group1.Name = "group1";
@@ -83,10 +83,10 @@
             this.btnFormatPcservi.ShowImage = true;
             this.btnFormatPcservi.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatPcservi_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // btnLoad
             // 
@@ -126,7 +126,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatPbv;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoad;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatPcservi;

@@ -55,12 +55,12 @@ namespace EllipseLabourCostingExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -107,7 +107,7 @@ namespace EllipseLabourCostingExcelAddIn
                 if (_thread != null && _thread.IsAlive) return;
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
 
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Default))
@@ -202,7 +202,7 @@ namespace EllipseLabourCostingExcelAddIn
 
                 _cells.GetRange("A6", "AZ65536").EntireRow.Delete(Excel.XlDirection.xlUp);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var sqlQuery = Queries.GetGroupEmployeesQuery(groupName, _eFunctions.dbReference, _eFunctions.dbLink);
                 var drEmployees = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -327,7 +327,7 @@ namespace EllipseLabourCostingExcelAddIn
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01 + LabourSheetTypeConstants.Mse850;
                 _cells.CreateNewWorksheet(ValidationSheetName);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -405,7 +405,7 @@ namespace EllipseLabourCostingExcelAddIn
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01 + LabourSheetTypeConstants.Mso850;
                 _cells.CreateNewWorksheet(ValidationSheetName);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -491,7 +491,7 @@ namespace EllipseLabourCostingExcelAddIn
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01 + LabourSheetTypeConstants.Elecsa;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 _cells.CreateNewWorksheet(ValidationSheetName);
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
@@ -632,7 +632,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //    maxInstances = 100,
                 //    returnWarnings = Debugger.DebugWarnings
                 //};
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new OperationContext
                 {
@@ -726,7 +726,7 @@ namespace EllipseLabourCostingExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new OperationContext
                 {
@@ -950,7 +950,7 @@ namespace EllipseLabourCostingExcelAddIn
                 //    returnWarnings = Debugger.DebugWarnings
                 //};
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 //Se usa un solo OperationContext para ahorrar en recursos y solicitudes
                 var opSheet = new OperationContext
                 {
@@ -1238,7 +1238,7 @@ namespace EllipseLabourCostingExcelAddIn
             var arrayFields = new ArrayScreenNameValue();
 
             //Selección de ambiente
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             //Aseguro que no esté en alguna pantalla antigua
             _eFunctions.RevertOperation(opSheet, proxySheet);
             //ejecutamos el programa
@@ -1413,7 +1413,7 @@ namespace EllipseLabourCostingExcelAddIn
                     _cells.GetCell(target.Column, target.Row + 1).Value = "";
                     return;
                 }
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 _cells.GetCell(target.Column, target.Row + 1).Value = "Buscando Orden...";
                 var district = "" + _cells.GetCell("B3").Value;
@@ -1457,7 +1457,7 @@ namespace EllipseLabourCostingExcelAddIn
                             _cells.GetCell(target.Column + 2, target.Row).Value = "";
                             return;
                         }
-                        _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                        _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                         _cells.GetCell(target.Column + 2, target.Row).Value = "Buscando Orden...";
                         var district = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, ElecsaTitleRow - 3).Value2);
@@ -1517,7 +1517,7 @@ namespace EllipseLabourCostingExcelAddIn
                 _cells.SetCursorWait();
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Default))
                 {
-                    _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                    _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                     var district = "" + _cells.GetCell("B3").Value;
                     for (var i = 0; i < OtFields; i++)
                     {
@@ -1536,7 +1536,7 @@ namespace EllipseLabourCostingExcelAddIn
                 }
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01 + LabourSheetTypeConstants.Elecsa))
                 {
-                    _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                    _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                     var district = "" + _cells.GetCell("B3").Value;
                     var i = ElecsaTitleRow + 1;
                     while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value2) != null)
