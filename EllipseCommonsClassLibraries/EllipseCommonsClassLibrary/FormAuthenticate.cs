@@ -64,9 +64,15 @@ namespace EllipseCommonsClassLibrary
 
                 drpPosition.SelectedIndex = drpPosition.FindString(EllipsePost);
 
-                var districts = authSer.getDistricts(opAuth);
-                if (districts != null && districts.Length > 0)
-                    txtDistrict.Text = EllipseDsct = districts[0].name;
+                if (string.IsNullOrWhiteSpace(txtDistrict.Text))
+                {
+                    var districts = authSer.getDistricts(opAuth);
+                    if (districts != null && districts.Length > 0)
+                        txtDistrict.Text = EllipseDsct = districts[0].name.ToUpper();
+                }
+                else
+                    txtDistrict.Text = txtDistrict.Text.ToUpper();
+
                 #endregion
                 DialogResult = DialogResult.OK;
                 txtPassword.Text = "";
@@ -82,9 +88,14 @@ namespace EllipseCommonsClassLibrary
                     foreach (var nvp in positions)
                         drpPosition.Items.Add(nvp.name + " - " + nvp.value);
 
-                    var districts = authSer.getDistricts(opAuth);
-                    if (districts != null && districts.Length > 0)
-                        txtDistrict.Text = EllipseDsct = districts[0].name;
+                    if (string.IsNullOrWhiteSpace(txtDistrict.Text))
+                    {
+                        var districts = authSer.getDistricts(opAuth);
+                        if (districts != null && districts.Length > 0)
+                            txtDistrict.Text = EllipseDsct = districts[0].name.ToUpper();
+                    }
+                    else
+                        txtDistrict.Text = txtDistrict.Text.ToUpper();
                 }
                 catch(Exception exx)
                 {
