@@ -1205,7 +1205,7 @@ namespace EllipseEquipmentExcelAddIn
 
         public void DeleteEquipment()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
             //if (_cells == null)
             //    _cells = new ExcelStyleCells(_excelApp);
             //_cells.SetCursorWait();
@@ -1259,6 +1259,61 @@ namespace EllipseEquipmentExcelAddIn
             //}
             //((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
             //if (_cells != null) _cells.SetCursorDefault();
+
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
+            var i = TitleRow01 + 1;
+
+            var opSheet = new EquipmentService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                returnWarnings = Debugger.DebugWarnings
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+
+                    var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+                    var equipment = new Equipment
+                    {
+                        EquipmentNo = equipmentRef, 
+                        DistrictCode = opSheet.district
+                    };
+
+                    EquipmentActions.DeleteEquipment(opSheet, urlService, equipment);
+
+                    _cells.GetCell(ResultColumn01, i).Value = "ELIMINACION COMPLETA";
+                    _cells.GetCell(1, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn01, i).Select();
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn01, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:DeleteEquipment()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn01, i).Select();
+                    i++;
+                    _eFunctions.CloseConnection();
+                }
+            }
+            ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+
         }
 
         [SuppressMessage("ReSharper", "SuggestVarOrType_Elsewhere")]

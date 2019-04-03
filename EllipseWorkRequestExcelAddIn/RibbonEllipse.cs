@@ -2002,6 +2002,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(03, i).Value = "'" + wr.requestIdDescription1 + " " + wr.requestIdDescription2;
 
                     var wrRefCodes = WorkRequestReferenceCodesActions.GetWorkRequestReferenceCodes(_eFunctions, urlService, opContext, wr.requestId);
+
                     _cells.GetCell(04, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Header;
                     _cells.GetCell(05, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Body;
                     _cells.GetCell(05, i).WrapText = false;
@@ -2084,7 +2085,9 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(01, i).Value = "'" + wr.workGroup;
                     _cells.GetCell(02, i).Value = "'" + wr.requestId;
                     _cells.GetCell(03, i).Value = "'" + wr.requestIdDescription1 + " " + wr.requestIdDescription2;
+                    
                     var wrRefCodes = WorkRequestReferenceCodesActions.GetWorkRequestReferenceCodes(_eFunctions, urlService, opContext, wr.requestId);
+                    
                     _cells.GetCell(04, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Header;
                     _cells.GetCell(05, i).Value = "'" + wr.GetExtendedDescription(urlService, opContext).Body;
                     _cells.GetCell(05, i).WrapText = false;
@@ -2111,6 +2114,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _cells.GetCell(26, i).Value = "'" + wrRefCodes.FechaEjecucionInicial;
                     _cells.GetCell(27, i).Value = "'" + wrRefCodes.FechaEjecucionFinal;
                     _cells.GetCell(28, i).Value = "'" + wrRefCodes.CalificacionEncuesta;
+                    _cells.GetCell(29, i).Value = "'" + wrRefCodes.NumeroComponente;
                 }
                 catch (Exception ex)
                 {

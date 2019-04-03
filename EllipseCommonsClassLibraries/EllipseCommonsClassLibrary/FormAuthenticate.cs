@@ -2,17 +2,17 @@
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using Authenticator = EllipseCommonsClassLibrary.AuthenticatorService;
+
 namespace EllipseCommonsClassLibrary
 {
     public partial class FormAuthenticate : Form
     {
-        public string EllipseUser = "";
-        public string EllipsePswd = "";
-        public string EllipsePost = "";
-        public string EllipseDsct = "";
-
         // ReSharper disable once FieldCanBeMadeReadOny.Local
-        EllipseFunctions _eFunctions = new EllipseFunctions();
+        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
+        public string EllipseDsct = "";
+        public string EllipsePost = "";
+        public string EllipsePswd = "";
+        public string EllipseUser = "";
         public string SelectedEnviroment = null;
 
         public FormAuthenticate()
@@ -27,7 +27,9 @@ namespace EllipseCommonsClassLibrary
         private void btnAuthenticate_Click(object sender, EventArgs e)
         {
             EllipseDsct = txtDistrict.Text.ToUpper();
-            EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
+            EllipsePost = drpPosition.Text.Contains(" - ")
+                ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper()
+                : EllipsePost = drpPosition.Text.ToUpper();
             EllipsePswd = txtPassword.Text;
             EllipseUser = txtUsername.Text.ToUpper();
 
@@ -40,7 +42,7 @@ namespace EllipseCommonsClassLibrary
             };
 
             //control de selección de entorno en programación
-            if(SelectedEnviroment == null)
+            if (SelectedEnviroment == null)
             {
                 MessageBox.Show("Debe seleccionar un entorno de la lista para poder realizar la acción");
                 return;
@@ -53,6 +55,7 @@ namespace EllipseCommonsClassLibrary
                 authSer.authenticate(opAuth);
 
                 #region Form Population
+
                 var positions = authSer.getPositions(opAuth);
                 drpPosition.Items.Clear();
                 foreach (var nvp in positions)
@@ -66,13 +69,15 @@ namespace EllipseCommonsClassLibrary
                 var districts = authSer.getDistricts(opAuth);
                 if (districts != null && districts.Length > 0)
                     txtDistrict.Text = EllipseDsct = districts[0].name;
+
                 #endregion
+
                 DialogResult = DialogResult.OK;
                 txtPassword.Text = "";
                 //clearForm();
                 Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 try
                 {
@@ -85,16 +90,20 @@ namespace EllipseCommonsClassLibrary
                     if (districts != null && districts.Length > 0)
                         txtDistrict.Text = EllipseDsct = districts[0].name;
                 }
-                catch(Exception exx)
+                catch (Exception exx)
                 {
-                    Debugger.LogError("FormAuthenticate:btnAuthenticate_Click(object, EventArgs):catch(catch)", exx.Message);
+                    Debugger.LogError("FormAuthenticate:btnAuthenticate_Click(object, EventArgs):catch(catch)",
+                        exx.Message);
                 }
                 finally
                 {
-                    MessageBox.Show(@"Se ha producido un error al intentar realizar la autenticación. Asegúrese que los datos ingresados sean correctos e intente nuevamente. \n\n" + ex.Message);
+                    MessageBox.Show(
+                        @"Se ha producido un error al intentar realizar la autenticación. Asegúrese que los datos ingresados sean correctos e intente nuevamente. \n\n" +
+                        ex.Message);
                 }
             }
         }
+
         public void ClearForm()
         {
             txtDistrict.Clear();

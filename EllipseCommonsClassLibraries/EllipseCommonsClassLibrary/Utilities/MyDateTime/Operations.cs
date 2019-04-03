@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using EllipseCommonsClassLibrary.Utilities.Shifts;
 
 namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
@@ -17,23 +18,31 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
 
             var i = 0;
             //To find the starting shift for the event / para encontrar el turno inicial del evento
-            var shiftStartLessShiftEnd = shifts[i].GetStartDateTime().TimeOfDay.TotalSeconds < shifts[i].GetEndDateTime().TimeOfDay.TotalSeconds;
-            var eventStartLessShiftStart = startEvent.TimeOfDay.TotalSeconds < shifts[i].GetStartDateTime().TimeOfDay.TotalSeconds;
-            var eventStartLessShiftEnd = startEvent.TimeOfDay.TotalSeconds < shifts[i].GetEndDateTime().TimeOfDay.TotalSeconds;
+            var shiftStartLessShiftEnd = shifts[i].GetStartDateTime().TimeOfDay.TotalSeconds <
+                                         shifts[i].GetEndDateTime().TimeOfDay.TotalSeconds;
+            var eventStartLessShiftStart =
+                startEvent.TimeOfDay.TotalSeconds < shifts[i].GetStartDateTime().TimeOfDay.TotalSeconds;
+            var eventStartLessShiftEnd =
+                startEvent.TimeOfDay.TotalSeconds < shifts[i].GetEndDateTime().TimeOfDay.TotalSeconds;
 
-            while (shiftStartLessShiftEnd && (eventStartLessShiftStart || (!eventStartLessShiftStart && !eventStartLessShiftEnd)) ||
-                !shiftStartLessShiftEnd && (eventStartLessShiftStart && !eventStartLessShiftEnd)
-                )
+            while (shiftStartLessShiftEnd &&
+                   (eventStartLessShiftStart || !eventStartLessShiftStart && !eventStartLessShiftEnd) ||
+                   !shiftStartLessShiftEnd && eventStartLessShiftStart && !eventStartLessShiftEnd
+            )
             {
                 i++;
-                shiftStartLessShiftEnd = shifts[i].GetStartDateTime().TimeOfDay.TotalSeconds < shifts[i].GetEndDateTime().TimeOfDay.TotalSeconds;
-                eventStartLessShiftStart = startEvent.TimeOfDay.TotalSeconds < shifts[i].GetStartDateTime().TimeOfDay.TotalSeconds;
-                eventStartLessShiftEnd = startEvent.TimeOfDay.TotalSeconds < shifts[i].GetEndDateTime().TimeOfDay.TotalSeconds;
-
+                shiftStartLessShiftEnd = shifts[i].GetStartDateTime().TimeOfDay.TotalSeconds <
+                                         shifts[i].GetEndDateTime().TimeOfDay.TotalSeconds;
+                eventStartLessShiftStart = startEvent.TimeOfDay.TotalSeconds <
+                                           shifts[i].GetStartDateTime().TimeOfDay.TotalSeconds;
+                eventStartLessShiftEnd =
+                    startEvent.TimeOfDay.TotalSeconds < shifts[i].GetEndDateTime().TimeOfDay.TotalSeconds;
             }
+
             var slotStart = startEvent;
             var slotEnd = slotStart.Date + shifts[i].GetEndDateTime().TimeOfDay;
-            slotEnd = slotEnd.AddDays((shifts[i].GetEndDateTime().Date - shifts[i].GetStartDateTime().Date).TotalDays);//adiciona si hay un cambio en el día
+            slotEnd = slotEnd.AddDays((shifts[i].GetEndDateTime().Date - shifts[i].GetStartDateTime().Date)
+                .TotalDays); //adiciona si hay un cambio en el día
 
             var slotList = new List<Slot>();
 
@@ -43,10 +52,13 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
             //            ? (endEvent.TimeOfDay.TotalSeconds >= shifts[i].StartHour.TotalSeconds && endEvent.TimeOfDay.TotalSeconds < shifts[i].EndHour.TotalSeconds)
             //            : (endEvent.TimeOfDay.TotalSeconds >= shifts[i].StartHour.TotalSeconds || endEvent.TimeOfDay.TotalSeconds < shifts[i].EndHour.TotalSeconds)
             //       )))
-            while (endEvent.Date > slotEnd.Date || (endEvent.Date == slotEnd.Date && (slotStart.TimeOfDay.TotalSeconds <= slotEnd.TimeOfDay.TotalSeconds
-                ? (endEvent.TimeOfDay.TotalSeconds > slotStart.TimeOfDay.TotalSeconds && endEvent.TimeOfDay.TotalSeconds > slotEnd.TimeOfDay.TotalSeconds)
-                : (endEvent.TimeOfDay.TotalSeconds < slotStart.TimeOfDay.TotalSeconds && endEvent.TimeOfDay.TotalSeconds > slotEnd.TimeOfDay.TotalSeconds)
-                )))
+            while (endEvent.Date > slotEnd.Date || endEvent.Date == slotEnd.Date &&
+                   (slotStart.TimeOfDay.TotalSeconds <= slotEnd.TimeOfDay.TotalSeconds
+                       ? endEvent.TimeOfDay.TotalSeconds > slotStart.TimeOfDay.TotalSeconds &&
+                         endEvent.TimeOfDay.TotalSeconds > slotEnd.TimeOfDay.TotalSeconds
+                       : endEvent.TimeOfDay.TotalSeconds < slotStart.TimeOfDay.TotalSeconds &&
+                         endEvent.TimeOfDay.TotalSeconds > slotEnd.TimeOfDay.TotalSeconds
+                   ))
             {
                 var newSlot = new Slot();
                 newSlot.SetDate(slotStart.Date);
@@ -64,8 +76,8 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
 
                 slotStart = slotStart.Date + shifts[i].GetStartDateTime().TimeOfDay;
                 slotEnd = slotStart.Date + shifts[i].GetEndDateTime().TimeOfDay;
-                slotEnd = slotEnd.AddDays((shifts[i].GetEndDateTime().Date - shifts[i].GetStartDateTime().Date).TotalDays);//adiciona si hay un cambio en el día
-
+                slotEnd = slotEnd.AddDays((shifts[i].GetEndDateTime().Date - shifts[i].GetStartDateTime().Date)
+                    .TotalDays); //adiciona si hay un cambio en el día
             }
 
             var lastSlot = new Slot();
@@ -79,7 +91,8 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
         }
 
         /// <summary>
-        /// Convierte una hora en formato de número (3, 1.6, 36.3) a formato HHMM (03:00, 01:36, 12:18). Si la hora ingresada excede el valor de 24 horas, esta es truncada al día.
+        ///     Convierte una hora en formato de número (3, 1.6, 36.3) a formato HHMM (03:00, 01:36, 12:18). Si la hora ingresada
+        ///     excede el valor de 24 horas, esta es truncada al día.
         /// </summary>
         /// <param name="hourTime">Hora de forma numérica (Ej: 11, 8.4, 3.1, 28.4) </param>
         /// <param name="separator"></param>
@@ -97,11 +110,11 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
             mm = Math.Abs(Math.Truncate(mm * 60));
             hh = Math.Truncate(hh);
 
-            var newHour = hh + separator + (Convert.ToInt32(mm)).ToString("D2");
+            var newHour = hh + separator + Convert.ToInt32(mm).ToString("D2");
             return newHour;
         }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="hourTime">Hora de forma numérica (Ej: 11, 8.4, 3.1, 28.4) </param>
         /// <param name="separator"></param>
@@ -114,11 +127,12 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
             mm = Math.Abs(Math.Truncate(mm * 60));
             hh = Math.Truncate(hh);
 
-            var newHour = hh + separator + (Convert.ToInt32(mm)).ToString("D2");
+            var newHour = hh + separator + Convert.ToInt32(mm).ToString("D2");
             return newHour;
         }
+
         /// <summary>
-        /// Formatea un DateTime a String con el format especificado en format
+        ///     Formatea un DateTime a String con el format especificado en format
         /// </summary>
         /// <param name="date">DateTime</param>
         /// <param name="format">DateTime.Formats</param>
@@ -127,57 +141,78 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
         public static string FormatDateToString(DateTime date, string format, string dateSeparator = "")
         {
             if (format.Equals(Formats.DateYYMMDD))
-                return "" + date.Year.ToString("0000").Substring(2) + dateSeparator + date.Month.ToString("00") + dateSeparator + date.Day.ToString("00");
+                return "" + date.Year.ToString("0000").Substring(2) + dateSeparator + date.Month.ToString("00") +
+                       dateSeparator + date.Day.ToString("00");
             if (format.Equals(Formats.DateYYDDMM))
-                return "" + date.Year.ToString("0000").Substring(2) + dateSeparator + date.Day.ToString("00") + dateSeparator + date.Month.ToString("00");
+                return "" + date.Year.ToString("0000").Substring(2) + dateSeparator + date.Day.ToString("00") +
+                       dateSeparator + date.Month.ToString("00");
             if (format.Equals(Formats.DateMMDDYY))
-                return "" + date.Month.ToString("00") + dateSeparator + date.Day.ToString("00") + dateSeparator + date.Year.ToString("0000").Substring(2);
+                return "" + date.Month.ToString("00") + dateSeparator + date.Day.ToString("00") + dateSeparator +
+                       date.Year.ToString("0000").Substring(2);
             if (format.Equals(Formats.DateDDMMYY))
-                return "" + date.Day.ToString("00") + dateSeparator + date.Month.ToString("00") + dateSeparator + date.Year.ToString("0000").Substring(2);
+                return "" + date.Day.ToString("00") + dateSeparator + date.Month.ToString("00") + dateSeparator +
+                       date.Year.ToString("0000").Substring(2);
 
             if (format.Equals(Formats.DateYYYYMMDD))
-                return "" + date.Year.ToString("0000") + dateSeparator + date.Month.ToString("00") + dateSeparator + date.Day.ToString("00");
+                return "" + date.Year.ToString("0000") + dateSeparator + date.Month.ToString("00") + dateSeparator +
+                       date.Day.ToString("00");
             if (format.Equals(Formats.DateYYYYDDMM))
-                return "" + date.Year.ToString("0000") + dateSeparator + date.Day.ToString("00") + dateSeparator + date.Month.ToString("00");
+                return "" + date.Year.ToString("0000") + dateSeparator + date.Day.ToString("00") + dateSeparator +
+                       date.Month.ToString("00");
             if (format.Equals(Formats.DateMMDDYYYY))
-                return "" + date.Month.ToString("00") + dateSeparator + date.Day.ToString("00") + dateSeparator + date.Year.ToString("0000");
+                return "" + date.Month.ToString("00") + dateSeparator + date.Day.ToString("00") + dateSeparator +
+                       date.Year.ToString("0000");
             if (format.Equals(Formats.DateDDMMYYYY))
-                return "" + date.Day.ToString("00") + dateSeparator + date.Month.ToString("00") + dateSeparator + date.Year.ToString("0000");
+                return "" + date.Day.ToString("00") + dateSeparator + date.Month.ToString("00") + dateSeparator +
+                       date.Year.ToString("0000");
 
             throw new ArgumentException("Not a valid Date format", "format");
         }
-        public static string FormatDateTimeToString(DateTime date, string format, string dateSeparator = null, string timeSeparator = null, string splitSeparator = null)
+
+        public static string FormatDateTimeToString(DateTime date, string format, string dateSeparator = null,
+            string timeSeparator = null, string splitSeparator = null)
         {
             dateSeparator = dateSeparator ?? "";
             timeSeparator = timeSeparator ?? "";
             splitSeparator = splitSeparator ?? " ";
 
             if (format.Equals(Formats.DateTimeYYYYMMDD_HHMM))
-                return "" + date.Year.ToString("0000") + dateSeparator + date.Month.ToString("00") + dateSeparator + date.Day.ToString("00") + splitSeparator + date.Hour.ToString("00") + timeSeparator + date.Minute.ToString("00");
+                return "" + date.Year.ToString("0000") + dateSeparator + date.Month.ToString("00") + dateSeparator +
+                       date.Day.ToString("00") + splitSeparator + date.Hour.ToString("00") + timeSeparator +
+                       date.Minute.ToString("00");
             if (format.Equals(Formats.DateTimeYYYYMMDD_HHMMSS))
-                return "" + date.Year.ToString("0000") + dateSeparator + date.Month.ToString("00") + dateSeparator + date.Day.ToString("00") + splitSeparator + date.Hour.ToString("00") + timeSeparator + date.Minute.ToString("00") + timeSeparator + date.Second.ToString("00");
+                return "" + date.Year.ToString("0000") + dateSeparator + date.Month.ToString("00") + dateSeparator +
+                       date.Day.ToString("00") + splitSeparator + date.Hour.ToString("00") + timeSeparator +
+                       date.Minute.ToString("00") + timeSeparator + date.Second.ToString("00");
             if (format.Equals(Formats.DateTimeYYYYDDMM_HHMM))
-                return "" + date.Year.ToString("0000") + dateSeparator + date.Day.ToString("00") + dateSeparator + date.Month.ToString("00") + splitSeparator + date.Hour.ToString("00") + timeSeparator + date.Minute.ToString("00");
+                return "" + date.Year.ToString("0000") + dateSeparator + date.Day.ToString("00") + dateSeparator +
+                       date.Month.ToString("00") + splitSeparator + date.Hour.ToString("00") + timeSeparator +
+                       date.Minute.ToString("00");
             if (format.Equals(Formats.DateTimeYYYYDDMM_HHMMSS))
-                return "" + date.Year.ToString("0000") + dateSeparator + date.Day.ToString("00") + dateSeparator + date.Month.ToString("00") + splitSeparator + date.Hour.ToString("00") + timeSeparator + date.Minute.ToString("00") + timeSeparator + date.Second.ToString("00");
+                return "" + date.Year.ToString("0000") + dateSeparator + date.Day.ToString("00") + dateSeparator +
+                       date.Month.ToString("00") + splitSeparator + date.Hour.ToString("00") + timeSeparator +
+                       date.Minute.ToString("00") + timeSeparator + date.Second.ToString("00");
 
             throw new ArgumentException("Not a valid DateTime format", "format");
         }
 
-        public static string FormatDateTimeToString(TimeSpan time, string format, string dateSeparator = null, string timeSeparator = null, string splitSeparator = null)
+        public static string FormatDateTimeToString(TimeSpan time, string format, string dateSeparator = null,
+            string timeSeparator = null, string splitSeparator = null)
         {
             var date = new DateTime();
             date = date.Add(time);
 
             return FormatDateTimeToString(date, format, dateSeparator, timeSeparator, splitSeparator);
         }
+
         public static string FormatTimeToString(TimeSpan time, string format, string timeSeparator)
         {
             var date = new DateTime();
             date = date.Add(time);
 
             if (format.Equals(Formats.TimeHHMMSS))
-                return "" + date.Hour.ToString("00") + timeSeparator + date.Minute.ToString("00") + timeSeparator + date.Second.ToString("00");
+                return "" + date.Hour.ToString("00") + timeSeparator + date.Minute.ToString("00") + timeSeparator +
+                       date.Second.ToString("00");
             if (format.Equals(Formats.TimeHHMM))
                 return "" + date.Hour.ToString("00") + timeSeparator + date.Minute.ToString("00");
 
@@ -185,16 +220,15 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
         }
 
 
-
         /// <summary>
-        /// Valida si la fecha YYYYMMDD ha superado el tiempo máximo permitido en días
+        ///     Valida si la fecha YYYYMMDD ha superado el tiempo máximo permitido en días
         /// </summary>
         /// <param name="date">string: fecha en formato yyyyMMdd</param>
         /// <param name="daysLimit">int: número de días permitidos</param>
         /// <returns></returns>
         public static bool ValidateUserStatus(string date, int daysLimit)
         {
-            var datetime = DateTime.ParseExact(date, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+            var datetime = DateTime.ParseExact(date, "yyyyMMdd", CultureInfo.InvariantCulture);
             return DateTime.Today.Subtract(datetime).TotalDays <= daysLimit;
         }
     }

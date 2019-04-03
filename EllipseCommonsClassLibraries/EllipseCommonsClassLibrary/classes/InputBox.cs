@@ -42,9 +42,10 @@ namespace EllipseCommonsClassLibrary.Classes
             form.MaximizeBox = false;
             form.AcceptButton = buttonOk;
             form.CancelButton = buttonCancel;
-            
+
             return form.ShowDialog() == DialogResult.OK ? textBox.Text : null;
         }
+
         public static string GetValue(string title, string promptText, string defaultValue = "")
         {
             var form = new Form();
@@ -68,7 +69,7 @@ namespace EllipseCommonsClassLibrary.Classes
             buttonOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             form.ClientSize = new Size(396, 107);
-            form.Controls.AddRange(new Control[] { label, textBox, buttonOk});
+            form.Controls.AddRange(new Control[] {label, textBox, buttonOk});
             form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
             form.FormBorderStyle = FormBorderStyle.FixedDialog;
             form.StartPosition = FormStartPosition.CenterScreen;
@@ -79,7 +80,5 @@ namespace EllipseCommonsClassLibrary.Classes
 
             return textBox.Text;
         }
-
     }
-
 }

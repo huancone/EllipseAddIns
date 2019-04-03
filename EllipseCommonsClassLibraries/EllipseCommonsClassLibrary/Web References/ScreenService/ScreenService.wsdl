@@ -1,7 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns2="http://exception.enterpriseservice.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:tns="http://screen.enterpriseservice.mincom.com" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" targetNamespace="http://screen.enterpriseservice.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding"
+                  xmlns:ns2="http://exception.enterpriseservice.mincom.com"
+                  xmlns:ns1="http://connectivity.service.ews.mincom.com"
+                  xmlns:tns="http://screen.enterpriseservice.mincom.com"
+                  xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:soap12="http://www.w3.org/2003/05/soap-envelope"
+                  targetNamespace="http://screen.enterpriseservice.mincom.com"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
-    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://connectivity.service.ews.mincom.com">
       <xsd:complexType name="OperationContext">
         <xsd:sequence>
           <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
@@ -24,7 +35,8 @@
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>
-    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://screen.enterpriseservice.mincom.com">
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://screen.enterpriseservice.mincom.com">
       <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
       <xsd:import namespace="http://exception.enterpriseservice.mincom.com" />
       <xsd:element name="positionToMenu">
@@ -47,7 +59,8 @@
       </xsd:complexType>
       <xsd:complexType name="ArrayOfScreenNameValueDTO">
         <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ScreenNameValueDTO" nillable="true" type="tns:ScreenNameValueDTO" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ScreenNameValueDTO" nillable="true"
+                       type="tns:ScreenNameValueDTO" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ScreenNameValueDTO">
@@ -60,7 +73,8 @@
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="screenSendRequestDTO" nillable="true" type="tns:ScreenSubmitRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="screenSendRequestDTO" nillable="true"
+                         type="tns:ScreenSubmitRequestDTO" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -82,7 +96,8 @@
       </xsd:complexType>
       <xsd:complexType name="ArrayOfScreenFieldDTO">
         <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ScreenFieldDTO" nillable="true" type="tns:ScreenFieldDTO" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ScreenFieldDTO" nillable="true"
+                       type="tns:ScreenFieldDTO" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ScreenFieldDTO">
@@ -116,7 +131,8 @@
         </xsd:complexType>
       </xsd:element>
     </xsd:schema>
-    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://exception.enterpriseservice.mincom.com">
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified"
+                targetNamespace="http://exception.enterpriseservice.mincom.com">
       <xsd:complexType name="InvalidConnectionIdException" />
       <xsd:complexType name="EnterpriseServiceException" />
     </xsd:schema>

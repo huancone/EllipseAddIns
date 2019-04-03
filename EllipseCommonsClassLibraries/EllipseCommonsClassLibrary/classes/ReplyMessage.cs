@@ -3,7 +3,7 @@
     public class ReplyMessage
     {
         public string[] Errors;
-        public string[] Warnings;
         public string Message;
+        public string[] Warnings;
     }
 }

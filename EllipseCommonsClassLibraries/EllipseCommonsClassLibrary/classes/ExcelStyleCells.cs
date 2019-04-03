@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.Threading;
 using Microsoft.Office.Interop.Excel;
-using Application = Microsoft.Office.Interop.Excel.Application;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
@@ -12,12 +12,14 @@ namespace EllipseCommonsClassLibrary.Classes
     public class ExcelStyleCells
     {
         private readonly Application _excelApp;
-        private Worksheet _excelSheet;
 
         private bool _alwaysActiveSheet;
+        private Worksheet _excelSheet;
         private CultureInfo _oldCultureInfo;
+
         /// <summary>
-        /// Constructor de la clase. Si alwaysActiveSheet es true La clase estará sujeta a la hoja activa con la que se esté trabajando, si es false, estará sujeta exclusivamente a la hoja activa desde la que se invoca este constructor
+        ///     Constructor de la clase. Si alwaysActiveSheet es true La clase estará sujeta a la hoja activa con la que se esté
+        ///     trabajando, si es false, estará sujeta exclusivamente a la hoja activa desde la que se invoca este constructor
         /// </summary>
         /// <param name="excelApp">Microsoft.Office.Interop.Excel.Application Aplicación Excel en ejecución</param>
         /// <param name="alwaysActiveSheet">bool: Determina si se ejecutará según la hoja activa de excel</param>
@@ -30,21 +32,25 @@ namespace EllipseCommonsClassLibrary.Classes
                 //Si hay un libro activo (Ej. Office 2013+ inicia sin libro activo)
                 if (_excelApp.ActiveWorkbook == null) return;
                 if (Debugger.ForceRegionalization)
-                    SetEllipseDefaultCulture();//Se adiciona instrucción para evitar conflictos de símbolos por diferencias de lenguaje
+                    SetEllipseDefaultCulture(); //Se adiciona instrucción para evitar conflictos de símbolos por diferencias de lenguaje
                 _excelSheet = (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet;
                 CreateStyles();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Debugger.LogError("Se ha producido un error al intentar inicializar la clase Commons>ExcelStyleCells. ", ex.Message);
+                Debugger.LogError("Se ha producido un error al intentar inicializar la clase Commons>ExcelStyleCells. ",
+                    ex.Message);
             }
         }
 
         /// <summary>
-        /// Constructor de la clase. La clase estará sujeta solamente a la hoja de trabajo ingresada en SheetName
+        ///     Constructor de la clase. La clase estará sujeta solamente a la hoja de trabajo ingresada en SheetName
         /// </summary>
         /// <param name="excelApp">Microsoft.Office.Interop.Excel.Application Aplicación Excel en ejecución</param>
-        /// <param name="sheetName">string: Especifica el nombre de la hoja para la que se le realizarán las acciones con esta clase</param>
+        /// <param name="sheetName">
+        ///     string: Especifica el nombre de la hoja para la que se le realizarán las acciones con esta
+        ///     clase
+        /// </param>
         public ExcelStyleCells(Application excelApp, string sheetName)
         {
             _excelApp = excelApp;
@@ -55,41 +61,44 @@ namespace EllipseCommonsClassLibrary.Classes
                 if (_excelApp.ActiveWorkbook == null) return;
                 if (Debugger.ForceRegionalization)
                     SetEllipseDefaultCulture();
-                _excelSheet = (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
+                _excelSheet = (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet;
                 foreach (Worksheet sheet in _excelApp.ActiveWorkbook.Sheets)
                 {
                     if (sheet.Name != sheetName) continue;
                     _excelSheet = sheet;
                     break;
                 }
+
                 CreateStyles();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Debugger.LogError("Se ha producido un error al intentar inicializar la clase Commons>ExcelStyleCells. ", ex.Message);
+                Debugger.LogError("Se ha producido un error al intentar inicializar la clase Commons>ExcelStyleCells. ",
+                    ex.Message);
             }
         }
 
         /// <summary>
-        /// Establece como hoja de trabajo a la hoja activa
+        ///     Establece como hoja de trabajo a la hoja activa
         /// </summary>
         /// <returns>bool: true si hay una hoja activa disponible</returns>
         public bool SetActiveSheet()
         {
             try
             {
-                _excelSheet = (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
+                _excelSheet = (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet;
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:SetActiveSheet", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:SetActiveSheet",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
 
         /// <summary>
-        /// Establece como hoja de trabajo a la hoja ingresada en sheetName. Si no existe no hace cambios
+        ///     Establece como hoja de trabajo a la hoja ingresada en sheetName. Si no existe no hace cambios
         /// </summary>
         /// <returns>bool: true si hay una hoja que coincida con sheetName</returns>
         public bool SetActiveSheet(string sheetName)
@@ -102,17 +111,21 @@ namespace EllipseCommonsClassLibrary.Classes
                     _excelSheet = ws;
                     return true;
                 }
-                return false;
 
+                return false;
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:SetActiveSheet", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:SetActiveSheet",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
+
         /// <summary>
-        /// Establece el valor de alwaysActiveSheet (siempre la hoja activa) como True o False. Si es true, ejecutará siempre las acciones en la hoja activa. Si es false, ejecutará las acciones en la hoja que se haya especificado en el momento de su creación o la hoja establecida en la clase
+        ///     Establece el valor de alwaysActiveSheet (siempre la hoja activa) como True o False. Si es true, ejecutará siempre
+        ///     las acciones en la hoja activa. Si es false, ejecutará las acciones en la hoja que se haya especificado en el
+        ///     momento de su creación o la hoja establecida en la clase
         /// </summary>
         /// <param name="value">bool: valor booleano a asignar a alwaysActiveSheet</param>
         public void SetAlwaysActiveSheet(bool value)
@@ -121,7 +134,7 @@ namespace EllipseCommonsClassLibrary.Classes
         }
 
         /// <summary>
-        /// Cambia el valor de alwaysActiveSheet. Si está en true, lo cambia a false y viceversa
+        ///     Cambia el valor de alwaysActiveSheet. Si está en true, lo cambia a false y viceversa
         /// </summary>
         /// <returns>bool: Estado final del valor de alwaysActiveSheet</returns>
         public bool ToggleAlwaysActiveSheet()
@@ -133,30 +146,34 @@ namespace EllipseCommonsClassLibrary.Classes
         //CELLS
 
         /// <summary>
-        /// Obtiene la celda de una hoja a partir de la columna y fila de la misma Ej: (4, 3) Columna 4, Fila 3
+        ///     Obtiene la celda de una hoja a partir de la columna y fila de la misma Ej: (4, 3) Columna 4, Fila 3
         /// </summary>
         /// <param name="column">long: columna de la celda </param>
         /// <param name="row">long: fila de la celda</param>
         /// <returns>Excel.Range Celda solicitada</returns>
         public Range GetCell(long column, long row)
         {
-            var excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
-            return excelSheet != null ? (Range)excelSheet.Cells[row, column] : null;
+            var excelSheet = _alwaysActiveSheet && _excelSheet != null
+                ? (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet
+                : _excelSheet;
+            return excelSheet != null ? (Range) excelSheet.Cells[row, column] : null;
         }
 
         /// <summary>
-        /// Obtiene la celda de una hoja a partir del nombre de la celda Ej: (A2) Columna A, Fila 2
+        ///     Obtiene la celda de una hoja a partir del nombre de la celda Ej: (A2) Columna A, Fila 2
         /// </summary>
         /// <param name="cell">string: nombre de la celda Ej. (A2) </param>
         /// <returns>Microsoft.Office.Interop.Excel.Range Celda solicitada</returns>
         public Range GetCell(string cell)
         {
-            var excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
+            var excelSheet = _alwaysActiveSheet && _excelSheet != null
+                ? (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet
+                : _excelSheet;
             return excelSheet != null ? excelSheet.Range[cell] : null;
         }
 
         /// <summary>
-        /// Borra los datos de una celda y devuelve si la acción se realizó o no
+        ///     Borra los datos de una celda y devuelve si la acción se realizó o no
         /// </summary>
         /// <param name="cell">string: nombre de la celda Ej. (A2) </param>
         /// <returns>bool: La acción se realizó sin problemas</returns>
@@ -165,18 +182,20 @@ namespace EllipseCommonsClassLibrary.Classes
             try
             {
                 var cellsRange = GetCell(cell);
-                if(cellsRange != null)
+                if (cellsRange != null)
                     cellsRange.Clear();
                 return true;
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:clearCell(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:clearCell(string)",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
+
         /// <summary>
-        /// Borra los datos de una celda y devuelve si la acción se realizó o no
+        ///     Borra los datos de una celda y devuelve si la acción se realizó o no
         /// </summary>
         /// <param name="column">long: columna de la celda </param>
         /// <param name="row">long: fila de la celda</param>
@@ -186,35 +205,37 @@ namespace EllipseCommonsClassLibrary.Classes
             try
             {
                 var cellsRange = GetCell(column, row);
-                if(cellsRange != null)
+                if (cellsRange != null)
                     cellsRange.Clear();
                 return true;
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:clearCell(long, long)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:clearCell(long, long)",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
 
 
-        
         //RANGES
 
         /// <summary>
-        /// Obtiene el rango de una hoja entre una celda inicial y una celda final Ej: ("A2", "F8")
+        ///     Obtiene el rango de una hoja entre una celda inicial y una celda final Ej: ("A2", "F8")
         /// </summary>
         /// <param name="startRange">string: celda inicial Ej. ("A2") </param>
         /// <param name="endRange">string: celda final Ej. ("F8") </param>
         /// <returns>Microsoft.Office.Interop.Excel.Range Rango solicitado</returns>
         public Range GetRange(string startRange, string endRange)
         {
-            Worksheet excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
+            var excelSheet = _alwaysActiveSheet && _excelSheet != null
+                ? (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet
+                : _excelSheet;
             return excelSheet != null ? excelSheet.Range[startRange + ":" + endRange] : null;
         }
 
         /// <summary>
-        /// Obtiene el rango de una hoja entre una celda inicial y una celda final Ej: (1, 2, 6, 8) para ("A2", "F8")
+        ///     Obtiene el rango de una hoja entre una celda inicial y una celda final Ej: (1, 2, 6, 8) para ("A2", "F8")
         /// </summary>
         /// <param name="startColumn">long: columna de la celda inicial Ej. (1) </param>
         /// <param name="startRow">long: fila de la celda inicial Ej. (2) </param>
@@ -223,23 +244,29 @@ namespace EllipseCommonsClassLibrary.Classes
         /// <returns>Microsoft.Office.Interop.Excel.Range Rango solicitado</returns>
         public Range GetRange(long startColumn, long startRow, long endColumn, long endRow)
         {
-            Worksheet excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
-            return excelSheet != null ? excelSheet.Range[GetCell(startColumn, startRow), GetCell(endColumn, endRow)] : null;
+            var excelSheet = _alwaysActiveSheet && _excelSheet != null
+                ? (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet
+                : _excelSheet;
+            return excelSheet != null
+                ? excelSheet.Range[GetCell(startColumn, startRow), GetCell(endColumn, endRow)]
+                : null;
         }
 
         /// <summary>
-        /// Obtiene el rango de una hoja según el nombre dado (Ej: rangos como tablas)
+        ///     Obtiene el rango de una hoja según el nombre dado (Ej: rangos como tablas)
         /// </summary>
         /// <param name="rangeName">string: nombre dado al rango (Ej: ValuesTable</param>
         /// <returns></returns>
         public Range GetRange(string rangeName)
         {
-            Worksheet excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
+            var excelSheet = _alwaysActiveSheet && _excelSheet != null
+                ? (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet
+                : _excelSheet;
             return excelSheet != null ? excelSheet.Range[rangeName] : null;
         }
 
         /// <summary>
-        /// Borra los datos de un rango y devuelve si la acción se realizó o no
+        ///     Borra los datos de un rango y devuelve si la acción se realizó o no
         /// </summary>
         /// <param name="startRange">string: nombre de la celda inicial Ej. ("A2") </param>
         /// <param name="endRange">string: nombre de la celda final Ej. ("F8") </param>
@@ -248,18 +275,20 @@ namespace EllipseCommonsClassLibrary.Classes
         {
             try
             {
-                Range cellsRange = GetRange(startRange, endRange);
+                var cellsRange = GetRange(startRange, endRange);
                 cellsRange.Clear();
                 return true;
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:clearRange(string, string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:clearRange(string, string)",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
+
         /// <summary>
-        /// Borra los datos de un rango y devuelve si la acción se realizó o no
+        ///     Borra los datos de un rango y devuelve si la acción se realizó o no
         /// </summary>
         /// <param name="startColumn">long: columna inicial del rango </param>
         /// <param name="startRow">long: fila inicial del rango</param>
@@ -276,12 +305,14 @@ namespace EllipseCommonsClassLibrary.Classes
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:clearRange(long, long, long, long)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:clearRange(long, long, long, long)",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
+
         /// <summary>
-        /// Combina un rango desde la celda inciial dada hasta la celda final dada
+        ///     Combina un rango desde la celda inciial dada hasta la celda final dada
         /// </summary>
         /// <param name="startRange">Celda inicial del rango a combinar Ej. ("A2")</param>
         /// <param name="endRange">Celda final del rango a combinar Ej. ("F8")</param>
@@ -293,7 +324,7 @@ namespace EllipseCommonsClassLibrary.Classes
         }
 
         /// <summary>
-        /// Combina un rango desde la celda inciial dada hasta la celda final dada
+        ///     Combina un rango desde la celda inciial dada hasta la celda final dada
         /// </summary>
         /// <param name="startColumn">long: columna inicial del rango </param>
         /// <param name="startRow">long: fila inicial del rango</param>
@@ -308,17 +339,21 @@ namespace EllipseCommonsClassLibrary.Classes
 
         //SHEETS
         /// <summary>
-        /// Establece un nuevo nombre a una Hoja dada según el índice Ej. Hoja(index) = newSheetName
+        ///     Establece un nuevo nombre a una Hoja dada según el índice Ej. Hoja(index) = newSheetName
         /// </summary>
         /// <param name="index">int: índice de hoja a cambiar nombre</param>
         /// <param name="newSheetName">string: nuevo nombre para la hoja</param>
-        /// <returns>true: si se realiza la acción. false: si no se realiza la acción por algún error o porque no existe la hoja ingresada</returns>
+        /// <returns>
+        ///     true: si se realiza la acción. false: si no se realiza la acción por algún error o porque no existe la hoja
+        ///     ingresada
+        /// </returns>
         public bool SetSheetName(int index, string newSheetName)
-        { //TO CHECK
+        {
+            //TO CHECK
             try
             {
-                ((Worksheet)_excelApp.ActiveWorkbook.Sheets[index]).Name = newSheetName;
-                
+                ((Worksheet) _excelApp.ActiveWorkbook.Sheets[index]).Name = newSheetName;
+
                 return true;
             }
             catch (Exception ex)
@@ -327,14 +362,16 @@ namespace EllipseCommonsClassLibrary.Classes
                 return false;
             }
         }
+
         /// <summary>
-        /// Establece un nuevo nombre a una hoja según el nombre antiguo dado Ej. Hoja(oldSheetName) = newSheetName
+        ///     Establece un nuevo nombre a una hoja según el nombre antiguo dado Ej. Hoja(oldSheetName) = newSheetName
         /// </summary>
         /// <param name="oldSheetName">string: Nombre de hoja a renombrar</param>
         /// <param name="newSheetName">string: Nuevo nombre dado</param>
         /// <returns></returns>
         public bool SetSheetName(string oldSheetName, string newSheetName)
-        { //TO CHECK
+        {
+            //TO CHECK
             try
             {
                 foreach (Worksheet ws in _excelApp.ActiveWorkbook.Sheets)
@@ -343,6 +380,7 @@ namespace EllipseCommonsClassLibrary.Classes
                     ws.Name = newSheetName;
                     return true;
                 }
+
                 return false;
             }
             catch (Exception ex)
@@ -351,8 +389,9 @@ namespace EllipseCommonsClassLibrary.Classes
                 return false;
             }
         }
+
         /// <summary>
-        /// Obtiene la hoja del libro según el nombre indicado. Si la hoja no existe retorna null
+        ///     Obtiene la hoja del libro según el nombre indicado. Si la hoja no existe retorna null
         /// </summary>
         /// <param name="worksheetName">string: nombre de la hoja de trabajo</param>
         /// <returns></returns>
@@ -363,18 +402,20 @@ namespace EllipseCommonsClassLibrary.Classes
                 if (sheet.Name != worksheetName) continue;
                 return sheet;
             }
+
             return null;
         }
+
         /// <summary>
-        /// Obtiene la hoja del libro según el nombre indicado. Si la hoja no existe retorna null
+        ///     Obtiene la hoja del libro según el nombre indicado. Si la hoja no existe retorna null
         /// </summary>
         /// <param name="index">int: índice de la hoja de trabajo (índice inicial 1)</param>
         /// <returns></returns>
         public Worksheet GetWorksheet(int index)
-        { 
+        {
             try
             {
-                return (Worksheet)_excelApp.ActiveWorkbook.Sheets[index];
+                return (Worksheet) _excelApp.ActiveWorkbook.Sheets[index];
             }
             catch (Exception ex)
             {
@@ -384,7 +425,7 @@ namespace EllipseCommonsClassLibrary.Classes
         }
 
         /// <summary>
-        /// Establece la visibilidad de la hoja.
+        ///     Establece la visibilidad de la hoja.
         /// </summary>
         /// <param name="worksheetName"></param>
         /// <param name="visible">bool: true para Visible, false para oculto</param>
@@ -400,29 +441,31 @@ namespace EllipseCommonsClassLibrary.Classes
         }
 
         /// <summary>
-        /// Crea una nueva hoja de trabajo al final del libro activo
+        ///     Crea una nueva hoja de trabajo al final del libro activo
         /// </summary>
         /// <param name="worksheetName">string: Nombre de la nueva hoja de trabajo</param>
         /// <returns></returns>
         public Worksheet CreateNewWorksheet(string worksheetName)
         {
             var currentSheetIndex = ((Worksheet) _excelApp.ActiveWorkbook.ActiveSheet).Index;
-            
-            _excelApp.ActiveWorkbook.Worksheets.Add(After: _excelApp.ActiveWorkbook.Sheets[_excelApp.ActiveWorkbook.Sheets.Count]);
-            ((Worksheet)_excelApp.ActiveWorkbook.Sheets[_excelApp.ActiveWorkbook.Worksheets.Count]).Select(Type.Missing);
 
-            ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name = worksheetName;
-            var newSheet = (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
+            _excelApp.ActiveWorkbook.Worksheets.Add(
+                After: _excelApp.ActiveWorkbook.Sheets[_excelApp.ActiveWorkbook.Sheets.Count]);
+            ((Worksheet) _excelApp.ActiveWorkbook.Sheets[_excelApp.ActiveWorkbook.Worksheets.Count]).Select(
+                Type.Missing);
 
-            ((Worksheet)_excelApp.ActiveWorkbook.Sheets[currentSheetIndex]).Select(Type.Missing);
+            ((Worksheet) _excelApp.ActiveWorkbook.ActiveSheet).Name = worksheetName;
+            var newSheet = (Worksheet) _excelApp.ActiveWorkbook.ActiveSheet;
+
+            ((Worksheet) _excelApp.ActiveWorkbook.Sheets[currentSheetIndex]).Select(Type.Missing);
             return newSheet;
-
         }
-    
+
         //STYLES
 
         /// <summary>
-        /// Obtiene un estilo a partir de un nombre de estilo dado. El nombre del estilo coincide con los valores de estilos existentes en StyleConstants.StyleName. Si el estilo ingresado no existe, devuelve el estilo Normal
+        ///     Obtiene un estilo a partir de un nombre de estilo dado. El nombre del estilo coincide con los valores de estilos
+        ///     existentes en StyleConstants.StyleName. Si el estilo ingresado no existe, devuelve el estilo Normal
         /// </summary>
         /// <param name="styleName">string: nombre de estilo a obtener</param>
         /// <returns>Microsoft.Office.Interop.Excel.Style styleName El estilo solicitado</returns>
@@ -442,12 +485,14 @@ namespace EllipseCommonsClassLibrary.Classes
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:getStyle(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:getStyle(string)",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return GetStyleNormal();
             }
         }
+
         /// <summary>
-        /// Obtiene el estilo Normal predeterminado
+        ///     Obtiene el estilo Normal predeterminado
         /// </summary>
         /// <returns>Microsoft.Office.Interop.Excel.Style styleName El estilo solicitado</returns>
         public Style GetStyleNormal()
@@ -461,15 +506,17 @@ namespace EllipseCommonsClassLibrary.Classes
                 CreateStyles();
                 return GetStyleNormal();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:getStyleNormal()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:getStyleNormal()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 CreateStyles();
                 return GetStyleNormal();
             }
         }
+
         /// <summary>
-        /// Obtiene el estilo Error predeterminado
+        ///     Obtiene el estilo Error predeterminado
         /// </summary>
         /// <returns>Microsoft.Office.Interop.Excel.Style styleName El estilo solicitado</returns>
         public Style GetStyleError()
@@ -485,13 +532,15 @@ namespace EllipseCommonsClassLibrary.Classes
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:getStyleError()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:getStyleError()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 CreateStyles();
                 return GetStyleError();
             }
         }
+
         /// <summary>
-        /// Obtiene el estilo Warning predeterminado
+        ///     Obtiene el estilo Warning predeterminado
         /// </summary>
         /// <returns>Microsoft.Office.Interop.Excel.Style styleName El estilo solicitado</returns>
         public Style GetStyleWarning()
@@ -507,13 +556,15 @@ namespace EllipseCommonsClassLibrary.Classes
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:getStyleWarning()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:getStyleWarning()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 CreateStyles();
                 return GetStyleWarning();
             }
         }
+
         /// <summary>
-        /// Obtiene el estilo Success predeterminado
+        ///     Obtiene el estilo Success predeterminado
         /// </summary>
         /// <returns>Microsoft.Office.Interop.Excel.Style styleName El estilo solicitado</returns>
         public Style GetStyleSuccess()
@@ -529,13 +580,15 @@ namespace EllipseCommonsClassLibrary.Classes
             }
             catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:getStyleSuccess()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:getStyleSuccess()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 CreateStyles();
                 return GetStyleSuccess();
             }
         }
+
         /// <summary>
-        /// Crea los estilos predeterminados que va a tener la clase
+        ///     Crea los estilos predeterminados que va a tener la clase
         /// </summary>
         private void CreateStyles()
         {
@@ -547,6 +600,7 @@ namespace EllipseCommonsClassLibrary.Classes
                     var styleNormal = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.Normal, Type.Missing);
                     styleNormal.NumberFormat = "General";
                 }
+
                 //Success
                 if (!ExistStyle(StyleConstants.Success))
                 {
@@ -557,6 +611,7 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleSuccess.NumberFormat = "General";
                     styleSuccess.Interior.Color = ColorTranslator.ToOle(Color.LightGreen);
                 }
+
                 //Warning
                 if (!ExistStyle(StyleConstants.Warning))
                 {
@@ -567,6 +622,7 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleWarning.NumberFormat = "General";
                     styleWarning.Interior.Color = ColorTranslator.ToOle(Color.Yellow);
                 }
+
                 //Error
                 if (!ExistStyle(StyleConstants.Error))
                 {
@@ -577,10 +633,12 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleError.NumberFormat = "General";
                     styleError.Interior.Color = ColorTranslator.ToOle(Color.Red);
                 }
+
                 //HeaderDefault
                 if (!ExistStyle(StyleConstants.HeaderDefault))
                 {
-                    var styleHeaderDefault = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.HeaderDefault, Type.Missing);
+                    var styleHeaderDefault =
+                        _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.HeaderDefault, Type.Missing);
                     styleHeaderDefault.Font.Name = "MS Sans Serif";
                     styleHeaderDefault.Font.Size = 13;
                     styleHeaderDefault.Font.Bold = true;
@@ -588,10 +646,12 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleHeaderDefault.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleHeaderDefault.NumberFormat = "General";
                 }
+
                 //HeaderSize17
                 if (!ExistStyle(StyleConstants.HeaderSize17))
                 {
-                    var styleHeaderSize17 = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.HeaderSize17, Type.Missing);
+                    var styleHeaderSize17 =
+                        _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.HeaderSize17, Type.Missing);
                     styleHeaderSize17.Font.Name = "MS Sans Serif";
                     styleHeaderSize17.Font.Size = 17;
                     styleHeaderSize17.Font.Bold = true;
@@ -599,10 +659,12 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleHeaderSize17.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleHeaderSize17.NumberFormat = "General";
                 }
+
                 //TitleDefault
                 if (!ExistStyle(StyleConstants.TitleDefault))
                 {
-                    var styleTitleDefault = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleDefault, Type.Missing);
+                    var styleTitleDefault =
+                        _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleDefault, Type.Missing);
                     styleTitleDefault.Font.Name = "Calibri";
                     styleTitleDefault.Font.Size = 10;
                     styleTitleDefault.Font.Bold = true;
@@ -610,10 +672,12 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleTitleDefault.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleTitleDefault.NumberFormat = "General";
                 }
+
                 //TitleRequired
                 if (!ExistStyle(StyleConstants.TitleRequired))
                 {
-                    var styleTitleRequired = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleRequired, Type.Missing);
+                    var styleTitleRequired =
+                        _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleRequired, Type.Missing);
                     styleTitleRequired.Font.Name = "Calibri";
                     styleTitleRequired.Font.Size = 10;
                     styleTitleRequired.Font.Bold = true;
@@ -623,10 +687,12 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleTitleRequired.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleTitleRequired.Interior.Color = ColorTranslator.ToOle(Color.DarkBlue);
                 }
+
                 //TitleOptional
                 if (!ExistStyle(StyleConstants.TitleOptional))
                 {
-                    var styleTitleOptional = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleOptional, Type.Missing);
+                    var styleTitleOptional =
+                        _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleOptional, Type.Missing);
                     styleTitleOptional.Font.Name = "Calibri";
                     styleTitleOptional.Font.Size = 10;
                     styleTitleOptional.Font.Bold = true;
@@ -636,10 +702,12 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleTitleOptional.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleTitleOptional.Interior.Color = ColorTranslator.ToOle(Color.Black);
                 }
+
                 //TitleInformation
                 if (!ExistStyle(StyleConstants.TitleInformation))
                 {
-                    var styleTitleInformation = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleInformation, Type.Missing);
+                    var styleTitleInformation =
+                        _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleInformation, Type.Missing);
                     styleTitleInformation.Font.Name = "Calibri";
                     styleTitleInformation.Font.Size = 10;
                     styleTitleInformation.Font.Bold = true;
@@ -649,10 +717,12 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleTitleInformation.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleTitleInformation.Interior.Color = ColorTranslator.ToOle(Color.Yellow);
                 }
+
                 //TitleAction
                 if (!ExistStyle(StyleConstants.TitleAction))
                 {
-                    var styleTitleAction = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleAction, Type.Missing);
+                    var styleTitleAction =
+                        _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleAction, Type.Missing);
                     styleTitleAction.Font.Name = "Calibri";
                     styleTitleAction.Font.Size = 10;
                     styleTitleAction.Font.Bold = true;
@@ -662,10 +732,12 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleTitleAction.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleTitleAction.Interior.Color = ColorTranslator.ToOle(Color.Red);
                 }
+
                 //TitleAdditional
                 if (!ExistStyle(StyleConstants.TitleAdditional))
                 {
-                    var styleTitleAdditional = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleAdditional, Type.Missing);
+                    var styleTitleAdditional =
+                        _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleAdditional, Type.Missing);
                     styleTitleAdditional.Font.Name = "Calibri";
                     styleTitleAdditional.Font.Size = 10;
                     styleTitleAdditional.Font.Bold = true;
@@ -675,10 +747,12 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleTitleAdditional.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleTitleAdditional.Interior.Color = ColorTranslator.ToOle(Color.LightGreen);
                 }
+
                 //TitleResult
                 if (!ExistStyle(StyleConstants.TitleResult))
                 {
-                    var styleTitleResult = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleResult, Type.Missing);
+                    var styleTitleResult =
+                        _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.TitleResult, Type.Missing);
                     styleTitleResult.Font.Name = "Calibri";
                     styleTitleResult.Borders.Color = ColorTranslator.ToOle(Color.Gray);
                     styleTitleResult.Borders.LineStyle = XlLineStyle.xlContinuous;
@@ -693,6 +767,7 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleTitleResult.NumberFormat = "General";
                     styleTitleResult.Interior.Color = ColorTranslator.ToOle(Color.Yellow);
                 }
+
                 //Option
                 if (!ExistStyle(StyleConstants.Option))
                 {
@@ -715,6 +790,7 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleTitleOption.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleTitleOption.Interior.Color = ColorTranslator.ToOle(Color.Gray);
                 }
+
                 //Select
                 if (!ExistStyle(StyleConstants.Select))
                 {
@@ -732,6 +808,7 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleTitleSelect.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleTitleSelect.NumberFormat = "General";
                 }
+
                 //Disabled
                 if (!ExistStyle(StyleConstants.Disabled))
                 {
@@ -745,16 +822,19 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleTitleDisabled.VerticalAlignment = XlVAlign.xlVAlignCenter;
                     styleTitleDisabled.Interior.Color = ColorTranslator.ToOle(Color.LightGray);
                 }
+
                 //Time
                 if (!ExistStyle(StyleConstants.Time))
                 {
                     var styleTime = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.Time, Type.Missing);
                     styleTime.NumberFormat = "HH:mm:ss";
                 }
+
                 //ItalicSmall
                 if (!ExistStyle(StyleConstants.ItalicSmall))
                 {
-                    var styleItalicSmall = _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.ItalicSmall, Type.Missing);
+                    var styleItalicSmall =
+                        _excelApp.ActiveWorkbook.Styles.Add(StyleConstants.ItalicSmall, Type.Missing);
                     styleItalicSmall.Font.Name = "Calibri";
                     styleItalicSmall.Font.Size = 8;
                     styleItalicSmall.Font.Italic = true;
@@ -765,19 +845,20 @@ namespace EllipseCommonsClassLibrary.Classes
                     styleItalicSmall.Interior.Color = ColorTranslator.ToOle(Color.LightGray);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Debugger.LogError("ExcelStyleCells:createStyles()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("ExcelStyleCells:createStyles()",
+                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 var styleConstantsList = StyleConstants.GetStyleListName();
                 foreach (Style style in _excelApp.ActiveWorkbook.Styles)
-                    if(styleConstantsList.Contains(style.Name))
+                    if (styleConstantsList.Contains(style.Name))
                         style.Delete();
                 CreateStyles();
             }
         }
 
         /// <summary>
-        /// Indica si el estilo ya existe en el libro de excel
+        ///     Indica si el estilo ya existe en el libro de excel
         /// </summary>
         /// <param name="styleName">Nombre del estilo a buscar</param>
         /// <returns>true si styleName existe, false si no existe un estilo con ese nombre</returns>
@@ -791,7 +872,7 @@ namespace EllipseCommonsClassLibrary.Classes
         }
 
         /// <summary>
-        /// Adiciona una lista de validación a la celda o rango especificada
+        ///     Adiciona una lista de validación a la celda o rango especificada
         /// </summary>
         /// <param name="targetRange">targetRange: Celda o rango para adicionarle la lista de validación</param>
         /// <param name="validationValues">List(string): lista de validación para adicionar al rango</param>
@@ -810,25 +891,27 @@ namespace EllipseCommonsClassLibrary.Classes
             else
             {
                 separator = _excelApp.DecimalSeparator.Equals(",") ? ";" : ",";
-                
             }
+
             var list = string.Join(separator, validationValues);
 
             targetRange.Validation.Delete();
-            targetRange.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, XlFormatConditionOperator.xlBetween, list, Type.Missing);
+            targetRange.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop,
+                XlFormatConditionOperator.xlBetween, list, Type.Missing);
             targetRange.Validation.IgnoreBlank = true;
             targetRange.Validation.ShowError = true;
         }
 
         /// <summary>
-        /// Adiciona una lista de validación a la celda o rango especificada
+        ///     Adiciona una lista de validación a la celda o rango especificada
         /// </summary>
         /// <param name="targetRange">targetRange: Celda o rango para adicionarle la lista de validación</param>
         /// <param name="validationSheetName">string: Nombre de la hoja de datos de validación</param>
         /// <param name="validationColumnIndex">int: índice de la columna de datos de la hoja de validación dada</param>
         /// <param name="validationValues">List(string): lista de validación para adicionar al rango</param>
         /// <param name="showError">bool: Indica si muestra o no el diálogo de error al ingresar un valor erróneo</param>
-        public void SetValidationList(Range targetRange, List<string> validationValues, string validationSheetName, int validationColumnIndex, bool showError = true)
+        public void SetValidationList(Range targetRange, List<string> validationValues, string validationSheetName,
+            int validationColumnIndex, bool showError = true)
         {
             Worksheet validationSheet = null;
             foreach (Worksheet sheet in _excelApp.ActiveWorkbook.Sheets)
@@ -837,9 +920,10 @@ namespace EllipseCommonsClassLibrary.Classes
                 validationSheet = sheet;
                 break;
             }
+
             if (validationSheet == null)
                 throw new Exception(@"La hoja de validación ingresada no existe");
-            
+
             var i = 1;
 
             var validCells = new ExcelStyleCells(_excelApp, validationSheetName);
@@ -854,21 +938,23 @@ namespace EllipseCommonsClassLibrary.Classes
             }
 
             var columnName = GetExcelColumnName(validationColumnIndex);
-            var formula = "='" + validationSheetName + "'!$"+columnName+":$"+columnName;
+            var formula = "='" + validationSheetName + "'!$" + columnName + ":$" + columnName;
             targetRange.Validation.Delete();
-            targetRange.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, XlFormatConditionOperator.xlBetween, formula, Type.Missing);
+            targetRange.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop,
+                XlFormatConditionOperator.xlBetween, formula, Type.Missing);
             targetRange.Validation.IgnoreBlank = true;
             targetRange.Validation.ShowError = showError;
         }
 
         /// <summary>
-        /// Adiciona una lista de validación a la celda o rango especificada a partir de una columna de datos de una hoja dada
+        ///     Adiciona una lista de validación a la celda o rango especificada a partir de una columna de datos de una hoja dada
         /// </summary>
         /// <param name="targetRange">targetRange: Celda o rango para adicionarle la lista de validación</param>
         /// <param name="validationSheetName">string: Nombre de la hoja de datos de validación</param>
         /// <param name="validationColumnIndex">int: índice de la columna de datos de la hoja de validación dada</param>
         /// <param name="showError">bool: Indica si muestra o no el diálogo de error al ingresar un valor erróneo</param>
-        public void SetValidationList(Range targetRange, string validationSheetName, int validationColumnIndex, bool showError = true)
+        public void SetValidationList(Range targetRange, string validationSheetName, int validationColumnIndex,
+            bool showError = true)
         {
             Worksheet validationSheet = null;
             foreach (Worksheet sheet in _excelApp.ActiveWorkbook.Sheets)
@@ -887,17 +973,20 @@ namespace EllipseCommonsClassLibrary.Classes
             var columnName = GetExcelColumnName(validationColumnIndex);
             var formula = "='" + validationSheetName + "'!$" + columnName + ":$" + columnName;
             targetRange.Validation.Delete();
-            targetRange.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, XlFormatConditionOperator.xlBetween, formula, Type.Missing);
+            targetRange.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop,
+                XlFormatConditionOperator.xlBetween, formula, Type.Missing);
             targetRange.Validation.IgnoreBlank = true;
             targetRange.Validation.ShowError = showError;
         }
+
         /// <summary>
-        /// Adiciona una lista de validación a la hoja de validación especificada
+        ///     Adiciona una lista de validación a la hoja de validación especificada
         /// </summary>
         /// <param name="validationSheetName">string: Nombre de la hoja de datos de validación</param>
         /// <param name="validationColumnIndex">int: índice de la columna de datos de la hoja de validación dada</param>
         /// <param name="validationValues">List(string): lista de validación para adicionar al rango</param>
-        public void SetValidationList(List<string> validationValues, string validationSheetName, int validationColumnIndex)
+        public void SetValidationList(List<string> validationValues, string validationSheetName,
+            int validationColumnIndex)
         {
             Worksheet validationSheet = null;
             foreach (Worksheet sheet in _excelApp.ActiveWorkbook.Sheets)
@@ -906,6 +995,7 @@ namespace EllipseCommonsClassLibrary.Classes
                 validationSheet = sheet;
                 break;
             }
+
             if (validationSheet == null)
                 throw new Exception(@"La hoja de validación ingresada no existe");
 
@@ -922,28 +1012,35 @@ namespace EllipseCommonsClassLibrary.Classes
                 i++;
             }
         }
+
         /// <summary>
-        /// Devuelve un string con el valor del objeto eliminando los espacios vacíos
+        ///     Devuelve un string con el valor del objeto eliminando los espacios vacíos
         /// </summary>
         /// <param name="value">Object: objeto con el valor a obtener</param>
-        /// <returns>string: Trim(value) o null si value es nulo. Si el valor está vacío o solo tiene espacios vacíos, devuelve un string vació</returns>
+        /// <returns>
+        ///     string: Trim(value) o null si value es nulo. Si el valor está vacío o solo tiene espacios vacíos, devuelve un
+        ///     string vació
+        /// </returns>
         public string GetNullOrTrimmedValue(object value)
         {
             return value == null ? null : Convert.ToString(value).Trim();
         }
 
         /// <summary>
-        /// Devuelve un string con el valor de value eliminando los espacios vacíos, o null si value está vacío
+        ///     Devuelve un string con el valor de value eliminando los espacios vacíos, o null si value está vacío
         /// </summary>
         /// <param name="value">Object: objeto con el valor a obtener</param>
-        /// <returns>string: Trim(value) o null si value es nulo. Si el valor está vacío o solo tiene espacios vacíos, devuelve null</returns>
+        /// <returns>
+        ///     string: Trim(value) o null si value es nulo. Si el valor está vacío o solo tiene espacios vacíos, devuelve
+        ///     null
+        /// </returns>
         public string GetNullIfTrimmedEmpty(object value)
         {
             return string.IsNullOrWhiteSpace(Convert.ToString(value)) ? null : value.ToString().Trim();
         }
 
         /// <summary>
-        /// Devuelve un string con el valor de value eliminando los espacios vacíos, o vacío si value es null
+        ///     Devuelve un string con el valor de value eliminando los espacios vacíos, o vacío si value es null
         /// </summary>
         /// <param name="value"></param>
         /// <returns>string: Trim(value) o vacío si value es nulo</returns>
@@ -952,20 +1049,19 @@ namespace EllipseCommonsClassLibrary.Classes
             return string.IsNullOrWhiteSpace(Convert.ToString(value)) ? "" : value.ToString().Trim();
         }
 
-        
 
         /// <summary>
-        /// Da formato a un rango especificado para que se comporte como una tabla en excel
+        ///     Da formato a un rango especificado para que se comporte como una tabla en excel
         /// </summary>
         /// <param name="sourceRange">Range: Rango a formatear como tabla</param>
         /// <param name="tableName">string: Nombre dado a la tabla</param>
         /// <returns>ListObject: Tabla del Rango en forma de objeto ListObject</returns>
         public ListObject FormatAsTable(Range sourceRange, string tableName)
         {
-            try//lo crea con un estilo predeterminado
+            try //lo crea con un estilo predeterminado
             {
                 sourceRange.Worksheet.ListObjects.Add(XlListObjectSourceType.xlSrcRange,
-                    sourceRange, Type.Missing, XlYesNoGuess.xlYes, Type.Missing).Name =
+                        sourceRange, Type.Missing, XlYesNoGuess.xlYes, Type.Missing).Name =
                     tableName;
                 sourceRange.Worksheet.ListObjects[tableName].TableStyle =
                     StyleConstants.TableStyleConstants.DefaultTableStyle;
@@ -974,11 +1070,12 @@ namespace EllipseCommonsClassLibrary.Classes
             catch (Exception)
             {
                 sourceRange.Worksheet.ListObjects.Add(XlListObjectSourceType.xlSrcRange,
-                    sourceRange, Type.Missing, XlYesNoGuess.xlYes, Type.Missing).Name =
+                        sourceRange, Type.Missing, XlYesNoGuess.xlYes, Type.Missing).Name =
                     tableName;
                 return sourceRange.Worksheet.ListObjects[tableName]; //get table
             }
         }
+
         public void DeleteTableRange(string tableRangeName)
         {
             try
@@ -994,7 +1091,7 @@ namespace EllipseCommonsClassLibrary.Classes
         }
 
         /// <summary>
-        /// Elimina todas las filas de una tabla de rango dejando su encabezado
+        ///     Elimina todas las filas de una tabla de rango dejando su encabezado
         /// </summary>
         /// <param name="tableRangeName">string: Nombre dado a la tabla rango</param>
         public void ClearTableRange(string tableRangeName)
@@ -1008,7 +1105,6 @@ namespace EllipseCommonsClassLibrary.Classes
                 ////para conservar el numberformat de la tabla
                 tableRange.ListObject.ListRows[1].Range.Style = StyleConstants.Normal;
                 tableRange.ListObject.ListRows[1].Range.NumberFormat = numberFormat;
-
             }
             catch (Exception)
             {
@@ -1017,7 +1113,7 @@ namespace EllipseCommonsClassLibrary.Classes
         }
 
         /// <summary>
-        /// Elimina el texto y formato de todas las celdas de una columna pertenecientes a una tabla rango
+        ///     Elimina el texto y formato de todas las celdas de una columna pertenecientes a una tabla rango
         /// </summary>
         /// <param name="tableRangeName">string: Nombre dado a la tabla rango</param>
         /// <param name="columnIndex">int: índice de la columna dentro de la tabla rango</param>
@@ -1027,15 +1123,15 @@ namespace EllipseCommonsClassLibrary.Classes
             {
                 var tableRange = GetRange(tableRangeName);
                 GetRange(tableRange.ListObject.ListColumns[columnIndex].Range.Column,
-                    tableRange.ListObject.ListColumns[columnIndex].Range.Row + 1,
-                    tableRange.ListObject.ListColumns[columnIndex].Range.Column,
-                    tableRange.ListObject.ListColumns[columnIndex].Range.Row + tableRange.ListObject.ListRows.Count)
+                        tableRange.ListObject.ListColumns[columnIndex].Range.Row + 1,
+                        tableRange.ListObject.ListColumns[columnIndex].Range.Column,
+                        tableRange.ListObject.ListColumns[columnIndex].Range.Row + tableRange.ListObject.ListRows.Count)
                     .Clear();
 
                 GetRange(tableRange.ListObject.ListColumns[columnIndex].Range.Column,
-                    tableRange.ListObject.ListColumns[columnIndex].Range.Row + 1,
-                    tableRange.ListObject.ListColumns[columnIndex].Range.Column,
-                    tableRange.ListObject.ListColumns[columnIndex].Range.Row + tableRange.ListObject.ListRows.Count)
+                        tableRange.ListObject.ListColumns[columnIndex].Range.Row + 1,
+                        tableRange.ListObject.ListColumns[columnIndex].Range.Column,
+                        tableRange.ListObject.ListColumns[columnIndex].Range.Row + tableRange.ListObject.ListRows.Count)
                     .Style = StyleConstants.Normal;
             }
             catch (Exception)
@@ -1043,8 +1139,9 @@ namespace EllipseCommonsClassLibrary.Classes
                 //ignored
             }
         }
+
         /// <summary>
-        /// Elimina el texto y formato de todas las celdas de una columna pertenecientes a una tabla rango
+        ///     Elimina el texto y formato de todas las celdas de una columna pertenecientes a una tabla rango
         /// </summary>
         /// <param name="tableRangeName">string: Nombre dado a la tabla rango</param>
         /// <param name="columnName">string: Título del encabezado de la columna dentro de la tabla rango</param>
@@ -1054,26 +1151,25 @@ namespace EllipseCommonsClassLibrary.Classes
             {
                 var tableRange = GetRange(tableRangeName);
                 GetRange(tableRange.ListObject.ListColumns[columnName].Range.Column,
-                    tableRange.ListObject.ListColumns[columnName].Range.Row + 1,
-                    tableRange.ListObject.ListColumns[columnName].Range.Column,
-                    tableRange.ListObject.ListColumns[columnName].Range.Row + tableRange.ListObject.ListRows.Count)
+                        tableRange.ListObject.ListColumns[columnName].Range.Row + 1,
+                        tableRange.ListObject.ListColumns[columnName].Range.Column,
+                        tableRange.ListObject.ListColumns[columnName].Range.Row + tableRange.ListObject.ListRows.Count)
                     .Clear();
 
                 GetRange(tableRange.ListObject.ListColumns[columnName].Range.Column,
-                    tableRange.ListObject.ListColumns[columnName].Range.Row + 1,
-                    tableRange.ListObject.ListColumns[columnName].Range.Column,
-                    tableRange.ListObject.ListColumns[columnName].Range.Row + tableRange.ListObject.ListRows.Count)
+                        tableRange.ListObject.ListColumns[columnName].Range.Row + 1,
+                        tableRange.ListObject.ListColumns[columnName].Range.Column,
+                        tableRange.ListObject.ListColumns[columnName].Range.Row + tableRange.ListObject.ListRows.Count)
                     .Style = StyleConstants.Normal;
             }
             catch (Exception)
             {
                 //ignored
             }
-
         }
 
         /// <summary>
-        /// Obtiene la letra de una columna Excel según el índice ingresado (Ej. columnNumber: 8, resultado: H)
+        ///     Obtiene la letra de una columna Excel según el índice ingresado (Ej. columnNumber: 8, resultado: H)
         /// </summary>
         /// <param name="columnNumber"></param>
         /// <returns></returns>
@@ -1085,7 +1181,7 @@ namespace EllipseCommonsClassLibrary.Classes
             while (dividend > 0)
             {
                 var modulo = (dividend - 1) % 26;
-                columnName = Convert.ToChar(65 + modulo).ToString() + columnName;
+                columnName = Convert.ToChar(65 + modulo) + columnName;
                 dividend = (dividend - modulo) / 26;
             }
 
@@ -1093,7 +1189,7 @@ namespace EllipseCommonsClassLibrary.Classes
         }
 
         /// <summary>
-        /// Indica si el separador de decimales usado es punto.
+        ///     Indica si el separador de decimales usado es punto.
         /// </summary>
         /// <returns>true: si el separador es punto ".", false si es otro símbolo</returns>
         public bool IsDecimalDotSeparator(Application excelApp = null)
@@ -1101,8 +1197,9 @@ namespace EllipseCommonsClassLibrary.Classes
             if (excelApp == null)
                 excelApp = _excelApp;
             //si uso los separadores del sistema
-            var separator = excelApp.UseSystemSeparators 
-                ? LanguageSettingConstants.DecimalSeparator : excelApp.DecimalSeparator;
+            var separator = excelApp.UseSystemSeparators
+                ? LanguageSettingConstants.DecimalSeparator
+                : excelApp.DecimalSeparator;
             return separator.Equals(".");
         }
 
@@ -1122,19 +1219,19 @@ namespace EllipseCommonsClassLibrary.Classes
 
         public void SetEllipseDefaultCulture()
         {
-            _oldCultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture;
-            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            _oldCultureInfo = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
         }
 
         public void ResetCurrentCulture()
         {
             if (_oldCultureInfo != null)
-                System.Threading.Thread.CurrentThread.CurrentCulture = _oldCultureInfo;
+                Thread.CurrentThread.CurrentCulture = _oldCultureInfo;
         }
     }
 
     /// <summary>
-    /// Estilos Predeterminados del Sistemas
+    ///     Estilos Predeterminados del Sistemas
     /// </summary>
     public static class StyleConstants
     {
@@ -1161,27 +1258,28 @@ namespace EllipseCommonsClassLibrary.Classes
         public const string Disabled = "Disabled";
         public const string Time = "Time";
         public const string ItalicSmall = "ItalicSmall";
+
         public static List<string> GetStyleListName()
         {
             var styleConstantsList = new List<string>
             {
-                Normal, 
-                Success, 
-                Warning, 
-                Error, 
-                HeaderDefault, 
-                HeaderSize17, 
-                TitleDefault, 
-                TitleRequired, 
-                TitleOptional, 
-                TitleInformation, 
-                TitleAction, 
-                TitleAdditional, 
-                TitleResult, 
-                Option, 
-                Select, 
-                Disabled, 
-                Time, 
+                Normal,
+                Success,
+                Warning,
+                Error,
+                HeaderDefault,
+                HeaderSize17,
+                TitleDefault,
+                TitleRequired,
+                TitleOptional,
+                TitleInformation,
+                TitleAction,
+                TitleAdditional,
+                TitleResult,
+                Option,
+                Select,
+                Disabled,
+                Time,
                 ItalicSmall
             };
 
@@ -1193,6 +1291,7 @@ namespace EllipseCommonsClassLibrary.Classes
             public const string DefaultTableStyle = "TableStyleLight8";
         }
     }
+
     //Formatos de Número para Celdas del Sistema
     public static class NumberFormatConstants
     {
@@ -1207,7 +1306,5 @@ namespace EllipseCommonsClassLibrary.Classes
     {
         public static readonly string ListSeparator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
         public static readonly string DecimalSeparator = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-
     }
-
 }

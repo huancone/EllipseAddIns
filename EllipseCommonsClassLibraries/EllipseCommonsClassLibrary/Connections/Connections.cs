@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable LoopCanBeConvertedToQuery
 
@@ -14,8 +15,10 @@ namespace EllipseCommonsClassLibrary.Connections
         public static string PostService = "POST";
         public static string EwsService = "EWS";
     }
+
     public static class Environments
     {
+        public const string DefaultDbReferenceName = "ELLIPSE";
         public static string EllipseProductivo = "Productivo";
         public static string EllipseContingencia = "Contingencia";
         public static string EllipseDesarrollo = "Desarrollo";
@@ -24,8 +27,6 @@ namespace EllipseCommonsClassLibrary.Connections
         public static string SigcorProductivo = "SIGCOR";
         public static string ScadaRdb = "SCADARDB";
         public static string CustomDatabase = "Personalizada";
-
-        public const string DefaultDbReferenceName = "ELLIPSE";
 
         public static string GetServiceUrl(string enviroment, string serviceType = null)
         {
@@ -46,26 +47,18 @@ namespace EllipseCommonsClassLibrary.Connections
 
             XDocument xmlDoc;
             if (File.Exists(serviceFile))
-            {
                 xmlDoc = XDocument.Load(serviceFile);
-            }
             else if (File.Exists(serviceFileBackUp))
-            {
                 xmlDoc = XDocument.Load(serviceFileBackUp);
-            }
             else if (File.Exists(serviceFileLocal))
-            {
                 xmlDoc = XDocument.Load(serviceFileLocal);
-            }
             else
-            {
-                throw new Exception("No se puede leer el archivo de configuración de servicios de Ellipse. Asegúrese de que el archivo exista o cree un archivo local.");
-            }
+                throw new Exception(
+                    "No se puede leer el archivo de configuración de servicios de Ellipse. Asegúrese de que el archivo exista o cree un archivo local.");
 
             string urlServer;
             if (serviceType.Equals(ServiceType.EwsService))
             {
-
                 if (enviroment == EllipseProductivo)
                     urlServer = WebService.Productivo;
                 else if (enviroment == EllipseContingencia)
@@ -79,6 +72,7 @@ namespace EllipseCommonsClassLibrary.Connections
 
                 return xmlDoc.XPathSelectElement(urlServer + "[1]").Value;
             }
+
             if (serviceType.Equals(ServiceType.PostService))
             {
                 if (enviroment == EllipseProductivo)
@@ -94,6 +88,7 @@ namespace EllipseCommonsClassLibrary.Connections
 
                 return xmlDoc.XPathSelectElement(urlServer + "[1]").Value;
             }
+
             throw new NullReferenceException("No se ha encontrado el servidor seleccionado");
         }
 
@@ -108,25 +103,19 @@ namespace EllipseCommonsClassLibrary.Connections
                 var urlLocalPath = Configuration.DefaultLocalDataPath + Configuration.ConfigXmlFileName;
 
                 if (File.Exists(urlPath))
-                {
                     xmlDoc.Load(urlPath);
-                }
                 else if (File.Exists(urlPathBackUp))
-                {
                     xmlDoc.Load(urlPathBackUp);
-                }
                 else if (File.Exists(urlLocalPath))
-                {
                     xmlDoc.Load(urlLocalPath);
-                }
                 else
-                {
-                    throw new Exception("No se puede leer el archivo de configuración de servicios de Ellipse. Asegúrese de que el archivo exista o cree un archivo local.");
-                }const string fullNode = "//ellipse/url";
-                    var nodeItemList = xmlDoc.SelectSingleNode(fullNode).ChildNodes;
+                    throw new Exception(
+                        "No se puede leer el archivo de configuración de servicios de Ellipse. Asegúrese de que el archivo exista o cree un archivo local.");
+                const string fullNode = "//ellipse/url";
+                var nodeItemList = xmlDoc.SelectSingleNode(fullNode).ChildNodes;
 
-                    foreach (XmlNode item in nodeItemList)
-                        enviromentList.Add(item.Name);
+                foreach (XmlNode item in nodeItemList)
+                    enviromentList.Add(item.Name);
             }
             else
             {
@@ -138,6 +127,7 @@ namespace EllipseCommonsClassLibrary.Connections
                     EllipseContingencia
                 };
             }
+
             return enviromentList;
         }
 
@@ -160,8 +150,12 @@ namespace EllipseCommonsClassLibrary.Connections
                     {
                         if (!item.Name.Equals(enviroment)) continue;
 
-                        var dbPassword = item.Attributes["dbpassword"] != null ? item.Attributes["dbpassword"].Value : null;
-                        var dbEncodedPassword = item.Attributes["dbencodedpassword"] != null ? item.Attributes["dbencodedpassword"].Value : null;
+                        var dbPassword = item.Attributes["dbpassword"] != null
+                            ? item.Attributes["dbpassword"].Value
+                            : null;
+                        var dbEncodedPassword = item.Attributes["dbencodedpassword"] != null
+                            ? item.Attributes["dbencodedpassword"].Value
+                            : null;
 
                         dbItem.Name = item.Name;
                         dbItem.DbName = item.Attributes["dbname"] != null ? item.Attributes["dbname"].Value : null;
@@ -170,9 +164,13 @@ namespace EllipseCommonsClassLibrary.Connections
                             dbItem.DbEncodedPassword = dbEncodedPassword;
                         else
                             dbItem.DbPassword = dbPassword;
-                        dbItem.DbReference = item.Attributes["dbreference"] != null ? item.Attributes["dbreference"].Value : null;
+                        dbItem.DbReference = item.Attributes["dbreference"] != null
+                            ? item.Attributes["dbreference"].Value
+                            : null;
                         dbItem.DbLink = item.Attributes["dblink"] != null ? item.Attributes["dblink"].Value : null;
-                        dbItem.DbCatalog = item.Attributes["dbcatalog"] != null ? item.Attributes["dbcatalog"].Value : null;
+                        dbItem.DbCatalog = item.Attributes["dbcatalog"] != null
+                            ? item.Attributes["dbcatalog"].Value
+                            : null;
                         return dbItem;
                     }
                 }
@@ -233,16 +231,18 @@ namespace EllipseCommonsClassLibrary.Connections
                         dbItem.DbReference = DefaultDbReferenceName;
                         dbItem.DbCatalog = "SCADARDB.DBO";
                     }
+
                     return dbItem;
                 }
+
                 return dbItem;
             }
             catch (Exception ex)
             {
-                Debugger.LogError("Connections:GetDatabaseItem(string) " + ex.Message, "No se ha encontrado el archivo xml de base de datos o el entorno seleccionado no existe en este archivo. Verifique la ruta del archivo y compruebe que la información del servidor existe");
+                Debugger.LogError("Connections:GetDatabaseItem(string) " + ex.Message,
+                    "No se ha encontrado el archivo xml de base de datos o el entorno seleccionado no existe en este archivo. Verifique la ruta del archivo y compruebe que la información del servidor existe");
                 return null;
             }
         }
-
     }
 }

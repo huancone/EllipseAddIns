@@ -56,7 +56,7 @@ namespace EllipsePlannerExcelAddIn
         private const int TitleRowEllipse = 6;
 
         //Columnas de Resultado
-        private const int ResultColumnResources = 18;
+        private const int ResultColumnResources = 19;
         private const int ResultColumnEllipse = 5;
         private const int ActionColumn = 15;
 
@@ -292,6 +292,7 @@ namespace EllipsePlannerExcelAddIn
                 _cells.GetCell(15, TitleRowResources).Value = "Accion";
                 _cells.GetCell(16, TitleRowResources).Value = "Codigo de Cierre";
                 _cells.GetCell(17, TitleRowResources).Value = "Fecha de Cierre";
+                _cells.GetCell(18, TitleRowResources).Value = "Asignado";
                 _cells.GetCell(ResultColumnResources, TitleRowResources).Value = "Resultado";
 
 
@@ -562,6 +563,7 @@ namespace EllipsePlannerExcelAddIn
                             _cells.GetCell(12, i).Value = j.PlanStrDate;
                             _cells.GetCell(13, i).Value = j.PlanStrTime;
                             _cells.GetCell(14, i).Value = j.EstimatedDurationsHrs;
+                            _cells.GetCell(18, i).Value = j.AssignPerson;
                             i++;
                         }
                     }
@@ -577,6 +579,7 @@ namespace EllipsePlannerExcelAddIn
                         _cells.GetCell(12, i).Value = j.PlanStrDate;
                         _cells.GetCell(13, i).Value = j.PlanStrTime;
                         _cells.GetCell(14, i).Value = j.EstimatedDurationsHrs;
+                        _cells.GetCell(18, i).Value = j.AssignPerson;
                     }
                 }
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();

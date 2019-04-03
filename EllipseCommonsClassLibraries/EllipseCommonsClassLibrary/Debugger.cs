@@ -9,7 +9,7 @@ using Screen = EllipseCommonsClassLibrary.ScreenService;
 namespace EllipseCommonsClassLibrary
 {
     /// <summary>
-    /// Debugger para gestionar los logs de errores
+    ///     Debugger para gestionar los logs de errores
     /// </summary>
     public static class Debugger
     {
@@ -29,12 +29,14 @@ namespace EllipseCommonsClassLibrary
             FileWriter.AppendTextToFile(requestJson, "ScreenRequest.txt", filePath);
             FileWriter.AppendTextToFile(replyJson, "ScreenReply.txt", filePath);
         }
+
         public static void LogError(string customDetails, string errorMessage)
         {
             try
             {
                 var errorFilePath = Configuration.LocalDataPath + @"logs\";
-                var errorFileName = @"error" + Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
+                var errorFileName = @"error" + Operations.FormatDateToString(DateTime.Today, Formats.DateYYYYMMDD) +
+                                    ".txt";
 
                 var lastError = new DebugError
                 {
@@ -47,7 +49,8 @@ namespace EllipseCommonsClassLibrary
                 _lastError = lastError;
 
                 if (DebugErrors)
-                    MessageBox.Show(lastError.CustomDetails+ ": " + lastError.ErrorMessage, "Error", MessageBoxButtons.OK,
+                    MessageBox.Show(lastError.CustomDetails + ": " + lastError.ErrorMessage, "Error",
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
 
                 var stringError = lastError.DateTime + " - " + lastError.CustomDetails + " : " + lastError.ErrorMessage;
@@ -57,16 +60,19 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se puede crear el Log de Error\n" + customDetails + ": " + ex + "\n" + errorMessage, "Error", MessageBoxButtons.OK,
+                MessageBox.Show("No se puede crear el Log de Error\n" + customDetails + ": " + ex + "\n" + errorMessage,
+                    "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
         }
+
         public static void LogWarning(string customDetails, string warningMessage)
         {
             try
             {
                 var warningFilePath = Configuration.LocalDataPath + @"logs\";
-                var warningFileName = @"warning" + Utilities.MyDateTime.Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
+                var warningFileName = @"warning" + Operations.FormatDateToString(DateTime.Today, Formats.DateYYYYMMDD) +
+                                      ".txt";
 
                 var lastWarning = new DebugError
                 {
@@ -79,20 +85,25 @@ namespace EllipseCommonsClassLibrary
                 _lastWarning = lastWarning;
 
                 if (DebugWarnings)
-                    MessageBox.Show(lastWarning.CustomDetails + ": " + lastWarning.ErrorMessage, "Error", MessageBoxButtons.OK,
+                    MessageBox.Show(lastWarning.CustomDetails + ": " + lastWarning.ErrorMessage, "Error",
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
 
-                var stringWarning = lastWarning.DateTime + " - " + lastWarning.CustomDetails + " : " + lastWarning.ErrorMessage;
+                var stringWarning = lastWarning.DateTime + " - " + lastWarning.CustomDetails + " : " +
+                                    lastWarning.ErrorMessage;
 
                 FileWriter.CreateDirectory(warningFilePath);
                 FileWriter.AppendTextToFile(stringWarning, warningFileName, warningFilePath);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se puede crear el Log de Warning\n" + customDetails + ": " + ex + "\n" + warningMessage, "Error", MessageBoxButtons.OK,
+                MessageBox.Show(
+                    "No se puede crear el Log de Warning\n" + customDetails + ": " + ex + "\n" + warningMessage,
+                    "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
         }
+
         public static void LogQuery(string query)
         {
             try
@@ -101,7 +112,8 @@ namespace EllipseCommonsClassLibrary
                     return;
 
                 var queryFilePath = Configuration.LocalDataPath + @"queries\";
-                var queryFileName = @"queries" + Operations.FormatDateToString(DateTime.Today, Utilities.MyDateTime.Formats.DateYYYYMMDD) + ".txt";
+                var queryFileName = @"queries" + Operations.FormatDateToString(DateTime.Today, Formats.DateYYYYMMDD) +
+                                    ".txt";
 
                 var dateTime = "" + DateTime.Now;
 
@@ -112,7 +124,8 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se puede crear el Log del query consultado\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se puede crear el Log del query consultado\n" + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -125,8 +138,8 @@ namespace EllipseCommonsClassLibrary
     public class DebugError
     {
         public string CustomDetails;
-        public string ErrorMessage;
         public string DateTime;
+        public string ErrorMessage;
         public string UrlLocation;
     }
 }

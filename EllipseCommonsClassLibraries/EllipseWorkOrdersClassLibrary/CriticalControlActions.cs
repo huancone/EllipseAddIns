@@ -264,7 +264,7 @@ namespace EllipseWorkOrdersClassLibrary
                 dateParameters = "";
             //escribimos el query
             var query = "" +
-                    " SELECT WO.WORK_ORDER," +
+                    " SELECT DISTINCT WO.WORK_ORDER," +
                     "   WOT.WO_TASK_NO," +
                     "   WOT.WO_TASK_DESC," +
                     "   DECODE(TRIM(WOT.JOB_DESC_CODE), NULL, MST.JOB_DESC_CODE, WOT.JOB_DESC_CODE) JOB_DESC_CODE," +
@@ -299,11 +299,14 @@ namespace EllipseWorkOrdersClassLibrary
                     "     WHEN MST.SCHED_IND_700 = '8' THEN TO_CHAR(TO_DATE(MST.OCCURENCE_TYPE, 'J'), 'fmJth') || ' ' || TO_CHAR(TO_DATE(MST.DAY_WEEK, 'J'), 'Day') || '/' || MST.SCHED_FREQ_1 || ' Months'" +
                     "     ELSE 'INACTIVE'" +
                     "   END FREQUENCY" +
-                    " FROM ELLIPSE.MSF620 WO" +
-                    " LEFT JOIN ELLIPSE.MSF623 WOT" +
-                    " ON WO.WORK_ORDER             = WOT.WORK_ORDER" +
-                    " LEFT JOIN ELLIPSE.MSF700 MST" +
-                    " ON WO.STD_JOB_NO = MST.STD_JOB_NO" +
+                    "  FROM " +
+                    "    ELLIPSE.MSF620 WO " +
+                    "      LEFT JOIN ELLIPSE.MSF623 WOT " +
+                    "    ON WO.WORK_ORDER = WOT.WORK_ORDER " +
+                    "       AND WO.DSTRCT_CODE = WOT.DSTRCT_CODE " +
+                    "      LEFT JOIN ELLIPSE.MSF700 MST " +
+                    "    ON WO.STD_JOB_NO = MST.STD_JOB_NO " +
+                    "       AND WO.MAINT_SCH_TASK = MST.MAINT_SCH_TASK " +
                     " WHERE" +
                     " " + "AND (WOT.JOB_DESC_CODE IN ( 'A', 'F','C','CP') OR MST.JOB_DESC_CODE IN ( 'A', 'F','C','CP'))  " +
                     " " + "AND TRIM(WO.MAINT_SCH_TASK) IS NOT NULL" +

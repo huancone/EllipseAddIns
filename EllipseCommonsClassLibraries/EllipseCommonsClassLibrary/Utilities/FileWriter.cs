@@ -6,13 +6,13 @@ namespace EllipseCommonsClassLibrary.Utilities
 {
     public static class FileWriter
     {
-        
         public static string NormalizePath(string path)
         {
             return Path.GetFullPath(new Uri(path).LocalPath)
                 .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                 .ToUpperInvariant();
         }
+
         public static string NormalizePath(string path, bool expandEnvironment)
         {
             return NormalizePath(expandEnvironment ? Environment.ExpandEnvironmentVariables(path) : path);
@@ -28,6 +28,7 @@ namespace EllipseCommonsClassLibrary.Utilities
                 urlPath = "";
             File.WriteAllText(Path.Combine(urlPath, filename), text);
         }
+
         public static void WriteTextToFile(string[] text, string filename, string urlPath = "")
         {
             //if (!string.IsNullOrWhiteSpace(urlPath) &&
@@ -39,6 +40,7 @@ namespace EllipseCommonsClassLibrary.Utilities
                 urlPath = "";
             File.WriteAllLines(Path.Combine(urlPath, filename), text);
         }
+
         public static void AppendTextToFile(string text, string filename, string urlPath = "")
         {
             //if (!string.IsNullOrWhiteSpace(urlPath) &&
@@ -73,8 +75,8 @@ namespace EllipseCommonsClassLibrary.Utilities
                 Debugger.LogError("FileWriter:CreateDirectory::" + directoryPath, ex.Message);
                 throw;
             }
-
         }
+
         public static void DeleteDirectory(string directoryPath)
         {
             try
@@ -93,10 +95,12 @@ namespace EllipseCommonsClassLibrary.Utilities
                 throw;
             }
         }
+
         public static void DeleteFile(string directoryPath, string fileName)
         {
             DeleteFile(Path.Combine(directoryPath, fileName));
         }
+
         public static void DeleteFile(string urlFileName)
         {
             try
@@ -115,6 +119,7 @@ namespace EllipseCommonsClassLibrary.Utilities
                 throw;
             }
         }
+
         public static bool CheckDirectoryExist(string directoryPath)
         {
             try
@@ -129,7 +134,8 @@ namespace EllipseCommonsClassLibrary.Utilities
             }
         }
 
-        public static void CopyFileToDirectory(string fileName, string sourcePath, string targetPath, bool overwrite = true)
+        public static void CopyFileToDirectory(string fileName, string sourcePath, string targetPath,
+            bool overwrite = true)
         {
             try
             {
@@ -144,7 +150,9 @@ namespace EllipseCommonsClassLibrary.Utilities
                 throw;
             }
         }
-        public static void MoveFileToDirectory(string sourceFileName, string sourcePath, string targetFileName, string targetPath)
+
+        public static void MoveFileToDirectory(string sourceFileName, string sourcePath, string targetFileName,
+            string targetPath)
         {
             try
             {
@@ -159,6 +167,5 @@ namespace EllipseCommonsClassLibrary.Utilities
                 throw;
             }
         }
-
     }
 }

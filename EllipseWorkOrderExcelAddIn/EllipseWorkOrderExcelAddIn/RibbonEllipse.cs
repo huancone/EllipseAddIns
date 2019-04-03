@@ -934,7 +934,6 @@ namespace EllipseWorkOrderExcelAddIn
                 var mtTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetMtTypeList());
                 var usTypeCodes = MyUtilities.GetCodeList(WorkOrderActions.GetUserStatusCodeList(_eFunctions).ToList());
 
-
                 _cells.GetCell(8, TitleRow01).Value = "WO_TYPE";
                 _cells.GetCell(8, TitleRow01).Style = StyleConstants.TitleRequired;
                 _cells.SetValidationList(_cells.GetCell(8, TitleRow01 + 1), woTypeCodes, ValidationSheetName, 6, false);
@@ -3262,8 +3261,8 @@ namespace EllipseWorkOrderExcelAddIn
                     var workOrder = WorkOrderActions.FetchWorkOrder(_eFunctions, districtCode, wo);
 
                     _cells.GetCell(2, i).Value = closeText;
-                    _cells.GetCell(3, i).Value = workOrder.CompletedBy;
-                    _cells.GetCell(4, i).Value = workOrder.closedDate;
+                    _cells.GetCell(3, i).Value = workOrder.closeCommitDate; 
+                    _cells.GetCell(4, i).Value = workOrder.completedBy;
                     _cells.GetCell(ResultColumn05, i).Value = "Ok";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn05, i).Style = StyleConstants.Success;
