@@ -40,7 +40,7 @@
             this.box2 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
             this.cbValidOnly = this.Factory.CreateRibbonCheckBox();
@@ -72,7 +72,7 @@
             // 
             this.box1.BoxStyle = Microsoft.Office.Tools.Ribbon.RibbonBoxStyle.Vertical;
             this.box1.Items.Add(this.box2);
-            this.box1.Items.Add(this.drpEnviroment);
+            this.box1.Items.Add(this.drpEnvironment);
             this.box1.Items.Add(this.menuActions);
             this.box1.Name = "box1";
             // 
@@ -95,10 +95,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -172,7 +172,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpStockCodeTrans;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReview;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewPurchaseOrders;

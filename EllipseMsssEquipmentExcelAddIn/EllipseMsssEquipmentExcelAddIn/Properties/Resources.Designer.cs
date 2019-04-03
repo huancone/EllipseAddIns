@@ -81,9 +81,9 @@ namespace EllipseMsssEquipmentExcelAddIn.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Productivo.
         /// </summary>
-        internal static string RibbonEllipse_RibbonEllipse_Load_DefaultEnviroment {
+        internal static string RibbonEllipse_RibbonEllipse_Load_DefaultEnvironment {
             get {
-                return ResourceManager.GetString("RibbonEllipse_RibbonEllipse_Load_DefaultEnviroment", resourceCulture);
+                return ResourceManager.GetString("RibbonEllipse_RibbonEllipse_Load_DefaultEnvironment", resourceCulture);
             }
         }
         

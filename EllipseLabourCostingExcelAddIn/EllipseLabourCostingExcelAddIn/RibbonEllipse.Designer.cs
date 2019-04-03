@@ -44,7 +44,7 @@
             this.btnFormatMso850 = this.Factory.CreateRibbonButton();
             this.btnFormatElecsa = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoadLaborSheet = this.Factory.CreateRibbonButton();
             this.btnReviewWorkOrder = this.Factory.CreateRibbonButton();
@@ -66,7 +66,7 @@
             // grpEllipse
             // 
             this.grpEllipse.Items.Add(this.box1);
-            this.grpEllipse.Items.Add(this.drpEnviroment);
+            this.grpEllipse.Items.Add(this.drpEnvironment);
             this.grpEllipse.Items.Add(this.menuActions);
             this.grpEllipse.Label = "Labour Costing";
             this.grpEllipse.Name = "grpEllipse";
@@ -127,10 +127,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "&Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "&Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -202,7 +202,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatDefault;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatMso850;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatElecsa;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadLaborSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCleanSheet;

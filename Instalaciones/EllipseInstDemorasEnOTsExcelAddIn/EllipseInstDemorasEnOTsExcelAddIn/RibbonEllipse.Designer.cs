@@ -42,7 +42,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatSheetImis = this.Factory.CreateRibbonButton();
             this.btnFormatSheetAires = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuOpciones = this.Factory.CreateRibbonMenu();
             this.btnUpdateDemoras = this.Factory.CreateRibbonButton();
             this.btnConsultarDemoras = this.Factory.CreateRibbonButton();
@@ -63,7 +63,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
             // grpDemorasOTs
             // 
             this.grpDemorasOTs.Items.Add(this.box1);
-            this.grpDemorasOTs.Items.Add(this.drpEnviroment);
+            this.grpDemorasOTs.Items.Add(this.drpEnvironment);
             this.grpDemorasOTs.Items.Add(this.menuOpciones);
             this.grpDemorasOTs.Label = "Demoras OTs";
             this.grpDemorasOTs.Name = "grpDemorasOTs";
@@ -89,10 +89,10 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
             this.btnFormatSheetAires.ShowImage = true;
             this.btnFormatSheetAires.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheetAires_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuOpciones
             // 
@@ -154,7 +154,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
 
         internal RibbonTab tabEllipse;
         internal RibbonGroup grpDemorasOTs;
-        internal RibbonDropDown drpEnviroment;
+        internal RibbonDropDown drpEnvironment;
         internal RibbonButton btnFormatSheetImis;
         internal RibbonButton btnConsultarDemoras;
         internal RibbonMenu menuOpciones;

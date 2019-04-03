@@ -38,7 +38,7 @@
             this.grpMSO685 = this.Factory.CreateRibbonGroup();
             this.menuFormats = this.Factory.CreateRibbonMenu();
             this.btnFormatSubAssetsDep = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnAccion3 = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
@@ -57,7 +57,7 @@
             // grpMSO685
             // 
             this.grpMSO685.Items.Add(this.box1);
-            this.grpMSO685.Items.Add(this.drpEnviroment);
+            this.grpMSO685.Items.Add(this.drpEnvironment);
             this.grpMSO685.Items.Add(this.menuActions);
             this.grpMSO685.Label = "MSO685.3";
             this.grpMSO685.Name = "grpMSO685";
@@ -75,10 +75,10 @@
             this.btnFormatSubAssetsDep.ShowImage = true;
             this.btnFormatSubAssetsDep.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSubAssetsDep_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -126,7 +126,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpMSO685;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormats;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSubAssetsDep;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAccion3;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;

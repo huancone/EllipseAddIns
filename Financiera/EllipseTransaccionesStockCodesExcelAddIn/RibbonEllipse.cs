@@ -64,12 +64,12 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -157,7 +157,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0203))
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -169,7 +169,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0303))
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
@@ -200,7 +200,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     @"ELIMINAR PURCHASE ORDERS", MessageBoxButtons.YesNo);
                 if (dr != DialogResult.Yes) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -217,7 +217,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     @"ELIMINAR PURCHASE ORDERS", MessageBoxButtons.YesNo);
                 if (dr != DialogResult.Yes) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -241,7 +241,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     @"ELIMINAR PURCHASE ORDERS ITEMS", MessageBoxButtons.YesNo);
                 if (dr != DialogResult.Yes) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -257,7 +257,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     @"ELIMINAR PURCHASE ORDERS ITEMS", MessageBoxButtons.YesNo);
                 if (dr != DialogResult.Yes) return;
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -285,7 +285,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.CreateNewWorksheet(ValidationSheetName01);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 0101
                 _cells.GetCell("A1").Value = "CERREJÓN";
@@ -770,7 +770,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
         public void ReviewReqScList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -860,7 +860,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
         public void ReviewPurchaseOrderList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -972,7 +972,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
 
             var poCells = new ExcelStyleCells(_excelApp, SheetName0301);
@@ -1092,7 +1092,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     _excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName0203)
                     throw new InvalidOperationException("La hoja seleccionada no coincide con el modelo requerido");
 
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     var i = TitleRow0201 + 1;
                     var resultC = ResultColumn0201;
@@ -1193,7 +1193,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     _excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName0303)
                     throw new InvalidOperationException("La hoja seleccionada no coincide con el modelo requerido");
 
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     var i = TitleRow0301 + 1;
                     var resultC = ResultColumn0301;
@@ -1293,7 +1293,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName0203)
                     throw new InvalidOperationException("La hoja seleccionada no coincide con el modelo requerido");
 
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     var i = TitleRow0203 + 1;
 
@@ -1377,7 +1377,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName0303)
                     throw new InvalidOperationException("La hoja seleccionada no coincide con el modelo requerido");
 
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     var i = TitleRow0303 + 1;
 
@@ -1453,7 +1453,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         public bool DeletePurchaseOrder(Screen.OperationContext opContext, Screen.ScreenService proxySheet,
             PurchaseOrder purchaseOrder)
         {
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO220");
@@ -1508,7 +1508,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         {
             if (item == null || string.IsNullOrWhiteSpace(item.Index))
                 throw new NullReferenceException("Debe ingresar el índice del item del vale que desea eliminar");
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO220");
@@ -1570,7 +1570,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName0203)
                     throw new InvalidOperationException("La hoja seleccionada no coincide con el modelo requerido");
 
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     var i = TitleRow0203 + 1;
                     while ("" + _cells.GetCell(1, i).Value != "")
@@ -1666,7 +1666,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName0303)
                     throw new InvalidOperationException("La hoja seleccionada no coincide con el modelo requerido");
 
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     var i = TitleRow0303 + 1;
                     while ("" + _cells.GetCell(1, i).Value != "")
@@ -1757,7 +1757,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         public bool ModifyPurchaseOrder(Screen.OperationContext opContext, Screen.ScreenService proxySheet,
             PurchaseOrder purchaseOrder, PurchaseOrderItem item)
         {
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO220");

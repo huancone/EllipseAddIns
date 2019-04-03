@@ -41,7 +41,7 @@
             this.btnChangeAccounts = this.Factory.CreateRibbonButton();
             this.btnInactivateSupplier = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.ValidateAccounts = this.Factory.CreateRibbonButton();
             this.btnLoadAccounts = this.Factory.CreateRibbonButton();
@@ -63,7 +63,7 @@
             // grpMSO200
             // 
             this.grpMSO200.Items.Add(this.box1);
-            this.grpMSO200.Items.Add(this.drpEnviroment);
+            this.grpMSO200.Items.Add(this.drpEnvironment);
             this.grpMSO200.Items.Add(this.menuActions);
             this.grpMSO200.Label = "MSO200";
             this.grpMSO200.Name = "grpMSO200";
@@ -101,10 +101,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -173,7 +173,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpMSO200;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormats;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnChangeAccounts;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ValidateAccounts;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadAccounts;

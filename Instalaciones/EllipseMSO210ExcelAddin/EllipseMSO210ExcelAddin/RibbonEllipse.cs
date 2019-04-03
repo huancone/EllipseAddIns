@@ -30,15 +30,15 @@ namespace EllipseMSO210ExcelAddin
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            var enviromentList = Environments.GetEnviromentList();
-            foreach (var item in enviromentList)
+            var environmentList = Environments.GetEnvironmentList();
+            foreach (var item in environmentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
                 drpItem.Label = item;
-                drpEnviroment.Items.Add(drpItem);
+                drpEnvironment.Items.Add(drpItem);
             }
 
-            drpEnviroment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_DefaultEnviroment;
+            drpEnvironment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_DefaultEnvironment;
         }
 
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
@@ -61,7 +61,7 @@ namespace EllipseMSO210ExcelAddin
 
                 Microsoft.Office.Tools.Excel.Worksheet worksheet = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 excelSheet.Name = SheetName01;
 
@@ -157,7 +157,7 @@ namespace EllipseMSO210ExcelAddin
 
             if (string.IsNullOrEmpty(contractNo)) return;
             var sqlQuery = Queries.GetContractData(contractNo, _eFunctions.dbReference, _eFunctions.dbLink);
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _drContractItems = _eFunctions.GetQueryResult(sqlQuery);
 
             if (_drContractItems != null && !_drContractItems.IsClosed && _drContractItems.HasRows)
@@ -202,7 +202,7 @@ namespace EllipseMSO210ExcelAddin
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                     LoadSheet();
             }
@@ -246,7 +246,7 @@ namespace EllipseMSO210ExcelAddin
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow + 1;
 

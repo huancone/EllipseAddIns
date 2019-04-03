@@ -41,7 +41,7 @@
             this.btnFormatoModificaciones = this.Factory.CreateRibbonButton();
             this.btnFormatoCausaciones = this.Factory.CreateRibbonButton();
             this.btnFormatoDistribuciones = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuAction = this.Factory.CreateRibbonMenu();
             this.btnValidar = this.Factory.CreateRibbonButton();
             this.btnExportar = this.Factory.CreateRibbonButton();
@@ -61,7 +61,7 @@
             // grpSAO900
             // 
             this.grpSAO900.Items.Add(this.box1);
-            this.grpSAO900.Items.Add(this.drpEnviroment);
+            this.grpSAO900.Items.Add(this.drpEnvironment);
             this.grpSAO900.Items.Add(this.menuAction);
             this.grpSAO900.Label = "SAO900";
             this.grpSAO900.Name = "grpSAO900";
@@ -103,10 +103,10 @@
             this.btnFormatoDistribuciones.ShowImage = true;
             this.btnFormatoDistribuciones.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatoDistribuciones_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuAction
             // 
@@ -165,7 +165,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatoModificaciones;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatoCausaciones;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatoDistribuciones;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAction;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnValidar;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExportar;

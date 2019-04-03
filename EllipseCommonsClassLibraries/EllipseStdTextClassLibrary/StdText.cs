@@ -21,7 +21,7 @@ namespace EllipseStdTextClassLibrary
         /// <summary>
         /// Obtiene el texto de un elemento. En la obtención se reagrupa el texto obviando la división de caracteres por línea para casi todos los casos
         /// </summary>
-        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnviroment.SelectedItem.Label))</param>
+        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnvironment.SelectedItem.Label))</param>
         /// <param name="opContext">StdTextService.OperationContext: Contexto del servicio stdText. Puede crear uno mediante el uso de StdText.getStdTextOpContext()</param>
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <returns>string: Texto del elemento ingresado. Retorna vacío si el Id no existe</returns>
@@ -61,7 +61,7 @@ namespace EllipseStdTextClassLibrary
         /// <summary>
         /// Obtiene el texto de un elemento. Se mantiene la división de caracteres por línea
         /// </summary>
-        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnviroment.SelectedItem.Label))</param>
+        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnvironment.SelectedItem.Label))</param>
         /// <param name="opContext">StdTextCustomService.OperationContext: Contexto del servicio stdTextCustom. Puede crear uno mediante el uso de StdText.getCustomOpContext()</param>
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <returns>string: Texto del elemento ingresado. Retorna vacío si el Id no existe</returns>
@@ -92,7 +92,7 @@ namespace EllipseStdTextClassLibrary
         /// <summary>
         /// Establece el texto para un stdTextID. Actualmente arroja una excepción por el LINE COUNT. Usar el setCustomText
         /// </summary>
-        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnviroment.SelectedItem.Label))</param>
+        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnvironment.SelectedItem.Label))</param>
         /// <param name="opContext">StdTextService.OperationContext: Contexto del servicio stdTextCustom. Puede crear uno mediante el uso de StdText.getCustomOpContext()</param>
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <param name="text">string: Texto a ingresar para el stdTextId</param>
@@ -128,7 +128,7 @@ namespace EllipseStdTextClassLibrary
         /// <summary>
         /// Establece el texto para un control de texto de tipo stdText
         /// </summary>
-        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnviroment.SelectedItem.Label))</param>
+        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnvironment.SelectedItem.Label))</param>
         /// <param name="opContext">StdTextCustomService.OperationContext: Contexto del servicio stdTextCustom. Puede crear uno mediante el uso de StdText.getCustomOpContext()</param>
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <param name="text">string: Texto a ingresar para el stdTextId</param>
@@ -160,7 +160,7 @@ namespace EllipseStdTextClassLibrary
         /// <summary>
         /// Establece el texto para el encabezado de un elemento stdText de id stdTextId
         /// </summary>
-        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnviroment.SelectedItem.Label))</param>
+        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnvironment.SelectedItem.Label))</param>
         /// <param name="opContext">StdTextCustomService.OperationContext: Contexto del servicio stdTextCustom. Puede crear uno mediante el uso de StdText.getCustomOpContext()</param>
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <param name="text">string: Texto a ingresar para el stdTextId</param>
@@ -194,7 +194,7 @@ namespace EllipseStdTextClassLibrary
         /// <summary>
         /// Establece el texto para el encabezado de un elemento stdText de id stdTextId
         /// </summary>
-        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnviroment.SelectedItem.Label))</param>
+        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnvironment.SelectedItem.Label))</param>
         /// <param name="opContext">StdTextCustomService.OperationContext: Contexto del servicio stdTextCustom. Puede crear uno mediante el uso de StdText.getCustomOpContext()</param>
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <param name="text">string: Texto a ingresar para el stdTextId</param>
@@ -219,7 +219,7 @@ namespace EllipseStdTextClassLibrary
         /// <summary>
         /// Obtiene el encabezado de un elemento a partir de su stdTextId
         /// </summary>
-        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnviroment.SelectedItem.Label))</param>
+        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnvironment.SelectedItem.Label))</param>
         /// <param name="opContext">StdTextService.OperationContext: Contexto del servicio stdText. Puede crear uno mediante el uso de StdText.getNewOpContext()</param>
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <returns>string: Encabezado del elemento ingresado</returns>
@@ -244,7 +244,7 @@ namespace EllipseStdTextClassLibrary
         /// <summary>
         /// Obtiene el encabezado de un elemento a partir de su stdTextId
         /// </summary>
-        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnviroment.SelectedItem.Label))</param>
+        /// <param name="urlService">string: URL del servicio (EFunctions.getServicesURL(drpEnvironment.SelectedItem.Label))</param>
         /// <param name="opContext">StdTextCustomService.OperationContext: Contexto del servicio stdTextCustom. Puede crear uno mediante el uso de StdText.getCustomOpContext()</param>
         /// <param name="stdTextId">string: Tipo[2], Distrito[4], Id[8] (Ej. WOICORIF039909)</param>
         /// <returns>string: Encabezado del elemento ingresado</returns>

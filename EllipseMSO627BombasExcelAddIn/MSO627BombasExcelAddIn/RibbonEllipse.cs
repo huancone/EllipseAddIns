@@ -36,12 +36,12 @@ namespace MSO627BombasExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -55,7 +55,7 @@ namespace MSO627BombasExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -79,7 +79,7 @@ namespace MSO627BombasExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
             _cells.CreateNewWorksheet(ValidationSheetName);
             
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             _cells.GetCell("A1").Value = "CERREJÓN";
             _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -133,7 +133,7 @@ namespace MSO627BombasExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
 
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
             var proxySheet = new Screen.ScreenService();
@@ -150,7 +150,7 @@ namespace MSO627BombasExcelAddIn
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow01 + 1;
 

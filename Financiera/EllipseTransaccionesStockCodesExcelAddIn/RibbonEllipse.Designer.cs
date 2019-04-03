@@ -42,7 +42,7 @@
             this.btnFormatPurchaseOrders = this.Factory.CreateRibbonButton();
             this.btnFormatPurchaseOrdersExtended = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.menuRequisitionActions = this.Factory.CreateRibbonMenu();
             this.btnReviewStockCodesRequisitions = this.Factory.CreateRibbonButton();
@@ -67,7 +67,7 @@
             // grpStockCodeTrans
             // 
             this.grpStockCodeTrans.Items.Add(this.box1);
-            this.grpStockCodeTrans.Items.Add(this.drpEnviroment);
+            this.grpStockCodeTrans.Items.Add(this.drpEnvironment);
             this.grpStockCodeTrans.Items.Add(this.menuActions);
             this.grpStockCodeTrans.Label = "StockCode Trans.";
             this.grpStockCodeTrans.Name = "grpStockCodeTrans";
@@ -113,10 +113,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -206,7 +206,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpStockCodeTrans;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatRequisitions;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewStockCodesRequisitions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewPurchaseOrders;

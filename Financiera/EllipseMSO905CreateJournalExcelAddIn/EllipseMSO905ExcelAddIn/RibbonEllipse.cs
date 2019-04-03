@@ -32,12 +32,12 @@ namespace EllipseMSO905ExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -94,7 +94,7 @@ namespace EllipseMSO905ExcelAddIn
             if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == _sheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -112,7 +112,7 @@ namespace EllipseMSO905ExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            EFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             _currentRow = _tittleRow + 1;
 
@@ -203,7 +203,7 @@ namespace EllipseMSO905ExcelAddIn
                 var proxySheet = new screen.ScreenService();
                 var requestSheet = new screen.ScreenSubmitRequestDTO();
 
-                proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+                proxySheet.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
                 var opSheet = new screen.OperationContext
                 {
@@ -344,7 +344,7 @@ namespace EllipseMSO905ExcelAddIn
             if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == _sheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -367,7 +367,7 @@ namespace EllipseMSO905ExcelAddIn
                 _cells.GetRange(1, _currentRow, _resultColumn, _currentRow).Style = StyleConstants.Normal;
                 _cells.ClearTableRangeColumn(TableName01, _resultColumn);
 
-                EFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 _currentRow = _tittleRow + 1;
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
@@ -375,7 +375,7 @@ namespace EllipseMSO905ExcelAddIn
                 var proxySheet = new screen.ScreenService();
                 var requestSheet = new screen.ScreenSubmitRequestDTO();
 
-                proxySheet.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+                proxySheet.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
                 var opSheet = new screen.OperationContext
                 {

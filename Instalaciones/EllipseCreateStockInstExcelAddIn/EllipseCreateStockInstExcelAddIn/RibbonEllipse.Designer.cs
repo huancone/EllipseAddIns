@@ -37,7 +37,7 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpCreateStockInst = this.Factory.CreateRibbonGroup();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnCreateStock = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnAbout = this.Factory.CreateRibbonButton();
@@ -55,7 +55,7 @@
             // grpCreateStockInst
             // 
             this.grpCreateStockInst.Items.Add(this.box1);
-            this.grpCreateStockInst.Items.Add(this.drpEnviroment);
+            this.grpCreateStockInst.Items.Add(this.drpEnvironment);
             this.grpCreateStockInst.Items.Add(this.btnCreateStock);
             this.grpCreateStockInst.Label = "Create Stock INST";
             this.grpCreateStockInst.Name = "grpCreateStockInst";
@@ -66,11 +66,11 @@
             this.btnFormatSheet.Name = "btnFormatSheet";
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
-            this.drpEnviroment.SelectionChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.drpEnviroment_SelectionChanged);
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
+            this.drpEnvironment.SelectionChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.drpEnvironment_SelectionChanged);
             // 
             // btnCreateStock
             // 
@@ -110,7 +110,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpCreateStockInst;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreateStock;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;

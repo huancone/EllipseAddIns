@@ -31,15 +31,15 @@ namespace EllipseMsssEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            var enviromentList = Environments.GetEnviromentList();
-            foreach (var item in enviromentList)
+            var environmentList = Environments.GetEnvironmentList();
+            foreach (var item in environmentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
                 drpItem.Label = item;
-                drpEnviroment.Items.Add(drpItem);
+                drpEnvironment.Items.Add(drpItem);
             }
 
-            drpEnviroment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_DefaultEnviroment;
+            drpEnvironment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_DefaultEnvironment;
         }
 
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
@@ -195,7 +195,7 @@ namespace EllipseMsssEquipmentExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 LoadSheet();
             }
@@ -208,7 +208,7 @@ namespace EllipseMsssEquipmentExcelAddIn
             var msssProxy = new MSSSService.MSSSService();
             var msssOp = new MSSSService.OperationContext();
 
-            msssProxy.Url = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/MSSSService";
+            msssProxy.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/MSSSService";
             msssOp.district = _frmAuth.EllipseDsct;
             msssOp.position = _frmAuth.EllipsePost;
             msssOp.maxInstances = 100;
@@ -257,8 +257,8 @@ namespace EllipseMsssEquipmentExcelAddIn
                     case "Delete":
                         try
                         {
-                            var urlEnviroment = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
-                            EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
+                            var urlEnvironment = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                            EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
                             var responseDto = EFunctions.InitiatePostConnection();
 
                             if (responseDto.GotErrorMessages()) return;
@@ -371,8 +371,8 @@ namespace EllipseMsssEquipmentExcelAddIn
         //        {
         //            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
         //            {
-        //                var urlEnviroment = EFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
-        //                EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
+        //                var urlEnvironment = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+        //                EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
         //                var responseDto = EFunctions.InitiatePostConnection();
         //
         //                if (responseDto.GotErrorMessages()) return;

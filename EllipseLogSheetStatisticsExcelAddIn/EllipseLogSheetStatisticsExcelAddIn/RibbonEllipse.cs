@@ -33,12 +33,12 @@ namespace EllipseLogSheetStatisticsExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
         private void btnFormatLogSheet_Click(object sender, RibbonControlEventArgs e)
@@ -80,7 +80,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     if (_thread != null && _thread.IsAlive) return;
 
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(StartCreateLogSheet);
 
@@ -155,7 +155,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName01)
                     throw new Exception("\nLa hoja seleccionada no coincide con el modelo requerido");
 
-                if (string.IsNullOrWhiteSpace(drpEnviroment.SelectedItem.Label))
+                if (string.IsNullOrWhiteSpace(drpEnvironment.SelectedItem.Label))
                     throw new Exception("\nSeleccione un ambiente válido");
 
                 if (_cells == null)
@@ -321,7 +321,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             var arrayFields = new ArrayScreenNameValue();
 
             //Selección de ambiente
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             //Aseguro que no esté en alguna pantalla antigua
             _eFunctions.RevertOperation(opSheet, proxySheet);
             //ejecutamos el programa
@@ -436,7 +436,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
                 _cells.ClearRange("A6", "AZ65536");
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var modelCode = "" + _cells.GetCell("B4").Value;
                 //encabezados
                 var sqlQuery1 = Queries.GetDefaultHeaderData(modelCode, _eFunctions.dbReference, _eFunctions.dbLink);
@@ -627,7 +627,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 if (Debugger.DebugQueries)
                     _cells.GetCell("M1").Value = sqlQuery;
 
-                ef.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                ef.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 var drEquipments = ef.GetQueryResult(sqlQuery);
 

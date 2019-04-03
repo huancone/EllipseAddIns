@@ -40,7 +40,7 @@
             this.btnFormatoSupplierInvoice = this.Factory.CreateRibbonButton();
             this.btnJournal = this.Factory.CreateRibbonButton();
             this.btnCustomerInvoice = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnConsultar = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnAbout = this.Factory.CreateRibbonButton();
@@ -58,7 +58,7 @@
             // grpMSQ901
             // 
             this.grpMSQ901.Items.Add(this.box1);
-            this.grpMSQ901.Items.Add(this.drpEnviroment);
+            this.grpMSQ901.Items.Add(this.drpEnvironment);
             this.grpMSQ901.Items.Add(this.btnConsultar);
             this.grpMSQ901.Label = "MSQ901";
             this.grpMSQ901.Name = "grpMSQ901";
@@ -92,10 +92,10 @@
             this.btnCustomerInvoice.ShowImage = true;
             this.btnCustomerInvoice.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCustomerInvoice_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // btnConsultar
             // 
@@ -136,7 +136,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpMSQ901;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatoSupplierInvoice;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConsultar;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnJournal;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCustomerInvoice;

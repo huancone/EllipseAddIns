@@ -32,12 +32,12 @@ namespace EllipseMSO010TestExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -51,7 +51,7 @@ namespace EllipseMSO010TestExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -214,7 +214,7 @@ namespace EllipseMSO010TestExcelAddIn
 
             _cells.ClearTableRange(TableName01);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
             var typeCriteriaList = SearchTypeCriteriaType.GetSearchTypeCriteriaTypes();

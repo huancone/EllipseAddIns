@@ -28,9 +28,6 @@ namespace EllipseRequisitionServiceExcelAddIn
         private const int TitleRow01Ext = 5;
         private const int ResultColumn01Ext = 21;
 
-
-        Excel.ListObject _excelSheetItems;
-
         private const string SheetName01 = "RequisitionService";
         private const string TableName01 = "RequisitionServiceTable";
         private const string ValidationSheet = "ValidationRequisition";
@@ -44,12 +41,12 @@ namespace EllipseRequisitionServiceExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var environmentList = Environments.GetEnviromentList();
+            var environmentList = Environments.GetEnvironmentList();
             foreach (var item in environmentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
                 drpItem.Label = item;
-                drpEnviroment.Items.Add(drpItem);
+                drpEnvironment.Items.Add(drpItem);
             }
         }
 
@@ -77,7 +74,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                         
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 + "Ext")
@@ -106,7 +103,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 + "Ext")
                         _thread = new Thread(CreateRequisitionServiceExtended);
@@ -135,7 +132,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 + "Ext")
                         _thread = new Thread(CreateRequisitionScreenServiceExtended);
@@ -164,7 +161,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     _ignoreItemError = false;
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 + "Ext")
                         _thread = new Thread(ManualCreditRequisitionExtended);
@@ -204,7 +201,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -335,7 +332,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
@@ -595,23 +592,42 @@ namespace EllipseRequisitionServiceExcelAddIn
                 CostCentreA = costCentreAllocation
             };
 
-            //La condición dice: Si la posición no existe en la tabla no tiene restricción.
-            //Si existe en la tabla la posición debe cumplir con la prioridad.
-            //Si existe en la tabla la posición y cumple con la prioridad, debe cumplir con el flag de orden
-            var isPositionRestrictionValid = true;
+            //La condición dice:
+            //Si la posición existe en la tabla debe cumplir con la prioridad
+            //Si la prioridad existe en la tabla debe cumplir con la posición
+            //Si la posición existe en la tabla y cumple con la prioridad, debe cumplir con el flag de orden
+            var isRestricted = false;
+
+            //Valida si existe en la tabla de restricciones
             foreach (var resItem in RestrictionList)
             {
-                if (!resItem.Position.Trim().ToUpper().Equals(_frmAuth.EllipsePost.Trim().ToUpper())) continue;
-                isPositionRestrictionValid = false;
-                if (!resItem.Code.Trim().ToUpper().Equals(requisitionHeader.PriorityCode.Trim().ToUpper())) continue;
-                isPositionRestrictionValid = true;
-                if (resItem.MandatoryWorkOrder && string.IsNullOrWhiteSpace(requisitionHeader.WorkOrderA))
-                    isPositionRestrictionValid = false;
-                break;
+                if (resItem.Position.Trim().ToUpper().Equals(_frmAuth.EllipsePost.Trim().ToUpper()) || resItem.Code.Trim().ToUpper().Equals(requisitionHeader.PriorityCode.Trim().ToUpper()))
+                {
+                    isRestricted = true;
+                    break;
+                }
             }
 
-            if (!isPositionRestrictionValid)
-                throw new Exception(@"UNAUTHORISED PRIORITY CODE FOR LOGGED POSITION");
+            //Si hay restricción valida el tipo
+            if (isRestricted)
+            {
+                var isPositionRestrictionValid = false;
+                var isMandatoryOrder = false;
+                foreach (var resItem in RestrictionList)
+                {
+                    if (resItem.Position.Trim().ToUpper().Equals(_frmAuth.EllipsePost.Trim().ToUpper()) && resItem.Code.Trim().ToUpper().Equals(requisitionHeader.PriorityCode.Trim().ToUpper()))
+                    {
+                        isPositionRestrictionValid = true;
+                        isMandatoryOrder = resItem.MandatoryWorkOrder;
+                        break;
+                    }
+                }
+                if (isMandatoryOrder && string.IsNullOrWhiteSpace(requisitionHeader.WorkOrderA))
+                    throw new Exception(@"MANDATORY WORK ORDER IN PRIORITY CODE " + requisitionHeader.PriorityCode.Trim().ToUpper() + " FOR LOGGED POSITION " + _frmAuth.EllipsePost.Trim().ToUpper());
+                if (!isPositionRestrictionValid)
+                    throw new Exception(@"UNAUTHORISED PRIORITY CODE " + requisitionHeader.PriorityCode.Trim().ToUpper() + " FOR LOGGED POSITION " + _frmAuth.EllipsePost.Trim().ToUpper());
+            }
+
             return requisitionHeader;
         }
 
@@ -704,46 +720,49 @@ namespace EllipseRequisitionServiceExcelAddIn
                     resultColumn = ResultColumn01;
                     titleRow = TitleRow01;
                 }
-                
-                _excelSheetItems = _cells.GetRange(TableName01).ListObject;
-                //Organiza las celdas de forma que se creen la menor cantidad de vales posibles
-                if (_excelSheetItems.Sort.SortFields.Count > 0)
-                {
-                    _excelSheetItems.Sort.SortFields.Clear();
-                }
+
 
                 #region SortFields
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(1, titleRow), Excel.XlSortOn.xlSortOnValues,
-                            Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(2, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(3, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(4, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(5, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(6, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(7, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(8, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(10, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(11, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(12, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(13, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(14, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                //_excelSheetItems.Sort.SortFields.Add(_cells.GetCell(16, TitleRow), Excel.XlSortOn.xlSortOnValues,
-                //    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.Apply(); 
+                if (cbSortItems.Checked)
+                {
+                    Excel.ListObject excelSheetItems = _cells.GetRange(TableName01).ListObject;
+                    //Organiza las celdas de forma que se creen la menor cantidad de vales posibles
+                    if (excelSheetItems.Sort.SortFields.Count > 0)
+                        excelSheetItems.Sort.SortFields.Clear();
+
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(1, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(2, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(3, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(4, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(5, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(6, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(7, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(8, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(10, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(11, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(12, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(13, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(14, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    //_excelSheetItems.Sort.SortFields.Add(_cells.GetCell(16, TitleRow), Excel.XlSortOn.xlSortOnValues,
+                    //    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.Apply();
+                }
+
                 #endregion
 
                 //instancia del Servicio
@@ -755,7 +774,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 //Objeto para crear la coleccion de Items
                 //new RequisitionService.RequisitionServiceCreateItemReplyCollectionDTO();
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false);//Se asigna por 'Pooled Connection Request Timed Out'
                 proxyRequisition.Url = urlService + "/RequisitionService";
 
@@ -1056,47 +1075,50 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.ClearTableRangeColumn(TableName01, 4);
 
                 #region SortItems
-                _excelSheetItems = _cells.GetRange(TableName01).ListObject;
-                //Organiza las celdas de forma que se creen la menor cantidad de vales posibles
-                if (_excelSheetItems.Sort.SortFields.Count > 0)
+
+                if (cbSortItems.Checked)
                 {
-                    _excelSheetItems.Sort.SortFields.Clear();
+                    Excel.ListObject excelSheetItems = _cells.GetRange(TableName01).ListObject;
+                    //Organiza las celdas de forma que se creen la menor cantidad de vales posibles
+                    if (excelSheetItems.Sort.SortFields.Count > 0)
+                        excelSheetItems.Sort.SortFields.Clear();
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(1, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(2, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(3, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(4, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(5, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(6, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(7, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(8, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(10, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(11, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(12, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(13, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.SortFields.Add(_cells.GetCell(14, titleRow), Excel.XlSortOn.xlSortOnValues,
+                        Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    //_excelSheetItems.Sort.SortFields.Add(_cells.GetCell(16, TitleRow), Excel.XlSortOn.xlSortOnValues,
+                    //    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
+                    excelSheetItems.Sort.Apply();
                 }
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(1, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(2, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(3, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(4, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(5, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(6, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(7, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(8, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(9, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(10, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(11, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(12, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(13, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.SortFields.Add(_cells.GetCell(14, titleRow), Excel.XlSortOn.xlSortOnValues,
-                    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                //_excelSheetItems.Sort.SortFields.Add(_cells.GetCell(16, TitleRow), Excel.XlSortOn.xlSortOnValues,
-                //    Excel.XlOrder.xlDownThenOver, Type.Missing, Excel.XlSortDataOption.xlSortTextAsNumbers);
-                _excelSheetItems.Sort.Apply();
+
                 #endregion
 
                 #region ScreenService
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false);//Se asigna por 'Pooled Connection Request Timed Out'
                 
                 //ScreenService Opción en reemplazo de los servicios
@@ -1126,6 +1148,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 RequisitionClassLibrary.RequisitionHeader prevReqHeader = null;
                 RequisitionClassLibrary.RequisitionHeader curReqHeader;
+                RestrictionList = RequisitionClassLibrary.SpecialRestriction.GetPositionRestrictions(_eFunctions);
                 while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(itemIndicatorColumn, currentRow).Value) != null || _cells.GetNullIfTrimmedEmpty(_cells.GetCell(seriesIndicatorColumn, currentRow).Value) != null)
                 {
                     try
@@ -1805,7 +1828,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 //Objeto para crear la coleccion de Items
                 //new RequisitionService.RequisitionServiceCreateItemReplyCollectionDTO();
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
                 proxyRequisition.Url = urlService + "/IssueRequisitionItemStocklessService";
 
@@ -1941,11 +1964,11 @@ namespace EllipseRequisitionServiceExcelAddIn
                 //Objeto para crear la coleccion de Items
                 //new RequisitionService.RequisitionServiceCreateItemReplyCollectionDTO();
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
                 proxyRequisition.Url = urlService + "/IssueRequisitionItemStocklessService";
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 opRequisition.district = _frmAuth.EllipseDsct;

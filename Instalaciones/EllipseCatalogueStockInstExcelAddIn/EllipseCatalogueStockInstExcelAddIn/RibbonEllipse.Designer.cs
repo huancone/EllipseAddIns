@@ -37,7 +37,7 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grp = this.Factory.CreateRibbonGroup();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnCatStockless = this.Factory.CreateRibbonButton();
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnAbout = this.Factory.CreateRibbonButton();
@@ -55,7 +55,7 @@
             // grp
             // 
             this.grp.Items.Add(this.box1);
-            this.grp.Items.Add(this.drpEnviroment);
+            this.grp.Items.Add(this.drpEnvironment);
             this.grp.Items.Add(this.btnCatStockless);
             this.grp.Label = "Catalog Stockless INST";
             this.grp.Name = "grp";
@@ -66,10 +66,10 @@
             this.btnFormatSheet.Name = "btnFormatSheet";
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // btnCatStockless
             // 
@@ -109,7 +109,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grp;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCatStockless;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;

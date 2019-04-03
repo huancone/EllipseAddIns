@@ -41,7 +41,7 @@
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnFormatDownPbv = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReviewDL = this.Factory.CreateRibbonButton();
             this.btnReviewDLPbv = this.Factory.CreateRibbonButton();
@@ -66,7 +66,7 @@
             // grpDownLost
             // 
             this.grpDownLost.Items.Add(this.box1);
-            this.grpDownLost.Items.Add(this.drpEnviroment);
+            this.grpDownLost.Items.Add(this.drpEnvironment);
             this.grpDownLost.Items.Add(this.menuActions);
             this.grpDownLost.Label = "Down & Lost";
             this.grpDownLost.Name = "grpDownLost";
@@ -104,10 +104,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -199,7 +199,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpDownLost;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewDL;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDeleteDL;

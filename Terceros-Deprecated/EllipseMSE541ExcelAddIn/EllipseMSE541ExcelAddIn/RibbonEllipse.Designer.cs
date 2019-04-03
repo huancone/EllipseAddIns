@@ -40,7 +40,7 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpWorkRequest = this.Factory.CreateRibbonGroup();
             this.Formatear = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.actions = this.Factory.CreateRibbonMenu();
             this.Ejecutar = this.Factory.CreateRibbonButton();
             this.Consulta = this.Factory.CreateRibbonButton();
@@ -62,7 +62,7 @@
             // grpWorkRequest
             // 
             this.grpWorkRequest.Items.Add(this.Formatear);
-            this.grpWorkRequest.Items.Add(this.drpEnviroment);
+            this.grpWorkRequest.Items.Add(this.drpEnvironment);
             this.grpWorkRequest.Items.Add(this.actions);
             this.grpWorkRequest.Label = "Work Request v1.0";
             this.grpWorkRequest.Name = "grpWorkRequest";
@@ -73,16 +73,16 @@
             this.Formatear.Name = "Formatear";
             this.Formatear.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Formatear_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
             ribbonDropDownItemImpl1.Label = "Productivo";
             ribbonDropDownItemImpl2.Label = "Test";
             ribbonDropDownItemImpl3.Label = "Desarrollo";
-            this.drpEnviroment.Items.Add(ribbonDropDownItemImpl1);
-            this.drpEnviroment.Items.Add(ribbonDropDownItemImpl2);
-            this.drpEnviroment.Items.Add(ribbonDropDownItemImpl3);
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Items.Add(ribbonDropDownItemImpl1);
+            this.drpEnvironment.Items.Add(ribbonDropDownItemImpl2);
+            this.drpEnvironment.Items.Add(ribbonDropDownItemImpl3);
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // actions
             // 
@@ -161,7 +161,7 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpWorkRequest;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton Formatear;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton Ejecutar;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu actions;

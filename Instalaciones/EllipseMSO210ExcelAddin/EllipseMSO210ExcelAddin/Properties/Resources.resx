@@ -117,7 +117,7 @@
   <data name="RibbonEllipse_btnLoad_Click_La_hoja_de_Excel_seleccionada_no_tiene_el_formato_válido_para_realizar_la_acción" xml:space="preserve">
     <value>La hoja de Excel seleccionada no tiene el formato válido para realizar la acción</value>
   </data>
-  <data name="RibbonEllipse_RibbonEllipse_Load_DefaultEnviroment" xml:space="preserve">
+  <data name="RibbonEllipse_RibbonEllipse_Load_DefaultEnvironment" xml:space="preserve">
     <value>Productivo</value>
   </data>
 </root>

@@ -36,12 +36,12 @@ namespace EllipseMSO627RodillosAddin
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
         private void btnFormatPbv_Click(object sender, RibbonControlEventArgs e)
@@ -435,11 +435,11 @@ namespace EllipseMSO627RodillosAddin
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name != PcsSheetName01)
                     throw new Exception("La hoja seleccionada no coincide con el modelo requerido");
 
-                if (drpEnviroment.Label == null || drpEnviroment.Label.Equals(""))
+                if (drpEnvironment.Label == null || drpEnvironment.Label.Equals(""))
                     throw new ArgumentException("Seleccione un ambiente válido");
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return; //no se autentica, se cancela el proceso
 
@@ -537,11 +537,11 @@ namespace EllipseMSO627RodillosAddin
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name != PbvSheetName01)
                     throw new Exception("La hoja seleccionada no coincide con el modelo requerido");
 
-                if (drpEnviroment.Label == null || drpEnviroment.Label.Equals(""))
+                if (drpEnvironment.Label == null || drpEnvironment.Label.Equals(""))
                     throw new ArgumentException("Seleccione un ambiente válido");
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return; //no se autentica, se cancela el proceso
 
@@ -631,7 +631,7 @@ namespace EllipseMSO627RodillosAddin
         }
         public bool CreateMontaje(Screen.OperationContext opSheet, MontajeRodillo montaje)
         {
-            var proxySheet = new Screen.ScreenService { Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService" };
+            var proxySheet = new Screen.ScreenService { Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService" };
             _eFunctions.RevertOperation(opSheet, proxySheet);
             var replySheet = proxySheet.executeScreen(opSheet, "MSO627");
 

@@ -41,7 +41,7 @@
             this.btnFormat = this.Factory.CreateRibbonButton();
             this.btnLimpiezaCarbon = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoad = this.Factory.CreateRibbonButton();
             this.btnDelete = this.Factory.CreateRibbonButton();
@@ -61,7 +61,7 @@
             // grpInspPestanas
             // 
             this.grpInspPestanas.Items.Add(this.box1);
-            this.grpInspPestanas.Items.Add(this.drpEnviroment);
+            this.grpInspPestanas.Items.Add(this.drpEnvironment);
             this.grpInspPestanas.Items.Add(this.menuActions);
             this.grpInspPestanas.Label = "MSO627 FFCC";
             this.grpInspPestanas.Name = "grpInspPestanas";
@@ -99,10 +99,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -154,7 +154,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpInspPestanas;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormat;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoad;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLimpiezaCarbon;

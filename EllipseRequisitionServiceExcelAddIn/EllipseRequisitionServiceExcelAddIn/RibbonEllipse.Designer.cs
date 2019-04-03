@@ -41,13 +41,15 @@
             this.btnFormatNewSheet = this.Factory.CreateRibbonButton();
             this.btnFormatExtended = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuAction = this.Factory.CreateRibbonMenu();
+            this.menuOptions = this.Factory.CreateRibbonMenu();
+            this.cbMaxItems = this.Factory.CreateRibbonCheckBox();
+            this.cbSortItems = this.Factory.CreateRibbonCheckBox();
             this.btnExcecuteRequisitionService = this.Factory.CreateRibbonButton();
             this.btnCreateReqIgError = this.Factory.CreateRibbonButton();
             this.btnCreateReqDirectOrderItems = this.Factory.CreateRibbonButton();
             this.btnManualCreditRequisitionMSE1VR = this.Factory.CreateRibbonButton();
-            this.cbMaxItems = this.Factory.CreateRibbonCheckBox();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
@@ -65,7 +67,7 @@
             // grpRequisitionService
             // 
             this.grpRequisitionService.Items.Add(this.box1);
-            this.grpRequisitionService.Items.Add(this.drpEnviroment);
+            this.grpRequisitionService.Items.Add(this.drpEnvironment);
             this.grpRequisitionService.Items.Add(this.menuAction);
             this.grpRequisitionService.Label = "Requisition Service";
             this.grpRequisitionService.Name = "grpRequisitionService";
@@ -103,22 +105,40 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuAction
             // 
+            this.menuAction.Items.Add(this.menuOptions);
             this.menuAction.Items.Add(this.btnExcecuteRequisitionService);
             this.menuAction.Items.Add(this.btnCreateReqIgError);
             this.menuAction.Items.Add(this.btnCreateReqDirectOrderItems);
             this.menuAction.Items.Add(this.btnManualCreditRequisitionMSE1VR);
-            this.menuAction.Items.Add(this.cbMaxItems);
             this.menuAction.Items.Add(this.btnCleanSheet);
             this.menuAction.Items.Add(this.btnStopThread);
             this.menuAction.Label = "&Acciones";
             this.menuAction.Name = "menuAction";
+            // 
+            // menuOptions
+            // 
+            this.menuOptions.Items.Add(this.cbMaxItems);
+            this.menuOptions.Items.Add(this.cbSortItems);
+            this.menuOptions.Label = "Opciones";
+            this.menuOptions.Name = "menuOptions";
+            this.menuOptions.ShowImage = true;
+            // 
+            // cbMaxItems
+            // 
+            this.cbMaxItems.Label = "Máximo 100 Items por Pedido";
+            this.cbMaxItems.Name = "cbMaxItems";
+            // 
+            // cbSortItems
+            // 
+            this.cbSortItems.Label = "Auto&Ordenar Elementos";
+            this.cbSortItems.Name = "cbSortItems";
             // 
             // btnExcecuteRequisitionService
             // 
@@ -147,11 +167,6 @@
             this.btnManualCreditRequisitionMSE1VR.Name = "btnManualCreditRequisitionMSE1VR";
             this.btnManualCreditRequisitionMSE1VR.ShowImage = true;
             this.btnManualCreditRequisitionMSE1VR.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnManualCreditRequisitionMSE1VR_Click);
-            // 
-            // cbMaxItems
-            // 
-            this.cbMaxItems.Label = "Max Items";
-            this.cbMaxItems.Name = "cbMaxItems";
             // 
             // btnCleanSheet
             // 
@@ -187,7 +202,7 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpRequisitionService;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatNewSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExcecuteRequisitionService;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAction;
@@ -201,6 +216,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatExtended;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuOptions;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbSortItems;
     }
 
     partial class ThisRibbonCollection

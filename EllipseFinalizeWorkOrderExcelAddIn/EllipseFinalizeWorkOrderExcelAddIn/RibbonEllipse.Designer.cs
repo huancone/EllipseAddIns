@@ -42,7 +42,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.butAbout = this.Factory.CreateRibbonButton();
             this.box2 = this.Factory.CreateRibbonBox();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
             this.btnReReview = this.Factory.CreateRibbonButton();
@@ -63,7 +63,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             // grpWorkOrder
             // 
             this.grpWorkOrder.Items.Add(this.box2);
-            this.grpWorkOrder.Items.Add(this.drpEnviroment);
+            this.grpWorkOrder.Items.Add(this.drpEnvironment);
             this.grpWorkOrder.Items.Add(this.menuActions);
             this.grpWorkOrder.Label = "Finalize Orders";
             this.grpWorkOrder.Name = "grpWorkOrder";
@@ -86,10 +86,10 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             this.box2.Items.Add(this.butAbout);
             this.box2.Name = "box2";
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -155,7 +155,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
 
         internal RibbonTab tabEllipse;
         internal RibbonGroup grpWorkOrder;
-        internal RibbonDropDown drpEnviroment;
+        internal RibbonDropDown drpEnvironment;
         internal RibbonButton btnReview;
         internal RibbonButton btnFormatSheet;
         internal RibbonMenu menuActions;

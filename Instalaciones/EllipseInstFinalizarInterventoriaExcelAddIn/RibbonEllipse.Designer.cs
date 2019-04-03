@@ -37,7 +37,7 @@
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpInstFinalizarInterventoria = this.Factory.CreateRibbonGroup();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnUpdate = this.Factory.CreateRibbonButton();
             this.btnClearSheet = this.Factory.CreateRibbonButton();
@@ -57,7 +57,7 @@
             // grpInstFinalizarInterventoria
             // 
             this.grpInstFinalizarInterventoria.Items.Add(this.box1);
-            this.grpInstFinalizarInterventoria.Items.Add(this.drpEnviroment);
+            this.grpInstFinalizarInterventoria.Items.Add(this.drpEnvironment);
             this.grpInstFinalizarInterventoria.Items.Add(this.menuActions);
             this.grpInstFinalizarInterventoria.Label = "Finalizar Inter.";
             this.grpInstFinalizarInterventoria.Name = "grpInstFinalizarInterventoria";
@@ -68,10 +68,10 @@
             this.btnFormatSheet.Name = "btnFormatSheet";
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -126,7 +126,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpInstFinalizarInterventoria;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnClearSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdate;

@@ -38,17 +38,6 @@ namespace EllipseCommonsClassLibrary.ScreenService {
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
-        public ScreenService() {
-            this.Url = global::EllipseCommonsClassLibrary.Properties.Settings.Default.EllipseCommonsClassLibrary_ScreenService_ScreenService;
-            if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
-                this.UseDefaultCredentials = true;
-                this.useDefaultCredentialsSetExplicitly = false;
-            }
-            else {
-                this.useDefaultCredentialsSetExplicitly = true;
-            }
-        }
-        
         public new string Url {
             get {
                 return base.Url;

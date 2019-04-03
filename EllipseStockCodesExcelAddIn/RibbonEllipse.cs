@@ -41,12 +41,12 @@ namespace EllipseStockCodesExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
         private void btnFormatRequisitions_Click(object sender, RibbonControlEventArgs e)
@@ -59,7 +59,7 @@ namespace EllipseStockCodesExcelAddIn
             {
                 //si ya hay un thread corriendo que no se ha detenido
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK || _thread != null && _thread.IsAlive) return;
                 _thread = new Thread(GetReviewResult);
 
@@ -186,7 +186,7 @@ namespace EllipseStockCodesExcelAddIn
                 cr.ClearTableRange(TableName02);
                 cr.DeleteTableRange(TableName02);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //Obtengo los parámetros de búsqueda
                 var district = cp.GetEmptyIfNull(cp.GetCell("B3").Value);
@@ -322,7 +322,7 @@ namespace EllipseStockCodesExcelAddIn
                 returnWarningsSpecified = true
             };
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);

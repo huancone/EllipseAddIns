@@ -33,18 +33,18 @@ namespace EllipseQueryLoaderExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
             
             var otherItem = Factory.CreateRibbonDropDownItem();
             otherItem.Label = @"OTRA BD";
 
-            drpEnviroment.Items.Add(otherItem);
+            drpEnvironment.Items.Add(otherItem);
         }
 
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
@@ -134,7 +134,7 @@ namespace EllipseQueryLoaderExcelAddIn
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 _cells.CreateNewWorksheet(ValidationSheetName);
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
@@ -243,7 +243,7 @@ namespace EllipseQueryLoaderExcelAddIn
                 cr.ClearTableRange(TableName02);
                 cr.DeleteTableRange(TableName02);
 
-                if (drpEnviroment.SelectedItem.Label.Equals("OTRA DB"))
+                if (drpEnvironment.SelectedItem.Label.Equals("OTRA DB"))
                 {
                     // ReSharper disable once UnusedVariable
                     var sqlDataReader = _eFunctions.GetSqlQueryResult(sqlQueryDecoded);
@@ -253,7 +253,7 @@ namespace EllipseQueryLoaderExcelAddIn
                 // ReSharper disable once RedundantIfElseBlock
                 else
                 {
-                    _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                    _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                     var dataReader = _eFunctions.GetQueryResult(sqlQueryDecoded);
 
                     if (dataReader == null)

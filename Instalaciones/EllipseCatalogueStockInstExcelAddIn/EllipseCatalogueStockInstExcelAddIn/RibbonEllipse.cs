@@ -35,12 +35,12 @@ namespace EllipseCatalogueStockInstExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviromentList = Environments.GetEnviromentList();
-            foreach (var item in enviromentList)
+            var environmentList = Environments.GetEnvironmentList();
+            foreach (var item in environmentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
                 drpItem.Label = item;
-                drpEnviroment.Items.Add(drpItem);
+                drpEnvironment.Items.Add(drpItem);
             }
         }
 
@@ -154,7 +154,7 @@ namespace EllipseCatalogueStockInstExcelAddIn
             var contractNo = _cells.GetNullOrTrimmedValue(_cells.GetCell(target.Column, target.Row).Value);
 
             if (string.IsNullOrEmpty(contractNo)) return;
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var sqlQuery = Queries.GetContractData(contractNo, _eFunctions.dbReference, _eFunctions.dbLink);
             _drContractItems = _eFunctions.GetQueryResult(sqlQuery);
 
@@ -185,7 +185,7 @@ namespace EllipseCatalogueStockInstExcelAddIn
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                     ExecuteCatalog();
             }
@@ -211,7 +211,7 @@ namespace EllipseCatalogueStockInstExcelAddIn
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow + 1;
 

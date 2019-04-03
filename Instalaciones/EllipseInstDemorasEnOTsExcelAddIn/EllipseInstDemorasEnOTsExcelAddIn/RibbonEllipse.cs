@@ -44,12 +44,12 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
             _actionList = new List<string> {"", "Eliminar"};
         }
@@ -212,7 +212,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 _cells.ClearRange("A6", "AZ65536");
                 _cells.GetRange(1, TitleRow02 + 1, ResultColumn02, TitleRow02 + 101).NumberFormat =
                     NumberFormatConstants.Text;
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var groupName = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("A3").Value);
                 var workGroup = "";
 
@@ -269,7 +269,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName01)
                     throw new Exception("La hoja seleccionada no coincide con el modelo requerido");
-                if (string.IsNullOrWhiteSpace(drpEnviroment.SelectedItem.Label))
+                if (string.IsNullOrWhiteSpace(drpEnvironment.SelectedItem.Label))
                     throw new Exception("\nSeleccione un ambiente válido");
 
                 if (_cells == null)
@@ -277,7 +277,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 _cells.SetCursorWait();
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 var opSheet = new OperationContext
@@ -294,7 +294,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
 
                 var i = TitleRow01 + 1;
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 var today =
                     Convert.ToDouble(string.Format("{0:0000}", DateTime.Now.Year) +
                                      string.Format("{0:00}", DateTime.Now.Month) +
@@ -411,14 +411,14 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName01)
                     throw new Exception("La hoja seleccionada no coincide con el modelo requerido");
-                if (string.IsNullOrWhiteSpace(drpEnviroment.SelectedItem.Label))
+                if (string.IsNullOrWhiteSpace(drpEnvironment.SelectedItem.Label))
                     throw new Exception("\nSeleccione un ambiente válido");
 
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 var opSheet = new OperationContext
@@ -435,7 +435,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
 
                 var i = TitleRow02 + 1;
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
                 while ("" + _cells.GetCell(1, i).Value != "")
                 {
@@ -538,7 +538,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
         {
             try
             {
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 _cells.GetCell(target.Column + 1, target.Row).Value = "Buscando Orden...";
                 OracleDataReader dr = _eFunctions.GetQueryResult(Queries.GetWoDataQuery(DistrictCode, target.Value, _eFunctions.dbReference, _eFunctions.dbLink));
@@ -578,7 +578,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 if (workOrder.Equals("")) return;
                 string durationCode = _cells.GetEmptyIfNull(target.Value);
                 durationCode = durationCode.Substring(0, 3);
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 var dr = _eFunctions.GetQueryResult(Queries.GetWoDurDatesDataQuery(_eFunctions.dbReference, _eFunctions.dbLink, workOrder, durationCode));
 

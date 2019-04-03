@@ -35,12 +35,12 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -158,7 +158,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                 _cells.SetCursorWait();
                 //Se realiza la autenticación
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return; //no se autentica, se cancela el proceso
 
@@ -176,8 +176,8 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                 //Instanciar el SOAP
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-                //Se define el ambiente del Dropdown de Enviroment
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                //Se define el ambiente del Dropdown de Environment
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
 
                 var i = TitleRow01 + 1;
@@ -254,7 +254,7 @@ namespace EllipseInstFinalizarInterventoriaExcelAddIn
                     return;
                 }
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var workOrderData =
                     _eFunctions.GetQueryResult(Queries.GetWorkOrderStatusQuery(_eFunctions.dbReference,
                         _eFunctions.dbLink,

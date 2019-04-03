@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseRequisitionServiceExcelAddIn", "EllipseRequisitionServiceExcelAddIn\EllipseRequisitionServiceExcelAddIn.csproj", "{C97136BE-08BE-4DBE-8A34-51111E76B250}"
 EndProject
@@ -30,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7AD3186E-6C3B-431E-AE9E-AB738E02512D}
 	EndGlobalSection
 EndGlobal

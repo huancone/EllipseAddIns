@@ -50,12 +50,12 @@ namespace EllipseEquipmentExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                var enviroments = Environments.GetEnviromentList();
-                foreach (var env in enviroments)
+                var environments = Environments.GetEnvironmentList();
+                foreach (var env in environments)
                 {
                     var item = Factory.CreateRibbonDropDownItem();
                     item.Label = env;
-                    drpEnviroment.Items.Add(item);
+                    drpEnvironment.Items.Add(item);
                 }
 
             }
@@ -116,7 +116,7 @@ namespace EllipseEquipmentExcelAddIn
             if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -133,7 +133,7 @@ namespace EllipseEquipmentExcelAddIn
             if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -151,7 +151,7 @@ namespace EllipseEquipmentExcelAddIn
             if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -171,7 +171,7 @@ namespace EllipseEquipmentExcelAddIn
             if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -190,7 +190,7 @@ namespace EllipseEquipmentExcelAddIn
             if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -208,7 +208,7 @@ namespace EllipseEquipmentExcelAddIn
             if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -234,7 +234,7 @@ namespace EllipseEquipmentExcelAddIn
 
                 _cells.CreateNewWorksheet(ValidationSheetName);
 
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 #region Hoja 1 - Equipment
                 ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name = SheetName01;
@@ -592,7 +592,7 @@ namespace EllipseEquipmentExcelAddIn
 
             _cells.ClearTableRange(TableName01);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var searchCriteriaList = SearchFieldCriteria.GetSearchFieldCriteriaTypes();
 
@@ -712,7 +712,7 @@ namespace EllipseEquipmentExcelAddIn
         }
         public void ReReviewEquipmentList()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -828,7 +828,7 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
             const int validationRow = TitleRow01 - 1;
@@ -845,7 +845,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                     var equipment = new Equipment
                     {
                         EquipmentNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
@@ -959,7 +959,7 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
             const int validationRow = TitleRow01 - 1;
@@ -977,7 +977,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
                     var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
@@ -1095,7 +1095,7 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
 
@@ -1112,7 +1112,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
                     var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
@@ -1156,7 +1156,7 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
 
@@ -1173,7 +1173,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
                     var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
@@ -1209,7 +1209,7 @@ namespace EllipseEquipmentExcelAddIn
             //if (_cells == null)
             //    _cells = new ExcelStyleCells(_excelApp);
             //_cells.SetCursorWait();
-            //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            //_eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             //_cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             //var i = TitleRow01 + 1;
 
@@ -1226,7 +1226,7 @@ namespace EllipseEquipmentExcelAddIn
             //{
             //    try
             //    {
-            //var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            //var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
             //var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
@@ -1322,7 +1322,7 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
             var i = TitleRow02 + 1;
 
@@ -1339,7 +1339,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
                     var instEquipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
                     var compCode = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
@@ -1435,7 +1435,7 @@ namespace EllipseEquipmentExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var i = TitleRow02 + 1;
             while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
@@ -1493,7 +1493,7 @@ namespace EllipseEquipmentExcelAddIn
 
             _cells.ClearTableRange(TableName03);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var searchCriteriaList = EquipListSearchFieldCriteria.GetSearchFieldCriteriaTypes();
 
@@ -1577,7 +1577,7 @@ namespace EllipseEquipmentExcelAddIn
             _cells.SetCursorWait();
             cellli.ClearTableRange(TableName03);
 
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             
             var searchCriteriaList = EquipListSearchFieldCriteria.GetSearchFieldCriteriaTypes();
@@ -1677,7 +1677,7 @@ namespace EllipseEquipmentExcelAddIn
             if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -1694,7 +1694,7 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var i = TitleRow03 + 1;
 
@@ -1711,7 +1711,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                     var equiplist = new EquipListItem()
                     {
                         EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
@@ -1746,7 +1746,7 @@ namespace EllipseEquipmentExcelAddIn
             if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName03)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
@@ -1763,7 +1763,7 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var i = TitleRow03 + 1;
 
@@ -1780,7 +1780,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                     var equiplist = new EquipListItem()
                     {
                         EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),

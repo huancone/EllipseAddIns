@@ -34,15 +34,15 @@ namespace EllipseNonOrderInvoiceEntryExcelAddIn
             Debugger.DebugQueries = false;
             Debugger.DebugWarnings = false;
 
-            var enviromentList = Environments.GetEnviromentList();
-            foreach (var item in enviromentList)
+            var environmentList = Environments.GetEnvironmentList();
+            foreach (var item in environmentList)
             {
                 var drpItem = Factory.CreateRibbonDropDownItem();
                 drpItem.Label = item;
-                drpEnviroment.Items.Add(drpItem);
+                drpEnvironment.Items.Add(drpItem);
             }
 
-            drpEnviroment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_DefaultEnviroment;
+            drpEnvironment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_DefaultEnvironment;
         }
 
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)

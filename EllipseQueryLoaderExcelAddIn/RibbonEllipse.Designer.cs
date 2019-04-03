@@ -39,7 +39,7 @@
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.drpEnviroment = this.Factory.CreateRibbonDropDown();
+            this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnExecuteQuery = this.Factory.CreateRibbonButton();
             this.btnReadFromText = this.Factory.CreateRibbonButton();
@@ -61,7 +61,7 @@
             // grpEllipseQueryLoaderExcelAddIn
             // 
             this.grpEllipseQueryLoaderExcelAddIn.Items.Add(this.box1);
-            this.grpEllipseQueryLoaderExcelAddIn.Items.Add(this.drpEnviroment);
+            this.grpEllipseQueryLoaderExcelAddIn.Items.Add(this.drpEnvironment);
             this.grpEllipseQueryLoaderExcelAddIn.Items.Add(this.menuActions);
             this.grpEllipseQueryLoaderExcelAddIn.Label = "QueryLoader";
             this.grpEllipseQueryLoaderExcelAddIn.Name = "grpEllipseQueryLoaderExcelAddIn";
@@ -84,10 +84,10 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
-            // drpEnviroment
+            // drpEnvironment
             // 
-            this.drpEnviroment.Label = "&Env.";
-            this.drpEnviroment.Name = "drpEnviroment";
+            this.drpEnvironment.Label = "&Env.";
+            this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
             // 
@@ -161,7 +161,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpEllipseQueryLoaderExcelAddIn;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatSheet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnviroment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExecuteQuery;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;

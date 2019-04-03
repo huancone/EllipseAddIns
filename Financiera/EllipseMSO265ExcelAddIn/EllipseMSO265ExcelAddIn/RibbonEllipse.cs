@@ -56,12 +56,12 @@ namespace EllipseMSO265ExcelAddIn
         {
             _excelApp = Globals.ThisAddIn.Application;
 
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -99,7 +99,7 @@ namespace EllipseMSO265ExcelAddIn
 
         private void FormatNonOrderInvoice()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -222,7 +222,7 @@ namespace EllipseMSO265ExcelAddIn
 
         private void FormatNomina()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -408,7 +408,7 @@ namespace EllipseMSO265ExcelAddIn
         private void FormatCesantias()
         {
             _excelApp = Globals.ThisAddIn.Application;
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -523,7 +523,7 @@ namespace EllipseMSO265ExcelAddIn
 
         private void ReviewInternalText()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -535,7 +535,7 @@ namespace EllipseMSO265ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var opContext = EllipseStdTextClassLibrary.StdText.GetCustomOpContext(districtCode, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
@@ -590,7 +590,7 @@ namespace EllipseMSO265ExcelAddIn
 
         private void UpdateInternalText()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -602,7 +602,7 @@ namespace EllipseMSO265ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var opContext = EllipseStdTextClassLibrary.StdText.GetCustomOpContext(districtCode, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
@@ -746,7 +746,7 @@ namespace EllipseMSO265ExcelAddIn
 
         private void ValidateCesantias()
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var currentRow = TitleRow01 + 1;
 
             _excelApp = Globals.ThisAddIn.Application;
@@ -847,7 +847,7 @@ namespace EllipseMSO265ExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
 
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01C)
@@ -875,7 +875,7 @@ namespace EllipseMSO265ExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var currentRow = TitleRow01 + 1;
 
@@ -965,7 +965,7 @@ namespace EllipseMSO265ExcelAddIn
         private void LoadNonInvoiceOrder()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1060,8 +1060,8 @@ namespace EllipseMSO265ExcelAddIn
                             currentRow++;
                     } while (invoice.Equals(nextInvoice));
 
-                    var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
-                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
+                    var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, "POST");
+                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
                     Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, invoice, invoiceItemList);
 
                     for (int i = startRow; i <= currentRow; i++)
@@ -1099,7 +1099,7 @@ namespace EllipseMSO265ExcelAddIn
         private void LoadNominaPost()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1202,8 +1202,8 @@ namespace EllipseMSO265ExcelAddIn
                             currentRow++;
                     } while (invoice.Equals(nextInvoice));
 
-                    var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
-                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
+                    var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, "POST");
+                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
                     Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, invoice, invoiceItemList);
 
                     for (int i = startRow; i <= currentRow; i++)
@@ -1241,7 +1241,7 @@ namespace EllipseMSO265ExcelAddIn
         private void LoadCesantiasPost()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _excelApp = Globals.ThisAddIn.Application;
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1330,8 +1330,8 @@ namespace EllipseMSO265ExcelAddIn
                             currentRow++;
                     } while (invoice.Equals(nextInvoice));
 
-                    var urlEnviroment = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label, "POST");
-                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnviroment);
+                    var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, "POST");
+                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
                     Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, invoice, invoiceItemList);
 
                     for (int i = startRow; i <= currentRow; i++)
@@ -1380,7 +1380,7 @@ namespace EllipseMSO265ExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(ReviewInternalText);
 
@@ -1406,7 +1406,7 @@ namespace EllipseMSO265ExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(UpdateInternalText);
 

@@ -40,12 +40,12 @@ namespace EllipseEqOperStatisticsExcelAddIn
             //adcionalmente validar la cantidad de hojas a utilizar al momento de dar formato
             //if (_cells == null)
             //    _cells = new ExcelStyleCells(_excelApp);
-            var enviroments = Environments.GetEnviromentList();
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
         }
 
@@ -62,7 +62,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(LoadStatistics);
 
@@ -155,14 +155,14 @@ namespace EllipseEqOperStatisticsExcelAddIn
         {
             try
             {
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     if (_cells == null)
                         _cells = new ExcelStyleCells(_excelApp);
                     _cells.SetCursorWait();
 
                     var proxySheet = new EquipmentOperatingStatisticsService.EquipmentOperatingStatisticsService();
-                    proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) +
+                    proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) +
                                      "/EquipmentOperatingStatistics";
 
                     var opSheet = new OperationContext();
@@ -313,7 +313,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
         /// <returns>string: EquipmentNo. Null si el equipo no existe</returns>
         string GetEquipmentDescription(string equipNo)
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var dbReference = _eFunctions.dbReference;
             var dbLink = _eFunctions.dbLink;
 
@@ -339,7 +339,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
         /// <returns>string[2]: {fecha, medidor}. Null si no existe</returns>
         string[] GetEquipmentLastStat(object equipNo, object statType, object statDate)
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var dbReference = _eFunctions.dbReference;
             var dbLink = _eFunctions.dbLink;
 
@@ -379,7 +379,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
 
         string GetEquipmentLastMeterValue(object equipNo, object statType, object statDate)
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var dbReference = _eFunctions.dbReference;
             var dbLink = _eFunctions.dbLink;
 
@@ -429,7 +429,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(DeleteStatistics);
 
@@ -451,13 +451,13 @@ namespace EllipseEqOperStatisticsExcelAddIn
         {
             try
             {
-                if (drpEnviroment.SelectedItem.Label != null && !drpEnviroment.SelectedItem.Label.Equals(""))
+                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
                 {
                     if (_cells == null)
                         _cells = new ExcelStyleCells(_excelApp);
                     _cells.SetCursorWait();
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
 
@@ -480,7 +480,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
 
                             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-                            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/ScreenService";
+                            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
                             _eFunctions.RevertOperation(opContext, proxySheet);
                             //ejecutamos el programa
                             Screen.ScreenDTO reply = proxySheet.executeScreen(opContext, "MSO400");
