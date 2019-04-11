@@ -36,7 +36,7 @@ namespace EllipseEquipmentExcelAddIn
         private const int TitleRow01 = 9;
         private const int TitleRow02 = 8;
         private const int TitleRow03 = 8;
-        private const int ResultColumn01 = 73;
+        private const int ResultColumn01 = 78;
         private const int ResultColumn02 = 10;
         private const int ResultColumn03 = 11;
         private const string TableName01 = "EquipmentTable";
@@ -74,6 +74,13 @@ namespace EllipseEquipmentExcelAddIn
             {
                 if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
                 {
+                    if (!cbIgnoreRefCodes.Checked)
+                    {
+                        _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                        _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                        if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    }
+
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(ReviewEquipmentList);
@@ -96,6 +103,12 @@ namespace EllipseEquipmentExcelAddIn
             {
                 if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
                 {
+                    if (!cbIgnoreRefCodes.Checked)
+                    {
+                        _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                        _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                        if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    }
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(ReReviewEquipmentList);
@@ -379,6 +392,15 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell(70, TitleRow01).Value = "E17. MODEL7";//E17
                 _cells.GetCell(71, TitleRow01).Value = "E18. MODEL8";//E18
                 _cells.GetCell(72, TitleRow01).Value = "E19. MODEL9";//E19
+                //REFERENCE CODES
+                _cells.GetCell(73, TitleRow01 - 2).Value = "REFERENCE CODES";
+                _cells.MergeCells(73, TitleRow01 - 2, 77, TitleRow01 - 2);
+                _cells.GetCell(73, TitleRow01).Value = "CAPACIDAD";//001_001
+                _cells.GetCell(74, TitleRow01).Value = "REFRIGERANTE";//002_001
+                _cells.GetCell(75, TitleRow01).Value = "CENTRO COMBUSTIBLE";//003_001
+                _cells.GetCell(76, TitleRow01).Value = "COP. RECONS?"; //004_001
+                _cells.GetCell(76, TitleRow01).AddComment("Y/N");
+                _cells.GetCell(77, TitleRow01).Value = "XERAS MODEL"; //200_001
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
@@ -581,7 +603,7 @@ namespace EllipseEquipmentExcelAddIn
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:FormatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja." + "\n" + ex.Message);
             }
         }
         private void ReviewEquipmentList()
@@ -593,6 +615,16 @@ namespace EllipseEquipmentExcelAddIn
             _cells.ClearTableRange(TableName01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var opContext = new EquipmentService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
 
             var searchCriteriaList = SearchFieldCriteria.GetSearchFieldCriteriaTypes();
 
@@ -693,6 +725,15 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(70, i).Value = "'" + eq.ClassCodes.EquipmentClassif17;
                     _cells.GetCell(71, i).Value = "'" + eq.ClassCodes.EquipmentClassif18;
                     _cells.GetCell(72, i).Value = "'" + eq.ClassCodes.EquipmentClassif19;
+                    //ReferenceCodes
+                    if (cbIgnoreRefCodes.Checked) continue;
+                    var referenceCodes = EquipmentActions.GetEquipmentReferenceCodes(_eFunctions, urlService, opContext, eq.EquipmentNo);
+                    _cells.GetCell(73, i).Value = "'" + referenceCodes.EquipmentCapacity;
+                    _cells.GetCell(74, i).Value = "'" + referenceCodes.RefrigerantType;
+                    _cells.GetCell(75, i).Value = "'" + referenceCodes.FuelCostCenter;
+                    _cells.GetCell(76, i).Value = "'" + referenceCodes.ReconstructedComponent;
+                    _cells.GetCell(77, i).Value = "'" + referenceCodes.XerasModel;
+
                 }
                 catch (Exception ex)
                 {
@@ -712,10 +753,22 @@ namespace EllipseEquipmentExcelAddIn
         }
         public void ReReviewEquipmentList()
         {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
+
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var opContext = new EquipmentService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
 
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
@@ -807,6 +860,15 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(70, i).Value = "'" + eq.ClassCodes.EquipmentClassif17;
                     _cells.GetCell(71, i).Value = "'" + eq.ClassCodes.EquipmentClassif18;
                     _cells.GetCell(72, i).Value = "'" + eq.ClassCodes.EquipmentClassif19;
+                    //ReferenceCodes
+                    //ReferenceCodes
+                    if (cbIgnoreRefCodes.Checked) continue;
+                    var referenceCodes = EquipmentActions.GetEquipmentReferenceCodes(_eFunctions, urlService, opContext, eq.EquipmentNo);
+                    _cells.GetCell(73, i).Value = "'" + referenceCodes.EquipmentCapacity;
+                    _cells.GetCell(74, i).Value = "'" + referenceCodes.RefrigerantType;
+                    _cells.GetCell(75, i).Value = "'" + referenceCodes.FuelCostCenter;
+                    _cells.GetCell(76, i).Value = "'" + referenceCodes.ReconstructedComponent;
+                    _cells.GetCell(77, i).Value = "'" + referenceCodes.XerasModel;
                 }
                 catch (Exception ex)
                 {
@@ -928,12 +990,41 @@ namespace EllipseEquipmentExcelAddIn
                         }
                     };
 
-                    EquipmentActions.CreateEquipment(opSheet, urlService, equipment);
+                    var createReply = EquipmentActions.CreateEquipment(opSheet, urlService, equipment);
+                    if (string.IsNullOrWhiteSpace(createReply.equipmentNo))
+                        throw new Exception("No se ha podido crear el Equipo");
+                    //Update Reference Codes
+                    var errorList = "";
+                    if (!cbIgnoreRefCodes.Checked)
+                    {
+                        var referenceCodes = new Equipment.EquipmentReferenceCodes
+                        {
+                            EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
+                            RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
+                            FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
+                            ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
+                            XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
+                        };
 
-                    _cells.GetCell(ResultColumn01, i).Value = "CREADO";
-                    _cells.GetCell(1, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn01, i).Select();
+                        var replyRefCode = EquipmentActions.ModifyReferenceCodes(_eFunctions, urlService, opSheet, equipment.EquipmentNo, referenceCodes);
+
+                        if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
+                            errorList = replyRefCode.Errors.Aggregate(errorList, (current, error) => current + ("\nError: " + error));
+                    }
+                    if (!string.IsNullOrWhiteSpace(errorList))
+                    {
+                        _cells.GetCell(ResultColumn01, i).Value = "CREADO " + errorList;
+                        _cells.GetCell(1, i).Style = StyleConstants.Warning;
+                        _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Warning;
+                        _cells.GetCell(ResultColumn01, i).Select();
+                    }
+                    else
+                    {
+                        _cells.GetCell(ResultColumn01, i).Value = "CREADO";
+                        _cells.GetCell(1, i).Style = StyleConstants.Success;
+                        _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
+                        _cells.GetCell(ResultColumn01, i).Select();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1066,10 +1157,39 @@ namespace EllipseEquipmentExcelAddIn
 
                     EquipmentActions.UpdateEquipmentData(opSheet, urlService, equipment);
 
-                    _cells.GetCell(ResultColumn01, i).Value = "ACTUALIZADO";
-                    _cells.GetCell(1, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn01, i).Select();
+                    //Update Reference Codes
+                    var errorList = "";
+                    if (!cbIgnoreRefCodes.Checked)
+                    {
+                        var referenceCodes = new Equipment.EquipmentReferenceCodes
+                        {
+                            EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
+                            RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
+                            FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
+                            ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
+                            XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
+                        };
+
+                        var replyRefCode = EquipmentActions.ModifyReferenceCodes(_eFunctions, urlService, opSheet, equipment.EquipmentNo, referenceCodes);
+
+                        if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
+                            errorList = replyRefCode.Errors.Aggregate(errorList, (current, error) => current + ("\nError: " + error));
+                    }
+                    if (!string.IsNullOrWhiteSpace(errorList))
+                    {
+                        _cells.GetCell(ResultColumn01, i).Value = "ACTUALIZADO " + errorList;
+                        _cells.GetCell(1, i).Style = StyleConstants.Warning;
+                        _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Warning;
+                        _cells.GetCell(ResultColumn01, i).Select();
+                    }
+                    else
+                    {
+                        _cells.GetCell(ResultColumn01, i).Value = "ACTUALIZADO";
+                        _cells.GetCell(1, i).Style = StyleConstants.Success;
+                        _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
+                        _cells.GetCell(ResultColumn01, i).Select();
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -1263,7 +1383,7 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
 
@@ -1280,7 +1400,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
                     var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
                     var equipment = new Equipment

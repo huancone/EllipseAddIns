@@ -132,5 +132,14 @@ namespace EllipseEquipmentClassLibrary
             public string EquipmentClassif18;
             public string EquipmentClassif19;
         }
+
+        public class EquipmentReferenceCodes
+        {
+            public string EquipmentCapacity;
+            public string RefrigerantType;
+            public string FuelCostCenter;
+            public string ReconstructedComponent;
+            public string XerasModel;
+        }
     }
 }

@@ -2652,8 +2652,7 @@ namespace EllipseWorkRequestExcelAddIn
 
                     var replyRefCode = WorkRequestReferenceCodesActions.ModifyReferenceCodes(_eFunctions, urlService, opContext, requestId, wrRefCodes);
                     if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
-                        if (replyExtended != null && replyExtended.Errors != null)
-                            errorList = replyExtended.Errors.Aggregate(errorList, (current, error) => current + ("\nError: " + error));
+                            errorList = replyRefCode.Errors.Aggregate(errorList, (current, error) => current + ("\nError: " + error));
 
                     //Service Level
                     try

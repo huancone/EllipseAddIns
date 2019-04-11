@@ -7,9 +7,8 @@ using System.Web.Services.Ellipse.Post;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Utilities;
-using Oracle.ManagedDataAccess.Client;
-
 using System.Threading;
+using Oracle.ManagedDataAccess.Client;
 
 namespace EllipseCommonsClassLibrary
 {

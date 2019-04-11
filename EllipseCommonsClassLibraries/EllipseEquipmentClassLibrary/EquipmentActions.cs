@@ -5,6 +5,7 @@ using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
 using EllipseEquipmentClassLibrary.EquipmentService;
+using EllipseReferenceCodesClassLibrary;
 
 namespace EllipseEquipmentClassLibrary
 {
@@ -487,13 +488,11 @@ namespace EllipseEquipmentClassLibrary
         /// <param name="urlService"></param>
         /// <param name="equipment"></param>
         /// <returns></returns>
-        public static void UpdateEquipmentData(OperationContext operationContext, string urlService,
-            Equipment equipment)
+        public static void UpdateEquipmentData(OperationContext operationContext, string urlService, Equipment equipment)
         {
             var proxyEquip = new EquipmentService.EquipmentService();
 
             //El servicio-método se modifica para hacer públicas las variables specifieds requeridas. En caso de actualización del servicio tener presente esta observación
-
             var request = new EquipmentServiceModifyRequestDTO
             {
                 accountCode = equipment.AccountCode,
@@ -643,6 +642,101 @@ namespace EllipseEquipmentClassLibrary
             while (drLastInstallation.Read())
                 installedcomponent = installedcomponent + " " + drLastInstallation["COMPONENTE"].ToString().Trim();
             return installedcomponent;
+        }
+
+        public static Equipment.EquipmentReferenceCodes GetEquipmentReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string equipmentNo)
+        {
+
+            var eqRefCodes = new Equipment.EquipmentReferenceCodes();
+
+            var rcOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
+            const string entityType = "EQP";
+            var entityValue = equipmentNo;
+
+            //Se encuentran problemas de implementación, debido a un comportamiento irregular del ODP en Windows. 
+            //Las conexiones cerradas (EllipseFunctions.Close()) vuelven a la piscina (pool) de conexiones por un tiempo antes 
+            //de ser completamente Cerradas (Close) y Dispuestas (Dispose), lo que ocasiona un desbordamiento del
+            //número máximo de conexiones en el pool (100) y la nueva conexión alcanza el tiempo de espera (timeout) antes de
+            //entrar en la cola del pool de conexiones arrojando un error 'Pooled Connection Request Timed Out'.
+            //Para solucionarlo se fuerza el string de conexiones para que no genere una conexión que entre al pool.
+            //Esto implica mayor tiempo de ejecución pero evita la excepción por el desbordamiento y tiempo de espera
+            var newef = new EllipseFunctions(eFunctions);
+            newef.SetConnectionPoolingType(false);
+            //
+            var item001001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "001");
+            var item002001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "002", "001");
+            var item003001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "003", "001");
+            var item004001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "004", "001");
+            var item200001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "200", "001");
+
+            eqRefCodes.EquipmentCapacity = item001001.RefCode;
+            eqRefCodes.RefrigerantType = item002001.RefCode;
+            eqRefCodes.FuelCostCenter = item003001.RefCode;
+            eqRefCodes.ReconstructedComponent = item004001.RefCode;
+            eqRefCodes.XerasModel = item200001.RefCode;
+            newef.CloseConnection();
+            return eqRefCodes;
+        }
+        public static ReplyMessage CreateReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string equipmentNo, Equipment.EquipmentReferenceCodes equipmentReferenceCodes)
+        {
+            //Corresponde a la misma acción de modificar, excepto que se garantiza que todos los RefCodes sean actualizados con la nueva información
+            return ModifyReferenceCodes(eFunctions, urlService, opContext, equipmentNo, equipmentReferenceCodes);
+        }
+        private static List<ReferenceCodeItem> GetNotNullRefCodeList(string entityType, string entityValue, Equipment.EquipmentReferenceCodes equipmentReferenceCodes)
+        {
+            var refItemList = new List<ReferenceCodeItem>();
+
+            var riEquipmentCapacity = new ReferenceCodeItem(entityType, entityValue, "001", "001", equipmentReferenceCodes.EquipmentCapacity) { ShortName = "Capacidad Equipo" };
+            var riRefrigerantType = new ReferenceCodeItem(entityType, entityValue, "002", "001", equipmentReferenceCodes.RefrigerantType) { ShortName = "Tipo Refrigeración" };
+            var riFuelCostCenter = new ReferenceCodeItem(entityType, entityValue, "003", "001", equipmentReferenceCodes.FuelCostCenter) { ShortName = "Centro Combustible" };
+            var riReconstructedComponent = new ReferenceCodeItem(entityType, entityValue, "004", "001", equipmentReferenceCodes.ReconstructedComponent) { ShortName = "Componente Reconstruído" };
+            var riXerasModel = new ReferenceCodeItem(entityType, entityValue, "200", "001", equipmentReferenceCodes.XerasModel) { ShortName = "Modelo XERAS" };
+            
+
+            if (equipmentReferenceCodes.EquipmentCapacity != null)
+                refItemList.Add(riEquipmentCapacity);
+            if (equipmentReferenceCodes.RefrigerantType != null)
+                refItemList.Add(riRefrigerantType);
+            if (equipmentReferenceCodes.FuelCostCenter != null)
+                refItemList.Add(riFuelCostCenter);
+            if (equipmentReferenceCodes.ReconstructedComponent != null)
+                refItemList.Add(riReconstructedComponent);
+            if (equipmentReferenceCodes.XerasModel != null)
+                refItemList.Add(riXerasModel);
+
+            return refItemList;
+        }
+
+        public static ReplyMessage ModifyReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string equipmentNo, Equipment.EquipmentReferenceCodes equipmentReferenceCodess)
+        {
+            var refCodeOpContext = ReferenceCodeActions.GetRefCodesOpContext(opContext.district, opContext.position, opContext.maxInstances, true);
+
+            const string entityType = "EQP";
+            var entityValue = equipmentNo;
+
+            var reply = new ReplyMessage();
+            var error = new List<string>();
+
+            var refItemList = GetNotNullRefCodeList(entityType, entityValue, equipmentReferenceCodess);
+
+            foreach (var item in refItemList)
+            {
+                try
+                {
+                    if (item.RefCode == null)
+                        continue;
+                    var replyRefCode = ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refCodeOpContext, item);
+                    if (string.IsNullOrWhiteSpace(replyRefCode.entityValue))
+                        throw new Exception("No se recibió respuesta");
+                }
+                catch (Exception ex)
+                {
+                    error.Add("Error al actualizar " + item.ShortName + ": " + ex.Message);
+                }
+            }
+
+            reply.Errors = error.ToArray();
+            return reply;
         }
 
         public static class Queries

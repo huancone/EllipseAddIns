@@ -116,7 +116,7 @@ namespace EllipseReferenceCodesClassLibrary
             try
             {
                 var replyModify = proxySt.modify(opContext, request);
-
+                
                 //Actualizamos el StdText si existe
                 try
                 {

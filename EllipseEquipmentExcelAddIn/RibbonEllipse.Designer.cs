@@ -59,6 +59,7 @@
             this.menuCompMovement = this.Factory.CreateRibbonMenu();
             this.btnTraceAction = this.Factory.CreateRibbonButton();
             this.btnReviewFitments = this.Factory.CreateRibbonButton();
+            this.cbIgnoreRefCodes = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpEllipse.SuspendLayout();
@@ -122,6 +123,7 @@
             this.menuActions.Items.Add(this.menuEquipments);
             this.menuActions.Items.Add(this.menuListEquipment);
             this.menuActions.Items.Add(this.menuCompMovement);
+            this.menuActions.Items.Add(this.cbIgnoreRefCodes);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "&Acciones";
             this.menuActions.Name = "menuActions";
@@ -148,7 +150,7 @@
             // 
             // btnReview
             // 
-            this.btnReview.Label = "&Consultar Equipos";
+            this.btnReview.Label = "C&onsultar Equipos";
             this.btnReview.Name = "btnReview";
             this.btnReview.ShowImage = true;
             this.btnReview.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReview_Click);
@@ -169,14 +171,14 @@
             // 
             // btnUpdateEquipmentStatus
             // 
-            this.btnUpdateEquipmentStatus.Label = "&Actualizar Estado Equipo";
+            this.btnUpdateEquipmentStatus.Label = "Actualizar E&stado Equipo";
             this.btnUpdateEquipmentStatus.Name = "btnUpdateEquipmentStatus";
             this.btnUpdateEquipmentStatus.ShowImage = true;
             this.btnUpdateEquipmentStatus.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateEquipmentStatus_Click);
             // 
             // btnDisposal
             // 
-            this.btnDisposal.Label = "Disposal";
+            this.btnDisposal.Label = "&Disposal";
             this.btnDisposal.Name = "btnDisposal";
             this.btnDisposal.ShowImage = true;
             this.btnDisposal.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDisposal_Click);
@@ -243,10 +245,15 @@
             // 
             // btnReviewFitments
             // 
-            this.btnReviewFitments.Label = "Consultar Historia";
+            this.btnReviewFitments.Label = "Consultar &Historia";
             this.btnReviewFitments.Name = "btnReviewFitments";
             this.btnReviewFitments.ShowImage = true;
             this.btnReviewFitments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewFitments_Click);
+            // 
+            // cbIgnoreRefCodes
+            // 
+            this.cbIgnoreRefCodes.Label = "Ignorar Reference Codes";
+            this.cbIgnoreRefCodes.Name = "cbIgnoreRefCodes";
             // 
             // btnStopThread
             // 
@@ -301,6 +308,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAddEquipToList;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDeleteEquipFromList;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDisposal;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreRefCodes;
     }
 
     partial class ThisRibbonCollection
