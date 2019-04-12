@@ -726,13 +726,23 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(71, i).Value = "'" + eq.ClassCodes.EquipmentClassif18;
                     _cells.GetCell(72, i).Value = "'" + eq.ClassCodes.EquipmentClassif19;
                     //ReferenceCodes
-                    if (cbIgnoreRefCodes.Checked) continue;
-                    var referenceCodes = EquipmentActions.GetEquipmentReferenceCodes(_eFunctions, urlService, opContext, eq.EquipmentNo);
-                    _cells.GetCell(73, i).Value = "'" + referenceCodes.EquipmentCapacity;
-                    _cells.GetCell(74, i).Value = "'" + referenceCodes.RefrigerantType;
-                    _cells.GetCell(75, i).Value = "'" + referenceCodes.FuelCostCenter;
-                    _cells.GetCell(76, i).Value = "'" + referenceCodes.ReconstructedComponent;
-                    _cells.GetCell(77, i).Value = "'" + referenceCodes.XerasModel;
+                    if (cbIgnoreRefCodes.Checked)
+                    {
+                        _cells.GetCell(73, i).Value = "Ignored";
+                        _cells.GetCell(74, i).Value = "Ignored";
+                        _cells.GetCell(75, i).Value = "Ignored";
+                        _cells.GetCell(76, i).Value = "Ignored";
+                        _cells.GetCell(77, i).Value = "Ignored";
+                    }
+                    else
+                    {
+                        var referenceCodes = EquipmentActions.GetEquipmentReferenceCodes(_eFunctions, urlService, opContext, eq.EquipmentNo);
+                        _cells.GetCell(73, i).Value = "'" + referenceCodes.EquipmentCapacity;
+                        _cells.GetCell(74, i).Value = "'" + referenceCodes.RefrigerantType;
+                        _cells.GetCell(75, i).Value = "'" + referenceCodes.FuelCostCenter;
+                        _cells.GetCell(76, i).Value = "'" + referenceCodes.ReconstructedComponent;
+                        _cells.GetCell(77, i).Value = "'" + referenceCodes.XerasModel;
+                    }
 
                 }
                 catch (Exception ex)
@@ -861,14 +871,23 @@ namespace EllipseEquipmentExcelAddIn
                     _cells.GetCell(71, i).Value = "'" + eq.ClassCodes.EquipmentClassif18;
                     _cells.GetCell(72, i).Value = "'" + eq.ClassCodes.EquipmentClassif19;
                     //ReferenceCodes
-                    //ReferenceCodes
-                    if (cbIgnoreRefCodes.Checked) continue;
-                    var referenceCodes = EquipmentActions.GetEquipmentReferenceCodes(_eFunctions, urlService, opContext, eq.EquipmentNo);
-                    _cells.GetCell(73, i).Value = "'" + referenceCodes.EquipmentCapacity;
-                    _cells.GetCell(74, i).Value = "'" + referenceCodes.RefrigerantType;
-                    _cells.GetCell(75, i).Value = "'" + referenceCodes.FuelCostCenter;
-                    _cells.GetCell(76, i).Value = "'" + referenceCodes.ReconstructedComponent;
-                    _cells.GetCell(77, i).Value = "'" + referenceCodes.XerasModel;
+                    if (cbIgnoreRefCodes.Checked)
+                    {
+                        _cells.GetCell(73, i).Value = "Ignored";
+                        _cells.GetCell(74, i).Value = "Ignored";
+                        _cells.GetCell(75, i).Value = "Ignored";
+                        _cells.GetCell(76, i).Value = "Ignored";
+                        _cells.GetCell(77, i).Value = "Ignored";
+                    }
+                    else
+                    {
+                        var referenceCodes = EquipmentActions.GetEquipmentReferenceCodes(_eFunctions, urlService, opContext, eq.EquipmentNo);
+                        _cells.GetCell(73, i).Value = "'" + referenceCodes.EquipmentCapacity;
+                        _cells.GetCell(74, i).Value = "'" + referenceCodes.RefrigerantType;
+                        _cells.GetCell(75, i).Value = "'" + referenceCodes.FuelCostCenter;
+                        _cells.GetCell(76, i).Value = "'" + referenceCodes.ReconstructedComponent;
+                        _cells.GetCell(77, i).Value = "'" + referenceCodes.XerasModel;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -990,22 +1009,36 @@ namespace EllipseEquipmentExcelAddIn
                         }
                     };
 
+                    var referenceCodes = new Equipment.EquipmentReferenceCodes
+                    {
+                        EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
+                        RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
+                        FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
+                        ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
+                        XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
+                    };
+
+                    //RefCode Validation
+                    decimal value;
+                    if (Decimal.TryParse(referenceCodes.EquipmentCapacity, out value))
+                    {
+                        var numericEquipmentCapacity = Convert.ToDecimal(referenceCodes.EquipmentCapacity);
+                        if (numericEquipmentCapacity > 999)
+                            throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
+                    }
+                    else
+                        throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
+
+                    //
                     var createReply = EquipmentActions.CreateEquipment(opSheet, urlService, equipment);
+
                     if (string.IsNullOrWhiteSpace(createReply.equipmentNo))
                         throw new Exception("No se ha podido crear el Equipo");
+
                     //Update Reference Codes
                     var errorList = "";
                     if (!cbIgnoreRefCodes.Checked)
                     {
-                        var referenceCodes = new Equipment.EquipmentReferenceCodes
-                        {
-                            EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
-                            RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
-                            FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
-                            ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
-                            XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
-                        };
-
                         var replyRefCode = EquipmentActions.ModifyReferenceCodes(_eFunctions, urlService, opSheet, equipment.EquipmentNo, referenceCodes);
 
                         if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
@@ -1155,21 +1188,34 @@ namespace EllipseEquipmentExcelAddIn
                         }
                     };
 
+                    var referenceCodes = new Equipment.EquipmentReferenceCodes
+                    {
+                        EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
+                        RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
+                        FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
+                        ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
+                        XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
+                    };
+
+                    //RefCode Validation
+                    decimal value;
+                    if (Decimal.TryParse(referenceCodes.EquipmentCapacity, out value))
+                    {
+                        var numericEquipmentCapacity = Convert.ToDecimal(referenceCodes.EquipmentCapacity);
+                        if (numericEquipmentCapacity > 999)
+                            throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
+                    }
+                    else
+                        throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
+
+                    //
+
                     EquipmentActions.UpdateEquipmentData(opSheet, urlService, equipment);
 
                     //Update Reference Codes
                     var errorList = "";
                     if (!cbIgnoreRefCodes.Checked)
                     {
-                        var referenceCodes = new Equipment.EquipmentReferenceCodes
-                        {
-                            EquipmentCapacity = MyUtilities.IsTrue(_cells.GetCell(73, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(73, i).Value) : null,
-                            RefrigerantType = MyUtilities.IsTrue(_cells.GetCell(74, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(74, i).Value) : null,
-                            FuelCostCenter = MyUtilities.IsTrue(_cells.GetCell(75, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(75, i).Value) : null,
-                            ReconstructedComponent = MyUtilities.IsTrue(_cells.GetCell(76, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(76, i).Value) : null,
-                            XerasModel = MyUtilities.IsTrue(_cells.GetCell(77, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(77, i).Value) : null
-                        };
-
                         var replyRefCode = EquipmentActions.ModifyReferenceCodes(_eFunctions, urlService, opSheet, equipment.EquipmentNo, referenceCodes);
 
                         if (replyRefCode != null && replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
@@ -1239,7 +1285,7 @@ namespace EllipseEquipmentExcelAddIn
                     var equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, equipmentRef);
                     var equipment = new Equipment
                     {
-                        EquipmentNo = equipmentList.Any() ? equipmentList.First() : equipmentRef,
+                        EquipmentNo = equipmentList != null && equipmentList.Count > 0 ? equipmentList[0] : equipmentRef,
                         EquipmentStatus = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value))
                     };
                     var newStatus = EquipmentActions.UpdateEquipmentStatus(opSheet, urlService, equipment.EquipmentNo, equipment.EquipmentStatus);
