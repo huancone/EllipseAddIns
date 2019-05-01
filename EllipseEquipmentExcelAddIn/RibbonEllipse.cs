@@ -1019,15 +1019,18 @@ namespace EllipseEquipmentExcelAddIn
                     };
 
                     //RefCode Validation
-                    decimal value;
-                    if (Decimal.TryParse(referenceCodes.EquipmentCapacity, out value))
+                    if (referenceCodes.EquipmentCapacity != null)
                     {
-                        var numericEquipmentCapacity = Convert.ToDecimal(referenceCodes.EquipmentCapacity);
-                        if (numericEquipmentCapacity > 999)
+                        decimal value;
+                        if (Decimal.TryParse(referenceCodes.EquipmentCapacity, out value))
+                        {
+                            var numericEquipmentCapacity = Convert.ToDecimal(referenceCodes.EquipmentCapacity);
+                            if (numericEquipmentCapacity > 999)
+                                throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
+                        }
+                        else
                             throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
                     }
-                    else
-                        throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
 
                     //
                     var createReply = EquipmentActions.CreateEquipment(opSheet, urlService, equipment);
@@ -1198,16 +1201,18 @@ namespace EllipseEquipmentExcelAddIn
                     };
 
                     //RefCode Validation
-                    decimal value;
-                    if (Decimal.TryParse(referenceCodes.EquipmentCapacity, out value))
+                    if (referenceCodes.EquipmentCapacity != null)
                     {
-                        var numericEquipmentCapacity = Convert.ToDecimal(referenceCodes.EquipmentCapacity);
-                        if (numericEquipmentCapacity > 999)
+                        decimal value;
+                        if (Decimal.TryParse(referenceCodes.EquipmentCapacity, out value))
+                        {
+                            var numericEquipmentCapacity = Convert.ToDecimal(referenceCodes.EquipmentCapacity);
+                            if (numericEquipmentCapacity > 999)
+                                throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
+                        }
+                        else
                             throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
                     }
-                    else
-                        throw new ArgumentException("La Capacidad del Equipo debe ser numérica y no mayor de 999");
-
                     //
 
                     EquipmentActions.UpdateEquipmentData(opSheet, urlService, equipment);
