@@ -43,6 +43,8 @@
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuAction = this.Factory.CreateRibbonMenu();
+            this.menuQueries = this.Factory.CreateRibbonMenu();
+            this.btnQueryRequisitions = this.Factory.CreateRibbonButton();
             this.menuOptions = this.Factory.CreateRibbonMenu();
             this.cbMaxItems = this.Factory.CreateRibbonCheckBox();
             this.cbSortItems = this.Factory.CreateRibbonCheckBox();
@@ -52,6 +54,8 @@
             this.btnManualCreditRequisitionMSE1VR = this.Factory.CreateRibbonButton();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.btnReviewRequisitionControl = this.Factory.CreateRibbonButton();
+            this.btnReReviewRequisitionControl = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpRequisitionService.SuspendLayout();
             this.box1.SuspendLayout();
@@ -112,6 +116,7 @@
             // 
             // menuAction
             // 
+            this.menuAction.Items.Add(this.menuQueries);
             this.menuAction.Items.Add(this.menuOptions);
             this.menuAction.Items.Add(this.btnExcecuteRequisitionService);
             this.menuAction.Items.Add(this.btnCreateReqIgError);
@@ -121,6 +126,22 @@
             this.menuAction.Items.Add(this.btnStopThread);
             this.menuAction.Label = "&Acciones";
             this.menuAction.Name = "menuAction";
+            // 
+            // menuQueries
+            // 
+            this.menuQueries.Items.Add(this.btnQueryRequisitions);
+            this.menuQueries.Items.Add(this.btnReviewRequisitionControl);
+            this.menuQueries.Items.Add(this.btnReReviewRequisitionControl);
+            this.menuQueries.Label = "Consultas";
+            this.menuQueries.Name = "menuQueries";
+            this.menuQueries.ShowImage = true;
+            // 
+            // btnQueryRequisitions
+            // 
+            this.btnQueryRequisitions.Label = "Consultar Requisiciones";
+            this.btnQueryRequisitions.Name = "btnQueryRequisitions";
+            this.btnQueryRequisitions.ShowImage = true;
+            this.btnQueryRequisitions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnQueryRequisitions_Click);
             // 
             // menuOptions
             // 
@@ -182,6 +203,20 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // btnReviewRequisitionControl
+            // 
+            this.btnReviewRequisitionControl.Label = "Consultar Detalle - Control";
+            this.btnReviewRequisitionControl.Name = "btnReviewRequisitionControl";
+            this.btnReviewRequisitionControl.ShowImage = true;
+            this.btnReviewRequisitionControl.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewRequisitionControl_Click);
+            // 
+            // btnReReviewRequisitionControl
+            // 
+            this.btnReReviewRequisitionControl.Label = "Reconsultar Detalle - Control";
+            this.btnReReviewRequisitionControl.Name = "btnReReviewRequisitionControl";
+            this.btnReReviewRequisitionControl.ShowImage = true;
+            this.btnReReviewRequisitionControl.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReReviewRequisitionControl_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -218,6 +253,10 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatExtended;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuOptions;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbSortItems;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuQueries;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnQueryRequisitions;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewRequisitionControl;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReReviewRequisitionControl;
     }
 
     partial class ThisRibbonCollection

@@ -32,7 +32,7 @@ namespace EllipseWorkOrdersClassLibrary
         public static KeyValuePair<int, string> EquipmentReference = new KeyValuePair<int, string>(2, "Equipment No");
         public static KeyValuePair<int, string> ProductiveUnit = new KeyValuePair<int, string>(3, "ProductiveUnit");
         public static KeyValuePair<int, string> Originator = new KeyValuePair<int, string>(4, "Originator");
-        public static KeyValuePair<int, string> CompletedBy = new KeyValuePair<int, string>(5, "Originator");
+        public static KeyValuePair<int, string> CompletedBy = new KeyValuePair<int, string>(5, "CompletedBy");
         public static KeyValuePair<int, string> AccountCode = new KeyValuePair<int, string>(6, "AccountCode");
         public static KeyValuePair<int, string> WorkRequest = new KeyValuePair<int, string>(7, "WorkRequest");
         public static KeyValuePair<int, string> ParentWorkOrder = new KeyValuePair<int, string>(8, "ParentWorkOrder");
