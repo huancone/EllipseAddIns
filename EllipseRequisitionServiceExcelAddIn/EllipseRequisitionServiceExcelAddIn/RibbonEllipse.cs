@@ -390,7 +390,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.GetCell(15, titleRow).Value = "Partial Allowed";
                 _cells.GetCell(15, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
                 var partialAllowedList = new List<string> {"Y - YES", "N - No"};
-                _cells.SetValidationList(_cells.GetCell(15, titleRow + 1), partialAllowedList, ValidationSheetName, 5, false);
+                _cells.SetValidationList(_cells.GetCell(15, titleRow + 1), partialAllowedList, ValidationSheetName, 6, false);
 
                 _cells.GetCell(16, titleRow).Value = "Stock Code";
                 _cells.GetCell(16, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
@@ -439,7 +439,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = Districts.DefaultDistrict;
-                _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
+                _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 7);
                 _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("A4").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
                                                 "INST: IMIS, MINA\n" +
@@ -448,8 +448,8 @@ namespace EllipseRequisitionServiceExcelAddIn
                                                 "" + ManagementArea.SoporteOperacion.Key + ": ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
 
-                _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 2);
-                _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 3, false);
+                _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 8);
+                _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 9, false);
                 _cells.GetCell("A5").Value = SearchFieldCriteriaType.EquipmentReference.Value;
                 _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);
                 _cells.GetCell("A6").Value = "STATUS";
@@ -459,7 +459,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 _cells.GetCell("C3").Value = "FECHA";
                 _cells.GetCell("D3").Value = SearchDateCriteriaType.Creation.Value;
-                _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 5);
+                _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 10);
                 _cells.GetCell("C4").Value = "DESDE";
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D4").AddComment("YYYYMMDD");
