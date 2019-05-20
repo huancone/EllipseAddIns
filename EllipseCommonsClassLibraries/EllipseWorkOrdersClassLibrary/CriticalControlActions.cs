@@ -281,7 +281,7 @@ namespace EllipseWorkOrdersClassLibrary
                     "     WHEN TRIM(WO.COMPLETED_CODE) IN ('01', '02', '06') THEN 'COMPLETADA'" +
                     "     WHEN TRIM(WO.COMPLETED_CODE) = '07' THEN 'NO REALIZADA'" +
                     "     WHEN TRIM(WO.COMPLETED_CODE) = 'CN' THEN 'CANCELADA'" +
-                    "     WHEN (ROW_NUMBER() OVER (PARTITION BY WO.MAINT_SCH_TASK, WO.STD_JOB_NO, WOT.WO_TASK_NO, WOT.ASSIGN_PERSON ORDER BY WO.PLAN_STR_DATE DESC)) > 1 THEN 'VENCIDA'" +
+                    "     WHEN (ROW_NUMBER() OVER (PARTITION BY WO.MAINT_SCH_TASK, WO.EQUIP_NO, WO.COMP_CODE, WO.COMP_MOD_CODE, WO.STD_JOB_NO, WOT.WO_TASK_NO, WOT.ASSIGN_PERSON ORDER BY WO.PLAN_STR_DATE DESC)) > 1 THEN 'VENCIDA'" +
                     "     WHEN TRIM(WO.COMPLETED_CODE) IS NULL THEN 'VIGENTE'" +
                     "     ELSE 'OTRO'" +
                     "   END STATUS," +
@@ -307,8 +307,10 @@ namespace EllipseWorkOrdersClassLibrary
                     "      LEFT JOIN ELLIPSE.MSF700 MST " +
                     "    ON WO.STD_JOB_NO = MST.STD_JOB_NO " +
                     "       AND WO.MAINT_SCH_TASK = MST.MAINT_SCH_TASK " +
+                    "       AND WO.EQUIP_NO = MST.EQUIP_NO " +
+                    "       AND WO.COMP_CODE = MST.COMP_CODE " +
+                    "       AND WO.COMP_MOD_CODE = MST.COMP_MOD_CODE " +
                     " WHERE" +
-                    " " + "AND (WOT.JOB_DESC_CODE IN ( 'A', 'F','C','CP') OR MST.JOB_DESC_CODE IN ( 'A', 'F','C','CP'))  " +
                     " " + "AND TRIM(WO.MAINT_SCH_TASK) IS NOT NULL" +
                     " " + queryCriteria1 +
                     " " + queryCriteria2 +

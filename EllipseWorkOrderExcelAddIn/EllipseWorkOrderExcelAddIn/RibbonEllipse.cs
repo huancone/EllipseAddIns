@@ -3706,6 +3706,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             FormatCriticalControls();
         }
+
         private void FormatCriticalControls()
         {
             try

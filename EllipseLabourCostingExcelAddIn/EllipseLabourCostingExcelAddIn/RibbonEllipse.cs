@@ -71,7 +71,7 @@ namespace EllipseLabourCostingExcelAddIn
 
         private void btnFormatDefault_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName01))
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Contains(SheetName01))
             {
                 var groupName = "" + _cells.GetCell("B4").Value;
 
@@ -393,6 +393,7 @@ namespace EllipseLabourCostingExcelAddIn
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
+
         public void FormatMso850Sheet()
         {
             try
@@ -782,13 +783,13 @@ namespace EllipseLabourCostingExcelAddIn
                             AccountCode = accountCode,
                         };
 
-                        if (!string.IsNullOrWhiteSpace(employee.WorkOrder))
-                        {
-                            if (string.IsNullOrWhiteSpace(employee.WorkOrderTask))
-                                employee.WorkOrderTask = "001";
-                            if (employee.WorkOrderTask.Length >= 1 && employee.WorkOrderTask.Length < 3)
-                                employee.WorkOrderTask = employee.WorkOrderTask.PadLeft(3, '0');
-                        }
+//                        if (!string.IsNullOrWhiteSpace(employee.WorkOrder))
+//                        {
+//                            if (string.IsNullOrWhiteSpace(employee.WorkOrderTask))
+//                                employee.WorkOrderTask = "001";
+//                            if (employee.WorkOrderTask.Length >= 1 && employee.WorkOrderTask.Length < 3)
+//                                employee.WorkOrderTask = employee.WorkOrderTask.PadLeft(3, '0');
+//                        }
 
                         var reply = LoadEmployeeMse(urlService, opSheet, employee, cbReplaceExisting.Checked);
 
@@ -1151,13 +1152,9 @@ namespace EllipseLabourCostingExcelAddIn
             {
                 transactionDate = new DateTime(int.Parse(labourEmployee.TransactionDate.Substring(0, 4)), int.Parse(labourEmployee.TransactionDate.Substring(4, 2)), int.Parse(labourEmployee.TransactionDate.Substring(6, 2))),
                 transactionDateSpecified = true,
-                labourCostingHours = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingHours)
-                    ? Convert.ToDecimal(labourEmployee.LabourCostingHours)
-                    : default(decimal),
+                labourCostingHours = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingHours)? Convert.ToDecimal(labourEmployee.LabourCostingHours): default(decimal),
                 labourCostingHoursSpecified = !string.IsNullOrEmpty(labourEmployee.LabourCostingHours),
-                labourCostingValue = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingValue)
-                    ? Convert.ToDecimal(labourEmployee.LabourCostingValue)
-                    : default(decimal),
+                labourCostingValue = !string.IsNullOrWhiteSpace(labourEmployee.LabourCostingValue)? Convert.ToDecimal(labourEmployee.LabourCostingValue): default(decimal),
                 labourCostingValueSpecified = !string.IsNullOrEmpty(labourEmployee.LabourCostingValue),
                 interDistrictCode = labourEmployee.InterDistrictCode,
                 accountCode = labourEmployee.AccountCode,
@@ -1168,55 +1165,64 @@ namespace EllipseLabourCostingExcelAddIn
                 employee = labourEmployee.Employee,
                 equipmentNo = labourEmployee.EquipmentNo,
                 equipmentReference = labourEmployee.EquipmentRef,
-                percentComplete = !string.IsNullOrWhiteSpace(labourEmployee.PercentComplete)
-                    ? Convert.ToDecimal(labourEmployee.PercentComplete)
-                    : default(decimal),
+                percentComplete = !string.IsNullOrWhiteSpace(labourEmployee.PercentComplete)? Convert.ToDecimal(labourEmployee.PercentComplete): default(decimal),
                 percentCompleteSpecified = !string.IsNullOrEmpty(labourEmployee.PercentComplete),
                 earnCode = labourEmployee.EarnCode,
                 labourClass = labourEmployee.LabourClass,
                 overtimeInd = labourEmployee.OvertimeInd,
                 overtimeIndSpecified = true,
-                unitsComplete = !string.IsNullOrWhiteSpace(labourEmployee.UnitsComplete)
-                    ? Convert.ToDecimal(labourEmployee.UnitsComplete)
-                    : default(decimal),
+                unitsComplete = !string.IsNullOrWhiteSpace(labourEmployee.UnitsComplete)? Convert.ToDecimal(labourEmployee.UnitsComplete): default(decimal),
                 unitsCompleteSpecified = !string.IsNullOrEmpty(labourEmployee.UnitsComplete),
                 completedCode = labourEmployee.CompletedCode
             };
 
             //Search Existing
-            if (!replaceExisting) return proxyLt.create(opContext, requestLt);
-            var requestSearch = new LabourCostingTransSearchParam
+            if (replaceExisting)
             {
-                transactionDate = new DateTime(int.Parse(labourEmployee.TransactionDate.Substring(0, 4)),
-                    int.Parse(labourEmployee.TransactionDate.Substring(4, 2)),
-                    int.Parse(labourEmployee.TransactionDate.Substring(6, 2))),
-                transactionDateSpecified = true,
-                employee = labourEmployee.Employee,
-                project = labourEmployee.Project,
-                workOrder = labourEmployee.WorkOrder,
-                workOrderTask = labourEmployee.WorkOrderTask
-            };
-            var searchRestartDto = new LabourCostingTransDTO();
-            //La búsqueda solo toma en cuenta la fecha de transacción y el employee id
-            var replySearch = proxyLt.search(opContext, requestSearch, searchRestartDto);
-            //Existe un elemento
-            if (replySearch == null || replySearch.Length < 1) return proxyLt.create(opContext, requestLt);
-            foreach (var replyItem in replySearch)
-            {
-                //Las comparaciones deben hacerse con LPAD para poder establecer bien las comparaciones númericas que trae ellipse en su información
-                var equalTranDate = replyItem.labourCostingTransDTO.transactionDate.Equals(requestSearch.transactionDate);
-                var equalEmployee = replyItem.labourCostingTransDTO.employee.PadLeft(20, '0').Equals(requestSearch.employee.PadLeft(20, '0'));
-                //posibles nulos de WorkOrders y/o Projects
-                var equalWo = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrder) && replyItem.labourCostingTransDTO.workOrder.PadLeft(20, '0').Equals(requestSearch.workOrder.PadLeft(20, '0'));
-                var equalTask = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrderTask) && replyItem.labourCostingTransDTO.workOrderTask.PadLeft(3, '0').Equals(requestSearch.workOrderTask.PadLeft(3, '0'));
-                var equalProject = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.project) && replyItem.labourCostingTransDTO.project.PadLeft(20, '0').Equals(requestSearch.project.PadLeft(20, '0'));
+                var requestSearch = new LabourCostingTransSearchParam
+                {
+                    transactionDate = new DateTime(int.Parse(labourEmployee.TransactionDate.Substring(0, 4)),
+                        int.Parse(labourEmployee.TransactionDate.Substring(4, 2)),
+                        int.Parse(labourEmployee.TransactionDate.Substring(6, 2))),
+                    transactionDateSpecified = true,
+                    employee = labourEmployee.Employee,
+                    project = labourEmployee.Project,
+                    workOrder = labourEmployee.WorkOrder,
+                    workOrderTask = labourEmployee.WorkOrderTask
+                };
+                var searchRestartDto = new LabourCostingTransDTO();
+                //La búsqueda solo toma en cuenta la fecha de transacción y el employee id
+                var replySearch = proxyLt.search(opContext, requestSearch, searchRestartDto);
+                //Existe un elemento
+                if (replySearch == null || replySearch.Length < 1) return proxyLt.create(opContext, requestLt);
+                foreach (var replyItem in replySearch)
+                {
+                    //Las comparaciones deben hacerse con LPAD para poder establecer bien las comparaciones númericas que trae ellipse en su información
+                    var equalTranDate =
+                        replyItem.labourCostingTransDTO.transactionDate.Equals(requestSearch.transactionDate);
+                    var equalEmployee = replyItem.labourCostingTransDTO.employee.PadLeft(20, '0')
+                        .Equals(requestSearch.employee.PadLeft(20, '0'));
+                    //posibles nulos de WorkOrders y/o Projects
+                    var equalWo = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrder) && replyItem
+                                      .labourCostingTransDTO.workOrder.PadLeft(20, '0')
+                                      .Equals(requestSearch.workOrder.PadLeft(20, '0'));
+                    var equalTask = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrderTask) &&
+                                    replyItem.labourCostingTransDTO.workOrderTask.PadLeft(3, '0')
+                                        .Equals(requestSearch.workOrderTask.PadLeft(3, '0'));
+                    var equalProject = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.project) &&
+                                       replyItem.labourCostingTransDTO.project.PadLeft(20, '0')
+                                           .Equals(requestSearch.project.PadLeft(20, '0'));
 
-                if (!equalTranDate || !equalEmployee || ((!equalWo || !equalTask) && !equalProject)) continue;
-                proxyLt.delete(opContext, replySearch[0].labourCostingTransDTO);
-                break;
+                    if (!equalTranDate || !equalEmployee || ((!equalWo || !equalTask) && !equalProject)) continue;
+                    var result = proxyLt.delete(opContext, replySearch[0].labourCostingTransDTO);
+                    break;
+                }
+
+                //se envía la acción
+                //return proxyLt.multipleCreate(opContext, multipleRequestLt);
+                return proxyLt.create(opContext, requestLt);
             }
-            //se envía la acción
-            //return proxyLt.multipleCreate(opContext, multipleRequestLt);
+
             return proxyLt.create(opContext, requestLt);
 
 
@@ -1607,7 +1613,8 @@ namespace EllipseLabourCostingExcelAddIn
                         "     " + dbReference + ".MSF723" + dbLink + " WE "+
                         "     INNER JOIN " + dbReference + ".MSF810" + dbLink + " EMP "+
                         "     ON EMP.EMPLOYEE_ID   = WE.EMPLOYEE_ID "+
-                        " WHERE "+
+                        "     OR TRIM(EMP.PREF_NAME)   = TRIM(WE.EMPLOYEE_ID) " +
+                        " WHERE " +
                         "     WE.WORK_GROUP = '" + workGroup + "' "+
                         "     AND ( WE.STOP_DT_REVSD   = '00000000' "+
                         "           OR ( 99999999 - WE.STOP_DT_REVSD ) >= TO_CHAR( SYSDATE, 'YYYYMMDD' ) ) "+

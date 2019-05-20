@@ -163,7 +163,7 @@ namespace EllipseMSE345ExcelAddIn
                 _cells.GetCell("A8").Value = "FECHA";
                 _cells.GetCell("B8").Value = DateTime.Now.ToString("yyyyMMdd");
 
-                var inspectoresCodeList = _eFunctions.GetItemCodes("VI", "AND SUBSTR(TABLE_DESC,1,6)<='999999'")
+                var inspectoresCodeList = _eFunctions.GetItemCodes("VI", true , "AND SUBSTR(TABLE_DESC,1,6)<='999999'")
                     .Select(item => item.code + " - " + item.description).ToList();
                 _cells.GetCell("A9").Value = "INSPECTOR 1";
                 _cells.SetValidationList(_cells.GetCell("B9"), inspectoresCodeList, ValidationSheetName, 2, false);
@@ -203,8 +203,7 @@ namespace EllipseMSE345ExcelAddIn
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
-                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, TitleRow01 + 1).NumberFormat =
-                    NumberFormatConstants.General;
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, TitleRow01 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1), TableName01);
 
 
@@ -281,20 +280,20 @@ namespace EllipseMSE345ExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B6"), flotasList, ValidationSheetName, 1, false);
 
                 _cells.GetCell("A7").Value = "MONITOREO";
-                var monitoreosCodeList = _eFunctions.GetItemCodes("OI", "AND TRIM(TABLE_CODE) IN ('IE','UT')")
+                var monitoreosCodeList = _eFunctions.GetItemCodes("OI", true, "AND TRIM(TABLE_CODE) IN ('IE','UT')")
                     .Select(item => item.code + " - " + item.description).ToList();
                 _cells.SetValidationList(_cells.GetCell("B7"), monitoreosCodeList, ValidationSheetName, 2, false);
 
                 _cells.GetCell("A8").Value = "EQUIPO";
                 _cells.GetCell("B8").NumberFormat = NumberFormatConstants.Text;
-                var equipmentList = GetEquipos();
-                _cells.SetValidationList(_cells.GetCell("B8"), equipmentList, ValidationSheetName, 3, false);
+//                var equipmentList = GetEquipos();
+//                _cells.SetValidationList(_cells.GetCell("B8"), equipmentList, ValidationSheetName, 3, false);
 
 
                 _cells.GetCell("A9").Value = "FECHA";
                 _cells.GetCell("B9").Value = DateTime.Now.ToString("yyyyMMdd");
 
-                var inspectoresCodeList = _eFunctions.GetItemCodes("VI", "AND SUBSTR(TABLE_DESC,1,6)<='999999'")
+                var inspectoresCodeList = _eFunctions.GetItemCodes("VI", true, "AND SUBSTR(TABLE_DESC,1,6)<='999999'")
                     .Select(item => item.code + " - " + item.description).ToList();
                 _cells.GetCell("A10").Value = "INSPECTOR 1";
                 _cells.SetValidationList(_cells.GetCell("B10"), inspectoresCodeList, ValidationSheetName, 4, false);
@@ -328,8 +327,7 @@ namespace EllipseMSE345ExcelAddIn
                 _cells.GetCell(ResultColumnMtto01, TitleRowMtto01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumnMtto01, TitleRowMtto01).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
-                _cells.GetRange(1, TitleRowMtto01 + 1, ResultColumnMtto01 - 3, TitleRowMtto01 + 1).NumberFormat =
-                    NumberFormatConstants.Text;
+                _cells.GetRange(1, TitleRowMtto01 + 1, ResultColumnMtto01 - 3, TitleRowMtto01 + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRowMtto01, ResultColumnMtto01, TitleRowMtto01 + 1),
                     TableNameMtto01);
 
@@ -581,13 +579,11 @@ namespace EllipseMSE345ExcelAddIn
 
         private List<string> GetEquipos()
         {
-            var currentEnvironment = _eFunctions.GetCurrentEnvironment();
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                var currentEnvironment = _eFunctions.GetCurrentEnvironment();
             try
             {
-                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-
-                const string sqlQuery = "SELECT EQUIP_NO FROM ELLIPSE.MSF600 " +
-                                        "WHERE EQUIP_NO IN '0220701' AND '0220999' AND EQUIP_NO NOT IN ( '02209       ','02208       ') ORDER BY EQUIP_NO";
+                const string sqlQuery = "SELECT EQUIP_NO FROM ELLIPSE.MSF600 WHERE EQUIP_NO IN '0220701' AND '0220999' AND EQUIP_NO NOT IN ( '02209       ','02208       ') ORDER BY EQUIP_NO";
 
                 var odr = _eFunctions.GetQueryResult(sqlQuery);
                 var getEquipos = new List<string>();
@@ -621,22 +617,12 @@ namespace EllipseMSE345ExcelAddIn
                 _cells.ClearTableRange(TableName01);
                 foreach (var item in list)
                 {
-                    _cells.GetCell(1, currentRow).Value =
-                        item.Type + (string.IsNullOrWhiteSpace(item.Type) ? "" : " - " + item.TypeDescription);
+                    _cells.GetCell(1, currentRow).Value = item.Type + (string.IsNullOrWhiteSpace(item.Type) ? "" : " - " + item.TypeDescription);
                     _cells.GetCell(2, currentRow).Value = equipment;
                     _cells.GetCell(3, currentRow).Value = DateTime.Now;
-                    _cells.GetCell(4, currentRow).Value =
-                        item.ComponentCode + (string.IsNullOrWhiteSpace(item.ComponentCode)
-                            ? ""
-                            : " - " + item.ComponentDescription);
-                    _cells.GetCell(5, currentRow).Value =
-                        item.ModifierCode + (string.IsNullOrWhiteSpace(item.ModifierCode)
-                            ? ""
-                            : " - " + item.ModifierDescription);
-                    _cells.GetCell(6, currentRow).Value =
-                        item.PositionCode + (string.IsNullOrWhiteSpace(item.PositionCode)
-                            ? ""
-                            : " - " + item.PositionDescription);
+                    _cells.GetCell(4, currentRow).Value = item.ComponentCode + (string.IsNullOrWhiteSpace(item.ComponentCode)? "" : " - " + item.ComponentDescription);
+                    _cells.GetCell(5, currentRow).Value = item.ModifierCode + (string.IsNullOrWhiteSpace(item.ModifierCode) ? "" : " - " + item.ModifierDescription);
+                    _cells.GetCell(6, currentRow).Value = item.PositionCode + (string.IsNullOrWhiteSpace(item.PositionCode) ? "" : " - " + item.PositionDescription);
                     _cells.GetCell(7, currentRow).Value = item.MeassureCode;
                     _cells.GetCell(8, currentRow).Value = item.MeassureDescription;
                     currentRow++;

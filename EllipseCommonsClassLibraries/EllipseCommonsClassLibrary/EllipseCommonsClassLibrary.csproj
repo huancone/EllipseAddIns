@@ -39,10 +39,6 @@
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>Service References\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=105.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\EllipsePlannerExcelAddIn\packages\RestSharp.105.2.2\lib\net4\RestSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />

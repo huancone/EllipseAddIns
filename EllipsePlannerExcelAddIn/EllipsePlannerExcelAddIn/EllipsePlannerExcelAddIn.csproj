@@ -135,20 +135,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\bin\Debug\EllipseCommonsClassLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="EllipseWorkOrdersClassLibrary, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\EllipseCommonsClassLibraries\EllipseWorkOrdersClassLibrary\bin\Debug\EllipseWorkOrdersClassLibrary.dll</HintPath>
+    <Reference Include="EllipseJobsClassLibrary">
+      <HintPath>..\..\EllipseCommonsClassLibraries\ReleasedLibraries\EllipseJobsClassLibrary\v1.0.0.1\EllipseJobsClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="EllipseWorkOrdersClassLibrary">
+      <HintPath>..\..\EllipseCommonsClassLibraries\ReleasedLibraries\EllipseWorkOrdersClassLibrary\v1.2.2.1\EllipseWorkOrdersClassLibrary.dll</HintPath>
     </Reference>
     <Reference Include="LINQtoCSV, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oracle.ManagedDataAccess.18.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp, Version=105.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.2\lib\net4\RestSharp.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Oracle.ManagedDataAccess.18.6.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -159,7 +157,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\bin\Debug\System.Web.Services.Ellipse.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute, Version=1.0.5.1, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
+      <HintPath>..\..\EllipseCommonsClassLibraries\ReleasedLibraries\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -246,10 +246,6 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseJobsClassLibrary\EllipseJobsClassLibrary.csproj">
-      <Project>{838948ce-353c-41fe-904e-753b4678aeeb}</Project>
-      <Name>EllipseJobsClassLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseStandardJobsClassLibrary\EllipseStandardJobsClassLibrary.csproj">
       <Project>{d83698a3-3b22-4af7-b92a-26e2a05b1764}</Project>
       <Name>EllipseStandardJobsClassLibrary</Name>
@@ -267,7 +263,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>1A92E1647894A27A607A937CD9F4A3111E823B95</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>CE78B1E566B0671933897B3500C94E2E578486AB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>

@@ -581,6 +581,7 @@ namespace EllipsePlannerExcelAddIn
                         _cells.GetCell(14, i).Value = j.EstimatedDurationsHrs;
                         _cells.GetCell(18, i).Value = j.AssignPerson;
                     }
+                    i++;
                 }
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
