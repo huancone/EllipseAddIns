@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
+using System.Linq;
 using Microsoft.Office.Tools.Ribbon;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Constants;
 using System.Web.Services.Ellipse;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using EllipseRequisitionServiceExcelAddIn.IssueRequisitionItemStocklessService;
+using EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary;
+using EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary.SearchConstants;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 
 namespace EllipseRequisitionServiceExcelAddIn
@@ -28,9 +32,19 @@ namespace EllipseRequisitionServiceExcelAddIn
         private const int TitleRow01Ext = 5;
         private const int ResultColumn01Ext = 21;
 
+        private const int TitleRow02 = 8;
+        private const int ResultColumn02 = 27;
+        private const int TitleRow03 = 5;
+
         private const string SheetName01 = "RequisitionService";
+        private const string SheetName02 = "Consultas";
+        private const string SheetName03 = "DetalleConsultas";
         private const string TableName01 = "RequisitionServiceTable";
-        private const string ValidationSheet = "ValidationRequisition";
+        private const string TableName02 = "RequisitionQueriesTable";
+        private const string TableName03 = "RequisitionDetailedTable";
+        private const string ValidationSheetName = "ValidationRequisition";
+
+
 
         private bool _ignoreItemError;
 
@@ -57,6 +71,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 MessageBox.Show(
                     @"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse", @"ADVERTENCIA");
         }
+
         private void btnFormatExtended_Click(object sender, RibbonControlEventArgs e)
         {
             RequisitionServiceExtendedFormat();
@@ -64,6 +79,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 MessageBox.Show(
                     @"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse", @"ADVERTENCIA");
         }
+
         private void btnExcecuteRequisitionService_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -76,7 +92,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                        
+
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 + "Ext")
                         _thread = new Thread(CreateRequisitionServiceExtended);
                     else
@@ -93,6 +109,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
         private void btnCreateReqIgError_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -122,6 +139,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
         private void btnCreateReqDirectOrderItems_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -180,19 +198,92 @@ namespace EllipseRequisitionServiceExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
+        private void btnQueryRequisitions_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReviewRequisitionList);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewRequisitionList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+
+
+        private void btnReviewRequisitionControl_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReviewRequisitionControlList);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewRequisitionControlList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void btnReReviewRequisitionControl_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReReviewRequisitionControlList);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReReviewRequisitionControlList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                if(_cells != null) _cells.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {
                 MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
             }
         }
+
         /// <summary>
         /// Da Formato a la Hoja de Excel Creando los
         /// </summary>
@@ -211,13 +302,15 @@ namespace EllipseRequisitionServiceExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
 
                 _cells.SetCursorWait();
-                _cells.CreateNewWorksheet(ValidationSheet);
+                _cells.CreateNewWorksheet(ValidationSheetName);
+
+                #region Hoja 1
+
                 ((Excel.Worksheet) _excelApp.ActiveWorkbook.ActiveSheet).Name = SheetName01;
 
                 var titleRow = TitleRow01;
                 var resultColumn = ResultColumn01;
 
-                #region FormatHeader
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
@@ -232,8 +325,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.GetCell("H3").Value = "INFORMATIVO";
                 _cells.GetCell("H3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
 
-                #endregion
-
+                //
                 _cells.GetCell(1, titleRow).Value = "Requested By";
                 _cells.GetCell(1, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(2, titleRow).Value = "Requested By Position";
@@ -252,7 +344,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     "CR - CREDIT REQUISITION",
                     "LN - LOAN REQUISITION"
                 };
-                _cells.SetValidationList(_cells.GetCell(5, titleRow + 1), optionReqTypeList, ValidationSheet, 1, false);
+                _cells.SetValidationList(_cells.GetCell(5, titleRow + 1), optionReqTypeList, ValidationSheetName, 1, false);
                 _cells.GetCell(6, titleRow).Value = "Transaction Type";
                 _cells.GetCell(6, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
 
@@ -263,7 +355,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     "CN - DEVOLUCION NO PLANEADA",
                     "CP - DEVOLUCION PLANEADA"
                 };
-                _cells.SetValidationList(_cells.GetCell(6, titleRow + 1), optionTransTypeList, ValidationSheet, 2, false);
+                _cells.SetValidationList(_cells.GetCell(6, titleRow + 1), optionTransTypeList, ValidationSheetName, 2, false);
                 _cells.GetCell(7, titleRow).Value = "Required By Date";
                 _cells.GetCell(7, titleRow).AddComment("YYYYMMDD");
                 _cells.GetCell(7, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
@@ -274,12 +366,12 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 var itemList = _eFunctions.GetItemCodes("PI");
                 var optionPriorList = MyUtilities.GetCodeList(itemList);
-                _cells.SetValidationList(_cells.GetCell(9, titleRow + 1), optionPriorList, ValidationSheet, 3, false);
+                _cells.SetValidationList(_cells.GetCell(9, titleRow + 1), optionPriorList, ValidationSheetName, 3, false);
 
                 _cells.GetCell(10, titleRow).Value = "Reference Type";
                 _cells.GetCell(10, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 var optionRefTypeList = new List<string> {"Work Order", "Equipment No.", "Project No.", "Account Code"};
-                _cells.SetValidationList(_cells.GetCell(10, titleRow + 1), optionRefTypeList, ValidationSheet, 4);
+                _cells.SetValidationList(_cells.GetCell(10, titleRow + 1), optionRefTypeList, ValidationSheetName, 4);
 
                 _cells.GetCell(11, titleRow).Value = "Reference";
                 _cells.GetCell(11, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
@@ -293,12 +385,12 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.GetCell(14, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
 
                 var optionIssueList = new List<string> {"A - VENTAS", "B - RUBROS"};
-                _cells.SetValidationList(_cells.GetCell(14, titleRow + 1), optionIssueList, ValidationSheet, 5, false);
+                _cells.SetValidationList(_cells.GetCell(14, titleRow + 1), optionIssueList, ValidationSheetName, 5, false);
 
                 _cells.GetCell(15, titleRow).Value = "Partial Allowed";
                 _cells.GetCell(15, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
                 var partialAllowedList = new List<string> {"Y - YES", "N - No"};
-                _cells.SetValidationList(_cells.GetCell(15, titleRow + 1), partialAllowedList, ValidationSheet, 5, false);
+                _cells.SetValidationList(_cells.GetCell(15, titleRow + 1), partialAllowedList, ValidationSheetName, 6, false);
 
                 _cells.GetCell(16, titleRow).Value = "Stock Code";
                 _cells.GetCell(16, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
@@ -314,6 +406,129 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), TableName01);
 
                 ((Excel.Worksheet) _excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+
+                #endregion
+
+                #region Hoja 2
+
+                titleRow = TitleRow02;
+                resultColumn = ResultColumn02;
+
+                _excelApp.ActiveWorkbook.Sheets[2].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName02;
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "B2");
+
+                _cells.GetCell("C1").Value = "CONSULTA GENERAL - ELLIPSE 8";
+                _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("C1", "J2");
+
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+
+                var districtList = Districts.GetDistrictList();
+                var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
+                var statusList = RequisitionStatus.GetStatusList(true).Select(g => g.Value).ToList();
+                var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
+
+                _cells.GetCell("A3").Value = "DISTRITO";
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
+                _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 7);
+                _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
+                _cells.GetCell("A4").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
+                                                "INST: IMIS, MINA\n" +
+                                                "" + ManagementArea.ManejoDeCarbon.Key + ": " + QuarterMasters.Ferrocarril.Key + ", " + QuarterMasters.PuertoBolivar.Key + ", " + QuarterMasters.PlantasDeCarbon.Key + "\n" +
+                                                "" + ManagementArea.Mantenimiento.Key + ": MINA\n" +
+                                                "" + ManagementArea.SoporteOperacion.Key + ": ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
+
+                _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 8);
+                _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 9, false);
+                _cells.GetCell("A5").Value = SearchFieldCriteriaType.EquipmentReference.Value;
+                _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);
+                _cells.GetCell("A6").Value = "STATUS";
+                _cells.SetValidationList(_cells.GetCell("B6"), statusList, ValidationSheetName, 4);
+                _cells.GetRange("A3", "A6").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("B3", "B6").Style = _cells.GetStyle(StyleConstants.Select);
+
+                _cells.GetCell("C3").Value = "FECHA";
+                _cells.GetCell("D3").Value = SearchDateCriteriaType.Creation.Value;
+                _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 10);
+                _cells.GetCell("C4").Value = "DESDE";
+                _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
+                _cells.GetCell("D4").AddComment("YYYYMMDD");
+                _cells.GetCell("C5").Value = "HASTA";
+                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+                _cells.GetCell("D5").AddComment("YYYYMMDD");
+                _cells.GetRange("C3", "C5").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("D3", "D5").Style = _cells.GetStyle(StyleConstants.Select);
+
+                _cells.GetRange(1, titleRow, resultColumn, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+
+                _cells.GetCell(1, titleRow).Value = "District";
+                _cells.GetCell(2, titleRow).Value = "Work Group";
+                _cells.GetCell(3, titleRow).Value = "Equipment No.";
+                _cells.GetCell(4, titleRow).Value = "Work Order";
+                _cells.GetCell(5, titleRow).Value = "Work Order Desc.";
+                _cells.GetCell(6, titleRow).Value = "Project No.";
+                _cells.GetCell(7, titleRow).Value = "Account Code";
+                _cells.GetCell(8, titleRow).Value = "Requisition Number";
+                _cells.GetCell(9, titleRow).Value = "Number of Items";
+                _cells.GetCell(10, titleRow).Value = "Wo Raised Date";
+                _cells.GetCell(11, titleRow).Value = "Wo Plan Date";
+                _cells.GetCell(12, titleRow).Value = "Creation Date";
+                _cells.GetCell(13, titleRow).Value = "Required Date";
+                _cells.GetCell(14, titleRow).Value = "Authorization Date";
+                _cells.GetCell(15, titleRow).Value = "Created By";
+                _cells.GetCell(16, titleRow).Value = "Requested By";
+                _cells.GetCell(17, titleRow).Value = "Requested Pos.";
+                _cells.GetCell(18, titleRow).Value = "Authorized By";
+                _cells.GetCell(19, titleRow).Value = "Authorized Pos.";
+                _cells.GetCell(20, titleRow).Value = "Requisition Status";
+                _cells.GetCell(21, titleRow).Value = "Authorized Status";
+                _cells.GetCell(22, titleRow).Value = "Requisition Type";
+                _cells.GetCell(23, titleRow).Value = "Transaction Type";
+                _cells.GetCell(24, titleRow).Value = "Original Warehouse";
+                _cells.GetCell(25, titleRow).Value = "Priority Code";
+                _cells.GetCell(26, titleRow).Value = "Egi";
+
+                _cells.GetCell(resultColumn, titleRow).Value = "Result";
+                _cells.GetCell(resultColumn, titleRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+
+                _cells.GetRange(1, titleRow + 1, resultColumn, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
+
+                _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), TableName02);
+
+                ((Excel.Worksheet) _excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+
+                #endregion
+
+                #region Hoja 3
+
+                titleRow = TitleRow03;
+                resultColumn = 10;
+
+                _excelApp.ActiveWorkbook.Sheets[3].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName03;
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "B2");
+
+                _cells.GetCell("C1").Value = "DETALLE CONSULTA - ELLIPSE 8";
+                _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("C1", "J2");
+
+                ((Excel.Worksheet) _excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+
+                #endregion
+
+                _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
             }
             catch (Exception ex)
             {
@@ -324,6 +539,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }
+
         /// <summary>
         /// Da Formato a la Hoja de Excel de forma extendida
         /// </summary>
@@ -342,10 +558,11 @@ namespace EllipseRequisitionServiceExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
 
                 _cells.SetCursorWait();
-                _cells.CreateNewWorksheet(ValidationSheet);
-                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name = SheetName01 + "Ext";
+                _cells.CreateNewWorksheet(ValidationSheetName);
+                ((Excel.Worksheet) _excelApp.ActiveWorkbook.ActiveSheet).Name = SheetName01 + "Ext";
 
                 #region FormatHeader
+
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "A2");
@@ -365,6 +582,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 var titleRow = TitleRow01Ext;
                 var resultColumn = ResultColumn01Ext;
 
+                //
                 _cells.GetCell(1, titleRow).Value = "Requested By";
                 _cells.GetCell(1, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(2, titleRow).Value = "Requested By Position";
@@ -383,7 +601,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     "CR - CREDIT REQUISITION",
                     "LN - LOAN REQUISITION"
                 };
-                _cells.SetValidationList(_cells.GetCell(5, titleRow + 1), optionReqTypeList, ValidationSheet, 1, false);
+                _cells.SetValidationList(_cells.GetCell(5, titleRow + 1), optionReqTypeList, ValidationSheetName, 1, false);
                 _cells.GetCell(6, titleRow).Value = "Transaction Type";
                 _cells.GetCell(6, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
 
@@ -394,7 +612,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     "CN - DEVOLUCION NO PLANEADA",
                     "CP - DEVOLUCION PLANEADA"
                 };
-                _cells.SetValidationList(_cells.GetCell(6, titleRow + 1), optionTransTypeList, ValidationSheet, 2, false);
+                _cells.SetValidationList(_cells.GetCell(6, titleRow + 1), optionTransTypeList, ValidationSheetName, 2, false);
                 _cells.GetCell(7, titleRow).Value = "Required By Date";
                 _cells.GetCell(7, titleRow).AddComment("YYYYMMDD");
                 _cells.GetCell(7, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
@@ -405,7 +623,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 var itemList = _eFunctions.GetItemCodes("PI");
                 var optionPriorList = MyUtilities.GetCodeList(itemList);
-                _cells.SetValidationList(_cells.GetCell(9, titleRow + 1), optionPriorList, ValidationSheet, 3, false);
+                _cells.SetValidationList(_cells.GetCell(9, titleRow + 1), optionPriorList, ValidationSheetName, 3, false);
 
                 _cells.GetCell(10, titleRow).Value = "Work Order";
                 _cells.GetCell(11, titleRow).Value = "Equipment No.";
@@ -421,13 +639,13 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.GetCell(16, titleRow).Value = "Issue Question";
                 _cells.GetCell(16, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
 
-                var optionIssueList = new List<string> { "A - VENTAS", "B - RUBROS" };
-                _cells.SetValidationList(_cells.GetCell(16, titleRow + 1), optionIssueList, ValidationSheet, 4, false);
+                var optionIssueList = new List<string> {"A - VENTAS", "B - RUBROS"};
+                _cells.SetValidationList(_cells.GetCell(16, titleRow + 1), optionIssueList, ValidationSheetName, 4, false);
 
                 _cells.GetCell(17, titleRow).Value = "Partial Allowed";
                 _cells.GetCell(17, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                var partialAllowedList = new List<string> { "Y - YES", "N - No" };
-                _cells.SetValidationList(_cells.GetCell(17, titleRow + 1), partialAllowedList, ValidationSheet, 5, false);
+                var partialAllowedList = new List<string> {"Y - YES", "N - No"};
+                _cells.SetValidationList(_cells.GetCell(17, titleRow + 1), partialAllowedList, ValidationSheetName, 5, false);
 
                 _cells.GetCell(18, titleRow).Value = "Stock Code";
                 _cells.GetCell(18, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
@@ -442,7 +660,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), TableName01);
 
-                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+                ((Excel.Worksheet) _excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
             }
             catch (Exception ex)
             {
@@ -478,7 +696,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             string equipmentAllocation;
             string projectAllocation;
             string costCentreAllocation;
-            string requisitionNumber; 
+            string requisitionNumber;
 
             if (isExtended)
             {
@@ -503,11 +721,13 @@ namespace EllipseRequisitionServiceExcelAddIn
                 deliveryInstructionsA = _cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value);
                 deliveryInstructionsB = deliveryInstructionsA.Length > 80 ? deliveryInstructionsA.Substring(80) : null;
                 answerB = _cells.GetEmptyIfNull(_cells.GetCell(15, currentRow).Value).Length >= 2
-                    ? _cells.GetEmptyIfNull(_cells.GetCell(15, currentRow).Value).Substring(0, 2).Trim() : null;
+                    ? _cells.GetEmptyIfNull(_cells.GetCell(15, currentRow).Value).Substring(0, 2).Trim()
+                    : null;
                 answerD = _cells.GetEmptyIfNull(_cells.GetCell(16, currentRow).Value).Length >= 2
-                    ? _cells.GetEmptyIfNull(_cells.GetCell(16, currentRow).Value).Substring(0, 2).Trim() : null;
+                    ? _cells.GetEmptyIfNull(_cells.GetCell(16, currentRow).Value).Substring(0, 2).Trim()
+                    : null;
 
-                partIssueIndicator = true;//general indicator
+                partIssueIndicator = true; //general indicator
                 protectedIndicator = false;
             }
             else
@@ -534,11 +754,13 @@ namespace EllipseRequisitionServiceExcelAddIn
                 deliveryInstructionsA = _cells.GetEmptyIfNull(_cells.GetCell(12, currentRow).Value);
                 deliveryInstructionsB = deliveryInstructionsA.Length > 80 ? deliveryInstructionsA.Substring(80) : null;
                 answerB = _cells.GetEmptyIfNull(_cells.GetCell(13, currentRow).Value).Length >= 2
-                    ? _cells.GetEmptyIfNull(_cells.GetCell(13, currentRow).Value).Substring(0, 2).Trim() : null;
+                    ? _cells.GetEmptyIfNull(_cells.GetCell(13, currentRow).Value).Substring(0, 2).Trim()
+                    : null;
                 answerD = _cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value).Length >= 2
-                    ? _cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value).Substring(0, 2).Trim() : null;
+                    ? _cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value).Substring(0, 2).Trim()
+                    : null;
 
-                partIssueIndicator = true;//general indicator
+                partIssueIndicator = true; //general indicator
                 protectedIndicator = false;
 
                 string switchCase = _cells.GetNullOrTrimmedValue(_cells.GetCell(10, currentRow).Value);
@@ -622,6 +844,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                         break;
                     }
                 }
+
                 if (isMandatoryOrder && string.IsNullOrWhiteSpace(requisitionHeader.WorkOrderA))
                     throw new Exception(@"MANDATORY WORK ORDER IN PRIORITY CODE " + requisitionHeader.PriorityCode.Trim().ToUpper() + " FOR LOGGED POSITION " + _frmAuth.EllipsePost.Trim().ToUpper());
                 if (!isPositionRestrictionValid)
@@ -697,6 +920,7 @@ namespace EllipseRequisitionServiceExcelAddIn
         {
             CreateRequisitionService(false);
         }
+
         /// <summary>
         /// Recorre y Crea los vales de a tabla de Excel
         /// </summary>
@@ -708,7 +932,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                
+
                 int resultColumn, titleRow;
                 if (isExtended)
                 {
@@ -723,6 +947,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
 
                 #region SortFields
+
                 if (cbSortItems.Checked)
                 {
                     Excel.ListObject excelSheetItems = _cells.GetRange(TableName01).ListObject;
@@ -775,7 +1000,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                 //new RequisitionService.RequisitionServiceCreateItemReplyCollectionDTO();
 
                 var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
-                _eFunctions.SetConnectionPoolingType(false);//Se asigna por 'Pooled Connection Request Timed Out'
+                _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
                 proxyRequisition.Url = urlService + "/RequisitionService";
 
                 opRequisition.district = _frmAuth.EllipseDsct;
@@ -828,6 +1053,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                 try
                                 {
                                     #region itemDto
+
                                     var itemDto = new List<RequisitionService.RequisitionItemDTO>
                                     {
                                         item.GetRequisitionItemDto()
@@ -841,7 +1067,9 @@ namespace EllipseRequisitionServiceExcelAddIn
                                         requisitionItems = itemDto.ToArray(),
 
                                     };
+
                                     #endregion
+
                                     proxyRequisition.createItem(opRequisition, itemRequest);
                                     _cells.GetCell(resultColumn, currentRowHeader + item.Index).Value2 = "OK";
                                     _cells.GetCell(resultColumn, currentRowHeader + item.Index).Style = StyleConstants.Success;
@@ -856,6 +1084,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                     _cells.GetCell(requisitionNoColumn, currentRowHeader + item.Index).Style = StyleConstants.Error;
                                     abortRequisition = true;
                                 }
+
                                 _cells.GetCell(resultColumn, currentRowHeader + item.Index).Select();
                             }
 
@@ -863,6 +1092,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                             if (abortRequisition && !_ignoreItemError)
                             {
                                 #region FailedItemProcess
+
                                 var addMessage = "";
                                 try
                                 {
@@ -883,6 +1113,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                                 prevReqHeader = null;
                                 abortRequisition = false;
+
                                 #endregion
                             }
                             else
@@ -908,7 +1139,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                             }
 
                             //creo el nuevo encabezado y reinicio variables
-                            prevReqHeader = null;//no es una línea inservible. Es necesaria por si se produce una excepción al momento de creación de un nuevo encabezado
+                            prevReqHeader = null; //no es una línea inservible. Es necesaria por si se produce una excepción al momento de creación de un nuevo encabezado
                             currentRowHeader = currentRow;
                             abortRequisition = false;
                             itemList = new List<RequisitionClassLibrary.RequisitionItem>();
@@ -926,7 +1157,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                             abortRequisition = true;
                             _cells.GetCell(resultColumn, currentRow).Value2 += curItem.StockCode + " NO EXISTE UNIDAD DE MEDIDA EN EL CATALOGO PARA ESTE STOCK CODE";
                             _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
-                            curItem.StockCode = "";//Se vacía el campo para conservar la estructura del vale, pero para que indique el error
+                            curItem.StockCode = ""; //Se vacía el campo para conservar la estructura del vale, pero para que indique el error
                         }
 
                         if (curItem.DirectOrderIndicator)
@@ -935,7 +1166,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                             _cells.GetCell(resultColumn, currentRow).Value2 += curItem.StockCode + " ITEM DE ORDEN DIRECTA. DEBE CREAR EL VALE CON OTRO MÉTODO";
                             _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
-                            curItem.StockCode = "";//Se vacía el campo para conservar la estructura del vale, pero para que indique el error
+                            curItem.StockCode = ""; //Se vacía el campo para conservar la estructura del vale, pero para que indique el error
                         }
 
                         itemList.Add(curItem);
@@ -977,13 +1208,14 @@ namespace EllipseRequisitionServiceExcelAddIn
                     }
                     catch (Exception ex)
                     {
-                        _cells.GetCell(resultColumn, currentRowHeader + item.Index).Value2 +=  "ERROR: " + ex.Message;
+                        _cells.GetCell(resultColumn, currentRowHeader + item.Index).Value2 += "ERROR: " + ex.Message;
                         _cells.GetCell(resultColumn, currentRowHeader + item.Index).Style = StyleConstants.Error;
                         _cells.GetCell(requisitionNoColumn, currentRowHeader + item.Index).Value2 = prevReqHeader.IreqNo;
                         _cells.GetCell(requisitionNoColumn, currentRowHeader + item.Index).Style = StyleConstants.Error;
                         abortRequisition = true;
 
                     }
+
                     _cells.GetCell(resultColumn, currentRowHeader + item.Index).Select();
                 }
 
@@ -1036,7 +1268,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             finally
             {
                 if (_cells != null) _cells.SetCursorDefault();
-                _eFunctions.SetConnectionPoolingType(true);//Se restaura por 'Pooled Connection Request Timed Out'
+                _eFunctions.SetConnectionPoolingType(true); //Se restaura por 'Pooled Connection Request Timed Out'
             }
         }
 
@@ -1049,6 +1281,7 @@ namespace EllipseRequisitionServiceExcelAddIn
         {
             CreateRequisitionScreenService(false);
         }
+
         /// <summary>
         /// Recorre y Crea los vales de a tabla de Excel para items catalogados como de Orden Directa
         /// </summary>
@@ -1071,6 +1304,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                     resultColumn = ResultColumn01;
                     titleRow = TitleRow01;
                 }
+
                 _cells.ClearTableRangeColumn(TableName01, resultColumn);
                 _cells.ClearTableRangeColumn(TableName01, 4);
 
@@ -1118,9 +1352,10 @@ namespace EllipseRequisitionServiceExcelAddIn
                 #endregion
 
                 #region ScreenService
+
                 var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
-                _eFunctions.SetConnectionPoolingType(false);//Se asigna por 'Pooled Connection Request Timed Out'
-                
+                _eFunctions.SetConnectionPoolingType(false); //Se asigna por 'Pooled Connection Request Timed Out'
+
                 //ScreenService Opción en reemplazo de los servicios
                 var opSheet = new Screen.OperationContext
                 {
@@ -1135,8 +1370,9 @@ namespace EllipseRequisitionServiceExcelAddIn
                 var proxySheet = new Screen.ScreenService {Url = urlService + "/ScreenService"};
                 ////ScreenService
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
                 #endregion
-                
+
                 var currentRow = titleRow + 1;
                 var currentRowHeader = currentRow;
 
@@ -1157,7 +1393,9 @@ namespace EllipseRequisitionServiceExcelAddIn
                         curReqHeader = PopulateRequisitionHeader(currentRow, false);
 
                         //si el nuevo registro corresponde a un encabezado nuevo diferente creo el vale anterior con sus items respectivos
+
                         #region CreateNewRequisition
+
                         if ((prevReqHeader != null && !prevReqHeader.Equals(curReqHeader) && itemList.Count > 0) || (cbMaxItems.Checked && itemList.Count >= 99))
                         {
                             try
@@ -1224,7 +1462,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                     if (!string.IsNullOrWhiteSpace(screenValues.GetField("IREQ_NO1I").value))
                                         prevReqHeader.IreqNo = screenValues.GetField("IREQ_NO1I").value;
 
-                                    if (parItemIndex%2 == 0)
+                                    if (parItemIndex % 2 == 0)
                                         arrayFields = new ArrayScreenNameValue();
                                     arrayFields.Add("QTY_REQD1I" + (parItemIndex + 1), "" + item.QuantityRequired);
                                     arrayFields.Add("UOM1I" + (parItemIndex + 1), item.UnitOfMeasure);
@@ -1276,6 +1514,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                                     if (parValue.fieldName != null && parValue.fieldName.StartsWith("QTY_REQD_"))
                                                         parValue.value = "";
                                                 }
+
                                                 //reingreso la lista al objeto del screen y actualizo la cantidad del w/h que quiero de acuerdo a lo realizado anteriormente
                                                 if (string.IsNullOrWhiteSpace(selWarehouseIndex))
                                                     throw new Exception("ERROR: Se ha producido un error al enviar el item " + item.Index + " - " + item.StockCode + ". " + "El item no está catalogado en la bodega seleccionada. MSM14CA");
@@ -1291,6 +1530,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                                 reply = proxySheet.submit(opSheet, request);
                                                 continue; //continúa con el siguiente while
                                             }
+
                                             ////Confirm MSM14BA o cualquier otra confirmación que no requiera datos
                                             request = new Screen.ScreenSubmitRequestDTO
                                             {
@@ -1299,6 +1539,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                             reply = proxySheet.submit(opSheet, request);
                                         }
                                     }
+
                                     parItemIndex++;
                                     if (parItemIndex > 1)
                                         parItemIndex = 0;
@@ -1309,6 +1550,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                     _cells.GetCell(requisitionNoColumn, currentRowHeader + item.Index).Value2 = "" + prevReqHeader.IreqNo;
                                     _cells.GetCell(requisitionNoColumn, currentRowHeader + item.Index).Style = StyleConstants.Success;
                                 }
+
                                 //Confirmo la creación de todos los items. Si no llega a este punto es por algún problema presentado
                                 foreach (var item in itemList)
                                 {
@@ -1339,8 +1581,8 @@ namespace EllipseRequisitionServiceExcelAddIn
                                             throw new Exception("" + reply.message);
 
                                         while (reply != null && !_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM140A" &&
-                                            (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" || reply.functionKeys.StartsWith("XMIT-WARNING")) &&
-                                            (screenValues.GetField("REQ_NO1I") != null && !string.IsNullOrWhiteSpace(screenValues.GetField("REQ_NO1I").value)))
+                                               (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" || reply.functionKeys.StartsWith("XMIT-WARNING")) &&
+                                               (screenValues.GetField("REQ_NO1I") != null && !string.IsNullOrWhiteSpace(screenValues.GetField("REQ_NO1I").value)))
                                         {
                                             var arrayFields = new ArrayScreenNameValue();
                                             arrayFields.Add("COMP_DEL1I", "D");
@@ -1356,6 +1598,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                             if (_eFunctions.CheckReplyError(reply))
                                                 throw new Exception(". ERROR AL ELIMINAR " + prevReqHeader.IreqNo + ": " + reply.message);
                                         }
+
                                         addMessage += " - VALE ELIMINADO " + prevReqHeader.IreqNo;
                                     }
                                 }
@@ -1383,7 +1626,9 @@ namespace EllipseRequisitionServiceExcelAddIn
                                 prevReqHeader = curReqHeader;
                             }
                         }
+
                         #endregion
+
                         //Obtengo los datos para el item
                         var curItem = PopulateRequisitionItem(currentRow, itemList.Count, false);
                         itemList.Add(curItem);
@@ -1400,10 +1645,13 @@ namespace EllipseRequisitionServiceExcelAddIn
                         currentRow++;
                     }
                 } //finaliza el while del proceso completo
+
                 //para el último vale a crear
+
                 #region CreateLastRequisition
+
                 // ReSharper disable once InvertIf
-                if (itemList.Count>0)
+                if (itemList.Count > 0)
                 {
                     try
                     {
@@ -1521,6 +1769,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                             if (parValue.fieldName != null && parValue.fieldName.StartsWith("QTY_REQD_"))
                                                 parValue.value = "";
                                         }
+
                                         //reingreso la lista al objeto del screen y actualizo la cantidad del w/h que quiero de acuerdo a lo realizado anteriormente
                                         if (string.IsNullOrWhiteSpace(selWarehouseIndex))
                                             throw new Exception("ERROR: Se ha producido un error al enviar el item " + item.Index + " - " + item.StockCode + ". " + "El item no está catalogado en la bodega seleccionada. MSM14CA");
@@ -1536,6 +1785,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                         reply = proxySheet.submit(opSheet, request);
                                         continue; //continúa con el siguiente while
                                     }
+
                                     ////Confirm MSM14BA o cualquier otra confirmación que no requiera datos
                                     request = new Screen.ScreenSubmitRequestDTO
                                     {
@@ -1544,6 +1794,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                                     reply = proxySheet.submit(opSheet, request);
                                 }
                             }
+
                             parItemIndex++;
                             if (parItemIndex > 1)
                                 parItemIndex = 0;
@@ -1554,6 +1805,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                             _cells.GetCell(4, currentRowHeader + item.Index).Value2 = "" + prevReqHeader.IreqNo;
                             _cells.GetCell(4, currentRowHeader + item.Index).Style = StyleConstants.Success;
                         }
+
                         //Confirmo la creación de todos los items. Si no llega a este punto es por algún problema presentado
                         foreach (var item in itemList)
                         {
@@ -1583,9 +1835,9 @@ namespace EllipseRequisitionServiceExcelAddIn
                                 if (_eFunctions.CheckReplyError(reply))
                                     throw new Exception("" + reply.message);
 
-                                while (reply != null && !_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM140A" && 
-                                    (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" || reply.functionKeys.StartsWith("XMIT-WARNING")) && 
-                                    (screenValues.GetField("REQ_NO1I") != null && !string.IsNullOrWhiteSpace(screenValues.GetField("REQ_NO1I").value)))
+                                while (reply != null && !_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM140A" &&
+                                       (_eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm" || reply.functionKeys.StartsWith("XMIT-WARNING")) &&
+                                       (screenValues.GetField("REQ_NO1I") != null && !string.IsNullOrWhiteSpace(screenValues.GetField("REQ_NO1I").value)))
                                 {
                                     var arrayFields = new ArrayScreenNameValue();
                                     arrayFields.Add("COMP_DEL1I", "D");
@@ -1601,10 +1853,11 @@ namespace EllipseRequisitionServiceExcelAddIn
                                     if (_eFunctions.CheckReplyError(reply))
                                         throw new Exception(". ERROR AL ELIMINAR " + prevReqHeader.IreqNo + ": " + reply.message);
                                 }
+
                                 addMessage += " - VALE ELIMINADO " + prevReqHeader.IreqNo;
                             }
                         }
-                        catch(Exception ex2)
+                        catch (Exception ex2)
                         {
                             addMessage += ex2;
                         }
@@ -1621,8 +1874,9 @@ namespace EllipseRequisitionServiceExcelAddIn
                         }
                     }
                 }
+
                 #endregion
-                
+
             }
             catch (Exception error)
             {
@@ -1631,10 +1885,10 @@ namespace EllipseRequisitionServiceExcelAddIn
             finally
             {
                 if (_cells != null) _cells.SetCursorDefault();
-                _eFunctions.SetConnectionPoolingType(true);//Se restaura por 'Pooled Connection Request Timed Out'
+                _eFunctions.SetConnectionPoolingType(true); //Se restaura por 'Pooled Connection Request Timed Out'
             }
         }
-       
+
         /// <summary>
         /// Borra el header de un vale cuando este no se puede finalizar
         /// </summary>
@@ -1803,7 +2057,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
             return deleteHeaderRequest;
         }
-        
+
         private void btnCleanSheet_Click(object sender, RibbonControlEventArgs e)
         {
             _cells.ClearTableRange(TableName01);
@@ -1942,9 +2196,10 @@ namespace EllipseRequisitionServiceExcelAddIn
             finally
             {
                 if (_cells != null) _cells.SetCursorDefault();
-                _eFunctions.SetConnectionPoolingType(true);//Se restaura por 'Pooled Connection Request Timed Out'
+                _eFunctions.SetConnectionPoolingType(true); //Se restaura por 'Pooled Connection Request Timed Out'
             }
         }
+
         private void ManualCreditRequisitionExtended()
         {
             var currentRow = TitleRow01Ext + 1;
@@ -2068,7 +2323,7 @@ namespace EllipseRequisitionServiceExcelAddIn
             finally
             {
                 if (_cells != null) _cells.SetCursorDefault();
-                _eFunctions.SetConnectionPoolingType(true);//Se restaura por 'Pooled Connection Request Timed Out'
+                _eFunctions.SetConnectionPoolingType(true); //Se restaura por 'Pooled Connection Request Timed Out'
             }
         }
 
@@ -2077,34 +2332,321 @@ namespace EllipseRequisitionServiceExcelAddIn
             new AboutBoxExcelAddIn().ShowDialog();
         }
 
-        
 
-        
 
-        
-
-    }
-
-    
-
-    public static class Queries
-    {
-        public static string GetItemUnitOfIssue(string stockCode)
+        private void ReviewRequisitionList()
         {
-            var query = "SELECT UNIT_OF_ISSUE FROM ELLIPSE.MSF100 SC WHERE SC.STOCK_CODE = '" + stockCode + "' ";
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
 
-            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            _cells.ClearTableRange(TableName02);
 
-            return query;
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
+            var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
+            var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes();
+
+            //Obtengo los valores de las opciones de búsqueda
+            var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            var searchCriteriaKey1Text = _cells.GetEmptyIfNull(_cells.GetCell("A4").Value);
+            var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
+            var searchCriteriaKey2Text = _cells.GetEmptyIfNull(_cells.GetCell("A5").Value);
+            var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B5").Value);
+            var statusKey = _cells.GetEmptyIfNull(_cells.GetCell("B6").Value);
+            var dateCriteriaKeyText = _cells.GetEmptyIfNull(_cells.GetCell("D3").Value);
+            var startDate = _cells.GetEmptyIfNull(_cells.GetCell("D4").Value);
+            var endDate = _cells.GetEmptyIfNull(_cells.GetCell("D5").Value);
+
+            //Convierto los nombres de las opciones a llaves
+            var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
+            var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
+            var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
+
+            try
+            {
+                var sqlQuery = Queries.GetRequisitionListQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
+                var drRequisitions = _eFunctions.GetQueryResult(sqlQuery);
+
+                if (drRequisitions == null || drRequisitions.IsClosed || !drRequisitions.HasRows) return;
+
+                var i = TitleRow02 + 1;
+
+                while (drRequisitions.Read())
+                {
+                    try
+                    {
+                        _cells.GetCell(1, i).Value = "" + drRequisitions["DSTRCT_CODE"].ToString().Trim();
+                        _cells.GetCell(2, i).Value = "" + drRequisitions["WORK_GROUP"].ToString().Trim();
+                        _cells.GetCell(3, i).Value = "" + drRequisitions["EQUIP_NO"].ToString().Trim();
+                        _cells.GetCell(4, i).Value = "" + drRequisitions["WORK_ORDER"].ToString().Trim();
+                        _cells.GetCell(5, i).Value = "" + drRequisitions["WO_DESC"].ToString().Trim();
+                        _cells.GetCell(6, i).Value = "" + drRequisitions["PROJECT_NO"].ToString().Trim();
+                        _cells.GetCell(7, i).Value = "" + drRequisitions["GL_ACCOUNT"].ToString().Trim();
+                        _cells.GetCell(8, i).Value = "" + drRequisitions["IREQ_NO"].ToString().Trim();
+                        _cells.GetCell(9, i).Value = "" + drRequisitions["NUM_OF_ITEMS"].ToString().Trim();
+                        _cells.GetCell(10, i).Value = "" + drRequisitions["WO_RAISED_DATE"].ToString().Trim();
+                        _cells.GetCell(11, i).Value = "" + drRequisitions["WO_PLAN_STR_DATE"].ToString().Trim();
+                        _cells.GetCell(12, i).Value = "" + drRequisitions["CREATION_DATE"].ToString().Trim();
+                        _cells.GetCell(13, i).Value = "" + drRequisitions["REQ_BY_DATE"].ToString().Trim();
+                        _cells.GetCell(14, i).Value = "" + drRequisitions["AUTHSD_DATE"].ToString().Trim();
+                        _cells.GetCell(15, i).Value = "" + drRequisitions["CREATED_BY"].ToString().Trim();
+                        _cells.GetCell(16, i).Value = "" + drRequisitions["REQUESTED_BY"].ToString().Trim();
+                        _cells.GetCell(17, i).Value = "" + drRequisitions["REQ_BY_POS"].ToString().Trim();
+                        _cells.GetCell(18, i).Value = "" + drRequisitions["AUTHSD_BY"].ToString().Trim();
+                        _cells.GetCell(19, i).Value = "" + drRequisitions["AUTHSD_POSITION"].ToString().Trim();
+                        _cells.GetCell(20, i).Value = "" + drRequisitions["REQ_STATUS"].ToString().Trim();
+                        _cells.GetCell(21, i).Value = "" + drRequisitions["AUTHSD_STATUS"].ToString().Trim();
+                        _cells.GetCell(22, i).Value = "" + drRequisitions["IREQ_TYPE"].ToString().Trim();
+                        _cells.GetCell(23, i).Value = "" + drRequisitions["ISS_TRAN_TYPE"].ToString().Trim();
+                        _cells.GetCell(24, i).Value = "" + drRequisitions["ORIG_WHOUSE_ID"].ToString().Trim();
+                        _cells.GetCell(25, i).Value = "" + drRequisitions["PRIORITY_CODE"].ToString().Trim();
+                        _cells.GetCell(26, i).Value = "" + drRequisitions["EQUIP_GRP_ID"].ToString().Trim();
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(1, i).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                        Debugger.LogError("RibbonEllipse.cs:ReviewRequisitionList()", ex.Message);
+                    }
+                    finally
+                    {
+                        _cells.GetCell(2, i).Select();
+                        i++;
+                    }
+                }
+
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewRequisitionList(ignoreError = false)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
+                _eFunctions.CloseConnection();
+            }
         }
 
-        public static string GetItemDirectOrder(string stockCode)
+        private void ReviewRequisitionControlList()
         {
-            var query = "SELECT SCI.DIRECT_ORDER_IND FROM ELLIPSE.MSF170 SCI WHERE STOCK_CODE = '" + stockCode + "' ";
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
 
-            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            var cp = new ExcelStyleCells(_excelApp, SheetName02); //cells parameters
+            var cr = new ExcelStyleCells(_excelApp, SheetName03); //cells results
 
-            return query;
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
+            var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
+            var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes();
+
+            //Obtengo los valores de las opciones de búsqueda
+            var district = cp.GetEmptyIfNull(cp.GetCell("B3").Value);
+            var searchCriteriaKey1Text = cp.GetEmptyIfNull(cp.GetCell("A4").Value);
+            var searchCriteriaValue1 = cp.GetEmptyIfNull(cp.GetCell("B4").Value);
+            var searchCriteriaKey2Text = cp.GetEmptyIfNull(cp.GetCell("A5").Value);
+            var searchCriteriaValue2 = cp.GetEmptyIfNull(cp.GetCell("B5").Value);
+            var statusKey = cp.GetEmptyIfNull(cp.GetCell("B6").Value);
+            var dateCriteriaKeyText = cp.GetEmptyIfNull(cp.GetCell("D3").Value);
+            var startDate = cp.GetEmptyIfNull(cp.GetCell("D4").Value);
+            var endDate = cp.GetEmptyIfNull(cp.GetCell("D5").Value);
+
+            //Convierto los nombres de las opciones a llaves
+            var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
+            var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
+            var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
+            try
+            {
+                //Elimino los registros anteriores
+                _excelApp.ActiveWorkbook.Sheets[3].Select(Type.Missing);
+                cr.ClearTableRange(TableName03);
+                cr.DeleteTableRange(TableName03);
+
+                var sqlQuery = Queries.GetRequisitionControlListQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
+                var drRequisitions = _eFunctions.GetQueryResult(sqlQuery);
+
+                if (drRequisitions == null || drRequisitions.IsClosed || !drRequisitions.HasRows) return;
+
+                //Cargo el encabezado de la tabla y doy formato
+                for (var i = 0; i < drRequisitions.FieldCount; i++)
+                    cr.GetCell(i + 1, TitleRow03).Value2 = "'" + drRequisitions.GetName(i);
+
+                _cells.FormatAsTable(cr.GetRange(1, TitleRow03, drRequisitions.FieldCount, TitleRow03 + 1), TableName03);
+
+                //cargo los datos 
+                var currentRow = TitleRow03 + 1;
+
+                while (drRequisitions.Read())
+                {
+                    try
+                    {
+                        for (var i = 0; i < drRequisitions.FieldCount; i++)
+                            cr.GetCell(i + 1, currentRow).Value2 = "'" + drRequisitions[i].ToString().Trim();
+                    }
+                    catch (Exception ex)
+                    {
+                        cr.GetCell(1, currentRow).Style = StyleConstants.Error;
+                        cr.GetCell(1, currentRow).Value = "ERROR: " + ex.Message;
+                        Debugger.LogError("RibbonEllipse.cs:ReviewRequisitionControlList()", ex.Message);
+                    }
+                    finally
+                    {
+                        cr.GetCell(1, currentRow).Select();
+                        currentRow++;
+                    }
+                }
+
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewRequisitionControlList(ignoreError = false)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
+                _eFunctions.CloseConnection();
+            }
+        }
+
+        private void ReReviewRequisitionControlList()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
+            try
+            {
+                var cp = new ExcelStyleCells(_excelApp, SheetName02); //cells parameters
+                var cr = new ExcelStyleCells(_excelApp, SheetName03); //cells results
+                //Elimino los registros anteriores
+                _excelApp.ActiveWorkbook.Sheets[3].Select(Type.Missing);
+                cr.ClearTableRange(TableName03);
+                cr.DeleteTableRange(TableName03);
+
+                cp.SetAlwaysActiveSheet(false);
+
+                var currentParam = TitleRow02 + 1; //itera según cada estándar
+                var currentRow = TitleRow03 + 1; //itera la celda para cada tarea
+
+                //criterios generales
+                var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes();
+                var dateCriteriaKeyText = cp.GetEmptyIfNull(cp.GetCell("D3").Value);
+                var startDate = cp.GetEmptyIfNull(cp.GetCell("D4").Value);
+                var endDate = cp.GetEmptyIfNull(cp.GetCell("D5").Value);
+                var statusKey = cp.GetEmptyIfNull(cp.GetCell("B6").Value);
+
+                //Convierto los nombres de las opciones a llaves
+
+
+                //mientras haya un registro con orden o con número de requisición
+                while (!string.IsNullOrEmpty("" + cp.GetCell(4, currentParam).Value) || !string.IsNullOrEmpty("" + cp.GetCell(8, currentParam).Value))
+                {
+                    try
+                    {
+                        var district = cp.GetNullIfTrimmedEmpty(cp.GetCell(1, currentParam).Value2) ?? cp.GetNullIfTrimmedEmpty(cp.GetCell("B3").Value) ?? "ICOR";
+                        var equipment = cp.GetEmptyIfNull(cp.GetCell(3, currentParam).Value2);
+                        var workOrder = cp.GetEmptyIfNull(cp.GetCell(4, currentParam).Value2);
+                        var reqNo = cp.GetEmptyIfNull(cp.GetCell(8, currentParam).Value2);
+                        var searchKey1 = SearchFieldCriteriaType.None.Key;
+                        var searchValue1 = "";
+                        var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
+                        var searchKey2 = SearchFieldCriteriaType.None.Key;
+                        var searchValue2 = "";
+
+                        if (!string.IsNullOrWhiteSpace(reqNo))
+                        {
+                            searchKey1 = SearchFieldCriteriaType.Requisition.Key;
+                            searchValue1 = reqNo;
+                            dateCriteriaKey = SearchDateCriteriaType.IgnoreDate.Key;
+                        }
+                        else if (!string.IsNullOrWhiteSpace(workOrder))
+                        {
+                            searchKey1 = SearchFieldCriteriaType.WorkOrder.Key;
+                            searchValue1 = workOrder;
+                            dateCriteriaKey = SearchDateCriteriaType.IgnoreDate.Key;
+                        }
+                        else if (!string.IsNullOrWhiteSpace(equipment))
+                        {
+                            searchKey1 = SearchFieldCriteriaType.EquipmentReference.Key;
+                            searchValue1 = equipment;
+                        }
+                        else
+                        {
+                            searchKey1 = SearchFieldCriteriaType.WorkOrder.Key;
+                            searchValue1 = workOrder;
+                        }
+
+                        var sqlQuery = Queries.GetRequisitionControlListQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, searchKey1, searchValue1, searchKey2, searchValue2, dateCriteriaKey, startDate, endDate, statusKey);
+                        var drRequisitions = _eFunctions.GetQueryResult(sqlQuery);
+
+                        if (drRequisitions == null || drRequisitions.IsClosed || !drRequisitions.HasRows) return;
+
+                        //Cargo el encabezado de la tabla y doy formato
+                        if (currentRow == TitleRow03 + 1)
+                        {
+                            for (var i = 0; i < drRequisitions.FieldCount; i++)
+                                cr.GetCell(i + 1, TitleRow03).Value2 = "'" + drRequisitions.GetName(i);
+                            cr.FormatAsTable(cr.GetRange(1, TitleRow03, drRequisitions.FieldCount, TitleRow03 + 1), TableName03);
+                        }
+
+                        
+
+                        //cargo los datos 
+                        while (drRequisitions.Read())
+                        {
+                            try
+                            {
+                                for (var i = 0; i < drRequisitions.FieldCount; i++)
+                                    cr.GetCell(i + 1, currentRow).Value2 = "'" + drRequisitions[i].ToString().Trim();
+                            }
+                            catch (Exception ex)
+                            {
+                                cr.GetCell(1, currentRow).Style = StyleConstants.Error;
+                                cr.GetCell(1, currentRow).Value = "ERROR: " + ex.Message;
+                                Debugger.LogError("RibbonEllipse.cs:ReReviewRequisitionControlList(ignoreError = false)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                            }
+                            finally
+                            {
+                                cr.GetCell(1, currentRow).Select();
+                                currentRow++;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debugger.LogError("RibbonEllipse.cs:ReReviewRequisitionControlList(ignoreError = false)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                        cp.GetCell(2, currentParam).Style = StyleConstants.Error;
+                        cp.GetCell(ResultColumn02, currentParam).Style = StyleConstants.Error;
+                        cp.GetCell(ResultColumn02, currentParam).Value = "ERROR: " + ex.Message;
+                    }
+                    finally
+                    {
+                        currentParam++;
+                    }
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReReviewRequisitionControlList(ignoreError = false)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+            finally
+            {
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                if (_cells != null) _cells.SetCursorDefault();
+                _eFunctions.CloseConnection();
+            }
         }
     }
 }
