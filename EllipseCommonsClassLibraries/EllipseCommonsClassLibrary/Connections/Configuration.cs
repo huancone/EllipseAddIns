@@ -35,8 +35,11 @@ namespace EllipseCommonsClassLibrary.Connections
                 var varForcedExpanded = Environment.ExpandEnvironmentVariables(varForced);
                 return !string.IsNullOrWhiteSpace(varForcedExpanded) && varForcedExpanded.ToLower().Equals("true");
             }
-            set => Environment.SetEnvironmentVariable(EllipseServicesForcedList, value.ToString(),
-                EnvironmentVariableTarget.User);
+            set
+            {
+                Environment.SetEnvironmentVariable(EllipseServicesForcedList, value.ToString(),
+                    EnvironmentVariableTarget.User);
+            }
         }
 
         public static string LocalDataPath
@@ -131,7 +134,7 @@ namespace EllipseCommonsClassLibrary.Connections
 
         public static string TnsnamesFilePath
         {
-            get => RuntimeConfigSettings.GetTnsUrlValue();
+            get { return RuntimeConfigSettings.GetTnsUrlValue(); }
             set
             {
                 if (value.Equals(RuntimeConfigSettings.GetTnsUrlValue()))
@@ -408,9 +411,12 @@ namespace EllipseCommonsClassLibrary.Connections
 
         public string DbPassword
         {
-            get => string.IsNullOrWhiteSpace(_dbPassword)
-                ? EncryptString.Decrypt(DbEncodedPassword, Configuration.EncryptPassPhrase)
-                : _dbPassword;
+            get
+            {
+                return string.IsNullOrWhiteSpace(_dbPassword)
+                    ? EncryptString.Decrypt(DbEncodedPassword, Configuration.EncryptPassPhrase)
+                    : _dbPassword;
+            }
             set
             {
                 _dbPassword = value;
@@ -420,7 +426,7 @@ namespace EllipseCommonsClassLibrary.Connections
 
         public string DbEncodedPassword
         {
-            get => _dbEncodedPassword;
+            get { return _dbEncodedPassword; }
             set
             {
                 _dbEncodedPassword = value;

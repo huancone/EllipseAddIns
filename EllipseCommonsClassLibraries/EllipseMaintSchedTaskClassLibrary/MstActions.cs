@@ -355,10 +355,6 @@ namespace EllipseMaintSchedTaskClassLibrary
             requestXml = requestXml + "				<returnWarnings>true</returnWarnings>";
             requestXml = requestXml + "				<dto    uuid=\"" + Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
             requestXml = requestXml + "					<allowMultiple>" + mst.AllowMultiple + "</allowMultiple>";
-            requestXml = requestXml + "					<conAstSegFr>0</conAstSegFr>";
-            requestXml = requestXml + "					<conAstSegFrNumeric>0</conAstSegFrNumeric>";
-            requestXml = requestXml + "					<conAstSegTo>0</conAstSegTo>";
-            requestXml = requestXml + "					<conAstSegToNumeric>0</conAstSegToNumeric>";
             requestXml = requestXml + "					<dayMonth>" + mst.DayOfMonth + "</dayMonth>";
             requestXml = requestXml + "					<dayWeek> " + mst.DayOfWeek + "</dayWeek>";
             requestXml = requestXml + "					<dstrctCode>" + mst.DistrictCode + "</dstrctCode>";

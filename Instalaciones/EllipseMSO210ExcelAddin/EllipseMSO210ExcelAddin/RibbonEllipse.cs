@@ -572,6 +572,7 @@ namespace EllipseMSO210ExcelAddin
             "ON " +
             "  PN.PART_NO = CON.PORTION_NO || CON.ELEMENT_NO || CON.CATEGORY_NO || '-MI-' || CON.CONTRACT_NO " +
             "  OR PN.PART_NO = CON.PORTION_NO || CON.ELEMENT_NO || CON.CATEGORY_NO || '-AA-' || CON.CONTRACT_NO " +
+            "  OR PN.PART_NO = CON.PORTION_NO || CON.ELEMENT_NO || CON.CATEGORY_NO || '-AGA-' || CON.CONTRACT_NO " +
             "INNER JOIN ELLIPSE.MSF100 SC " +
             "ON " +
             "  PN.STOCK_CODE = SC.STOCK_CODE " +
