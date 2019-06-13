@@ -50,12 +50,12 @@
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 y x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 y x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -70,7 +70,7 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Runtime de Microsoft Visual Studio 2010 Tools para Office %28x86 y x64%29</ProductName>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
@@ -269,7 +269,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>34704A5AFB986320480A679A4A40DEE73DB1C96F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>CE78B1E566B0671933897B3500C94E2E578486AB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,8 +1,12 @@
-﻿using EllipseCommonsClassLibrary;
+﻿using System;
+using System.Threading;
+using System.Windows.Forms;
+using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
+using Application = Microsoft.Office.Interop.Excel.Application;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 
 namespace EllipseMSQ901ExcelAddIn
@@ -16,6 +20,7 @@ namespace EllipseMSQ901ExcelAddIn
         private int _resultColumn = 35;
         private string _sheetName01;
         private int _tittleRow = 8;
+        private Thread _thread;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
@@ -32,19 +37,40 @@ namespace EllipseMSQ901ExcelAddIn
 
         private void btnConsultar_Click(object sender, RibbonControlEventArgs e)
         {
-            _excelApp = Globals.ThisAddIn.Application;
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            var excelBook = _excelApp.ActiveWorkbook;
-            Worksheet excelSheet = excelBook.ActiveSheet;
-            switch (excelSheet.Name)
+
+            try
             {
-                case "MSQ901-ConsultaSupplier":
-                    InvoiceSupplierHeaderChange();
-                    break;
-                case "MSQ901-ConsultaJournal":
-                    JournalHeaderRangeChange();
-                    break;
+                _excelApp = Globals.ThisAddIn.Application;
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                var excelBook = _excelApp.ActiveWorkbook;
+                Worksheet excelSheet = excelBook.ActiveSheet;
+                switch (excelSheet.Name)
+                {
+                    case "MSQ901-ConsultaSupplier":
+                    {
+                        if (_thread != null && _thread.IsAlive) return;
+                        _thread = new Thread(InvoiceSupplierHeaderChange);
+                        break;
+                    }
+                    case "MSQ901-ConsultaJournal":
+                    {
+                        if (_thread != null && _thread.IsAlive) return;
+                        _thread = new Thread(JournalHeaderRangeChange);
+                        break;
+                    }
+                    case "MSQ901-ConsultaCustomer":
+                    {
+                        if (_thread != null && _thread.IsAlive) return;
+                        _thread = new Thread(CustomerInvoiceHeaderRangeChange);
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
 
@@ -161,7 +187,7 @@ namespace EllipseMSQ901ExcelAddIn
             _cells.GetCell(1, 1).Value = "CERREJÓN";
             _cells.GetCell(1, 1).Style = _cells.GetStyle(StyleConstants.HeaderDefault);
             _cells.MergeCells(1, 1, 1, 2);
-            _cells.GetCell("B1").Value = "CONSULTA POR SUPPLIER E INVOICE";
+            _cells.GetCell("B1").Value = "CONSULTA POR JOURNAL";
             _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderSize17);
             _cells.MergeCells(2, 1, 7, 2);
 
@@ -219,7 +245,7 @@ namespace EllipseMSQ901ExcelAddIn
 
             Microsoft.Office.Tools.Excel.Worksheet workSheet = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
 
-            _sheetName01 = "MSQ901-ConsultaSupplier";
+            _sheetName01 = "MSQ901-ConsultaCustomer";
             excelSheet.Name = _sheetName01;
 
             _resultColumn = 24;
@@ -227,7 +253,7 @@ namespace EllipseMSQ901ExcelAddIn
             _cells.GetCell(1, 1).Value = "CERREJÓN";
             _cells.GetCell(1, 1).Style = _cells.GetStyle(StyleConstants.HeaderDefault);
             _cells.MergeCells(1, 1, 1, 2);
-            _cells.GetCell("B1").Value = "CONSULTA POR SUPPLIER E INVOICE";
+            _cells.GetCell("B1").Value = "CONSULTA POR CUSTOMER E INVOICE";
             _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderSize17);
             _cells.MergeCells(2, 1, 7, 2);
 
@@ -293,6 +319,8 @@ namespace EllipseMSQ901ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
+            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
 
             _cells.GetRange(2, 4, 2, 5).Style = _cells.GetStyle(StyleConstants.Normal);
             _cells.GetRange(2, 4, 2, 5).NumberFormat = "@";
@@ -306,8 +334,6 @@ namespace EllipseMSQ901ExcelAddIn
             if (string.IsNullOrEmpty(districtNo) || string.IsNullOrEmpty(journal)) return;
 
             var sqlQuery = Queries.GetJournalInfo(districtNo, journal, EFunctions.dbReference, EFunctions.dbLink);
-
-            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var drinfo = EFunctions.GetQueryResult(sqlQuery);
 
@@ -362,6 +388,7 @@ namespace EllipseMSQ901ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
+            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             _cells.GetRange(2, 4, 2, 6).Style = _cells.GetStyle(StyleConstants.Normal);
             _cells.GetRange(2, 4, 2, 6).NumberFormat = "@";
@@ -375,8 +402,6 @@ namespace EllipseMSQ901ExcelAddIn
             if (string.IsNullOrEmpty(districtNo) || string.IsNullOrEmpty(supplier) || string.IsNullOrEmpty(invoice)) return;
 
             var sqlQuery = Queries.GetSupplierInvoiceInfo(districtNo, supplier, invoice, EFunctions.dbReference, EFunctions.dbLink);
-
-            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var drinfo = EFunctions.GetQueryResult(sqlQuery);
 
@@ -442,7 +467,6 @@ namespace EllipseMSQ901ExcelAddIn
             FormatoCustomerInvoice();
         }
 
-
         private void customerInvoiceHeaderRange_Change(Range target)
         {
             CustomerInvoiceHeaderRangeChange();
@@ -455,6 +479,9 @@ namespace EllipseMSQ901ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
+
+
+            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             _cells.GetRange(1, _tittleRow + 1, _resultColumn, MaxRows).ClearContents();
             _cells.GetRange(1, _tittleRow + 1, _resultColumn, MaxRows).Style = _cells.GetStyle(StyleConstants.Normal);
@@ -472,8 +499,6 @@ namespace EllipseMSQ901ExcelAddIn
             if (string.IsNullOrEmpty(districtNo) || string.IsNullOrEmpty(customer) || string.IsNullOrEmpty(invoice)) return;
 
             var sqlQuery = Queries.GetCustomerInvoiceInfo(districtNo, customer, invoice, EFunctions.dbReference, EFunctions.dbLink);
-
-            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             var drinfo = EFunctions.GetQueryResult(sqlQuery);
 
@@ -521,6 +546,20 @@ namespace EllipseMSQ901ExcelAddIn
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();
+        }
+
+        private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_thread != null && _thread.IsAlive)
+                    _thread.Abort();
+                if (_cells != null) _cells.SetCursorDefault();
+            }
+            catch (ThreadAbortException ex)
+            {
+                MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
+            }
         }
     }
 
@@ -666,11 +705,11 @@ namespace EllipseMSQ901ExcelAddIn
                 "  " + dbReference + ".MSF900" + dbLink + " TR " +
                 "INNER JOIN " + dbReference + ".MSFX93" + dbLink + " X93 " +
                 "ON " +
-                "  X93.DSTRCT_CODE       = TT.DSTRCT_CODE " +
-                "  AND X93.PROCESS_DATE   = TT.PROCESS_DATE " +
-                "  AND X93.TRANSACTION_NO = TT.TRANSACTION_NO " +
-                "  AND X93.USERNO         = TT.USERNO " +
-                "  AND X93.REC900_TYPE    = TT.REC900_TYPE " +
+                "  X93.DSTRCT_CODE       = TR.DSTRCT_CODE " +
+                "  AND X93.PROCESS_DATE   = TR.PROCESS_DATE " +
+                "  AND X93.TRANSACTION_NO = TR.TRANSACTION_NO " +
+                "  AND X93.USERNO         = TR.USERNO " +
+                "  AND X93.REC900_TYPE    = TR.REC900_TYPE " +
                 "WHERE " +
                 "  X93.CUST_NO = '" + customer + "' " +
                 "AND X93.AR_INV_NO = '" + invoice + "' " +
