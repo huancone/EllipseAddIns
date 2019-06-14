@@ -43,9 +43,9 @@
             this.btnCustomerInvoice = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
+            this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnConsultar = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.menuActions = this.Factory.CreateRibbonMenu();
             this.tabEllipse.SuspendLayout();
             this.grpMSQ901.SuspendLayout();
             this.box1.SuspendLayout();
@@ -112,6 +112,13 @@
             this.drpEnvironment.Label = "Env.";
             this.drpEnvironment.Name = "drpEnvironment";
             // 
+            // menuActions
+            // 
+            this.menuActions.Items.Add(this.btnConsultar);
+            this.menuActions.Items.Add(this.btnStopThread);
+            this.menuActions.Label = "Acciones";
+            this.menuActions.Name = "menuActions";
+            // 
             // btnConsultar
             // 
             this.btnConsultar.Label = "C&onsultar";
@@ -125,13 +132,6 @@
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
-            // menuActions
-            // 
-            this.menuActions.Items.Add(this.btnConsultar);
-            this.menuActions.Items.Add(this.btnStopThread);
-            this.menuActions.Label = "Acciones";
-            this.menuActions.Name = "menuActions";
             // 
             // RibbonEllipse
             // 
