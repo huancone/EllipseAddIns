@@ -51,19 +51,25 @@ namespace EllipseMSQ901ExcelAddIn
                     {
                         if (_thread != null && _thread.IsAlive) return;
                         _thread = new Thread(InvoiceSupplierHeaderChange);
-                        break;
+                        _thread.SetApartmentState(ApartmentState.STA);
+                        _thread.Start();
+                            break;
                     }
                     case "MSQ901-ConsultaJournal":
                     {
                         if (_thread != null && _thread.IsAlive) return;
                         _thread = new Thread(JournalHeaderRangeChange);
-                        break;
+                        _thread.SetApartmentState(ApartmentState.STA);
+                        _thread.Start();
+                            break;
                     }
                     case "MSQ901-ConsultaCustomer":
                     {
                         if (_thread != null && _thread.IsAlive) return;
                         _thread = new Thread(CustomerInvoiceHeaderRangeChange);
-                        break;
+                        _thread.SetApartmentState(ApartmentState.STA);
+                        _thread.Start();
+                            break;
                     }
                 }
             }
