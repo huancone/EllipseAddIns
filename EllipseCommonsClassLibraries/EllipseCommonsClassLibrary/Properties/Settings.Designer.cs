@@ -22,5 +22,24 @@ namespace EllipseCommonsClassLibrary.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/ScreenService")]
+        public string EllipseCommonsClassLibrary_ScreenService_ScreenService {
+            get {
+                return ((string)(this["EllipseCommonsClassLibrary_ScreenService_ScreenService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/AuthenticatorService")]
+        public string EllipseCommonsClassLibrary_AuthenticatorService_AuthenticatorService {
+            get {
+                return ((string)(this["EllipseCommonsClassLibrary_AuthenticatorService_AuthenticatorService"]));
+            }
+        }
     }
 }

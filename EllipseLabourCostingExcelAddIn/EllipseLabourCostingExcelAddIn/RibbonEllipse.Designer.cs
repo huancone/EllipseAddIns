@@ -49,8 +49,10 @@
             this.btnLoadLaborSheet = this.Factory.CreateRibbonButton();
             this.btnReviewWorkOrder = this.Factory.CreateRibbonButton();
             this.cbReplaceExisting = this.Factory.CreateRibbonCheckBox();
+            this.cbAutoTaskAssigment = this.Factory.CreateRibbonCheckBox();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.btnDeleteLaborSheet = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpEllipse.SuspendLayout();
             this.box1.SuspendLayout();
@@ -135,8 +137,10 @@
             // menuActions
             // 
             this.menuActions.Items.Add(this.btnLoadLaborSheet);
+            this.menuActions.Items.Add(this.btnDeleteLaborSheet);
             this.menuActions.Items.Add(this.btnReviewWorkOrder);
             this.menuActions.Items.Add(this.cbReplaceExisting);
+            this.menuActions.Items.Add(this.cbAutoTaskAssigment);
             this.menuActions.Items.Add(this.btnCleanSheet);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "&Acciones";
@@ -162,6 +166,12 @@
             this.cbReplaceExisting.Label = "Reemplazar horas en e&xistente";
             this.cbReplaceExisting.Name = "cbReplaceExisting";
             // 
+            // cbAutoTaskAssigment
+            // 
+            this.cbAutoTaskAssigment.Checked = true;
+            this.cbAutoTaskAssigment.Label = "Autoasignar Tarea Inicial";
+            this.cbAutoTaskAssigment.Name = "cbAutoTaskAssigment";
+            // 
             // btnCleanSheet
             // 
             this.btnCleanSheet.Label = "&Limpiar Hoja";
@@ -175,6 +185,13 @@
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
+            // 
+            // btnDeleteLaborSheet
+            // 
+            this.btnDeleteLaborSheet.Label = "Eliminar Registros de Labor";
+            this.btnDeleteLaborSheet.Name = "btnDeleteLaborSheet";
+            this.btnDeleteLaborSheet.ShowImage = true;
+            this.btnDeleteLaborSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDeleteLaborSheet_Click);
             // 
             // RibbonEllipse
             // 
@@ -211,6 +228,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbReplaceExisting;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAutoTaskAssigment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDeleteLaborSheet;
     }
 
     partial class ThisRibbonCollection

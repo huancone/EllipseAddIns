@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseWorkOrderExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.5.0.22</ApplicationVersion>
+    <ApplicationVersion>1.5.1.1</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -177,9 +177,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse">
-      <HintPath>..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\bin\Debug\System.Web.Services.Ellipse.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -276,6 +273,10 @@
       <Project>{b08f098e-e4de-4431-8cf1-0e3156b96a00}</Project>
       <Name>EllipseWorkOrdersClassLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
+      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
+      <Name>System.Web.Services.Ellipse</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ventyx_logo.ico" />
@@ -292,7 +293,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CE78B1E566B0671933897B3500C94E2E578486AB</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B0BBF7E8FDBA5724AFE6B04F60B35F9285054342</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>

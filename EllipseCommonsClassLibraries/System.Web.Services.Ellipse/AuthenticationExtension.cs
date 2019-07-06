@@ -26,7 +26,7 @@ namespace System.Web.Services.Ellipse
         }
 
         public override Stream ChainStream(Stream stream)
-        {
+        { 
             this.outwardStream = stream;
             this.inwardStream = (Stream) new MemoryStream();
             return this.inwardStream;
