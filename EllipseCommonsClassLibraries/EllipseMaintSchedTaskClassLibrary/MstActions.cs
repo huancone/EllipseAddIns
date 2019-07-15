@@ -412,21 +412,21 @@ namespace EllipseMaintSchedTaskClassLibrary
         public static MaintSchedTskServiceModNextSchedReplyDTO ModNextSchedMaintenanceScheduleTask(string urlService, OperationContext opContext, MaintenanceScheduleTask mst)
         {
 
-            var proxyEquip = new MaintSchedTskService.MaintSchedTskService();
+            var mstService = new MaintSchedTskService.MaintSchedTskService();
             var request = new MaintSchedTskServiceModNextSchedRequestDTO()
             {
-                equipmentRef = mst.EquipmentNo,
+                equipmentNo = mst.EquipmentNo,
                 compCode = mst.CompCode,
                 compModCode = mst.CompModCode,
                 maintenanceSchTask = mst.MaintenanceSchTask,
                 nextSchedDate = mst.NextSchedDate,
                 nextSchedValSpecified = string.IsNullOrWhiteSpace(mst.NextSchedValue),
                 nextStat = mst.NextSchedStat,
-                nextSchedVal = Convert.ToDecimal(mst.NextSchedValue)
+                nextSchedVal = string.IsNullOrWhiteSpace(mst.NextSchedValue) ? 0 : Convert.ToDecimal(mst.NextSchedValue)
             };
-
-            proxyEquip.Url = urlService + "/MaintSchedTskService";
-            return proxyEquip.modNextSched(opContext, request);
+            
+            mstService.Url = urlService + "/MaintSchedTskService";
+            return mstService.modNextSched(opContext, request);
         }
 
         public static MaintSchedTskServiceDeleteReplyDTO DeleteMaintenanceScheduleTask(string urlService, OperationContext opContext, MaintenanceScheduleTask mst)

@@ -69,7 +69,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const int ResultColumn03 = 16;
         private const int ResultColumn04 = 8;
         private const int ResultColumn05 = 5;
-        private const int ResultColumn06 = 8;
+        private const int ResultColumn06 = 9;
         private const int ResultColumn07 = 6;
 
         private const int ResultColumnD01 = 56;
@@ -1332,11 +1332,14 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(5, TitleRow06).AddComment("hhmmss");
                 _cells.GetCell(6, TitleRow06).Value = "FINAL_HOUR";
                 _cells.GetCell(6, TitleRow06).AddComment("hhmmss");
-                _cells.GetCell(7, TitleRow06).Value = "ACTION";
-                _cells.GetCell(7, TitleRow06).Style = StyleConstants.TitleAction;
-                _cells.GetCell(7, TitleRow06).AddComment("Crear, Eliminar");
+                _cells.GetCell(7, TitleRow06).Value = "DURATION_TIME";
+                _cells.GetCell(7, TitleRow06).AddComment("En formato numérico. Ej. 2.5 horas (000000 - 023000) hhmmss");
+                _cells.GetCell(7, TitleRow06).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(8, TitleRow06).Value = "ACTION";
+                _cells.GetCell(8, TitleRow06).Style = StyleConstants.TitleAction;
+                _cells.GetCell(8, TitleRow06).AddComment("Crear, Eliminar");
                 var actionsList = new List<string> { "Crear", "Eliminar" };
-                _cells.SetValidationList(_cells.GetCell(7, TitleRow06 + 1), actionsList, ValidationSheetName, 12, false);
+                _cells.SetValidationList(_cells.GetCell(8, TitleRow06 + 1), actionsList, ValidationSheetName, 12, false);
 
                 _cells.GetCell(ResultColumn06, TitleRow06).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn06, TitleRow06).Style = StyleConstants.TitleResult;
@@ -3436,16 +3439,43 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 try
                 {
-                    var districtCode = _cells.GetNullOrTrimmedValue(_cells.GetCell(1, i).Value);
+                    string districtCode = _cells.GetNullOrTrimmedValue(_cells.GetCell(1, i).Value);
+                    if (string.IsNullOrWhiteSpace(districtCode))
+                        districtCode = "ICOR";
+
                     var wo = WorkOrderActions.GetNewWorkOrderDto(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value));
+
+                    //Corrección de Start Hour y Finish Hour
+                    string startTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
+                    string finishTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
+                    string stringHoursTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value);
+                    
+                    //Si solo se ingresó la hora final se asume la inicial como la hora 0
+                    if (string.IsNullOrWhiteSpace(startTime) && !string.IsNullOrWhiteSpace(finishTime))
+                        startTime = "000000";
+                    //si se ingresa la información con solo la duración sin especificar las horas
+                    else if(string.IsNullOrWhiteSpace(startTime) && string.IsNullOrWhiteSpace(finishTime) && !string.IsNullOrWhiteSpace(stringHoursTime))
+                    {
+                        startTime = "000000";
+                        finishTime = EllipseCommonsClassLibrary.Utilities.MyDateTime.Operations.ConvertDecimalHourToHHMM(stringHoursTime, "") + "00";
+                    }
+
+                    //Ellipse presenta problemas cuando los segundos ingresados son diferentes de 0
+                    //Se restringe para que siempre los asuma como 0
+                    if (startTime != null && startTime.Length == 6)
+                        startTime = startTime.Substring(0, 4) + "00";
+                    if (finishTime != null && finishTime.Length == 6)
+                        finishTime = finishTime.Substring(0, 4) + "00";
+                    //
+
                     var duration = new WorkOrderDuration
                     {
                         jobDurationsDate = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value),
                         jobDurationsCode = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value)),
-                        jobDurationsStart = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
-                        jobDurationsFinish = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value)
+                        jobDurationsStart = startTime,
+                        jobDurationsFinish = finishTime
                     };
-                    string action = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value).ToUpper();
+                    string action = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value).ToUpper();
                     switch (action)
                     {
                         case "CREAR":
@@ -3453,7 +3483,7 @@ namespace EllipseWorkOrderExcelAddIn
                                 WorkOrderActions.CreateWorkOrderDuration(urlService, opSheet, districtCode, wo, duration);
                                 _cells.GetCell(ResultColumn06, i).Value = "CREADO";
                                 _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Success;
-                                _cells.GetCell(7, i).Value = "";//Para evitar duplicados por repetición
+                                _cells.GetCell(ResultColumn06 - 1, i).Value = "";//Para evitar duplicados por repetición
                             }
                             break;
                         case "ELIMINAR":

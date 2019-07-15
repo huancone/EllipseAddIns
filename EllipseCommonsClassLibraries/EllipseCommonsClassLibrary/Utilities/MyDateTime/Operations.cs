@@ -110,7 +110,7 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
             mm = Math.Abs(Math.Truncate(mm * 60));
             hh = Math.Truncate(hh);
 
-            var newHour = hh + separator + Convert.ToInt32(mm).ToString("D2");
+            var newHour = Convert.ToInt32(hh).ToString("D2") + separator + Convert.ToInt32(mm).ToString("D2");
             return newHour;
         }
 
@@ -127,7 +127,7 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
             mm = Math.Abs(Math.Truncate(mm * 60));
             hh = Math.Truncate(hh);
 
-            var newHour = hh + separator + Convert.ToInt32(mm).ToString("D2");
+            var newHour = Convert.ToInt32(hh).ToString("D2") + separator + Convert.ToInt32(mm).ToString("D2");
             return newHour;
         }
 

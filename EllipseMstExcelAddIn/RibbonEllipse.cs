@@ -13,8 +13,6 @@ using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using System.Threading;
 using System.Web.Services.Ellipse;
-using EllipseCommonsClassLibrary.AuthenticatorService;
-using Util = System.Web.Services.Ellipse.Post.Util;
 
 // ReSharper disable UseObjectOrCollectionInitializer
 
@@ -358,6 +356,7 @@ namespace EllipseMstExcelAddIn
                 _cells.GetCell(7, TitleRow02).Value = "STAT TYPE";
                 _cells.GetCell(8, TitleRow02).Value = "STAT VALUE";
                 _cells.GetCell(9, TitleRow02).Value = "NEXT SCHED DATE";
+                _cells.GetCell(9, TitleRow02).AddComment("YYYYMMDD");
 
                 _cells.GetRange(10, TitleRow02 - 1, ResultColumn02 - 1, TitleRow02 - 1).Style = StyleConstants.Select;
                 _cells.GetCell(10, TitleRow02 - 1).Value = "FIXED SCHEDULE";
@@ -866,6 +865,7 @@ namespace EllipseMstExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         public void ModifyNextScheduleList()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
@@ -886,7 +886,7 @@ namespace EllipseMstExcelAddIn
             var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, "POST");
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
 
-            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
                 try
                 {
@@ -956,6 +956,7 @@ namespace EllipseMstExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+
         public void DeleteMstList()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);

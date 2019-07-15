@@ -366,15 +366,16 @@ namespace EllipseCommonsClassLibrary.Connections
         public static string Test = @"/ellipse/url/elltest"; //XPath
 
         public static string UrlProductivo =
-            "http://ellipse-el8prod.lmnerp02.cerrejon.com/ria-Ellipse-8.9.8_446/bind?app=";
+            "http://ellipse-el8prod.lmnerp02.cerrejon.com/ria-Ellipse-8.9.17_84/bind?app=";
 
         public static string UrlContingencia =
             "http://ellipse-el8prod.lmnerp02.cerrejon.com/ria-Ellipse-8.9.8_446/bind?app=";
 
         public static string UrlDesarrollo =
-            "http://ellipse-el8test.lmnerp03.cerrejon.com/ria-Ellipse-8.9.8_446/bind?app=";
+            "http://ellipse-el8test.lmnerp03.cerrejon.com/ria-Ellipse-8.9.17_84/bind?app=";
 
-        public static string UrlTest = "http://ellipse-el8test.lmnerp03.cerrejon.com/ria-Ellipse-8.9.8_446/bind?app=";
+        public static string UrlTest = 
+            "http://ellipse-el8test.lmnerp03.cerrejon.com/ria-Ellipse-8.9.17_84/bind?app=";
     }
 
     public class DatabaseItem
