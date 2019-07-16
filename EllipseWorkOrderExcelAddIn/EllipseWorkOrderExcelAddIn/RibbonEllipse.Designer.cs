@@ -59,7 +59,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnExecuteTaskActions = this.Factory.CreateRibbonButton();
             this.btnCleanTasksTable = this.Factory.CreateRibbonButton();
             this.menuRequirements = this.Factory.CreateRibbonMenu();
-            this.btnReviewRequirements = this.Factory.CreateRibbonButton();
+            this.btnReviewLabRequirements = this.Factory.CreateRibbonButton();
             this.btnExecuteRequirements = this.Factory.CreateRibbonButton();
             this.btnGetAplRequirements = this.Factory.CreateRibbonButton();
             this.btnCleanRequirementTable = this.Factory.CreateRibbonButton();
@@ -91,6 +91,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
             this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.btnReviewMatRequirements = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
@@ -257,7 +258,8 @@ namespace EllipseWorkOrderExcelAddIn
             // 
             // menuRequirements
             // 
-            this.menuRequirements.Items.Add(this.btnReviewRequirements);
+            this.menuRequirements.Items.Add(this.btnReviewLabRequirements);
+            this.menuRequirements.Items.Add(this.btnReviewMatRequirements);
             this.menuRequirements.Items.Add(this.btnExecuteRequirements);
             this.menuRequirements.Items.Add(this.btnGetAplRequirements);
             this.menuRequirements.Items.Add(this.btnCleanRequirementTable);
@@ -265,12 +267,12 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuRequirements.Name = "menuRequirements";
             this.menuRequirements.ShowImage = true;
             // 
-            // btnReviewRequirements
+            // btnReviewLabRequirements
             // 
-            this.btnReviewRequirements.Label = "Consultar Requerimientos";
-            this.btnReviewRequirements.Name = "btnReviewRequirements";
-            this.btnReviewRequirements.ShowImage = true;
-            this.btnReviewRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewRequirements_Click);
+            this.btnReviewLabRequirements.Label = "Consultar Requerimientos de Labor";
+            this.btnReviewLabRequirements.Name = "btnReviewLabRequirements";
+            this.btnReviewLabRequirements.ShowImage = true;
+            this.btnReviewLabRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewRequirements_Click);
             // 
             // btnExecuteRequirements
             // 
@@ -500,6 +502,13 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // btnReviewMatRequirements
+            // 
+            this.btnReviewMatRequirements.Label = "Consultar Requerimientos de Materiales";
+            this.btnReviewMatRequirements.Name = "btnReviewMatRequirements";
+            this.btnReviewMatRequirements.ShowImage = true;
+            this.btnReviewMatRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewMatRequirements_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -568,10 +577,11 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnExecuteTaskActions;
         internal RibbonButton btnCleanTasksTable;
         internal RibbonMenu menuRequirements;
-        internal RibbonButton btnReviewRequirements;
+        internal RibbonButton btnReviewLabRequirements;
         internal RibbonButton btnExecuteRequirements;
         internal RibbonButton btnGetAplRequirements;
         internal RibbonButton btnCleanRequirementTable;
+        internal RibbonButton btnReviewMatRequirements;
     }
 
     partial class ThisRibbonCollection

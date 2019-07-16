@@ -49,17 +49,23 @@ namespace EllipseMSQ901ExcelAddIn
                     case _sheetNameSupplier:
                     {
                         _thread = new Thread(InvoiceSupplierHeaderChange);
-                        break;
+                        _thread.SetApartmentState(ApartmentState.STA);
+                        _thread.Start();
+                            break;
                     }
                     case _sheetNameJournal:
                     {
                         _thread = new Thread(JournalHeaderRangeChange);
-                        break;
+                        _thread.SetApartmentState(ApartmentState.STA);
+                        _thread.Start();
+                            break;
                     }
                     case _sheetNameCustomer:
                     {
                         _thread = new Thread(CustomerInvoiceHeaderRangeChange);
-                        break;
+                        _thread.SetApartmentState(ApartmentState.STA);
+                        _thread.Start();
+                            break;
                     }
                     default:
                     {
