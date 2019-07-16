@@ -448,7 +448,11 @@ namespace EllipseMaintSchedTaskClassLibrary
                 schedFreq1Specified = true,
                 schedFreq2Specified = true,
                 statType1 = "",
-                statType2 = ""
+                statType2 = "",
+                conAstSegFr = default(decimal),
+                conAstSegFrSpecified = true,
+                conAstSegTo = default(decimal),
+                conAstSegToSpecified = true
             };
 
 

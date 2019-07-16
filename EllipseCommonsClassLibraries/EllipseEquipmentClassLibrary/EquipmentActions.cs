@@ -393,6 +393,7 @@ namespace EllipseEquipmentClassLibrary
                 equipmentClass = equipment.EquipmentClass,
                 equipmentCriticality = equipment.EquipmentCriticality,
                 equipmentGrpId = equipment.EquipmentGrpId,
+                //location = equipment.EquipmentLocation,  //Location de pestaña Location
                 equipmentLocation = equipment.EquipmentLocation,
                 equipmentNo = equipment.EquipmentNo,
                 equipmentNoDescription1 = equipment.EquipmentNoDescription1,
@@ -407,7 +408,6 @@ namespace EllipseEquipmentClassLibrary
                 inputBy = equipment.InputBy,
                 itemNameCode = equipment.ItemNameCode,
                 latestConditionDate = equipment.LatestConditionDate,
-                //location = equipment.Location,
                 mnemonic = equipment.Mnemonic,
                 operatingStandard = equipment.OperatingStandard,
                 operatorId = equipment.OperatorId,
@@ -532,7 +532,8 @@ namespace EllipseEquipmentClassLibrary
                 equipmentClass = equipment.EquipmentClass,
                 equipmentCriticality = equipment.EquipmentCriticality,
                 equipmentGrpId = equipment.EquipmentGrpId,
-                equipmentLocation = equipment.EquipmentLocation,
+                //location = equipment.EquipmentLocation, //Location de pestaña de location
+                equipmentLocation = equipment.EquipmentLocation, 
                 equipmentNo = equipment.EquipmentNo,
                 equipmentNoDescription1 = equipment.EquipmentNoDescription1,
                 equipmentNoDescription2 = equipment.EquipmentNoDescription2,
@@ -546,7 +547,6 @@ namespace EllipseEquipmentClassLibrary
                 inputBy = equipment.InputBy,
                 itemNameCode = equipment.ItemNameCode,
                 latestConditionDate = equipment.LatestConditionDate,
-                //location = equipment.Location,
                 mnemonic = equipment.Mnemonic,
                 operatingStandard = equipment.OperatingStandard,
                 operatorId = equipment.OperatorId,
