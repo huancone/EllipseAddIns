@@ -22,5 +22,15 @@ namespace EllipseAplsExcelAddIn.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/APLItemService")]
+        public string EllipseAplsExcelAddIn_APLItemService_APLItemService {
+            get {
+                return ((string)(this["EllipseAplsExcelAddIn_APLItemService_APLItemService"]));
+            }
+        }
     }
 }

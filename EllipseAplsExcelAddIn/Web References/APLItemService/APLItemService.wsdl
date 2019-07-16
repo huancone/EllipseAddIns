@@ -1,0 +1,2462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://ellipse.enterpriseservice.mincom.com" xmlns:tns="http://aplitem.ellipse.enterpriseservice.mincom.com" xmlns:ns5="http://exception.enterpriseservice.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns3="http://dto.dependant.ellipse.enterpriseservice.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns4="http://attribute.ellipse.mincom.com" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://aplitem.ellipse.enterpriseservice.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://aplitem.ellipse.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://exception.enterpriseservice.mincom.com" />
+      <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
+      <xsd:import namespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="APLItemServiceRetrieveSubAPLRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveSubAPLRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLComponentCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipment" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGroupId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLMaintenanceAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmpDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosition" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLRevAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSequenceNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodePackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAvailable" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnChangesToBeReported" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComponentCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCostEstimate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCreationDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCycleMonths" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentName" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGroupIdDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnExtendedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnExtendedDescExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemCatalogued" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemCostingMethod" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockPackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModUser" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaximumLeadTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrative" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrativeExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextIssueDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityInstalled" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatusDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalNumberItems" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCost" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCostDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssueDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWhouse" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveSubAPL">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:APLItemServiceRetrieveSubAPLRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:APLItemServiceRetrieveSubAPLRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveSubAPLReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfAPLItemServiceRetrieveSubAPLReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfAPLItemServiceRetrieveSubAPLReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APLItemServiceRetrieveSubAPLReplyDTO" nillable="true" type="tns:APLItemServiceRetrieveSubAPLReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="itemTypeDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="20" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="documentNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="20" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="available">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemPartNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemStockDesc4">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="manMnemonicDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityRequired">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="totalNumberItems">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemNarrativeNumber">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="typeOfCost">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="extendedDescExists">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="unitOfIssue">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="typeOfCostDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastModUser">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="narrativeExists">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="APLRevAccess">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemManMnemonic">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLItemNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="maximumLeadTime">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="narrative">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="26" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentGroupIdDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLSequenceNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLOwnerEmployee">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLStockCodeDesc4">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLStockCodeDesc3">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLStockCodeDesc2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLStockCodeDesc1">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLStockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastItemNumber">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemManMnemonicDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemStockDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemStockPackedDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="compModCodeDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="20" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLComponentCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLTypeDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="componentCodeDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="extendedDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="26" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLOwnerEmpDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="unitOfIssueDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemCostingMethod">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLOwnerPosDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="cycleMonths">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemCatalogued">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="APLDescription2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLDescription1">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLMaintenanceAccess">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLOwnerPosition">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLCompModCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLEquipment">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="changesToBeReported">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="documentName">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="60" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemStockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLEquipmentGroupId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="manMnemonic">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemStockDesc2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemStockDesc3">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="costEstimate">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemStockDesc1">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="whouse">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="narrativeNumber">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLStockCodeDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="partNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityInstalled">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLStockCodePackedDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="APLItemServiceRetrieveSubAPLReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLComponentCode" type="tns:APLComponentCode" />
+              <xsd:element minOccurs="0" name="APLDescription1" type="tns:APLDescription1" />
+              <xsd:element minOccurs="0" name="APLDescription2" type="tns:APLDescription2" />
+              <xsd:element minOccurs="0" name="APLEquipment" type="tns:APLEquipment" />
+              <xsd:element minOccurs="0" name="APLEquipmentGroupId" type="tns:APLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="APLItemNumber" type="tns:APLItemNumber" />
+              <xsd:element minOccurs="0" name="APLMaintenanceAccess" type="tns:APLMaintenanceAccess" />
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="APLOwnerEmpDesc" type="tns:APLOwnerEmpDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerEmployee" type="tns:APLOwnerEmployee" />
+              <xsd:element minOccurs="0" name="APLOwnerPosDesc" type="tns:APLOwnerPosDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerPosition" type="tns:APLOwnerPosition" />
+              <xsd:element minOccurs="0" name="APLRevAccess" type="tns:APLRevAccess" />
+              <xsd:element minOccurs="0" name="APLSequenceNumber" type="tns:APLSequenceNumber" />
+              <xsd:element minOccurs="0" name="APLStatus" type="tns:APLStatus" />
+              <xsd:element minOccurs="0" name="APLStockCode" type="tns:APLStockCode" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc1" type="tns:APLStockCodeDesc1" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc2" type="tns:APLStockCodeDesc2" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc3" type="tns:APLStockCodeDesc3" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc4" type="tns:APLStockCodeDesc4" />
+              <xsd:element minOccurs="0" name="APLStockCodePackedDesc" type="tns:APLStockCodePackedDesc" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="APLTypeDesc" type="tns:APLTypeDesc" />
+              <xsd:element minOccurs="0" name="available" type="tns:available" />
+              <xsd:element minOccurs="0" name="changesToBeReported" type="tns:changesToBeReported" />
+              <xsd:element minOccurs="0" name="compModCodeDesc" type="tns:compModCodeDesc" />
+              <xsd:element minOccurs="0" name="componentCodeDesc" type="tns:componentCodeDesc" />
+              <xsd:element minOccurs="0" name="costEstimate" type="tns:costEstimate" />
+              <xsd:element minOccurs="0" name="creationDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="cycleMonths" type="tns:cycleMonths" />
+              <xsd:element minOccurs="0" name="documentName" type="tns:documentName" />
+              <xsd:element minOccurs="0" name="documentNumber" type="tns:documentNumber" />
+              <xsd:element minOccurs="0" name="equipmentGroupIdDesc" type="tns:equipmentGroupIdDesc" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="extendedDesc" type="tns:extendedDesc" />
+              <xsd:element minOccurs="0" name="extendedDescExists" type="tns:extendedDescExists" />
+              <xsd:element minOccurs="0" name="itemCatalogued" type="tns:itemCatalogued" />
+              <xsd:element minOccurs="0" name="itemCostingMethod" type="tns:itemCostingMethod" />
+              <xsd:element minOccurs="0" name="itemDesc" type="tns:itemDesc" />
+              <xsd:element minOccurs="0" name="itemManMnemonic" type="tns:itemManMnemonic" />
+              <xsd:element minOccurs="0" name="itemManMnemonicDesc" type="tns:itemManMnemonicDesc" />
+              <xsd:element minOccurs="0" name="itemModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="itemNarrativeNumber" type="tns:itemNarrativeNumber" />
+              <xsd:element minOccurs="0" name="itemPartNumber" type="tns:itemPartNumber" />
+              <xsd:element minOccurs="0" name="itemStockCode" type="tns:itemStockCode" />
+              <xsd:element minOccurs="0" name="itemStockDesc" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="itemStockDesc1" type="tns:itemStockDesc1" />
+              <xsd:element minOccurs="0" name="itemStockDesc2" type="tns:itemStockDesc2" />
+              <xsd:element minOccurs="0" name="itemStockDesc3" type="tns:itemStockDesc3" />
+              <xsd:element minOccurs="0" name="itemStockDesc4" type="tns:itemStockDesc4" />
+              <xsd:element minOccurs="0" name="itemStockPackedDesc" type="tns:itemStockPackedDesc" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
+              <xsd:element minOccurs="0" name="itemTypeDesc" type="tns:itemTypeDesc" />
+              <xsd:element minOccurs="0" name="lastItemNumber" type="tns:lastItemNumber" />
+              <xsd:element minOccurs="0" name="lastModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModTime" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModUser" type="tns:lastModUser" />
+              <xsd:element minOccurs="0" name="manMnemonic" type="tns:manMnemonic" />
+              <xsd:element minOccurs="0" name="manMnemonicDesc" type="tns:manMnemonicDesc" />
+              <xsd:element minOccurs="0" name="maximumLeadTime" type="tns:maximumLeadTime" />
+              <xsd:element minOccurs="0" name="narrative" type="tns:narrative" />
+              <xsd:element minOccurs="0" name="narrativeExists" type="tns:narrativeExists" />
+              <xsd:element minOccurs="0" name="narrativeNumber" type="tns:narrativeNumber" />
+              <xsd:element minOccurs="0" name="nextIssueDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="partNumber" type="tns:partNumber" />
+              <xsd:element minOccurs="0" name="quantityInstalled" type="tns:quantityInstalled" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="statusDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="totalNumberItems" type="tns:totalNumberItems" />
+              <xsd:element minOccurs="0" name="typeOfCost" type="tns:typeOfCost" />
+              <xsd:element minOccurs="0" name="typeOfCostDesc" type="tns:typeOfCostDesc" />
+              <xsd:element minOccurs="0" name="unitOfIssue" type="tns:unitOfIssue" />
+              <xsd:element minOccurs="0" name="unitOfIssueDesc" type="tns:unitOfIssueDesc" />
+              <xsd:element minOccurs="0" name="whouse" type="tns:whouse" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="retrieveSubAPLResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:APLItemServiceRetrieveSubAPLReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EnterpriseServiceOperationException" type="ns5:EnterpriseServiceOperationException" />
+      <xsd:complexType name="APLItemServiceReadRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLComponentCode" type="tns:APLComponentCode" />
+              <xsd:element minOccurs="0" name="APLDescription2" type="tns:APLDescription2" />
+              <xsd:element minOccurs="0" name="APLEquipment" type="tns:APLEquipment" />
+              <xsd:element minOccurs="0" name="APLEquipmentGroupId" type="tns:APLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="APLItemNumber" type="tns:APLItemNumber" />
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="APLSequenceNumber" type="tns:APLSequenceNumber" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="itemPartNumber" type="tns:itemPartNumber" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:APLItemServiceReadRequiredAttributesDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceReadRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLComponentCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipment" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGroupId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLMaintenanceAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLMaintenanceAccessDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmpDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosition" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLRevAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLRevAccessDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSequenceNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatusDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodePackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAvailable" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnChangesToBeReported" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComponentCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCostEstimate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCreationDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCycleMonths" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentName" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDrawNbrSrchMethod" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGroupIdDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnExtendedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnExtendedDescExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemCatalogued" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemCostingMethod" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockName" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockPackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModUser" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaximumLeadTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrative" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrativeExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextIssueDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNoSrchMethod" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityInstalled" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnRequisitionRestricted" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatusDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubAPLComponent" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubAPLEquipment" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubAPLEquipmentGroupId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubAPLSequenceNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalNumberItems" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCost" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCostDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssueDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWhouse" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:APLItemServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="requisitionRestricted">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="subAPLCompModCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="subAPLSequenceNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="drawNbrSrchMethod">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemStockName">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLRevAccessDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="subAPLComponent">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLStatusDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="21" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="subAPLEquipment">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="partNoSrchMethod">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLMaintenanceAccessDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="subAPLType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="subAPLEquipmentGroupId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="APLItemServiceReadReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLComponentCode" type="tns:APLComponentCode" />
+              <xsd:element minOccurs="0" name="APLDescription1" type="tns:APLDescription1" />
+              <xsd:element minOccurs="0" name="APLDescription2" type="tns:APLDescription2" />
+              <xsd:element minOccurs="0" name="APLEquipment" type="tns:APLEquipment" />
+              <xsd:element minOccurs="0" name="APLEquipmentGroupId" type="tns:APLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="APLItemNumber" type="tns:APLItemNumber" />
+              <xsd:element minOccurs="0" name="APLMaintenanceAccess" type="tns:APLMaintenanceAccess" />
+              <xsd:element minOccurs="0" name="APLMaintenanceAccessDesc" type="tns:APLMaintenanceAccessDesc" />
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="APLOwnerEmpDesc" type="tns:APLOwnerEmpDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerEmployee" type="tns:APLOwnerEmployee" />
+              <xsd:element minOccurs="0" name="APLOwnerPosDesc" type="tns:APLOwnerPosDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerPosition" type="tns:APLOwnerPosition" />
+              <xsd:element minOccurs="0" name="APLRevAccess" type="tns:APLRevAccess" />
+              <xsd:element minOccurs="0" name="APLRevAccessDesc" type="tns:APLRevAccessDesc" />
+              <xsd:element minOccurs="0" name="APLSequenceNumber" type="tns:APLSequenceNumber" />
+              <xsd:element minOccurs="0" name="APLStatus" type="tns:APLStatus" />
+              <xsd:element minOccurs="0" name="APLStatusDesc" type="tns:APLStatusDesc" />
+              <xsd:element minOccurs="0" name="APLStockCode" type="tns:APLStockCode" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc1" type="tns:APLStockCodeDesc1" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc2" type="tns:APLStockCodeDesc2" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc3" type="tns:APLStockCodeDesc3" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc4" type="tns:APLStockCodeDesc4" />
+              <xsd:element minOccurs="0" name="APLStockCodePackedDesc" type="tns:APLStockCodePackedDesc" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="APLTypeDesc" type="tns:APLTypeDesc" />
+              <xsd:element minOccurs="0" name="available" type="tns:available" />
+              <xsd:element minOccurs="0" name="changesToBeReported" type="tns:changesToBeReported" />
+              <xsd:element minOccurs="0" name="compModCodeDesc" type="tns:compModCodeDesc" />
+              <xsd:element minOccurs="0" name="componentCodeDesc" type="tns:componentCodeDesc" />
+              <xsd:element minOccurs="0" name="costEstimate" type="tns:costEstimate" />
+              <xsd:element minOccurs="0" name="creationDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="cycleMonths" type="tns:cycleMonths" />
+              <xsd:element minOccurs="0" name="documentName" type="tns:documentName" />
+              <xsd:element minOccurs="0" name="documentNumber" type="tns:documentNumber" />
+              <xsd:element minOccurs="0" name="drawNbrSrchMethod" type="tns:drawNbrSrchMethod" />
+              <xsd:element minOccurs="0" name="equipmentGroupIdDesc" type="tns:equipmentGroupIdDesc" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="extendedDesc" type="tns:extendedDesc" />
+              <xsd:element minOccurs="0" name="extendedDescExists" type="tns:extendedDescExists" />
+              <xsd:element minOccurs="0" name="itemCatalogued" type="tns:itemCatalogued" />
+              <xsd:element minOccurs="0" name="itemCostingMethod" type="tns:itemCostingMethod" />
+              <xsd:element minOccurs="0" name="itemDesc" type="tns:itemDesc" />
+              <xsd:element minOccurs="0" name="itemManMnemonic" type="tns:itemManMnemonic" />
+              <xsd:element minOccurs="0" name="itemManMnemonicDesc" type="tns:itemManMnemonicDesc" />
+              <xsd:element minOccurs="0" name="itemModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="itemNarrativeNumber" type="tns:itemNarrativeNumber" />
+              <xsd:element minOccurs="0" name="itemPartNumber" type="tns:itemPartNumber" />
+              <xsd:element minOccurs="0" name="itemStockCode" type="tns:itemStockCode" />
+              <xsd:element minOccurs="0" name="itemStockDesc" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="itemStockDesc1" type="tns:itemStockDesc1" />
+              <xsd:element minOccurs="0" name="itemStockDesc2" type="tns:itemStockDesc2" />
+              <xsd:element minOccurs="0" name="itemStockDesc3" type="tns:itemStockDesc3" />
+              <xsd:element minOccurs="0" name="itemStockDesc4" type="tns:itemStockDesc4" />
+              <xsd:element minOccurs="0" name="itemStockName" type="tns:itemStockName" />
+              <xsd:element minOccurs="0" name="itemStockPackedDesc" type="tns:itemStockPackedDesc" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
+              <xsd:element minOccurs="0" name="itemTypeDesc" type="tns:itemTypeDesc" />
+              <xsd:element minOccurs="0" name="lastItemNumber" type="tns:lastItemNumber" />
+              <xsd:element minOccurs="0" name="lastModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModTime" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModUser" type="tns:lastModUser" />
+              <xsd:element minOccurs="0" name="manMnemonic" type="tns:manMnemonic" />
+              <xsd:element minOccurs="0" name="manMnemonicDesc" type="tns:manMnemonicDesc" />
+              <xsd:element minOccurs="0" name="maximumLeadTime" type="tns:maximumLeadTime" />
+              <xsd:element minOccurs="0" name="narrative" type="tns:narrative" />
+              <xsd:element minOccurs="0" name="narrativeExists" type="tns:narrativeExists" />
+              <xsd:element minOccurs="0" name="narrativeNumber" type="tns:narrativeNumber" />
+              <xsd:element minOccurs="0" name="nextIssueDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="partNoSrchMethod" type="tns:partNoSrchMethod" />
+              <xsd:element minOccurs="0" name="partNumber" type="tns:partNumber" />
+              <xsd:element minOccurs="0" name="quantityInstalled" type="tns:quantityInstalled" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="requisitionRestricted" type="tns:requisitionRestricted" />
+              <xsd:element minOccurs="0" name="statusDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="subAPLCompModCode" type="tns:subAPLCompModCode" />
+              <xsd:element minOccurs="0" name="subAPLComponent" type="tns:subAPLComponent" />
+              <xsd:element minOccurs="0" name="subAPLEquipment" type="tns:subAPLEquipment" />
+              <xsd:element minOccurs="0" name="subAPLEquipmentGroupId" type="tns:subAPLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="subAPLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="subAPLSequenceNo" type="tns:subAPLSequenceNo" />
+              <xsd:element minOccurs="0" name="subAPLType" type="tns:subAPLType" />
+              <xsd:element minOccurs="0" name="totalNumberItems" type="tns:totalNumberItems" />
+              <xsd:element minOccurs="0" name="typeOfCost" type="tns:typeOfCost" />
+              <xsd:element minOccurs="0" name="typeOfCostDesc" type="tns:typeOfCostDesc" />
+              <xsd:element minOccurs="0" name="unitOfIssue" type="tns:unitOfIssue" />
+              <xsd:element minOccurs="0" name="unitOfIssueDesc" type="tns:unitOfIssueDesc" />
+              <xsd:element minOccurs="0" name="whouse" type="tns:whouse" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:APLItemServiceReadReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveAPLItemsRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveAPLItemsRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLComponentCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipment" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGroupId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLMaintenanceAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmpDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosition" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLRevAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSequenceNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatusDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodePackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAvailable" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnChangesToBeReported" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComponentCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCostEstimate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCreationDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCycleMonths" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentName" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGroupIdDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemCatalogued" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemCostingMethod" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockPackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModUser" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaximumLeadTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextIssueDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityInstalled" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatusDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalNumberItems" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCost" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCostDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssueDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWhouse" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveAPLItems">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:APLItemServiceRetrieveAPLItemsRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:APLItemServiceRetrieveAPLItemsRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveAPLItemsReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfAPLItemServiceRetrieveAPLItemsReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfAPLItemServiceRetrieveAPLItemsReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APLItemServiceRetrieveAPLItemsReplyDTO" nillable="true" type="tns:APLItemServiceRetrieveAPLItemsReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveAPLItemsReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLComponentCode" type="tns:APLComponentCode" />
+              <xsd:element minOccurs="0" name="APLDescription1" type="tns:APLDescription1" />
+              <xsd:element minOccurs="0" name="APLDescription2" type="tns:APLDescription2" />
+              <xsd:element minOccurs="0" name="APLEquipment" type="tns:APLEquipment" />
+              <xsd:element minOccurs="0" name="APLEquipmentGroupId" type="tns:APLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="APLItemNumber" type="tns:APLItemNumber" />
+              <xsd:element minOccurs="0" name="APLMaintenanceAccess" type="tns:APLMaintenanceAccess" />
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="APLOwnerEmpDesc" type="tns:APLOwnerEmpDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerEmployee" type="tns:APLOwnerEmployee" />
+              <xsd:element minOccurs="0" name="APLOwnerPosDesc" type="tns:APLOwnerPosDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerPosition" type="tns:APLOwnerPosition" />
+              <xsd:element minOccurs="0" name="APLRevAccess" type="tns:APLRevAccess" />
+              <xsd:element minOccurs="0" name="APLSequenceNumber" type="tns:APLSequenceNumber" />
+              <xsd:element minOccurs="0" name="APLStatus" type="tns:APLStatus" />
+              <xsd:element minOccurs="0" name="APLStatusDesc" type="tns:APLStatusDesc" />
+              <xsd:element minOccurs="0" name="APLStockCode" type="tns:APLStockCode" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc1" type="tns:APLStockCodeDesc1" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc2" type="tns:APLStockCodeDesc2" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc3" type="tns:APLStockCodeDesc3" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc4" type="tns:APLStockCodeDesc4" />
+              <xsd:element minOccurs="0" name="APLStockCodePackedDesc" type="tns:APLStockCodePackedDesc" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="APLTypeDesc" type="tns:APLTypeDesc" />
+              <xsd:element minOccurs="0" name="available" type="tns:available" />
+              <xsd:element minOccurs="0" name="changesToBeReported" type="tns:changesToBeReported" />
+              <xsd:element minOccurs="0" name="compModCodeDesc" type="tns:compModCodeDesc" />
+              <xsd:element minOccurs="0" name="componentCodeDesc" type="tns:componentCodeDesc" />
+              <xsd:element minOccurs="0" name="costEstimate" type="tns:costEstimate" />
+              <xsd:element minOccurs="0" name="creationDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="cycleMonths" type="tns:cycleMonths" />
+              <xsd:element minOccurs="0" name="documentName" type="tns:documentName" />
+              <xsd:element minOccurs="0" name="documentNumber" type="tns:documentNumber" />
+              <xsd:element minOccurs="0" name="equipmentGroupIdDesc" type="tns:equipmentGroupIdDesc" />
+              <xsd:element minOccurs="0" name="itemCatalogued" type="tns:itemCatalogued" />
+              <xsd:element minOccurs="0" name="itemCostingMethod" type="tns:itemCostingMethod" />
+              <xsd:element minOccurs="0" name="itemDesc" type="tns:itemDesc" />
+              <xsd:element minOccurs="0" name="itemManMnemonic" type="tns:itemManMnemonic" />
+              <xsd:element minOccurs="0" name="itemManMnemonicDesc" type="tns:itemManMnemonicDesc" />
+              <xsd:element minOccurs="0" name="itemModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="itemNarrativeNumber" type="tns:itemNarrativeNumber" />
+              <xsd:element minOccurs="0" name="itemPartNumber" type="tns:itemPartNumber" />
+              <xsd:element minOccurs="0" name="itemStockCode" type="tns:itemStockCode" />
+              <xsd:element minOccurs="0" name="itemStockDesc1" type="tns:itemStockDesc1" />
+              <xsd:element minOccurs="0" name="itemStockDesc2" type="tns:itemStockDesc2" />
+              <xsd:element minOccurs="0" name="itemStockDesc3" type="tns:itemStockDesc3" />
+              <xsd:element minOccurs="0" name="itemStockDesc4" type="tns:itemStockDesc4" />
+              <xsd:element minOccurs="0" name="itemStockPackedDesc" type="tns:itemStockPackedDesc" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
+              <xsd:element minOccurs="0" name="itemTypeDesc" type="tns:itemTypeDesc" />
+              <xsd:element minOccurs="0" name="lastItemNumber" type="tns:lastItemNumber" />
+              <xsd:element minOccurs="0" name="lastModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModTime" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModUser" type="tns:lastModUser" />
+              <xsd:element minOccurs="0" name="manMnemonic" type="tns:manMnemonic" />
+              <xsd:element minOccurs="0" name="manMnemonicDesc" type="tns:manMnemonicDesc" />
+              <xsd:element minOccurs="0" name="maximumLeadTime" type="tns:maximumLeadTime" />
+              <xsd:element minOccurs="0" name="narrativeNumber" type="tns:narrativeNumber" />
+              <xsd:element minOccurs="0" name="nextIssueDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="partNumber" type="tns:partNumber" />
+              <xsd:element minOccurs="0" name="quantityInstalled" type="tns:quantityInstalled" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="statusDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="subAPLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="totalNumberItems" type="tns:totalNumberItems" />
+              <xsd:element minOccurs="0" name="typeOfCost" type="tns:typeOfCost" />
+              <xsd:element minOccurs="0" name="typeOfCostDesc" type="tns:typeOfCostDesc" />
+              <xsd:element minOccurs="0" name="unitOfIssue" type="tns:unitOfIssue" />
+              <xsd:element minOccurs="0" name="unitOfIssueDesc" type="tns:unitOfIssueDesc" />
+              <xsd:element minOccurs="0" name="whouse" type="tns:whouse" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveAPLItemsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:APLItemServiceRetrieveAPLItemsReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLComponentCode" type="tns:APLComponentCode" />
+              <xsd:element minOccurs="0" name="APLEquipment" type="tns:APLEquipment" />
+              <xsd:element minOccurs="0" name="APLEquipmentGroupId" type="tns:APLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="APLOwnerEmployee" type="tns:APLOwnerEmployee" />
+              <xsd:element minOccurs="0" name="APLOwnerPosition" type="tns:APLOwnerPosition" />
+              <xsd:element minOccurs="0" name="APLSequenceNumber" type="tns:APLSequenceNumber" />
+              <xsd:element minOccurs="0" name="APLStockCode" type="tns:APLStockCode" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="documentNumber" type="tns:documentNumber" />
+              <xsd:element minOccurs="0" name="drawNbrSrchMethod" type="tns:drawNbrSrchMethod" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="partNoSrchMethod" type="tns:partNoSrchMethod" />
+              <xsd:element minOccurs="0" name="partNumber" type="tns:partNumber" />
+              <xsd:element minOccurs="0" name="subAPLCompModCode" type="tns:subAPLCompModCode" />
+              <xsd:element minOccurs="0" name="subAPLComponent" type="tns:subAPLComponent" />
+              <xsd:element minOccurs="0" name="subAPLEquipment" type="tns:subAPLEquipment" />
+              <xsd:element minOccurs="0" name="subAPLEquipmentGroupId" type="tns:subAPLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="subAPLSequenceNo" type="tns:subAPLSequenceNo" />
+              <xsd:element minOccurs="0" name="subAPLType" type="tns:subAPLType" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLComponentCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipment" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGroupId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLFullDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLMaintenanceAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmpDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosition" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLRevAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSequenceNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodePackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAvailable" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnChangesToBeReported" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComponentCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCostEstimate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCreationDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCycleMonths" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentName" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGroupIdDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnExtendedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnExtendedDescExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockPackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModUser" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaximumLeadTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrative" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrativeExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextIssueDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityInstalled" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatusDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalNumberItems" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCost" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCostDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssueDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWhouse" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieve">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:APLItemServiceRetrieveRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:APLItemServiceRetrieveRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfAPLItemServiceRetrieveReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfAPLItemServiceRetrieveReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APLItemServiceRetrieveReplyDTO" nillable="true" type="tns:APLItemServiceRetrieveReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="APLFullDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="80" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="APLItemServiceRetrieveReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLComponentCode" type="tns:APLComponentCode" />
+              <xsd:element minOccurs="0" name="APLDescription1" type="tns:APLDescription1" />
+              <xsd:element minOccurs="0" name="APLDescription2" type="tns:APLDescription2" />
+              <xsd:element minOccurs="0" name="APLEquipment" type="tns:APLEquipment" />
+              <xsd:element minOccurs="0" name="APLEquipmentGroupId" type="tns:APLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="APLFullDescription" type="tns:APLFullDescription" />
+              <xsd:element minOccurs="0" name="APLItemNumber" type="tns:APLItemNumber" />
+              <xsd:element minOccurs="0" name="APLMaintenanceAccess" type="tns:APLMaintenanceAccess" />
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="APLOwnerEmpDesc" type="tns:APLOwnerEmpDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerEmployee" type="tns:APLOwnerEmployee" />
+              <xsd:element minOccurs="0" name="APLOwnerPosDesc" type="tns:APLOwnerPosDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerPosition" type="tns:APLOwnerPosition" />
+              <xsd:element minOccurs="0" name="APLRevAccess" type="tns:APLRevAccess" />
+              <xsd:element minOccurs="0" name="APLSequenceNumber" type="tns:APLSequenceNumber" />
+              <xsd:element minOccurs="0" name="APLStatus" type="tns:APLStatus" />
+              <xsd:element minOccurs="0" name="APLStockCode" type="tns:APLStockCode" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc1" type="tns:APLStockCodeDesc1" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc2" type="tns:APLStockCodeDesc2" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc3" type="tns:APLStockCodeDesc3" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc4" type="tns:APLStockCodeDesc4" />
+              <xsd:element minOccurs="0" name="APLStockCodePackedDesc" type="tns:APLStockCodePackedDesc" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="APLTypeDesc" type="tns:APLTypeDesc" />
+              <xsd:element minOccurs="0" name="available" type="tns:available" />
+              <xsd:element minOccurs="0" name="changesToBeReported" type="tns:changesToBeReported" />
+              <xsd:element minOccurs="0" name="compModCodeDesc" type="tns:compModCodeDesc" />
+              <xsd:element minOccurs="0" name="componentCodeDesc" type="tns:componentCodeDesc" />
+              <xsd:element minOccurs="0" name="costEstimate" type="tns:costEstimate" />
+              <xsd:element minOccurs="0" name="creationDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="cycleMonths" type="tns:cycleMonths" />
+              <xsd:element minOccurs="0" name="documentName" type="tns:documentName" />
+              <xsd:element minOccurs="0" name="documentNumber" type="tns:documentNumber" />
+              <xsd:element minOccurs="0" name="equipmentGroupIdDesc" type="tns:equipmentGroupIdDesc" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="extendedDesc" type="tns:extendedDesc" />
+              <xsd:element minOccurs="0" name="extendedDescExists" type="tns:extendedDescExists" />
+              <xsd:element minOccurs="0" name="itemDesc" type="tns:itemDesc" />
+              <xsd:element minOccurs="0" name="itemManMnemonic" type="tns:itemManMnemonic" />
+              <xsd:element minOccurs="0" name="itemManMnemonicDesc" type="tns:itemManMnemonicDesc" />
+              <xsd:element minOccurs="0" name="itemModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="itemNarrativeNumber" type="tns:itemNarrativeNumber" />
+              <xsd:element minOccurs="0" name="itemPartNumber" type="tns:itemPartNumber" />
+              <xsd:element minOccurs="0" name="itemStockCode" type="tns:itemStockCode" />
+              <xsd:element minOccurs="0" name="itemStockDesc1" type="tns:itemStockDesc1" />
+              <xsd:element minOccurs="0" name="itemStockDesc2" type="tns:itemStockDesc2" />
+              <xsd:element minOccurs="0" name="itemStockDesc3" type="tns:itemStockDesc3" />
+              <xsd:element minOccurs="0" name="itemStockDesc4" type="tns:itemStockDesc4" />
+              <xsd:element minOccurs="0" name="itemStockPackedDesc" type="tns:itemStockPackedDesc" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
+              <xsd:element minOccurs="0" name="itemTypeDesc" type="tns:itemTypeDesc" />
+              <xsd:element minOccurs="0" name="lastItemNumber" type="tns:lastItemNumber" />
+              <xsd:element minOccurs="0" name="lastModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModTime" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModUser" type="tns:lastModUser" />
+              <xsd:element minOccurs="0" name="manMnemonic" type="tns:manMnemonic" />
+              <xsd:element minOccurs="0" name="manMnemonicDesc" type="tns:manMnemonicDesc" />
+              <xsd:element minOccurs="0" name="maximumLeadTime" type="tns:maximumLeadTime" />
+              <xsd:element minOccurs="0" name="narrative" type="tns:narrative" />
+              <xsd:element minOccurs="0" name="narrativeExists" type="tns:narrativeExists" />
+              <xsd:element minOccurs="0" name="narrativeNumber" type="tns:narrativeNumber" />
+              <xsd:element minOccurs="0" name="nextIssueDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="partNumber" type="tns:partNumber" />
+              <xsd:element minOccurs="0" name="quantityInstalled" type="tns:quantityInstalled" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="statusDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="totalNumberItems" type="tns:totalNumberItems" />
+              <xsd:element minOccurs="0" name="typeOfCost" type="tns:typeOfCost" />
+              <xsd:element minOccurs="0" name="typeOfCostDesc" type="tns:typeOfCostDesc" />
+              <xsd:element minOccurs="0" name="unitOfIssue" type="tns:unitOfIssue" />
+              <xsd:element minOccurs="0" name="unitOfIssueDesc" type="tns:unitOfIssueDesc" />
+              <xsd:element minOccurs="0" name="whouse" type="tns:whouse" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:APLItemServiceRetrieveReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveAPLFitmentRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLStockCode" type="tns:APLStockCode" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveAPLFitmentRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLComponentCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipment" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGroupId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSequenceNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComponentCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityInstalled" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveAPLFitment">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:APLItemServiceRetrieveAPLFitmentRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:APLItemServiceRetrieveAPLFitmentRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveAPLFitmentReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfAPLItemServiceRetrieveAPLFitmentReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfAPLItemServiceRetrieveAPLFitmentReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APLItemServiceRetrieveAPLFitmentReplyDTO" nillable="true" type="tns:APLItemServiceRetrieveAPLFitmentReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveAPLFitmentReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLComponentCode" type="tns:APLComponentCode" />
+              <xsd:element minOccurs="0" name="APLDescription1" type="tns:APLDescription1" />
+              <xsd:element minOccurs="0" name="APLDescription2" type="tns:APLDescription2" />
+              <xsd:element minOccurs="0" name="APLEquipment" type="tns:APLEquipment" />
+              <xsd:element minOccurs="0" name="APLEquipmentGroupId" type="tns:APLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="APLSequenceNumber" type="tns:APLSequenceNumber" />
+              <xsd:element minOccurs="0" name="APLStockCode" type="tns:APLStockCode" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="componentCodeDesc" type="tns:componentCodeDesc" />
+              <xsd:element minOccurs="0" name="itemDesc" type="tns:itemDesc" />
+              <xsd:element minOccurs="0" name="quantityInstalled" type="tns:quantityInstalled" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveAPLFitmentResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:APLItemServiceRetrieveAPLFitmentReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="refNo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="entityType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="keyType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="refCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="APLItemServiceRetrieveViaRefCodesRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="entityType" type="tns:entityType" />
+              <xsd:element minOccurs="0" name="keyType" type="tns:keyType" />
+              <xsd:element minOccurs="0" name="refCode" type="tns:refCode" />
+              <xsd:element minOccurs="0" name="refNo" type="tns:refNo" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveViaRefCodesRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLComponentCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipment" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGroupId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLMaintenanceAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmpDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosition" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLRevAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSequenceNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatusDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodePackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAvailable" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnChangesToBeReported" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComponentCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCostEstimate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCreationDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCycleMonths" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentName" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGroupIdDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnExtendedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnExtendedDescExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockPackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModUser" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaximumLeadTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextIssueDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityInstalled" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatusDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalNumberItems" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCost" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCostDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssueDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWhouse" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveViaRefCodes">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:APLItemServiceRetrieveViaRefCodesRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:APLItemServiceRetrieveViaRefCodesRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveViaRefCodesReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfAPLItemServiceRetrieveViaRefCodesReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfAPLItemServiceRetrieveViaRefCodesReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APLItemServiceRetrieveViaRefCodesReplyDTO" nillable="true" type="tns:APLItemServiceRetrieveViaRefCodesReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveViaRefCodesReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLComponentCode" type="tns:APLComponentCode" />
+              <xsd:element minOccurs="0" name="APLDescription1" type="tns:APLDescription1" />
+              <xsd:element minOccurs="0" name="APLDescription2" type="tns:APLDescription2" />
+              <xsd:element minOccurs="0" name="APLEquipment" type="tns:APLEquipment" />
+              <xsd:element minOccurs="0" name="APLEquipmentGroupId" type="tns:APLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="APLItemNumber" type="tns:APLItemNumber" />
+              <xsd:element minOccurs="0" name="APLMaintenanceAccess" type="tns:APLMaintenanceAccess" />
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="APLOwnerEmpDesc" type="tns:APLOwnerEmpDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerEmployee" type="tns:APLOwnerEmployee" />
+              <xsd:element minOccurs="0" name="APLOwnerPosDesc" type="tns:APLOwnerPosDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerPosition" type="tns:APLOwnerPosition" />
+              <xsd:element minOccurs="0" name="APLRevAccess" type="tns:APLRevAccess" />
+              <xsd:element minOccurs="0" name="APLSequenceNumber" type="tns:APLSequenceNumber" />
+              <xsd:element minOccurs="0" name="APLStatus" type="tns:APLStatus" />
+              <xsd:element minOccurs="0" name="APLStatusDesc" type="tns:APLStatusDesc" />
+              <xsd:element minOccurs="0" name="APLStockCode" type="tns:APLStockCode" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc1" type="tns:APLStockCodeDesc1" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc2" type="tns:APLStockCodeDesc2" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc3" type="tns:APLStockCodeDesc3" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc4" type="tns:APLStockCodeDesc4" />
+              <xsd:element minOccurs="0" name="APLStockCodePackedDesc" type="tns:APLStockCodePackedDesc" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="APLTypeDesc" type="tns:APLTypeDesc" />
+              <xsd:element minOccurs="0" name="available" type="tns:available" />
+              <xsd:element minOccurs="0" name="changesToBeReported" type="tns:changesToBeReported" />
+              <xsd:element minOccurs="0" name="compModCodeDesc" type="tns:compModCodeDesc" />
+              <xsd:element minOccurs="0" name="componentCodeDesc" type="tns:componentCodeDesc" />
+              <xsd:element minOccurs="0" name="costEstimate" type="tns:costEstimate" />
+              <xsd:element minOccurs="0" name="creationDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="cycleMonths" type="tns:cycleMonths" />
+              <xsd:element minOccurs="0" name="documentName" type="tns:documentName" />
+              <xsd:element minOccurs="0" name="documentNumber" type="tns:documentNumber" />
+              <xsd:element minOccurs="0" name="equipmentGroupIdDesc" type="tns:equipmentGroupIdDesc" />
+              <xsd:element minOccurs="0" name="extendedDesc" type="tns:extendedDesc" />
+              <xsd:element minOccurs="0" name="extendedDescExists" type="tns:extendedDescExists" />
+              <xsd:element minOccurs="0" name="itemDesc" type="tns:itemDesc" />
+              <xsd:element minOccurs="0" name="itemManMnemonic" type="tns:itemManMnemonic" />
+              <xsd:element minOccurs="0" name="itemManMnemonicDesc" type="tns:itemManMnemonicDesc" />
+              <xsd:element minOccurs="0" name="itemModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="itemNarrativeNumber" type="tns:itemNarrativeNumber" />
+              <xsd:element minOccurs="0" name="itemPartNumber" type="tns:itemPartNumber" />
+              <xsd:element minOccurs="0" name="itemStockCode" type="tns:itemStockCode" />
+              <xsd:element minOccurs="0" name="itemStockDesc1" type="tns:itemStockDesc1" />
+              <xsd:element minOccurs="0" name="itemStockDesc2" type="tns:itemStockDesc2" />
+              <xsd:element minOccurs="0" name="itemStockDesc3" type="tns:itemStockDesc3" />
+              <xsd:element minOccurs="0" name="itemStockDesc4" type="tns:itemStockDesc4" />
+              <xsd:element minOccurs="0" name="itemStockPackedDesc" type="tns:itemStockPackedDesc" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
+              <xsd:element minOccurs="0" name="itemTypeDesc" type="tns:itemTypeDesc" />
+              <xsd:element minOccurs="0" name="lastItemNumber" type="tns:lastItemNumber" />
+              <xsd:element minOccurs="0" name="lastModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModTime" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModUser" type="tns:lastModUser" />
+              <xsd:element minOccurs="0" name="manMnemonic" type="tns:manMnemonic" />
+              <xsd:element minOccurs="0" name="manMnemonicDesc" type="tns:manMnemonicDesc" />
+              <xsd:element minOccurs="0" name="maximumLeadTime" type="tns:maximumLeadTime" />
+              <xsd:element minOccurs="0" name="narrativeNumber" type="tns:narrativeNumber" />
+              <xsd:element minOccurs="0" name="nextIssueDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="partNumber" type="tns:partNumber" />
+              <xsd:element minOccurs="0" name="quantityInstalled" type="tns:quantityInstalled" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="statusDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="totalNumberItems" type="tns:totalNumberItems" />
+              <xsd:element minOccurs="0" name="typeOfCost" type="tns:typeOfCost" />
+              <xsd:element minOccurs="0" name="typeOfCostDesc" type="tns:typeOfCostDesc" />
+              <xsd:element minOccurs="0" name="unitOfIssue" type="tns:unitOfIssue" />
+              <xsd:element minOccurs="0" name="unitOfIssueDesc" type="tns:unitOfIssueDesc" />
+              <xsd:element minOccurs="0" name="whouse" type="tns:whouse" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveViaRefCodesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:APLItemServiceRetrieveViaRefCodesReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfAPLItemServiceReadRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APLItemServiceReadRequestDTO" nillable="true" type="tns:APLItemServiceReadRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfAPLItemServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceReadReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfAPLItemServiceReadReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfAPLItemServiceReadReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APLItemServiceReadReplyDTO" nillable="true" type="tns:APLItemServiceReadReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:APLItemServiceReadReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadWithPartialResults">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfAPLItemServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadWithPartialResultsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:APLItemServiceReadReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveStockItRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveStockItRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLComponentCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipment" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGroupId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLMaintenanceAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmpDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosition" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLRevAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSequenceNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatusDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodePackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAvailable" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnChangesToBeReported" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComponentCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCostEstimate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCreationDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCycleMonths" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentName" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGroupIdDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockPackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModUser" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaximumLeadTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextIssueDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityInstalled" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatusDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalNumberItems" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCost" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCostDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssueDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWhouse" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveStockIt">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:APLItemServiceRetrieveStockItRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:APLItemServiceRetrieveStockItRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveStockItReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfAPLItemServiceRetrieveStockItReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfAPLItemServiceRetrieveStockItReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APLItemServiceRetrieveStockItReplyDTO" nillable="true" type="tns:APLItemServiceRetrieveStockItReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveStockItReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLComponentCode" type="tns:APLComponentCode" />
+              <xsd:element minOccurs="0" name="APLDescription1" type="tns:APLDescription1" />
+              <xsd:element minOccurs="0" name="APLDescription2" type="tns:APLDescription2" />
+              <xsd:element minOccurs="0" name="APLEquipment" type="tns:APLEquipment" />
+              <xsd:element minOccurs="0" name="APLEquipmentGroupId" type="tns:APLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="APLItemNumber" type="tns:APLItemNumber" />
+              <xsd:element minOccurs="0" name="APLMaintenanceAccess" type="tns:APLMaintenanceAccess" />
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="APLOwnerEmpDesc" type="tns:APLOwnerEmpDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerEmployee" type="tns:APLOwnerEmployee" />
+              <xsd:element minOccurs="0" name="APLOwnerPosDesc" type="tns:APLOwnerPosDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerPosition" type="tns:APLOwnerPosition" />
+              <xsd:element minOccurs="0" name="APLRevAccess" type="tns:APLRevAccess" />
+              <xsd:element minOccurs="0" name="APLSequenceNumber" type="tns:APLSequenceNumber" />
+              <xsd:element minOccurs="0" name="APLStatus" type="tns:APLStatus" />
+              <xsd:element minOccurs="0" name="APLStatusDesc" type="tns:APLStatusDesc" />
+              <xsd:element minOccurs="0" name="APLStockCode" type="tns:APLStockCode" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc1" type="tns:APLStockCodeDesc1" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc2" type="tns:APLStockCodeDesc2" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc3" type="tns:APLStockCodeDesc3" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc4" type="tns:APLStockCodeDesc4" />
+              <xsd:element minOccurs="0" name="APLStockCodePackedDesc" type="tns:APLStockCodePackedDesc" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="APLTypeDesc" type="tns:APLTypeDesc" />
+              <xsd:element minOccurs="0" name="available" type="tns:available" />
+              <xsd:element minOccurs="0" name="changesToBeReported" type="tns:changesToBeReported" />
+              <xsd:element minOccurs="0" name="compModCodeDesc" type="tns:compModCodeDesc" />
+              <xsd:element minOccurs="0" name="componentCodeDesc" type="tns:componentCodeDesc" />
+              <xsd:element minOccurs="0" name="costEstimate" type="tns:costEstimate" />
+              <xsd:element minOccurs="0" name="creationDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="cycleMonths" type="tns:cycleMonths" />
+              <xsd:element minOccurs="0" name="documentName" type="tns:documentName" />
+              <xsd:element minOccurs="0" name="documentNumber" type="tns:documentNumber" />
+              <xsd:element minOccurs="0" name="equipmentGroupIdDesc" type="tns:equipmentGroupIdDesc" />
+              <xsd:element minOccurs="0" name="itemDesc" type="tns:itemDesc" />
+              <xsd:element minOccurs="0" name="itemManMnemonic" type="tns:itemManMnemonic" />
+              <xsd:element minOccurs="0" name="itemManMnemonicDesc" type="tns:itemManMnemonicDesc" />
+              <xsd:element minOccurs="0" name="itemModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="itemNarrativeNumber" type="tns:itemNarrativeNumber" />
+              <xsd:element minOccurs="0" name="itemPartNumber" type="tns:itemPartNumber" />
+              <xsd:element minOccurs="0" name="itemStockCode" type="tns:itemStockCode" />
+              <xsd:element minOccurs="0" name="itemStockDesc1" type="tns:itemStockDesc1" />
+              <xsd:element minOccurs="0" name="itemStockDesc2" type="tns:itemStockDesc2" />
+              <xsd:element minOccurs="0" name="itemStockDesc3" type="tns:itemStockDesc3" />
+              <xsd:element minOccurs="0" name="itemStockDesc4" type="tns:itemStockDesc4" />
+              <xsd:element minOccurs="0" name="itemStockPackedDesc" type="tns:itemStockPackedDesc" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
+              <xsd:element minOccurs="0" name="itemTypeDesc" type="tns:itemTypeDesc" />
+              <xsd:element minOccurs="0" name="lastItemNumber" type="tns:lastItemNumber" />
+              <xsd:element minOccurs="0" name="lastModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModTime" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModUser" type="tns:lastModUser" />
+              <xsd:element minOccurs="0" name="manMnemonic" type="tns:manMnemonic" />
+              <xsd:element minOccurs="0" name="manMnemonicDesc" type="tns:manMnemonicDesc" />
+              <xsd:element minOccurs="0" name="maximumLeadTime" type="tns:maximumLeadTime" />
+              <xsd:element minOccurs="0" name="narrativeNumber" type="tns:narrativeNumber" />
+              <xsd:element minOccurs="0" name="nextIssueDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="partNumber" type="tns:partNumber" />
+              <xsd:element minOccurs="0" name="quantityInstalled" type="tns:quantityInstalled" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="statusDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="subAPLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="totalNumberItems" type="tns:totalNumberItems" />
+              <xsd:element minOccurs="0" name="typeOfCost" type="tns:typeOfCost" />
+              <xsd:element minOccurs="0" name="typeOfCostDesc" type="tns:typeOfCostDesc" />
+              <xsd:element minOccurs="0" name="unitOfIssue" type="tns:unitOfIssue" />
+              <xsd:element minOccurs="0" name="unitOfIssueDesc" type="tns:unitOfIssueDesc" />
+              <xsd:element minOccurs="0" name="whouse" type="tns:whouse" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveStockItResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:APLItemServiceRetrieveStockItReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveNonStockItRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveNonStockItRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLComponentCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLDescription2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipment" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGroupId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLMaintenanceAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmpDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLOwnerPosition" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLRevAccess" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSequenceNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStatusDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodeDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLStockCodePackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAvailable" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnChangesToBeReported" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnComponentCodeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCostEstimate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCreationDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCycleMonths" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentName" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnDocumentNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGroupIdDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc1" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc2" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc3" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockName" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemStockPackedDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemTypeDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastItemNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnLastModUser" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnManMnemonicDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMaximumLeadTime" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNarrativeNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnNextIssueDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityInstalled" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnQuantityRequired" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatusDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubAPLNumber" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTotalNumberItems" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCost" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTypeOfCostDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnUnitOfIssueDesc" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWhouse" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveNonStockIt">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:APLItemServiceRetrieveNonStockItRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:APLItemServiceRetrieveNonStockItRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="APLItemServiceRetrieveNonStockItReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfAPLItemServiceRetrieveNonStockItReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfAPLItemServiceRetrieveNonStockItReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="APLItemServiceRetrieveNonStockItReplyDTO" nillable="true" type="tns:APLItemServiceRetrieveNonStockItReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="APLItemServiceRetrieveNonStockItReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLComponentCode" type="tns:APLComponentCode" />
+              <xsd:element minOccurs="0" name="APLDescription1" type="tns:APLDescription1" />
+              <xsd:element minOccurs="0" name="APLDescription2" type="tns:APLDescription2" />
+              <xsd:element minOccurs="0" name="APLEquipment" type="tns:APLEquipment" />
+              <xsd:element minOccurs="0" name="APLEquipmentGroupId" type="tns:APLEquipmentGroupId" />
+              <xsd:element minOccurs="0" name="APLItemNumber" type="tns:APLItemNumber" />
+              <xsd:element minOccurs="0" name="APLMaintenanceAccess" type="tns:APLMaintenanceAccess" />
+              <xsd:element minOccurs="0" name="APLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="APLOwnerEmpDesc" type="tns:APLOwnerEmpDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerEmployee" type="tns:APLOwnerEmployee" />
+              <xsd:element minOccurs="0" name="APLOwnerPosDesc" type="tns:APLOwnerPosDesc" />
+              <xsd:element minOccurs="0" name="APLOwnerPosition" type="tns:APLOwnerPosition" />
+              <xsd:element minOccurs="0" name="APLRevAccess" type="tns:APLRevAccess" />
+              <xsd:element minOccurs="0" name="APLSequenceNumber" type="tns:APLSequenceNumber" />
+              <xsd:element minOccurs="0" name="APLStatus" type="tns:APLStatus" />
+              <xsd:element minOccurs="0" name="APLStatusDesc" type="tns:APLStatusDesc" />
+              <xsd:element minOccurs="0" name="APLStockCode" type="tns:APLStockCode" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc1" type="tns:APLStockCodeDesc1" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc2" type="tns:APLStockCodeDesc2" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc3" type="tns:APLStockCodeDesc3" />
+              <xsd:element minOccurs="0" name="APLStockCodeDesc4" type="tns:APLStockCodeDesc4" />
+              <xsd:element minOccurs="0" name="APLStockCodePackedDesc" type="tns:APLStockCodePackedDesc" />
+              <xsd:element minOccurs="0" name="APLType" type="tns:APLType" />
+              <xsd:element minOccurs="0" name="APLTypeDesc" type="tns:APLTypeDesc" />
+              <xsd:element minOccurs="0" name="available" type="tns:available" />
+              <xsd:element minOccurs="0" name="changesToBeReported" type="tns:changesToBeReported" />
+              <xsd:element minOccurs="0" name="compModCodeDesc" type="tns:compModCodeDesc" />
+              <xsd:element minOccurs="0" name="componentCodeDesc" type="tns:componentCodeDesc" />
+              <xsd:element minOccurs="0" name="costEstimate" type="tns:costEstimate" />
+              <xsd:element minOccurs="0" name="creationDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="cycleMonths" type="tns:cycleMonths" />
+              <xsd:element minOccurs="0" name="documentName" type="tns:documentName" />
+              <xsd:element minOccurs="0" name="documentNumber" type="tns:documentNumber" />
+              <xsd:element minOccurs="0" name="equipmentGroupIdDesc" type="tns:equipmentGroupIdDesc" />
+              <xsd:element minOccurs="0" name="itemDesc" type="tns:itemDesc" />
+              <xsd:element minOccurs="0" name="itemManMnemonic" type="tns:itemManMnemonic" />
+              <xsd:element minOccurs="0" name="itemManMnemonicDesc" type="tns:itemManMnemonicDesc" />
+              <xsd:element minOccurs="0" name="itemModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="itemNarrativeNumber" type="tns:itemNarrativeNumber" />
+              <xsd:element minOccurs="0" name="itemPartNumber" type="tns:itemPartNumber" />
+              <xsd:element minOccurs="0" name="itemStockCode" type="tns:itemStockCode" />
+              <xsd:element minOccurs="0" name="itemStockDesc1" type="tns:itemStockDesc1" />
+              <xsd:element minOccurs="0" name="itemStockDesc2" type="tns:itemStockDesc2" />
+              <xsd:element minOccurs="0" name="itemStockDesc3" type="tns:itemStockDesc3" />
+              <xsd:element minOccurs="0" name="itemStockDesc4" type="tns:itemStockDesc4" />
+              <xsd:element minOccurs="0" name="itemStockName" type="tns:itemStockName" />
+              <xsd:element minOccurs="0" name="itemStockPackedDesc" type="tns:itemStockPackedDesc" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
+              <xsd:element minOccurs="0" name="itemTypeDesc" type="tns:itemTypeDesc" />
+              <xsd:element minOccurs="0" name="lastItemNumber" type="tns:lastItemNumber" />
+              <xsd:element minOccurs="0" name="lastModDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModTime" type="xsd:string" />
+              <xsd:element minOccurs="0" name="lastModUser" type="tns:lastModUser" />
+              <xsd:element minOccurs="0" name="manMnemonic" type="tns:manMnemonic" />
+              <xsd:element minOccurs="0" name="manMnemonicDesc" type="tns:manMnemonicDesc" />
+              <xsd:element minOccurs="0" name="maximumLeadTime" type="tns:maximumLeadTime" />
+              <xsd:element minOccurs="0" name="narrativeNumber" type="tns:narrativeNumber" />
+              <xsd:element minOccurs="0" name="nextIssueDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="partNumber" type="tns:partNumber" />
+              <xsd:element minOccurs="0" name="quantityInstalled" type="tns:quantityInstalled" />
+              <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
+              <xsd:element minOccurs="0" name="statusDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="subAPLNumber" type="ns3:APLNumberDTO" />
+              <xsd:element minOccurs="0" name="totalNumberItems" type="tns:totalNumberItems" />
+              <xsd:element minOccurs="0" name="typeOfCost" type="tns:typeOfCost" />
+              <xsd:element minOccurs="0" name="typeOfCostDesc" type="tns:typeOfCostDesc" />
+              <xsd:element minOccurs="0" name="unitOfIssue" type="tns:unitOfIssue" />
+              <xsd:element minOccurs="0" name="unitOfIssueDesc" type="tns:unitOfIssueDesc" />
+              <xsd:element minOccurs="0" name="whouse" type="tns:whouse" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveNonStockItResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:APLItemServiceRetrieveNonStockItReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ellipse.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="AbstractDTO" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="customAttributes" type="ns4:ArrayOfAttribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
+      <xsd:complexType name="AbstractReplyCollectionDTO" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractReplyDTO" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="warningsAndInformation" type="ns2:ArrayOfWarningMessageDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarningMessageDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WarningMessageDTO" nillable="true" type="ns2:WarningMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="WarningMessageDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ApplicationMessageImpl" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ApplicationMessageImpl">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="code" type="xsd:string" />
+          <xsd:element minOccurs="0" name="dtoIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="fieldName" type="xsd:string" />
+          <xsd:element minOccurs="0" name="message" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfErrorMessageDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ErrorMessageDTO" nillable="true" type="ns2:ErrorMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ErrorMessageDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ApplicationMessageImpl" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:import namespace="http://aplitem.ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns4:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
+          <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
+      <xsd:complexType name="APLNumberDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="equipmentGroupId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="aPLType" type="xsd:string" />
+          <xsd:element minOccurs="0" name="componentCode" type="xsd:string" />
+          <xsd:element minOccurs="0" name="compModCode" type="xsd:string" />
+          <xsd:element minOccurs="0" name="aPLSeqNumber" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://exception.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="EnterpriseServiceOperationException">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errorMessages" type="ns2:ArrayOfErrorMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="retrieveAPLFitmentRequest">
+    <wsdl:part name="parameters" element="tns:retrieveAPLFitment" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveStockItResponse">
+    <wsdl:part name="parameters" element="tns:retrieveStockItResponse" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveAPLFitmentResponse">
+    <wsdl:part name="parameters" element="tns:retrieveAPLFitmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveSubAPLRequest">
+    <wsdl:part name="parameters" element="tns:retrieveSubAPL" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="retrieveStockItRequest">
+    <wsdl:part name="parameters" element="tns:retrieveStockIt" />
+  </wsdl:message>
+  <wsdl:message name="retrieveSubAPLResponse">
+    <wsdl:part name="parameters" element="tns:retrieveSubAPLResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveViaRefCodesResponse">
+    <wsdl:part name="parameters" element="tns:retrieveViaRefCodesResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveViaRefCodesRequest">
+    <wsdl:part name="parameters" element="tns:retrieveViaRefCodes" />
+  </wsdl:message>
+  <wsdl:message name="retrieveAPLItemsRequest">
+    <wsdl:part name="parameters" element="tns:retrieveAPLItems" />
+  </wsdl:message>
+  <wsdl:message name="retrieveAPLItemsResponse">
+    <wsdl:part name="parameters" element="tns:retrieveAPLItemsResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveRequest">
+    <wsdl:part name="parameters" element="tns:retrieve" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPartialResultsRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResults" />
+  </wsdl:message>
+  <wsdl:message name="EnterpriseServiceOperationException">
+    <wsdl:part name="EnterpriseServiceOperationException" element="tns:EnterpriseServiceOperationException" />
+  </wsdl:message>
+  <wsdl:message name="retrieveResponse">
+    <wsdl:part name="parameters" element="tns:retrieveResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPartialResultsResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResultsResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveNonStockItResponse">
+    <wsdl:part name="parameters" element="tns:retrieveNonStockItResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveNonStockItRequest">
+    <wsdl:part name="parameters" element="tns:retrieveNonStockIt" />
+  </wsdl:message>
+  <wsdl:portType name="APLItem">
+    <wsdl:operation name="retrieveSubAPL">
+      <wsdl:input name="retrieveSubAPLRequest" message="tns:retrieveSubAPLRequest" />
+      <wsdl:output name="retrieveSubAPLResponse" message="tns:retrieveSubAPLResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveAPLItems">
+      <wsdl:input name="retrieveAPLItemsRequest" message="tns:retrieveAPLItemsRequest" />
+      <wsdl:output name="retrieveAPLItemsResponse" message="tns:retrieveAPLItemsResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieve">
+      <wsdl:input name="retrieveRequest" message="tns:retrieveRequest" />
+      <wsdl:output name="retrieveResponse" message="tns:retrieveResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveAPLFitment">
+      <wsdl:input name="retrieveAPLFitmentRequest" message="tns:retrieveAPLFitmentRequest" />
+      <wsdl:output name="retrieveAPLFitmentResponse" message="tns:retrieveAPLFitmentResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveViaRefCodes">
+      <wsdl:input name="retrieveViaRefCodesRequest" message="tns:retrieveViaRefCodesRequest" />
+      <wsdl:output name="retrieveViaRefCodesResponse" message="tns:retrieveViaRefCodesResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadWithPartialResults">
+      <wsdl:input name="multipleReadWithPartialResultsRequest" message="tns:multipleReadWithPartialResultsRequest" />
+      <wsdl:output name="multipleReadWithPartialResultsResponse" message="tns:multipleReadWithPartialResultsResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveStockIt">
+      <wsdl:input name="retrieveStockItRequest" message="tns:retrieveStockItRequest" />
+      <wsdl:output name="retrieveStockItResponse" message="tns:retrieveStockItResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveNonStockIt">
+      <wsdl:input name="retrieveNonStockItRequest" message="tns:retrieveNonStockItRequest" />
+      <wsdl:output name="retrieveNonStockItResponse" message="tns:retrieveNonStockItResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="APLItemServiceHttpBinding" type="tns:APLItem">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="retrieveSubAPL">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveSubAPLRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveSubAPLResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveAPLItems">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveAPLItemsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveAPLItemsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieve">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveAPLFitment">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveAPLFitmentRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveAPLFitmentResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveViaRefCodes">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveViaRefCodesRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveViaRefCodesResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadWithPartialResults">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadWithPartialResultsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadWithPartialResultsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveStockIt">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveStockItRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveStockItResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveNonStockIt">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveNonStockItRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveNonStockItResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="APLItemService">
+    <wsdl:port name="APLItemServiceHttpPort" binding="tns:APLItemServiceHttpBinding">
+      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/APLItemService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

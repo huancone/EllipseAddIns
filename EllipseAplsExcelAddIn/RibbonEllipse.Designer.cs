@@ -71,6 +71,7 @@
             // 
             this.btnFormat.Label = "&Formatear";
             this.btnFormat.Name = "btnFormat";
+            this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
             // 
             // btnAbout
             // 
