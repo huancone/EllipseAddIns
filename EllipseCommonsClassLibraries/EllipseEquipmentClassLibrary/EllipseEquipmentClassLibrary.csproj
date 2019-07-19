@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="SearchFieldCriteria.cs" />
     <Compile Include="TracingActions.cs" />
+    <Compile Include="TracingItem.cs" />
     <Compile Include="Web References\EquipmentListService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

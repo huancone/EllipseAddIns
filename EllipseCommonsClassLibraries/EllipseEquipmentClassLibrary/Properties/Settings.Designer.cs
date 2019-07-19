@@ -12,7 +12,7 @@ namespace EllipseEquipmentClassLibrary.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -36,20 +36,20 @@ namespace EllipseEquipmentClassLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipTraceService")]
-        public string EllipseEquipmentClassLibrary_EquipTraceService_EquipTraceService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipmentListService")]
+        public string EllipseEquipmentClassLibrary_EquipmentListService_EquipmentListService {
             get {
-                return ((string)(this["EllipseEquipmentClassLibrary_EquipTraceService_EquipTraceService"]));
+                return ((string)(this["EllipseEquipmentClassLibrary_EquipmentListService_EquipmentListService"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipmentListService")]
-        public string EllipseEquipmentClassLibrary_EquipmentListService_EquipmentListService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipTraceService")]
+        public string EllipseEquipmentClassLibrary_EquipTraceService_EquipTraceService {
             get {
-                return ((string)(this["EllipseEquipmentClassLibrary_EquipmentListService_EquipmentListService"]));
+                return ((string)(this["EllipseEquipmentClassLibrary_EquipTraceService_EquipTraceService"]));
             }
         }
     }

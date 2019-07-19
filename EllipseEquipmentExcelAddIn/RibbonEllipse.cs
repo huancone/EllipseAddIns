@@ -37,7 +37,7 @@ namespace EllipseEquipmentExcelAddIn
         private const int TitleRow02 = 8;
         private const int TitleRow03 = 8;
         private const int ResultColumn01 = 78;
-        private const int ResultColumn02 = 10;
+        private const int ResultColumn02 = 11;
         private const int ResultColumn03 = 11;
         private const string TableName01 = "EquipmentTable";
         private const string TableName02 = "FitmentDefitmentTable";
@@ -216,7 +216,7 @@ namespace EllipseEquipmentExcelAddIn
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
         }
 
-        private void btnDefitment_Click(object sender, RibbonControlEventArgs e)
+        private void btnTraceAction_Click(object sender, RibbonControlEventArgs e)
         {
             if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
             {
@@ -233,6 +233,23 @@ namespace EllipseEquipmentExcelAddIn
             else
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
 
+        }
+        private void btnDeleteAction_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(DeleteTraceAction);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
         }
         public void FormatSheet()
         {
@@ -501,11 +518,6 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetCell("B3").Value = Districts.DefaultDistrict;
                 _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
 
-                _cells.GetCell(1, TitleRow02).Value = "EQUIPMENT REFERENCE";
-                _cells.GetCell(2, TitleRow02).Value = "EQ. DESCRIPTION 1";
-                _cells.GetCell(3, TitleRow02).Value = "EQ. DESCRIPTION 2";
-                _cells.GetCell(4, TitleRow02).Value = "EGI";
-
                 _cells.GetRange(1, TitleRow02 - 1, ResultColumn02 - 1, TitleRow02 - 1).Style = StyleConstants.Select;
                 //INSTALL POSITION
                 _cells.GetCell(1, TitleRow02 - 1).Value = "INSTALL POSITION";
@@ -517,26 +529,28 @@ namespace EllipseEquipmentExcelAddIn
                 _cells.GetRange(1, TitleRow02, 3, TitleRow02).Style = StyleConstants.TitleRequired;
                 //ACTION
                 _cells.GetCell(4, TitleRow02 - 1).Value = "ACTION";
-                _cells.GetCell(4, TitleRow02).Value = "F/D";
+                _cells.GetCell(4, TitleRow02).Value = "B - Fitment /C - Defitment";
                 _cells.GetCell(4, TitleRow02).Style = StyleConstants.TitleAction;
                 //FITTED EQUIPMENT
                 _cells.GetCell(5, TitleRow02 - 1).Value = "INSTALL POSITION";
-                _cells.MergeCells(5, TitleRow02 - 1, 8, TitleRow02 - 1);
+                _cells.MergeCells(5, TitleRow02 - 1, 10, TitleRow02 - 1);
 
                 _cells.GetCell(5, TitleRow02).Value = "FIT EQ. REF";
                 _cells.GetCell(6, TitleRow02).Value = "DATE";
-                _cells.GetCell(7, TitleRow02).Value = "REF. TYPE";
-                _cells.GetCell(8, TitleRow02).Value = "REF. NUMBER";
-                _cells.GetRange(4, TitleRow02, 8, TitleRow02).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(7, TitleRow02).Value = "SEQ. NUMBER";
+                _cells.GetCell(8, TitleRow02).Value = "REF. TYPE";
+                _cells.GetCell(9, TitleRow02).Value = "REF. NUMBER";
+                _cells.GetRange(4, TitleRow02, 9, TitleRow02).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(7, TitleRow02).Style = StyleConstants.TitleOptional;
 
-                _cells.GetCell(9, TitleRow02).Value = "ACTUAL COMPONENT";
-                _cells.GetCell(4, TitleRow02).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(10, TitleRow02).Value = "ACTUAL COMPONENT";
+                _cells.GetCell(10, TitleRow02).Style = StyleConstants.TitleInformation;
 
                 _cells.GetCell(ResultColumn02, TitleRow02).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn02, TitleRow02).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
                 //asigno la validación de celda
-                var listTypeAction = new List<string> { "F - Fitment", "D - Defitment" };
+                var listTypeAction = new List<string> { "B - Fitment", "C - Defitment" };
                 _cells.SetValidationList(_cells.GetCell(4, TitleRow02 + 1), listTypeAction, ValidationSheetName, 35, false);
 
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
@@ -1512,35 +1526,37 @@ namespace EllipseEquipmentExcelAddIn
                 {
                     var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
-                    var instEquipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
-                    var compCode = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
-                    var compModCode = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
-                    var action = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value));
-                    var fitEquipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
-                    var fitDate = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);
-                    var refType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
-                    var refNumber = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
+                    var traceItem = new TracingItem();
 
-                    List<string> instEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, instEquipmentRef);
-                    List<string> fitEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, fitEquipmentRef);
+                    traceItem.InstEquipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+                    traceItem.ComponentCode = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
+                    traceItem.ModifierCode = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
+                    traceItem.TracingAction = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value));
+                    traceItem.FitEquipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
+                    traceItem.Date = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);
+                    traceItem.SequenceNumber = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
+                    traceItem.ReferenceType = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
+                    traceItem.ReferenceNumber = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value);
 
-                    var instEquipmentNo = instEquipmentList.Any() ? instEquipmentList.First() : instEquipmentRef;
-                    var fitEquipmentNo = fitEquipmentList.Any() ? fitEquipmentList.First() : fitEquipmentRef;
+                    //Obtengo el número a partir de la referencia
+                    List<string> instEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, traceItem.InstEquipmentNo);
+                    List<string> fitEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, traceItem.FitEquipmentNo);
 
-                    bool result;
-                    if (action.ToUpper().Equals("F"))
-                        result = TracingActions.Fitment(opSheet, urlService, instEquipmentNo, compCode, compModCode, fitEquipmentNo, fitDate, refType, refNumber);
-                    else if (action.ToUpper().Equals("D"))
-                        result = TracingActions.Defitment(opSheet, urlService, instEquipmentNo, compCode, compModCode, fitEquipmentNo, fitDate, refType, refNumber);
+                    traceItem.InstEquipmentNo = instEquipmentList.Any() ? instEquipmentList.First() : traceItem.InstEquipmentNo;
+                    traceItem.FitEquipmentNo = fitEquipmentList.Any() ? fitEquipmentList.First() : traceItem.FitEquipmentNo;
+                    //
+
+                    TracingItem result;
+                    if (traceItem.TracingAction.ToUpper().Equals("B") || traceItem.TracingAction.ToUpper().Equals("FIT") || traceItem.TracingAction.ToUpper().Equals("FITMENT"))
+                        result = TracingActions.Fitment(opSheet, urlService, traceItem);
+                    else if (traceItem.TracingAction.ToUpper().Equals("C") || traceItem.TracingAction.ToUpper().Equals("DEFIT") || traceItem.TracingAction.ToUpper().Equals("DEFITMENT"))
+                        result = TracingActions.Defitment(opSheet, urlService, traceItem);
                     else
                         throw new Exception("No se ha seleccionado una acción a realizar");
 
-                    var replyMessage = result ? "SE HA REALIZADO LA ACCION" : "HA OCURRIDO UN ERROR INESPERADO";
-                    var styleResult = result ? StyleConstants.Success : StyleConstants.Error;
-
-                    _cells.GetCell(ResultColumn02, i).Value = replyMessage;
-                    _cells.GetCell(1, i).Style = styleResult;
-                    _cells.GetCell(ResultColumn02, i).Style = styleResult;
+                    _cells.GetCell(ResultColumn02, i).Value = "SE HA REALIZADO LA ACCION";
+                    _cells.GetCell(1, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn02, i).Select();
                 }
                 catch (Exception ex)
@@ -1562,6 +1578,75 @@ namespace EllipseEquipmentExcelAddIn
             if (_cells != null) _cells.SetCursorDefault();
         }
 
+        public void DeleteTraceAction()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
+            var i = TitleRow02 + 1;
+
+            var opSheet = new EquipTraceService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                returnWarnings = Debugger.DebugWarnings
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+
+                    var traceItem = new TracingItem();
+
+                    traceItem.InstEquipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
+                    traceItem.ComponentCode = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
+                    traceItem.ModifierCode = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
+                    traceItem.TracingAction = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value));
+                    traceItem.FitEquipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
+                    traceItem.Date = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);
+                    traceItem.SequenceNumber = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
+                    traceItem.ReferenceType = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
+                    traceItem.ReferenceNumber = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value);
+
+                    //Obtengo el número a partir de la referencia
+                    List<string> instEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, traceItem.InstEquipmentNo);
+                    List<string> fitEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, traceItem.FitEquipmentNo);
+
+                    traceItem.InstEquipmentNo = instEquipmentList.Any() ? instEquipmentList.First() : traceItem.InstEquipmentNo;
+                    traceItem.FitEquipmentNo = fitEquipmentList.Any() ? fitEquipmentList.First() : traceItem.FitEquipmentNo;
+                    //
+
+                    TracingActions.Delete(opSheet, urlService, traceItem);
+
+                    _cells.GetCell(ResultColumn02, i).Value = "SE HA REALIZADO LA ACCION";
+                    _cells.GetCell(1, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn02, i).Select();
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn02, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn02, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn02, i).Select();
+                    i++;
+                    _eFunctions.CloseConnection();
+                }
+            }
+            ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -1617,15 +1702,11 @@ namespace EllipseEquipmentExcelAddIn
                 var component = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
                 var position = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
 
-                if (Debugger.DebugQueries)
-                    _cells.GetCell("L1").Value = EquipmentActions.Queries.GetFetchLastInstallationQuery(_eFunctions.dbReference, _eFunctions.dbLink, district, equipmentNo, component, position);
-
                 var listeq = EquipmentActions.GetFetchLastInstallation(_eFunctions, district, equipmentNo, component, position);
 
-                _cells.GetCell(9, i).Value = listeq;
+                _cells.GetCell(10, i).Value = listeq;
                 i++;
             }
-
 
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
@@ -1981,5 +2062,7 @@ namespace EllipseEquipmentExcelAddIn
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
+
+        
     }
 }

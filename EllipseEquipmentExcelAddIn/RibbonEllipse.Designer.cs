@@ -58,7 +58,8 @@
             this.btnDeleteEquipFromList = this.Factory.CreateRibbonButton();
             this.menuCompMovement = this.Factory.CreateRibbonMenu();
             this.btnTraceAction = this.Factory.CreateRibbonButton();
-            this.btnReviewFitments = this.Factory.CreateRibbonButton();
+            this.btnReviewCurrentFitment = this.Factory.CreateRibbonButton();
+            this.btnDeleteAction = this.Factory.CreateRibbonButton();
             this.cbIgnoreRefCodes = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
@@ -231,7 +232,8 @@
             // menuCompMovement
             // 
             this.menuCompMovement.Items.Add(this.btnTraceAction);
-            this.menuCompMovement.Items.Add(this.btnReviewFitments);
+            this.menuCompMovement.Items.Add(this.btnReviewCurrentFitment);
+            this.menuCompMovement.Items.Add(this.btnDeleteAction);
             this.menuCompMovement.Label = "&Mov. Componentes";
             this.menuCompMovement.Name = "menuCompMovement";
             this.menuCompMovement.ShowImage = true;
@@ -241,14 +243,21 @@
             this.btnTraceAction.Label = "&Realizar Acción";
             this.btnTraceAction.Name = "btnTraceAction";
             this.btnTraceAction.ShowImage = true;
-            this.btnTraceAction.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDefitment_Click);
+            this.btnTraceAction.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnTraceAction_Click);
             // 
-            // btnReviewFitments
+            // btnReviewCurrentFitment
             // 
-            this.btnReviewFitments.Label = "Consultar &Historia";
-            this.btnReviewFitments.Name = "btnReviewFitments";
-            this.btnReviewFitments.ShowImage = true;
-            this.btnReviewFitments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewFitments_Click);
+            this.btnReviewCurrentFitment.Label = "Consultar &Ultimo Movimiento";
+            this.btnReviewCurrentFitment.Name = "btnReviewCurrentFitment";
+            this.btnReviewCurrentFitment.ShowImage = true;
+            this.btnReviewCurrentFitment.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewFitments_Click);
+            // 
+            // btnDeleteAction
+            // 
+            this.btnDeleteAction.Label = "&Eliminar Acción";
+            this.btnDeleteAction.Name = "btnDeleteAction";
+            this.btnDeleteAction.ShowImage = true;
+            this.btnDeleteAction.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDeleteAction_Click);
             // 
             // cbIgnoreRefCodes
             // 
@@ -301,7 +310,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box5;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewFitments;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewCurrentFitment;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuListEquipment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewListEquips;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewFromEquipmentList;
@@ -309,6 +318,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDeleteEquipFromList;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDisposal;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreRefCodes;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDeleteAction;
     }
 
     partial class ThisRibbonCollection
