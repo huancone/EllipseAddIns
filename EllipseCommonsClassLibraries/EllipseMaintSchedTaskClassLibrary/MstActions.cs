@@ -196,10 +196,23 @@ namespace EllipseMaintSchedTaskClassLibrary
                 conAstSegTo = default(decimal),
                 conAstSegToSpecified = true
             };
+            var attributeList = new MaintSchedTskService.Attribute[2];
+            attributeList[0] = new MaintSchedTskService.Attribute
+            {
+                name = "conAstSegFrNumeric",
+                value = "0"
+            };
+            attributeList[1] = new MaintSchedTskService.Attribute
+            {
+                name = "conAstSegToNumeric",
+                value = "0"
+            };
 
+            request.customAttributes = attributeList;
             return proxyEquip.create(opContext, request);
         }
 
+        [Obsolete("ModifyMaintenanceScheduleTask is deprecated, please use ModifyMaintenanceScheduleTaskPost instead.")]
         public static MaintSchedTskServiceModifyReplyDTO ModifyMaintenanceScheduleTask(string urlService, OperationContext opContext, MaintenanceScheduleTask mst)
         {
 
@@ -245,12 +258,29 @@ namespace EllipseMaintSchedTaskClassLibrary
                 dayOfWeek = mst.DayOfWeek,
                 dayOfMonth = mst.DayOfMonth,
                 startMonth = mst.StartMonth,
-                startYear = mst.StartYear,
-                conAstSegFr = default(decimal),
-                conAstSegFrSpecified = true,
-                conAstSegTo = default(decimal),
-                conAstSegToSpecified = true
+                startYear = mst.StartYear
             };
+            
+            request.conAstSegFrSpecified = true;
+            request.conAstSegTo = default(decimal);
+            request.conAstSegToSpecified = true;
+            var attributeList = new MaintSchedTskService.Attribute[3];
+            attributeList[0] = new MaintSchedTskService.Attribute
+            {
+                name = "conAstSegFrNumeric",
+                value = "0.000000"
+            };
+            attributeList[1] = new MaintSchedTskService.Attribute
+            {
+                name = "conAstSegToNumeric",
+                value = "0.000000"
+            };
+            attributeList[1] = new MaintSchedTskService.Attribute
+            {
+                name = "outputConAstSeg",
+                value = "0.000000"
+            };
+            request.customAttributes = attributeList;
 
             proxyEquip.Url = urlService + "/MaintSchedTskService";
             return proxyEquip.modify(opContext, request);
@@ -259,8 +289,8 @@ namespace EllipseMaintSchedTaskClassLibrary
         public static void CreateMaintenanceScheduleTaskPost(EllipseFunctions ef, MaintenanceScheduleTask mst)
         {
             var responseDto = ef.InitiatePostConnection();
-            if (responseDto.GotErrorMessages()) return;
-
+            if (responseDto.GotErrorMessages())
+                throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
 
             var requestXml = "";
 
@@ -340,7 +370,8 @@ namespace EllipseMaintSchedTaskClassLibrary
         public static void ModifyMaintenanceScheduleTaskPost(EllipseFunctions ef, MaintenanceScheduleTask mst)
         {
             var responseDto = ef.InitiatePostConnection();
-            if (responseDto.GotErrorMessages()) return;
+            if (responseDto.GotErrorMessages())
+                throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
 
             var requestXml = "";
 
@@ -388,6 +419,10 @@ namespace EllipseMaintSchedTaskClassLibrary
             requestXml = requestXml + "					<nextSchValue>" + mst.NextSchedValue + "</nextSchValue>";
             requestXml = requestXml + "					<statutoryFlg>N</statutoryFlg>";
             requestXml = requestXml + "					<hideSuppressed>Y</hideSuppressed>";
+            requestXml = requestXml + "					< conAstSegFrNumeric > 0.000000 </ conAstSegFrNumeric >";
+            requestXml = requestXml + "					< conAstSegToNumeric > 0.000000 </ conAstSegToNumeric >";
+            requestXml = requestXml + "					<conAstSegFr>0</conAstSegFr>";
+            requestXml = requestXml + "					<conAstSegTo>0</conAstSegTo>";
             requestXml = requestXml + "				</dto>";
             requestXml = requestXml + "			</data>";
             requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
@@ -438,7 +473,8 @@ namespace EllipseMaintSchedTaskClassLibrary
             {
                 workGroup = mst.WorkGroup,
                 equipmentGrpId = mst.EquipmentGrpId,
-                equipmentRef = mst.EquipmentNo,
+                equipmentNo = mst.EquipmentNo,
+                
                 compCode = mst.CompCode,
                 compModCode = mst.CompModCode,
                 maintenanceSchTask = mst.MaintenanceSchTask,
@@ -449,12 +485,23 @@ namespace EllipseMaintSchedTaskClassLibrary
                 schedFreq2Specified = true,
                 statType1 = "",
                 statType2 = "",
-                conAstSegFr = default(decimal),
-                conAstSegFrSpecified = true,
-                conAstSegTo = default(decimal),
-                conAstSegToSpecified = true
+                conAstSegFrSpecified = false,
+                conAstSegToSpecified = false
             };
 
+            var attributeList = new MaintSchedTskService.Attribute[2];
+            attributeList[0] = new MaintSchedTskService.Attribute
+            {
+                name = "conAstSegFrNumeric",
+                value = "0"
+            };
+            attributeList[1] = new MaintSchedTskService.Attribute
+            {
+                name = "conAstSegToNumeric",
+                value = "0"
+            };
+
+            requestUpdate.customAttributes = attributeList;
 
             var request = new MaintSchedTskServiceDeleteRequestDTO
             {

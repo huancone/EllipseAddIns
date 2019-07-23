@@ -650,9 +650,6 @@ namespace EllipseMstExcelAddIn
                     mst.SchedDescription1 = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
                     mst.SchedDescription2 = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null;
 
-                    //mst.ConAstSegFr = "0";
-                    //mst.ConAstSegTo = "0";
-
                     mst.StdJobNo = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null;
 
                     mst.JobDescCode = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
@@ -782,9 +779,6 @@ namespace EllipseMstExcelAddIn
                     mst.SchedDescription1 = MyUtilities.IsTrue(_cells.GetCell(7, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value) : null;
                     mst.SchedDescription2 = MyUtilities.IsTrue(_cells.GetCell(8, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value) : null;
 
-                    //mst.ConAstSegFr = "0";
-                    //mst.ConAstSegTo = "0";
-
                     mst.StdJobNo = MyUtilities.IsTrue(_cells.GetCell(9, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value) : null;
 
                     mst.JobDescCode = MyUtilities.IsTrue(_cells.GetCell(10, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value) : null;
@@ -827,7 +821,8 @@ namespace EllipseMstExcelAddIn
                         mst.NextSchedValue = nextSchedValue;
                         mst.NextSchedDate = nextSchedDate;
                         mst.SchedFreq1 = frequency;
-                        MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
+                        //MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
+                        MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
                     }
                     else if (indicator >= 7 && indicator <= 8)
                     {
@@ -838,7 +833,8 @@ namespace EllipseMstExcelAddIn
                         mst.StartMonth = startMonth?.PadLeft(2, '0') ?? "";
                         mst.StartYear = startYear;
 
-                        MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
+                        //MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
+                        MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
                     }
                     else
                     {
