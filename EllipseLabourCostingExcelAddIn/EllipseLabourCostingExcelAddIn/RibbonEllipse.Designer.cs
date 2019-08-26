@@ -47,12 +47,12 @@
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoadLaborSheet = this.Factory.CreateRibbonButton();
+            this.btnDeleteLaborSheet = this.Factory.CreateRibbonButton();
             this.btnReviewWorkOrder = this.Factory.CreateRibbonButton();
             this.cbReplaceExisting = this.Factory.CreateRibbonCheckBox();
             this.cbAutoTaskAssigment = this.Factory.CreateRibbonCheckBox();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.btnDeleteLaborSheet = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpEllipse.SuspendLayout();
             this.box1.SuspendLayout();
@@ -153,6 +153,13 @@
             this.btnLoadLaborSheet.ShowImage = true;
             this.btnLoadLaborSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadLaborSheet_Click);
             // 
+            // btnDeleteLaborSheet
+            // 
+            this.btnDeleteLaborSheet.Label = "Eliminar Registros de Labor";
+            this.btnDeleteLaborSheet.Name = "btnDeleteLaborSheet";
+            this.btnDeleteLaborSheet.ShowImage = true;
+            this.btnDeleteLaborSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDeleteLaborSheet_Click);
+            // 
             // btnReviewWorkOrder
             // 
             this.btnReviewWorkOrder.Label = "Verificar OTs";
@@ -185,13 +192,6 @@
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
-            // btnDeleteLaborSheet
-            // 
-            this.btnDeleteLaborSheet.Label = "Eliminar Registros de Labor";
-            this.btnDeleteLaborSheet.Name = "btnDeleteLaborSheet";
-            this.btnDeleteLaborSheet.ShowImage = true;
-            this.btnDeleteLaborSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDeleteLaborSheet_Click);
             // 
             // RibbonEllipse
             // 

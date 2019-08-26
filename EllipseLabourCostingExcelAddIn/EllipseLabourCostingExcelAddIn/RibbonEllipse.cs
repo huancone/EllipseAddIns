@@ -1103,7 +1103,7 @@ namespace EllipseLabourCostingExcelAddIn
                         var errorFlag = false;
 
                         var task = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value2);
-                        task = task && cbAutoTaskAssigment.Checked ?? "001";
+                        task = (task == null)  && cbAutoTaskAssigment.Checked ? "001": task;
                         //el número de tarea debe tener tres dígitos 001
                         if (string.IsNullOrWhiteSpace(task) && task.Length >= 1 && task.Length < 3)
                             task = task.PadLeft(3, '0');
