@@ -1,0 +1,17 @@
+//Para ejecutar este código debe tener referenciados los siguientes namespaces
+
+//using AuthenticatorService = EllipseCommonsClassLibrary.AuthenticatorService;
+
+	private void AuthenticateCommons()
+        {
+            try
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnvironment = drpEnviroment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Se ha producido un error al intentar realizar la autenticación. Asegúrese que los datos ingresados sean correctos e intente nuevamente." + "\n\n" + ex.Message);
+            }
+        }

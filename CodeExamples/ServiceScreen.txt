@@ -1,0 +1,57 @@
+private void ScreenService()
+        {
+            //Proceso del Servicio Screen
+            var service = new Screen.ScreenService();
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            service.Url = urlService + "/ScreenService";
+
+            //Instanciar el Contexto de Operación
+            var opContext = new Screen.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost
+            };
+
+            //Instanciar el SOAP
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            //Solicitud 1 y Respuesta 1
+            var reply = service.executeScreen(opContext, "MSO435");
+
+            //validamos el ingreso al programa
+            if (reply.mapName != "MSM435A")
+                throw new Exception ("ERROR:" + "No se pudo establecer comunicación con el servicio");
+
+            //arreglo para los campos del screen
+            var arrayFields = new ArrayScreenNameValue();
+
+            //se adicionan los campos que se vayan a enviar
+            arrayFields.Add("OPTION1I", "1");
+            arrayFields.Add("MODEL_CODE1I", "CÓDIGO MODELO");
+            arrayFields.Add("STAT_DATE1I", "FECHA MODELO");
+            arrayFields.Add("SHIFT1I", "TURNO MODELO");
+
+            //Solicitud 2
+            var request = new Screen.ScreenSubmitRequestDTO();
+            request.screenFields = arrayFields.ToArray();
+            request.screenKey = "1";
+
+            //Respuesta 2
+            reply = service.submit(opContext, request);
+
+            //Existencia y nombre de pantalla de respuesta
+            if (reply == null || reply.mapName == "MSM435B")
+                throw new Exception("ERROR:" + "Se ha producido un error al intentar enviar la solicitud");
+
+            //La respuesta tiene un error o una advertencia
+            if (_eFunctions.CheckReplyError(reply) || _eFunctions.CheckReplyWarning(reply))
+                throw new Exception("ERROR:" + "Se ha producido un error al intentar enviar la solicitud");
+
+            //La respuesta pide confirmación
+            if (reply.functionKeys == "XMIT-Confirm")
+                reply = service.submit(opContext, request);
+
+            //si necesitas obtener los campso del reply y trabajar con ellos
+            var replyFields = new ArrayScreenNameValue(reply.screenFields);
+            var woProject = replyFields.GetField("WO_PROJ1I1").value.Equals("");
+        }

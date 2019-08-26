@@ -1,0 +1,44 @@
+	private void GeneralService()
+        {
+            try
+            {
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+
+                //Creación del Servicio
+                var service = new WorkOrderService.WorkOrderService();
+                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                service.Url = urlService + "/WorkOrderService";
+                
+                //Instanciar el Contexto de Operación
+                var opContext = new WorkOrderService.OperationContext
+                {
+                    district = _frmAuth.EllipseDsct,
+                    position = _frmAuth.EllipsePost
+                };
+
+                //Instanciar el SOAP
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                //Se cargan los parámetros de  la solicitud
+                var request = new WorkOrderServiceCreateRequestDTO();
+                request.districtCode = "ICOR";
+                request.workGroup = "MTOLOC";
+                request.workOrderDesc = "ORDEN DE PRUEBA";
+                request.workOrderType = "CO";
+                request.maintenanceType = "CO";
+                request.equipmentNo = "1000016";
+
+                //se envía la acción
+                var reply = service.create(opContext, request);
+
+                //se analiza la respuesta y se hacen las acciones pertinentes
+                _cells.GetCell(1, 1).Value2 = reply.workOrder.prefix + reply.workOrder.no;
+                
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Se ha producido un error al intentar crear la orden de trabajo." + "\n\n" + ex.Message);
+            }
+        }
