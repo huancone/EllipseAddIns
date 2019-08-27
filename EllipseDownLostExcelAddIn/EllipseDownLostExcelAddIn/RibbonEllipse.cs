@@ -237,7 +237,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName, 1);
                 _cells.GetCell("B3").Value = "ICOR";
 
-                var equipTypeList = new List<string> { "EQUIPMENT", "EGI", "LIST TYPE", "PROD.UNIT" };
+                var equipTypeList = new List<string> { SearchFieldCriteria.EquipmentReference.Value, SearchFieldCriteria.Egi.Value, SearchFieldCriteria.ListType.Value, SearchFieldCriteria.ProductiveUnit.Value };
 
                 _cells.SetValidationList(_cells.GetCell("A4"), equipTypeList, ValidationSheetName, 2);
                 _cells.GetCell("A4").Value = "EQUIPMENT";
@@ -458,7 +458,7 @@ namespace EllipseDownLostExcelAddIn
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja" + "\n\n" + ex.Message);
             }
         }
         private void FormatSheetPbv()
@@ -501,7 +501,7 @@ namespace EllipseDownLostExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName, 1);
                 _cells.GetCell("B3").Value = "ICOR";
 
-                var equipTypeList = new List<string> { "EQUIPMENT", "EGI", "LIST TYPE", "PROD.UNIT" };
+                var equipTypeList = new List<string> { SearchFieldCriteria.EquipmentReference.Value, SearchFieldCriteria.Egi.Value, SearchFieldCriteria.ListType.Value, SearchFieldCriteria.ProductiveUnit.Value };
 
                 _cells.SetValidationList(_cells.GetCell("A4"), equipTypeList, ValidationSheetName, 2);
                 _cells.GetCell("A4").Value = "EQUIPMENT";
@@ -832,13 +832,13 @@ namespace EllipseDownLostExcelAddIn
                 var dataType = cells.GetNullIfTrimmedEmpty(cells.GetCell("D5").Value);
 
                 List<string> equipmentList;
-                if (equipType.Equals("EQUIPMENT"))
+                if (equipType.Equals(SearchFieldCriteria.EquipmentNo.Value))
                     equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, districtCode, equipRef);
-                else if (equipType.Equals("EGI"))
+                else if (equipType.Equals(SearchFieldCriteria.Egi.Value))
                     equipmentList = EquipmentActions.GetEgiEquipments(_eFunctions, equipRef);
-                else if (equipType.Equals("LIST TYPE"))
+                else if (equipType.Equals(SearchFieldCriteria.ListType.Value))
                     equipmentList = EquipmentActions.GetListEquipments(_eFunctions, equipRef, listId);
-                else if (equipType.Equals("PROD.UNIT"))
+                else if (equipType.Equals(SearchFieldCriteria.ProductiveUnit.Value))
                     equipmentList = EquipmentActions.GetProductiveUnitEquipments(_eFunctions, districtCode, equipRef);
                 else
                     equipmentList = new List<string>();
@@ -871,6 +871,9 @@ namespace EllipseDownLostExcelAddIn
                                 cells.GetCell(12, i).Value = "'" + cells.GetEmptyIfNull(ddr["EVENT_CODE"].ToString());
                                 cells.GetCell(13, i).Value = "'" + cells.GetEmptyIfNull(ddr["DESCRIPTION"].ToString());
                                 cells.GetCell(14, i).Value = "'" + cells.GetEmptyIfNull(ddr["WO_COMMENT"].ToString());
+                                if(!string.IsNullOrWhiteSpace(ddr["WO_COMMENT"].ToString()))
+                                    cells.GetCell(ResultColumn01, i).Value = "Estado OT: " + cells.GetEmptyIfNull(WoStatusList.GetStatusName(ddr["WO_STATUS_M"].ToString()));
+                                
                                 cells.GetCell(01, i).Select();
                                 i++;
                             }
@@ -1976,10 +1979,11 @@ namespace EllipseDownLostExcelAddIn
                 "     (99999999 - DW.REV_STAT_DATE) START_DATE, DW.STOP_TIME START_TIME," +
                 "     (99999999 - DW.REV_STAT_DATE) FINISH_DATE, DW.START_TIME FINISH_TIME, DW.ELAPSED_HOURS, DW.SHIFT, 'DOWN' EVENT_TYPE," +
                 "     DW.DOWN_TIME_CODE EVENT_CODE, COD.TABLE_DESC DESCRIPTION, DW.WORK_ORDER WO_COMMENT," +
-                "     DW.SEQUENCE_NO, DW.SHIFT_SEQ_NO" +
+                "     DW.SEQUENCE_NO, DW.SHIFT_SEQ_NO, WO.WO_STATUS_M" +
                 "   FROM" +
                 "     " + dbreference + ".MSF420" + dblink + " DW" +
                 "   INNER JOIN " + dbreference + ".MSF010" + dblink + " COD ON TRIM(DW.DOWN_TIME_CODE) = TRIM(COD.TABLE_CODE)" +
+                "   LEFT JOIN ELLIPSE.MSF620 WO ON DW.WORK_ORDER = WO.WORK_ORDER" +
                 "   WHERE" +
                 "     DW.REC_EQUIP_420 = 'E' ||'" + equipmentNo + "'" +
                 "     AND (99999999 - DW.REV_STAT_DATE) BETWEEN '" + startDate + "' AND '" + endDate + "'" +
