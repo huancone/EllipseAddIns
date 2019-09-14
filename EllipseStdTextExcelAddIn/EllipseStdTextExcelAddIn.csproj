@@ -40,8 +40,8 @@
     <PublishUrl>D:\Projects\Release\EllipseStdTextExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.0.1</ApplicationVersion>
-    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <ApplicationVersion>1.2.0.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
@@ -251,6 +251,10 @@
       <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
       <Name>EllipseCommonsClassLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseDocumentReferenceClassLibrary\EllipseDocumentReferenceClassLibrary.csproj">
+      <Project>{943e6e82-7dc1-4201-b379-72b3dca724b2}</Project>
+      <Name>EllipseDocumentReferenceClassLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj">
       <Project>{093ec04e-6e92-4e59-848b-5b79277ffe9b}</Project>
       <Name>EllipseReferenceCodesClassLibrary</Name>
@@ -259,6 +263,9 @@
       <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
       <Name>EllipseStdTextClassLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -272,7 +279,10 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>1A92E1647894A27A607A937CD9F4A3111E823B95</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>64018B59CF0F6F722C0F1529A19071BB0634113F</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

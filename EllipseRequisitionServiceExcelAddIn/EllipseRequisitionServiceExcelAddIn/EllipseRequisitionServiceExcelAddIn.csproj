@@ -203,6 +203,13 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RequisitionClassLibrary\Assurance\AssuranceSettings.cs" />
+    <Compile Include="RequisitionClassLibrary\Assurance\AssuranceSettingsBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RequisitionClassLibrary\Assurance\AssuranceSettingsBox.Designer.cs">
+      <DependentUpon>AssuranceSettingsBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="RequisitionClassLibrary\Queries.cs" />
     <Compile Include="RequisitionClassLibrary\RequisitionHeader.cs" />
     <Compile Include="RequisitionClassLibrary\RequisitionItem.cs" />
@@ -236,6 +243,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RequisitionClassLibrary\Assurance\AssuranceSettingsBox.resx">
+      <DependentUpon>AssuranceSettingsBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RibbonEllipse.resx">
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>
@@ -439,7 +449,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>502CF36E39C1AF0F235353CA2C4BDA9F2A1D558D</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B0BBF7E8FDBA5724AFE6B04F60B35F9285054342</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />

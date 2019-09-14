@@ -72,6 +72,14 @@ namespace EllipseRequisitionServiceExcelAddIn
                     @"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse", @"ADVERTENCIA");
         }
 
+        private void btnFormatMnttoAssurance_Click(object sender, RibbonControlEventArgs e)
+        {
+            RequisitionServiceAssuranceFormat();
+            if (!_cells.IsDecimalDotSeparator())
+                MessageBox.Show(
+                    @"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse", @"ADVERTENCIA");
+        }
+
         private void btnFormatExtended_Click(object sender, RibbonControlEventArgs e)
         {
             RequisitionServiceExtendedFormat();
@@ -539,6 +547,264 @@ namespace EllipseRequisitionServiceExcelAddIn
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }
+
+
+        /// <summary>
+        /// Da Formato a la Hoja de Excel Creando los
+        /// </summary>
+        private void RequisitionServiceAssuranceFormat()
+        {
+            try
+            {
+                _excelApp = Globals.ThisAddIn.Application;
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
+                //CONSTRUYO LA HOJA 1
+                _excelApp.Workbooks.Add();
+                while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
+                    _excelApp.ActiveWorkbook.Worksheets.Add();
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+
+                _cells.SetCursorWait();
+                _cells.CreateNewWorksheet(ValidationSheetName);
+
+                #region Hoja 1
+
+                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name = SheetName01;
+
+                var titleRow = TitleRow01;
+                var resultColumn = ResultColumn01;
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "A2");
+                _cells.GetCell("B1").Value = "REQUISITION SERVICE";
+                _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("B1", "G2");
+
+                _cells.GetCell("H1").Value = "OBLIGATORIO";
+                _cells.GetCell("H1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("H2").Value = "OPCIONAL";
+                _cells.GetCell("H2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("H3").Value = "INFORMATIVO";
+                _cells.GetCell("H3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+
+                //
+                _cells.GetCell(1, titleRow).Value = "Requested By";
+                _cells.GetCell(1, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(2, titleRow).Value = "Requested By Position";
+                _cells.GetCell(2, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(3, titleRow).Value = "Indicador de Serie";
+                _cells.GetCell(3, titleRow).AddComment("Indica una serie diferente para vales con encabezados comunes (Ej. Flota, número, secuencia A, etc)");
+                _cells.GetCell(3, titleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell(4, titleRow).Value = "Requisition Number";
+                _cells.GetCell(4, titleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell(5, titleRow).Value = "Requisition Type";
+                _cells.GetCell(5, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                var optionReqTypeList = new List<string>
+                {
+                    "NI - NORMAL REQUISITION",
+                    "PR - PURCHASE REQUISITION",
+                    "CR - CREDIT REQUISITION",
+                    "LN - LOAN REQUISITION"
+                };
+                _cells.SetValidationList(_cells.GetCell(5, titleRow + 1), optionReqTypeList, ValidationSheetName, 1, false);
+                _cells.GetCell(6, titleRow).Value = "Transaction Type";
+                _cells.GetCell(6, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+
+                var optionTransTypeList = new List<string>
+                {
+                    "DN - DESPACHO NO PLANEADO",
+                    "DP - DESPACHO PLANEADO",
+                    "CN - DEVOLUCION NO PLANEADA",
+                    "CP - DEVOLUCION PLANEADA"
+                };
+                _cells.SetValidationList(_cells.GetCell(6, titleRow + 1), optionTransTypeList, ValidationSheetName, 2, false);
+                _cells.GetCell(7, titleRow).Value = "Required By Date";
+                _cells.GetCell(7, titleRow).AddComment("YYYYMMDD");
+                _cells.GetCell(7, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(8, titleRow).Value = "Original Warehouse";
+                _cells.GetCell(8, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(9, titleRow).Value = "Priority Code";
+                _cells.GetCell(9, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+
+                var itemList = _eFunctions.GetItemCodes("PI");
+                var optionPriorList = MyUtilities.GetCodeList(itemList);
+                _cells.SetValidationList(_cells.GetCell(9, titleRow + 1), optionPriorList, ValidationSheetName, 3, false);
+
+                _cells.GetCell(10, titleRow).Value = "Reference Type";
+                _cells.GetCell(10, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                var optionRefTypeList = new List<string> { "Work Order", "Equipment No.", "Project No.", "Account Code" };
+                _cells.SetValidationList(_cells.GetCell(10, titleRow + 1), optionRefTypeList, ValidationSheetName, 4);
+
+                _cells.GetCell(11, titleRow).Value = "Reference";
+                _cells.GetCell(11, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+
+                _cells.GetCell(12, titleRow).Value = "Delivery Instructions"; //120 caracteres (60/60)
+                _cells.GetCell(12, titleRow).AddComment("120 caracteres");
+                _cells.GetCell(12, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(13, titleRow).Value = "Return Cause";
+                _cells.GetCell(13, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(14, titleRow).Value = "Issue Question";
+                _cells.GetCell(14, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+
+                var optionIssueList = new List<string> { "A - VENTAS", "B - RUBROS" };
+                _cells.SetValidationList(_cells.GetCell(14, titleRow + 1), optionIssueList, ValidationSheetName, 5, false);
+
+                _cells.GetCell(15, titleRow).Value = "Partial Allowed";
+                _cells.GetCell(15, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                var partialAllowedList = new List<string> { "Y - YES", "N - No" };
+                _cells.SetValidationList(_cells.GetCell(15, titleRow + 1), partialAllowedList, ValidationSheetName, 6, false);
+
+                _cells.GetCell(16, titleRow).Value = "Stock Code";
+                _cells.GetCell(16, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(17, titleRow).Value = "Unit Of Issue";
+                _cells.GetCell(17, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(18, titleRow).Value = "Quantity";
+                _cells.GetCell(18, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(resultColumn, titleRow).Value = "Result";
+                _cells.GetCell(resultColumn, titleRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+
+                _cells.GetRange(1, titleRow + 1, resultColumn, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
+
+                _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), TableName01);
+
+                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+
+                #endregion
+
+                #region Hoja 2
+
+                titleRow = TitleRow02;
+                resultColumn = ResultColumn02;
+
+                _excelApp.ActiveWorkbook.Sheets[2].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName02;
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "B2");
+
+                _cells.GetCell("C1").Value = "CONSULTA GENERAL - ELLIPSE 8";
+                _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("C1", "J2");
+
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+
+                var districtList = Districts.GetDistrictList();
+                var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
+                var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
+                var statusList = RequisitionStatus.GetStatusList(true).Select(g => g.Value).ToList();
+                var dateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
+
+                _cells.GetCell("A3").Value = "DISTRITO";
+                _cells.GetCell("B3").Value = Districts.DefaultDistrict;
+                _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 7);
+                _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
+                _cells.GetCell("A4").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
+                                                "INST: IMIS, MINA\n" +
+                                                "" + ManagementArea.ManejoDeCarbon.Key + ": " + QuarterMasters.Ferrocarril.Key + ", " + QuarterMasters.PuertoBolivar.Key + ", " + QuarterMasters.PlantasDeCarbon.Key + "\n" +
+                                                "" + ManagementArea.Mantenimiento.Key + ": MINA\n" +
+                                                "" + ManagementArea.SoporteOperacion.Key + ": ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
+
+                _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 8);
+                _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 9, false);
+                _cells.GetCell("A5").Value = SearchFieldCriteriaType.EquipmentReference.Value;
+                _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);
+                _cells.GetCell("A6").Value = "STATUS";
+                _cells.SetValidationList(_cells.GetCell("B6"), statusList, ValidationSheetName, 4);
+                _cells.GetRange("A3", "A6").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("B3", "B6").Style = _cells.GetStyle(StyleConstants.Select);
+
+                _cells.GetCell("C3").Value = "FECHA";
+                _cells.GetCell("D3").Value = SearchDateCriteriaType.Creation.Value;
+                _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 10);
+                _cells.GetCell("C4").Value = "DESDE";
+                _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
+                _cells.GetCell("D4").AddComment("YYYYMMDD");
+                _cells.GetCell("C5").Value = "HASTA";
+                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+                _cells.GetCell("D5").AddComment("YYYYMMDD");
+                _cells.GetRange("C3", "C5").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("D3", "D5").Style = _cells.GetStyle(StyleConstants.Select);
+
+                _cells.GetRange(1, titleRow, resultColumn, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+
+                _cells.GetCell(1, titleRow).Value = "District";
+                _cells.GetCell(2, titleRow).Value = "Work Group";
+                _cells.GetCell(3, titleRow).Value = "Equipment No.";
+                _cells.GetCell(4, titleRow).Value = "Work Order";
+                _cells.GetCell(5, titleRow).Value = "Work Order Desc.";
+                _cells.GetCell(6, titleRow).Value = "Project No.";
+                _cells.GetCell(7, titleRow).Value = "Account Code";
+                _cells.GetCell(8, titleRow).Value = "Requisition Number";
+                _cells.GetCell(9, titleRow).Value = "Number of Items";
+                _cells.GetCell(10, titleRow).Value = "Wo Raised Date";
+                _cells.GetCell(11, titleRow).Value = "Wo Plan Date";
+                _cells.GetCell(12, titleRow).Value = "Creation Date";
+                _cells.GetCell(13, titleRow).Value = "Required Date";
+                _cells.GetCell(14, titleRow).Value = "Authorization Date";
+                _cells.GetCell(15, titleRow).Value = "Created By";
+                _cells.GetCell(16, titleRow).Value = "Requested By";
+                _cells.GetCell(17, titleRow).Value = "Requested Pos.";
+                _cells.GetCell(18, titleRow).Value = "Authorized By";
+                _cells.GetCell(19, titleRow).Value = "Authorized Pos.";
+                _cells.GetCell(20, titleRow).Value = "Requisition Status";
+                _cells.GetCell(21, titleRow).Value = "Authorized Status";
+                _cells.GetCell(22, titleRow).Value = "Requisition Type";
+                _cells.GetCell(23, titleRow).Value = "Transaction Type";
+                _cells.GetCell(24, titleRow).Value = "Original Warehouse";
+                _cells.GetCell(25, titleRow).Value = "Priority Code";
+                _cells.GetCell(26, titleRow).Value = "Egi";
+
+                _cells.GetCell(resultColumn, titleRow).Value = "Result";
+                _cells.GetCell(resultColumn, titleRow).Style = _cells.GetStyle(StyleConstants.TitleResult);
+
+                _cells.GetRange(1, titleRow + 1, resultColumn, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
+
+                _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), TableName02);
+
+                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+
+                #endregion
+
+                #region Hoja 3
+
+                titleRow = TitleRow03;
+                resultColumn = 10;
+
+                _excelApp.ActiveWorkbook.Sheets[3].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName03;
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "B2");
+
+                _cells.GetCell("C1").Value = "DETALLE CONSULTA - ELLIPSE 8";
+                _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("C1", "J2");
+
+                ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
+
+                #endregion
+
+                _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Error: " + ex.Message);
+            }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
+            }
+        }
+
 
         /// <summary>
         /// Da Formato a la Hoja de Excel de forma extendida
@@ -2648,5 +2914,12 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _eFunctions.CloseConnection();
             }
         }
+
+        private void btnConfigAssuranceSettings_Click(object sender, RibbonControlEventArgs e)
+        {
+            new AssuranceSettingsBox().ShowDialog();
+        }
+
+
     }
 }
