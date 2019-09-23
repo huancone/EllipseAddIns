@@ -89,6 +89,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\TodoListWorkOrderService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\WorkOrderService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -104,6 +109,10 @@
     <Compile Include="WorkOrderQualityStyles.cs" />
     <Compile Include="WorkOrderReferenceCodes.cs" />
     <Compile Include="SearchConstants.cs" />
+    <Compile Include="WorkOrderTask.cs" />
+    <Compile Include="WorkOrderToDoActions.cs" />
+    <Compile Include="WorkOrderTaskActions.cs" />
+    <Compile Include="WorkOrderToDoItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -112,6 +121,17 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/TodoListWorkOrderService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\TodoListWorkOrderService\</RelPath>
+      <UpdateFromURL>http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/TodoListWorkOrderService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_TodoListWorkOrderService_TodoListWorkOrderService</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/EquipmentReqmntsService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\EquipmentReqmntsService\</RelPath>
@@ -332,6 +352,29 @@
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\ResourceReqmntsService\ResourceReqmntsServiceShowReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\TodoListWorkOrderService\AssignTodoListServiceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\TodoListWorkOrderService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\TodoListWorkOrderService\RetrieveTodoInstancesServiceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\TodoListWorkOrderService\TodoListItemInstanceServiceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\TodoListWorkOrderService\TodoListWorkOrderBulkUpdateServiceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\TodoListWorkOrderService\TodoListWorkOrderService.wsdl" />
+    <None Include="Web References\TodoListWorkOrderService\TodoListWorkOrderServiceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\TodoListWorkOrderService\WorkOrderTodoInstanceServiceResult.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\WorkOrderService\Reference.map">

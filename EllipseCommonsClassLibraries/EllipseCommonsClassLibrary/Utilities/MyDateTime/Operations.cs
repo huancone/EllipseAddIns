@@ -219,6 +219,32 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
             throw new ArgumentException("Not a valid Time format", "format");
         }
 
+        public static DateTime FormatStringToDateTime(string dateTime, string format, string dateSeparator = null)
+        {
+            if (string.IsNullOrWhiteSpace(dateTime))
+                throw new ArgumentNullException("dateTime");
+            var date = new DateTime();
+            dateSeparator = string.IsNullOrWhiteSpace(dateSeparator) ? "" : dateSeparator;
+
+
+            if (format.Equals(Formats.DateYYYYMMDD))
+            {
+                var yearStartIndex = 0;
+                var monthStartIndex = 4 + dateSeparator.Length;
+                var dayStartIndex = 6 + dateSeparator.Length * 2;
+
+                var year = Convert.ToInt32(dateTime.Substring(yearStartIndex, 4));
+                var month = Convert.ToInt32(dateTime.Substring(monthStartIndex, 2));
+                var day = Convert.ToInt32(dateTime.Substring(dayStartIndex, 2));
+
+                date = new DateTime(year, month, day);
+            }
+            else
+                throw new Exception("Formato de conversión de fecha no válido");
+            //TO DO
+
+            return date;
+        }
 
         /// <summary>
         ///     Valida si la fecha YYYYMMDD ha superado el tiempo máximo permitido en días

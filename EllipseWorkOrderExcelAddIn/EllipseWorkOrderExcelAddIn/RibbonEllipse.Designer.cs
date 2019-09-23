@@ -60,6 +60,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnCleanTasksTable = this.Factory.CreateRibbonButton();
             this.menuRequirements = this.Factory.CreateRibbonMenu();
             this.btnReviewLabRequirements = this.Factory.CreateRibbonButton();
+            this.btnReviewMatRequirements = this.Factory.CreateRibbonButton();
             this.btnExecuteRequirements = this.Factory.CreateRibbonButton();
             this.btnGetAplRequirements = this.Factory.CreateRibbonButton();
             this.btnCleanRequirementTable = this.Factory.CreateRibbonButton();
@@ -79,6 +80,13 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnUpdatePercentProgress = this.Factory.CreateRibbonButton();
             this.btnUpdateUnitsProgress = this.Factory.CreateRibbonButton();
             this.btnUpdateUnitsRequired = this.Factory.CreateRibbonButton();
+            this.menuToDo = this.Factory.CreateRibbonMenu();
+            this.btnToDoReviewWorkOrders = this.Factory.CreateRibbonButton();
+            this.btnToDoReviewTasks = this.Factory.CreateRibbonButton();
+            this.btnCreateToDo = this.Factory.CreateRibbonButton();
+            this.btnUpdateToDo = this.Factory.CreateRibbonButton();
+            this.btnDeleteToDo = this.Factory.CreateRibbonButton();
+            this.btnCleanToDo = this.Factory.CreateRibbonButton();
             this.menuReferenceCodes = this.Factory.CreateRibbonMenu();
             this.btnReviewReferenceCodes = this.Factory.CreateRibbonButton();
             this.btnUpdateReferenceCodes = this.Factory.CreateRibbonButton();
@@ -91,7 +99,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
             this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.btnReviewMatRequirements = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
@@ -174,6 +181,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuActions.Items.Add(this.menuComplete);
             this.menuActions.Items.Add(this.menuDurations);
             this.menuActions.Items.Add(this.menuWorkProgress);
+            this.menuActions.Items.Add(this.menuToDo);
             this.menuActions.Items.Add(this.menuReferenceCodes);
             this.menuActions.Items.Add(this.menuQuality);
             this.menuActions.Items.Add(this.menuCriticalControls);
@@ -255,6 +263,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnCleanTasksTable.Label = "&Limpiar Tabla de Tareas";
             this.btnCleanTasksTable.Name = "btnCleanTasksTable";
             this.btnCleanTasksTable.ShowImage = true;
+            this.btnCleanTasksTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanTasksTable_Click);
             // 
             // menuRequirements
             // 
@@ -274,6 +283,13 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReviewLabRequirements.ShowImage = true;
             this.btnReviewLabRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewRequirements_Click);
             // 
+            // btnReviewMatRequirements
+            // 
+            this.btnReviewMatRequirements.Label = "Consultar Requerimientos de Materiales";
+            this.btnReviewMatRequirements.Name = "btnReviewMatRequirements";
+            this.btnReviewMatRequirements.ShowImage = true;
+            this.btnReviewMatRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewMatRequirements_Click);
+            // 
             // btnExecuteRequirements
             // 
             this.btnExecuteRequirements.Label = "Ejecutar Acciones";
@@ -292,6 +308,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnCleanRequirementTable.Label = "Limpiar Tabla Requerimientos";
             this.btnCleanRequirementTable.Name = "btnCleanRequirementTable";
             this.btnCleanRequirementTable.ShowImage = true;
+            this.btnCleanRequirementTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanRequirementTable_Click);
             // 
             // menuComplete
             // 
@@ -413,6 +430,61 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnUpdateUnitsRequired.ShowImage = true;
             this.btnUpdateUnitsRequired.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateUnitsRequired_Click);
             // 
+            // menuToDo
+            // 
+            this.menuToDo.Items.Add(this.btnToDoReviewWorkOrders);
+            this.menuToDo.Items.Add(this.btnToDoReviewTasks);
+            this.menuToDo.Items.Add(this.btnCreateToDo);
+            this.menuToDo.Items.Add(this.btnUpdateToDo);
+            this.menuToDo.Items.Add(this.btnDeleteToDo);
+            this.menuToDo.Items.Add(this.btnCleanToDo);
+            this.menuToDo.Label = "To Do de OTs";
+            this.menuToDo.Name = "menuToDo";
+            this.menuToDo.ShowImage = true;
+            this.menuToDo.Visible = false;
+            // 
+            // btnToDoReviewWorkOrders
+            // 
+            this.btnToDoReviewWorkOrders.Label = "Consultar de OTs";
+            this.btnToDoReviewWorkOrders.Name = "btnToDoReviewWorkOrders";
+            this.btnToDoReviewWorkOrders.ShowImage = true;
+            this.btnToDoReviewWorkOrders.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnToDoReviewWorkOrders_Click);
+            // 
+            // btnToDoReviewTasks
+            // 
+            this.btnToDoReviewTasks.Label = "Consultar de Tareas";
+            this.btnToDoReviewTasks.Name = "btnToDoReviewTasks";
+            this.btnToDoReviewTasks.ShowImage = true;
+            this.btnToDoReviewTasks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnToDoReviewTasks_Click);
+            // 
+            // btnCreateToDo
+            // 
+            this.btnCreateToDo.Label = "Crear To Do";
+            this.btnCreateToDo.Name = "btnCreateToDo";
+            this.btnCreateToDo.ShowImage = true;
+            this.btnCreateToDo.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreateToDo_Click);
+            // 
+            // btnUpdateToDo
+            // 
+            this.btnUpdateToDo.Label = "Actualizar To Do";
+            this.btnUpdateToDo.Name = "btnUpdateToDo";
+            this.btnUpdateToDo.ShowImage = true;
+            this.btnUpdateToDo.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateToDo_Click);
+            // 
+            // btnDeleteToDo
+            // 
+            this.btnDeleteToDo.Label = "Eliminar To Do";
+            this.btnDeleteToDo.Name = "btnDeleteToDo";
+            this.btnDeleteToDo.ShowImage = true;
+            this.btnDeleteToDo.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDeleteToDo_Click);
+            // 
+            // btnCleanToDo
+            // 
+            this.btnCleanToDo.Label = "&Limpiar Hoja";
+            this.btnCleanToDo.Name = "btnCleanToDo";
+            this.btnCleanToDo.ShowImage = true;
+            this.btnCleanToDo.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanToDo_Click);
+            // 
             // menuReferenceCodes
             // 
             this.menuReferenceCodes.Items.Add(this.btnReviewReferenceCodes);
@@ -502,13 +574,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
-            // btnReviewMatRequirements
-            // 
-            this.btnReviewMatRequirements.Label = "Consultar Requerimientos de Materiales";
-            this.btnReviewMatRequirements.Name = "btnReviewMatRequirements";
-            this.btnReviewMatRequirements.ShowImage = true;
-            this.btnReviewMatRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewMatRequirements_Click);
-            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -582,6 +647,13 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnGetAplRequirements;
         internal RibbonButton btnCleanRequirementTable;
         internal RibbonButton btnReviewMatRequirements;
+        internal RibbonMenu menuToDo;
+        internal RibbonButton btnToDoReviewWorkOrders;
+        internal RibbonButton btnToDoReviewTasks;
+        internal RibbonButton btnCreateToDo;
+        internal RibbonButton btnDeleteToDo;
+        internal RibbonButton btnCleanToDo;
+        internal RibbonButton btnUpdateToDo;
     }
 
     partial class ThisRibbonCollection
