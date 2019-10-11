@@ -45,17 +45,20 @@
             this.menuAction = this.Factory.CreateRibbonMenu();
             this.menuQueries = this.Factory.CreateRibbonMenu();
             this.btnQueryRequisitions = this.Factory.CreateRibbonButton();
+            this.btnReviewRequisitionControl = this.Factory.CreateRibbonButton();
+            this.btnReReviewRequisitionControl = this.Factory.CreateRibbonButton();
             this.menuOptions = this.Factory.CreateRibbonMenu();
             this.cbMaxItems = this.Factory.CreateRibbonCheckBox();
             this.cbSortItems = this.Factory.CreateRibbonCheckBox();
+            this.cbAssuranceProcess = this.Factory.CreateRibbonCheckBox();
+            this.btnConfigAssuranceSettings = this.Factory.CreateRibbonButton();
             this.btnExcecuteRequisitionService = this.Factory.CreateRibbonButton();
             this.btnCreateReqIgError = this.Factory.CreateRibbonButton();
             this.btnCreateReqDirectOrderItems = this.Factory.CreateRibbonButton();
             this.btnManualCreditRequisitionMSE1VR = this.Factory.CreateRibbonButton();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.btnReviewRequisitionControl = this.Factory.CreateRibbonButton();
-            this.btnReReviewRequisitionControl = this.Factory.CreateRibbonButton();
+            this.btnFormatMnttoAssurance = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpRequisitionService.SuspendLayout();
             this.box1.SuspendLayout();
@@ -85,6 +88,7 @@
             // menuFormat
             // 
             this.menuFormat.Items.Add(this.btnFormatNewSheet);
+            this.menuFormat.Items.Add(this.btnFormatMnttoAssurance);
             this.menuFormat.Items.Add(this.btnFormatExtended);
             this.menuFormat.Label = "&Formatear";
             this.menuFormat.Name = "menuFormat";
@@ -143,10 +147,26 @@
             this.btnQueryRequisitions.ShowImage = true;
             this.btnQueryRequisitions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnQueryRequisitions_Click);
             // 
+            // btnReviewRequisitionControl
+            // 
+            this.btnReviewRequisitionControl.Label = "Consultar Detalle - Control";
+            this.btnReviewRequisitionControl.Name = "btnReviewRequisitionControl";
+            this.btnReviewRequisitionControl.ShowImage = true;
+            this.btnReviewRequisitionControl.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewRequisitionControl_Click);
+            // 
+            // btnReReviewRequisitionControl
+            // 
+            this.btnReReviewRequisitionControl.Label = "Reconsultar Detalle - Control";
+            this.btnReReviewRequisitionControl.Name = "btnReReviewRequisitionControl";
+            this.btnReReviewRequisitionControl.ShowImage = true;
+            this.btnReReviewRequisitionControl.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReReviewRequisitionControl_Click);
+            // 
             // menuOptions
             // 
             this.menuOptions.Items.Add(this.cbMaxItems);
             this.menuOptions.Items.Add(this.cbSortItems);
+            this.menuOptions.Items.Add(this.cbAssuranceProcess);
+            this.menuOptions.Items.Add(this.btnConfigAssuranceSettings);
             this.menuOptions.Label = "Opciones";
             this.menuOptions.Name = "menuOptions";
             this.menuOptions.ShowImage = true;
@@ -160,6 +180,18 @@
             // 
             this.cbSortItems.Label = "Auto&Ordenar Elementos";
             this.cbSortItems.Name = "cbSortItems";
+            // 
+            // cbAssuranceProcess
+            // 
+            this.cbAssuranceProcess.Label = "Seguimiento a Garantías";
+            this.cbAssuranceProcess.Name = "cbAssuranceProcess";
+            // 
+            // btnConfigAssuranceSettings
+            // 
+            this.btnConfigAssuranceSettings.Label = "Configurar Opciones de Garantías";
+            this.btnConfigAssuranceSettings.Name = "btnConfigAssuranceSettings";
+            this.btnConfigAssuranceSettings.ShowImage = true;
+            this.btnConfigAssuranceSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnConfigAssuranceSettings_Click);
             // 
             // btnExcecuteRequisitionService
             // 
@@ -203,19 +235,12 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
-            // btnReviewRequisitionControl
+            // btnFormatMnttoAssurance
             // 
-            this.btnReviewRequisitionControl.Label = "Consultar Detalle - Control";
-            this.btnReviewRequisitionControl.Name = "btnReviewRequisitionControl";
-            this.btnReviewRequisitionControl.ShowImage = true;
-            this.btnReviewRequisitionControl.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewRequisitionControl_Click);
-            // 
-            // btnReReviewRequisitionControl
-            // 
-            this.btnReReviewRequisitionControl.Label = "Reconsultar Detalle - Control";
-            this.btnReReviewRequisitionControl.Name = "btnReReviewRequisitionControl";
-            this.btnReReviewRequisitionControl.ShowImage = true;
-            this.btnReReviewRequisitionControl.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReReviewRequisitionControl_Click);
+            this.btnFormatMnttoAssurance.Label = "Formato - Validación de Garantías";
+            this.btnFormatMnttoAssurance.Name = "btnFormatMnttoAssurance";
+            this.btnFormatMnttoAssurance.ShowImage = true;
+            this.btnFormatMnttoAssurance.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatMnttoAssurance_Click);
             // 
             // RibbonEllipse
             // 
@@ -257,6 +282,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnQueryRequisitions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewRequisitionControl;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReReviewRequisitionControl;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAssuranceProcess;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnConfigAssuranceSettings;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatMnttoAssurance;
     }
 
     partial class ThisRibbonCollection

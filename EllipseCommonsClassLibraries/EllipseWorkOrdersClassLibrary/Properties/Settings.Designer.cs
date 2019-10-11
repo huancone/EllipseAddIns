@@ -12,7 +12,7 @@ namespace EllipseWorkOrdersClassLibrary.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -70,6 +70,16 @@ namespace EllipseWorkOrdersClassLibrary.Properties {
         public string EllipseWorkOrdersClassLibrary_MaterialReqmntsService_MaterialReqmntsService {
             get {
                 return ((string)(this["EllipseWorkOrdersClassLibrary_MaterialReqmntsService_MaterialReqmntsService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/TodoListWorkOrderService")]
+        public string EllipseWorkOrdersClassLibrary_TodoListWorkOrderService_TodoListWorkOrderService {
+            get {
+                return ((string)(this["EllipseWorkOrdersClassLibrary_TodoListWorkOrderService_TodoListWorkOrderService"]));
             }
         }
     }

@@ -617,18 +617,26 @@ namespace EllipseMstExcelAddIn
             var i = TitleRow01 + 1;
             const int validationRow = TitleRow01 - 1;
 
+            //Para Servicios WSDL
             var opSheet = new EllipseMaintSchedTaskClassLibrary.MaintSchedTskService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
-                returnWarnings = Debugger.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings,
+                maxInstancesSpecified = true,
+                returnWarningsSpecified = Debugger.DebugWarnings,
             };
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
             var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
-
+            //
+            //Para Servicios POST
             var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, "POST");
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
+            //
+
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+
+
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
@@ -677,7 +685,10 @@ namespace EllipseMstExcelAddIn
 
                     var indicator = Convert.ToInt16(mst.SchedInd);
 
-                    mst.AllowMultiple = indicator == 4 ? "N" : "Y";
+                    if (indicator == 3 || indicator == 4)
+                        mst.AllowMultiple = "N";
+                    else
+                        mst.AllowMultiple = "Y";
 
                     var frequency = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
                     var nextSchedStat = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
@@ -741,8 +752,6 @@ namespace EllipseMstExcelAddIn
         public void UpdateMstList()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
-            _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlService);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -750,13 +759,24 @@ namespace EllipseMstExcelAddIn
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
             const int validationRow = TitleRow01 - 1;
+
+            //Para Servicios WSDL
             var opSheet = new EllipseMaintSchedTaskClassLibrary.MaintSchedTskService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
                 maxInstances = 100,
-                returnWarnings = Debugger.DebugWarnings
+                returnWarnings = Debugger.DebugWarnings,
+                maxInstancesSpecified = true,
+                returnWarningsSpecified = Debugger.DebugWarnings,
             };
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            //
+            //Para Servicios POST
+            var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, "POST");
+            _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
+            //
+
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -815,14 +835,18 @@ namespace EllipseMstExcelAddIn
                     var startMonth = MyUtilities.IsTrue(_cells.GetCell(28, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(28, i).Value) : null;
                     var startYear = MyUtilities.IsTrue(_cells.GetCell(29, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(29, i).Value) : null;
 
-                    if ( (indicator >= 1 && indicator <= 4) || indicator == 9 ) 
+                    if (string.IsNullOrWhiteSpace(mst.SchedInd))//No hay ajuste de indicador
+                    {
+                        MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
+                    }
+                    else if ( (indicator >= 1 && indicator <= 4) || indicator == 9 ) 
                     {
                         mst.NextSchedStat = nextSchedStat;
                         mst.NextSchedValue = nextSchedValue;
                         mst.NextSchedDate = nextSchedDate;
                         mst.SchedFreq1 = frequency;
-                        //MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
-                        MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
+                        MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
+                        //MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
                     }
                     else if (indicator >= 7 && indicator <= 8)
                     {
@@ -833,8 +857,8 @@ namespace EllipseMstExcelAddIn
                         mst.StartMonth = startMonth?.PadLeft(2, '0') ?? "";
                         mst.StartYear = startYear;
 
-                        //MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
-                        MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
+                        MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
+                        //MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
                     }
                     else
                     {

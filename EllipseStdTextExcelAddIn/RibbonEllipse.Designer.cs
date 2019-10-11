@@ -52,12 +52,18 @@
             this.menuRefCodes = this.Factory.CreateRibbonMenu();
             this.btnReviewRefCodes = this.Factory.CreateRibbonButton();
             this.btnUpdateRefCodes = this.Factory.CreateRibbonButton();
+            this.menuDocReferences = this.Factory.CreateRibbonMenu();
+            this.btnCreateDocRef = this.Factory.CreateRibbonButton();
+            this.btnLinkDocument = this.Factory.CreateRibbonButton();
+            this.btnUpdateDocument = this.Factory.CreateRibbonButton();
+            this.btnDeleteReference = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.btnCleanTable = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.grpStdText.SuspendLayout();
             this.box1.SuspendLayout();
             this.box2.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tab1
             // 
@@ -107,6 +113,7 @@
             // 
             this.menuActions.Items.Add(this.menuStdText);
             this.menuActions.Items.Add(this.menuRefCodes);
+            this.menuActions.Items.Add(this.menuDocReferences);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Items.Add(this.btnCleanTable);
             this.menuActions.Label = "Acciones";
@@ -188,6 +195,45 @@
             this.btnUpdateRefCodes.ShowImage = true;
             this.btnUpdateRefCodes.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateRefCodes_Click);
             // 
+            // menuDocReferences
+            // 
+            this.menuDocReferences.Items.Add(this.btnCreateDocRef);
+            this.menuDocReferences.Items.Add(this.btnLinkDocument);
+            this.menuDocReferences.Items.Add(this.btnUpdateDocument);
+            this.menuDocReferences.Items.Add(this.btnDeleteReference);
+            this.menuDocReferences.Label = "Document References";
+            this.menuDocReferences.Name = "menuDocReferences";
+            this.menuDocReferences.ShowImage = true;
+            // 
+            // btnCreateDocRef
+            // 
+            this.btnCreateDocRef.Label = "&Crear Documento";
+            this.btnCreateDocRef.Name = "btnCreateDocRef";
+            this.btnCreateDocRef.ShowImage = true;
+            this.btnCreateDocRef.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreateDocRef_Click);
+            // 
+            // btnLinkDocument
+            // 
+            this.btnLinkDocument.Label = "&Vincular Existente";
+            this.btnLinkDocument.Name = "btnLinkDocument";
+            this.btnLinkDocument.ShowImage = true;
+            this.btnLinkDocument.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLinkDocument_Click);
+            // 
+            // btnUpdateDocument
+            // 
+            this.btnUpdateDocument.Enabled = false;
+            this.btnUpdateDocument.Label = "&Actualizar Existente";
+            this.btnUpdateDocument.Name = "btnUpdateDocument";
+            this.btnUpdateDocument.ShowImage = true;
+            this.btnUpdateDocument.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateDocument_Click);
+            // 
+            // btnDeleteReference
+            // 
+            this.btnDeleteReference.Label = "&Eliminar Referencia";
+            this.btnDeleteReference.Name = "btnDeleteReference";
+            this.btnDeleteReference.ShowImage = true;
+            this.btnDeleteReference.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDeleteReference_Click);
+            // 
             // btnStopThread
             // 
             this.btnStopThread.Label = "&Detener Proceso";
@@ -216,6 +262,7 @@
             this.box1.PerformLayout();
             this.box2.ResumeLayout(false);
             this.box2.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
@@ -241,6 +288,11 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewRefCodes;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateRefCodes;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuDocReferences;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreateDocRef;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLinkDocument;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateDocument;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDeleteReference;
     }
 
     partial class ThisRibbonCollection

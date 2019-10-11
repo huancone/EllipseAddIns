@@ -166,6 +166,7 @@ namespace EllipseReferenceCodesClassLibrary
 
             return opContext;
         }
+
         public static RefCodesService.OperationContext GetRefCodesOpContext()
         {
             return new RefCodesService.OperationContext();

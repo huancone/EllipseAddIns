@@ -143,12 +143,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
-      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
-      <Name>EllipseCommonsClassLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/StdTextCustomService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\StdTextCustomService\</RelPath>
@@ -174,6 +168,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ventyx_logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
+      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
+      <Name>EllipseCommonsClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

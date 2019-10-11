@@ -1,0 +1,35 @@
+//Para ejecutar este código debe tener referenciados los siguientes namespaces
+
+//using Authenticator = EllipseProyectoExcelAddIn.AuthenticatorService;
+
+	private void Authenticate()
+        {
+            //creación del servicio
+            var service = new Authenticator.AuthenticatorService();
+            service.Url = @"http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/AuthenticatorService";
+            //creación del contexto de operación
+            var opContext = new Authenticator.OperationContext
+            {
+                district = "ICOR",
+                position = ""
+            };
+            try
+            {
+                var excelSheet = (Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
+
+                //Encabezado de consumo
+                var EllipseUser = "HHERNAND";
+                var EllipsePswd = "ene2014";
+                var EllipseDsct = "ICOR";
+                var EllipsePost = "COMC0";
+
+
+                ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDsct, EllipsePost);
+                //Recuerde que el encabezado SOAP es enviado con todas las solicitudes
+                service.authenticate(opContext);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Se ha producido un error al intentar realizar la autenticación. Asegúrese que los datos ingresados sean correctos e intente nuevamente." + "\n\n" + ex.Message);
+            }
+        }

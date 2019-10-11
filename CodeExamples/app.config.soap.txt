@@ -1,0 +1,14 @@
+<configuration>
+	<system.web>
+		<webServices>
+		  <soapExtensionTypes>
+			<add type="System.Web.Services.Ellipse.AuthenticationExtension, System.Web.Services.Ellipse" priority="1"/>
+		  </soapExtensionTypes>
+		</webServices>
+	</system.web>
+	<system.net>
+		<settings>
+		  <servicePointManager expect100Continue="false"/>
+		</settings>
+	</system.net>
+</configuration>

@@ -17,5 +17,8 @@
     <Setting Name="EllipseWorkOrdersClassLibrary_MaterialReqmntsService_MaterialReqmntsService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://ews-el8test.lmnerp03.cerrejon.com/ews/services/MaterialReqmntsService</Value>
     </Setting>
+    <Setting Name="EllipseWorkOrdersClassLibrary_TodoListWorkOrderService_TodoListWorkOrderService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/TodoListWorkOrderService</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

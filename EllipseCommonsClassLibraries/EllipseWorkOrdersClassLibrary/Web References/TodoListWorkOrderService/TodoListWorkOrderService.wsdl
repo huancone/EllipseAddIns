@@ -1,0 +1,1531 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://instances.m8mwp.types.ellipse.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:tns="http://todolistworkorder.m8mwp.service.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns3="http://service.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://todolistworkorder.m8mwp.service.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.m8mwp.types.ellipse.mincom.com">
+      <xsd:import namespace="http://todolistworkorder.m8mwp.service.ellipse.mincom.com" />
+      <xsd:import namespace="http://service.ellipse.mincom.com" />
+      <xsd:complexType name="ArrayOfWorkOrderTodoInstanceDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WorkOrderTodoInstanceDTO" nillable="true" type="ns2:WorkOrderTodoInstanceDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="owner">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrder">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="planStrDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderTaskDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="districtCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="notes">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10000" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="taskStatusM">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="neededForRelease">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="requiredByDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="externalReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="250" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="sequence">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999.0" />
+          <xsd:minInclusive value="-999999.0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderTask">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemName">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="woStatusM">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="planFinDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="todoListItemInstanceId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="expirationDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="statusCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="WorkOrderTodoInstanceDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
+              <xsd:element minOccurs="0" name="expirationDate" type="ns2:expirationDate" />
+              <xsd:element minOccurs="0" name="externalReference" type="ns2:externalReference" />
+              <xsd:element minOccurs="0" name="itemName" type="ns2:itemName" />
+              <xsd:element minOccurs="0" name="neededForRelease" type="ns2:neededForRelease" />
+              <xsd:element minOccurs="0" name="notes" type="ns2:notes" />
+              <xsd:element minOccurs="0" name="owner" type="ns2:owner" />
+              <xsd:element minOccurs="0" name="planFinDate" type="ns2:planFinDate" />
+              <xsd:element minOccurs="0" name="planStrDate" type="ns2:planStrDate" />
+              <xsd:element minOccurs="0" name="requiredByDate" type="ns2:requiredByDate" />
+              <xsd:element minOccurs="0" name="sequence" type="ns2:sequence" />
+              <xsd:element minOccurs="0" name="statusCode" type="ns2:statusCode" />
+              <xsd:element minOccurs="0" name="taskStatusM" type="ns2:taskStatusM" />
+              <xsd:element minOccurs="0" name="todoListItemInstanceId" type="ns2:todoListItemInstanceId" />
+              <xsd:element minOccurs="0" name="woStatusM" type="ns2:woStatusM" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns2:workOrder" />
+              <xsd:element minOccurs="0" name="workOrderDesc" type="ns2:workOrderDesc" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="ns2:workOrderTask" />
+              <xsd:element minOccurs="0" name="workOrderTaskDesc" type="ns2:workOrderTaskDesc" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfTodoListItemInstanceServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TodoListItemInstanceServiceResult" nillable="true" type="ns2:TodoListItemInstanceServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TodoListItemInstanceServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="todoListItemInstanceDTO" type="ns2:TodoListItemInstanceDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="TodoListItemInstanceDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="expirationDate" type="ns2:expirationDate" />
+              <xsd:element minOccurs="0" name="externalReference" type="ns2:externalReference" />
+              <xsd:element minOccurs="0" name="itemName" type="ns2:itemName" />
+              <xsd:element minOccurs="0" name="neededForRelease" type="ns2:neededForRelease" />
+              <xsd:element minOccurs="0" name="notes" type="ns2:notes" />
+              <xsd:element minOccurs="0" name="owner" type="ns2:owner" />
+              <xsd:element minOccurs="0" name="requiredByDate" type="ns2:requiredByDate" />
+              <xsd:element minOccurs="0" name="sequence" type="ns2:sequence" />
+              <xsd:element minOccurs="0" name="statusCode" type="ns2:statusCode" />
+              <xsd:element minOccurs="0" name="todoListItemInstanceId" type="ns2:todoListItemInstanceId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfTodoListWorkOrderDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TodoListWorkOrderDTO" nillable="true" type="ns2:TodoListWorkOrderDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="todoListWorkOrderId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="TodoListWorkOrderDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
+              <xsd:element minOccurs="0" name="todoListItemInstanceId" type="ns2:todoListItemInstanceId" />
+              <xsd:element minOccurs="0" name="todoListWorkOrderId" type="ns2:todoListWorkOrderId" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns2:workOrder" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="ns2:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfTodoListWorkOrderServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TodoListWorkOrderServiceResult" nillable="true" type="ns2:TodoListWorkOrderServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TodoListWorkOrderServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="todoListWorkOrderDTO" type="ns2:TodoListWorkOrderDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="WorkOrderTodoInstanceServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="workOrderTodoInstanceDTO" type="ns2:WorkOrderTodoInstanceDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="TodoListWorkOrderSearchParam">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:AbstractSearchParam">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns2:workOrder" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="ns2:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="dispatchType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="todoListId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="hasAssignTodo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assignTo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="todoListName">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="AssignTodoListDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="assignTo" type="ns2:assignTo" />
+              <xsd:element minOccurs="0" name="dispatchType" type="ns2:dispatchType" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
+              <xsd:element minOccurs="0" name="expirationDate" type="ns2:expirationDate" />
+              <xsd:element minOccurs="0" name="hasAssignTodo" type="ns2:hasAssignTodo" />
+              <xsd:element minOccurs="0" name="requiredByDate" type="ns2:requiredByDate" />
+              <xsd:element minOccurs="0" name="todoListId" type="ns2:todoListId" />
+              <xsd:element minOccurs="0" name="todoListName" type="ns2:todoListName" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns2:workOrder" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="ns2:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="AssignTodoListServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="assignTodoListDTO" type="ns2:AssignTodoListDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfRetrieveTodoInstancesServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="RetrieveTodoInstancesServiceResult" nillable="true" type="ns2:RetrieveTodoInstancesServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RetrieveTodoInstancesServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="todoListItemInstanceDTO" type="ns2:TodoListItemInstanceDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfAssignTodoListDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="AssignTodoListDTO" nillable="true" type="ns2:AssignTodoListDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfAssignTodoListServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="AssignTodoListServiceResult" nillable="true" type="ns2:AssignTodoListServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfTodoListWorkOrderBulkUpdateDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TodoListWorkOrderBulkUpdateDTO" nillable="true" type="ns2:TodoListWorkOrderBulkUpdateDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="requiredByDateUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="expirationDateUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkOwner">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkStatusCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="statusCodeUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkNeededForRelease">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkExternalReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="250" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkRequiredByDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="bulkExpirationDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="externalReferenceUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="ownerUnset">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:complexType name="TodoListWorkOrderBulkUpdateDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="bulkExpirationDate" type="ns2:bulkExpirationDate" />
+              <xsd:element minOccurs="0" name="bulkExternalReference" type="ns2:bulkExternalReference" />
+              <xsd:element minOccurs="0" name="bulkNeededForRelease" type="ns2:bulkNeededForRelease" />
+              <xsd:element minOccurs="0" name="bulkOwner" type="ns2:bulkOwner" />
+              <xsd:element minOccurs="0" name="bulkRequiredByDate" type="ns2:bulkRequiredByDate" />
+              <xsd:element minOccurs="0" name="bulkStatusCode" type="ns2:bulkStatusCode" />
+              <xsd:element minOccurs="0" name="expirationDateUnset" type="ns2:expirationDateUnset" />
+              <xsd:element minOccurs="0" name="externalReferenceUnset" type="ns2:externalReferenceUnset" />
+              <xsd:element minOccurs="0" name="ownerUnset" type="ns2:ownerUnset" />
+              <xsd:element minOccurs="0" name="requiredByDateUnset" type="ns2:requiredByDateUnset" />
+              <xsd:element minOccurs="0" name="statusCodeUnset" type="ns2:statusCodeUnset" />
+              <xsd:element minOccurs="0" name="todoToUpdate" type="ns2:WorkOrderTodoInstanceDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfTodoListWorkOrderBulkUpdateServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TodoListWorkOrderBulkUpdateServiceResult" nillable="true" type="ns2:TodoListWorkOrderBulkUpdateServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="TodoListWorkOrderBulkUpdateServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="todoListWorkOrderBulkUpdateDTO" type="ns2:TodoListWorkOrderBulkUpdateDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="overdueRequiredByDate">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="expirationDateFrom">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="searchType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="overduePlannedStartDate">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="plannedStartDateFrom">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="plannedStartDateTo">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="requiredByDateTo">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="expirationDateTo">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="requiredByDateFrom">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="includeClosed">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="overdueExpiredDate">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:complexType name="WorkGroupTodoInstanceSearchParam">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:AbstractSearchParam">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="crews" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="expirationDateFrom" type="ns2:expirationDateFrom" />
+              <xsd:element minOccurs="0" name="expirationDateTo" type="ns2:expirationDateTo" />
+              <xsd:element minOccurs="0" name="includeClosed" type="ns2:includeClosed" />
+              <xsd:element minOccurs="0" name="itemName" type="ns2:itemName" />
+              <xsd:element minOccurs="0" name="neededForRelease" type="ns2:neededForRelease" />
+              <xsd:element minOccurs="0" name="overdueExpiredDate" type="ns2:overdueExpiredDate" />
+              <xsd:element minOccurs="0" name="overduePlannedStartDate" type="ns2:overduePlannedStartDate" />
+              <xsd:element minOccurs="0" name="overdueRequiredByDate" type="ns2:overdueRequiredByDate" />
+              <xsd:element minOccurs="0" name="owner" type="ns2:owner" />
+              <xsd:element minOccurs="0" name="plannedStartDateFrom" type="ns2:plannedStartDateFrom" />
+              <xsd:element minOccurs="0" name="plannedStartDateTo" type="ns2:plannedStartDateTo" />
+              <xsd:element minOccurs="0" name="requiredByDateFrom" type="ns2:requiredByDateFrom" />
+              <xsd:element minOccurs="0" name="requiredByDateTo" type="ns2:requiredByDateTo" />
+              <xsd:element minOccurs="0" name="searchType" type="ns2:searchType" />
+              <xsd:element minOccurs="0" name="statusCode" type="ns2:statusCode" />
+              <xsd:element minOccurs="0" name="workGroup" type="tns:ArrayOfString" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWorkOrderTodoInstanceServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WorkOrderTodoInstanceServiceResult" nillable="true" type="ns2:WorkOrderTodoInstanceServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.ellipse.mincom.com">
+      <xsd:import namespace="http://errors.ellipse.mincom.com" />
+      <xsd:import namespace="http://instances.base.types.ellipse.mincom.com" />
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="ServiceDTO" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Base">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="customAttributes" type="ns5:ArrayOfAttribute" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:BaseServiceResult" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="BaseServiceResult" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errors" type="ns6:ArrayOfError" />
+          <xsd:element minOccurs="0" name="informationalMessages" type="ns6:ArrayOfMessage" />
+          <xsd:element minOccurs="0" name="warnings" type="ns6:ArrayOfWarning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractSearchParam" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="serviceRequiredAttributes" type="ns3:ServiceRequiredAttributes" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceRequiredAttributes" />
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
+      <xsd:complexType name="Base" abstract="true" />
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:import namespace="http://todolistworkorder.m8mwp.service.ellipse.mincom.com" />
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns5:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
+          <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://todolistworkorder.m8mwp.service.ellipse.mincom.com">
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://instances.m8mwp.types.ellipse.mincom.com" />
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleUpdateTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfWorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdateTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListItemInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDelete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfTodoListWorkOrderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDeleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="update">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:TodoListWorkOrderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:TodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:WorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:TodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleMoveDownTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfWorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleMoveDownTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListItemInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:TodoListWorkOrderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:TodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:WorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:WorkOrderTodoInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="search">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns2:TodoListWorkOrderSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns2:TodoListWorkOrderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfTodoListWorkOrderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="create">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:TodoListWorkOrderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:TodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleMoveUpTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfWorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleMoveUpTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListItemInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="assignTodoList">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:AssignTodoListDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="assignTodoListResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:AssignTodoListServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="retrieveTodoInstances">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns2:TodoListWorkOrderSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns2:TodoListItemInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="retrieveTodoInstancesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfRetrieveTodoInstancesServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:TodoListWorkOrderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:TodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDeleteTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfWorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDeleteTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:WorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:TodoListItemInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleAssignTodoList">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfAssignTodoListDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleAssignTodoListResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfAssignTodoListServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:WorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:TodoListItemInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleBulkUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfTodoListWorkOrderBulkUpdateDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleBulkUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListWorkOrderBulkUpdateServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="searchByWorkGroup">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns2:WorkGroupTodoInstanceSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns2:WorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchByWorkGroupResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfWorkOrderTodoInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfWorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfWorkOrderTodoInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="moveUpTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:WorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="moveUpTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:TodoListItemInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreateTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfWorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreateTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListItemInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="bulkUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:TodoListWorkOrderBulkUpdateDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="bulkUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:TodoListWorkOrderBulkUpdateServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="moveDownTodoInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:WorkOrderTodoInstanceDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="moveDownTodoInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:TodoListItemInstanceServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfTodoListWorkOrderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfTodoListWorkOrderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfTodoListWorkOrderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfMessage">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Message">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fieldId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="localisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="messageId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageText" type="xsd:string" />
+          <xsd:element minOccurs="0" name="parentInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarning">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Warning" nillable="true" type="ns6:Warning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Warning">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfError">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Error">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="bulkUpdateResponse">
+    <wsdl:part name="parameters" element="tns:bulkUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleAssignTodoListRequest">
+    <wsdl:part name="parameters" element="tns:multipleAssignTodoList" />
+  </wsdl:message>
+  <wsdl:message name="multipleAssignTodoListResponse">
+    <wsdl:part name="parameters" element="tns:multipleAssignTodoListResponse" />
+  </wsdl:message>
+  <wsdl:message name="assignTodoListResponse">
+    <wsdl:part name="parameters" element="tns:assignTodoListResponse" />
+  </wsdl:message>
+  <wsdl:message name="assignTodoListRequest">
+    <wsdl:part name="parameters" element="tns:assignTodoList" />
+  </wsdl:message>
+  <wsdl:message name="searchByWorkGroupRequest">
+    <wsdl:part name="parameters" element="tns:searchByWorkGroup" />
+  </wsdl:message>
+  <wsdl:message name="createRequest">
+    <wsdl:part name="parameters" element="tns:create" />
+  </wsdl:message>
+  <wsdl:message name="moveUpTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:moveUpTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="parameters" element="tns:deleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleBulkUpdateResponse">
+    <wsdl:part name="parameters" element="tns:multipleBulkUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="moveUpTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:moveUpTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:multipleDeleteTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteRequest">
+    <wsdl:part name="parameters" element="tns:multipleDelete" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:multipleUpdateTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleMoveDownTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:multipleMoveDownTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="parameters" element="tns:delete" />
+  </wsdl:message>
+  <wsdl:message name="searchByWorkGroupResponse">
+    <wsdl:part name="parameters" element="tns:searchByWorkGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="retrieveTodoInstancesResponse">
+    <wsdl:part name="parameters" element="tns:retrieveTodoInstancesResponse" />
+  </wsdl:message>
+  <wsdl:message name="moveDownTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:moveDownTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="updateTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:updateTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="createTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:createTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleMoveUpTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:multipleMoveUpTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="deleteTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:deleteTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreateTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="searchRequest">
+    <wsdl:part name="parameters" element="tns:search" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleMoveDownTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:multipleMoveDownTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:updateTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="readTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:readTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="retrieveTodoInstancesRequest">
+    <wsdl:part name="parameters" element="tns:retrieveTodoInstances" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateResponse">
+    <wsdl:part name="parameters" element="tns:multipleUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="readTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:readTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:multipleUpdateTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="bulkUpdateRequest">
+    <wsdl:part name="parameters" element="tns:bulkUpdate" />
+  </wsdl:message>
+  <wsdl:message name="updateRequest">
+    <wsdl:part name="parameters" element="tns:update" />
+  </wsdl:message>
+  <wsdl:message name="multipleMoveUpTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:multipleMoveUpTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="multipleBulkUpdateRequest">
+    <wsdl:part name="parameters" element="tns:multipleBulkUpdate" />
+  </wsdl:message>
+  <wsdl:message name="updateResponse">
+    <wsdl:part name="parameters" element="tns:updateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:deleteTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateRequest">
+    <wsdl:part name="parameters" element="tns:multipleUpdate" />
+  </wsdl:message>
+  <wsdl:message name="createTodoInstanceRequest">
+    <wsdl:part name="parameters" element="tns:createTodoInstance" />
+  </wsdl:message>
+  <wsdl:message name="moveDownTodoInstanceResponse">
+    <wsdl:part name="parameters" element="tns:moveDownTodoInstanceResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreate" />
+  </wsdl:message>
+  <wsdl:message name="searchResponse">
+    <wsdl:part name="parameters" element="tns:searchResponse" />
+  </wsdl:message>
+  <wsdl:portType name="TodoListWorkOrder">
+    <wsdl:operation name="multipleUpdateTodoInstance">
+      <wsdl:input name="multipleUpdateTodoInstanceRequest" message="tns:multipleUpdateTodoInstanceRequest" />
+      <wsdl:output name="multipleUpdateTodoInstanceResponse" message="tns:multipleUpdateTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdl:input name="multipleDeleteRequest" message="tns:multipleDeleteRequest" />
+      <wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="update">
+      <wsdl:input name="updateRequest" message="tns:updateRequest" />
+      <wsdl:output name="updateResponse" message="tns:updateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteTodoInstance">
+      <wsdl:input name="deleteTodoInstanceRequest" message="tns:deleteTodoInstanceRequest" />
+      <wsdl:output name="deleteTodoInstanceResponse" message="tns:deleteTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleMoveDownTodoInstance">
+      <wsdl:input name="multipleMoveDownTodoInstanceRequest" message="tns:multipleMoveDownTodoInstanceRequest" />
+      <wsdl:output name="multipleMoveDownTodoInstanceResponse" message="tns:multipleMoveDownTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input name="deleteRequest" message="tns:deleteRequest" />
+      <wsdl:output name="deleteResponse" message="tns:deleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="readTodoInstance">
+      <wsdl:input name="readTodoInstanceRequest" message="tns:readTodoInstanceRequest" />
+      <wsdl:output name="readTodoInstanceResponse" message="tns:readTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdl:input name="searchRequest" message="tns:searchRequest" />
+      <wsdl:output name="searchResponse" message="tns:searchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdl:input name="multipleUpdateRequest" message="tns:multipleUpdateRequest" />
+      <wsdl:output name="multipleUpdateResponse" message="tns:multipleUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input name="createRequest" message="tns:createRequest" />
+      <wsdl:output name="createResponse" message="tns:createResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleMoveUpTodoInstance">
+      <wsdl:input name="multipleMoveUpTodoInstanceRequest" message="tns:multipleMoveUpTodoInstanceRequest" />
+      <wsdl:output name="multipleMoveUpTodoInstanceResponse" message="tns:multipleMoveUpTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="assignTodoList">
+      <wsdl:input name="assignTodoListRequest" message="tns:assignTodoListRequest" />
+      <wsdl:output name="assignTodoListResponse" message="tns:assignTodoListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieveTodoInstances">
+      <wsdl:input name="retrieveTodoInstancesRequest" message="tns:retrieveTodoInstancesRequest" />
+      <wsdl:output name="retrieveTodoInstancesResponse" message="tns:retrieveTodoInstancesResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleDeleteTodoInstance">
+      <wsdl:input name="multipleDeleteTodoInstanceRequest" message="tns:multipleDeleteTodoInstanceRequest" />
+      <wsdl:output name="multipleDeleteTodoInstanceResponse" message="tns:multipleDeleteTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="createTodoInstance">
+      <wsdl:input name="createTodoInstanceRequest" message="tns:createTodoInstanceRequest" />
+      <wsdl:output name="createTodoInstanceResponse" message="tns:createTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleAssignTodoList">
+      <wsdl:input name="multipleAssignTodoListRequest" message="tns:multipleAssignTodoListRequest" />
+      <wsdl:output name="multipleAssignTodoListResponse" message="tns:multipleAssignTodoListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="updateTodoInstance">
+      <wsdl:input name="updateTodoInstanceRequest" message="tns:updateTodoInstanceRequest" />
+      <wsdl:output name="updateTodoInstanceResponse" message="tns:updateTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleBulkUpdate">
+      <wsdl:input name="multipleBulkUpdateRequest" message="tns:multipleBulkUpdateRequest" />
+      <wsdl:output name="multipleBulkUpdateResponse" message="tns:multipleBulkUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="searchByWorkGroup">
+      <wsdl:input name="searchByWorkGroupRequest" message="tns:searchByWorkGroupRequest" />
+      <wsdl:output name="searchByWorkGroupResponse" message="tns:searchByWorkGroupResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadTodoInstance">
+      <wsdl:input name="multipleReadTodoInstanceRequest" message="tns:multipleReadTodoInstanceRequest" />
+      <wsdl:output name="multipleReadTodoInstanceResponse" message="tns:multipleReadTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="moveUpTodoInstance">
+      <wsdl:input name="moveUpTodoInstanceRequest" message="tns:moveUpTodoInstanceRequest" />
+      <wsdl:output name="moveUpTodoInstanceResponse" message="tns:moveUpTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreateTodoInstance">
+      <wsdl:input name="multipleCreateTodoInstanceRequest" message="tns:multipleCreateTodoInstanceRequest" />
+      <wsdl:output name="multipleCreateTodoInstanceResponse" message="tns:multipleCreateTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="bulkUpdate">
+      <wsdl:input name="bulkUpdateRequest" message="tns:bulkUpdateRequest" />
+      <wsdl:output name="bulkUpdateResponse" message="tns:bulkUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="moveDownTodoInstance">
+      <wsdl:input name="moveDownTodoInstanceRequest" message="tns:moveDownTodoInstanceRequest" />
+      <wsdl:output name="moveDownTodoInstanceResponse" message="tns:moveDownTodoInstanceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
+      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TodoListWorkOrderServiceHttpBinding" type="tns:TodoListWorkOrder">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="multipleUpdateTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUpdateTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleUpdateTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="update">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="updateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleMoveDownTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleMoveDownTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleMoveDownTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="readTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleMoveUpTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleMoveUpTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleMoveUpTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="assignTodoList">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="assignTodoListRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="assignTodoListResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveTodoInstances">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveTodoInstancesRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveTodoInstancesResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleDeleteTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleAssignTodoList">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleAssignTodoListRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleAssignTodoListResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="updateTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleBulkUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleBulkUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleBulkUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchByWorkGroup">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchByWorkGroupRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchByWorkGroupResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="moveUpTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="moveUpTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="moveUpTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreateTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="bulkUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="bulkUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="bulkUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="moveDownTodoInstance">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="moveDownTodoInstanceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="moveDownTodoInstanceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TodoListWorkOrderService">
+    <wsdl:port name="TodoListWorkOrderServiceHttpPort" binding="tns:TodoListWorkOrderServiceHttpBinding">
+      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/TodoListWorkOrderService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

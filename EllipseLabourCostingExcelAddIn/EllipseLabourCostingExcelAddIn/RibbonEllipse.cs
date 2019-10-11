@@ -1016,7 +1016,14 @@ namespace EllipseLabourCostingExcelAddIn
                         }
                         else
                         {
-                            _cells.GetCell(Mse850ResultColumn, i).Value = string.Join(",", reply.errors.Select(p => p.messageText).ToArray());
+                            string errorMessage = null;
+                            if (reply == null)
+                                errorMessage = "NO SE HA ENCONTRADO UN REGISTRO PARA ELIMINAR";
+                            else if (reply != null && reply.errors.Length > 0)
+                                errorMessage = string.Join(",", reply.errors.Select(p => p.messageText).ToArray());
+                            else
+                                errorMessage = "SE HA PRODUCIDO UN ERROR AL INTENTAR ELIMINAR UN REGISTRO";
+                            _cells.GetCell(Mse850ResultColumn, i).Value = errorMessage;
                             _cells.GetCell(Mse850ResultColumn, i).Style = StyleConstants.Error;
                             _cells.GetCell(Mse850ResultColumn, i).Select();
                         }

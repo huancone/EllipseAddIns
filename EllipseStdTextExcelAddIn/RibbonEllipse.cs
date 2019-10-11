@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows.Forms;
-using System.Web.Services.Ellipse;
+using System.Globalization;
+using System.Linq;
 using System.Threading;
+using System.Web.Services.Ellipse;
+using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
+using EllipseCommonsClassLibrary.Utilities;
 using Microsoft.Office.Tools.Ribbon;
 using Excel = Microsoft.Office.Interop.Excel; 
 using EllipseStdTextClassLibrary;
 using EllipseReferenceCodesClassLibrary;
+using EllipseDocumentReferenceClassLibrary;
 
 namespace EllipseStdTextExcelAddIn
 {
@@ -23,12 +28,19 @@ namespace EllipseStdTextExcelAddIn
         private Excel.Application _excelApp;
         private const string SheetName01 = "StdText";
         private const string SheetName02 = "ReferenceCodes";
+        private const string SheetName03 = "DocReferences";
         private const int TitleRow01 = 5;
         private const int TitleRow02 = 5;
+        private const int TitleRow03 = 5;
         private const int ResultColumn01 = 6;
         private const int ResultColumn02 = 10;
+        private const int ResultColumn03 = 14;
         private const string TableName01 = "StdTextTable";
         private const string TableName02 = "RefCodeTable";
+        private const string TableName03 = "DocRefTable";
+
+        private const string ValidationSheetName = "ValidationData";
+
         private Thread _thread;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
@@ -51,106 +63,170 @@ namespace EllipseStdTextExcelAddIn
 
         private void btnGetHeaderAndText_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+            try
             {
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() == DialogResult.OK)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName01))
                 {
-                    GetStdText(true, true);
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => GetStdText(true, true));
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
                 }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
             }
-            else
-                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:GetStdText(true, true)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private void btnUpdateHeaderAndText_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+            try
             {
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() == DialogResult.OK)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName01))
                 {
-                    SetStdText(true, true);
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => SetStdText(true, true));
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
                 }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
             }
-            else
-                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:SetStdText(true, true)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+            
         }
 
         private void btnGetHeaderOnly_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+            try
             {
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() == DialogResult.OK)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName01))
                 {
-                    GetStdText(true, false);
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => GetStdText(true, false));
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
                 }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
             }
-            else
-                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:GetStdText(true, false)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private void btnSetHeaderOnly_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+            try
             {
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment= drpEnvironment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() == DialogResult.OK)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName01))
                 {
-                    SetStdText(true, false);
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => SetStdText(true, false));
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
                 }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
             }
-            else
-                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:SetStdText(true, false)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private void btnGetTextOnly_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+            try
             {
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() == DialogResult.OK)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName01))
                 {
-                    GetStdText(false, true);
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => GetStdText(false, true));
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
                 }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
             }
-            else
-                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:GetStdText(false, true)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
         private void btnSetTextOnly_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+            try
             {
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() == DialogResult.OK)
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName01))
                 {
-                    SetStdText(false, true);
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => SetStdText(false, true));
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
                 }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
             }
-            else
-                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:SetStdText(false, true)", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
 
-        public void FormatSheet()
+        private void FormatSheet()
         {
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
                
-                //CONSTRUYO LA HOJA 1
+
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
                     _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
+                _cells.CreateNewWorksheet(ValidationSheetName);//hoja de validación
+
+                //CONSTRUYO LA HOJA 1
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
@@ -201,7 +277,7 @@ namespace EllipseStdTextExcelAddIn
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("A1", "B2");
 
-                _cells.GetCell("C1").Value = "STD TEXT - ELLIPSE 8";
+                _cells.GetCell("C1").Value = "REFERENCE CODES - ELLIPSE 8";
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
@@ -244,18 +320,93 @@ namespace EllipseStdTextExcelAddIn
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
 
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-                
+               
+
+                //CONSTRUYO LA HOJA 3 - DOCUMENT REFERENCES
+                _excelApp.ActiveWorkbook.Sheets[3].Select(Type.Missing);
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName03;
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A1", "B2");
+
+                _cells.GetCell("C1").Value = "DOCUMENT REFERENCES - ELLIPSE 8";
+                _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("C1", "J2");
+
+                _cells.GetCell("A3").Value = "DISTRITO";
+                _cells.GetCell("B3").Value = "ICOR";
+                _cells.GetCell("A3").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetCell("B3").Style = _cells.GetStyle(StyleConstants.Select);
+
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+
+
+                _cells.GetCell(1, TitleRow03).Value = "Reference Type";
+                _cells.GetCell(1, TitleRow03).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(2, TitleRow03).Value = "Reference No";
+                _cells.GetCell(2, TitleRow03).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(3, TitleRow03).Value = "Reference Other";
+                _cells.GetCell(3, TitleRow03).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(4, TitleRow03).Value = "Document No";
+                _cells.GetCell(4, TitleRow03).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(5, TitleRow03).Value = "Document Reference";
+                _cells.GetCell(5, TitleRow03).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(6, TitleRow03).Value = "Prefix";
+                _cells.GetCell(6, TitleRow03).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(7, TitleRow03).Value = "Document Type";
+                _cells.GetCell(7, TitleRow03).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(8, TitleRow03).Value = "Version Status";
+                _cells.GetCell(8, TitleRow03).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(9, TitleRow03).Value = "Version Type";
+                _cells.GetCell(9, TitleRow03).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(10, TitleRow03).Value = "Version No";
+                _cells.GetCell(10, TitleRow03).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(11, TitleRow03).Value = "Description";
+                _cells.GetCell(11, TitleRow03).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(12, TitleRow03).Value = "Electronic Reference";
+                _cells.GetCell(12, TitleRow03).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(13, TitleRow03).Value = "Electronic Type";
+                _cells.GetCell(13, TitleRow03).Style = StyleConstants.TitleOptional;
+
+
+
+                _cells.GetCell(ResultColumn03, TitleRow03).Value = "RESULTADO";
+                _cells.GetCell(ResultColumn03, TitleRow03).Style = StyleConstants.TitleResult;
+
+                var refTypeCodes = _eFunctions.GetItemCodes("DOLT").Select(item => item.code + " - " + item.description).ToList();
+                var docTypeCodes = _eFunctions.GetItemCodes("DO").Select(item => item.code + " - " + item.description).ToList();
+                var versionTypeCodes = _eFunctions.GetItemCodes("VT").Select(item => item.code + " - " + item.description).ToList();
+                var versionStatusCodes = _eFunctions.GetItemCodes("DOVS").Select(item => item.code + " - " + item.description).ToList();
+                var elecTypeCodes = _eFunctions.GetItemCodes("DOET").Select(item => item.code + " - " + item.description).ToList();
+
+                _cells.SetValidationList(_cells.GetCell(1, TitleRow03 + 1), refTypeCodes, ValidationSheetName, 1, false);
+                _cells.SetValidationList(_cells.GetCell(7, TitleRow03 + 1), docTypeCodes, ValidationSheetName, 2, false);
+                _cells.SetValidationList(_cells.GetCell(8, TitleRow03 + 1), versionStatusCodes, ValidationSheetName, 3, false);
+                _cells.SetValidationList(_cells.GetCell(9, TitleRow03 + 1), versionTypeCodes, ValidationSheetName, 4, false);
+                _cells.SetValidationList(_cells.GetCell(13, TitleRow03 + 1), elecTypeCodes, ValidationSheetName, 5, false);
+
+                _cells.GetRange(1, TitleRow03 + 1, ResultColumn03, TitleRow03 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow03, ResultColumn03, TitleRow03 + 1), TableName03);
+
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+
                 _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
             }
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:formatSheet()",
                     "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja." + "\n\n" + ex.Message);
             }
         }
 
-        public void GetStdText(bool getHeader, bool getText)
+        private void GetStdText(bool getHeader, bool getText)
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
@@ -303,7 +454,8 @@ namespace EllipseStdTextExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-        public void SetStdText(bool setHeader, bool setText)
+
+        private void SetStdText(bool setHeader, bool setText)
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
@@ -367,7 +519,8 @@ namespace EllipseStdTextExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-        public void ReviewRefCodesList()
+
+        private void ReviewRefCodesList()
         {
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
@@ -438,7 +591,7 @@ namespace EllipseStdTextExcelAddIn
             if (_cells != null) _cells.SetCursorDefault();
         }
 
-        public void UpdateRefCodesList()
+        private void UpdateRefCodesList()
         {
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
@@ -514,6 +667,7 @@ namespace EllipseStdTextExcelAddIn
             else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02)
                 _cells.ClearTableRange(TableName02);
         }
+
         private void btnReviewRefCodes_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -565,6 +719,512 @@ namespace EllipseStdTextExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
+        private void btnCreateDocRef_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName03))
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => CreateDocumentReference());
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:CreateDocumentReference()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void btnLinkDocument_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName03))
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => LinkDocumentReference());
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:CreateDocumentReference()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void btnUpdateDocument_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName03))
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => UpdateDocumentReference());
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:CreateDocumentReference()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void btnDeleteReference_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName03))
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => DeleteDocumentReference());
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:CreateDocumentReference()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        private void CreateDocumentReference()
+        {
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
+
+            var drOpContext = DocumentReferenceActions.GetDocRefOpContext(district, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            var i = TitleRow03 + 1;
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var refType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
+                    var refNo = _cells.GetCell(2, i).Value;
+                    var refOther = _cells.GetCell(3, i).Value;
+                    var docNo = _cells.GetCell(4, i).Value;
+                    var docRef = _cells.GetCell(5, i).Value;
+                    var refPrefix = _cells.GetCell(6, i).Value;
+                    var docType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value));
+                    var versionType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
+                    var versionStatus = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value));
+                    var versionNo = _cells.GetCell(10, i).Value;
+                    var docName = _cells.GetCell(11, i).Value;
+                    var elecRef = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value));
+                    var elecType = _cells.GetCell(13, i).Value;
+
+                    var item = new DocumentReferenceItem();
+                    item.District = string.IsNullOrWhiteSpace(district) ? null : district;
+                    item.DocRefType = string.IsNullOrWhiteSpace(refType) ? null : refType;
+                    item.DocReference = string.IsNullOrWhiteSpace(refNo) ? null : refNo;
+                    item.DocRefOther = string.IsNullOrWhiteSpace(refOther) ? null : refOther;
+                    item.DocumentNo = string.IsNullOrWhiteSpace(docNo) ? null : docNo;
+                    item.DocumentRef = string.IsNullOrWhiteSpace(docRef) ? null : docRef;
+                    item.DocPrefix = string.IsNullOrWhiteSpace(refPrefix) ? null : refPrefix;
+                    item.DocumentType = string.IsNullOrWhiteSpace(docType) ? null : docType;
+                    item.VerType = string.IsNullOrWhiteSpace(versionType) ? null : versionType;
+                    item.VerStatus = string.IsNullOrWhiteSpace(versionStatus) ? null : versionStatus;
+                    item.DocVerNo = string.IsNullOrWhiteSpace(versionNo) ? null : versionNo;
+                    item.DocumentName1 = string.IsNullOrWhiteSpace(docName) ? null : docName;
+                    item.ElecRef = string.IsNullOrWhiteSpace(elecRef) ? null : elecRef;
+                    item.ElecType = string.IsNullOrWhiteSpace(elecType) ? null : elecType;
+
+                    var reply = DocumentReferenceActions.CreateDocument(urlService, drOpContext, item);
+                    var successMessage = "CREADO";
+
+                    if (reply.errors != null && reply.errors.Length > 0)
+                    {
+                        string error = "";
+                        foreach (var err in reply.errors)
+                            error = error + err.messageText + "\n";
+
+                        if (error.Contains("DOCUMENT ALREADY EXISTS"))
+                        {
+                            reply = DocumentReferenceActions.LinkDocument(urlService, drOpContext, item);
+                            successMessage = "VINCULADO. DOCUMENTO YA EXISTENTE";
+
+                            //revalido el error
+                            if (reply.errors != null && reply.errors.Length > 0)
+                            {
+                                error = "";
+                                foreach (var err in reply.errors)
+                                    error = error + err.messageText + "\n";
+                                throw new Exception(error);
+                            }
+                        }
+                        else
+                            throw new Exception(error);
+                    }
+
+                    var newItem = new DocumentReferenceItem(reply.documentReferenceDTO);
+
+                    _cells.GetCell(1, i).Value = "" + newItem.DocRefType;
+                    _cells.GetCell(2, i).Value = "" + newItem.DocReference;
+                    _cells.GetCell(3, i).Value = "" + newItem.DocRefOther;
+                    _cells.GetCell(4, i).Value = "" + newItem.DocumentNo;
+                    _cells.GetCell(5, i).Value = "" + newItem.DocumentRef;
+                    _cells.GetCell(6, i).Value = "" + newItem.DocPrefix;
+                    _cells.GetCell(7, i).Value = "" + newItem.DocumentType;
+                    _cells.GetCell(8, i).Value = "" + newItem.VerStatus;
+                    _cells.GetCell(9, i).Value = "" + newItem.VerType;
+                    _cells.GetCell(10, i).Value = "" + newItem.DocVerNo;
+                    _cells.GetCell(11, i).Value = "" + newItem.DocumentName1;
+                    _cells.GetCell(12, i).Value = "" + newItem.ElecRef;
+                    _cells.GetCell(13, i).Value = "" + newItem.ElecType;
+
+                    _cells.GetCell(ResultColumn03, i).Value = successMessage;
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:UpdateRefCodesList()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void LinkDocumentReference()
+        {
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
+
+            var drOpContext = DocumentReferenceActions.GetDocRefOpContext(district, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            var i = TitleRow03 + 1;
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var refType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
+                    var refNo = _cells.GetCell(2, i).Value;
+                    var refOther = _cells.GetCell(3, i).Value;
+                    var docNo = _cells.GetCell(4, i).Value;
+                    var docRef = _cells.GetCell(5, i).Value;
+                    var refPrefix = _cells.GetCell(6, i).Value;
+                    var docType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value));
+                    var versionType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
+                    var versionStatus = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value));
+                    var versionNo = _cells.GetCell(10, i).Value;
+                    var docName = _cells.GetCell(11, i).Value;
+                    var elecRef = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value));
+                    var elecType = _cells.GetCell(13, i).Value;
+
+                    var item = new DocumentReferenceItem();
+                    item.District = string.IsNullOrWhiteSpace(district) ? null : district;
+                    item.DocRefType = string.IsNullOrWhiteSpace(refType) ? null : refType;
+                    item.DocReference = string.IsNullOrWhiteSpace(refNo) ? null : refNo;
+                    item.DocRefOther = string.IsNullOrWhiteSpace(refOther) ? null : refOther;
+                    item.DocumentNo = string.IsNullOrWhiteSpace(docNo) ? null : docNo;
+                    item.DocumentRef = string.IsNullOrWhiteSpace(docRef) ? null : docRef;
+                    item.DocPrefix = string.IsNullOrWhiteSpace(refPrefix) ? null : refPrefix;
+                    item.DocumentType = string.IsNullOrWhiteSpace(docType) ? null : docType;
+                    item.VerType = string.IsNullOrWhiteSpace(versionType) ? null : versionType;
+                    item.VerStatus = string.IsNullOrWhiteSpace(versionStatus) ? null : versionStatus;
+                    item.DocVerNo = string.IsNullOrWhiteSpace(versionNo) ? null : versionNo;
+                    item.DocumentName1 = string.IsNullOrWhiteSpace(docName) ? null : docName;
+                    item.ElecRef = string.IsNullOrWhiteSpace(elecRef) ? null : elecRef;
+                    item.ElecType = string.IsNullOrWhiteSpace(elecType) ? null : elecType;
+
+                    var reply = DocumentReferenceActions.LinkDocument(urlService, drOpContext, item);
+
+                    if(reply.errors != null && reply.errors.Length > 0)
+                    {
+                        string error = "";
+                        foreach(var err in reply.errors)
+                        {
+                            error = error + err.messageText + "\n";
+                        }
+                        throw new Exception(error);
+                    }
+                    var newItem = new DocumentReferenceItem(reply.documentReferenceDTO);
+
+                    _cells.GetCell(1, i).Value = "" + newItem.DocRefType;
+                    _cells.GetCell(2, i).Value = "" + newItem.DocReference;
+                    _cells.GetCell(3, i).Value = "" + newItem.DocRefOther;
+                    _cells.GetCell(4, i).Value = "" + newItem.DocumentNo;
+                    _cells.GetCell(5, i).Value = "" + newItem.DocumentRef;
+                    _cells.GetCell(6, i).Value = "" + newItem.DocPrefix;
+                    _cells.GetCell(7, i).Value = "" + newItem.DocumentType;
+                    _cells.GetCell(8, i).Value = "" + newItem.VerStatus;
+                    _cells.GetCell(9, i).Value = "" + newItem.VerType;
+                    _cells.GetCell(10, i).Value = "" + newItem.DocVerNo;
+                    _cells.GetCell(11, i).Value = "" + newItem.DocumentName1;
+                    _cells.GetCell(12, i).Value = "" + newItem.ElecRef;
+                    _cells.GetCell(13, i).Value = "" + newItem.ElecType;
+
+
+                    _cells.GetCell(ResultColumn03, i).Value = "VINCULADO";
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:LinkDocumentReference()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void UpdateDocumentReference()
+        {
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
+
+            var drOpContext = DocumentReferenceActions.GetDocRefOpContext(district, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            var i = TitleRow03 + 1;
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var refType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
+                    var refNo = _cells.GetCell(2, i).Value;
+                    var refOther = _cells.GetCell(3, i).Value;
+                    var docNo = _cells.GetCell(4, i).Value;
+                    var docRef = _cells.GetCell(5, i).Value;
+                    var refPrefix = _cells.GetCell(6, i).Value;
+                    var docType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value));
+                    var versionType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
+                    var versionStatus = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value));
+                    var versionNo = _cells.GetCell(10, i).Value;
+                    var docName = _cells.GetCell(11, i).Value;
+                    var elecRef = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value));
+                    var elecType = _cells.GetCell(13, i).Value;
+
+                    var item = new DocumentReferenceItem();
+                    item.District = string.IsNullOrWhiteSpace(district) ? null : district;
+                    item.DocRefType = string.IsNullOrWhiteSpace(refType) ? null : refType;
+                    item.DocReference = string.IsNullOrWhiteSpace(refNo) ? null : refNo;
+                    item.DocRefOther = string.IsNullOrWhiteSpace(refOther) ? null : refOther;
+                    item.DocumentNo = string.IsNullOrWhiteSpace(docNo) ? null : docNo;
+                    item.DocumentRef = string.IsNullOrWhiteSpace(docRef) ? null : docRef;
+                    item.DocPrefix = string.IsNullOrWhiteSpace(refPrefix) ? null : refPrefix;
+                    item.DocumentType = string.IsNullOrWhiteSpace(docType) ? null : docType;
+                    item.VerType = string.IsNullOrWhiteSpace(versionType) ? null : versionType;
+                    item.VerStatus = string.IsNullOrWhiteSpace(versionStatus) ? null : versionStatus;
+                    item.DocVerNo = string.IsNullOrWhiteSpace(versionNo) ? null : versionNo;
+                    item.DocumentName1 = string.IsNullOrWhiteSpace(docName) ? null : docName;
+                    item.ElecRef = string.IsNullOrWhiteSpace(elecRef) ? null : elecRef;
+                    item.ElecType = string.IsNullOrWhiteSpace(elecType) ? null : elecType;
+
+                    var reply = DocumentReferenceActions.UpdateDocument(urlService, drOpContext, item);
+
+                    if (reply.errors != null && reply.errors.Length > 0)
+                    {
+                        string error = "";
+                        foreach (var err in reply.errors)
+                        {
+                            error = error + err.messageText + "\n";
+                        }
+                        throw new Exception(error);
+                    }
+                    var newItem = new DocumentReferenceItem(reply.documentReferenceDTO);
+
+                    _cells.GetCell(1, i).Value = "" + newItem.DocRefType;
+                    _cells.GetCell(2, i).Value = "" + newItem.DocReference;
+                    _cells.GetCell(3, i).Value = "" + newItem.DocRefOther;
+                    _cells.GetCell(4, i).Value = "" + newItem.DocumentNo;
+                    _cells.GetCell(5, i).Value = "" + newItem.DocumentRef;
+                    _cells.GetCell(6, i).Value = "" + newItem.DocPrefix;
+                    _cells.GetCell(7, i).Value = "" + newItem.DocumentType;
+                    _cells.GetCell(8, i).Value = "" + newItem.VerStatus;
+                    _cells.GetCell(9, i).Value = "" + newItem.VerType;
+                    _cells.GetCell(10, i).Value = "" + newItem.DocVerNo;
+                    _cells.GetCell(11, i).Value = "" + newItem.DocumentName1;
+                    _cells.GetCell(12, i).Value = "" + newItem.ElecRef;
+                    _cells.GetCell(13, i).Value = "" + newItem.ElecType;
+
+                    _cells.GetCell(ResultColumn03, i).Value = "ACTUALIZADO";
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:UpdateDocumentReference()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void DeleteDocumentReference()
+        {
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            district = string.IsNullOrWhiteSpace(district) ? "ICOR" : district;
+
+            var drOpContext = DocumentReferenceActions.GetDocRefOpContext(district, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            var i = TitleRow03 + 1;
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var refType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
+                    var refNo = _cells.GetCell(2, i).Value;
+                    var refOther = _cells.GetCell(3, i).Value;
+                    var docNo = _cells.GetCell(4, i).Value;
+                    var docRef = _cells.GetCell(5, i).Value;
+                    var refPrefix = _cells.GetCell(6, i).Value;
+                    var docType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value));
+                    var versionType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
+                    var versionStatus = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value));
+                    var versionNo = _cells.GetCell(10, i).Value;
+                    var docName = _cells.GetCell(11, i).Value;
+                    var elecRef = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value));
+                    var elecType = _cells.GetCell(13, i).Value;
+
+                    var item = new DocumentReferenceItem();
+                    item.District = string.IsNullOrWhiteSpace(district) ? null : district;
+                    item.DocRefType = string.IsNullOrWhiteSpace(refType) ? null : refType;
+                    item.DocReference = string.IsNullOrWhiteSpace(refNo) ? null : refNo;
+                    item.DocRefOther = string.IsNullOrWhiteSpace(refOther) ? null : refOther;
+                    item.DocumentNo = string.IsNullOrWhiteSpace(docNo) ? null : docNo;
+                    item.DocumentRef = string.IsNullOrWhiteSpace(docRef) ? null : docRef;
+                    item.DocPrefix = string.IsNullOrWhiteSpace(refPrefix) ? null : refPrefix;
+                    item.DocumentType = string.IsNullOrWhiteSpace(docType) ? null : docType;
+                    item.VerType = string.IsNullOrWhiteSpace(versionType) ? null : versionType;
+                    item.VerStatus = string.IsNullOrWhiteSpace(versionStatus) ? null : versionStatus;
+                    item.DocVerNo = string.IsNullOrWhiteSpace(versionNo) ? null : versionNo;
+                    item.DocumentName1 = string.IsNullOrWhiteSpace(docName) ? null : docName;
+                    item.ElecRef = string.IsNullOrWhiteSpace(elecRef) ? null : elecRef;
+                    item.ElecType = string.IsNullOrWhiteSpace(elecType) ? null : elecType;
+
+                    var reply = DocumentReferenceActions.DeleteDocument(urlService, drOpContext, item);
+
+                    if (reply.errors != null && reply.errors.Length > 0)
+                    {
+                        string error = "";
+                        foreach (var err in reply.errors)
+                        {
+                            error = error + err.messageText + "\n";
+                        }
+                        throw new Exception(error);
+                    }
+                    var newItem = new DocumentReferenceItem(reply.documentReferenceDTO);
+
+                    _cells.GetCell(1, i).Value = "" + newItem.DocRefType;
+                    _cells.GetCell(2, i).Value = "" + newItem.DocReference;
+                    _cells.GetCell(3, i).Value = "" + newItem.DocRefOther;
+                    _cells.GetCell(4, i).Value = "" + newItem.DocumentNo;
+                    _cells.GetCell(5, i).Value = "" + newItem.DocumentRef;
+                    _cells.GetCell(6, i).Value = "" + newItem.DocPrefix;
+                    _cells.GetCell(7, i).Value = "" + newItem.DocumentType;
+                    _cells.GetCell(8, i).Value = "" + newItem.VerStatus;
+                    _cells.GetCell(9, i).Value = "" + newItem.VerType;
+                    _cells.GetCell(10, i).Value = "" + newItem.DocVerNo;
+                    _cells.GetCell(11, i).Value = "" + newItem.DocumentName1;
+                    _cells.GetCell(12, i).Value = "" + newItem.ElecRef;
+                    _cells.GetCell(13, i).Value = "" + newItem.ElecType;
+
+                    _cells.GetCell(ResultColumn03, i).Value = "ELIMINADO";
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:DeleteDocumentReference()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(2, i).Select();
+                    i++;
+                }
+            }
+
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -582,5 +1242,7 @@ namespace EllipseStdTextExcelAddIn
         {
             new AboutBoxExcelAddIn().ShowDialog();
         }
+
+        
     }
 }

@@ -191,23 +191,31 @@ namespace EllipseMaintSchedTaskClassLibrary
                 dayOfMonth = mst.DayOfMonth,
                 startMonth = mst.StartMonth,
                 startYear = mst.StartYear,
-                conAstSegFr = default(decimal),
-                conAstSegFrSpecified = true,
-                conAstSegTo = default(decimal),
-                conAstSegToSpecified = true
             };
-            var attributeList = new MaintSchedTskService.Attribute[2];
+
+            //
+            request.conAstSegFr = default(decimal);
+            request.conAstSegFrSpecified = false;
+            request.conAstSegTo = default(decimal);
+            request.conAstSegToSpecified = false;
+
+            var attributeList = new MaintSchedTskService.Attribute[3];
             attributeList[0] = new MaintSchedTskService.Attribute
             {
                 name = "conAstSegFrNumeric",
-                value = "0"
+                value = "0.000000"
             };
             attributeList[1] = new MaintSchedTskService.Attribute
             {
                 name = "conAstSegToNumeric",
-                value = "0"
+                value = "0.000000"
             };
-
+            attributeList[1] = new MaintSchedTskService.Attribute
+            {
+                name = "outputConAstSeg",
+                value = "0.000000"
+            };
+            //
             request.customAttributes = attributeList;
             return proxyEquip.create(opContext, request);
         }
@@ -261,9 +269,9 @@ namespace EllipseMaintSchedTaskClassLibrary
                 startYear = mst.StartYear
             };
             
-            request.conAstSegFrSpecified = true;
+            request.conAstSegFrSpecified = false;
             request.conAstSegTo = default(decimal);
-            request.conAstSegToSpecified = true;
+            request.conAstSegToSpecified = false;
             var attributeList = new MaintSchedTskService.Attribute[3];
             attributeList[0] = new MaintSchedTskService.Attribute
             {

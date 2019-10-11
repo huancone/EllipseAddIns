@@ -1,0 +1,17 @@
+	try
+	{
+		if (true)
+			throw new Exception("ERROR MESSAGE");
+	}
+	catch (Exception ex)
+	{
+		_cells.GetCell(1, i).Style = StyleConstants.Error;
+		_cells.GetCell(ResultColumnD01, i).Value = "ERROR: " + ex.Message;
+		Debugger.LogError("RibbonEllipse.cs:ReReviewWODetailedList()", ex.Message);
+		if(true)
+			throw;
+	}
+	finally
+	{
+		_eFunctions.CloseConnection();
+	}

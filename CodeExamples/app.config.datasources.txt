@@ -1,0 +1,12 @@
+  <oracle.manageddataaccess.client>
+    <version number="*">
+      <settings>
+        <setting name="TNS_ADMIN" value="C:\oracle\product\11.2.0\client\network\ADMIN"/>
+      </settings>
+      <dataSources>
+		<dataSource alias="EL8PROD" descriptor="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=lmndbs09)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=el8prod))) "/>
+		<dataSource alias="EL8TEST" descriptor="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=lmndbs05)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=el8test))) "/>
+		<dataSource alias="EL8DESA" descriptor="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=lmndbs05)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=el8desa))) "/>
+      </dataSources>
+    </version>
+  </oracle.manageddataaccess.client>
