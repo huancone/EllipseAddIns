@@ -23,35 +23,37 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="MSSSServiceHttpBinding", Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractReplyCollectionDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EnterpriseServiceOperationException))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ApplicationMessageImpl))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractRequiredAttributesDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Attribute[]))]
     public partial class MSSSService : System.Web.Services.Protocols.SoapHttpClientProtocol {
+        
+        private System.Threading.SendOrPostCallback modifyOperationCompleted;
         
         private System.Threading.SendOrPostCallback multipleModifyOperationCompleted;
         
+        private System.Threading.SendOrPostCallback readOperationCompleted;
+        
         private System.Threading.SendOrPostCallback multipleDeleteOperationCompleted;
         
-        private System.Threading.SendOrPostCallback multipleCreateOperationCompleted;
+        private System.Threading.SendOrPostCallback createOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback retrieveOperationCompleted;
         
         private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
         
         private System.Threading.SendOrPostCallback multipleReadWithPartialResultsOperationCompleted;
         
-        private System.Threading.SendOrPostCallback retrieveOperationCompleted;
-        
         private System.Threading.SendOrPostCallback deleteOperationCompleted;
         
-        private System.Threading.SendOrPostCallback readOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback modifyOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback createOperationCompleted;
+        private System.Threading.SendOrPostCallback multipleCreateOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -92,13 +94,22 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         }
         
         /// <remarks/>
+        public event modifyCompletedEventHandler modifyCompleted;
+        
+        /// <remarks/>
         public event multipleModifyCompletedEventHandler multipleModifyCompleted;
+        
+        /// <remarks/>
+        public event readCompletedEventHandler readCompleted;
         
         /// <remarks/>
         public event multipleDeleteCompletedEventHandler multipleDeleteCompleted;
         
         /// <remarks/>
-        public event multipleCreateCompletedEventHandler multipleCreateCompleted;
+        public event createCompletedEventHandler createCompleted;
+        
+        /// <remarks/>
+        public event retrieveCompletedEventHandler retrieveCompleted;
         
         /// <remarks/>
         public event multipleReadCompletedEventHandler multipleReadCompleted;
@@ -107,19 +118,42 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         public event multipleReadWithPartialResultsCompletedEventHandler multipleReadWithPartialResultsCompleted;
         
         /// <remarks/>
-        public event retrieveCompletedEventHandler retrieveCompleted;
-        
-        /// <remarks/>
         public event deleteCompletedEventHandler deleteCompleted;
         
         /// <remarks/>
-        public event readCompletedEventHandler readCompleted;
+        public event multipleCreateCompletedEventHandler multipleCreateCompleted;
         
         /// <remarks/>
-        public event modifyCompletedEventHandler modifyCompleted;
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://msss.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://msss.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public MSSSServiceModifyReplyDTO modify([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceModifyRequestDTO requestParameters) {
+            object[] results = this.Invoke("modify", new object[] {
+                        context,
+                        requestParameters});
+            return ((MSSSServiceModifyReplyDTO)(results[0]));
+        }
         
         /// <remarks/>
-        public event createCompletedEventHandler createCompleted;
+        public void modifyAsync(OperationContext context, MSSSServiceModifyRequestDTO requestParameters) {
+            this.modifyAsync(context, requestParameters, null);
+        }
+        
+        /// <remarks/>
+        public void modifyAsync(OperationContext context, MSSSServiceModifyRequestDTO requestParameters, object userState) {
+            if ((this.modifyOperationCompleted == null)) {
+                this.modifyOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmodifyOperationCompleted);
+            }
+            this.InvokeAsync("modify", new object[] {
+                        context,
+                        requestParameters}, this.modifyOperationCompleted, userState);
+        }
+        
+        private void OnmodifyOperationCompleted(object arg) {
+            if ((this.modifyCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.modifyCompleted(this, new modifyCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://msss.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://msss.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -150,6 +184,38 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
             if ((this.multipleModifyCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.multipleModifyCompleted(this, new multipleModifyCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://msss.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://msss.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public MSSSServiceReadReplyDTO read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceReadRequestDTO requestParameters) {
+            object[] results = this.Invoke("read", new object[] {
+                        context,
+                        requestParameters});
+            return ((MSSSServiceReadReplyDTO)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void readAsync(OperationContext context, MSSSServiceReadRequestDTO requestParameters) {
+            this.readAsync(context, requestParameters, null);
+        }
+        
+        /// <remarks/>
+        public void readAsync(OperationContext context, MSSSServiceReadRequestDTO requestParameters, object userState) {
+            if ((this.readOperationCompleted == null)) {
+                this.readOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreadOperationCompleted);
+            }
+            this.InvokeAsync("read", new object[] {
+                        context,
+                        requestParameters}, this.readOperationCompleted, userState);
+        }
+        
+        private void OnreadOperationCompleted(object arg) {
+            if ((this.readCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -188,32 +254,68 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://msss.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://msss.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public MSSSServiceCreateReplyCollectionDTO multipleCreate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] MSSSServiceCreateRequestDTO[] requestParameters) {
-            object[] results = this.Invoke("multipleCreate", new object[] {
+        public MSSSServiceCreateReplyDTO create([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceCreateRequestDTO requestParameters) {
+            object[] results = this.Invoke("create", new object[] {
                         context,
                         requestParameters});
-            return ((MSSSServiceCreateReplyCollectionDTO)(results[0]));
+            return ((MSSSServiceCreateReplyDTO)(results[0]));
         }
         
         /// <remarks/>
-        public void multipleCreateAsync(OperationContext context, MSSSServiceCreateRequestDTO[] requestParameters) {
-            this.multipleCreateAsync(context, requestParameters, null);
+        public void createAsync(OperationContext context, MSSSServiceCreateRequestDTO requestParameters) {
+            this.createAsync(context, requestParameters, null);
         }
         
         /// <remarks/>
-        public void multipleCreateAsync(OperationContext context, MSSSServiceCreateRequestDTO[] requestParameters, object userState) {
-            if ((this.multipleCreateOperationCompleted == null)) {
-                this.multipleCreateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateOperationCompleted);
+        public void createAsync(OperationContext context, MSSSServiceCreateRequestDTO requestParameters, object userState) {
+            if ((this.createOperationCompleted == null)) {
+                this.createOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateOperationCompleted);
             }
-            this.InvokeAsync("multipleCreate", new object[] {
+            this.InvokeAsync("create", new object[] {
                         context,
-                        requestParameters}, this.multipleCreateOperationCompleted, userState);
+                        requestParameters}, this.createOperationCompleted, userState);
         }
         
-        private void OnmultipleCreateOperationCompleted(object arg) {
-            if ((this.multipleCreateCompleted != null)) {
+        private void OncreateOperationCompleted(object arg) {
+            if ((this.createCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleCreateCompleted(this, new multipleCreateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.createCompleted(this, new createCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://msss.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://msss.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public MSSSServiceRetrieveReplyCollectionDTO retrieve([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceRetrieveRequestDTO requestParameters, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceRetrieveRequiredAttributesDTO requiredAttributes, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string restartInfo) {
+            object[] results = this.Invoke("retrieve", new object[] {
+                        context,
+                        requestParameters,
+                        requiredAttributes,
+                        restartInfo});
+            return ((MSSSServiceRetrieveReplyCollectionDTO)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void retrieveAsync(OperationContext context, MSSSServiceRetrieveRequestDTO requestParameters, MSSSServiceRetrieveRequiredAttributesDTO requiredAttributes, string restartInfo) {
+            this.retrieveAsync(context, requestParameters, requiredAttributes, restartInfo, null);
+        }
+        
+        /// <remarks/>
+        public void retrieveAsync(OperationContext context, MSSSServiceRetrieveRequestDTO requestParameters, MSSSServiceRetrieveRequiredAttributesDTO requiredAttributes, string restartInfo, object userState) {
+            if ((this.retrieveOperationCompleted == null)) {
+                this.retrieveOperationCompleted = new System.Threading.SendOrPostCallback(this.OnretrieveOperationCompleted);
+            }
+            this.InvokeAsync("retrieve", new object[] {
+                        context,
+                        requestParameters,
+                        requiredAttributes,
+                        restartInfo}, this.retrieveOperationCompleted, userState);
+        }
+        
+        private void OnretrieveOperationCompleted(object arg) {
+            if ((this.retrieveCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.retrieveCompleted(this, new retrieveCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -284,42 +386,6 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://msss.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://msss.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public MSSSServiceRetrieveReplyCollectionDTO retrieve([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceRetrieveRequestDTO requestParameters, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceRetrieveRequiredAttributesDTO requiredAttributes, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string restartInfo) {
-            object[] results = this.Invoke("retrieve", new object[] {
-                        context,
-                        requestParameters,
-                        requiredAttributes,
-                        restartInfo});
-            return ((MSSSServiceRetrieveReplyCollectionDTO)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void retrieveAsync(OperationContext context, MSSSServiceRetrieveRequestDTO requestParameters, MSSSServiceRetrieveRequiredAttributesDTO requiredAttributes, string restartInfo) {
-            this.retrieveAsync(context, requestParameters, requiredAttributes, restartInfo, null);
-        }
-        
-        /// <remarks/>
-        public void retrieveAsync(OperationContext context, MSSSServiceRetrieveRequestDTO requestParameters, MSSSServiceRetrieveRequiredAttributesDTO requiredAttributes, string restartInfo, object userState) {
-            if ((this.retrieveOperationCompleted == null)) {
-                this.retrieveOperationCompleted = new System.Threading.SendOrPostCallback(this.OnretrieveOperationCompleted);
-            }
-            this.InvokeAsync("retrieve", new object[] {
-                        context,
-                        requestParameters,
-                        requiredAttributes,
-                        restartInfo}, this.retrieveOperationCompleted, userState);
-        }
-        
-        private void OnretrieveOperationCompleted(object arg) {
-            if ((this.retrieveCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.retrieveCompleted(this, new retrieveCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://msss.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://msss.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
         public MSSSServiceDeleteReplyDTO delete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceDeleteRequestDTO requestParameters) {
             object[] results = this.Invoke("delete", new object[] {
                         context,
@@ -352,96 +418,32 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://msss.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://msss.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public MSSSServiceReadReplyDTO read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceReadRequestDTO requestParameters) {
-            object[] results = this.Invoke("read", new object[] {
+        public MSSSServiceCreateReplyCollectionDTO multipleCreate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] MSSSServiceCreateRequestDTO[] requestParameters) {
+            object[] results = this.Invoke("multipleCreate", new object[] {
                         context,
                         requestParameters});
-            return ((MSSSServiceReadReplyDTO)(results[0]));
+            return ((MSSSServiceCreateReplyCollectionDTO)(results[0]));
         }
         
         /// <remarks/>
-        public void readAsync(OperationContext context, MSSSServiceReadRequestDTO requestParameters) {
-            this.readAsync(context, requestParameters, null);
+        public void multipleCreateAsync(OperationContext context, MSSSServiceCreateRequestDTO[] requestParameters) {
+            this.multipleCreateAsync(context, requestParameters, null);
         }
         
         /// <remarks/>
-        public void readAsync(OperationContext context, MSSSServiceReadRequestDTO requestParameters, object userState) {
-            if ((this.readOperationCompleted == null)) {
-                this.readOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreadOperationCompleted);
+        public void multipleCreateAsync(OperationContext context, MSSSServiceCreateRequestDTO[] requestParameters, object userState) {
+            if ((this.multipleCreateOperationCompleted == null)) {
+                this.multipleCreateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateOperationCompleted);
             }
-            this.InvokeAsync("read", new object[] {
+            this.InvokeAsync("multipleCreate", new object[] {
                         context,
-                        requestParameters}, this.readOperationCompleted, userState);
+                        requestParameters}, this.multipleCreateOperationCompleted, userState);
         }
         
-        private void OnreadOperationCompleted(object arg) {
-            if ((this.readCompleted != null)) {
+        private void OnmultipleCreateOperationCompleted(object arg) {
+            if ((this.multipleCreateCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://msss.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://msss.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public MSSSServiceModifyReplyDTO modify([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceModifyRequestDTO requestParameters) {
-            object[] results = this.Invoke("modify", new object[] {
-                        context,
-                        requestParameters});
-            return ((MSSSServiceModifyReplyDTO)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void modifyAsync(OperationContext context, MSSSServiceModifyRequestDTO requestParameters) {
-            this.modifyAsync(context, requestParameters, null);
-        }
-        
-        /// <remarks/>
-        public void modifyAsync(OperationContext context, MSSSServiceModifyRequestDTO requestParameters, object userState) {
-            if ((this.modifyOperationCompleted == null)) {
-                this.modifyOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmodifyOperationCompleted);
-            }
-            this.InvokeAsync("modify", new object[] {
-                        context,
-                        requestParameters}, this.modifyOperationCompleted, userState);
-        }
-        
-        private void OnmodifyOperationCompleted(object arg) {
-            if ((this.modifyCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.modifyCompleted(this, new modifyCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://msss.ellipse.enterpriseservice.mincom.com", ResponseNamespace="http://msss.ellipse.enterpriseservice.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public MSSSServiceCreateReplyDTO create([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] MSSSServiceCreateRequestDTO requestParameters) {
-            object[] results = this.Invoke("create", new object[] {
-                        context,
-                        requestParameters});
-            return ((MSSSServiceCreateReplyDTO)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void createAsync(OperationContext context, MSSSServiceCreateRequestDTO requestParameters) {
-            this.createAsync(context, requestParameters, null);
-        }
-        
-        /// <remarks/>
-        public void createAsync(OperationContext context, MSSSServiceCreateRequestDTO requestParameters, object userState) {
-            if ((this.createOperationCompleted == null)) {
-                this.createOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateOperationCompleted);
-            }
-            this.InvokeAsync("create", new object[] {
-                        context,
-                        requestParameters}, this.createOperationCompleted, userState);
-        }
-        
-        private void OncreateOperationCompleted(object arg) {
-            if ((this.createCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.createCompleted(this, new createCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.multipleCreateCompleted(this, new multipleCreateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -465,14 +467,20 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://connectivity.service.ews.mincom.com")]
     public partial class OperationContext {
         
+        private string applicationClientIdField;
+        
         private string districtField;
+        
+        private bool eventDisableField;
+        
+        private bool eventDisableFieldSpecified;
         
         private int maxInstancesField;
         
@@ -486,11 +494,23 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         
         private RunAs runAsField;
         
+        private string tenantIdField;
+        
         private bool traceField;
         
         private bool traceFieldSpecified;
         
         private string transactionField;
+        
+        /// <remarks/>
+        public string applicationClientId {
+            get {
+                return this.applicationClientIdField;
+            }
+            set {
+                this.applicationClientIdField = value;
+            }
+        }
         
         /// <remarks/>
         public string district {
@@ -499,6 +519,27 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
             }
             set {
                 this.districtField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool eventDisable {
+            get {
+                return this.eventDisableField;
+            }
+            set {
+                this.eventDisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool eventDisableSpecified {
+            get {
+                return this.eventDisableFieldSpecified;
+            }
+            set {
+                this.eventDisableFieldSpecified = value;
             }
         }
         
@@ -565,6 +606,16 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         }
         
         /// <remarks/>
+        public string tenantId {
+            get {
+                return this.tenantIdField;
+            }
+            set {
+                this.tenantIdField = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool trace {
             get {
                 return this.traceField;
@@ -597,7 +648,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -642,17 +693,17 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceRetrieveReplyCollectionDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceReadReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceCreateReplyCollectionDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceReadReplyCollectionDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceRetrieveReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceDeleteReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceModifyReplyCollectionDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class AbstractReplyCollectionDTO {
+    public abstract partial class AbstractReplyCollectionDTO {
         
         private string collectionRestartPointField;
         
@@ -668,17 +719,17 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
-    public partial class MSSSServiceRetrieveReplyCollectionDTO : AbstractReplyCollectionDTO {
+    public partial class MSSSServiceCreateReplyCollectionDTO : AbstractReplyCollectionDTO {
         
-        private MSSSServiceRetrieveReplyDTO[] replyElementsField;
+        private MSSSServiceCreateReplyDTO[] replyElementsField;
         
         /// <remarks/>
-        public MSSSServiceRetrieveReplyDTO[] replyElements {
+        public MSSSServiceCreateReplyDTO[] replyElements {
             get {
                 return this.replyElementsField;
             }
@@ -689,12 +740,12 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
-    public partial class MSSSServiceRetrieveReplyDTO : AbstractReplyDTO {
+    public partial class MSSSServiceCreateReplyDTO : AbstractReplyDTO {
         
         private string agreedActionField;
         
@@ -951,16 +1002,16 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceRetrieveReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceReadReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceCreateReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceDeleteReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceReadReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceModifyReplyDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class AbstractReplyDTO : AbstractDTO {
+    public abstract partial class AbstractReplyDTO : AbstractDTO {
         
         private WarningMessageDTO[] warningsAndInformationField;
         
@@ -976,7 +1027,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -987,7 +1038,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ErrorMessageDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WarningMessageDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1082,7 +1133,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1091,23 +1142,23 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceRetrieveRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceCreateRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceReadRequestDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceDeleteRequestDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceRetrieveReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceReadReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceCreateReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceDeleteReplyDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceReadReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceModifyReplyDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceRetrieveRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceReadRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceCreateRequestDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceDeleteRequestDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceModifyRequestDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class AbstractDTO {
+    public abstract partial class AbstractDTO {
         
         private Attribute[] customAttributesField;
         
@@ -1124,7 +1175,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1132,6 +1183,10 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     public partial class Attribute {
         
         private string nameField;
+        
+        private string namespaceField;
+        
+        private anyType2anyTypeMapEntry[] propertiesField;
         
         private string valueField;
         
@@ -1142,6 +1197,27 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
             }
             set {
                 this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string @namespace {
+            get {
+                return this.namespaceField;
+            }
+            set {
+                this.namespaceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("entry", Namespace="http://msss.ellipse.enterpriseservice.mincom.com", IsNullable=false)]
+        public anyType2anyTypeMapEntry[] properties {
+            get {
+                return this.propertiesField;
+            }
+            set {
+                this.propertiesField = value;
             }
         }
         
@@ -1157,7 +1233,40 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
+    public partial class anyType2anyTypeMapEntry {
+        
+        private object keyField;
+        
+        private object valueField;
+        
+        /// <remarks/>
+        public object key {
+            get {
+                return this.keyField;
+            }
+            set {
+                this.keyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public object value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1262,12 +1371,14 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
-    public partial class MSSSServiceReadRequestDTO : AbstractDTO {
+    public partial class MSSSServiceCreateRequestDTO : AbstractDTO {
+        
+        private string agreedActionField;
         
         private string compCodeField;
         
@@ -1275,17 +1386,37 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         
         private string consequenceField;
         
+        private string effectField;
+        
         private string equipmentGrpIdField;
         
         private string equipmentNoField;
+        
+        private string failureClassField;
         
         private string failureCodeField;
         
         private string failureModeField;
         
+        private string functionClassField;
+        
         private string functionCodeField;
         
-        private MSSSServiceReadRequiredAttributesDTO requiredAttributesField;
+        private string loadRequestParamField;
+        
+        private MSSSServiceCreateRequiredAttributesDTO requiredAttributesField;
+        
+        private string strategyField;
+        
+        /// <remarks/>
+        public string agreedAction {
+            get {
+                return this.agreedActionField;
+            }
+            set {
+                this.agreedActionField = value;
+            }
+        }
         
         /// <remarks/>
         public string compCode {
@@ -1318,6 +1449,16 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         }
         
         /// <remarks/>
+        public string effect {
+            get {
+                return this.effectField;
+            }
+            set {
+                this.effectField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string equipmentGrpId {
             get {
                 return this.equipmentGrpIdField;
@@ -1334,6 +1475,16 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
             }
             set {
                 this.equipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string failureClass {
+            get {
+                return this.failureClassField;
+            }
+            set {
+                this.failureClassField = value;
             }
         }
         
@@ -1358,6 +1509,16 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         }
         
         /// <remarks/>
+        public string functionClass {
+            get {
+                return this.functionClassField;
+            }
+            set {
+                this.functionClassField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string functionCode {
             get {
                 return this.functionCodeField;
@@ -1368,7 +1529,17 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         }
         
         /// <remarks/>
-        public MSSSServiceReadRequiredAttributesDTO requiredAttributes {
+        public string loadRequestParam {
+            get {
+                return this.loadRequestParamField;
+            }
+            set {
+                this.loadRequestParamField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public MSSSServiceCreateRequiredAttributesDTO requiredAttributes {
             get {
                 return this.requiredAttributesField;
             }
@@ -1376,1092 +1547,20 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
                 this.requiredAttributesField = value;
             }
         }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
-    public partial class MSSSServiceReadRequiredAttributesDTO : AbstractRequiredAttributesDTO {
-        
-        private bool returnAgreedActionField;
-        
-        private bool returnAgreedActionFieldSpecified;
-        
-        private bool returnCompCodeField;
-        
-        private bool returnCompCodeFieldSpecified;
-        
-        private bool returnCompModCodeField;
-        
-        private bool returnCompModCodeFieldSpecified;
-        
-        private bool returnCompcodeDescriptionField;
-        
-        private bool returnCompcodeDescriptionFieldSpecified;
-        
-        private bool returnConsequenceField;
-        
-        private bool returnConsequenceFieldSpecified;
-        
-        private bool returnConsequenceDescriptionField;
-        
-        private bool returnConsequenceDescriptionFieldSpecified;
-        
-        private bool returnEffectField;
-        
-        private bool returnEffectFieldSpecified;
-        
-        private bool returnEquipmentGrpIdField;
-        
-        private bool returnEquipmentGrpIdFieldSpecified;
-        
-        private bool returnEquipmentGrpIdDescriptionField;
-        
-        private bool returnEquipmentGrpIdDescriptionFieldSpecified;
-        
-        private bool returnFailureClassField;
-        
-        private bool returnFailureClassFieldSpecified;
-        
-        private bool returnFailureClassDescriptionField;
-        
-        private bool returnFailureClassDescriptionFieldSpecified;
-        
-        private bool returnFailureCodeField;
-        
-        private bool returnFailureCodeFieldSpecified;
-        
-        private bool returnFailureCodeDescriptionField;
-        
-        private bool returnFailureCodeDescriptionFieldSpecified;
-        
-        private bool returnFailureModeField;
-        
-        private bool returnFailureModeFieldSpecified;
-        
-        private bool returnFailureModeDescriptionField;
-        
-        private bool returnFailureModeDescriptionFieldSpecified;
-        
-        private bool returnFunctionClassField;
-        
-        private bool returnFunctionClassFieldSpecified;
-        
-        private bool returnFunctionClassDescriptionField;
-        
-        private bool returnFunctionClassDescriptionFieldSpecified;
-        
-        private bool returnFunctionCodeField;
-        
-        private bool returnFunctionCodeFieldSpecified;
-        
-        private bool returnFunctionCodeDescriptionField;
-        
-        private bool returnFunctionCodeDescriptionFieldSpecified;
-        
-        private bool returnStrategyField;
-        
-        private bool returnStrategyFieldSpecified;
-        
-        private bool returnStrategyDescriptionField;
-        
-        private bool returnStrategyDescriptionFieldSpecified;
         
         /// <remarks/>
-        public bool returnAgreedAction {
+        public string strategy {
             get {
-                return this.returnAgreedActionField;
+                return this.strategyField;
             }
             set {
-                this.returnAgreedActionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnAgreedActionSpecified {
-            get {
-                return this.returnAgreedActionFieldSpecified;
-            }
-            set {
-                this.returnAgreedActionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompCode {
-            get {
-                return this.returnCompCodeField;
-            }
-            set {
-                this.returnCompCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompCodeSpecified {
-            get {
-                return this.returnCompCodeFieldSpecified;
-            }
-            set {
-                this.returnCompCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompModCode {
-            get {
-                return this.returnCompModCodeField;
-            }
-            set {
-                this.returnCompModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompModCodeSpecified {
-            get {
-                return this.returnCompModCodeFieldSpecified;
-            }
-            set {
-                this.returnCompModCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompcodeDescription {
-            get {
-                return this.returnCompcodeDescriptionField;
-            }
-            set {
-                this.returnCompcodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompcodeDescriptionSpecified {
-            get {
-                return this.returnCompcodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCompcodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnConsequence {
-            get {
-                return this.returnConsequenceField;
-            }
-            set {
-                this.returnConsequenceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnConsequenceSpecified {
-            get {
-                return this.returnConsequenceFieldSpecified;
-            }
-            set {
-                this.returnConsequenceFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnConsequenceDescription {
-            get {
-                return this.returnConsequenceDescriptionField;
-            }
-            set {
-                this.returnConsequenceDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnConsequenceDescriptionSpecified {
-            get {
-                return this.returnConsequenceDescriptionFieldSpecified;
-            }
-            set {
-                this.returnConsequenceDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEffect {
-            get {
-                return this.returnEffectField;
-            }
-            set {
-                this.returnEffectField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEffectSpecified {
-            get {
-                return this.returnEffectFieldSpecified;
-            }
-            set {
-                this.returnEffectFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentGrpId {
-            get {
-                return this.returnEquipmentGrpIdField;
-            }
-            set {
-                this.returnEquipmentGrpIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentGrpIdSpecified {
-            get {
-                return this.returnEquipmentGrpIdFieldSpecified;
-            }
-            set {
-                this.returnEquipmentGrpIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentGrpIdDescription {
-            get {
-                return this.returnEquipmentGrpIdDescriptionField;
-            }
-            set {
-                this.returnEquipmentGrpIdDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentGrpIdDescriptionSpecified {
-            get {
-                return this.returnEquipmentGrpIdDescriptionFieldSpecified;
-            }
-            set {
-                this.returnEquipmentGrpIdDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureClass {
-            get {
-                return this.returnFailureClassField;
-            }
-            set {
-                this.returnFailureClassField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureClassSpecified {
-            get {
-                return this.returnFailureClassFieldSpecified;
-            }
-            set {
-                this.returnFailureClassFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureClassDescription {
-            get {
-                return this.returnFailureClassDescriptionField;
-            }
-            set {
-                this.returnFailureClassDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureClassDescriptionSpecified {
-            get {
-                return this.returnFailureClassDescriptionFieldSpecified;
-            }
-            set {
-                this.returnFailureClassDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureCode {
-            get {
-                return this.returnFailureCodeField;
-            }
-            set {
-                this.returnFailureCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureCodeSpecified {
-            get {
-                return this.returnFailureCodeFieldSpecified;
-            }
-            set {
-                this.returnFailureCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureCodeDescription {
-            get {
-                return this.returnFailureCodeDescriptionField;
-            }
-            set {
-                this.returnFailureCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureCodeDescriptionSpecified {
-            get {
-                return this.returnFailureCodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnFailureCodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureMode {
-            get {
-                return this.returnFailureModeField;
-            }
-            set {
-                this.returnFailureModeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureModeSpecified {
-            get {
-                return this.returnFailureModeFieldSpecified;
-            }
-            set {
-                this.returnFailureModeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureModeDescription {
-            get {
-                return this.returnFailureModeDescriptionField;
-            }
-            set {
-                this.returnFailureModeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureModeDescriptionSpecified {
-            get {
-                return this.returnFailureModeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnFailureModeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFunctionClass {
-            get {
-                return this.returnFunctionClassField;
-            }
-            set {
-                this.returnFunctionClassField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFunctionClassSpecified {
-            get {
-                return this.returnFunctionClassFieldSpecified;
-            }
-            set {
-                this.returnFunctionClassFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFunctionClassDescription {
-            get {
-                return this.returnFunctionClassDescriptionField;
-            }
-            set {
-                this.returnFunctionClassDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFunctionClassDescriptionSpecified {
-            get {
-                return this.returnFunctionClassDescriptionFieldSpecified;
-            }
-            set {
-                this.returnFunctionClassDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFunctionCode {
-            get {
-                return this.returnFunctionCodeField;
-            }
-            set {
-                this.returnFunctionCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFunctionCodeSpecified {
-            get {
-                return this.returnFunctionCodeFieldSpecified;
-            }
-            set {
-                this.returnFunctionCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFunctionCodeDescription {
-            get {
-                return this.returnFunctionCodeDescriptionField;
-            }
-            set {
-                this.returnFunctionCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFunctionCodeDescriptionSpecified {
-            get {
-                return this.returnFunctionCodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnFunctionCodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnStrategy {
-            get {
-                return this.returnStrategyField;
-            }
-            set {
-                this.returnStrategyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnStrategySpecified {
-            get {
-                return this.returnStrategyFieldSpecified;
-            }
-            set {
-                this.returnStrategyFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnStrategyDescription {
-            get {
-                return this.returnStrategyDescriptionField;
-            }
-            set {
-                this.returnStrategyDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnStrategyDescriptionSpecified {
-            get {
-                return this.returnStrategyDescriptionFieldSpecified;
-            }
-            set {
-                this.returnStrategyDescriptionFieldSpecified = value;
+                this.strategyField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceRetrieveRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceReadRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceCreateRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceDeleteRequiredAttributesDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceModifyRequiredAttributesDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
-    public partial class AbstractRequiredAttributesDTO {
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
-    public partial class MSSSServiceRetrieveRequiredAttributesDTO : AbstractRequiredAttributesDTO {
-        
-        private bool returnAgreedActionField;
-        
-        private bool returnAgreedActionFieldSpecified;
-        
-        private bool returnCompCodeField;
-        
-        private bool returnCompCodeFieldSpecified;
-        
-        private bool returnCompModCodeField;
-        
-        private bool returnCompModCodeFieldSpecified;
-        
-        private bool returnCompcodeDescriptionField;
-        
-        private bool returnCompcodeDescriptionFieldSpecified;
-        
-        private bool returnConsequenceField;
-        
-        private bool returnConsequenceFieldSpecified;
-        
-        private bool returnConsequenceDescriptionField;
-        
-        private bool returnConsequenceDescriptionFieldSpecified;
-        
-        private bool returnEffectField;
-        
-        private bool returnEffectFieldSpecified;
-        
-        private bool returnEquipmentGrpIdField;
-        
-        private bool returnEquipmentGrpIdFieldSpecified;
-        
-        private bool returnEquipmentGrpIdDescriptionField;
-        
-        private bool returnEquipmentGrpIdDescriptionFieldSpecified;
-        
-        private bool returnFailureClassField;
-        
-        private bool returnFailureClassFieldSpecified;
-        
-        private bool returnFailureClassDescriptionField;
-        
-        private bool returnFailureClassDescriptionFieldSpecified;
-        
-        private bool returnFailureCodeField;
-        
-        private bool returnFailureCodeFieldSpecified;
-        
-        private bool returnFailureCodeDescriptionField;
-        
-        private bool returnFailureCodeDescriptionFieldSpecified;
-        
-        private bool returnFailureModeField;
-        
-        private bool returnFailureModeFieldSpecified;
-        
-        private bool returnFailureModeDescriptionField;
-        
-        private bool returnFailureModeDescriptionFieldSpecified;
-        
-        private bool returnFunctionClassField;
-        
-        private bool returnFunctionClassFieldSpecified;
-        
-        private bool returnFunctionClassDescriptionField;
-        
-        private bool returnFunctionClassDescriptionFieldSpecified;
-        
-        private bool returnFunctionCodeField;
-        
-        private bool returnFunctionCodeFieldSpecified;
-        
-        private bool returnFunctionCodeDescriptionField;
-        
-        private bool returnFunctionCodeDescriptionFieldSpecified;
-        
-        private bool returnStrategyField;
-        
-        private bool returnStrategyFieldSpecified;
-        
-        private bool returnStrategyDescriptionField;
-        
-        private bool returnStrategyDescriptionFieldSpecified;
-        
-        /// <remarks/>
-        public bool returnAgreedAction {
-            get {
-                return this.returnAgreedActionField;
-            }
-            set {
-                this.returnAgreedActionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnAgreedActionSpecified {
-            get {
-                return this.returnAgreedActionFieldSpecified;
-            }
-            set {
-                this.returnAgreedActionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompCode {
-            get {
-                return this.returnCompCodeField;
-            }
-            set {
-                this.returnCompCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompCodeSpecified {
-            get {
-                return this.returnCompCodeFieldSpecified;
-            }
-            set {
-                this.returnCompCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompModCode {
-            get {
-                return this.returnCompModCodeField;
-            }
-            set {
-                this.returnCompModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompModCodeSpecified {
-            get {
-                return this.returnCompModCodeFieldSpecified;
-            }
-            set {
-                this.returnCompModCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnCompcodeDescription {
-            get {
-                return this.returnCompcodeDescriptionField;
-            }
-            set {
-                this.returnCompcodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnCompcodeDescriptionSpecified {
-            get {
-                return this.returnCompcodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnCompcodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnConsequence {
-            get {
-                return this.returnConsequenceField;
-            }
-            set {
-                this.returnConsequenceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnConsequenceSpecified {
-            get {
-                return this.returnConsequenceFieldSpecified;
-            }
-            set {
-                this.returnConsequenceFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnConsequenceDescription {
-            get {
-                return this.returnConsequenceDescriptionField;
-            }
-            set {
-                this.returnConsequenceDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnConsequenceDescriptionSpecified {
-            get {
-                return this.returnConsequenceDescriptionFieldSpecified;
-            }
-            set {
-                this.returnConsequenceDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEffect {
-            get {
-                return this.returnEffectField;
-            }
-            set {
-                this.returnEffectField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEffectSpecified {
-            get {
-                return this.returnEffectFieldSpecified;
-            }
-            set {
-                this.returnEffectFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentGrpId {
-            get {
-                return this.returnEquipmentGrpIdField;
-            }
-            set {
-                this.returnEquipmentGrpIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentGrpIdSpecified {
-            get {
-                return this.returnEquipmentGrpIdFieldSpecified;
-            }
-            set {
-                this.returnEquipmentGrpIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnEquipmentGrpIdDescription {
-            get {
-                return this.returnEquipmentGrpIdDescriptionField;
-            }
-            set {
-                this.returnEquipmentGrpIdDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnEquipmentGrpIdDescriptionSpecified {
-            get {
-                return this.returnEquipmentGrpIdDescriptionFieldSpecified;
-            }
-            set {
-                this.returnEquipmentGrpIdDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureClass {
-            get {
-                return this.returnFailureClassField;
-            }
-            set {
-                this.returnFailureClassField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureClassSpecified {
-            get {
-                return this.returnFailureClassFieldSpecified;
-            }
-            set {
-                this.returnFailureClassFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureClassDescription {
-            get {
-                return this.returnFailureClassDescriptionField;
-            }
-            set {
-                this.returnFailureClassDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureClassDescriptionSpecified {
-            get {
-                return this.returnFailureClassDescriptionFieldSpecified;
-            }
-            set {
-                this.returnFailureClassDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureCode {
-            get {
-                return this.returnFailureCodeField;
-            }
-            set {
-                this.returnFailureCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureCodeSpecified {
-            get {
-                return this.returnFailureCodeFieldSpecified;
-            }
-            set {
-                this.returnFailureCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureCodeDescription {
-            get {
-                return this.returnFailureCodeDescriptionField;
-            }
-            set {
-                this.returnFailureCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureCodeDescriptionSpecified {
-            get {
-                return this.returnFailureCodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnFailureCodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureMode {
-            get {
-                return this.returnFailureModeField;
-            }
-            set {
-                this.returnFailureModeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureModeSpecified {
-            get {
-                return this.returnFailureModeFieldSpecified;
-            }
-            set {
-                this.returnFailureModeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFailureModeDescription {
-            get {
-                return this.returnFailureModeDescriptionField;
-            }
-            set {
-                this.returnFailureModeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFailureModeDescriptionSpecified {
-            get {
-                return this.returnFailureModeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnFailureModeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFunctionClass {
-            get {
-                return this.returnFunctionClassField;
-            }
-            set {
-                this.returnFunctionClassField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFunctionClassSpecified {
-            get {
-                return this.returnFunctionClassFieldSpecified;
-            }
-            set {
-                this.returnFunctionClassFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFunctionClassDescription {
-            get {
-                return this.returnFunctionClassDescriptionField;
-            }
-            set {
-                this.returnFunctionClassDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFunctionClassDescriptionSpecified {
-            get {
-                return this.returnFunctionClassDescriptionFieldSpecified;
-            }
-            set {
-                this.returnFunctionClassDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFunctionCode {
-            get {
-                return this.returnFunctionCodeField;
-            }
-            set {
-                this.returnFunctionCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFunctionCodeSpecified {
-            get {
-                return this.returnFunctionCodeFieldSpecified;
-            }
-            set {
-                this.returnFunctionCodeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnFunctionCodeDescription {
-            get {
-                return this.returnFunctionCodeDescriptionField;
-            }
-            set {
-                this.returnFunctionCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnFunctionCodeDescriptionSpecified {
-            get {
-                return this.returnFunctionCodeDescriptionFieldSpecified;
-            }
-            set {
-                this.returnFunctionCodeDescriptionFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnStrategy {
-            get {
-                return this.returnStrategyField;
-            }
-            set {
-                this.returnStrategyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnStrategySpecified {
-            get {
-                return this.returnStrategyFieldSpecified;
-            }
-            set {
-                this.returnStrategyFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool returnStrategyDescription {
-            get {
-                return this.returnStrategyDescriptionField;
-            }
-            set {
-                this.returnStrategyDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool returnStrategyDescriptionSpecified {
-            get {
-                return this.returnStrategyDescriptionFieldSpecified;
-            }
-            set {
-                this.returnStrategyDescriptionFieldSpecified = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2995,7 +2094,555 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceRetrieveRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceCreateRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceDeleteRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceReadRequiredAttributesDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSSSServiceModifyRequiredAttributesDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
+    public abstract partial class AbstractRequiredAttributesDTO {
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
+    public partial class MSSSServiceRetrieveRequiredAttributesDTO : AbstractRequiredAttributesDTO {
+        
+        private bool returnAgreedActionField;
+        
+        private bool returnAgreedActionFieldSpecified;
+        
+        private bool returnCompCodeField;
+        
+        private bool returnCompCodeFieldSpecified;
+        
+        private bool returnCompModCodeField;
+        
+        private bool returnCompModCodeFieldSpecified;
+        
+        private bool returnCompcodeDescriptionField;
+        
+        private bool returnCompcodeDescriptionFieldSpecified;
+        
+        private bool returnConsequenceField;
+        
+        private bool returnConsequenceFieldSpecified;
+        
+        private bool returnConsequenceDescriptionField;
+        
+        private bool returnConsequenceDescriptionFieldSpecified;
+        
+        private bool returnEffectField;
+        
+        private bool returnEffectFieldSpecified;
+        
+        private bool returnEquipmentGrpIdField;
+        
+        private bool returnEquipmentGrpIdFieldSpecified;
+        
+        private bool returnEquipmentGrpIdDescriptionField;
+        
+        private bool returnEquipmentGrpIdDescriptionFieldSpecified;
+        
+        private bool returnFailureClassField;
+        
+        private bool returnFailureClassFieldSpecified;
+        
+        private bool returnFailureClassDescriptionField;
+        
+        private bool returnFailureClassDescriptionFieldSpecified;
+        
+        private bool returnFailureCodeField;
+        
+        private bool returnFailureCodeFieldSpecified;
+        
+        private bool returnFailureCodeDescriptionField;
+        
+        private bool returnFailureCodeDescriptionFieldSpecified;
+        
+        private bool returnFailureModeField;
+        
+        private bool returnFailureModeFieldSpecified;
+        
+        private bool returnFailureModeDescriptionField;
+        
+        private bool returnFailureModeDescriptionFieldSpecified;
+        
+        private bool returnFunctionClassField;
+        
+        private bool returnFunctionClassFieldSpecified;
+        
+        private bool returnFunctionClassDescriptionField;
+        
+        private bool returnFunctionClassDescriptionFieldSpecified;
+        
+        private bool returnFunctionCodeField;
+        
+        private bool returnFunctionCodeFieldSpecified;
+        
+        private bool returnFunctionCodeDescriptionField;
+        
+        private bool returnFunctionCodeDescriptionFieldSpecified;
+        
+        private bool returnStrategyField;
+        
+        private bool returnStrategyFieldSpecified;
+        
+        private bool returnStrategyDescriptionField;
+        
+        private bool returnStrategyDescriptionFieldSpecified;
+        
+        /// <remarks/>
+        public bool returnAgreedAction {
+            get {
+                return this.returnAgreedActionField;
+            }
+            set {
+                this.returnAgreedActionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAgreedActionSpecified {
+            get {
+                return this.returnAgreedActionFieldSpecified;
+            }
+            set {
+                this.returnAgreedActionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompCode {
+            get {
+                return this.returnCompCodeField;
+            }
+            set {
+                this.returnCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompCodeSpecified {
+            get {
+                return this.returnCompCodeFieldSpecified;
+            }
+            set {
+                this.returnCompCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompModCode {
+            get {
+                return this.returnCompModCodeField;
+            }
+            set {
+                this.returnCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompModCodeSpecified {
+            get {
+                return this.returnCompModCodeFieldSpecified;
+            }
+            set {
+                this.returnCompModCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompcodeDescription {
+            get {
+                return this.returnCompcodeDescriptionField;
+            }
+            set {
+                this.returnCompcodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompcodeDescriptionSpecified {
+            get {
+                return this.returnCompcodeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCompcodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnConsequence {
+            get {
+                return this.returnConsequenceField;
+            }
+            set {
+                this.returnConsequenceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnConsequenceSpecified {
+            get {
+                return this.returnConsequenceFieldSpecified;
+            }
+            set {
+                this.returnConsequenceFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnConsequenceDescription {
+            get {
+                return this.returnConsequenceDescriptionField;
+            }
+            set {
+                this.returnConsequenceDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnConsequenceDescriptionSpecified {
+            get {
+                return this.returnConsequenceDescriptionFieldSpecified;
+            }
+            set {
+                this.returnConsequenceDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEffect {
+            get {
+                return this.returnEffectField;
+            }
+            set {
+                this.returnEffectField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEffectSpecified {
+            get {
+                return this.returnEffectFieldSpecified;
+            }
+            set {
+                this.returnEffectFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentGrpId {
+            get {
+                return this.returnEquipmentGrpIdField;
+            }
+            set {
+                this.returnEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentGrpIdSpecified {
+            get {
+                return this.returnEquipmentGrpIdFieldSpecified;
+            }
+            set {
+                this.returnEquipmentGrpIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentGrpIdDescription {
+            get {
+                return this.returnEquipmentGrpIdDescriptionField;
+            }
+            set {
+                this.returnEquipmentGrpIdDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentGrpIdDescriptionSpecified {
+            get {
+                return this.returnEquipmentGrpIdDescriptionFieldSpecified;
+            }
+            set {
+                this.returnEquipmentGrpIdDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureClass {
+            get {
+                return this.returnFailureClassField;
+            }
+            set {
+                this.returnFailureClassField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureClassSpecified {
+            get {
+                return this.returnFailureClassFieldSpecified;
+            }
+            set {
+                this.returnFailureClassFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureClassDescription {
+            get {
+                return this.returnFailureClassDescriptionField;
+            }
+            set {
+                this.returnFailureClassDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureClassDescriptionSpecified {
+            get {
+                return this.returnFailureClassDescriptionFieldSpecified;
+            }
+            set {
+                this.returnFailureClassDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureCode {
+            get {
+                return this.returnFailureCodeField;
+            }
+            set {
+                this.returnFailureCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureCodeSpecified {
+            get {
+                return this.returnFailureCodeFieldSpecified;
+            }
+            set {
+                this.returnFailureCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureCodeDescription {
+            get {
+                return this.returnFailureCodeDescriptionField;
+            }
+            set {
+                this.returnFailureCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureCodeDescriptionSpecified {
+            get {
+                return this.returnFailureCodeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnFailureCodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureMode {
+            get {
+                return this.returnFailureModeField;
+            }
+            set {
+                this.returnFailureModeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureModeSpecified {
+            get {
+                return this.returnFailureModeFieldSpecified;
+            }
+            set {
+                this.returnFailureModeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureModeDescription {
+            get {
+                return this.returnFailureModeDescriptionField;
+            }
+            set {
+                this.returnFailureModeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureModeDescriptionSpecified {
+            get {
+                return this.returnFailureModeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnFailureModeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFunctionClass {
+            get {
+                return this.returnFunctionClassField;
+            }
+            set {
+                this.returnFunctionClassField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFunctionClassSpecified {
+            get {
+                return this.returnFunctionClassFieldSpecified;
+            }
+            set {
+                this.returnFunctionClassFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFunctionClassDescription {
+            get {
+                return this.returnFunctionClassDescriptionField;
+            }
+            set {
+                this.returnFunctionClassDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFunctionClassDescriptionSpecified {
+            get {
+                return this.returnFunctionClassDescriptionFieldSpecified;
+            }
+            set {
+                this.returnFunctionClassDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFunctionCode {
+            get {
+                return this.returnFunctionCodeField;
+            }
+            set {
+                this.returnFunctionCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFunctionCodeSpecified {
+            get {
+                return this.returnFunctionCodeFieldSpecified;
+            }
+            set {
+                this.returnFunctionCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFunctionCodeDescription {
+            get {
+                return this.returnFunctionCodeDescriptionField;
+            }
+            set {
+                this.returnFunctionCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFunctionCodeDescriptionSpecified {
+            get {
+                return this.returnFunctionCodeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnFunctionCodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnStrategy {
+            get {
+                return this.returnStrategyField;
+            }
+            set {
+                this.returnStrategyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnStrategySpecified {
+            get {
+                return this.returnStrategyFieldSpecified;
+            }
+            set {
+                this.returnStrategyFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnStrategyDescription {
+            get {
+                return this.returnStrategyDescriptionField;
+            }
+            set {
+                this.returnStrategyDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnStrategyDescriptionSpecified {
+            get {
+                return this.returnStrategyDescriptionFieldSpecified;
+            }
+            set {
+                this.returnStrategyDescriptionFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3179,7 +2826,541 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
+    public partial class MSSSServiceReadRequiredAttributesDTO : AbstractRequiredAttributesDTO {
+        
+        private bool returnAgreedActionField;
+        
+        private bool returnAgreedActionFieldSpecified;
+        
+        private bool returnCompCodeField;
+        
+        private bool returnCompCodeFieldSpecified;
+        
+        private bool returnCompModCodeField;
+        
+        private bool returnCompModCodeFieldSpecified;
+        
+        private bool returnCompcodeDescriptionField;
+        
+        private bool returnCompcodeDescriptionFieldSpecified;
+        
+        private bool returnConsequenceField;
+        
+        private bool returnConsequenceFieldSpecified;
+        
+        private bool returnConsequenceDescriptionField;
+        
+        private bool returnConsequenceDescriptionFieldSpecified;
+        
+        private bool returnEffectField;
+        
+        private bool returnEffectFieldSpecified;
+        
+        private bool returnEquipmentGrpIdField;
+        
+        private bool returnEquipmentGrpIdFieldSpecified;
+        
+        private bool returnEquipmentGrpIdDescriptionField;
+        
+        private bool returnEquipmentGrpIdDescriptionFieldSpecified;
+        
+        private bool returnFailureClassField;
+        
+        private bool returnFailureClassFieldSpecified;
+        
+        private bool returnFailureClassDescriptionField;
+        
+        private bool returnFailureClassDescriptionFieldSpecified;
+        
+        private bool returnFailureCodeField;
+        
+        private bool returnFailureCodeFieldSpecified;
+        
+        private bool returnFailureCodeDescriptionField;
+        
+        private bool returnFailureCodeDescriptionFieldSpecified;
+        
+        private bool returnFailureModeField;
+        
+        private bool returnFailureModeFieldSpecified;
+        
+        private bool returnFailureModeDescriptionField;
+        
+        private bool returnFailureModeDescriptionFieldSpecified;
+        
+        private bool returnFunctionClassField;
+        
+        private bool returnFunctionClassFieldSpecified;
+        
+        private bool returnFunctionClassDescriptionField;
+        
+        private bool returnFunctionClassDescriptionFieldSpecified;
+        
+        private bool returnFunctionCodeField;
+        
+        private bool returnFunctionCodeFieldSpecified;
+        
+        private bool returnFunctionCodeDescriptionField;
+        
+        private bool returnFunctionCodeDescriptionFieldSpecified;
+        
+        private bool returnStrategyField;
+        
+        private bool returnStrategyFieldSpecified;
+        
+        private bool returnStrategyDescriptionField;
+        
+        private bool returnStrategyDescriptionFieldSpecified;
+        
+        /// <remarks/>
+        public bool returnAgreedAction {
+            get {
+                return this.returnAgreedActionField;
+            }
+            set {
+                this.returnAgreedActionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAgreedActionSpecified {
+            get {
+                return this.returnAgreedActionFieldSpecified;
+            }
+            set {
+                this.returnAgreedActionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompCode {
+            get {
+                return this.returnCompCodeField;
+            }
+            set {
+                this.returnCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompCodeSpecified {
+            get {
+                return this.returnCompCodeFieldSpecified;
+            }
+            set {
+                this.returnCompCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompModCode {
+            get {
+                return this.returnCompModCodeField;
+            }
+            set {
+                this.returnCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompModCodeSpecified {
+            get {
+                return this.returnCompModCodeFieldSpecified;
+            }
+            set {
+                this.returnCompModCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCompcodeDescription {
+            get {
+                return this.returnCompcodeDescriptionField;
+            }
+            set {
+                this.returnCompcodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCompcodeDescriptionSpecified {
+            get {
+                return this.returnCompcodeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnCompcodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnConsequence {
+            get {
+                return this.returnConsequenceField;
+            }
+            set {
+                this.returnConsequenceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnConsequenceSpecified {
+            get {
+                return this.returnConsequenceFieldSpecified;
+            }
+            set {
+                this.returnConsequenceFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnConsequenceDescription {
+            get {
+                return this.returnConsequenceDescriptionField;
+            }
+            set {
+                this.returnConsequenceDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnConsequenceDescriptionSpecified {
+            get {
+                return this.returnConsequenceDescriptionFieldSpecified;
+            }
+            set {
+                this.returnConsequenceDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEffect {
+            get {
+                return this.returnEffectField;
+            }
+            set {
+                this.returnEffectField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEffectSpecified {
+            get {
+                return this.returnEffectFieldSpecified;
+            }
+            set {
+                this.returnEffectFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentGrpId {
+            get {
+                return this.returnEquipmentGrpIdField;
+            }
+            set {
+                this.returnEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentGrpIdSpecified {
+            get {
+                return this.returnEquipmentGrpIdFieldSpecified;
+            }
+            set {
+                this.returnEquipmentGrpIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnEquipmentGrpIdDescription {
+            get {
+                return this.returnEquipmentGrpIdDescriptionField;
+            }
+            set {
+                this.returnEquipmentGrpIdDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnEquipmentGrpIdDescriptionSpecified {
+            get {
+                return this.returnEquipmentGrpIdDescriptionFieldSpecified;
+            }
+            set {
+                this.returnEquipmentGrpIdDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureClass {
+            get {
+                return this.returnFailureClassField;
+            }
+            set {
+                this.returnFailureClassField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureClassSpecified {
+            get {
+                return this.returnFailureClassFieldSpecified;
+            }
+            set {
+                this.returnFailureClassFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureClassDescription {
+            get {
+                return this.returnFailureClassDescriptionField;
+            }
+            set {
+                this.returnFailureClassDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureClassDescriptionSpecified {
+            get {
+                return this.returnFailureClassDescriptionFieldSpecified;
+            }
+            set {
+                this.returnFailureClassDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureCode {
+            get {
+                return this.returnFailureCodeField;
+            }
+            set {
+                this.returnFailureCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureCodeSpecified {
+            get {
+                return this.returnFailureCodeFieldSpecified;
+            }
+            set {
+                this.returnFailureCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureCodeDescription {
+            get {
+                return this.returnFailureCodeDescriptionField;
+            }
+            set {
+                this.returnFailureCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureCodeDescriptionSpecified {
+            get {
+                return this.returnFailureCodeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnFailureCodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureMode {
+            get {
+                return this.returnFailureModeField;
+            }
+            set {
+                this.returnFailureModeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureModeSpecified {
+            get {
+                return this.returnFailureModeFieldSpecified;
+            }
+            set {
+                this.returnFailureModeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFailureModeDescription {
+            get {
+                return this.returnFailureModeDescriptionField;
+            }
+            set {
+                this.returnFailureModeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFailureModeDescriptionSpecified {
+            get {
+                return this.returnFailureModeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnFailureModeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFunctionClass {
+            get {
+                return this.returnFunctionClassField;
+            }
+            set {
+                this.returnFunctionClassField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFunctionClassSpecified {
+            get {
+                return this.returnFunctionClassFieldSpecified;
+            }
+            set {
+                this.returnFunctionClassFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFunctionClassDescription {
+            get {
+                return this.returnFunctionClassDescriptionField;
+            }
+            set {
+                this.returnFunctionClassDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFunctionClassDescriptionSpecified {
+            get {
+                return this.returnFunctionClassDescriptionFieldSpecified;
+            }
+            set {
+                this.returnFunctionClassDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFunctionCode {
+            get {
+                return this.returnFunctionCodeField;
+            }
+            set {
+                this.returnFunctionCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFunctionCodeSpecified {
+            get {
+                return this.returnFunctionCodeFieldSpecified;
+            }
+            set {
+                this.returnFunctionCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnFunctionCodeDescription {
+            get {
+                return this.returnFunctionCodeDescriptionField;
+            }
+            set {
+                this.returnFunctionCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnFunctionCodeDescriptionSpecified {
+            get {
+                return this.returnFunctionCodeDescriptionFieldSpecified;
+            }
+            set {
+                this.returnFunctionCodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnStrategy {
+            get {
+                return this.returnStrategyField;
+            }
+            set {
+                this.returnStrategyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnStrategySpecified {
+            get {
+                return this.returnStrategyFieldSpecified;
+            }
+            set {
+                this.returnStrategyFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnStrategyDescription {
+            get {
+                return this.returnStrategyDescriptionField;
+            }
+            set {
+                this.returnStrategyDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnStrategyDescriptionSpecified {
+            get {
+                return this.returnStrategyDescriptionFieldSpecified;
+            }
+            set {
+                this.returnStrategyDescriptionFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3713,14 +3894,12 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
-    public partial class MSSSServiceCreateRequestDTO : AbstractDTO {
-        
-        private string agreedActionField;
+    public partial class MSSSServiceReadRequestDTO : AbstractDTO {
         
         private string compCodeField;
         
@@ -3728,37 +3907,17 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         
         private string consequenceField;
         
-        private string effectField;
-        
         private string equipmentGrpIdField;
         
         private string equipmentNoField;
-        
-        private string failureClassField;
         
         private string failureCodeField;
         
         private string failureModeField;
         
-        private string functionClassField;
-        
         private string functionCodeField;
         
-        private string loadRequestParamField;
-        
-        private MSSSServiceCreateRequiredAttributesDTO requiredAttributesField;
-        
-        private string strategyField;
-        
-        /// <remarks/>
-        public string agreedAction {
-            get {
-                return this.agreedActionField;
-            }
-            set {
-                this.agreedActionField = value;
-            }
-        }
+        private MSSSServiceReadRequiredAttributesDTO requiredAttributesField;
         
         /// <remarks/>
         public string compCode {
@@ -3791,16 +3950,6 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         }
         
         /// <remarks/>
-        public string effect {
-            get {
-                return this.effectField;
-            }
-            set {
-                this.effectField = value;
-            }
-        }
-        
-        /// <remarks/>
         public string equipmentGrpId {
             get {
                 return this.equipmentGrpIdField;
@@ -3817,16 +3966,6 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
             }
             set {
                 this.equipmentNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string failureClass {
-            get {
-                return this.failureClassField;
-            }
-            set {
-                this.failureClassField = value;
             }
         }
         
@@ -3851,16 +3990,6 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         }
         
         /// <remarks/>
-        public string functionClass {
-            get {
-                return this.functionClassField;
-            }
-            set {
-                this.functionClassField = value;
-            }
-        }
-        
-        /// <remarks/>
         public string functionCode {
             get {
                 return this.functionCodeField;
@@ -3871,17 +4000,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
         }
         
         /// <remarks/>
-        public string loadRequestParam {
-            get {
-                return this.loadRequestParamField;
-            }
-            set {
-                this.loadRequestParamField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public MSSSServiceCreateRequiredAttributesDTO requiredAttributes {
+        public MSSSServiceReadRequiredAttributesDTO requiredAttributes {
             get {
                 return this.requiredAttributesField;
             }
@@ -3889,20 +4008,10 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
                 this.requiredAttributesField = value;
             }
         }
-        
-        /// <remarks/>
-        public string strategy {
-            get {
-                return this.strategyField;
-            }
-            set {
-                this.strategyField = value;
-            }
-        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4007,7 +4116,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4184,7 +4293,361 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
+    public partial class MSSSServiceRetrieveReplyDTO : AbstractReplyDTO {
+        
+        private string agreedActionField;
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string compcodeDescriptionField;
+        
+        private string consequenceField;
+        
+        private string consequenceDescriptionField;
+        
+        private string effectField;
+        
+        private string equipmentGrpIdField;
+        
+        private string equipmentGrpIdDescriptionField;
+        
+        private string failureClassField;
+        
+        private string failureClassDescriptionField;
+        
+        private string failureCodeField;
+        
+        private string failureCodeDescriptionField;
+        
+        private string failureModeField;
+        
+        private string failureModeDescriptionField;
+        
+        private string functionClassField;
+        
+        private string functionClassDescriptionField;
+        
+        private string functionCodeField;
+        
+        private string functionCodeDescriptionField;
+        
+        private string strategyField;
+        
+        private string strategyDescriptionField;
+        
+        /// <remarks/>
+        public string agreedAction {
+            get {
+                return this.agreedActionField;
+            }
+            set {
+                this.agreedActionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compcodeDescription {
+            get {
+                return this.compcodeDescriptionField;
+            }
+            set {
+                this.compcodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string consequence {
+            get {
+                return this.consequenceField;
+            }
+            set {
+                this.consequenceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string consequenceDescription {
+            get {
+                return this.consequenceDescriptionField;
+            }
+            set {
+                this.consequenceDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string effect {
+            get {
+                return this.effectField;
+            }
+            set {
+                this.effectField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentGrpId {
+            get {
+                return this.equipmentGrpIdField;
+            }
+            set {
+                this.equipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentGrpIdDescription {
+            get {
+                return this.equipmentGrpIdDescriptionField;
+            }
+            set {
+                this.equipmentGrpIdDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string failureClass {
+            get {
+                return this.failureClassField;
+            }
+            set {
+                this.failureClassField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string failureClassDescription {
+            get {
+                return this.failureClassDescriptionField;
+            }
+            set {
+                this.failureClassDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string failureCode {
+            get {
+                return this.failureCodeField;
+            }
+            set {
+                this.failureCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string failureCodeDescription {
+            get {
+                return this.failureCodeDescriptionField;
+            }
+            set {
+                this.failureCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string failureMode {
+            get {
+                return this.failureModeField;
+            }
+            set {
+                this.failureModeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string failureModeDescription {
+            get {
+                return this.failureModeDescriptionField;
+            }
+            set {
+                this.failureModeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string functionClass {
+            get {
+                return this.functionClassField;
+            }
+            set {
+                this.functionClassField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string functionClassDescription {
+            get {
+                return this.functionClassDescriptionField;
+            }
+            set {
+                this.functionClassDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string functionCode {
+            get {
+                return this.functionCodeField;
+            }
+            set {
+                this.functionCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string functionCodeDescription {
+            get {
+                return this.functionCodeDescriptionField;
+            }
+            set {
+                this.functionCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string strategy {
+            get {
+                return this.strategyField;
+            }
+            set {
+                this.strategyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string strategyDescription {
+            get {
+                return this.strategyDescriptionField;
+            }
+            set {
+                this.strategyDescriptionField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
+    public partial class MSSSServiceDeleteReplyDTO : AbstractReplyDTO {
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string consequenceField;
+        
+        private string equipmentGrpIdField;
+        
+        private string failureCodeField;
+        
+        private string failureModeField;
+        
+        private string functionCodeField;
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string consequence {
+            get {
+                return this.consequenceField;
+            }
+            set {
+                this.consequenceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentGrpId {
+            get {
+                return this.equipmentGrpIdField;
+            }
+            set {
+                this.equipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string failureCode {
+            get {
+                return this.failureCodeField;
+            }
+            set {
+                this.failureCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string failureMode {
+            get {
+                return this.failureModeField;
+            }
+            set {
+                this.failureModeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string functionCode {
+            get {
+                return this.functionCodeField;
+            }
+            set {
+                this.functionCodeField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4445,361 +4908,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
-    public partial class MSSSServiceCreateReplyDTO : AbstractReplyDTO {
-        
-        private string agreedActionField;
-        
-        private string compCodeField;
-        
-        private string compModCodeField;
-        
-        private string compcodeDescriptionField;
-        
-        private string consequenceField;
-        
-        private string consequenceDescriptionField;
-        
-        private string effectField;
-        
-        private string equipmentGrpIdField;
-        
-        private string equipmentGrpIdDescriptionField;
-        
-        private string failureClassField;
-        
-        private string failureClassDescriptionField;
-        
-        private string failureCodeField;
-        
-        private string failureCodeDescriptionField;
-        
-        private string failureModeField;
-        
-        private string failureModeDescriptionField;
-        
-        private string functionClassField;
-        
-        private string functionClassDescriptionField;
-        
-        private string functionCodeField;
-        
-        private string functionCodeDescriptionField;
-        
-        private string strategyField;
-        
-        private string strategyDescriptionField;
-        
-        /// <remarks/>
-        public string agreedAction {
-            get {
-                return this.agreedActionField;
-            }
-            set {
-                this.agreedActionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compCode {
-            get {
-                return this.compCodeField;
-            }
-            set {
-                this.compCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCode {
-            get {
-                return this.compModCodeField;
-            }
-            set {
-                this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compcodeDescription {
-            get {
-                return this.compcodeDescriptionField;
-            }
-            set {
-                this.compcodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string consequence {
-            get {
-                return this.consequenceField;
-            }
-            set {
-                this.consequenceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string consequenceDescription {
-            get {
-                return this.consequenceDescriptionField;
-            }
-            set {
-                this.consequenceDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string effect {
-            get {
-                return this.effectField;
-            }
-            set {
-                this.effectField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentGrpId {
-            get {
-                return this.equipmentGrpIdField;
-            }
-            set {
-                this.equipmentGrpIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentGrpIdDescription {
-            get {
-                return this.equipmentGrpIdDescriptionField;
-            }
-            set {
-                this.equipmentGrpIdDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string failureClass {
-            get {
-                return this.failureClassField;
-            }
-            set {
-                this.failureClassField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string failureClassDescription {
-            get {
-                return this.failureClassDescriptionField;
-            }
-            set {
-                this.failureClassDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string failureCode {
-            get {
-                return this.failureCodeField;
-            }
-            set {
-                this.failureCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string failureCodeDescription {
-            get {
-                return this.failureCodeDescriptionField;
-            }
-            set {
-                this.failureCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string failureMode {
-            get {
-                return this.failureModeField;
-            }
-            set {
-                this.failureModeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string failureModeDescription {
-            get {
-                return this.failureModeDescriptionField;
-            }
-            set {
-                this.failureModeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string functionClass {
-            get {
-                return this.functionClassField;
-            }
-            set {
-                this.functionClassField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string functionClassDescription {
-            get {
-                return this.functionClassDescriptionField;
-            }
-            set {
-                this.functionClassDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string functionCode {
-            get {
-                return this.functionCodeField;
-            }
-            set {
-                this.functionCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string functionCodeDescription {
-            get {
-                return this.functionCodeDescriptionField;
-            }
-            set {
-                this.functionCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string strategy {
-            get {
-                return this.strategyField;
-            }
-            set {
-                this.strategyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string strategyDescription {
-            get {
-                return this.strategyDescriptionField;
-            }
-            set {
-                this.strategyDescriptionField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
-    public partial class MSSSServiceDeleteReplyDTO : AbstractReplyDTO {
-        
-        private string compCodeField;
-        
-        private string compModCodeField;
-        
-        private string consequenceField;
-        
-        private string equipmentGrpIdField;
-        
-        private string failureCodeField;
-        
-        private string failureModeField;
-        
-        private string functionCodeField;
-        
-        /// <remarks/>
-        public string compCode {
-            get {
-                return this.compCodeField;
-            }
-            set {
-                this.compCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCode {
-            get {
-                return this.compModCodeField;
-            }
-            set {
-                this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string consequence {
-            get {
-                return this.consequenceField;
-            }
-            set {
-                this.consequenceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipmentGrpId {
-            get {
-                return this.equipmentGrpIdField;
-            }
-            set {
-                this.equipmentGrpIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string failureCode {
-            get {
-                return this.failureCodeField;
-            }
-            set {
-                this.failureCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string failureMode {
-            get {
-                return this.failureModeField;
-            }
-            set {
-                this.failureModeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string functionCode {
-            get {
-                return this.functionCodeField;
-            }
-            set {
-                this.functionCodeField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5060,7 +5169,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5081,17 +5190,17 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://msss.ellipse.enterpriseservice.mincom.com")]
-    public partial class MSSSServiceCreateReplyCollectionDTO : AbstractReplyCollectionDTO {
+    public partial class MSSSServiceRetrieveReplyCollectionDTO : AbstractReplyCollectionDTO {
         
-        private MSSSServiceCreateReplyDTO[] replyElementsField;
+        private MSSSServiceRetrieveReplyDTO[] replyElementsField;
         
         /// <remarks/>
-        public MSSSServiceCreateReplyDTO[] replyElements {
+        public MSSSServiceRetrieveReplyDTO[] replyElements {
             get {
                 return this.replyElementsField;
             }
@@ -5102,7 +5211,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5123,7 +5232,7 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5144,219 +5253,33 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void multipleModifyCompletedEventHandler(object sender, multipleModifyCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleModifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://exception.enterpriseservice.mincom.com")]
+    public partial class EnterpriseServiceOperationException {
         
-        private object[] results;
-        
-        internal multipleModifyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
+        private ErrorMessageDTO[] errorMessagesField;
         
         /// <remarks/>
-        public MSSSServiceModifyReplyCollectionDTO Result {
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://ellipse.enterpriseservice.mincom.com")]
+        public ErrorMessageDTO[] errorMessages {
             get {
-                this.RaiseExceptionIfNecessary();
-                return ((MSSSServiceModifyReplyCollectionDTO)(this.results[0]));
+                return this.errorMessagesField;
+            }
+            set {
+                this.errorMessagesField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleDeleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public MSSSServiceDeleteReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((MSSSServiceDeleteReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleCreateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public MSSSServiceCreateReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((MSSSServiceCreateReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public MSSSServiceReadReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((MSSSServiceReadReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void multipleReadWithPartialResultsCompletedEventHandler(object sender, multipleReadWithPartialResultsCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleReadWithPartialResultsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleReadWithPartialResultsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public MSSSServiceReadReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((MSSSServiceReadReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void retrieveCompletedEventHandler(object sender, retrieveCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class retrieveCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal retrieveCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public MSSSServiceRetrieveReplyCollectionDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((MSSSServiceRetrieveReplyCollectionDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal deleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public MSSSServiceDeleteReplyDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((MSSSServiceDeleteReplyDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal readCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public MSSSServiceReadReplyDTO Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((MSSSServiceReadReplyDTO)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
     public delegate void modifyCompletedEventHandler(object sender, modifyCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class modifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -5378,11 +5301,89 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    public delegate void multipleModifyCompletedEventHandler(object sender, multipleModifyCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleModifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleModifyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public MSSSServiceModifyReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((MSSSServiceModifyReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal readCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public MSSSServiceReadReplyDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((MSSSServiceReadReplyDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleDeleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public MSSSServiceDeleteReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((MSSSServiceDeleteReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
     public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1038.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -5399,6 +5400,136 @@ namespace EllipseMsssEquipmentExcelAddIn.MSSSService {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((MSSSServiceCreateReplyDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    public delegate void retrieveCompletedEventHandler(object sender, retrieveCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class retrieveCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal retrieveCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public MSSSServiceRetrieveReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((MSSSServiceRetrieveReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public MSSSServiceReadReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((MSSSServiceReadReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    public delegate void multipleReadWithPartialResultsCompletedEventHandler(object sender, multipleReadWithPartialResultsCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleReadWithPartialResultsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleReadWithPartialResultsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public MSSSServiceReadReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((MSSSServiceReadReplyCollectionDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal deleteCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public MSSSServiceDeleteReplyDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((MSSSServiceDeleteReplyDTO)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleCreateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public MSSSServiceCreateReplyCollectionDTO Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((MSSSServiceCreateReplyCollectionDTO)(this.results[0]));
             }
         }
     }

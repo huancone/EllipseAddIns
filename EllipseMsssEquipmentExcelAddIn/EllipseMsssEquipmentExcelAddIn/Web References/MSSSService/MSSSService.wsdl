@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns2="http://ellipse.enterpriseservice.mincom.com" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:tns="http://msss.ellipse.enterpriseservice.mincom.com" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns4="http://exception.enterpriseservice.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns3="http://attribute.ellipse.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" targetNamespace="http://msss.ellipse.enterpriseservice.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns2="http://ellipse.enterpriseservice.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:tns="http://msss.ellipse.enterpriseservice.mincom.com" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns4="http://exception.enterpriseservice.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns3="http://attribute.ellipse.mincom.com" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" targetNamespace="http://msss.ellipse.enterpriseservice.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
       <xsd:complexType name="OperationContext">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
           <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
           <xsd:element minOccurs="0" name="position" type="xsd:string" />
           <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
           <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
         </xsd:sequence>
@@ -25,87 +28,82 @@
       <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
       <xsd:import namespace="http://exception.enterpriseservice.mincom.com" />
       <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
-      <xsd:complexType name="ArrayOfMSSSServiceModifyRequestDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceModifyRequestDTO" nillable="true" type="tns:MSSSServiceModifyRequestDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:simpleType name="functionCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="5" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="equipmentGrpId">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="12" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="strategy">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="failureClass">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="agreedAction">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="250" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="compModCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="2" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="effect">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="250" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="equipmentNo">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="12" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="functionClass">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="failureMode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="5" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="compCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
       <xsd:simpleType name="consequence">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="5" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="5" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="failureCode">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="5" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="functionCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="agreedAction">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="250" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="compCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="failureMode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="effect">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="250" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="failureClass">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="functionClass">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="compModCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="strategy">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentGrpId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:complexType name="MSSSServiceModifyRequestDTO">
@@ -129,6 +127,18 @@
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="MSSSServiceModifyRequiredAttributesDTO">
         <xsd:complexContent mixed="false">
@@ -159,80 +169,66 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:element name="multipleModify">
+      <xsd:element name="modify">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMSSSServiceModifyRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MSSSServiceModifyRequestDTO" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:complexType name="MSSSServiceModifyReplyCollectionDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMSSSServiceModifyReplyDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfMSSSServiceModifyReplyDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceModifyReplyDTO" nillable="true" type="tns:MSSSServiceModifyReplyDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:simpleType name="functionClassDescription">
+      <xsd:simpleType name="strategyDescription">
         <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
           <xsd:maxLength value="30" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="consequenceDescription">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="30" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="failureModeDescription">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="50" />
-          <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="equipmentGrpIdDescription">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="40" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="failureModeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="functionClassDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="compcodeDescription">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="30" />
           <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="strategyDescription">
-        <xsd:restriction base="xsd:string">
           <xsd:maxLength value="30" />
-          <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="failureClassDescription">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="30" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="functionCodeDescription">
+      <xsd:simpleType name="consequenceDescription">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="50" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="failureCodeDescription">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="50" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="functionCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="50" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:complexType name="MSSSServiceModifyReplyDTO">
@@ -264,6 +260,41 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
+      <xsd:element name="modifyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceModifyReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EnterpriseServiceOperationException" type="ns4:EnterpriseServiceOperationException" />
+      <xsd:complexType name="ArrayOfMSSSServiceModifyRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceModifyRequestDTO" nillable="true" type="tns:MSSSServiceModifyRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleModify">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMSSSServiceModifyRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MSSSServiceModifyReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMSSSServiceModifyReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMSSSServiceModifyReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceModifyReplyDTO" nillable="true" type="tns:MSSSServiceModifyReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:element name="multipleModifyResponse">
         <xsd:complexType>
           <xsd:sequence>
@@ -271,7 +302,96 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="EnterpriseServiceOperationException" type="ns4:EnterpriseServiceOperationException" />
+      <xsd:complexType name="MSSSServiceReadRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="consequence" type="tns:consequence" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="failureCode" type="tns:failureCode" />
+              <xsd:element minOccurs="0" name="failureMode" type="tns:failureMode" />
+              <xsd:element minOccurs="0" name="functionCode" type="tns:functionCode" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MSSSServiceReadRequiredAttributesDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="MSSSServiceReadRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAgreedAction" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCompcodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnConsequence" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnConsequenceDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEffect" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentGrpIdDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFailureClass" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFailureClassDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFailureCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFailureCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFailureMode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFailureModeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFunctionClass" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFunctionClassDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFunctionCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnFunctionCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStrategy" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStrategyDescription" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MSSSServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MSSSServiceReadReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="agreedAction" type="tns:agreedAction" />
+              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
+              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
+              <xsd:element minOccurs="0" name="compcodeDescription" type="tns:compcodeDescription" />
+              <xsd:element minOccurs="0" name="consequence" type="tns:consequence" />
+              <xsd:element minOccurs="0" name="consequenceDescription" type="tns:consequenceDescription" />
+              <xsd:element minOccurs="0" name="effect" type="tns:effect" />
+              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
+              <xsd:element minOccurs="0" name="equipmentGrpIdDescription" type="tns:equipmentGrpIdDescription" />
+              <xsd:element minOccurs="0" name="failureClass" type="tns:failureClass" />
+              <xsd:element minOccurs="0" name="failureClassDescription" type="tns:failureClassDescription" />
+              <xsd:element minOccurs="0" name="failureCode" type="tns:failureCode" />
+              <xsd:element minOccurs="0" name="failureCodeDescription" type="tns:failureCodeDescription" />
+              <xsd:element minOccurs="0" name="failureMode" type="tns:failureMode" />
+              <xsd:element minOccurs="0" name="failureModeDescription" type="tns:failureModeDescription" />
+              <xsd:element minOccurs="0" name="functionClass" type="tns:functionClass" />
+              <xsd:element minOccurs="0" name="functionClassDescription" type="tns:functionClassDescription" />
+              <xsd:element minOccurs="0" name="functionCode" type="tns:functionCode" />
+              <xsd:element minOccurs="0" name="functionCodeDescription" type="tns:functionCodeDescription" />
+              <xsd:element minOccurs="0" name="strategy" type="tns:strategy" />
+              <xsd:element minOccurs="0" name="strategyDescription" type="tns:strategyDescription" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceReadReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
       <xsd:complexType name="ArrayOfMSSSServiceDeleteRequestDTO">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceDeleteRequestDTO" nillable="true" type="tns:MSSSServiceDeleteRequestDTO" />
@@ -352,15 +472,10 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:complexType name="ArrayOfMSSSServiceCreateRequestDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceCreateRequestDTO" nillable="true" type="tns:MSSSServiceCreateRequestDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:simpleType name="loadRequestParam">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:complexType name="MSSSServiceCreateRequestDTO">
@@ -415,28 +530,14 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:element name="multipleCreate">
+      <xsd:element name="create">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMSSSServiceCreateRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MSSSServiceCreateRequestDTO" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:complexType name="MSSSServiceCreateReplyCollectionDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMSSSServiceCreateReplyDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfMSSSServiceCreateReplyDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceCreateReplyDTO" nillable="true" type="tns:MSSSServiceCreateReplyDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="MSSSServiceCreateReplyDTO">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractReplyDTO">
@@ -466,134 +567,10 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:element name="multipleCreateResponse">
+      <xsd:element name="createResponse">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceCreateReplyCollectionDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:complexType name="ArrayOfMSSSServiceReadRequestDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceReadRequestDTO" nillable="true" type="tns:MSSSServiceReadRequestDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="MSSSServiceReadRequestDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns2:AbstractDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
-              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
-              <xsd:element minOccurs="0" name="consequence" type="tns:consequence" />
-              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
-              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
-              <xsd:element minOccurs="0" name="failureCode" type="tns:failureCode" />
-              <xsd:element minOccurs="0" name="failureMode" type="tns:failureMode" />
-              <xsd:element minOccurs="0" name="functionCode" type="tns:functionCode" />
-              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:MSSSServiceReadRequiredAttributesDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="MSSSServiceReadRequiredAttributesDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="returnAgreedAction" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnCompCode" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnCompModCode" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnCompcodeDescription" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnConsequence" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnConsequenceDescription" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnEffect" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnEquipmentGrpId" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnEquipmentGrpIdDescription" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnFailureClass" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnFailureClassDescription" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnFailureCode" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnFailureCodeDescription" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnFailureMode" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnFailureModeDescription" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnFunctionClass" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnFunctionClassDescription" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnFunctionCode" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnFunctionCodeDescription" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnStrategy" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnStrategyDescription" type="xsd:boolean" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:element name="multipleRead">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMSSSServiceReadRequestDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:complexType name="MSSSServiceReadReplyCollectionDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMSSSServiceReadReplyDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfMSSSServiceReadReplyDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceReadReplyDTO" nillable="true" type="tns:MSSSServiceReadReplyDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="MSSSServiceReadReplyDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns2:AbstractReplyDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="agreedAction" type="tns:agreedAction" />
-              <xsd:element minOccurs="0" name="compCode" type="tns:compCode" />
-              <xsd:element minOccurs="0" name="compModCode" type="tns:compModCode" />
-              <xsd:element minOccurs="0" name="compcodeDescription" type="tns:compcodeDescription" />
-              <xsd:element minOccurs="0" name="consequence" type="tns:consequence" />
-              <xsd:element minOccurs="0" name="consequenceDescription" type="tns:consequenceDescription" />
-              <xsd:element minOccurs="0" name="effect" type="tns:effect" />
-              <xsd:element minOccurs="0" name="equipmentGrpId" type="tns:equipmentGrpId" />
-              <xsd:element minOccurs="0" name="equipmentGrpIdDescription" type="tns:equipmentGrpIdDescription" />
-              <xsd:element minOccurs="0" name="failureClass" type="tns:failureClass" />
-              <xsd:element minOccurs="0" name="failureClassDescription" type="tns:failureClassDescription" />
-              <xsd:element minOccurs="0" name="failureCode" type="tns:failureCode" />
-              <xsd:element minOccurs="0" name="failureCodeDescription" type="tns:failureCodeDescription" />
-              <xsd:element minOccurs="0" name="failureMode" type="tns:failureMode" />
-              <xsd:element minOccurs="0" name="failureModeDescription" type="tns:failureModeDescription" />
-              <xsd:element minOccurs="0" name="functionClass" type="tns:functionClass" />
-              <xsd:element minOccurs="0" name="functionClassDescription" type="tns:functionClassDescription" />
-              <xsd:element minOccurs="0" name="functionCode" type="tns:functionCode" />
-              <xsd:element minOccurs="0" name="functionCodeDescription" type="tns:functionCodeDescription" />
-              <xsd:element minOccurs="0" name="strategy" type="tns:strategy" />
-              <xsd:element minOccurs="0" name="strategyDescription" type="tns:strategyDescription" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:element name="multipleReadResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceReadReplyCollectionDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="multipleReadWithPartialResults">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMSSSServiceReadRequestDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="multipleReadWithPartialResultsResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceReadReplyCollectionDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceCreateReplyDTO" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -702,6 +679,55 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+      <xsd:complexType name="ArrayOfMSSSServiceReadRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceReadRequestDTO" nillable="true" type="tns:MSSSServiceReadRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMSSSServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="MSSSServiceReadReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMSSSServiceReadReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMSSSServiceReadReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceReadReplyDTO" nillable="true" type="tns:MSSSServiceReadReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceReadReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadWithPartialResults">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMSSSServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadWithPartialResultsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceReadReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
       <xsd:element name="delete">
         <xsd:complexType>
           <xsd:sequence>
@@ -717,66 +743,50 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="read">
+      <xsd:complexType name="ArrayOfMSSSServiceCreateRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceCreateRequestDTO" nillable="true" type="tns:MSSSServiceCreateRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleCreate">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MSSSServiceReadRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfMSSSServiceCreateRequestDTO" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="readResponse">
+      <xsd:complexType name="MSSSServiceCreateReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfMSSSServiceCreateReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMSSSServiceCreateReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MSSSServiceCreateReplyDTO" nillable="true" type="tns:MSSSServiceCreateReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleCreateResponse">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceReadReplyDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="modify">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MSSSServiceModifyRequestDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="modifyResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceModifyReplyDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="create">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:MSSSServiceCreateRequestDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="createResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceCreateReplyDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:MSSSServiceCreateReplyCollectionDTO" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ellipse.enterpriseservice.mincom.com">
       <xsd:import namespace="http://attribute.ellipse.mincom.com" />
-      <xsd:complexType name="AbstractRequiredAttributesDTO" />
-      <xsd:complexType name="AbstractDTO">
+      <xsd:complexType name="AbstractDTO" abstract="true">
         <xsd:sequence>
           <xsd:element minOccurs="0" name="customAttributes" type="ns3:ArrayOfAttribute" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="AbstractReplyCollectionDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="AbstractReplyDTO">
+      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
+      <xsd:complexType name="AbstractReplyDTO" abstract="true">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractDTO">
             <xsd:sequence>
@@ -814,8 +824,14 @@
           <xsd:extension base="ns2:ApplicationMessageImpl" />
         </xsd:complexContent>
       </xsd:complexType>
+      <xsd:complexType name="AbstractReplyCollectionDTO" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:import namespace="http://msss.ellipse.enterpriseservice.mincom.com" />
       <xsd:complexType name="ArrayOfAttribute">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns3:Attribute" />
@@ -824,6 +840,8 @@
       <xsd:complexType name="Attribute">
         <xsd:sequence>
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
+          <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
           <xsd:element minOccurs="0" name="value" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
@@ -837,73 +855,83 @@
       </xsd:complexType>
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="modifyRequest">
-    <wsdl:part name="parameters" element="tns:modify" />
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
   </wsdl:message>
   <wsdl:message name="multipleCreateResponse">
     <wsdl:part name="parameters" element="tns:multipleCreateResponse" />
   </wsdl:message>
-  <wsdl:message name="deleteResponse">
-    <wsdl:part name="parameters" element="tns:deleteResponse" />
-  </wsdl:message>
-  <wsdl:message name="multipleReadWithPartialResultsResponse">
-    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResultsResponse" />
-  </wsdl:message>
-  <wsdl:message name="retrieveRequest">
-    <wsdl:part name="parameters" element="tns:retrieve" />
-  </wsdl:message>
-  <wsdl:message name="createResponse">
-    <wsdl:part name="parameters" element="tns:createResponse" />
-  </wsdl:message>
-  <wsdl:message name="modifyResponse">
-    <wsdl:part name="parameters" element="tns:modifyResponse" />
-  </wsdl:message>
-  <wsdl:message name="createRequest">
-    <wsdl:part name="parameters" element="tns:create" />
-  </wsdl:message>
-  <wsdl:message name="readResponse">
-    <wsdl:part name="parameters" element="tns:readResponse" />
+  <wsdl:message name="multipleModifyRequest">
+    <wsdl:part name="parameters" element="tns:multipleModify" />
   </wsdl:message>
   <wsdl:message name="readRequest">
     <wsdl:part name="parameters" element="tns:read" />
   </wsdl:message>
-  <wsdl:message name="multipleDeleteRequest">
-    <wsdl:part name="parameters" element="tns:multipleDelete" />
-  </wsdl:message>
-  <wsdl:message name="multipleModifyRequest">
-    <wsdl:part name="parameters" element="tns:multipleModify" />
-  </wsdl:message>
-  <wsdl:message name="multipleCreateRequest">
-    <wsdl:part name="parameters" element="tns:multipleCreate" />
-  </wsdl:message>
-  <wsdl:message name="multipleReadRequest">
-    <wsdl:part name="parameters" element="tns:multipleRead" />
-  </wsdl:message>
-  <wsdl:message name="deleteRequest">
-    <wsdl:part name="parameters" element="tns:delete" />
-  </wsdl:message>
-  <wsdl:message name="multipleDeleteResponse">
-    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
-  </wsdl:message>
-  <wsdl:message name="multipleReadWithPartialResultsRequest">
-    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResults" />
-  </wsdl:message>
-  <wsdl:message name="multipleModifyResponse">
-    <wsdl:part name="parameters" element="tns:multipleModifyResponse" />
-  </wsdl:message>
-  <wsdl:message name="EnterpriseServiceOperationException">
-    <wsdl:part name="EnterpriseServiceOperationException" element="tns:EnterpriseServiceOperationException" />
+  <wsdl:message name="createRequest">
+    <wsdl:part name="parameters" element="tns:create" />
   </wsdl:message>
   <wsdl:message name="multipleReadResponse">
     <wsdl:part name="parameters" element="tns:multipleReadResponse" />
   </wsdl:message>
+  <wsdl:message name="modifyResponse">
+    <wsdl:part name="parameters" element="tns:modifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse" />
+  </wsdl:message>
+  <wsdl:message name="modifyRequest">
+    <wsdl:part name="parameters" element="tns:modify" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteRequest">
+    <wsdl:part name="parameters" element="tns:multipleDelete" />
+  </wsdl:message>
+  <wsdl:message name="multipleModifyResponse">
+    <wsdl:part name="parameters" element="tns:multipleModifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveRequest">
+    <wsdl:part name="parameters" element="tns:retrieve" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="parameters" element="tns:deleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreate" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPartialResultsRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResults" />
+  </wsdl:message>
+  <wsdl:message name="EnterpriseServiceOperationException">
+    <wsdl:part name="EnterpriseServiceOperationException" element="tns:EnterpriseServiceOperationException" />
+  </wsdl:message>
   <wsdl:message name="retrieveResponse">
     <wsdl:part name="parameters" element="tns:retrieveResponse" />
   </wsdl:message>
+  <wsdl:message name="multipleReadWithPartialResultsResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResultsResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="parameters" element="tns:delete" />
+  </wsdl:message>
   <wsdl:portType name="MSSS">
+    <wsdl:operation name="modify">
+      <wsdl:input name="modifyRequest" message="tns:modifyRequest" />
+      <wsdl:output name="modifyResponse" message="tns:modifyResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
     <wsdl:operation name="multipleModify">
       <wsdl:input name="multipleModifyRequest" message="tns:multipleModifyRequest" />
       <wsdl:output name="multipleModifyResponse" message="tns:multipleModifyResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
       <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
     </wsdl:operation>
     <wsdl:operation name="multipleDelete">
@@ -911,9 +939,14 @@
       <wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse" />
       <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
     </wsdl:operation>
-    <wsdl:operation name="multipleCreate">
-      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
-      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
+    <wsdl:operation name="create">
+      <wsdl:input name="createRequest" message="tns:createRequest" />
+      <wsdl:output name="createResponse" message="tns:createResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieve">
+      <wsdl:input name="retrieveRequest" message="tns:retrieveRequest" />
+      <wsdl:output name="retrieveResponse" message="tns:retrieveResponse" />
       <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
     </wsdl:operation>
     <wsdl:operation name="multipleRead">
@@ -926,40 +959,49 @@
       <wsdl:output name="multipleReadWithPartialResultsResponse" message="tns:multipleReadWithPartialResultsResponse" />
       <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
     </wsdl:operation>
-    <wsdl:operation name="retrieve">
-      <wsdl:input name="retrieveRequest" message="tns:retrieveRequest" />
-      <wsdl:output name="retrieveResponse" message="tns:retrieveResponse" />
-      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
-    </wsdl:operation>
     <wsdl:operation name="delete">
       <wsdl:input name="deleteRequest" message="tns:deleteRequest" />
       <wsdl:output name="deleteResponse" message="tns:deleteResponse" />
       <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
     </wsdl:operation>
-    <wsdl:operation name="read">
-      <wsdl:input name="readRequest" message="tns:readRequest" />
-      <wsdl:output name="readResponse" message="tns:readResponse" />
-      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
-    </wsdl:operation>
-    <wsdl:operation name="modify">
-      <wsdl:input name="modifyRequest" message="tns:modifyRequest" />
-      <wsdl:output name="modifyResponse" message="tns:modifyResponse" />
-      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
-    </wsdl:operation>
-    <wsdl:operation name="create">
-      <wsdl:input name="createRequest" message="tns:createRequest" />
-      <wsdl:output name="createResponse" message="tns:createResponse" />
+    <wsdl:operation name="multipleCreate">
+      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
+      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
       <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="MSSSServiceHttpBinding" type="tns:MSSS">
     <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="modify">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="modifyRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="modifyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="multipleModify">
       <wsdlsoap:operation soapAction="" />
       <wsdl:input name="multipleModifyRequest">
         <wsdlsoap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="multipleModifyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
         <wsdlsoap:body use="literal" />
       </wsdl:output>
       <wsdl:fault name="EnterpriseServiceOperationException">
@@ -978,12 +1020,24 @@
         <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="multipleCreate">
+    <wsdl:operation name="create">
       <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="multipleCreateRequest">
+      <wsdl:input name="createRequest">
         <wsdlsoap:body use="literal" />
       </wsdl:input>
-      <wsdl:output name="multipleCreateResponse">
+      <wsdl:output name="createResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieve">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveResponse">
         <wsdlsoap:body use="literal" />
       </wsdl:output>
       <wsdl:fault name="EnterpriseServiceOperationException">
@@ -1014,18 +1068,6 @@
         <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="retrieve">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="retrieveRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="retrieveResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-      <wsdl:fault name="EnterpriseServiceOperationException">
-        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
-      </wsdl:fault>
-    </wsdl:operation>
     <wsdl:operation name="delete">
       <wsdlsoap:operation soapAction="" />
       <wsdl:input name="deleteRequest">
@@ -1038,36 +1080,12 @@
         <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="read">
+    <wsdl:operation name="multipleCreate">
       <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="readRequest">
+      <wsdl:input name="multipleCreateRequest">
         <wsdlsoap:body use="literal" />
       </wsdl:input>
-      <wsdl:output name="readResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-      <wsdl:fault name="EnterpriseServiceOperationException">
-        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="modify">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="modifyRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="modifyResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-      <wsdl:fault name="EnterpriseServiceOperationException">
-        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="create">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="createRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="createResponse">
+      <wsdl:output name="multipleCreateResponse">
         <wsdlsoap:body use="literal" />
       </wsdl:output>
       <wsdl:fault name="EnterpriseServiceOperationException">

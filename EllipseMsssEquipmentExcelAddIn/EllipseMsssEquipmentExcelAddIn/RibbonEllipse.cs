@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Services.Ellipse;
 using Microsoft.Office.Tools.Ribbon;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
@@ -11,35 +10,33 @@ using EllipseCommonsClassLibrary.Utilities;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using EllipseMsssEquipmentExcelAddIn.Properties;
+using Application = Microsoft.Office.Interop.Excel.Application;
 
 namespace EllipseMsssEquipmentExcelAddIn
 {
     public partial class RibbonEllipse
     {
-        private static readonly string SheetName01 = Resources.RibbonEllipse_SheetName01;
+        private ExcelStyleCells _cells;
+        private static readonly EllipseFunctions _eFunctions = new EllipseFunctions();
+        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private Application _excelApp;
+
         private const int TittleRow = 6;
         private const int ResultColumn = 23;
         private const int MaxRows = 10000;
-        private static readonly EllipseFunctions EFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
-        private ExcelStyleCells _cells;
-        private Excel.Application _excelApp;
+        private static readonly string SheetName01 = Resources.RibbonEllipse_SheetName01;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
 
-            var environmentList = Environments.GetEnvironmentList();
-            foreach (var item in environmentList)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
-                var drpItem = Factory.CreateRibbonDropDownItem();
-                drpItem.Label = item;
-                drpEnvironment.Items.Add(drpItem);
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
             }
-
-            drpEnvironment.SelectedItem.Label = Resources.RibbonEllipse_RibbonEllipse_Load_DefaultEnvironment;
         }
 
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
@@ -52,21 +49,24 @@ namespace EllipseMsssEquipmentExcelAddIn
             try
             {
                 _excelApp = Globals.ThisAddIn.Application;
-                var excelBook = _excelApp.Workbooks.Add();
-                Excel.Worksheet excelSheet = excelBook.ActiveSheet;
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
-                Microsoft.Office.Tools.Excel.Worksheet workSheet =
-                    Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
+                _excelApp.Workbooks.Add();
+                while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
+                    _excelApp.ActiveWorkbook.Worksheets.Add();
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
 
+                _cells.SetCursorWait();
 
-                excelSheet.Name = SheetName01;
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
-                _cells.MergeCells("A1", "A2");
-                _cells.GetCell("B1").Value = "MSSS SERVICE";
-                _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
-                _cells.MergeCells("B1", "G2");
+                _cells.MergeCells("A1", "B2");
+                _cells.GetCell("A3").Value = "MSSS SERVICE";
+                _cells.GetCell("A3").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.MergeCells("A3", "G3");
 
                 _cells.GetCell("A4").Value = "equipmentGrpId";
 
@@ -119,6 +119,8 @@ namespace EllipseMsssEquipmentExcelAddIn
                 _cells.GetCell(22, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
                 _cells.GetCell(23, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
 
+                Microsoft.Office.Tools.Excel.Worksheet workSheet = Globals.Factory.GetVstoObject(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[1]);
+
                 var equipmentGrpId = workSheet.Controls.AddNamedRange(workSheet.Range["B4"], "equipmentGrpId");
                 equipmentGrpId.Change += equipmentGrpIdRange_Change;
 
@@ -130,8 +132,10 @@ namespace EllipseMsssEquipmentExcelAddIn
                 };
                 _cells.SetValidationList(_cells.GetRange(1, TittleRow + 1, 1, 200000), optionList);
 
-                excelSheet.Cells.Columns.AutoFit();
-                excelSheet.Cells.Rows.AutoFit();
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Rows.AutoFit();
+
+                _cells.SetCursorDefault();
             }
             catch (Exception error)
             {
@@ -156,8 +160,8 @@ namespace EllipseMsssEquipmentExcelAddIn
             _cells.GetRange(1, TittleRow + 1, ResultColumn, MaxRows).Clear();
 
             if (string.IsNullOrEmpty(equipmentGrpId)) return;
-            var sqlQuery = Queries.GetMsssInfo(equipmentGrpId, EFunctions.dbReference, EFunctions.dbLink);
-            var drMsss = EFunctions.GetQueryResult(sqlQuery);
+            var sqlQuery = Queries.GetMsssInfo(equipmentGrpId, _eFunctions.dbReference, _eFunctions.dbLink);
+            var drMsss = _eFunctions.GetQueryResult(sqlQuery);
 
             if (drMsss == null || drMsss.IsClosed || !drMsss.HasRows) return;
 
@@ -208,7 +212,7 @@ namespace EllipseMsssEquipmentExcelAddIn
             var msssProxy = new MSSSService.MSSSService();
             var msssOp = new MSSSService.OperationContext();
 
-            msssProxy.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/MSSSService";
+            msssProxy.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/MSSSService";
             msssOp.district = _frmAuth.EllipseDsct;
             msssOp.position = _frmAuth.EllipsePost;
             msssOp.maxInstances = 100;
@@ -257,9 +261,9 @@ namespace EllipseMsssEquipmentExcelAddIn
                     case "Delete":
                         try
                         {
-                            var urlEnvironment = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
-                            EFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
-                            var responseDto = EFunctions.InitiatePostConnection();
+                            var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                            _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
+                            var responseDto = _eFunctions.InitiatePostConnection();
 
                             if (responseDto.GotErrorMessages()) return;
                             var equipmentGrpId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value);
@@ -321,13 +325,13 @@ namespace EllipseMsssEquipmentExcelAddIn
                             requestXml = requestXml + "		</action>";
                             requestXml = requestXml + "	</actions>";
                             requestXml = requestXml + "	<chains/>";
-                            requestXml = requestXml + "	<connectionId>" + EFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
+                            requestXml = requestXml + "	<connectionId>" + _eFunctions.PostServiceProxy.ConnectionId + "</connectionId>";
                             requestXml = requestXml + "	<application>mse6a1</application>";
                             requestXml = requestXml + "	<applicationPage>read</applicationPage>";
                             requestXml = requestXml + "	<transaction>true</transaction>";
                             requestXml = requestXml + "</interaction>";
 
-                            responseDto = EFunctions.ExecutePostRequest(requestXml);
+                            responseDto = _eFunctions.ExecutePostRequest(requestXml);
 
                             var errorMessage = responseDto.Errors.Aggregate("",
                                 (current, msg) => current + (msg.Field + " " + msg.Text));
