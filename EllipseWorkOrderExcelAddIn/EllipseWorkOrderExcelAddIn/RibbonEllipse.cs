@@ -170,7 +170,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(ReReviewWoList);
 
@@ -179,7 +179,7 @@ namespace EllipseWorkOrderExcelAddIn
                 }
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameD01)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -205,7 +205,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -217,7 +217,7 @@ namespace EllipseWorkOrderExcelAddIn
                 }
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameD01)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -243,7 +243,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -255,7 +255,7 @@ namespace EllipseWorkOrderExcelAddIn
                 }
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameD01)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -281,7 +281,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -306,7 +306,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName04)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -331,7 +331,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName05)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -357,7 +357,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName05)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -382,7 +382,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName06)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -408,7 +408,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName06)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -433,7 +433,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName07)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(ReviewWorkProgress);
 
@@ -456,7 +456,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName07)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -484,7 +484,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName07)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -511,7 +511,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName07)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -737,7 +737,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameD04))
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -762,7 +762,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameD04))
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -792,7 +792,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameQ01))
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(ReviewQualityList);
 
@@ -814,7 +814,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameQ01))
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _thread = new Thread(ReReviewQualityList);
 
@@ -3888,7 +3888,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameCc01))
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -3990,7 +3990,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameCc01))
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -4307,7 +4307,7 @@ namespace EllipseWorkOrderExcelAddIn
                         _cells.GetCell(3, i).Value = "'" + task.WorkOrder;
                         _cells.GetCell(4, i).Value = "" + task.WorkOrderDescription;
                         //ACTION
-                        _cells.GetCell(5, i).Value = "M";
+                        _cells.GetCell(5, i).Value = WorkOrderTaskActions.Modify;
                         //GENERAL
                         _cells.GetCell(6, i).Value = "'" + task.WoTaskNo;
                         _cells.GetCell(7, i).Value = "" + task.WoTaskDesc;
@@ -5298,7 +5298,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName08)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -5324,7 +5324,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName08)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -5350,7 +5350,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName08)
                 {
-                    //si si ya hay un thread corriendo que no se ha detenido
+                    //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;

@@ -752,6 +752,8 @@ namespace EllipseEquipmentClassLibrary
                 else
                     districtParam = " = '" + districtCode + "'";
 
+                /*
+                OLD QUERY CHANGED IN 20191108
                 var query = "" +
                             " SELECT DISTINCT(EQUIP_NO)" +
                             " FROM (" +
@@ -771,6 +773,32 @@ namespace EllipseEquipmentClassLibrary
                             "     WHERE REQ.DSTRCT_CODE " + districtParam + " AND TRIM(RAL.ALTERNATE_REF) = '" +
                             equipmentRef + "'" +
                             " )";
+                */
+                var query = "" +
+                    " WITH EXACT AS ( " +
+                    "   SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO " +
+                    "   FROM " + dbReference + ".MSF600" + dbLink + " EQ " +
+                    "   WHERE TRIM(EQ.EQUIP_NO) = '" + equipmentRef + "' AND EQ.DSTRCT_CODE " + districtParam + "), " +
+                    " PADDED AS( " +
+                    "   SELECT TRIM(EQ.EQUIP_NO) EQUIP_NO " +
+                    "   FROM " + dbReference + ".MSF600" + dbLink + " EQ " +
+                    "   WHERE LPAD(TRIM(EQ.EQUIP_NO), 12, '0') = LPAD('" + equipmentRef + "',12,'0') AND EQ.DSTRCT_CODE " + districtParam + " " +
+                    " ), " +
+                    " ALTERNATE AS( " +
+                    "   SELECT REQ.EQUIP_NO " +
+                    "   FROM " + dbReference + ".MSF600" + dbLink + " REQ " +
+                    "     JOIN " + dbReference + ".MSF601" + dbLink + " RAL ON REQ.EQUIP_NO = RAL.ALT_REF_CODE " +
+                    "   WHERE REQ.DSTRCT_CODE " + districtParam + " AND TRIM(RAL.ALTERNATE_REF) = '" + equipmentRef + "' " +
+                    " ), " +
+                    " MERGED AS( " +
+                    "   SELECT EQUIP_NO FROM PADDED " +
+                    "   UNION ALL " +
+                    "   SELECT EQUIP_NO FROM ALTERNATE " +
+                    " ) " +
+                    " SELECT EQUIP_NO FROM EXACT " +
+                    " UNION ALL " +
+                    " SELECT DISTINCT(EQUIP_NO) FROM MERGED " +
+                    " WHERE EQUIP_NO NOT IN (SELECT EQUIP_NO FROM EXACT) ";
 
                 query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 

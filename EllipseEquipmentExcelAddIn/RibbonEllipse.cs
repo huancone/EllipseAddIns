@@ -1528,15 +1528,15 @@ namespace EllipseEquipmentExcelAddIn
 
                     var traceItem = new TracingItem();
 
-                    traceItem.InstEquipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
-                    traceItem.ComponentCode = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
-                    traceItem.ModifierCode = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
-                    traceItem.TracingAction = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value));
-                    traceItem.FitEquipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
-                    traceItem.Date = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);
-                    traceItem.SequenceNumber = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);
-                    traceItem.ReferenceType = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
-                    traceItem.ReferenceNumber = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value);
+                    traceItem.InstEquipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value2);
+                    traceItem.ComponentCode = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value2);
+                    traceItem.ModifierCode = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value2);
+                    traceItem.TracingAction = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(4, i).Value2));
+                    traceItem.FitEquipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value2);
+                    traceItem.Date = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value2);
+                    traceItem.SequenceNumber = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value2);
+                    traceItem.ReferenceType = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value2);
+                    traceItem.ReferenceNumber = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value2);
 
                     //Obtengo el número a partir de la referencia
                     List<string> instEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, traceItem.InstEquipmentNo);

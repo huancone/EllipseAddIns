@@ -345,7 +345,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetNameM02))
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetNameM02))
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;

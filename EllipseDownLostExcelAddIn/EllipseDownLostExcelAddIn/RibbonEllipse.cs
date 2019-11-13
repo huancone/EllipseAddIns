@@ -240,9 +240,9 @@ namespace EllipseDownLostExcelAddIn
                 var equipTypeList = new List<string> { SearchFieldCriteria.EquipmentReference.Value, SearchFieldCriteria.Egi.Value, SearchFieldCriteria.ListType.Value, SearchFieldCriteria.ProductiveUnit.Value };
 
                 _cells.SetValidationList(_cells.GetCell("A4"), equipTypeList, ValidationSheetName, 2);
-                _cells.GetCell("A4").Value = "EQUIPMENT";
+                _cells.GetCell("A4").Value = SearchFieldCriteria.EquipmentReference.Value;
 
-                _cells.GetCell("A5").Value = "LIST ID";
+                _cells.GetCell("A5").Value = SearchFieldCriteria.ListId.Value;
                 _cells.GetCell("A5").AddComment("Solo para List Type");
 
                 _cells.GetRange("A3", "A5").Style = _cells.GetStyle(StyleConstants.Option);
@@ -832,7 +832,7 @@ namespace EllipseDownLostExcelAddIn
                 var dataType = cells.GetNullIfTrimmedEmpty(cells.GetCell("D5").Value);
 
                 List<string> equipmentList;
-                if (equipType.Equals(SearchFieldCriteria.EquipmentNo.Value))
+                if (equipType.Equals(SearchFieldCriteria.EquipmentNo.Value) || equipType.Equals(SearchFieldCriteria.EquipmentReference.Value))
                     equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, districtCode, equipRef);
                 else if (equipType.Equals(SearchFieldCriteria.Egi.Value))
                     equipmentList = EquipmentActions.GetEgiEquipments(_eFunctions, equipRef);
@@ -841,7 +841,7 @@ namespace EllipseDownLostExcelAddIn
                 else if (equipType.Equals(SearchFieldCriteria.ProductiveUnit.Value))
                     equipmentList = EquipmentActions.GetProductiveUnitEquipments(_eFunctions, districtCode, equipRef);
                 else
-                    equipmentList = new List<string>();
+                    equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, districtCode, equipRef);
 
                 var i = TitleRow01 + 1;
 
