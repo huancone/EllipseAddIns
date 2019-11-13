@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSO627BombasExcelAddIn", "MSO627BombasExcelAddIn\MSO627BombasExcelAddIn.csproj", "{109762D4-DFB8-45F7-AF95-D91284040256}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseEquipmentClassLibrary", "..\EllipseCommonsClassLibraries\EllipseEquipmentClassLibrary\EllipseEquipmentClassLibrary.csproj", "{864F90D8-5073-4F1C-83F6-E1B8B28B0A33}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web.Services.Ellipse", "..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj", "{1C5ABABA-126F-424B-932B-A110F3665344}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseReferenceCodesClassLibrary", "..\EllipseCommonsClassLibraries\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj", "{093EC04E-6E92-4E59-848B-5B79277FFE9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseStdTextClassLibrary", "..\EllipseCommonsClassLibraries\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj", "{55F2204E-933A-4B98-87A4-5BA928275192}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +37,19 @@ Global
 		{1C5ABABA-126F-424B-932B-A110F3665344}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.Build.0 = Release|Any CPU
+		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F2204E-933A-4B98-87A4-5BA928275192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F2204E-933A-4B98-87A4-5BA928275192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F2204E-933A-4B98-87A4-5BA928275192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F2204E-933A-4B98-87A4-5BA928275192}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69C0B136-4CC7-40FB-B591-F7C209D29EC0}
 	EndGlobalSection
 EndGlobal
