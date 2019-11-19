@@ -35,22 +35,26 @@ namespace EllipseStandardJobsExcelAddIn
         private const string SheetName03 = "SJRequirements";
         private const string SheetNameQualRev = "SJRevisionCalidad";
         private const string SheetName05 = "SJRefCodes";
+        private const string SheetName06 = "SJEquipments";
 
         private const int TitleRow01 = 8;
         private const int TitleRow02 = 6;
         private const int TitleRow03 = 6;
         private const int TitleRowQualRev = 8;
         private const int TitleRow05 = 7;
+        private const int TitleRow06 = 7;
         private const int ResultColumn01 = 40;
         private const int ResultColumn02 = 26;
         private const int ResultColumn03 = 14;
         private const int ResultColumnQualRev = 26;
         private const int ResultColumn05 = 35;
+        private const int ResultColumn06 = 10;
         private const string TableName01 = "StandardJobsTable";
         private const string TableName02 = "SJTasksTable";
         private const string TableName03 = "SJRequirementsTable";
         private const string TableNameQualRev = "SJRevCalTable";
         private const string TableName05 = "SJJobCodesTable";
+        private const string TableName06 = "SJEquipments";
         private bool ActiveQualityValidation = true;
         private bool _quickReview = true;
         private string _standardStatus = "A";//A Active / I Inactive
@@ -357,14 +361,15 @@ namespace EllipseStandardJobsExcelAddIn
             {
                 _excelApp = Globals.ThisAddIn.Application;
 
-                #region CONSTRUYO LA HOJA 1
                 _excelApp.Workbooks.Add();
-                while (_excelApp.ActiveWorkbook.Sheets.Count < 4)
+                while (_excelApp.ActiveWorkbook.Sheets.Count < 5)
                     _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 if (ActiveQualityValidation)
                     _excelApp.ActiveWorkbook.Worksheets.Add();
+
+                #region CONSTRUYO LA HOJA 1
                 // ReSharper disable once UseIndexedProperty
                 _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
@@ -788,6 +793,8 @@ namespace EllipseStandardJobsExcelAddIn
                 }
                 // 
                 #endregion
+
+                #region CONSTRUYO LA HOJA 5
                 //CONSTRUYO LA HOJA 5 - REF CODE
                 // ReSharper disable once UseIndexedProperty
                 _excelApp.ActiveWorkbook.Sheets.get_Item(5).Activate();
@@ -874,6 +881,64 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow05, ResultColumn05, TitleRow05 + 1), TableName05);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
+                #endregion
+
+                #region CONSTRUYO LA HOJA 6
+                //CONSTRUYO LA HOJA 5 - EQUIPMENTS
+                // ReSharper disable once UseIndexedProperty
+                _excelApp.ActiveWorkbook.Sheets.get_Item(6).Activate();
+                _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName06;
+
+                _cells.GetCell("A1").Value = "CERREJÓN";
+                _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
+                _cells.MergeCells("A1", "B2");
+
+                _cells.GetCell("C1").Value = "STANDARD JOBS REFERENCE CODES - ELLIPSE 8";
+                _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
+                _cells.MergeCells("C1", "J2");
+
+                _cells.GetCell("K1").Value = "OBLIGATORIO";
+                _cells.GetCell("K1").Style = StyleConstants.TitleRequired;
+                _cells.GetCell("K2").Value = "OPCIONAL";
+                _cells.GetCell("K2").Style = StyleConstants.TitleOptional;
+                _cells.GetCell("K3").Value = "INFORMATIVO";
+                _cells.GetCell("K3").Style = StyleConstants.TitleInformation;
+                _cells.GetCell("K4").Value = "ACCIÓN A REALIZAR";
+                _cells.GetCell("K4").Style = StyleConstants.TitleAction;
+
+                _cells.GetRange(1, TitleRow06, ResultColumn06 - 1, TitleRow06).Style = StyleConstants.TitleRequired;
+
+                //STANDARD
+                _cells.GetCell(1, TitleRow06 - 1).Value = "EQUIPMENT";
+                _cells.GetRange(1, TitleRow06 - 1, ResultColumn06, TitleRow06 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(1, TitleRow06 - 1, ResultColumn06, TitleRow06 - 1).Merge();
+
+                _cells.GetCell(1, TitleRow06).Value = "DistrictCode";
+                _cells.GetCell(2, TitleRow06).Value = "StandardJob";
+                _cells.GetCell(3, TitleRow06).Value = "EquipmentGrpId";
+                _cells.GetCell(4, TitleRow06).Value = "EquipmentNo";
+                _cells.GetCell(5, TitleRow06).Value = "EquipmentDescription";
+                _cells.GetCell(6, TitleRow06).Value = "CompCode";
+                _cells.GetCell(7, TitleRow06).Value = "CompCodeDescription";
+                _cells.GetCell(8, TitleRow06).Value = "ModCode";
+                _cells.GetCell(9, TitleRow06).Value = "ModCodeDescription";
+
+                _cells.GetRange(1, TitleRow06, 4, TitleRow06).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(5, TitleRow06).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(6, TitleRow06).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(7, TitleRow06).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(8, TitleRow06).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(9, TitleRow06).Style = StyleConstants.TitleInformation;
+
+                _cells.GetCell(ResultColumn06, TitleRow06).Value = "RESULTADO";
+                
+
+                _cells.GetCell(ResultColumn06, TitleRow06).Style = StyleConstants.TitleResult;
+                _cells.GetRange(1, TitleRow06 + 1, ResultColumn06, TitleRow06 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow06, ResultColumn06, TitleRow06 + 1), TableName06);
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+
+                #endregion
 
                 _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
             }
@@ -2390,6 +2455,98 @@ namespace EllipseStandardJobsExcelAddIn
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();
+        }
+
+        private void buttonReviewEquipments_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName06)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                _thread = new Thread(RetrieveEquipment);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+
+        }
+
+        private void RetrieveEquipment()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _cells.ClearTableRange(TableName06);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var opSheet = new StandardJobService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            }; 
+
+            var stdCells = new ExcelStyleCells(_excelApp, SheetName01);
+            stdCells.SetAlwaysActiveSheet(false);
+
+            var j = TitleRow01 + 1;//itera según cada estándar
+            var i = TitleRow06 + 1;//itera la celda para cada tarea
+
+            while (!string.IsNullOrEmpty("" + stdCells.GetCell(3, j).Value))
+            {
+                try
+                {
+                    var districtCode = _cells.GetEmptyIfNull(stdCells.GetCell(1, j).Value2);
+                    var workGroup = _cells.GetEmptyIfNull(stdCells.GetCell(2, j).Value2);
+                    var stdJobNo = _cells.GetEmptyIfNull(stdCells.GetCell(3, j).Value2);
+
+                    var EquipmentList = StandardJobActions.RetrieveStandardJobEquipments(_eFunctions, urlService, opSheet, districtCode, stdJobNo);
+
+                    foreach (var Equipment in EquipmentList)
+                    {
+                        //Para resetear el estilo
+                        _cells.GetRange(1, i, ResultColumn06, i).Style = StyleConstants.Normal;
+
+                        _cells.GetCell(1, i).Value = "" + Equipment.DistrictCode;
+                        _cells.GetCell(2, i).Value = "" + Equipment.StandardJob;
+                        _cells.GetCell(3, i).Value = "" + Equipment.EquipmentGrpId;
+                        _cells.GetCell(4, i).Value = "" + Equipment.EquipmentNo;
+                        _cells.GetCell(5, i).Value = "" + Equipment.EquipmentDescription;
+                        _cells.GetCell(6, i).Value = "" + Equipment.CompCode;
+                        _cells.GetCell(7, i).Value = "" + Equipment.CompCodeDescription;
+                        _cells.GetCell(8, i).Value = "" + Equipment.ModCode;
+                        _cells.GetCell(9, i).Value = "" + Equipment.ModCodeDescription;
+                        i++;
+                       
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(1, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(1, j).Value2);
+                    _cells.GetCell(2, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(2, j).Value2);
+                    _cells.GetCell(3, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(3, j).Value2);
+                    _cells.GetCell(ResultColumn06, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn06, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:ReviewStandardJobTasks()", ex.Message);
+                    i++;
+                }
+                finally
+                {
+                    j++;//aumenta std
+                    _eFunctions.CloseConnection();
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            _cells.SetCursorDefault();
         }
     }
 }
