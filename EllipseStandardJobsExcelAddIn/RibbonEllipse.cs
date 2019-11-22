@@ -48,7 +48,7 @@ namespace EllipseStandardJobsExcelAddIn
         private const int ResultColumn03 = 14;
         private const int ResultColumnQualRev = 26;
         private const int ResultColumn05 = 35;
-        private const int ResultColumn06 = 10;
+        private const int ResultColumn06 = 11;
         private const string TableName01 = "StandardJobsTable";
         private const string TableName02 = "SJTasksTable";
         private const string TableName03 = "SJRequirementsTable";
@@ -922,6 +922,7 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell(7, TitleRow06).Value = "CompCodeDescription";
                 _cells.GetCell(8, TitleRow06).Value = "ModCode";
                 _cells.GetCell(9, TitleRow06).Value = "ModCodeDescription";
+                _cells.GetCell(10, TitleRow06).Value = "Accion";
 
                 _cells.GetRange(1, TitleRow06, 4, TitleRow06).Style = StyleConstants.TitleRequired;
                 _cells.GetCell(5, TitleRow06).Style = StyleConstants.TitleInformation;
@@ -929,9 +930,12 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell(7, TitleRow06).Style = StyleConstants.TitleInformation;
                 _cells.GetCell(8, TitleRow06).Style = StyleConstants.TitleOptional;
                 _cells.GetCell(9, TitleRow06).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(10, TitleRow06).Style = StyleConstants.TitleAction;
+                _cells.GetCell(10, TitleRow06).AddComment("C: Crear \nD: Eliminar");
+                _cells.SetValidationList(_cells.GetCell(10, TitleRow06 + 1), new List<string> { "C", "D" });
 
                 _cells.GetCell(ResultColumn06, TitleRow06).Value = "RESULTADO";
-                
+
 
                 _cells.GetCell(ResultColumn06, TitleRow06).Style = StyleConstants.TitleResult;
                 _cells.GetRange(1, TitleRow06 + 1, ResultColumn06, TitleRow06 + 1).NumberFormat = NumberFormatConstants.Text;
@@ -1026,7 +1030,7 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetCell(36, i).Value = "" + stdJob.JobCode8;
                     _cells.GetCell(37, i).Value = "" + stdJob.JobCode9;
                     _cells.GetCell(38, i).Value = "" + stdJob.JobCode10;
-                    
+
                     var stdTextId = "SJ" + stdJob.DistrictCode + stdJob.StandardJobNo;
                     var extendedDescription = StdText.GetText(urlService, stOpContext, stdTextId);
                     _cells.GetCell(39, i).Value = extendedDescription;
@@ -1395,7 +1399,7 @@ namespace EllipseStandardJobsExcelAddIn
                     stdJob.JobCode10 = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
                     stdJob.ExtText = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
                     StandardJobActions.CreateStandardJob(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob);
-                    if(!string.IsNullOrWhiteSpace(stdJob.ExtText))
+                    if (!string.IsNullOrWhiteSpace(stdJob.ExtText))
                         StandardJobActions.SetStandardJobText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
 
                     _cells.GetCell(ResultColumn01, i).Value = "CREADO";
@@ -1595,7 +1599,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         private void UpdateStandardJobStatus()
@@ -1663,21 +1667,21 @@ namespace EllipseStandardJobsExcelAddIn
             var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlService);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+            var operationContext = new StandardJobTaskService.OperationContext()
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
                 try
                 {
                     string action = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
-                    var operationContext = new StandardJobTaskService.OperationContext()
-                    {
-                        district = _frmAuth.EllipseDsct,
-                        position = _frmAuth.EllipsePost,
-                        maxInstances = 100,
-                        maxInstancesSpecified = true,
-                        returnWarnings = Debugger.DebugWarnings,
-                        returnWarningsSpecified = true
-                    };
 
                     var stdTask = new StandardJobTask
                     {
@@ -1748,7 +1752,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         /// <summary>
@@ -1912,7 +1916,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         private void ExecuteRequirementActions()
@@ -2114,7 +2118,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         public static class Queries
@@ -2176,7 +2180,7 @@ namespace EllipseStandardJobsExcelAddIn
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                if(_cells != null) _cells.SetCursorDefault();
+                if (_cells != null) _cells.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {
@@ -2302,7 +2306,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         private void btnUpdateStandardReferenceCodes_Click(object sender, RibbonControlEventArgs e)
@@ -2449,7 +2453,7 @@ namespace EllipseStandardJobsExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if(_cells != null) _cells.SetCursorDefault();
+            if (_cells != null) _cells.SetCursorDefault();
         }
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
@@ -2492,7 +2496,7 @@ namespace EllipseStandardJobsExcelAddIn
                 maxInstancesSpecified = true,
                 returnWarnings = Debugger.DebugWarnings,
                 returnWarningsSpecified = true
-            }; 
+            };
 
             var stdCells = new ExcelStyleCells(_excelApp, SheetName01);
             stdCells.SetAlwaysActiveSheet(false);
@@ -2525,15 +2529,14 @@ namespace EllipseStandardJobsExcelAddIn
                         _cells.GetCell(8, i).Value = "" + Equipment.ModCode;
                         _cells.GetCell(9, i).Value = "" + Equipment.ModCodeDescription;
                         i++;
-                       
+
                     }
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(1, i).Style = StyleConstants.Error;
                     _cells.GetCell(1, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(1, j).Value2);
                     _cells.GetCell(2, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(2, j).Value2);
-                    _cells.GetCell(3, i).Value = _cells.GetEmptyIfNull(_cells.GetCell(3, j).Value2);
+                    _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Error;
                     _cells.GetCell(ResultColumn06, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn06, i).Select();
                     Debugger.LogError("RibbonEllipse.cs:ReviewStandardJobTasks()", ex.Message);
@@ -2542,11 +2545,102 @@ namespace EllipseStandardJobsExcelAddIn
                 finally
                 {
                     j++;//aumenta std
-                    _eFunctions.CloseConnection();
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             _cells.SetCursorDefault();
+        }
+
+        private void buttonActionsEquipment_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName06)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                _thread = new Thread(ActionsEquipment);
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+        private void ActionsEquipment()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var opSheet = new StandardJobService.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings,
+                returnWarningsSpecified = true
+            };
+
+            var i = TitleRow06 + 1;
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
+            {
+                try
+                {
+                    string action = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value);
+
+                    var stdEquipment = new StandardJobEquipments
+                    {
+                        DistrictCode = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value),
+                        StandardJob = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value),
+                        EquipmentGrpId = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
+                        EquipmentNo = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value),
+                        EquipmentDescription = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value),
+                        CompCode = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value),
+                        CompCodeDescription = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value),
+                        ModCode = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value),
+                        ModCodeDescription = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value),
+                    };
+
+                    if (string.IsNullOrWhiteSpace(action))
+                        continue;
+
+                    if (action.Equals("C"))
+                    {
+                        StandardJobActions.CreateStandardJobEquipment(_eFunctions, urlService, opSheet, stdEquipment);
+                    }
+                    else if (action.Equals("D"))
+                    {
+                        StandardJobActions.DeleteStandardJobEquipment(_eFunctions, urlService, opSheet, stdEquipment);
+                    }
+                    else
+                        continue;
+
+                    _cells.GetCell(ResultColumn06, i).Value = "OK";
+                    _cells.GetCell(1, i).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn06, i).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn06, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:ExecuteEquipmentActions", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(ResultColumn06, i).Select();
+                    i++;
+                }
+            }
+
+            if (_cells != null) _cells.SetCursorDefault();
         }
     }
 }

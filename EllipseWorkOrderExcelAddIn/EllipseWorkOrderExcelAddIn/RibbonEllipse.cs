@@ -68,7 +68,7 @@ namespace EllipseWorkOrderExcelAddIn
         private const int TitleRowCc01 = 6;
 
         private const int ResultColumn01 = 54;
-        private const int ResultColumn02 = 24;
+        private const int ResultColumn02 = 25;
         private const int ResultColumn03 = 16;
         private const int ResultColumn04 = 8;
         private const int ResultColumn05 = 5;
@@ -1049,8 +1049,6 @@ namespace EllipseWorkOrderExcelAddIn
                 #endregion
 
                 #region CONSTRUYO LA HOJA 2
-                titleRow = TitleRow02;
-                resultColumn = ResultColumn02;
 
                 _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName02;
@@ -1072,83 +1070,87 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell("K4").Value = "ACCIÓN A REALIZAR";
                 _cells.GetCell("K4").Style = StyleConstants.TitleAction;
 
-                _cells.GetRange(1, titleRow, resultColumn - 1, titleRow).Style = StyleConstants.TitleRequired;
+                _cells.GetRange(1, TitleRow02, ResultColumn02 - 1, TitleRow02).Style = StyleConstants.TitleRequired;
 
                 //STANDARD
-                _cells.GetCell(1, titleRow - 1).Value = "WORK ORDER";
-                _cells.GetRange(1, titleRow - 1, 5, titleRow - 1).Style = StyleConstants.Option;
-                _cells.GetRange(1, titleRow - 1, 5, titleRow - 1).Merge();
+                _cells.GetCell(1, TitleRow02 - 1).Value = "WORK ORDER";
+                _cells.GetRange(1, TitleRow02 - 1, 5, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(1, TitleRow02 - 1, 5, TitleRow02 - 1).Merge();
 
-                _cells.GetCell(1, titleRow).Value = "DISTRICT";
-                _cells.GetCell(2, titleRow).Value = "WORK_GROUP";
-                _cells.GetCell(3, titleRow).Value = "WORK_ORDER";
-                _cells.GetCell(4, titleRow).Value = "WO_DESC";
-                _cells.GetCell(4, titleRow).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(1, TitleRow02).Value = "DISTRICT";
+                _cells.GetCell(2, TitleRow02).Value = "WORK_GROUP";
+                _cells.GetCell(3, TitleRow02).Value = "WORK_ORDER";
+                _cells.GetCell(4, TitleRow02).Value = "WO_DESC";
+                _cells.GetCell(4, TitleRow02).Style = StyleConstants.TitleInformation;
                 //ACTION
-                _cells.GetCell(5, titleRow).Value = "ACTION";
-                _cells.GetCell(5, titleRow).Style = StyleConstants.TitleAction;
+                _cells.GetCell(5, TitleRow02).Value = "ACTION";
+                _cells.GetCell(5, TitleRow02).Style = StyleConstants.TitleAction;
 
                 var actionList = WorkOrderTaskActions.GetActionsList();
                 var actionListComment = "";
                 foreach (var item in actionList)
                     actionListComment += item + "\n";
-                _cells.GetCell(5, titleRow).AddComment(actionListComment);
-                _cells.SetValidationList(_cells.GetCell(5, titleRow + 1), actionList);
+                _cells.GetCell(5, TitleRow02).AddComment(actionListComment);
+                _cells.SetValidationList(_cells.GetCell(5, TitleRow02 + 1), actionList);
                 //GENERAL
-                _cells.GetCell(6, titleRow - 1).Value = "GENERAL";
-                _cells.GetRange(6, titleRow - 1, 11, titleRow - 1).Style = StyleConstants.Option;
-                _cells.GetRange(6, titleRow - 1, 11, titleRow - 1).Merge();
+                _cells.GetCell(6, TitleRow02 - 1).Value = "GENERAL";
+                _cells.GetRange(6, TitleRow02 - 1, 11, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(6, TitleRow02 - 1, 11, TitleRow02 - 1).Merge();
 
-                _cells.GetCell(6, titleRow).Value = "TASK_NO";
-                _cells.GetCell(7, titleRow).Value = "WO_TASK_DESC";
-                _cells.GetCell(8, titleRow).Value = "JOB_DESC_CODE";
-                _cells.GetCell(9, titleRow).Value = "SAFETY_INST";
-                _cells.GetCell(10, titleRow).Value = "COMPL_INST";
-                _cells.GetCell(11, titleRow).Value = "COMPL_TEXT_CODE";
+                _cells.GetCell(6, TitleRow02).Value = "TASK_NO";
+                _cells.GetCell(7, TitleRow02).Value = "WO_TASK_DESC";
+                _cells.GetCell(8, TitleRow02).Value = "JOB_DESC_CODE";
+                _cells.GetCell(9, TitleRow02).Value = "SAFETY_INST";
+                _cells.GetCell(10, TitleRow02).Value = "COMPL_INST";
+                _cells.GetCell(11, TitleRow02).Value = "COMPL_TEXT_CODE";
 
                 //PLANNING
-                _cells.GetCell(12, titleRow - 1).Value = "PLANNING";
-                _cells.GetRange(12, titleRow - 1, 14, titleRow - 1).Style = StyleConstants.Option;
-                _cells.GetRange(12, titleRow - 1, 14, titleRow - 1).Merge();
+                _cells.GetCell(12, TitleRow02 - 1).Value = "PLANNING";
+                _cells.GetRange(12, TitleRow02 - 1, 14, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(12, TitleRow02 - 1, 14, TitleRow02 - 1).Merge();
 
-                _cells.GetCell(12, titleRow).Value = "ASSIGN_PERSON";
-                _cells.GetCell(13, titleRow).Value = "EST_MACH_HRS";
-                _cells.GetCell(14, titleRow).Value = "PLAN START DATE";
-                _cells.GetRange(12, titleRow, 14, titleRow).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(12, TitleRow02).Value = "ASSIGN_PERSON";
+                _cells.GetCell(13, TitleRow02).Value = "EST_MACH_HRS";
+                _cells.GetCell(14, TitleRow02).Value = "PLAN START DATE";
+                _cells.GetRange(12, TitleRow02, 14, TitleRow02).Style = StyleConstants.TitleOptional;
 
                 //RECURSOS
-                _cells.GetCell(15, titleRow - 1).Value = "RECURSOS";
-                _cells.GetRange(15, titleRow - 1, 17, titleRow - 1).Style = StyleConstants.Option;
-                _cells.GetRange(15, titleRow - 1, 17, titleRow - 1).Merge();
+                _cells.GetCell(15, TitleRow02 - 1).Value = "RECURSOS";
+                _cells.GetRange(15, TitleRow02 - 1, 17, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(15, TitleRow02 - 1, 17, TitleRow02 - 1).Merge();
 
-                _cells.GetCell(15, titleRow).Value = "EST_DUR_HRS";
-                _cells.GetCell(15, titleRow).Style = StyleConstants.TitleOptional;
-                _cells.GetCell(16, titleRow).Value = "LABOR";
-                _cells.GetCell(17, titleRow).Value = "MATERIAL";
-                _cells.GetRange(15, titleRow, 17, titleRow).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(15, TitleRow02).Value = "EST_DUR_HRS";
+                _cells.GetCell(15, TitleRow02).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(16, TitleRow02).Value = "LABOR";
+                _cells.GetCell(17, TitleRow02).Value = "MATERIAL";
+                _cells.GetRange(15, TitleRow02, 17, TitleRow02).Style = StyleConstants.TitleInformation;
 
                 //APL
-                _cells.GetCell(18, titleRow - 1).Value = "APL";
-                _cells.GetRange(18, titleRow - 1, 22, titleRow - 1).Style = StyleConstants.Option;
-                _cells.GetRange(18, titleRow - 1, 22, titleRow - 1).Merge();
+                _cells.GetCell(18, TitleRow02 - 1).Value = "APL";
+                _cells.GetRange(18, TitleRow02 - 1, 22, TitleRow02 - 1).Style = StyleConstants.Option;
+                _cells.GetRange(18, TitleRow02 - 1, 22, TitleRow02 - 1).Merge();
 
-                _cells.GetCell(18, titleRow).Value = "EQUIP_GRP_ID";
-                _cells.GetCell(19, titleRow).Value = "APL_TYPE";
-                _cells.GetCell(20, titleRow).Value = "COMP_CODE";
-                _cells.GetCell(21, titleRow).Value = "COMP_MOD_CODE";
-                _cells.GetCell(22, titleRow).Value = "APL_SEQ_NO";
+                _cells.GetCell(18, TitleRow02).Value = "EQUIP_GRP_ID";
+                _cells.GetCell(19, TitleRow02).Value = "APL_TYPE";
+                _cells.GetCell(20, TitleRow02).Value = "COMP_CODE";
+                _cells.GetCell(21, TitleRow02).Value = "COMP_MOD_CODE";
+                _cells.GetCell(22, TitleRow02).Value = "APL_SEQ_NO";
 
-                _cells.GetRange(18, titleRow, 22, titleRow).Style = StyleConstants.TitleOptional;
+                _cells.GetRange(18, TitleRow02, 22, TitleRow02).Style = StyleConstants.TitleOptional;
 
 
-                _cells.GetCell(23, titleRow).Value = "DESCRIPCION EXTENDIDA";
-                _cells.GetCell(23, titleRow).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(23, TitleRow02).Value = "DESCRIPCION EXTENDIDA";
+                _cells.GetCell(23, TitleRow02).Style = StyleConstants.TitleOptional;
+
+                _cells.GetCell(24, TitleRow02).Value = "COMENTARIOS DE CIERRE";
+                _cells.GetCell(24, TitleRow02).Style = StyleConstants.TitleOptional;
+
                 //RESULTADO
-                _cells.GetCell(resultColumn, titleRow).Value = "RESULTADO";
-                _cells.GetCell(resultColumn, titleRow).Style = StyleConstants.TitleResult;
+                _cells.GetCell(ResultColumn02, TitleRow02).Value = "RESULTADO";
+                _cells.GetCell(ResultColumn02, TitleRow02).Style = StyleConstants.TitleResult;
 
-                _cells.GetRange(1, titleRow + 1, resultColumn, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
-                _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), TableName02);
+                _cells.GetRange(1, TitleRow02 + 1, ResultColumn02, TitleRow02 + 1).NumberFormat = NumberFormatConstants.Text;
+                _cells.FormatAsTable(_cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02 + 1), TableName02);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                 #endregion
 
@@ -4333,9 +4335,13 @@ namespace EllipseWorkOrderExcelAddIn
                         _cells.GetRange(17, i, 22, i).Style = !string.IsNullOrWhiteSpace(task.AplType)
                             ? StyleConstants.Error : StyleConstants.Normal;
 
-                        var stdTextId = "WA" + task.DistrictCode + task.WorkOrder + task.WoTaskNo;
+                        var stdTextId = "WI" + task.DistrictCode + task.WorkOrder + task.WoTaskNo;
                         _cells.GetCell(23, i).Value = StdText.GetText(urlService, stOpContext, stdTextId);
                         _cells.GetCell(23, i).WrapText = false;
+
+                        var stdTextCompleteId = "WA" + task.DistrictCode + task.WorkOrder + task.WoTaskNo;
+                        _cells.GetCell(24, i).Value = StdText.GetText(urlService, stOpContext, stdTextCompleteId);
+                        _cells.GetCell(24, i).WrapText = false;
                         _cells.GetCell(3, i).Select();
                         i++;//aumenta tarea
                     }
@@ -4926,7 +4932,8 @@ namespace EllipseWorkOrderExcelAddIn
                         AplCompCode = _cells.GetEmptyIfNull(_cells.GetCell(20, i).Value),
                         AplCompModCode = _cells.GetEmptyIfNull(_cells.GetCell(21, i).Value),
                         AplSeqNo = _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value),
-                        ExtTaskText = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value)
+                        ExtTaskText = _cells.GetEmptyIfNull(_cells.GetCell(23, i).Value),
+                        CompleteTaskText = _cells.GetEmptyIfNull(_cells.GetCell(24, i).Value)
                     };
 
                     woTask.SetWorkOrderDto(woTask.WorkOrder);
@@ -4953,6 +4960,7 @@ namespace EllipseWorkOrderExcelAddIn
                     else if (action.Equals(WorkOrderTaskActions.Close))
                     {
                         reply = WorkOrderTaskActions.CompleteWorkOrderTask(urlService, opSheet, woTask);
+                        WorkOrderTaskActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else if (action.Equals(WorkOrderTaskActions.ReOpen))
                     {

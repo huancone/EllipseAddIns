@@ -1673,15 +1673,15 @@ namespace EllipseStandardJobsClassLibrary
 
         public static List<StandardJobEquipments> RetrieveStandardJobEquipments(EllipseFunctions eFunctions, string urlService, StandardJobService.OperationContext opSheet, string district, string standardJobNo)
         {
+            var proxyRetrieveEquipment = new StandardJobService.StandardJobService() { Url = urlService + "/StandardJobService" };
+
+
             var standardJobEquipments = new List<StandardJobEquipments>();
-            var proxyRetrieveEquipment = new StandardJobService.StandardJobService();
             var RetrieveEquipmentRequest = new StandardJobServiceRetrieveEquipmentRequestDTO()
             {
                 districtCode = district,
                 standardJob = standardJobNo
             };
-
-            proxyRetrieveEquipment.Url = urlService + "/StandardJobService";
 
             var reply = proxyRetrieveEquipment.retrieveEquipment(opSheet, RetrieveEquipmentRequest);
 
@@ -1699,7 +1699,7 @@ namespace EllipseStandardJobsClassLibrary
                 eq.ModCodeDescription = reply.equipmentRelation[i].modCodeDescription;
 
 
-                if (!string.IsNullOrWhiteSpace(reply.equipmentRelation[i].equipmentNo) || !string.IsNullOrWhiteSpace(reply.equipmentRelation[i].equipmentGrpId ))
+                if (!string.IsNullOrWhiteSpace(reply.equipmentRelation[i].equipmentNo) || !string.IsNullOrWhiteSpace(reply.equipmentRelation[i].equipmentGrpId))
                 {
                     standardJobEquipments.Add(eq);
                 }
@@ -1708,6 +1708,61 @@ namespace EllipseStandardJobsClassLibrary
             return standardJobEquipments;
         }
 
+        public static void CreateStandardJobEquipment(EllipseFunctions eFunctions, string urlService, StandardJobService.OperationContext opSheet, StandardJobEquipments stdEquipment)
+        {
+            var proxyRetrieveEquipment = new StandardJobService.StandardJobService() { Url = urlService + "/StandardJobService" };
+
+            var standardJobEquipments = new List<StandardJobEquipments>();
+            var requestParametersList = new List<StandardJobServiceAddEquipmentRequestDTO>();
+            var equipmentRelationList = new List<EquipmentRelationDTO>();
+
+            equipmentRelationList.Add(new EquipmentRelationDTO
+            {
+                equipmentGrpId = stdEquipment.EquipmentGrpId,
+                equipmentNo = stdEquipment.EquipmentNo,
+                equipmentRef = stdEquipment.EquipmentNo,
+                compCode = stdEquipment.CompCode,
+                modCode = stdEquipment.ModCode
+            });
+
+            requestParametersList.Add(new StandardJobServiceAddEquipmentRequestDTO
+            {
+
+                districtCode = stdEquipment.DistrictCode,
+                standardJob = stdEquipment.StandardJob,
+                equipmentRelation = equipmentRelationList.ToArray()
+            });
+
+            proxyRetrieveEquipment.multipleAddEquipment(opSheet, requestParametersList.ToArray());
+        }
+
+        public static void DeleteStandardJobEquipment(EllipseFunctions eFunctions, string urlService, StandardJobService.OperationContext opSheet, StandardJobEquipments stdEquipment)
+        {
+            var proxyRetrieveEquipment = new StandardJobService.StandardJobService() { Url = urlService + "/StandardJobService" };
+
+            var standardJobEquipments = new List<StandardJobEquipments>();
+            var requestParametersList = new List<StandardJobServiceDeleteEquipmentRequestDTO>();
+            var equipmentRelationList = new List<EquipmentRelationDTO>();
+
+            equipmentRelationList.Add(new EquipmentRelationDTO
+            {
+                equipmentGrpId = stdEquipment.EquipmentGrpId,
+                equipmentNo = stdEquipment.EquipmentNo,
+                equipmentRef = stdEquipment.EquipmentNo,
+                compCode = stdEquipment.CompCode,
+                modCode = stdEquipment.ModCode
+            });
+
+            requestParametersList.Add(new StandardJobServiceDeleteEquipmentRequestDTO
+            {
+
+                districtCode = stdEquipment.DistrictCode,
+                standardJob = stdEquipment.StandardJob,
+                equipmentRelation = equipmentRelationList.ToArray()
+            });
+
+            proxyRetrieveEquipment.multipleDeleteEquipment(opSheet, requestParametersList.ToArray());
+        }
     }
 
 }

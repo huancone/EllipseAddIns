@@ -50,6 +50,9 @@
             this.btnCreateStandard = this.Factory.CreateRibbonButton();
             this.btnModifyStandard = this.Factory.CreateRibbonButton();
             this.btnCleanStandardTable = this.Factory.CreateRibbonButton();
+            this.menuEquipments = this.Factory.CreateRibbonMenu();
+            this.buttonReviewEquipments = this.Factory.CreateRibbonButton();
+            this.buttonActionsEquipment = this.Factory.CreateRibbonButton();
             this.menuTasks = this.Factory.CreateRibbonMenu();
             this.btnReviewTasks = this.Factory.CreateRibbonButton();
             this.btnExecuteTaskActions = this.Factory.CreateRibbonButton();
@@ -67,10 +70,6 @@
             this.btnUpdateQualityStdJobs = this.Factory.CreateRibbonButton();
             this.btnCleanQualityStdJobsTable = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.menuEquipments = this.Factory.CreateRibbonMenu();
-            this.buttonReviewEquipments = this.Factory.CreateRibbonButton();
-            this.buttonDeleteEquipment = this.Factory.CreateRibbonButton();
-            this.buttonCreateEquipment = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpStandardJobs.SuspendLayout();
             this.box1.SuspendLayout();
@@ -197,6 +196,28 @@
             this.btnCleanStandardTable.Name = "btnCleanStandardTable";
             this.btnCleanStandardTable.ShowImage = true;
             this.btnCleanStandardTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanStandardTable_Click);
+            // 
+            // menuEquipments
+            // 
+            this.menuEquipments.Items.Add(this.buttonReviewEquipments);
+            this.menuEquipments.Items.Add(this.buttonActionsEquipment);
+            this.menuEquipments.Label = "Equipos";
+            this.menuEquipments.Name = "menuEquipments";
+            this.menuEquipments.ShowImage = true;
+            // 
+            // buttonReviewEquipments
+            // 
+            this.buttonReviewEquipments.Label = "Consultar Equipos o EGI";
+            this.buttonReviewEquipments.Name = "buttonReviewEquipments";
+            this.buttonReviewEquipments.ShowImage = true;
+            this.buttonReviewEquipments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonReviewEquipments_Click);
+            // 
+            // buttonActionsEquipment
+            // 
+            this.buttonActionsEquipment.Label = "Ejecutar Acciones";
+            this.buttonActionsEquipment.Name = "buttonActionsEquipment";
+            this.buttonActionsEquipment.ShowImage = true;
+            this.buttonActionsEquipment.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonActionsEquipment_Click);
             // 
             // menuTasks
             // 
@@ -327,34 +348,6 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
-            // menuEquipments
-            // 
-            this.menuEquipments.Items.Add(this.buttonReviewEquipments);
-            this.menuEquipments.Items.Add(this.buttonDeleteEquipment);
-            this.menuEquipments.Items.Add(this.buttonCreateEquipment);
-            this.menuEquipments.Label = "Equipos";
-            this.menuEquipments.Name = "menuEquipments";
-            this.menuEquipments.ShowImage = true;
-            // 
-            // buttonReviewEquipments
-            // 
-            this.buttonReviewEquipments.Label = "Consultar Equipos o EGI";
-            this.buttonReviewEquipments.Name = "buttonReviewEquipments";
-            this.buttonReviewEquipments.ShowImage = true;
-            this.buttonReviewEquipments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonReviewEquipments_Click);
-            // 
-            // buttonDeleteEquipment
-            // 
-            this.buttonDeleteEquipment.Label = "Eliminar Equipos o EGI";
-            this.buttonDeleteEquipment.Name = "buttonDeleteEquipment";
-            this.buttonDeleteEquipment.ShowImage = true;
-            // 
-            // buttonCreateEquipment
-            // 
-            this.buttonCreateEquipment.Label = "Crear Equipos o EGI";
-            this.buttonCreateEquipment.Name = "buttonCreateEquipment";
-            this.buttonCreateEquipment.ShowImage = true;
-            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -408,8 +401,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuEquipments;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonReviewEquipments;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonDeleteEquipment;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonCreateEquipment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonActionsEquipment;
     }
 
     partial class ThisRibbonCollection
