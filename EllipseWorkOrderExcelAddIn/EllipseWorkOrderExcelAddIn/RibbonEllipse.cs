@@ -847,7 +847,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 5
                 _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 6
                 _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 7
-                //_excelApp.ActiveWorkbook.Worksheets.Add();//hoja 8
+                _excelApp.ActiveWorkbook.Worksheets.Add();//hoja 8
 
                 #region CONSTRUYO LA HOJA 1
                 var titleRow = TitleRow01;
@@ -1422,7 +1422,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), TableName07);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                 #endregion
-                /*
+                
                 #region CONSTRUYO LA HOJA 8 - TO DO LIST
                 titleRow = TitleRow08;
                 resultColumn = ResultColumn08;
@@ -1464,7 +1464,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), TableName07);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
                 #endregion
-                */
+                
                 _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
             }
             catch (Exception ex)
