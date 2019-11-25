@@ -7,14 +7,14 @@ using System.Windows.Forms;
 using EllipseBulkMaterialExcelAddIn.Properties;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Utilities;
+
 using EllipseCommonsClassLibrary.Connections;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using BMUSheet = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetService;
-using BMUSheetItem = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService;
+using BMUService = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetService;
+using BMUItemService = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService;
 using EllipseEquipmentClassLibrary;
 using ListService = EllipseEquipmentClassLibrary.EquipmentListService;
 using System.Threading;
@@ -62,7 +62,11 @@ namespace EllipseBulkMaterialExcelAddIn
                 {
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(BulkMaterialExcecute);
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(BulkMaterialExecute);
+
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -118,7 +122,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
 
-                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).Style = _cells.GetStyle(StyleConstants.Normal);
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).Style = StyleConstants.Normal;
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).Clear();
@@ -128,7 +132,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("B1").Value = "Bulk Material Usage Sheet";
 
-                _cells.GetRange("A1", "B1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.GetRange("A1", "B1").Style = StyleConstants.HeaderDefault;
                 _cells.GetRange("B1", "D1").Merge();
 
                 _cells.GetCell(1, TitleRow01).Value = "Usage Sheet Id";
@@ -154,39 +158,39 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 #region Styles
 
-                _cells.GetCell(1, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetCell(2, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(3, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(4, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(5, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(6, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(7, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetCell(8, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(9, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(10, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(11, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(12, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(13, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(14, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell(15, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(16, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(17, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell(1, TitleRow01).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(2, TitleRow01).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(3, TitleRow01).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(4, TitleRow01).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(5, TitleRow01).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(6, TitleRow01).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(7, TitleRow01).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(8, TitleRow01).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(9, TitleRow01).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(10, TitleRow01).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(11, TitleRow01).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(12, TitleRow01).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(13, TitleRow01).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(14, TitleRow01).Style = StyleConstants.TitleRequired;
+                _cells.GetCell(15, TitleRow01).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(16, TitleRow01).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(17, TitleRow01).Style = StyleConstants.TitleOptional;
+                _cells.GetCell(ResultColumn01, TitleRow01).Style = StyleConstants.TitleInformation;
 
                 #endregion
 
                 #region Instructions
 
                 _cells.GetCell("E1").Value = "OBLIGATORIO";
-                _cells.GetCell("E1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("E1").Style = StyleConstants.TitleRequired;
                 _cells.GetCell("E2").Value = "OPCIONAL";
-                _cells.GetCell("E2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("E2").Style = StyleConstants.TitleOptional;
                 _cells.GetCell("E3").Value = "INFORMATIVO";
-                _cells.GetCell("E3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell("E3").Style = StyleConstants.TitleInformation;
                 _cells.GetCell("E4").Value = "ACCIÓN A REALIZAR";
-                _cells.GetCell("E4").Style = _cells.GetStyle(StyleConstants.TitleAction);
+                _cells.GetCell("E4").Style = StyleConstants.TitleAction;
                 _cells.GetCell("E5").Value = "REQUERIDO ADICIONAL";
-                _cells.GetCell("E5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
+                _cells.GetCell("E5").Style = StyleConstants.TitleAdditional;
 
                 #endregion
 
@@ -206,7 +210,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1), TableName01);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
-                OrderAndSort(_excelApp.ActiveWorkbook.ActiveSheet);
+                OrderAndSort(_excelApp.ActiveWorkbook.ActiveSheet, TableName01);
 
                 //Hoja 2
                 #region Hoja de Listas
@@ -214,25 +218,25 @@ namespace EllipseBulkMaterialExcelAddIn
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName02;
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
-                _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.GetCell("A1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("A1", "B2");
                 _cells.GetCell("C1").Value = "EQUIPMENT LIST CHECKER - ELLIPSE 8";
-                _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
+                _cells.GetCell("C1").Style = StyleConstants.HeaderDefault;
                 _cells.MergeCells("C1", "J2");
 
                 _cells.GetCell("K1").Value = "OBLIGATORIO";
-                _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell("K1").Style = StyleConstants.TitleRequired;
                 _cells.GetCell("K2").Value = "OPCIONAL";
-                _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell("K2").Style = StyleConstants.TitleOptional;
                 _cells.GetCell("K3").Value = "INFORMATIVO";
-                _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
+                _cells.GetCell("K3").Style = StyleConstants.TitleInformation;
 
                 _cells.GetCell("A3").Value = EquipListSearchFieldCriteria.ListType.Value;
                 _cells.GetCell("B3").Value = "PCOMBU";
                 _cells.GetCell("A4").Value = EquipListSearchFieldCriteria.ListId.Value;
                 _cells.SetValidationList(_cells.GetCell("B4"), GetListIdList("PCOMBU"), ValidationSheetName, 2);
-                _cells.GetRange("A3", "A4").Style = _cells.GetStyle(StyleConstants.Option);
-                _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
+                _cells.GetRange("A3", "A4").Style = StyleConstants.Option;
+                _cells.GetRange("B3", "B4").Style = StyleConstants.Select;
 
                 var statusCodeList = _eFunctions.GetItemCodes("ES").Select(item => item.code + " - " + item.description).ToList();
                 var equipClassCodeList = _eFunctions.GetItemCodes("EC").Select(item => item.code + " - " + item.description).ToList();
@@ -295,14 +299,14 @@ namespace EllipseBulkMaterialExcelAddIn
             }
         }
 
-        private void OrderAndSort(Worksheet excelSheet)
+        private void OrderAndSort(Worksheet excelSheet, string tableName)
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
 
-            var tableSheetItems = _cells.GetRange(TableName01).ListObject;
+            var tableSheetItems = _cells.GetRange(tableName).ListObject;
             tableSheetItems.Sort.SortFields.Clear();
             tableSheetItems.Sort.SortFields.Add(_cells.GetCell(2, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
             tableSheetItems.Sort.SortFields.Add(_cells.GetCell(3, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
@@ -350,7 +354,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
             var cc = new CsvContext();
 
-            var bulkMaterials = cc.Read<BulkMaterial>(filePath, inputFileDescription);
+            var bulkMaterials = cc.Read<BulkMaterialItem>(filePath, inputFileDescription);
 
             var currentRow = TitleRow01 + 1;
             foreach (var bulkMaterial in bulkMaterials)
@@ -370,51 +374,54 @@ namespace EllipseBulkMaterialExcelAddIn
                 finally { currentRow++; }
             }
 
-            OrderAndSort(excelSheet);
+            OrderAndSort(excelSheet, TableName01);
         }
 
         /// <summary>
         ///     Crea las instancias a los servicios BulkMaterialUsageSheetService y BulkMaterialUsageSheetItemService
         /// </summary>
-        private void BulkMaterialExcecute()
+        private void BulkMaterialExecute()
         {
             try
             {
-                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
-                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
-
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 var excelBook = _excelApp.ActiveWorkbook;
                 Worksheet excelSheet = excelBook.ActiveSheet;
+                _cells.SetCursorWait();
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
-                if (excelSheet.Name != SheetName01) return;
-                var proxySheet = new BMUSheet.BulkMaterialUsageSheetService();
-                var opSheet = new BMUSheet.OperationContext();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
+                _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
-                var proxyItem = new BMUSheetItem.BulkMaterialUsageSheetItemService();
-                var opItem = new BMUSheetItem.OperationContext();
+                var sheetService = new BMUService.BulkMaterialUsageSheetService();
+                sheetService.Url = urlService + "/BulkMaterialUsageSheet";
 
+                var opContext = new BMUService.OperationContext()
+                {
+                    district = _frmAuth.EllipseDsct,
+                    maxInstances = 100,
+                    position = _frmAuth.EllipsePost,
+                    returnWarnings = false
+                };
 
-                if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
-                proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/BulkMaterialUsageSheet";
-                proxyItem.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/BulkMaterialUsageSheetItem";
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-
-                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                opSheet.district = _frmAuth.EllipseDsct;
-                opSheet.maxInstances = 100;
-                opSheet.position = _frmAuth.EllipsePost;
-                opSheet.returnWarnings = false;
-
-                opItem.district = _frmAuth.EllipseDsct;
-                opItem.maxInstances = 100;
-                opItem.position = _frmAuth.EllipsePost;
-                opItem.returnWarnings = false;
-
+                var itemService = new BMUItemService.BulkMaterialUsageSheetItemService();
+                itemService.Url = urlService + "/BulkMaterialUsageSheetItem";
+                var opItem = new BMUItemService.OperationContext()
+                {
+                    district = _frmAuth.EllipseDsct,
+                    maxInstances = 100,
+                    position = _frmAuth.EllipsePost,
+                    returnWarnings = false
+                };
+                
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-                try
+                var currentRow = TitleRow01 + 1;
+                var currentHeaderRow = currentRow;
+
+                if (cbAutoSortItems.Checked)
                 {
                     var tableSheetItems = _cells.GetRange(TableName01).ListObject;
                     tableSheetItems.Sort.SortFields.Clear();
@@ -422,355 +429,208 @@ namespace EllipseBulkMaterialExcelAddIn
                     tableSheetItems.Sort.SortFields.Add(_cells.GetCell(3, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
                     tableSheetItems.Sort.SortFields.Add(_cells.GetCell(4, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
                     tableSheetItems.Sort.SortFields.Add(_cells.GetCell(6, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
-                    tableSheetItems.Sort.SortFields.Add(_cells.GetCell(9, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
+                    tableSheetItems.Sort.SortFields.Add(_cells.GetCell(8, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
                     tableSheetItems.Sort.SortFields.Add(_cells.GetCell(9, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
                     tableSheetItems.Sort.SortFields.Add(_cells.GetCell(10, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
                     tableSheetItems.Sort.SortFields.Add(_cells.GetCell(11, TitleRow01), XlSortOn.xlSortOnValues, XlOrder.xlDownThenOver, Type.Missing, Type.Missing);
                     tableSheetItems.Sort.Apply();
+                }
 
-                    var currentRow = TitleRow01 + 1;
+                BulkMaterial.BulkMaterialUsageSheet currentSheetHeader = null;
+                BulkMaterial.BulkMaterialUsageSheet newSheetHeader = null;
+                var itemList = new List<BulkMaterial.BulkMaterialUsageSheetItem>();
 
-                    while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
+                while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
+                {
+                    try
                     {
-                        DateTime usageDate;
-                        if (DateTime.TryParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, out usageDate))
+                        _cells.GetCell(1, currentRow).Select();
+
+                        newSheetHeader = new BulkMaterial.BulkMaterialUsageSheet();
+
+                        //llenado de variables del encabezado de la hoja
+                        newSheetHeader.BulkMaterialUsageSheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
+                        newSheetHeader.DistrictCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) ?? "ICOR";
+                        newSheetHeader.WarehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+
+                        newSheetHeader.DefaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);//DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture);
+                        newSheetHeader.DefaultAccountCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value);
+                        newSheetHeader.DefaultAccountCode = newSheetHeader.DefaultAccountCode ?? BulkMaterialActions.GetBulkAccountCode(_eFunctions, _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
+
+                        if (currentSheetHeader == null)
                         {
+                            currentSheetHeader = newSheetHeader;
+                            currentHeaderRow = currentRow;
+                        }
 
-                            var currentHeader = currentRow;
-                            var requestSheet = new BMUSheet.BulkMaterialUsageSheetDTO();
-                            var requestItemList = new List<BMUSheetItem.BulkMaterialUsageSheetItemDTO>();
-                            var allRequestItemList = new List<BMUSheetItem.BulkMaterialUsageSheetItemDTO>();
+                        //Crea el encabezado cuando los ids sean diferente o si el encabezado es diferente en caso de ids automáticos
+                        var isNullIds = string.IsNullOrWhiteSpace(newSheetHeader.BulkMaterialUsageSheetId) && string.IsNullOrWhiteSpace(currentSheetHeader.BulkMaterialUsageSheetId);
+                        var isEqualIds = newSheetHeader.BulkMaterialUsageSheetId == currentSheetHeader.BulkMaterialUsageSheetId;
 
-                            _cells.GetCell(1, currentRow).Select();
+                        if (!isEqualIds || (isNullIds && !newSheetHeader.Equals(currentSheetHeader)))
+                        {
+                            CreateBulkMaterialSheet(sheetService, opContext, itemService, opItem, currentSheetHeader, itemList, currentHeaderRow, currentRow - 1);
+                            currentSheetHeader = newSheetHeader;
+                            currentHeaderRow = currentRow;
+                        }
 
-                            //llenado de variables del encabezado de la hoja
-                            requestSheet.bulkMaterialUsageSheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) : null;
-                            requestSheet.districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) ?? "ICOR";
-                            requestSheet.warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+                        var requestItem = new BulkMaterial.BulkMaterialUsageSheetItem
+                        {
+                            BulkMaterialUsageSheetId = "" + currentSheetHeader.BulkMaterialUsageSheetId,
+                            EquipmentReference = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(8, currentRow).Value),
+                            ComponentCode = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(9, currentRow).Value),
+                            Modifier = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(10, currentRow).Value),
+                            BulkMaterialTypeId = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(11, currentRow).Value),
+                            ConditionMonitoringAction = (_cells.GetEmptyIfNull(_cells.GetCell(12, currentRow).Value) == "Fuel/Diesel") || (_cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(12, currentRow).Value) == null) ? null : "" + _cells.GetCell(12, currentRow).Value.ToString().Substring(0, 1),
+                            Quantity = "" + _cells.GetCell(13, currentRow).Value,
+                            UsageDate = _cells.GetEmptyIfNull("" + _cells.GetCell(14, currentRow).Value),
+                            UsageTime = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(15, currentRow).Value),
+                            OperationStatisticType = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(16, currentRow).Value),
+                            MeterReading = "" + _cells.GetCell(17, currentRow).Value,
+                        };
 
+                        itemList.Add(requestItem);
 
-                            requestSheet.defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);//DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture);
-                            requestSheet.defaultAccountCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null;
-                            requestSheet.defaultAccountCode = requestSheet.defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
-                            //Crea el encabezado
-                            var replySheet = proxySheet.create(opSheet, requestSheet);
+                        //Si es el último registro
+                        if (string.IsNullOrWhiteSpace(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow + 1).Value)))
+                        {
+                            //Para control de estilos en caso de falla
+                            currentRow++;
+                            //Creo la hoja si es el último registro
+                            CreateBulkMaterialSheet(sheetService, opContext, itemService, opItem, currentSheetHeader, itemList, currentHeaderRow, currentRow - 1);
+                            //Reajuste de control de estilo si no hay fallas
+                            currentRow--;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var exceptionMessage = "";
+                        var exceptionType = StyleConstants.Error;
 
-
-                            //valida si el encabezado tiene errores
-                            if (replySheet.errors.Length > 0)
-                            {
-                                foreach (var t in replySheet.errors)
-                                    _cells.GetCell(ResultColumn01, currentRow).Value += " - " + t.messageText;
-
-                                _cells.GetRange(1, currentHeader, 6, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                                _cells.GetRange(1, currentHeader, 6, currentRow).Select();
-                                currentRow++;
-                            }
-                            else
-                            {
-                                //si el encabezado no tiene errores empueza a agregar los items a la coleccion.
-                                requestSheet.bulkMaterialUsageSheetId = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
-                                _cells.GetCell(1, currentRow).Value = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
-
-                                //mientras que el encabezado sea el mismo, llene la lista de items
-                                var sheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
-                                var warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                                var defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value); //DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture);
-                                var defaultAccountCode = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null);
-                                defaultAccountCode = defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
-
-                                while (
-                                        (
-                                            requestSheet.bulkMaterialUsageSheetId == sheetId ||
-                                            (
-                                                sheetId == null &&
-                                                requestSheet.warehouseId == warehouseId &&
-                                                requestSheet.defaultUsageDate == defaultUsageDate &&
-                                                requestSheet.defaultAccountCode == defaultAccountCode
-                                            )
-                                        )
-                                      )
-                                {
-                                    ItemListAdd(currentRow, requestSheet, requestItemList, allRequestItemList, excelSheet);
-                                    currentRow++;
-
-                                    sheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
-                                    warehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
-                                    defaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value); //DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture);
-                                    defaultAccountCode = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value) != null ? _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value) : null);
-                                    defaultAccountCode = defaultAccountCode ?? GetBulkAccountCode(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
-                                }
-
-                                try
-                                {
-                                    if (requestItemList.Count > 0)
-                                    {
-                                        //esta operacion agrega la lista de items al encabezado
-                                        var replyItem = proxyItem.multipleCreate(opItem, requestItemList.ToArray());
-
-                                        //recorre el resultado de la ejecucion de la operacion multipleCreate donde hubo errores.
-                                        var errorCounter = 0;
-
-                                        foreach (var rItem in replyItem.Where(rItem => rItem.errors.Length > 0))
-                                        {
-                                            errorCounter++;
-                                            var errorMessage = rItem.errors.Aggregate("", (current, error) => current + (error.messageText + ", "));
-
-                                            var currentItem = 0;
-                                            foreach (var item in allRequestItemList)
-                                            {
-                                                if (_cells.GetEmptyIfNull(item.bulkMaterialUsageSheetId).ToUpper() == _cells.GetEmptyIfNull(rItem.bulkMaterialUsageSheetItemDTO.bulkMaterialUsageSheetId) &
-                                                    _cells.GetEmptyIfNull(item.bulkMaterialUsageSheetItemId).ToUpper() == _cells.GetEmptyIfNull(rItem.bulkMaterialUsageSheetItemDTO.bulkMaterialUsageSheetItemId)
-                                                    )
-                                                {
-                                                    requestItemList.Remove(item);
-                                                    _cells.GetRange(8, currentHeader + currentItem, 13, currentHeader + currentItem).Style = _cells.GetStyle(StyleConstants.Error);
-                                                    _cells.GetCell(ResultColumn01, currentHeader + currentItem).Value += errorMessage;
-                                                    _cells.GetCell(ResultColumn01, currentHeader + currentItem).Select();
-                                                }
-                                                currentItem++;
-                                            }
-                                        }
-
-                                        if (errorCounter > 0 & requestItemList.Count > 0)
-                                        {
-                                            try
-                                            {
-                                                var deleteHeader = false;
-                                                replyItem = proxyItem.multipleCreate(opItem, requestItemList.ToArray());
-                                                foreach (var rItem in replyItem.Where(item => item.errors.Length > 0)) { deleteHeader = true; }
-                                                if (deleteHeader)
-                                                {
-                                                    DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
-                                                }
-                                                else
-                                                {
-                                                    ApplyHeader(proxySheet, opSheet, requestSheet, currentRow - 1, currentHeader);
-                                                }
-                                            }
-                                            catch (Exception error)
-                                            {
-                                                MessageBox.Show(error.Message);
-                                                DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
-                                            }
-                                        }
-                                        else if (errorCounter == 0 & requestItemList.Count > 0)
-                                        {
-                                            ApplyHeader(proxySheet, opSheet, requestSheet, currentRow - 1, currentHeader);
-                                        }
-                                        else
-                                        {
-                                            DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        _cells.GetCell(ResultColumn01, currentRow - 1).Value += "No hay Items para Aplicar en esta hoja!";
-                                        DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow - 1);
-                                    }
-                                }
-                                catch (Exception error)
-                                {
-                                    MessageBox.Show(error.Message);
-                                }
-                            }
+                        if (ex.Message.Equals("The operation has timed out"))
+                        {
+                            exceptionMessage = " - Hoja " + currentSheetHeader.BulkMaterialUsageSheetId + " Completada. No se recibió respuesta de Ellipse, por lo que se recomienda verificar la completación";
+                            exceptionType = StyleConstants.Warning;
+                        }
+                        else if(ex.Message.Equals(" - A record with the same key already exists in table [BulkMaterialUsageSheet]."))
+                        {
+                            exceptionMessage = "El id ingresado ya existe. " + currentSheetHeader.BulkMaterialUsageSheetId;
+                            exceptionType = StyleConstants.Error;
+                        }
+                        else if(ex.Message.Equals("Object reference not set to an instance of an object."))
+                        {
+                            exceptionMessage = ex.Message;
+                            exceptionType = StyleConstants.Error;
                         }
                         else
                         {
-                            _cells.GetCell(4, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                            _cells.GetCell(ResultColumn01, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                            _cells.GetCell(ResultColumn01, currentRow).Value += "Fecha Errada";
-                            currentRow++;
+                            BulkMaterialActions.DeleteHeader(sheetService, opContext, currentSheetHeader.ToDto());
+                            exceptionMessage = " - Hoja " + currentSheetHeader.BulkMaterialUsageSheetId + " Borrada. " + ex.Message;
+                            exceptionType = StyleConstants.Error;
                         }
+                        //Agrego el mensaje para el resultado de la excepción
+                        for (int i = currentHeaderRow; i < currentRow; i++)
+                            _cells.GetCell(ResultColumn01, i).Value += exceptionMessage;
+                        _cells.GetRange(1, currentHeaderRow, ResultColumn01, currentRow - 1).Style = exceptionType;
+
+                        //Cuando ocurre un error no se agrega el elemento actual que estaba leyendo por lo que se fuerza a que vuelva a procesar la línea actual
+                        currentRow--;
+
+                        currentSheetHeader = null;
+                        itemList.Clear();
                     }
-                }
-                catch (Exception error)
-                {
-                    MessageBox.Show(error.Message);
+                    finally
+                    {
+                        currentRow++;
+                    }
                 }
             }
             catch (Exception error)
             {
                 MessageBox.Show(error.Message);
             }
-        }
-
-        private void ApplyHeader(BMUSheet.BulkMaterialUsageSheetService proxySheet, BMUSheet.OperationContext opSheet, BMUSheet.BulkMaterialUsageSheetDTO requestSheet, int currentRow, int currentHeader)
-        {
-            try
-            {
-                var replySheet = proxySheet.apply(opSheet, requestSheet);
-                if (replySheet.errors.Length > 0)
-                {
-                    foreach (var t in replySheet.errors)
-                    {
-                        _cells.GetCell(ResultColumn01, currentRow).Value += " - " + t.messageText;
-                    }
-                    _cells.GetRange(1, currentHeader, ResultColumn01 - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                    DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow);
-                }
-                else
-                {
-                    _cells.GetRange(1, currentHeader, ResultColumn01 - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Success); _cells.GetRange(1, currentHeader, 6, currentRow).Select();
-                }
-            }
-            catch (Exception)
-            {
-                DeleteHeader(proxySheet, opSheet, requestSheet, currentHeader, currentRow);
-            }
-        }
-
-        private void ItemListAdd(int currentRow, BMUSheet.BulkMaterialUsageSheetDTO requestSheet, List<BMUSheetItem.BulkMaterialUsageSheetItemDTO> requestItemList, List<BMUSheetItem.BulkMaterialUsageSheetItemDTO> allRequestItemList, Worksheet excelSheet)
-        {
-            _cells.GetCell(1, currentRow).Select();
-            _cells.GetCell(1, currentRow).Value = requestSheet.bulkMaterialUsageSheetId;
-
-            var requestItem = new BMUSheetItem.BulkMaterialUsageSheetItemDTO
-            {
-                bulkMaterialUsageSheetId = requestSheet.bulkMaterialUsageSheetId,
-                equipmentReference = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value),
-                componentCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value),
-                modifier = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, currentRow).Value),
-                bulkMaterialTypeId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, currentRow).Value),
-                conditionMonitoringAction = (_cells.GetEmptyIfNull(_cells.GetCell(12, currentRow).Value) == "Fuel/Diesel") || (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, currentRow).Value) == null) ? null : _cells.GetCell(12, currentRow).Value.ToString().Substring(0, 1),
-                quantity = decimal.Round(Convert.ToDecimal(_cells.GetCell(13, currentRow).Value)),
-                quantitySpecified = (_cells.GetNullIfTrimmedEmpty(_cells.GetEmptyIfNull(_cells.GetCell(13, currentRow).Value)) != null),
-                usageDate = _cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value), //DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture),
-                usageTime = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value),
-                operationStatisticType = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(16, currentRow).Value),
-                meterReading = Convert.ToDecimal(_cells.GetCell(17, currentRow).Value),
-                meterReadingSpecified = (_cells.GetNullIfTrimmedEmpty(_cells.GetEmptyIfNull(_cells.GetCell(17, currentRow).Value)) != null),
-            };
-
-            //consulta la base de datos y obtiene la capacidad maxima de combustible a cargar al equipo, si no tiene coloca 0.
-            try
-            {
-                _cells.GetCell(8, currentRow).Select();
-
-                allRequestItemList.Add(requestItem);
-
-                var profile = GetFuelCapacity(requestItem.equipmentReference, requestItem.bulkMaterialTypeId);
-
-                if (requestItem.bulkMaterialTypeId == profile.FuelType && requestItem.quantity > profile.Capacity)
-                {
-                    _cells.GetCell(ResultColumn01, currentRow).Value = "Este valor supera la capacidad del Equipo!";
-                    _cells.GetRange(8, currentRow, 13, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                }
-                else
-                {
-                    //agrega el item a la coleccion
-                    requestItemList.Add(requestItem);
-                    _cells.GetRange(8, currentRow, 13, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
-                }
-
-            }
-            catch (Exception error)
-            {
-                _cells.GetCell(ResultColumn01, currentRow).Value = error.Message;
-                _cells.GetCell(13, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                _cells.GetCell(13, currentRow).Select();
-            }
-        }
-
-        private void DeleteHeader(BMUSheet.BulkMaterialUsageSheetService proxySheet, BMUSheet.OperationContext opSheet, BMUSheet.BulkMaterialUsageSheetDTO requestSheet, int currentHeader, int currentRow)
-        {
-            try
-            {
-                var replySheet = proxySheet.delete(opSheet, requestSheet);
-
-                if (replySheet.errors.Length > 0)
-                {
-                    foreach (var t in replySheet.errors)
-                    {
-                        _cells.GetCell(ResultColumn01, (currentHeader + t.fieldIndex)).Value += " - " + t.messageText;
-                    }
-                }
-                else
-                {
-                    _cells.GetCell(ResultColumn01, currentRow).Value += " - Hoja " + replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId + " Borrada";
-                    _cells.GetRange(1, currentHeader, ResultColumn01 - 1, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                }
-            }
-            catch (Exception err)
-            {
-                _cells.GetCell(ResultColumn01, currentRow).Value += err.Message;
-            }
-        }
-
-        private string GetBulkAccountCode(string equipNo)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(equipNo)) return "";
-
-                var sqlQuery = Queries.GetBulkAccountCode(equipNo, _eFunctions.dbReference, _eFunctions.dbLink);
-
-                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-
-                var drEquipCapacity = _eFunctions.GetQueryResult(sqlQuery);
-
-                if (!drEquipCapacity.Read()) return "";
-
-                if (!drEquipCapacity.IsClosed && drEquipCapacity.HasRows)
-                {
-                    return drEquipCapacity["BULK_ACCOUNT"].ToString();
-                }
-                else
-                    return "";
-            }
-            catch (Exception)
-            {
-                return "";
-            }
             finally
             {
+                if (_cells != null)
+                    _cells.SetCursorDefault();
                 _eFunctions.CloseConnection();
             }
+
         }
 
-        private Profile GetFuelCapacity(string equipNo, string fuelType)
+        private void CreateBulkMaterialSheet(BMUService.BulkMaterialUsageSheetService sheetService, BMUService.OperationContext opContext, BMUItemService.BulkMaterialUsageSheetItemService itemService, BMUItemService.OperationContext opItem, BulkMaterial.BulkMaterialUsageSheet currentSheetHeader, List<BulkMaterial.BulkMaterialUsageSheetItem> itemList, int currentHeaderRow, int currentRow)
         {
-            try
+            DateTime usageDate;
+            if (!DateTime.TryParseExact(currentSheetHeader.DefaultUsageDate, "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, out usageDate))
+                throw new Exception("Se ha ingresado una fecha inválida");
+
+            if (itemList.Count <= 0)
+                throw new Exception("No hay items para agregar en esta hoja");
+
+            var replySheet = BulkMaterialActions.CreateHeader(sheetService, opContext, currentSheetHeader.ToDto());
+
+            //valido que no haya errores en la creación del encabezado
+            if (replySheet.errors.Length > 0)
             {
-                var profile = new Profile();
+                var errorMessage = "";
+                foreach (var t in replySheet.errors)
+                    errorMessage += " - " + t.messageText;
 
-                if (string.IsNullOrEmpty(equipNo))
+                throw new Exception(errorMessage);
+            }
+
+            currentSheetHeader.BulkMaterialUsageSheetId = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
+
+            _cells.GetRange(1, currentHeaderRow, 1, currentRow).Value = currentSheetHeader.BulkMaterialUsageSheetId;
+            _cells.GetRange(1, currentHeaderRow, 6, currentRow).Style = StyleConstants.Success;
+
+            bool existItemError = false;
+
+            foreach (var item in itemList)
+            {
+                try
                 {
-                    Profile.Error = "Defina un Equipo";
-                    return profile;
+                    if (string.IsNullOrWhiteSpace(item.BulkMaterialUsageSheetId))
+                        item.BulkMaterialUsageSheetId = currentSheetHeader.BulkMaterialUsageSheetId;
+
+                    var replyItem = BulkMaterialActions.AddItemToHeader(_eFunctions, itemService, opItem, item.ToDto());
+
+                    //valido que no haya errores en la creación del ítem
+                    if (replyItem.errors.Length > 0)
+                    {
+                        var errorMessage = "";
+                        foreach (var t in replyItem.errors)
+                            errorMessage += " - " + t.messageText;
+
+                        throw new Exception(errorMessage);
+                    }
+
+                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Value = "OK";
+                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Select();
                 }
-
-                var sqlQuery = Queries.GetFuelCapacity(equipNo, _eFunctions.dbReference, _eFunctions.dbLink);
-
-                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-
-                var drEquipCapacity = _eFunctions.GetQueryResult(sqlQuery);
-
-                if (!drEquipCapacity.Read())
+                catch (Exception ex)
                 {
-                    Profile.Error = "No Tiene Perfil";
-
-                    return profile;
+                    existItemError = true;
+                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Value = ex.Message;
+                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Select();
                 }
-
-                if (!drEquipCapacity.IsClosed && drEquipCapacity.HasRows)
+                finally
                 {
-                    profile.Equipo = drEquipCapacity["EQUIP_NO"].ToString();
-                    profile.Egi = drEquipCapacity["EQUIP_GRP_ID"].ToString();
-                    profile.FuelType = drEquipCapacity["FUEL_OIL_TYPE"].ToString();
-                    profile.Capacity = Convert.ToDecimal(drEquipCapacity["FUEL_CAPACITY"].ToString());
-                    return profile;
-                }
-                else
-                {
-                    Profile.Error = "No Tiene Perfil";
-                    return profile;
+                    //valido si hay un error y debe ser ignorado
+                    if (existItemError && !cbIgnoreItemError.Checked)
+                        throw new Exception("Se ha cancelado la creación de la hoja por un error al intentar agregar uno de sus ítems.");
                 }
             }
-            finally
-            {
-                _eFunctions.CloseConnection();
-            }
+
+            BulkMaterialActions.ApplyHeader(sheetService, opContext, currentSheetHeader.ToDto());
+            _cells.GetRange(1, currentHeaderRow, ResultColumn01 - 1, currentRow).Style = StyleConstants.Success;
+            _cells.GetRange(1, currentHeaderRow, 6, currentRow).Select();
+
+            _eFunctions.CloseConnection();
+            currentSheetHeader = null;
+            itemList.Clear();
         }
 
         private void btnUnApplyDelete_Click(object sender, RibbonControlEventArgs e)
@@ -781,7 +641,11 @@ namespace EllipseBulkMaterialExcelAddIn
                 {
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(Unapply);
+
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -797,67 +661,72 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void Unapply()
         {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            var excelBook = _excelApp.ActiveWorkbook;
-            Worksheet excelSheet = excelBook.ActiveSheet;
-
-            if (excelSheet.Name != SheetName01) return;
-            var proxySheet = new BMUSheet.BulkMaterialUsageSheetService();
-            var opSheet = new BMUSheet.OperationContext();
-
-
-            if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/BulkMaterialUsageSheet";
-            _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-            _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-
-            if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-            opSheet.district = _frmAuth.EllipseDsct;
-            opSheet.maxInstances = 100;
-            opSheet.position = _frmAuth.EllipsePost;
-            opSheet.returnWarnings = false;
-
-
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
-            var currentRow = TitleRow01 + 1;
-
-            while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value)) != null)
+            try
             {
-                var requestSheet = new BMUSheet.BulkMaterialUsageSheetDTO();
-                _cells.GetCell(1, currentRow).Select();
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                _cells.SetCursorWait();
+                var excelBook = _excelApp.ActiveWorkbook;
+                Worksheet excelSheet = excelBook.ActiveSheet;
 
-                try
+                if (excelSheet.Name != SheetName01) return;
+                var service = new BMUService.BulkMaterialUsageSheetService();
+                var opContext = new BMUService.OperationContext()
                 {
-                    requestSheet.bulkMaterialUsageSheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
+                    district = _frmAuth.EllipseDsct,
+                    maxInstances = 100,
+                    position = _frmAuth.EllipsePost,
+                    returnWarnings = false,
+                };
+                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
 
-                    var replySheet = proxySheet.unapply(opSheet, requestSheet);
+                if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
+                service.Url = urlService + "/BulkMaterialUsageSheet";
 
-                    if (replySheet.errors.Length > 0)
-                    {
-                        foreach (var t in replySheet.errors) { _cells.GetCell(ResultColumn01, currentRow).Value += " - " + t.messageText; }
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-                        _cells.GetRange(1, currentRow, 6, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                        _cells.GetRange(1, currentRow, 6, currentRow).Select();
-                    }
-                    else
-                    {
-                        _cells.GetRange(1, currentRow, 6, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
-                        _cells.GetRange(1, currentRow, 6, currentRow).Select();
-                        DeleteHeader(proxySheet, opSheet, requestSheet, currentRow, currentRow);
+                var currentRow = TitleRow01 + 1;
 
-                    }
-                }
-                catch (Exception error)
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
+                _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
+                _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
+
+                while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value)) != null)
                 {
-                    _cells.GetRange(1, currentRow, 6, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                    _cells.GetCell(ResultColumn01, currentRow).Value = error.Message;
-                    _cells.GetCell(ResultColumn01, currentRow).Select();
+                    var requestSheet = new BMUService.BulkMaterialUsageSheetDTO();
+                    _cells.GetCell(1, currentRow).Select();
+
+                    try
+                    {
+                        requestSheet.bulkMaterialUsageSheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
+
+                        var replySheet = BulkMaterialActions.UnApplyHeader(service, opContext, requestSheet, true);
+
+                        BulkMaterialActions.DeleteHeader(service, opContext, requestSheet);
+                        _cells.GetRange(1, currentRow, ResultColumn01, currentRow).Style = StyleConstants.Success;
+                        _cells.GetCell(ResultColumn01, currentRow).Value2 = "HOJA ELIMINADA";
+                        _cells.GetCell(ResultColumn01, currentRow).Select();
+                    }
+                    catch (Exception error)
+                    {
+                        _cells.GetRange(1, currentRow, ResultColumn01, currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(ResultColumn01, currentRow).Value = error.Message;
+                        _cells.GetCell(ResultColumn01, currentRow).Select();
+                    }
+                    finally { currentRow++; }
                 }
-                finally { currentRow++; }
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (_cells != null)
+                    _cells.SetCursorDefault();
             }
         }
+
         private void btnValidateStats_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -958,227 +827,7 @@ namespace EllipseBulkMaterialExcelAddIn
             return list;
         }
 
-        private static class Queries
-        {
-            public static string GetBulkAccountCode(string equipNo, string dbReference, string dbLink)
-            {
-                var query = "" +
-                    "WITH " +
-                    "  REFERENCE AS " +
-                    "  ( " +
-                    "    SELECT " +
-                    "      RC.REF_NO, " +
-                    "      RC.SCREEN_LITERAL, " +
-                    "      RCD.ENTITY_VALUE EQUIP_NO, " +
-                    "      RCD.REF_CODE BULK_ACCOUNT, " +
-                    "      RCD.LAST_MOD_DATE || ' ' || RCD.LAST_MOD_TIME || ' ' || RCD.SEQ_NUM FECHA, " +
-                    "      MAX ( RCD.LAST_MOD_DATE || ' ' || RCD.LAST_MOD_TIME || ' ' || RCD.SEQ_NUM ) OVER ( PARTITION BY RCD.REF_NO, RCD.ENTITY_VALUE ) MAX_FECHA " +
-                    "    FROM " +
-                    "      " + dbReference + ".MSF071" + dbLink + " RCD " +
-                    "    INNER JOIN " + dbReference + ".MSF070" + dbLink + " RC " +
-                    "    ON " +
-                    "      RCD.ENTITY_TYPE = RC.ENTITY_TYPE " +
-                    "    AND RC.REF_NO = RCD.REF_NO " +
-                    "    WHERE " +
-                    "      RCD.ENTITY_TYPE = 'EQP' " +
-                    "    AND RCD.REF_NO = '003' " +
-                    "  ) " +
-                    "SELECT " +
-                    "  EQUIP_NO, " +
-                    "  BULK_ACCOUNT " +
-                    "FROM " +
-                    "  REFERENCE " +
-                    "WHERE " +
-                    "  FECHA = MAX_FECHA " +
-                    "AND EQUIP_NO = '" + equipNo + "'";
-
-                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-
-                return query;
-            }
-
-            public static string GetFuelCapacity(string equipNo, string dbReference, string dbLink)
-            {
-                var query = "" +
-                    "WITH   " +
-                    "  EQUIPO AS   " +
-                    "  (   " +
-                    "    SELECT   " +
-                    "      EQ.EQUIP_NO   " +
-                    "    FROM   " +
-                    "      " + dbReference + ".MSF600" + dbLink + " EQ   " +
-                    "    WHERE   " +
-                    "      EQ.EQUIP_NO = '" + equipNo + "'   " +
-                    "  )   " +
-                    "  ,   " +
-                    "  BASE AS   " +
-                    "  (   " +
-                    "    SELECT   " +
-                    "      1 PESO,   " +
-                    "      PROFILES.EQUIP_GRP_ID,   " +
-                    "      PROFILES.FUEL_OIL_TYPE,   " +
-                    "      PROFILES.FUEL_CAPACITY   " +
-                    "    FROM   " +
-                    "      " + dbReference + ".MSF617_GENERAL" + dbLink + "  PROFILES   " +
-                    "    WHERE   " +
-                    "      PROFILES.EGI_REC_TYPE = 'E'   " +
-                    "    AND TRIM ( PROFILES.FUEL_OIL_TYPE ) IS NOT NULL   " +
-                    "    UNION ALL   " +
-                    "    SELECT   " +
-                    "      0 PESO,   " +
-                    "      PROFILES.EQUIP_GRP_ID,   " +
-                    "      PROFILES.FUEL_OIL_TYPE,   " +
-                    "      PROFILES.FUEL_CAPACITY   " +
-                    "    FROM   " +
-                    "      " + dbReference + ".MSF617_GENERAL" + dbLink + "  PROFILES   " +
-                    "    WHERE   " +
-                    "      PROFILES.EGI_REC_TYPE = 'G'   " +
-                    "    AND TRIM ( PROFILES.FUEL_OIL_TYPE ) IS NOT NULL   " +
-                    "  )   " +
-                    "  ,   " +
-                    "  EQUIPOS AS   " +
-                    "  (   " +
-                    "    SELECT   " +
-                    "      BASE.PESO,   " +
-                    "      EQ.EQUIP_NO,   " +
-                    "      EQ.EQUIP_GRP_ID,   " +
-                    "      BASE.FUEL_OIL_TYPE,   " +
-                    "      BASE.FUEL_CAPACITY   " +
-                    "    FROM   " +
-                    "      " + dbReference + ".MSF600" + dbLink + "  EQ   " +
-                    "    LEFT JOIN BASE   " +
-                    "    ON   " +
-                    "      EQ.EQUIP_NO = BASE.EQUIP_GRP_ID   " +
-                    "    OR EQ.EQUIP_GRP_ID = BASE.EQUIP_GRP_ID   " +
-                    "    WHERE   " +
-                    "      EQ.DSTRCT_CODE = 'ICOR'   " +
-                    "  )   " +
-                    "  ,   " +
-                    "  PROFILES AS   " +
-                    "  (   " +
-                    "    SELECT   " +
-                    "      EQUIPOS.PESO,   " +
-                    "      MAX ( EQUIPOS.PESO ) OVER ( PARTITION BY EQUIPOS.EQUIP_NO, EQUIPOS.EQUIP_GRP_ID ) MAX_PESO,   " +
-                    "      EQUIPOS.EQUIP_NO,   " +
-                    "      EQUIPOS.EQUIP_GRP_ID,   " +
-                    "      EQUIPOS.FUEL_OIL_TYPE,   " +
-                    "      EQUIPOS.FUEL_CAPACITY   " +
-                    "    FROM   " +
-                    "      EQUIPOS   " +
-                    "  )   " +
-                    "SELECT   " +
-                    "  EQUIPO.EQUIP_NO,   " +
-                    "  DECODE ( PROFILES.EQUIP_GRP_ID, NULL, 'NO TIENE', TRIM(PROFILES.EQUIP_GRP_ID) ) EQUIP_GRP_ID,   " +
-                    "  DECODE ( PROFILES.FUEL_OIL_TYPE, NULL, 'NO TIENE', TRIM(PROFILES.FUEL_OIL_TYPE) ) FUEL_OIL_TYPE,   " +
-                    "  DECODE ( PROFILES.FUEL_CAPACITY, NULL, 0, PROFILES.FUEL_CAPACITY ) FUEL_CAPACITY   " +
-                    "FROM   " +
-                    "  EQUIPO   " +
-                    "LEFT JOIN PROFILES   " +
-                    "ON   " +
-                    "  EQUIPO.EQUIP_NO = PROFILES.EQUIP_NO   " +
-                    "AND PROFILES.PESO = PROFILES.MAX_PESO   " +
-                    "ORDER BY   " +
-                    "  PROFILES.PESO   ";
-
-                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-
-                return query;
-            }
-
-            public static string GetLastStatistic(string equipNo, string statType, string statDate, string dbReference, string dbLink)
-            {
-                var query = "" +
-                    "SELECT " +
-                    "  STAT.EQUIP_NO, " +
-                    "  STAT.ITEM_NAME_1, " +
-                    "  STAT.METER_VALUE, " +
-                    "  STAT.STAT_TYPE, " +
-                    "  STAT.STAT_DATE " +
-                    "FROM " +
-                    "  ( " +
-                    "    SELECT " +
-                    "      EQ.EQUIP_NO, " +
-                    "      EQ.ITEM_NAME_1, " +
-                    "      STAT.STAT_TYPE, " +
-                    "      STAT.STAT_DATE, " +
-                    "      STAT.STAT_VALUE, " +
-                    "      STAT.CUM_VALUE, " +
-                    "      STAT.METER_VALUE, " +
-                    "      MAX ( STAT.STAT_DATE ) OVER ( PARTITION BY STAT.EQUIP_NO, STAT.STAT_TYPE ) MAX_DATE, " +
-                    "      EQ.DSTRCT_CODE " +
-                    "    FROM " +
-                    "      " + dbReference + ".MSF600" + dbLink + " EQ " +
-                    "    LEFT JOIN " + dbReference + ".MSF400" + dbLink + " STAT " +
-                    "    ON " +
-                    "      EQ.EQUIP_NO = STAT.EQUIP_NO " +
-                    "    WHERE " +
-                    "      EQ.EQUIP_NO = '" + equipNo + "' " +
-                    "    AND EQ.DSTRCT_CODE = 'ICOR' " +
-                    "    AND STAT.STAT_TYPE = '" + statType + "' " +
-                    "    AND STAT_DATE <= '" + statDate + "' " +
-                    "  ) " +
-                    "  STAT " +
-                    "WHERE " +
-                    "  STAT.MAX_DATE = STAT.STAT_DATE " +
-                    "OR STAT.STAT_DATE IS NULL ";
-
-                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-
-                return query;
-            }
-
-            public static string GetListIdList(string dbReference, string dbLink, string listType)
-            {
-                var query = "" +
-                            "SELECT EQL.LIST_TYP, EQL.LIST_ID FROM " + dbReference + ".MSF606" + dbLink + " EQL " +
-                            "WHERE EQL.LIST_TYP = '" + listType + "'";
-
-                query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-
-                return query;
-            }
-        }
-
-        private class BulkMaterial
-        {
-            [CsvColumn(FieldIndex = 1)]
-            public string WarehouseId { get; set; }
-
-            [CsvColumn(FieldIndex = 2, OutputFormat = "yyyyMMdd")]
-            public string DefaultUsageDate { get; set; }
-
-            [CsvColumn(FieldIndex = 3)]
-            public string UserId { get; set; }
-
-            [CsvColumn(FieldIndex = 4)]
-            public string EquipmentReference { get; set; }
-
-            [CsvColumn(FieldIndex = 5)]
-            public string BulkMaterialTypeId { get; set; }
-
-            [CsvColumn(FieldIndex = 6)]
-            public string Quantity { get; set; }
-        }
-
-        private class Profile
-        {
-            public string Equipo { get; set; }
-            public string Egi { get; set; }
-            public string FuelType { get; set; }
-            public decimal Capacity { get; set; }
-            public static string Error { get; set; }
-        }
-
-        private class Stats
-        {
-            public string EquipNo { get; set; }
-            public string StatType { get; set; }
-            public decimal MeterValue { get; set; }
-            public string StatDate { get; set; }
-
-            public string Error { get; set; }
-        }
-
+        
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();
@@ -1192,7 +841,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 {
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(ReviewListEquipmentsList);
+                    _thread = new Thread(ReviewEquipmentsList);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -1206,7 +855,7 @@ namespace EllipseBulkMaterialExcelAddIn
             }
         }
 
-        private void ReviewListEquipmentsList()
+        private void ReviewEquipmentsList()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1296,7 +945,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 {
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(ReviewFromEquipmentList);
+                    _thread = new Thread(ReviewEquipmentListFromBulkList);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -1309,14 +958,11 @@ namespace EllipseBulkMaterialExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
-        private void ReviewFromEquipmentList()
+        private void ReviewEquipmentListFromBulkList()
         {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-
             var celleq = new ExcelStyleCells(_excelApp, SheetName01);
             var cellli = new ExcelStyleCells(_excelApp, SheetName02);
-            _cells.SetCursorWait();
+            celleq.SetCursorWait();
             cellli.ClearTableRange(TableName02);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
@@ -1326,11 +972,11 @@ namespace EllipseBulkMaterialExcelAddIn
             var i = TitleRow02 + 1;
             while (!string.IsNullOrEmpty("" + celleq.GetCell(8, k).Value))
             {
-                var equipmentNo = _cells.GetEmptyIfNull(celleq.GetCell(8, k).Value);
+                var equipmentNo = celleq.GetEmptyIfNull(celleq.GetCell(8, k).Value);
                 var searchCriteriaKey1 = EquipListSearchFieldCriteria.ListType.Key;
-                var searchCriteriaValue1 = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+                var searchCriteriaValue1 = cellli.GetEmptyIfNull(cellli.GetCell("B3").Value);
                 var searchCriteriaKey2 = EquipListSearchFieldCriteria.ListId.Key;
-                var searchCriteriaValue2 = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
+                var searchCriteriaValue2 = cellli.GetEmptyIfNull(cellli.GetCell("B4").Value);
                 var previousEquipment = new Equipment { EquipmentNo = "" };
 
                 try
@@ -1415,41 +1061,51 @@ namespace EllipseBulkMaterialExcelAddIn
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(1, k).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn01, k).Value = "ERRORLIST: " + ex.Message;
+                    celleq.GetCell(1, k).Style = StyleConstants.Error;
+                    celleq.GetCell(ResultColumn01, k).Value = "ERRORLIST: " + ex.Message;
                     Debugger.LogError("RibbonEllipse.cs:ReviewFromEquipmentList()", ex.Message);
                 }
                 finally
                 {
                     if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
                         celleq.GetCell(1, k).Select();
+                    else if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+                        cellli.GetCell(1, i).Select();
                     k++;
                 }
             }
 
             ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            if (celleq != null) celleq.SetCursorDefault();
 
         }
 
         private void btnAddToList_Click(object sender, RibbonControlEventArgs e)
         {
-            if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+            try
             {
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                //si ya hay un thread corriendo que no se ha detenido
-                if (_thread != null && _thread.IsAlive) return;
-                _thread = new Thread(AddListEquipmentsList);
+                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(AddEquipmentsToList);
 
-                _thread.SetApartmentState(ApartmentState.STA);
-                _thread.Start();
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
             }
-            else
-                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:AddEquipmentToList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
-        private void AddListEquipmentsList()
+        private void AddEquipmentsToList()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1504,22 +1160,30 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void btnRemoveFromList_Click(object sender, RibbonControlEventArgs e)
         {
-            if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+            try
             {
-                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                //si ya hay un thread corriendo que no se ha detenido
-                if (_thread != null && _thread.IsAlive) return;
-                _thread = new Thread(DeleteListEquipmentsList);
+                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName02)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(RemoveEquipmentsFromList);
 
-                _thread.SetApartmentState(ApartmentState.STA);
-                _thread.Start();
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
             }
-            else
-                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:RemoveEquipmentsFromList()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
-        private void DeleteListEquipmentsList()
+        private void RemoveEquipmentsFromList()
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);

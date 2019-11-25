@@ -29,8 +29,23 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
 
         public string AllocPcA;
         public string RequiredByDate;
+
+        public string AnswerA;
         public string AnswerB;
+        public string AnswerC;
         public string AnswerD;
+        public string AnswerE;
+        public string AnswerF;
+        public string AnswerG;
+        public string AnswerH;
+        public string AnswerI;
+        public string AnswerJ;
+        public string AnswerK;
+        public string AnswerL;
+        public string AnswerM;
+        public string AnswerN;
+        public string AnswerO;
+        public string AnswerP;
 
         public bool PartIssue;
         public bool PartIssueSpecified;
@@ -63,8 +78,23 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                    DelivInstrB == objectHeader.DelivInstrB &&
                    AllocPcA == objectHeader.AllocPcA &&
                    RequiredByDate == objectHeader.RequiredByDate &&
+                   AnswerA == objectHeader.AnswerA &&
                    AnswerB == objectHeader.AnswerB &&
+                   AnswerC == objectHeader.AnswerC &&
                    AnswerD == objectHeader.AnswerD &&
+                   AnswerE == objectHeader.AnswerE &&
+                   AnswerF == objectHeader.AnswerF &&
+                   AnswerG == objectHeader.AnswerG &&
+                   AnswerH == objectHeader.AnswerH &&
+                   AnswerI == objectHeader.AnswerI &&
+                   AnswerJ == objectHeader.AnswerJ &&
+                   AnswerK == objectHeader.AnswerK &&
+                   AnswerL == objectHeader.AnswerL &&
+                   AnswerM == objectHeader.AnswerM &&
+                   AnswerN == objectHeader.AnswerN &&
+                   AnswerO == objectHeader.AnswerO &&
+                   AnswerP == objectHeader.AnswerP &&
+
                    PartIssue == objectHeader.PartIssue &&
                    ProtectedInd == objectHeader.ProtectedInd &&
                    PickTaskReq == objectHeader.PickTaskReq &&
@@ -92,8 +122,22 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                 delivInstrB = DelivInstrB,
                 allocPcA = AllocPcA,
                 requiredByDate = RequiredByDate,
+                answerA = AnswerA,
                 answerB = AnswerB,
+                answerC = AnswerC,
                 answerD = AnswerD,
+                answerE = AnswerE,
+                answerF = AnswerF,
+                answerG = AnswerG,
+                answerH = AnswerH,
+                answerI = AnswerI,
+                answerJ = AnswerJ,
+                answerK = AnswerK,
+                answerL = AnswerL,
+                answerM = AnswerM,
+                answerN = AnswerN,
+                answerO = AnswerO,
+                answerP = AnswerP,
                 partIssue = PartIssue,
                 partIssueSpecified = PartIssueSpecified,
                 protectedInd = ProtectedInd,
@@ -124,8 +168,22 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                 delivInstrB = DelivInstrB,
                 allocPcA = AllocPcA,
                 requiredByDate = RequiredByDate,
+                answerA = AnswerA,
                 answerB = AnswerB,
+                answerC = AnswerC,
                 answerD = AnswerD,
+                answerE = AnswerE,
+                answerF = AnswerF,
+                answerG = AnswerG,
+                answerH = AnswerH,
+                answerI = AnswerI,
+                answerJ = AnswerJ,
+                answerK = AnswerK,
+                answerL = AnswerL,
+                answerM = AnswerM,
+                answerN = AnswerN,
+                answerO = AnswerO,
+                answerP = AnswerP,
                 partIssue = PartIssue,
                 partIssueSpecified = PartIssueSpecified,
                 protectedInd = ProtectedInd,

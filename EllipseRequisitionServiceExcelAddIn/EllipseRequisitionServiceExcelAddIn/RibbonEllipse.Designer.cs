@@ -39,6 +39,7 @@
             this.box1 = this.Factory.CreateRibbonBox();
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatNewSheet = this.Factory.CreateRibbonButton();
+            this.btnFormatMnttoAssurance = this.Factory.CreateRibbonButton();
             this.btnFormatExtended = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
@@ -58,7 +59,6 @@
             this.btnManualCreditRequisitionMSE1VR = this.Factory.CreateRibbonButton();
             this.btnCleanSheet = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.btnFormatMnttoAssurance = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpRequisitionService.SuspendLayout();
             this.box1.SuspendLayout();
@@ -99,6 +99,14 @@
             this.btnFormatNewSheet.Name = "btnFormatNewSheet";
             this.btnFormatNewSheet.ShowImage = true;
             this.btnFormatNewSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatNewSheet_Click);
+            // 
+            // btnFormatMnttoAssurance
+            // 
+            this.btnFormatMnttoAssurance.Label = "Formato - Validación de Garantías";
+            this.btnFormatMnttoAssurance.Name = "btnFormatMnttoAssurance";
+            this.btnFormatMnttoAssurance.ShowImage = true;
+            this.btnFormatMnttoAssurance.Visible = false;
+            this.btnFormatMnttoAssurance.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatMnttoAssurance_Click);
             // 
             // btnFormatExtended
             // 
@@ -234,13 +242,6 @@
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
-            // btnFormatMnttoAssurance
-            // 
-            this.btnFormatMnttoAssurance.Label = "Formato - Validación de Garantías";
-            this.btnFormatMnttoAssurance.Name = "btnFormatMnttoAssurance";
-            this.btnFormatMnttoAssurance.ShowImage = true;
-            this.btnFormatMnttoAssurance.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatMnttoAssurance_Click);
             // 
             // RibbonEllipse
             // 
