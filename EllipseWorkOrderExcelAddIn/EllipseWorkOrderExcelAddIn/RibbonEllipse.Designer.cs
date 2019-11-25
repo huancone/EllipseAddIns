@@ -441,7 +441,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuToDo.Label = "To Do de OTs";
             this.menuToDo.Name = "menuToDo";
             this.menuToDo.ShowImage = true;
-            this.menuToDo.Visible = false;
             // 
             // btnToDoReviewWorkOrders
             // 

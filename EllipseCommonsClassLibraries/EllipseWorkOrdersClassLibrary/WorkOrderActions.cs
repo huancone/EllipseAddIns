@@ -124,6 +124,11 @@ namespace EllipseWorkOrdersClassLibrary
                     actualOtherCost = drWorkOrder["ACT_OTHER_COST"].ToString().Trim(),
                     finalCosts = drWorkOrder["FINAL_COSTS"].ToString().Trim()
                 };
+
+                //Para que al consultar, se puedan realizar nuevamente las operaciones comunes
+                if (string.IsNullOrWhiteSpace(order.unitOfWork) && order.unitsRequired.Equals("0"))
+                    order.unitsRequired = "";
+                //
                 order.SetWorkOrderDto(drWorkOrder["WORK_ORDER"].ToString().Trim());
                 order.SetRelatedWoDto(drWorkOrder["RELATED_WO"].ToString().Trim());
                 list.Add(order);
@@ -260,6 +265,11 @@ namespace EllipseWorkOrdersClassLibrary
                 actualOtherCost = drWorkOrder["ACT_OTHER_COST"].ToString().Trim(),
                 finalCosts = drWorkOrder["FINAL_COSTS"].ToString().Trim()
             };
+
+            //Para que al consultar, se puedan realizar nuevamente las operaciones comunes
+            if (string.IsNullOrWhiteSpace(order.unitOfWork) && order.unitsRequired.Equals("0"))
+                order.unitsRequired = "";
+            //
             order.SetWorkOrderDto(drWorkOrder["WORK_ORDER"].ToString().Trim());
             order.SetRelatedWoDto(drWorkOrder["RELATED_WO"].ToString().Trim());
             return order;
