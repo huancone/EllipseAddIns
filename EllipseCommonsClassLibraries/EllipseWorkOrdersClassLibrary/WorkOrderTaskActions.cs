@@ -204,11 +204,14 @@ namespace EllipseWorkOrdersClassLibrary
         {
             if (!string.IsNullOrWhiteSpace(woTask.WoTaskNo))
                 woTask.WoTaskNo = woTask.WoTaskNo.PadLeft(3, '0');//comentario
-            var stdTextId = "WA" + districtCode + woTask.WorkOrder + woTask.WoTaskNo;
+            var stdTextId = "WI" + districtCode + woTask.WorkOrder + woTask.WoTaskNo;
+            var stdTextCompleteId = "WA" + districtCode + woTask.WorkOrder + woTask.WoTaskNo;
 
             var stdTextCopc = StdText.GetCustomOpContext(districtCode, position, 100, returnWarnings);
 
             StdText.SetText(urlService, stdTextCopc, stdTextId, woTask.ExtTaskText);
+
+            StdText.SetText(urlService, stdTextCopc, stdTextCompleteId, woTask.CompleteTaskText);
         }
 
 

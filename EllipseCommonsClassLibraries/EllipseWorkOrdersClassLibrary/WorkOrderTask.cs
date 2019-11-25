@@ -35,6 +35,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string EstimatedMachHrsSpecified;
         public string EstimatedDurationsHrsSpecified;
         public string ExtTaskText;
+        public string CompleteTaskText;
         public string ClosedStatus;
         public string CompletedCode;
         public string CompletedBy;

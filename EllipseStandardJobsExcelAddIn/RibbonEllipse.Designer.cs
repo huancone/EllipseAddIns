@@ -50,6 +50,9 @@
             this.btnCreateStandard = this.Factory.CreateRibbonButton();
             this.btnModifyStandard = this.Factory.CreateRibbonButton();
             this.btnCleanStandardTable = this.Factory.CreateRibbonButton();
+            this.menuEquipments = this.Factory.CreateRibbonMenu();
+            this.buttonReviewEquipments = this.Factory.CreateRibbonButton();
+            this.buttonActionsEquipment = this.Factory.CreateRibbonButton();
             this.menuTasks = this.Factory.CreateRibbonMenu();
             this.btnReviewTasks = this.Factory.CreateRibbonButton();
             this.btnExecuteTaskActions = this.Factory.CreateRibbonButton();
@@ -114,6 +117,7 @@
             // 
             this.menuActions.Dynamic = true;
             this.menuActions.Items.Add(this.menuStandardJobs);
+            this.menuActions.Items.Add(this.menuEquipments);
             this.menuActions.Items.Add(this.menuTasks);
             this.menuActions.Items.Add(this.menuRequirements);
             this.menuActions.Items.Add(this.menuReferenceCodes);
@@ -192,6 +196,28 @@
             this.btnCleanStandardTable.Name = "btnCleanStandardTable";
             this.btnCleanStandardTable.ShowImage = true;
             this.btnCleanStandardTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCleanStandardTable_Click);
+            // 
+            // menuEquipments
+            // 
+            this.menuEquipments.Items.Add(this.buttonReviewEquipments);
+            this.menuEquipments.Items.Add(this.buttonActionsEquipment);
+            this.menuEquipments.Label = "Equipos";
+            this.menuEquipments.Name = "menuEquipments";
+            this.menuEquipments.ShowImage = true;
+            // 
+            // buttonReviewEquipments
+            // 
+            this.buttonReviewEquipments.Label = "Consultar Equipos o EGI";
+            this.buttonReviewEquipments.Name = "buttonReviewEquipments";
+            this.buttonReviewEquipments.ShowImage = true;
+            this.buttonReviewEquipments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonReviewEquipments_Click);
+            // 
+            // buttonActionsEquipment
+            // 
+            this.buttonActionsEquipment.Label = "Ejecutar Acciones";
+            this.buttonActionsEquipment.Name = "buttonActionsEquipment";
+            this.buttonActionsEquipment.ShowImage = true;
+            this.buttonActionsEquipment.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.buttonActionsEquipment_Click);
             // 
             // menuTasks
             // 
@@ -373,6 +399,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateStandardReferenceCodes;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuEquipments;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonReviewEquipments;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton buttonActionsEquipment;
     }
 
     partial class ThisRibbonCollection

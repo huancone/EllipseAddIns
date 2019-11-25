@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Web.Services.Ellipse.Post;
@@ -234,6 +233,20 @@ namespace EllipseStandardJobsClassLibrary
         //public string DepartamentoText;//030_9001
         public string Localizacion;//031_001
     }
+
+    public class StandardJobEquipments
+    {
+        public string DistrictCode;
+        public string StandardJob;
+        public string EquipmentGrpId;
+        public string EquipmentNo;
+        public string EquipmentDescription;
+        public string CompCode;
+        public string CompCodeDescription;
+        public string ModCode;
+        public string ModCodeDescription;
+    }
+
     public static class StandardJobActions
     {
         /// <summary>
@@ -450,6 +463,7 @@ namespace EllipseStandardJobsClassLibrary
             var reply = proxyStdJob.updateStatus(opContext, requestStatus);
             return reply.status;
         }
+
         public static List<StandardJob> FetchStandardJob(EllipseFunctions ef, string districtCode, string workGroup, bool quickReview = false)
         {
 
@@ -644,7 +658,7 @@ namespace EllipseStandardJobsClassLibrary
         {
             var sqlQuery = (taskNo == null) ? Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob)
                                           : Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob, taskNo.PadLeft(3, '0'));
-            
+
             var stdDataReader = ef.GetQueryResult(sqlQuery);
 
             var list = new List<TaskRequirement>();
@@ -677,7 +691,6 @@ namespace EllipseStandardJobsClassLibrary
             ef.CloseConnection();
             return list;
         }
-
 
         /// <summary>
         /// Actualiza un standardJob con la información de la clase StandardJob
@@ -713,7 +726,7 @@ namespace EllipseStandardJobsClassLibrary
             requestStdTask.unitsRequiredSpecified = !string.IsNullOrEmpty(stdTask.UnitsRequired);
             requestStdTask.unitsPerDay = !string.IsNullOrEmpty(stdTask.UnitsPerDay) ? Convert.ToDecimal(stdTask.UnitsPerDay) : default(decimal);
             requestStdTask.unitsPerDaySpecified = !string.IsNullOrEmpty(stdTask.UnitsPerDay);
-            requestStdTask.estimatedDurationsHrs =!string.IsNullOrEmpty(stdTask.EstimatedDurationsHrs) ? Convert.ToDecimal(stdTask.EstimatedDurationsHrs) : default(decimal);
+            requestStdTask.estimatedDurationsHrs = !string.IsNullOrEmpty(stdTask.EstimatedDurationsHrs) ? Convert.ToDecimal(stdTask.EstimatedDurationsHrs) : default(decimal);
             requestStdTask.estimatedDurationsHrsSpecified = !string.IsNullOrEmpty(stdTask.EstimatedDurationsHrs);
             requestStdTask.APLEquipmentGrpId = stdTask.AplEquipmentGrpId ?? requestStdTask.APLEquipmentGrpId;
             requestStdTask.APLType = stdTask.AplType ?? requestStdTask.APLType;
@@ -761,6 +774,7 @@ namespace EllipseStandardJobsClassLibrary
             requestStdTask.estimatedDurationsHrs = stdTask.EstimatedDurationsHrs != null ? Convert.ToDecimal(stdTask.EstimatedDurationsHrs) : default(decimal);
             requestStdTask.estimatedDurationsHrsSpecified = stdTask.EstimatedDurationsHrs != null;
             requestStdTask.APLEquipmentGrpId = stdTask.AplEquipmentGrpId ?? requestStdTask.APLEquipmentGrpId;
+            requestStdTask.APLEGIRef = stdTask.AplEgiRef ?? requestStdTask.APLEGIRef;
             requestStdTask.APLType = stdTask.AplType ?? requestStdTask.APLType;
             requestStdTask.APLCompCode = stdTask.AplCompCode ?? requestStdTask.APLCompCode;
             requestStdTask.APLCompModCode = stdTask.AplCompModCode ?? requestStdTask.APLCompModCode;
@@ -773,7 +787,7 @@ namespace EllipseStandardJobsClassLibrary
         {
             ef.InitiatePostConnection();
 
-            if(!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
+            if (!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
                 stdTask.SjTaskNo = stdTask.SjTaskNo.PadLeft(3, '0');
 
             var requestXml = "";
@@ -803,8 +817,16 @@ namespace EllipseStandardJobsClassLibrary
             requestXml = requestXml + "                 <completeInstr>" + stdTask.CompleteInstr + "</completeInstr>";
             if (MyUtilities.IsTrue(stdTask.EstimatedDurationsHrsSpecified))
                 requestXml = requestXml + "                 <estimatedDurationsHrs>" + stdTask.EstimatedDurationsHrs + "</estimatedDurationsHrs>";
-            if(MyUtilities.IsTrue(stdTask.UnitsPerDaySpecified))
+            if (MyUtilities.IsTrue(stdTask.UnitsPerDaySpecified))
                 requestXml = requestXml + "                 <unitsPerDay>" + stdTask.UnitsPerDay + "</unitsPerDay>";
+
+            requestXml = requestXml + "				    <APLEGIRef>" + stdTask.AplEgiRef + "</APLEGIRef>";
+            requestXml = requestXml + "				    <APLEquipmentGrpId>" + stdTask.AplEquipmentGrpId + "</APLEquipmentGrpId>";
+            requestXml = requestXml + "				    <APLType>" + stdTask.AplType + "</APLType>";
+            requestXml = requestXml + "				    <APLCompCode>" + stdTask.AplCompCode + "</APLCompCode>";
+            requestXml = requestXml + "				    <APLCompModCode>" + stdTask.AplCompModCode + "</APLCompModCode>";
+            requestXml = requestXml + "				    <APLSeqNo>" + stdTask.AplSeqNo + "</APLSeqNo>";
+
             requestXml = requestXml + "				</dto>";
             requestXml = requestXml + "			</data>";
             requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
@@ -861,6 +883,14 @@ namespace EllipseStandardJobsClassLibrary
                 requestXml = requestXml + "                 <unitsRequired>" + stdTask.UnitsRequired + "</unitsRequired>";
             if (MyUtilities.IsTrue(stdTask.UnitsPerDaySpecified))
                 requestXml = requestXml + "                 <unitsPerDay>" + stdTask.UnitsPerDay + "</unitsPerDay>";
+
+            requestXml = requestXml + "				    <APLEGIRef>" + stdTask.AplEgiRef + "</APLEGIRef>";
+            requestXml = requestXml + "				    <APLEquipmentGrpId>" + stdTask.AplEquipmentGrpId + "</APLEquipmentGrpId>";
+            requestXml = requestXml + "				    <APLType>" + stdTask.AplType + "</APLType>";
+            requestXml = requestXml + "				    <APLCompCode>" + stdTask.AplCompCode + "</APLCompCode>";
+            requestXml = requestXml + "				    <APLCompModCode>" + stdTask.AplCompModCode + "</APLCompModCode>";
+            requestXml = requestXml + "				    <APLSeqNo>" + stdTask.AplSeqNo + "</APLSeqNo>";
+
             requestXml = requestXml + "				</dto>";
             requestXml = requestXml + "			</data>";
             requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
@@ -938,7 +968,6 @@ namespace EllipseStandardJobsClassLibrary
 
         }
 
-
         public static void SetStandardJobTaskText(string urlService, string districtCode, string position, bool returnWarnings, StandardJobTask stdTask)
         {
             if (!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
@@ -959,7 +988,6 @@ namespace EllipseStandardJobsClassLibrary
 
             StdText.SetText(urlService, stdTextCopc, stdTextId, stdJob.ExtText);
         }
-
 
         public static void CreateTaskResource(string urlService, OperationContext opContext, TaskRequirement taskReq, bool overrideActive = false)
         {
@@ -988,6 +1016,7 @@ namespace EllipseStandardJobsClassLibrary
 
             proxyTaskReq.create(opContext, requestTaskReq);
         }
+
         public static void CreateTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq, bool overrideActive = false)
         {
             var proxyTaskReq = new MaterialReqmntsService.MaterialReqmntsService();//ejecuta las acciones del servicio
@@ -1040,7 +1069,7 @@ namespace EllipseStandardJobsClassLibrary
             {
                 districtCode = taskReq.DistrictCode,
                 stdJobNo = taskReq.StandardJob,
-                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? taskReq.SJTaskNo : null ,
+                SJTaskNo = !string.IsNullOrWhiteSpace(taskReq.SJTaskNo) ? taskReq.SJTaskNo : null,
                 resourceClass = taskReq.ReqCode.Substring(0, 1),
                 resourceCode = taskReq.ReqCode.Substring(1),
                 quantityRequired = taskReq.QtyReq != null ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
@@ -1090,7 +1119,6 @@ namespace EllipseStandardJobsClassLibrary
             requestTaskReqList.Add(requestTaskReq);
             proxyTaskReq.multipleModify(opContext, requestTaskReqList.ToArray());
         }
-
 
         public static void DeleteTaskResource(string urlService, OperationContext opContext, TaskRequirement taskReq)
         {
@@ -1142,7 +1170,6 @@ namespace EllipseStandardJobsClassLibrary
             requestTaskReqList.Add(requestTaskReq);
             proxyTaskReq.multipleDelete(opContext, requestTaskReqList.ToArray());
         }
-
 
         public static void CreateTaskEquipment(string urlService, EquipmentReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
@@ -1643,6 +1670,100 @@ namespace EllipseStandardJobsClassLibrary
                 ReferenceCodeActions.ModifyRefCode(eFunctions, urlService, refOpContext, item);
             return true;
         }
+
+        public static List<StandardJobEquipments> RetrieveStandardJobEquipments(EllipseFunctions eFunctions, string urlService, StandardJobService.OperationContext opSheet, string district, string standardJobNo)
+        {
+            var proxyRetrieveEquipment = new StandardJobService.StandardJobService() { Url = urlService + "/StandardJobService" };
+
+
+            var standardJobEquipments = new List<StandardJobEquipments>();
+            var RetrieveEquipmentRequest = new StandardJobServiceRetrieveEquipmentRequestDTO()
+            {
+                districtCode = district,
+                standardJob = standardJobNo
+            };
+
+            var reply = proxyRetrieveEquipment.retrieveEquipment(opSheet, RetrieveEquipmentRequest);
+
+            for (var i = 0; i < reply.equipmentRelation.Length; i++)
+            {
+                var eq = new StandardJobEquipments();
+                eq.DistrictCode = district;
+                eq.StandardJob = standardJobNo;
+                eq.EquipmentGrpId = reply.equipmentRelation[i].equipmentGrpId;
+                eq.EquipmentNo = reply.equipmentRelation[i].equipmentNo;
+                eq.EquipmentDescription = reply.equipmentRelation[i].equipmentDescription;
+                eq.CompCode = reply.equipmentRelation[i].compCode;
+                eq.CompCodeDescription = reply.equipmentRelation[i].compCodeDescription;
+                eq.ModCode = reply.equipmentRelation[i].modCode;
+                eq.ModCodeDescription = reply.equipmentRelation[i].modCodeDescription;
+
+
+                if (!string.IsNullOrWhiteSpace(reply.equipmentRelation[i].equipmentNo) || !string.IsNullOrWhiteSpace(reply.equipmentRelation[i].equipmentGrpId))
+                {
+                    standardJobEquipments.Add(eq);
+                }
+            }
+
+            return standardJobEquipments;
+        }
+
+        public static void CreateStandardJobEquipment(EllipseFunctions eFunctions, string urlService, StandardJobService.OperationContext opSheet, StandardJobEquipments stdEquipment)
+        {
+            var proxyRetrieveEquipment = new StandardJobService.StandardJobService() { Url = urlService + "/StandardJobService" };
+
+            var standardJobEquipments = new List<StandardJobEquipments>();
+            var requestParametersList = new List<StandardJobServiceAddEquipmentRequestDTO>();
+            var equipmentRelationList = new List<EquipmentRelationDTO>();
+
+            equipmentRelationList.Add(new EquipmentRelationDTO
+            {
+                equipmentGrpId = stdEquipment.EquipmentGrpId,
+                equipmentNo = stdEquipment.EquipmentNo,
+                equipmentRef = stdEquipment.EquipmentNo,
+                compCode = stdEquipment.CompCode,
+                modCode = stdEquipment.ModCode
+            });
+
+            requestParametersList.Add(new StandardJobServiceAddEquipmentRequestDTO
+            {
+
+                districtCode = stdEquipment.DistrictCode,
+                standardJob = stdEquipment.StandardJob,
+                equipmentRelation = equipmentRelationList.ToArray()
+            });
+
+            proxyRetrieveEquipment.multipleAddEquipment(opSheet, requestParametersList.ToArray());
+        }
+
+        public static void DeleteStandardJobEquipment(EllipseFunctions eFunctions, string urlService, StandardJobService.OperationContext opSheet, StandardJobEquipments stdEquipment)
+        {
+            var proxyRetrieveEquipment = new StandardJobService.StandardJobService() { Url = urlService + "/StandardJobService" };
+
+            var standardJobEquipments = new List<StandardJobEquipments>();
+            var requestParametersList = new List<StandardJobServiceDeleteEquipmentRequestDTO>();
+            var equipmentRelationList = new List<EquipmentRelationDTO>();
+
+            equipmentRelationList.Add(new EquipmentRelationDTO
+            {
+                equipmentGrpId = stdEquipment.EquipmentGrpId,
+                equipmentNo = stdEquipment.EquipmentNo,
+                equipmentRef = stdEquipment.EquipmentNo,
+                compCode = stdEquipment.CompCode,
+                modCode = stdEquipment.ModCode
+            });
+
+            requestParametersList.Add(new StandardJobServiceDeleteEquipmentRequestDTO
+            {
+
+                districtCode = stdEquipment.DistrictCode,
+                standardJob = stdEquipment.StandardJob,
+                equipmentRelation = equipmentRelationList.ToArray()
+            });
+
+            proxyRetrieveEquipment.multipleDeleteEquipment(opSheet, requestParametersList.ToArray());
+        }
     }
+
 }
 
