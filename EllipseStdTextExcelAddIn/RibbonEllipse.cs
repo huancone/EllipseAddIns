@@ -853,7 +853,7 @@ namespace EllipseStdTextExcelAddIn
                     var versionNo = _cells.GetCell(10, i).Value;
                     var docName = _cells.GetCell(11, i).Value;
                     var elecRef = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value));
-                    var elecType = _cells.GetCell(13, i).Value;
+                    var elecType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value));
 
                     var item = new DocumentReferenceItem();
                     item.District = string.IsNullOrWhiteSpace(district) ? null : district;
@@ -966,7 +966,7 @@ namespace EllipseStdTextExcelAddIn
                     var versionNo = _cells.GetCell(10, i).Value;
                     var docName = _cells.GetCell(11, i).Value;
                     var elecRef = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value));
-                    var elecType = _cells.GetCell(13, i).Value;
+                    var elecType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value));
 
                     var item = new DocumentReferenceItem();
                     item.District = string.IsNullOrWhiteSpace(district) ? null : district;
@@ -1064,7 +1064,7 @@ namespace EllipseStdTextExcelAddIn
                     var versionNo = _cells.GetCell(10, i).Value;
                     var docName = _cells.GetCell(11, i).Value;
                     var elecRef = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value));
-                    var elecType = _cells.GetCell(13, i).Value;
+                    var elecType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value));
 
                     var item = new DocumentReferenceItem();
                     item.District = string.IsNullOrWhiteSpace(district) ? null : district;
@@ -1161,7 +1161,7 @@ namespace EllipseStdTextExcelAddIn
                     var versionNo = _cells.GetCell(10, i).Value;
                     var docName = _cells.GetCell(11, i).Value;
                     var elecRef = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value));
-                    var elecType = _cells.GetCell(13, i).Value;
+                    var elecType = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, i).Value));
 
                     var item = new DocumentReferenceItem();
                     item.District = string.IsNullOrWhiteSpace(district) ? null : district;
