@@ -388,6 +388,9 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.GetCell(12, titleRow).AddComment("120 caracteres");
                 _cells.GetCell(12, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(13, titleRow).Value = "Return Cause";
+                var returnCauseList = MyUtilities.GetCodeList(_eFunctions.GetItemCodes("I2"));
+                _cells.SetValidationList(_cells.GetCell(13, titleRow + 1), returnCauseList, ValidationSheetName, 7, false);
+
                 _cells.GetCell(13, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
                 _cells.GetCell(14, titleRow).Value = "Issue Question";
                 _cells.GetCell(14, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
@@ -447,7 +450,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = Districts.DefaultDistrict;
-                _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 7);
+                _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 8);
                 _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("A4").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
                                                 "INST: IMIS, MINA\n" +
@@ -456,18 +459,18 @@ namespace EllipseRequisitionServiceExcelAddIn
                                                 "" + ManagementArea.SoporteOperacion.Key + ": ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
 
-                _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 8);
-                _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 9, false);
+                _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 9);
+                _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 10, false);
                 _cells.GetCell("A5").Value = SearchFieldCriteriaType.EquipmentReference.Value;
                 _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);
                 _cells.GetCell("A6").Value = "STATUS";
-                _cells.SetValidationList(_cells.GetCell("B6"), statusList, ValidationSheetName, 4);
+                _cells.SetValidationList(_cells.GetCell("B6"), statusList, ValidationSheetName, 11);
                 _cells.GetRange("A3", "A6").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B6").Style = _cells.GetStyle(StyleConstants.Select);
 
                 _cells.GetCell("C3").Value = "FECHA";
                 _cells.GetCell("D3").Value = SearchDateCriteriaType.Creation.Value;
-                _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 10);
+                _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 12);
                 _cells.GetCell("C4").Value = "DESDE";
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D4").AddComment("YYYYMMDD");
@@ -646,6 +649,8 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.GetCell(12, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(13, titleRow).Value = "Return Cause";
                 _cells.GetCell(13, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                var returnCauseList = MyUtilities.GetCodeList(_eFunctions.GetItemCodes("I2"));
+                _cells.SetValidationList(_cells.GetCell(13, titleRow + 1), returnCauseList, ValidationSheetName, 7, false);
                 _cells.GetCell(14, titleRow).Value = "Issue Question";
                 _cells.GetCell(14, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
 
@@ -704,7 +709,7 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = Districts.DefaultDistrict;
-                _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 7);
+                _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 8);
                 _cells.GetCell("A4").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("A4").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
                                                 "INST: IMIS, MINA\n" +
@@ -713,18 +718,18 @@ namespace EllipseRequisitionServiceExcelAddIn
                                                 "" + ManagementArea.SoporteOperacion.Key + ": ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A4").Comment.Shape.TextFrame.AutoSize = true;
 
-                _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 8);
-                _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 9, false);
+                _cells.SetValidationList(_cells.GetCell("A4"), searchCriteriaList, ValidationSheetName, 9);
+                _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 10, false);
                 _cells.GetCell("A5").Value = SearchFieldCriteriaType.EquipmentReference.Value;
                 _cells.SetValidationList(_cells.GetCell("A5"), ValidationSheetName, 2);
                 _cells.GetCell("A6").Value = "STATUS";
-                _cells.SetValidationList(_cells.GetCell("B6"), statusList, ValidationSheetName, 4);
+                _cells.SetValidationList(_cells.GetCell("B6"), statusList, ValidationSheetName, 11);
                 _cells.GetRange("A3", "A6").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B6").Style = _cells.GetStyle(StyleConstants.Select);
 
                 _cells.GetCell("C3").Value = "FECHA";
                 _cells.GetCell("D3").Value = SearchDateCriteriaType.Creation.Value;
-                _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 10);
+                _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 12);
                 _cells.GetCell("C4").Value = "DESDE";
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D4").AddComment("YYYYMMDD");
@@ -901,17 +906,19 @@ namespace EllipseRequisitionServiceExcelAddIn
                 _cells.GetCell(14, titleRow).AddComment("120 caracteres");
                 _cells.GetCell(14, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(15, titleRow).Value = "Return Cause";
+                var returnCauseList = MyUtilities.GetCodeList(_eFunctions.GetItemCodes("I2"));
+                _cells.SetValidationList(_cells.GetCell(15, titleRow + 1), returnCauseList, ValidationSheetName, 7, false);
                 _cells.GetCell(15, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
                 _cells.GetCell(16, titleRow).Value = "Issue Question";
                 _cells.GetCell(16, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
 
                 var optionIssueList = new List<string> {"A - VENTAS", "B - RUBROS"};
-                _cells.SetValidationList(_cells.GetCell(16, titleRow + 1), optionIssueList, ValidationSheetName, 4, false);
+                _cells.SetValidationList(_cells.GetCell(16, titleRow + 1), optionIssueList, ValidationSheetName, 5, false);
 
                 _cells.GetCell(17, titleRow).Value = "Partial Allowed";
                 _cells.GetCell(17, titleRow).Style = _cells.GetStyle(StyleConstants.TitleOptional);
                 var partialAllowedList = new List<string> {"Y - YES", "N - No"};
-                _cells.SetValidationList(_cells.GetCell(17, titleRow + 1), partialAllowedList, ValidationSheetName, 5, false);
+                _cells.SetValidationList(_cells.GetCell(17, titleRow + 1), partialAllowedList, ValidationSheetName, 6, false);
 
                 _cells.GetCell(18, titleRow).Value = "Stock Code";
                 _cells.GetCell(18, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
@@ -957,6 +964,8 @@ namespace EllipseRequisitionServiceExcelAddIn
             string deliveryInstructionsB;
             string answerB;
             string answerD;
+            string answerN;
+            string answerP;
             string workOrderAllocation;
             string workProjectIndicatorAllocation;
             string equipmentAllocation;
@@ -986,13 +995,28 @@ namespace EllipseRequisitionServiceExcelAddIn
                 workProjectIndicatorAllocation = string.IsNullOrWhiteSpace(projectAllocation) ? "W" : "P";
                 deliveryInstructionsA = _cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value);
                 deliveryInstructionsB = deliveryInstructionsA.Length > 80 ? deliveryInstructionsA.Substring(80) : null;
-                answerB = _cells.GetEmptyIfNull(_cells.GetCell(15, currentRow).Value).Length >= 2
-                    ? _cells.GetEmptyIfNull(_cells.GetCell(15, currentRow).Value).Substring(0, 2).Trim()
-                    : null;
-                answerD = _cells.GetEmptyIfNull(_cells.GetCell(16, currentRow).Value).Length >= 2
-                    ? _cells.GetEmptyIfNull(_cells.GetCell(16, currentRow).Value).Substring(0, 2).Trim()
-                    : null;
+                if (requisitionType != null && requisitionType.Equals("CR"))
+                {
+                    answerB = null;
+                    answerD = null;
+                    answerN = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(15, currentRow).Value));
+                    answerP = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(16, currentRow).Value));
 
+                    //revalidación porque el campo no acepta caracteres vacíos y getCodeKey devuelve vacío si no hay código
+                    answerN = string.IsNullOrWhiteSpace(answerN) ? null : answerN;
+                    answerP = string.IsNullOrWhiteSpace(answerP) ? null : answerP;
+                }
+                else
+                {
+                    answerB = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(15, currentRow).Value));
+                    answerD = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(16, currentRow).Value));
+                    answerN = null;
+                    answerP = null;
+
+                    //revalidación porque el campo no acepta caracteres vacíos y getCodeKey devuelve vacío si no hay código
+                    answerB = string.IsNullOrWhiteSpace(answerB) ? null : answerB;
+                    answerD = string.IsNullOrWhiteSpace(answerD) ? null : answerD;
+                }
                 partIssueIndicator = true; //general indicator
                 protectedIndicator = false;
             }
@@ -1019,12 +1043,28 @@ namespace EllipseRequisitionServiceExcelAddIn
 
                 deliveryInstructionsA = _cells.GetEmptyIfNull(_cells.GetCell(12, currentRow).Value);
                 deliveryInstructionsB = deliveryInstructionsA.Length > 80 ? deliveryInstructionsA.Substring(80) : null;
-                answerB = _cells.GetEmptyIfNull(_cells.GetCell(13, currentRow).Value).Length >= 2
-                    ? _cells.GetEmptyIfNull(_cells.GetCell(13, currentRow).Value).Substring(0, 2).Trim()
-                    : null;
-                answerD = _cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value).Length >= 2
-                    ? _cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value).Substring(0, 2).Trim()
-                    : null;
+                if (requisitionType != null && requisitionType.Equals("CR"))
+                {
+                    answerB = null;
+                    answerD = null;
+                    answerN = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(13, currentRow).Value));
+                    answerP = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value));
+
+                    //revalidación porque el campo no acepta caracteres vacíos y getCodeKey devuelve vacío si no hay código
+                    answerN = string.IsNullOrWhiteSpace(answerN) ? null : answerN;
+                    answerP = string.IsNullOrWhiteSpace(answerP) ? null : answerP;
+                }
+                else
+                {
+                    answerB = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(13, currentRow).Value));
+                    answerD = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(14, currentRow).Value));
+                    answerN = null;
+                    answerP = null;
+
+                    //revalidación porque el campo no acepta caracteres vacíos y getCodeKey devuelve vacío si no hay código
+                    answerB = string.IsNullOrWhiteSpace(answerB) ? null : answerB;
+                    answerD = string.IsNullOrWhiteSpace(answerD) ? null : answerD;
+                }
 
                 partIssueIndicator = true; //general indicator
                 protectedIndicator = false;
@@ -1073,6 +1113,8 @@ namespace EllipseRequisitionServiceExcelAddIn
                 DelivInstrB = deliveryInstructionsB,
                 AnswerB = answerB,
                 AnswerD = answerD,
+                AnswerN = answerN,
+                AnswerP = answerP,
                 WorkOrderA = workOrderAllocation,
                 WorkProjectIndA = workProjectIndicatorAllocation,
                 EquipmentA = equipmentAllocation,
@@ -1304,6 +1346,7 @@ namespace EllipseRequisitionServiceExcelAddIn
                         if (prevReqHeader == null)
                         {
                             var headerCreateRequest = curReqHeader.GetCreateHeaderRequest();
+
                             headerCreateReply = proxyRequisition.createHeader(opRequisition, headerCreateRequest);
                             curReqHeader.IreqNo = headerCreateReply.ireqNo;
                             prevReqHeader = curReqHeader;
@@ -1692,6 +1735,8 @@ namespace EllipseRequisitionServiceExcelAddIn
                                 arrayFields.Add("PRIORITY_CODE1I", "" + prevReqHeader.PriorityCode);
                                 arrayFields.Add("ANSWER_B1I", "" + prevReqHeader.AnswerB);
                                 arrayFields.Add("ANSWER_D1I", "" + prevReqHeader.AnswerD);
+                                arrayFields.Add("ANSWER_N1I", "" + prevReqHeader.AnswerN);
+                                arrayFields.Add("ANSWER_P1I", "" + prevReqHeader.AnswerP);
                                 arrayFields.Add("REQUESTED_BY1I", "" + prevReqHeader.RequestedBy);
 
                                 //enviar el encabezado MSM140A
@@ -1947,6 +1992,8 @@ namespace EllipseRequisitionServiceExcelAddIn
                         arrayFields.Add("PRIORITY_CODE1I", "" + prevReqHeader.PriorityCode);
                         arrayFields.Add("ANSWER_B1I", "" + prevReqHeader.AnswerB);
                         arrayFields.Add("ANSWER_D1I", "" + prevReqHeader.AnswerD);
+                        arrayFields.Add("ANSWER_B1I", "" + prevReqHeader.AnswerN);
+                        arrayFields.Add("ANSWER_D1I", "" + prevReqHeader.AnswerP);
                         arrayFields.Add("REQUESTED_BY1I", "" + prevReqHeader.RequestedBy);
 
                         //enviar el encabezado MSM140A
