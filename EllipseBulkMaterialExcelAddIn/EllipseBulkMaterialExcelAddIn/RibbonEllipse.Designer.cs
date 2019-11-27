@@ -50,9 +50,10 @@
             this.btnReviewFromBulkSheet = this.Factory.CreateRibbonButton();
             this.btnAddToList = this.Factory.CreateRibbonButton();
             this.btnRemoveFromList = this.Factory.CreateRibbonButton();
+            this.cbAutoSortItems = this.Factory.CreateRibbonCheckBox();
             this.cbIgnoreItemError = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.cbAutoSortItems = this.Factory.CreateRibbonCheckBox();
+            this.btnLoadSecond = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpBulkMaterial.SuspendLayout();
             this.box1.SuspendLayout();
@@ -99,6 +100,7 @@
             // menuActions
             // 
             this.menuActions.Items.Add(this.btnLoad);
+            this.menuActions.Items.Add(this.btnLoadSecond);
             this.menuActions.Items.Add(this.btnValidateStats);
             this.menuActions.Items.Add(this.btnImport);
             this.menuActions.Items.Add(this.btnUnApplyDelete);
@@ -175,6 +177,12 @@
             this.btnRemoveFromList.ShowImage = true;
             this.btnRemoveFromList.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnRemoveFromList_Click);
             // 
+            // cbAutoSortItems
+            // 
+            this.cbAutoSortItems.Checked = true;
+            this.cbAutoSortItems.Label = "Ordenar Automáticamente";
+            this.cbAutoSortItems.Name = "cbAutoSortItems";
+            // 
             // cbIgnoreItemError
             // 
             this.cbIgnoreItemError.Label = "Ignorar Errores en Ítems";
@@ -187,11 +195,12 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
-            // cbAutoSortItems
+            // btnLoadSecond
             // 
-            this.cbAutoSortItems.Checked = true;
-            this.cbAutoSortItems.Label = "Ordenar Automáticamente";
-            this.cbAutoSortItems.Name = "cbAutoSortItems";
+            this.btnLoadSecond.Label = "Load Data (No Post)";
+            this.btnLoadSecond.Name = "btnLoadSecond";
+            this.btnLoadSecond.ShowImage = true;
+            this.btnLoadSecond.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadSecond_Click);
             // 
             // RibbonEllipse
             // 
@@ -230,6 +239,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreItemError;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAutoSortItems;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadSecond;
     }
 
     partial class ThisRibbonCollection

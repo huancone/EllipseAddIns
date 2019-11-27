@@ -1667,15 +1667,6 @@ namespace EllipseStandardJobsExcelAddIn
             var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlService);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var operationContext = new StandardJobTaskService.OperationContext()
-            {
-                district = _frmAuth.EllipseDsct,
-                position = _frmAuth.EllipsePost,
-                maxInstances = 100,
-                maxInstancesSpecified = true,
-                returnWarnings = Debugger.DebugWarnings,
-                returnWarningsSpecified = true
-            };
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {

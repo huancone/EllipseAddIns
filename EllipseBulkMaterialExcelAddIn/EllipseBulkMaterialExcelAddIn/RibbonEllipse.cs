@@ -65,7 +65,7 @@ namespace EllipseBulkMaterialExcelAddIn
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                    _thread = new Thread(BulkMaterialExecute);
+                    _thread = new Thread(() => BulkMaterialExecute("POST"));
 
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
@@ -380,7 +380,7 @@ namespace EllipseBulkMaterialExcelAddIn
         /// <summary>
         ///     Crea las instancias a los servicios BulkMaterialUsageSheetService y BulkMaterialUsageSheetItemService
         /// </summary>
-        private void BulkMaterialExecute()
+        private void BulkMaterialExecute(string serviceType = "POST")
         {
             try
             {
@@ -391,7 +391,10 @@ namespace EllipseBulkMaterialExcelAddIn
                 _cells.SetCursorWait();
                 var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-
+                //
+                var urlServicePost = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
+                _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
+                //
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
                 _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
@@ -469,7 +472,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                         if (!isEqualIds || (isNullIds && !newSheetHeader.Equals(currentSheetHeader)))
                         {
-                            CreateBulkMaterialSheet(sheetService, opContext, itemService, opItem, currentSheetHeader, itemList, currentHeaderRow, currentRow - 1);
+                            CreateBulkMaterialSheet(sheetService, opContext, itemService, opItem, currentSheetHeader, itemList, currentHeaderRow, currentRow - 1, serviceType);
                             currentSheetHeader = newSheetHeader;
                             currentHeaderRow = currentRow;
                         }
@@ -497,7 +500,7 @@ namespace EllipseBulkMaterialExcelAddIn
                             //Para control de estilos en caso de falla
                             currentRow++;
                             //Creo la hoja si es el último registro
-                            CreateBulkMaterialSheet(sheetService, opContext, itemService, opItem, currentSheetHeader, itemList, currentHeaderRow, currentRow - 1);
+                            CreateBulkMaterialSheet(sheetService, opContext, itemService, opItem, currentSheetHeader, itemList, currentHeaderRow, currentRow - 1, serviceType);
                             //Reajuste de control de estilo si no hay fallas
                             currentRow--;
                         }
@@ -558,7 +561,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
         }
 
-        private void CreateBulkMaterialSheet(BMUService.BulkMaterialUsageSheetService sheetService, BMUService.OperationContext opContext, BMUItemService.BulkMaterialUsageSheetItemService itemService, BMUItemService.OperationContext opItem, BulkMaterial.BulkMaterialUsageSheet currentSheetHeader, List<BulkMaterial.BulkMaterialUsageSheetItem> itemList, int currentHeaderRow, int currentRow)
+        private void CreateBulkMaterialSheet(BMUService.BulkMaterialUsageSheetService sheetService, BMUService.OperationContext opContext, BMUItemService.BulkMaterialUsageSheetItemService itemService, BMUItemService.OperationContext opItem, BulkMaterial.BulkMaterialUsageSheet currentSheetHeader, List<BulkMaterial.BulkMaterialUsageSheetItem> itemList, int currentHeaderRow, int currentRow, string serviceType)
         {
             DateTime usageDate;
             if (!DateTime.TryParseExact(currentSheetHeader.DefaultUsageDate, "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, out usageDate))
@@ -567,19 +570,41 @@ namespace EllipseBulkMaterialExcelAddIn
             if (itemList.Count <= 0)
                 throw new Exception("No hay items para agregar en esta hoja");
 
-            var replySheet = BulkMaterialActions.CreateHeader(sheetService, opContext, currentSheetHeader.ToDto());
+            string newSheetId = "";
 
-            //valido que no haya errores en la creación del encabezado
-            if (replySheet.errors.Length > 0)
+            if (serviceType == "POST")
             {
-                var errorMessage = "";
-                foreach (var t in replySheet.errors)
-                    errorMessage += " - " + t.messageText;
+                var replySheet = BulkMaterialActions.CreateHeaderPost(_eFunctions, currentSheetHeader.ToDto());
 
-                throw new Exception(errorMessage);
+                //valido que no haya errores en la creación del encabezado
+                if (replySheet.Errors != null && replySheet.Errors.Length > 0)
+                {
+                    var errorMessage = "";
+                    foreach (var t in replySheet.Errors)
+                        errorMessage += " - " + t;
+
+                    throw new Exception(errorMessage);
+                }
+
+                newSheetId = replySheet.Message;
             }
+            else
+            {
+                var replySheet = BulkMaterialActions.CreateHeader(sheetService, opContext, currentSheetHeader.ToDto());
 
-            currentSheetHeader.BulkMaterialUsageSheetId = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
+                //valido que no haya errores en la creación del encabezado
+                if (replySheet.errors != null && replySheet.errors.Length > 0)
+                {
+                    var errorMessage = "";
+                    foreach (var t in replySheet.errors)
+                        errorMessage += " - " + t.messageText;
+
+                    throw new Exception(errorMessage);
+                }
+
+                newSheetId = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
+            }
+            currentSheetHeader.BulkMaterialUsageSheetId = newSheetId;
 
             _cells.GetRange(1, currentHeaderRow, 1, currentRow).Value = currentSheetHeader.BulkMaterialUsageSheetId;
             _cells.GetRange(1, currentHeaderRow, 6, currentRow).Style = StyleConstants.Success;
@@ -593,18 +618,33 @@ namespace EllipseBulkMaterialExcelAddIn
                     if (string.IsNullOrWhiteSpace(item.BulkMaterialUsageSheetId))
                         item.BulkMaterialUsageSheetId = currentSheetHeader.BulkMaterialUsageSheetId;
 
-                    var replyItem = BulkMaterialActions.AddItemToHeader(_eFunctions, itemService, opItem, item.ToDto());
-
-                    //valido que no haya errores en la creación del ítem
-                    if (replyItem.errors.Length > 0)
+                    if (serviceType == "POST")
                     {
-                        var errorMessage = "";
-                        foreach (var t in replyItem.errors)
-                            errorMessage += " - " + t.messageText;
+                        var replyItem = BulkMaterialActions.AddItemToHeaderPost(_eFunctions, item.ToDto(), itemList.IndexOf(item));
+                        //valido que no haya errores en la creación del encabezado
+                        if (replyItem.Errors != null && replyItem.Errors.Length > 0)
+                        {
+                            var errorMessage = "";
+                            foreach (var t in replyItem.Errors)
+                                errorMessage += " - " + t;
 
-                        throw new Exception(errorMessage);
+                            throw new Exception(errorMessage);
+                        }
                     }
+                    else
+                    {
+                        var replyItem = BulkMaterialActions.AddItemToHeader(_eFunctions, itemService, opItem, item.ToDto());
 
+                        //valido que no haya errores en la creación del ítem
+                        if (replyItem.errors != null && replyItem.errors.Length > 0)
+                        {
+                            var errorMessage = "";
+                            foreach (var t in replyItem.errors)
+                                errorMessage += " - " + t.messageText;
+
+                            throw new Exception(errorMessage);
+                        }
+                    }
                     _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Value = "OK";
                     _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Select();
@@ -624,7 +664,10 @@ namespace EllipseBulkMaterialExcelAddIn
                 }
             }
 
-            BulkMaterialActions.ApplyHeader(sheetService, opContext, currentSheetHeader.ToDto());
+            if (serviceType == "POST")
+                BulkMaterialActions.ApplyHeaderPost(_eFunctions, currentSheetHeader.ToDto());
+            else
+                BulkMaterialActions.ApplyHeader(sheetService, opContext, currentSheetHeader.ToDto());
             _cells.GetRange(1, currentHeaderRow, ResultColumn01 - 1, currentRow).Style = StyleConstants.Success;
             _cells.GetRange(1, currentHeaderRow, 6, currentRow).Select();
 
@@ -1234,6 +1277,32 @@ namespace EllipseBulkMaterialExcelAddIn
             }
             ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void btnLoadSecond_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(() => BulkMaterialExecute("NOPOST"));
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:BulkMaterialExcecute()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
         }
     }
 }
