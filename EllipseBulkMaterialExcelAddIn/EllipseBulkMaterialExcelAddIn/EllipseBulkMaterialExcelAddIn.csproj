@@ -37,11 +37,11 @@
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>I:\Sistemas\Mina\Proyecto Ellipse\Ellipse 8\ExcelAddIn_E8 %28Loaders%29\Manejo del carbon\EllipseBulkMaterialExcelAddIn\</PublishUrl>
+    <PublishUrl>D:\Projects\Release\EllipseBulkMaterialExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.1.0.4</ApplicationVersion>
-    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <ApplicationVersion>2.2.0.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
@@ -211,9 +211,15 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="BulkMaterial\BulkMaterial.cs" />
+    <Compile Include="BulkMaterial\BulkMaterialActions.cs" />
+    <Compile Include="BulkMaterial\BulkMaterialUsageSheet.cs" />
+    <Compile Include="BulkMaterial\BulkMaterialUsageSheetItem.cs" />
+    <Compile Include="BulkMaterial\Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Queries.cs" />
     <Compile Include="RibbonEllipse.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -221,6 +227,7 @@
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="Stats.cs" />
     <Compile Include="Web References\BulkMaterialUsageSheetItemService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -324,6 +331,9 @@
       <CachedSettingsPropName>EllipseBulkMaterialExcelAddIn_BulkMaterialUsageSheetService_BulkMaterialUsageSheetService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="ventyx_logo.ico" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -336,7 +346,10 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>1A92E1647894A27A607A937CD9F4A3111E823B95</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>64018B59CF0F6F722C0F1529A19071BB0634113F</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

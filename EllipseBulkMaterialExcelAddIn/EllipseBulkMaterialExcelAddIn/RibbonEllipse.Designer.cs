@@ -50,7 +50,9 @@
             this.btnReviewFromBulkSheet = this.Factory.CreateRibbonButton();
             this.btnAddToList = this.Factory.CreateRibbonButton();
             this.btnRemoveFromList = this.Factory.CreateRibbonButton();
+            this.cbIgnoreItemError = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.cbAutoSortItems = this.Factory.CreateRibbonCheckBox();
             this.tabEllipse.SuspendLayout();
             this.grpBulkMaterial.SuspendLayout();
             this.box1.SuspendLayout();
@@ -101,6 +103,8 @@
             this.menuActions.Items.Add(this.btnImport);
             this.menuActions.Items.Add(this.btnUnApplyDelete);
             this.menuActions.Items.Add(this.menuListActions);
+            this.menuActions.Items.Add(this.cbAutoSortItems);
+            this.menuActions.Items.Add(this.cbIgnoreItemError);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Actions";
             this.menuActions.Name = "menuActions";
@@ -171,12 +175,23 @@
             this.btnRemoveFromList.ShowImage = true;
             this.btnRemoveFromList.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnRemoveFromList_Click);
             // 
+            // cbIgnoreItemError
+            // 
+            this.cbIgnoreItemError.Label = "Ignorar Errores en Ítems";
+            this.cbIgnoreItemError.Name = "cbIgnoreItemError";
+            // 
             // btnStopThread
             // 
             this.btnStopThread.Label = "&Detener Proceso";
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
+            // 
+            // cbAutoSortItems
+            // 
+            this.cbAutoSortItems.Checked = true;
+            this.cbAutoSortItems.Label = "Ordenar Automáticamente";
+            this.cbAutoSortItems.Name = "cbAutoSortItems";
             // 
             // RibbonEllipse
             // 
@@ -213,6 +228,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnRemoveFromList;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewFromBulkSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreItemError;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAutoSortItems;
     }
 
     partial class ThisRibbonCollection

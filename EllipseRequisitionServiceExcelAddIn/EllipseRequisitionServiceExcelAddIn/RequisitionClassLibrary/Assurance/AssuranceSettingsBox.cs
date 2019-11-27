@@ -16,15 +16,17 @@ namespace EllipseRequisitionServiceExcelAddIn
         {
             try
             {
-                config = Settings.GetSettingsFile();
+                config = Settings.GetSettings();
             }
             catch(System.IO.FileNotFoundException ex)
             {
                 config = Settings.CreateSettingsFile();
+                EllipseCommonsClassLibrary.Debugger.LogError("AssuranceSettingsBox.cs:AssuranceSettingsBox()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
             }
             catch(System.IO.DirectoryNotFoundException ex)
             {
                 config = Settings.CreateSettingsFile();
+                EllipseCommonsClassLibrary.Debugger.LogError("AssuranceSettingsBox.cs:AssuranceSettingsBox()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
             }
             catch(Exception ex)
             {
