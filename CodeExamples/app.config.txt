@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <configSections>
     <section name="oracle.manageddataaccess.client"
@@ -11,6 +11,19 @@
            type="Oracle.ManagedDataAccess.Client.OracleClientFactory, Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342"/>
     </DbProviderFactories>
   </system.data>
+	<system.web>
+		<webServices>
+		  <soapExtensionTypes>
+			<add type="System.Web.Services.Ellipse.AuthenticationExtension, System.Web.Services.Ellipse" priority="1"/>
+		  </soapExtensionTypes>
+		</webServices>
+	</system.web>
+
+	<system.net>
+		<settings>
+		  <servicePointManager expect100Continue="false"/>
+		</settings>
+	</system.net>
   <runtime>
     <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
       <dependentAssembly>
@@ -22,7 +35,13 @@
   </runtime>
   <oracle.manageddataaccess.client>
     <version number="*">
+      <settings>
+        <setting name="TNS_ADMIN" value="C:\oracle\product\11.2.0\client\network\ADMIN"/>
+      </settings>
       <dataSources>
+		<dataSource alias="EL8PROD" descriptor="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=lmndbs09)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=el8prod))) "/>
+		<dataSource alias="EL8TEST" descriptor="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=lmndbs05)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=el8test))) "/>
+		<dataSource alias="EL8DESA" descriptor="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=lmndbs05)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=el8desa))) "/>
       </dataSources>
     </version>
   </oracle.manageddataaccess.client>
