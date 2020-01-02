@@ -102,6 +102,7 @@
     <Compile Include="Utilities\MyDateTime\Formats.cs" />
     <Compile Include="Utilities\MyDateTime\Operations.cs" />
     <Compile Include="Utilities\FileWriter.cs" />
+    <Compile Include="Utilities\MyKeyValuePair.cs" />
     <Compile Include="Utilities\MyMath.cs" />
     <Compile Include="Utilities\RuntimeConfigSettings\RuntimeConfigSettings.cs" />
     <Compile Include="Utilities\Shifts\ShiftCodes.cs" />
