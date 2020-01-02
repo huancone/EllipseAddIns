@@ -42,6 +42,7 @@
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoad = this.Factory.CreateRibbonButton();
+            this.btnLoadSecond = this.Factory.CreateRibbonButton();
             this.btnValidateStats = this.Factory.CreateRibbonButton();
             this.btnImport = this.Factory.CreateRibbonButton();
             this.btnUnApplyDelete = this.Factory.CreateRibbonButton();
@@ -53,7 +54,6 @@
             this.cbAutoSortItems = this.Factory.CreateRibbonCheckBox();
             this.cbIgnoreItemError = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.btnLoadSecond = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpBulkMaterial.SuspendLayout();
             this.box1.SuspendLayout();
@@ -117,6 +117,13 @@
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.ShowImage = true;
             this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
+            // 
+            // btnLoadSecond
+            // 
+            this.btnLoadSecond.Label = "Load Data (No Post)";
+            this.btnLoadSecond.Name = "btnLoadSecond";
+            this.btnLoadSecond.ShowImage = true;
+            this.btnLoadSecond.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadSecond_Click);
             // 
             // btnValidateStats
             // 
@@ -194,13 +201,6 @@
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
-            // btnLoadSecond
-            // 
-            this.btnLoadSecond.Label = "Load Data (No Post)";
-            this.btnLoadSecond.Name = "btnLoadSecond";
-            this.btnLoadSecond.ShowImage = true;
-            this.btnLoadSecond.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadSecond_Click);
             // 
             // RibbonEllipse
             // 

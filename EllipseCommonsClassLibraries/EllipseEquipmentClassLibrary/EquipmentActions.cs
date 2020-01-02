@@ -234,7 +234,7 @@ namespace EllipseEquipmentClassLibrary
                 ConditionStandard = drEquipments["COND_STANDARD"].ToString().Trim(),
                 CostSegLgth = drEquipments["COST_SEG_LGTH"].ToString().Trim(),
                 CostingFlag = drEquipments["COSTING_FLG"].ToString().Trim(),
-                CtaxCode = drEquipments["CTAX_CODE"].ToString().Trim(),
+                CtaxCode = drEquipments["TAX_CODE"].ToString().Trim(),
                 Custodian = drEquipments["CUSTODIAN"].ToString().Trim(),
                 CustodianPosition = drEquipments["CUSTODIAN_POSN"].ToString().Trim(),
                 CustomerNumber = drEquipments["CUST_NO"].ToString().Trim(),

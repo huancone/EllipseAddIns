@@ -277,7 +277,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>B0BBF7E8FDBA5724AFE6B04F60B35F9285054342</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0D4FBACA8743D0AE7D90940C6B7049305CBCB2B8</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>
