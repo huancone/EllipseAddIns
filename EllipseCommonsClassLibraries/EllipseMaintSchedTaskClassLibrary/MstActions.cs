@@ -210,7 +210,7 @@ namespace EllipseMaintSchedTaskClassLibrary
                 name = "conAstSegToNumeric",
                 value = "0.000000"
             };
-            attributeList[1] = new MaintSchedTskService.Attribute
+            attributeList[2] = new MaintSchedTskService.Attribute
             {
                 name = "outputConAstSeg",
                 value = "0.000000"
@@ -268,28 +268,66 @@ namespace EllipseMaintSchedTaskClassLibrary
                 startMonth = mst.StartMonth,
                 startYear = mst.StartYear
             };
-            
+            //schedInd700
             request.conAstSegFrSpecified = false;
             request.conAstSegTo = default(decimal);
             request.conAstSegToSpecified = false;
-            var attributeList = new MaintSchedTskService.Attribute[3];
-            attributeList[0] = new MaintSchedTskService.Attribute
+
+            var isInSeries = "N";
+            var isInSupressionSeries = "N";
+            if (mst != null && mst.MaintenanceSchTask != null && mst.MaintenanceSchTask.StartsWith("8") && mst.MaintenanceSchTask.Length == 4)
+                isInSeries = "Y";
+            if (mst != null && mst.MaintenanceSchTask != null && mst.MaintenanceSchTask.StartsWith("9") && mst.MaintenanceSchTask.Length == 4)
+                isInSupressionSeries = "Y";
+            var attributeList = new List<MaintSchedTskService.Attribute>();
+            attributeList.Add(new MaintSchedTskService.Attribute
             {
                 name = "conAstSegFrNumeric",
                 value = "0.000000"
-            };
-            attributeList[1] = new MaintSchedTskService.Attribute
+            });
+            attributeList.Add(new MaintSchedTskService.Attribute
             {
                 name = "conAstSegToNumeric",
                 value = "0.000000"
-            };
-            attributeList[1] = new MaintSchedTskService.Attribute
+            });
+            attributeList.Add(new MaintSchedTskService.Attribute
             {
                 name = "outputConAstSeg",
                 value = "0.000000"
-            };
-            request.customAttributes = attributeList;
+            });
+            attributeList.Add(new MaintSchedTskService.Attribute
+            {
+                name = "isInSeries",
+                value = isInSeries
+            });
+            attributeList.Add(new MaintSchedTskService.Attribute
+            {
+                name = "isInSuppressionSeries",
+                value = isInSupressionSeries
+            });
+            attributeList.Add(new MaintSchedTskService.Attribute
+            {
+                name = "schedInd700",
+                value = mst.SchedInd
+            });
+            attributeList.Add(new MaintSchedTskService.Attribute
+            {
+                name = "schedInd700_lang",
+                value = mst.SchedInd
+            });
+            attributeList.Add(new MaintSchedTskService.Attribute
+            {
+                name = "hideSuppressed",
+                value = "Y"
+            });
+            attributeList.Add(new MaintSchedTskService.Attribute
+            {
+                name = "jobType",
+                value = "M"
+            });
 
+            request.customAttributes = attributeList.ToArray();
+            
             proxyEquip.Url = urlService + "/MaintSchedTskService";
             return proxyEquip.modify(opContext, request);
         }
@@ -300,8 +338,15 @@ namespace EllipseMaintSchedTaskClassLibrary
             if (responseDto.GotErrorMessages())
                 throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
 
-            var requestXml = "";
 
+            var isInSeries = "N";
+            var isInSupressionSeries = "N";
+            if (mst != null && mst.MaintenanceSchTask != null && mst.MaintenanceSchTask.StartsWith("8") && mst.MaintenanceSchTask.Length == 4)
+                isInSeries = "Y";
+            if (mst != null && mst.MaintenanceSchTask != null && mst.MaintenanceSchTask.StartsWith("9") && mst.MaintenanceSchTask.Length == 4)
+                isInSupressionSeries = "Y";
+
+            var requestXml = "";
             requestXml = requestXml + "<interaction>";
             requestXml = requestXml + "<actions>";
             requestXml = requestXml + "     <action>";
@@ -349,8 +394,8 @@ namespace EllipseMaintSchedTaskClassLibrary
             requestXml = requestXml + "                 <statutoryFlg>" + mst.StatutoryFlg + "</statutoryFlg>";
             requestXml = requestXml + "                 <fixedScheduling>N</fixedScheduling>";
             requestXml = requestXml + "                 <allowMultiple>" + mst.AllowMultiple + "</allowMultiple>";
-            requestXml = requestXml + "                 <isInSeries>N</isInSeries>";
-            requestXml = requestXml + "                 <isInSuppressionSeries>N</isInSuppressionSeries>";
+            requestXml = requestXml + "                 <isInSeries>" + isInSeries + "</isInSeries>";
+            requestXml = requestXml + "                 <isInSuppressionSeries>" + isInSupressionSeries + "</isInSuppressionSeries>";
             requestXml = requestXml + "                 <hideSuppressed>Y</hideSuppressed>";
             requestXml = requestXml + "                 </dto>";
             requestXml = requestXml + "         </data>";
@@ -381,6 +426,13 @@ namespace EllipseMaintSchedTaskClassLibrary
             if (responseDto.GotErrorMessages())
                 throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
 
+            var isInSeries = "N";
+            var isInSupressionSeries = "N";
+            if (mst != null && mst.MaintenanceSchTask != null && mst.MaintenanceSchTask.StartsWith("8") && mst.MaintenanceSchTask.Length == 4)
+                isInSeries = "Y";
+            if (mst != null && mst.MaintenanceSchTask != null && mst.MaintenanceSchTask.StartsWith("9") && mst.MaintenanceSchTask.Length == 4)
+                isInSupressionSeries = "Y";
+
             var requestXml = "";
 
             requestXml = requestXml + "<interaction>";
@@ -391,47 +443,186 @@ namespace EllipseMaintSchedTaskClassLibrary
             requestXml = requestXml + "				<name>com.mincom.ellipse.service.m8mwp.mst.MSTService</name>";
             requestXml = requestXml + "				<operation>update</operation>";
             requestXml = requestXml + "				<className>mfui.actions.detail::UpdateAction</className>";
-            requestXml = requestXml + "				<returnWarnings>true</returnWarnings>";
-            requestXml = requestXml + "				<dto    uuid=\"" + Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
-            requestXml = requestXml + "					<allowMultiple>" + mst.AllowMultiple + "</allowMultiple>";
-            requestXml = requestXml + "					<dayMonth>" + mst.DayOfMonth + "</dayMonth>";
-            requestXml = requestXml + "					<dayWeek> " + mst.DayOfWeek + "</dayWeek>";
-            requestXml = requestXml + "					<dstrctCode>" + mst.DistrictCode + "</dstrctCode>";
-            requestXml = requestXml + "					<equipEntity>" + mst.EquipmentNo + "</equipEntity>";
-            requestXml = requestXml + "					<equipNo>" + mst.EquipmentNo + "</equipNo>";
-            requestXml = requestXml + "					<equipRef>" + mst.EquipmentNo + "</equipRef>";
-            requestXml = requestXml + "					<fixedScheduling>Y</fixedScheduling>";
-            requestXml = requestXml + "					<isInSeries>Y</isInSeries>";
-            requestXml = requestXml + "					<isInSuppressionSeries>Y</isInSuppressionSeries>";
-            requestXml = requestXml + "					<jobDescCode>" + mst.JobDescCode + "</jobDescCode>";
-            requestXml = requestXml + "					<lastPerfDate>" + mst.LastPerfDate + "</lastPerfDate>";
-            requestXml = requestXml + "					<lastPerfStat1>" + mst.LastPerfStat1 + "</lastPerfStat1>";
-            requestXml = requestXml + "					<lastSchDate>" + mst.LastSchedDate + "</lastSchDate>";
-            requestXml = requestXml + "					<lastSchStat1>" + mst.LastSchedStat1 + "</lastSchStat1>";
+            requestXml = requestXml + "				<returnWarnings>false</returnWarnings>";
+            requestXml = requestXml + "				<dto>";//    uuid=\"" + Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
+            requestXml = requestXml + "					<assignPerson>JRODRIG4</assignPerson>";
+            requestXml = requestXml + "					<complTextCde/>";
+            requestXml = requestXml + "					<completeInstr/>";
+            requestXml = requestXml + (mst.ConAstSegFr != null ? "					<conAstSegFr>" + mst.ConAstSegFr + "</conAstSegFr>" : null);
+            requestXml = requestXml + (mst.ConAstSegFr != null ? "					<conAstSegFrNumeric>" + mst.ConAstSegFr + "</conAstSegFrNumeric>" : null);
+            requestXml = requestXml + (mst.ConAstSegTo != null ? "					<conAstSegTo>" + mst .ConAstSegTo + "</conAstSegTo>" : null);
+            requestXml = requestXml + (mst.ConAstSegTo != null ? "					<conAstSegToNumeric>" + mst.ConAstSegTo + "</conAstSegToNumeric>" : null);
+            requestXml = requestXml + (mst.DayOfWeek != null ? "					<dayWeek>" + mst.DayOfWeek + "</dayWeek>" : null);
+            requestXml = requestXml + (mst.DistrictCode != null ? "					<dstrctCode>" + mst.DistrictCode + "</dstrctCode>" : null);
+            requestXml = requestXml + (mst.EquipmentNo != null ? "					<equipEntity>" + mst.EquipmentNo + "</equipEntity>" : null);
+            requestXml = requestXml + (mst.EquipmentNo != null ? "					<equipNo>" + mst.EquipmentNo + "</equipNo>" : null);
+            //requestXml = requestXml + "					<equipNoD></equipNoD>";
+            //requestXml = requestXml + "					<equipNoD2></equipNoD2>";
+            //requestXml = requestXml (mst.EquipmentNo != null ? + "					<equipRef>" + mst.EquipmentNo + "</equipRef> : null)";
+            requestXml = requestXml + "					<isInSeries>" + isInSeries + "</isInSeries>";
+            requestXml = requestXml + (mst.JobDescCode != null ? "					<jobDescCode>" + mst .JobDescCode + "</jobDescCode>" : null);
+            requestXml = requestXml + (mst.LastPerfDate != null ? "					<lastPerfDate>" + mst.LastPerfDate + "</lastPerfDate>" : null);
+            requestXml = requestXml + (mst.LastPerfStat1 != null ? "					<lastPerfStat1>" + mst.LastPerfStat1 + "</lastPerfStat1>" : null);
+            requestXml = requestXml + (mst.LastPerfStat2 != null ? "					<lastPerfStat2>" + mst.LastPerfStat2 + "</lastPerfStat2>" : null);
+            requestXml = requestXml + (mst.LastSchedStat1 != null ? "					<lastSchStat1>" + mst.LastSchedStat1 + "</lastSchStat1>" : null);
+            requestXml = requestXml + (mst.LastSchedStat2 != null ? "					<lastSchStat2>" + mst.LastSchedStat2 + "</lastSchStat2>" : null);
             requestXml = requestXml + "					<linkedInd>N</linkedInd>";
-            requestXml = requestXml + "					<maintSchTask>" + mst.MaintenanceSchTask + "</maintSchTask>";
-            requestXml = requestXml + "					<msHistFlg>Y</msHistFlg>";
-            requestXml = requestXml + "					<nextSchDate>" + mst.NextSchedDate + "</nextSchDate>";
-            requestXml = requestXml + "					<rec700Type>" + mst.RecType + "</rec700Type>";
+            requestXml = requestXml + (mst.MaintenanceSchTask != null ? "					<maintSchTask>" + mst.MaintenanceSchTask + "</maintSchTask>" : null);
+            requestXml = requestXml + (mst.MsHistFlag != null ? "					<msHistFlg>" + mst.MsHistFlag + "</msHistFlg>" : null);
+            requestXml = requestXml + "					<nextSchInd> </nextSchInd>";
+            requestXml = requestXml + "					<occurenceType> </occurenceType>";
+            requestXml = requestXml + (mst.RecType != null ? "					<rec700Type>" + mst.RecType + "</rec700Type>" : null);
             requestXml = requestXml + "					<recallTimeHrs>0.00</recallTimeHrs>";
-            requestXml = requestXml + "					<schedDesc1>" + mst.SchedDescription1 + "</schedDesc1>";
-            requestXml = requestXml + "					<schedFreq1>" + mst.SchedFreq1 + "</schedFreq1>";
-            requestXml = requestXml + "					<schedInd700>" + mst.SchedInd + "</schedInd700>";
-            requestXml = requestXml + "					<startMonth>" + mst.StartMonth + "</startMonth>";
-            requestXml = requestXml + "					<startYear>" + mst.StartYear + "</startYear>";
-            requestXml = requestXml + "					<workGroup>" + mst.WorkGroup + "</workGroup>";
-            requestXml = requestXml + "					<autoReqInd>N</autoReqInd>";
-            requestXml = requestXml + "					<statType1>" + mst.StatType1 + "</statType1>";
-            requestXml = requestXml + "					<statType2>" + mst.StatType2 + "</statType2>";
-            requestXml = requestXml + "					<nextSchStat>" + mst.NextSchedStat + "</nextSchStat>";
-            requestXml = requestXml + "					<nextSchValue>" + mst.NextSchedValue + "</nextSchValue>";
-            requestXml = requestXml + "					<statutoryFlg>N</statutoryFlg>";
+            requestXml = requestXml + "					<safetyInstr/>";
+            
+            requestXml = requestXml + (mst.SchedDescription1 != null ? "                 <schedDesc1>" + mst.SchedDescription1 + "</schedDesc1>" : null);
+            requestXml = requestXml + (mst.SchedDescription2 != null ? "                 <schedDesc2>" + mst.SchedDescription2 + "</schedDesc2>" : null);
+            requestXml = requestXml + (mst.SchedFreq1 != null ? "					<schedFreq1>" + mst.SchedFreq1 + "</schedFreq1>" : null);
+            requestXml = requestXml + (mst.SchedFreq2 != null ? "					<schedFreq2>" + mst.SchedFreq2 + "</schedFreq2>" : null);
+            requestXml = requestXml + (mst.SchedInd != null ? "					<schedInd700>" + mst.SchedInd + "</schedInd700>" : null);
+            requestXml = requestXml + "					<segmentUom/>";
+            requestXml = requestXml + (mst.StatType1 != null ? "					<statType1>" + mst.StatType1 + "</statType1>" : null);
+            requestXml = requestXml + (mst.StatType2 != null ? "					<statType2>" + mst.StatType2 + "</statType2>" : null);
+           
+            requestXml = requestXml + "					<tskDurHours>0</tskDurHours>";
+            requestXml = requestXml + "					<unitsRequired>0.00</unitsRequired>";
+            requestXml = requestXml + (mst.WorkGroup != null ? "					<workGroup>" + mst.WorkGroup + "</workGroup>" : null);
+            requestXml = requestXml + "					<workOrder/>";
+            requestXml = requestXml + "					<jobType>M</jobType>";
+
+            //requestXml = requestXml + "					<dstrctCode_desc></dstrctCode_desc>";
+            //requestXml = requestXml + "					<dstrctCode_lang></dstrctCode_lang>";
+            //requestXml = requestXml + "					<schedInd700_desc></schedInd700_desc>";
+            requestXml = requestXml + (mst.SchedInd != null ? "					<schedInd700_lang>" + mst.SchedInd + "</schedInd700_lang>" : null);
+            requestXml = requestXml + "					<outputConAstSeg/>";
+            requestXml = requestXml + "					<parentChildType/>";
+            requestXml = requestXml + "					<outputMeasureType/>";
+            requestXml = requestXml + (mst.EquipmentGrpId != null ? "					<equipGrpId>" + mst.EquipmentGrpId + "</equipGrpId>" : null);
+            requestXml = requestXml + (mst.CompCode != null ? "					<compCode>" + mst.CompCode + "</compCode>" : null);
+            requestXml = requestXml + (mst.CompModCode != null ? "					<compModCode>" + mst.CompModCode + "</compModCode>" : null);
+            requestXml = requestXml + "					<segmentUnitOfMeasure/>";
+            requestXml = requestXml + "					<fromInKilometers/>";
+            requestXml = requestXml + "					<toInKilometers/>";
+            requestXml = requestXml + "					<fromInMilesYards/>";
+            requestXml = requestXml + "					<toInMilesYards/>";
+            requestXml = requestXml + "					<fromInMilesChains/>";
+            requestXml = requestXml + "					<toInMilesChains/>";
+            requestXml = requestXml + "					<linkParent/>";
+            requestXml = requestXml + "					<linkId/>";
+            requestXml = requestXml + "					<displayInd/>";
+            requestXml = requestXml + "					<stdUnitOfWork/>";
+            requestXml = requestXml + "					<unitsScale/>";
+            requestXml = requestXml + "					<shutdownType/>";
+            requestXml = requestXml + (mst.AutoRequisitionInd != null ? "					<autoReqInd>" + mst.AutoRequisitionInd + "</autoReqInd>" : null);
+            requestXml = requestXml + (mst.DayOfMonth != null ? "					<dayMonth>" + mst.DayOfMonth + "</dayMonth>" : null);
+            requestXml = requestXml + (mst.StartMonth != null ? "					<startMonth>" + mst.StartMonth + "</startMonth>" : null);
+            requestXml = requestXml + (mst.StartYear != null ? "					<startYear>" + mst.StartYear + "</startYear>" : null);
+            requestXml = requestXml + (mst.LastSchedDate != null ? "					<lastSchDate>" + mst.LastSchedDate + "</lastSchDate>" : null);
+            requestXml = requestXml + (mst.NextSchedDate != null ? "					<nextSchDate>" + mst.NextSchedDate + "</nextSchDate>" : null);
+            requestXml = requestXml + "					<scheduleType> </scheduleType>";
+            requestXml = requestXml + (mst.NextSchedStat != null ? "					<nextSchStat>" + mst.NextSchedStat + "</nextSchStat>" : null);
+            requestXml = requestXml + (mst.NextSchedValue != null ? "					<nextSchValue>" + mst.NextSchedValue + "</nextSchValue>" : null);
+            requestXml = requestXml + "					<nextSchMeterValue/>";
+            requestXml = requestXml + (mst.StatutoryFlg != null ? "					<statutoryFlg>" + mst.StatutoryFlg + "</statutoryFlg>" : null);
+            requestXml = requestXml + "					<fixedScheduling>N</fixedScheduling>";
+            requestXml = requestXml + (mst.AllowMultiple != null ? "					<allowMultiple>" + mst.AllowMultiple  + "</allowMultiple>" : null);
+            //requestXml = requestXml + "					<stdJobWorkGroup></stdJobWorkGroup>";
+            //requestXml = requestXml + "					<stdJobWorkOrderType></stdJobWorkOrderType>";
+            //requestXml = requestXml + "					<stdJobMaintenanceType></stdJobMaintenanceType>";
+            //requestXml = requestXml + "					<stdJobOriginatorPriority></stdJobOriginatorPriority>";
+            //requestXml = requestXml + "					<stdJobCompCode/>";
+            //requestXml = requestXml + "					<stdJobCompModCode/>";
+            //requestXml = requestXml + "					<stdJobEstimatedDurationHours></stdJobEstimatedDurationHours>";
+            //requestXml = requestXml + "					<stdJobDesc></stdJobDesc>";
+            //requestXml = requestXml + "					<stdJobDstrctCode_desc></stdJobDstrctCode_desc>";
+            //requestXml = requestXml + "					<stdJobDstrctCode_lang></stdJobDstrctCode_lang>";
+            requestXml = requestXml + (mst.StdJobNo != null ? "					<stdJobDstrctCode>" + mst.DistrictCode + "</stdJobDstrctCode>" : null);
+            requestXml = requestXml + (mst.StdJobNo != null ? "					<stdJobNo>" + mst.StdJobNo + "</stdJobNo>" : null);
+            requestXml = requestXml + "					<stdUnitsRequired/>";
+            requestXml = requestXml + (mst.CondMonPos != null ? "					<condMonPos>" + mst.CondMonPos + "</condMonPos>" : null);
+            requestXml = requestXml + (mst.CondMonType != null ? "					<condMonType>" + mst.CondMonType + "</condMonType>" : null);
+            requestXml = requestXml + "					<isInSuppressionSeries>" + isInSupressionSeries + "</isInSuppressionSeries>";
             requestXml = requestXml + "					<hideSuppressed>Y</hideSuppressed>";
-            requestXml = requestXml + "					< conAstSegFrNumeric > 0.000000 </ conAstSegFrNumeric >";
-            requestXml = requestXml + "					< conAstSegToNumeric > 0.000000 </ conAstSegToNumeric >";
-            requestXml = requestXml + "					<conAstSegFr>0</conAstSegFr>";
-            requestXml = requestXml + "					<conAstSegTo>0</conAstSegTo>";
             requestXml = requestXml + "				</dto>";
+            //requestXml = requestXml + "				<requiredAttributes>";
+            //requestXml = requestXml + "					<outputConAstSeg>true</outputConAstSeg>";
+            //requestXml = requestXml + "					<parentChildType>true</parentChildType>";
+            //requestXml = requestXml + "					<equipNo>true</equipNo>";
+            //requestXml = requestXml + "					<outputMeasureType>true</outputMeasureType>";
+            //requestXml = requestXml + "					<equipRef>true</equipRef>";
+            //requestXml = requestXml + "					<equipNoD>true</equipNoD>";
+            //requestXml = requestXml + "					<equipGrpId>true</equipGrpId>";
+            //requestXml = requestXml + "					<compCode>true</compCode>";
+            //requestXml = requestXml + "					<compModCode>true</compModCode>";
+            //requestXml = requestXml + "					<maintSchTask>true</maintSchTask>";
+            //requestXml = requestXml + "					<conAstSegFrNumeric>true</conAstSegFrNumeric>";
+            //requestXml = requestXml + "					<conAstSegToNumeric>true</conAstSegToNumeric>";
+            //requestXml = requestXml + "					<segmentUnitOfMeasure>true</segmentUnitOfMeasure>";
+            //requestXml = requestXml + "					<fromInKilometers>true</fromInKilometers>";
+            //requestXml = requestXml + "					<toInKilometers>true</toInKilometers>";
+            //requestXml = requestXml + "					<fromInMilesYards>true</fromInMilesYards>";
+            //requestXml = requestXml + "					<toInMilesYards>true</toInMilesYards>";
+            //requestXml = requestXml + "					<fromInMilesChains>true</fromInMilesChains>";
+            //requestXml = requestXml + "					<toInMilesChains>true</toInMilesChains>";
+            //requestXml = requestXml + "					<linkParent>true</linkParent>";
+            //requestXml = requestXml + "					<linkId>true</linkId>";
+            //requestXml = requestXml + "					<displayInd>true</displayInd>";
+            //requestXml = requestXml + "					<rec700Type>true</rec700Type>";
+            //requestXml = requestXml + "					<schedDesc1>" + (!string.IsNullOrWhiteSpace(mst.SchedDescription1)).ToString().ToLower() + "</schedDesc1>";
+            //requestXml = requestXml + "					<schedDesc2>" + (!string.IsNullOrWhiteSpace(mst.SchedDescription2)).ToString().ToLower() + "</schedDesc2>";
+            //requestXml = requestXml + "					<workGroup>true</workGroup>";
+            //requestXml = requestXml + "					<assignPerson>true</assignPerson>";
+            //requestXml = requestXml + "					<stdJobNo>true</stdJobNo>";
+            //requestXml = requestXml + "					<unitsRequired>true</unitsRequired>";
+            //requestXml = requestXml + "					<stdUnitOfWork>true</stdUnitOfWork>";
+            //requestXml = requestXml + "					<stdUnitsRequired>true</stdUnitsRequired>";
+            //requestXml = requestXml + "					<unitsScale>true</unitsScale>";
+            //requestXml = requestXml + "					<shutdownType>true</shutdownType>";
+            //requestXml = requestXml + "					<autoReqInd>true</autoReqInd>";
+            //requestXml = requestXml + "					<jobDescCode>true</jobDescCode>";
+            //requestXml = requestXml + "					<msHistFlg>true</msHistFlg>";
+            //requestXml = requestXml + "					<dstrctCode>true</dstrctCode>";
+            //requestXml = requestXml + "					<schedInd700>true</schedInd700>";
+            //requestXml = requestXml + "					<statType1>true</statType1>";
+            //requestXml = requestXml + "					<lastSchStat1>true</lastSchStat1>";
+            //requestXml = requestXml + "					<lastPerfStat1>true</lastPerfStat1>";
+            //requestXml = requestXml + "					<occurenceType>true</occurenceType>";
+            //requestXml = requestXml + "					<dayWeek>true</dayWeek>";
+            //requestXml = requestXml + "					<dayMonth>true</dayMonth>";
+            //requestXml = requestXml + "					<startMonth>true</startMonth>";
+            //requestXml = requestXml + "					<startYear>true</startYear>";
+            //requestXml = requestXml + "					<schedFreq1>true</schedFreq1>";
+            //requestXml = requestXml + "					<statType2>true</statType2>";
+            //requestXml = requestXml + "					<schedFreq2>true</schedFreq2>";
+            //requestXml = requestXml + "					<lastSchStat2>true</lastSchStat2>";
+            //requestXml = requestXml + "					<lastPerfStat2>true</lastPerfStat2>";
+            //requestXml = requestXml + "					<lastSchDate>true</lastSchDate>";
+            //requestXml = requestXml + "					<lastPerfDate>true</lastPerfDate>";
+            //requestXml = requestXml + "					<nextSchDate>true</nextSchDate>";
+            //requestXml = requestXml + "					<scheduleType>true</scheduleType>";
+            //requestXml = requestXml + "					<nextSchStat>true</nextSchStat>";
+            //requestXml = requestXml + "					<nextSchValue>true</nextSchValue>";
+            //requestXml = requestXml + "					<nextSchMeterValue>true</nextSchMeterValue>";
+            //requestXml = requestXml + "					<nextSchInd>true</nextSchInd>";
+            //requestXml = requestXml + "					<recallTimeHrs>true</recallTimeHrs>";
+            //requestXml = requestXml + "					<statutoryFlg>true</statutoryFlg>";
+            //requestXml = requestXml + "					<fixedScheduling>true</fixedScheduling>";
+            //requestXml = requestXml + "					<allowMultiple>true</allowMultiple>";
+            //requestXml = requestXml + "					<stdJobDstrctCode>true</stdJobDstrctCode>";
+            //requestXml = requestXml + "					<stdJobDesc>true</stdJobDesc>";
+            //requestXml = requestXml + "					<stdJobWorkGroup>true</stdJobWorkGroup>";
+            //requestXml = requestXml + "					<stdJobWorkOrderType>true</stdJobWorkOrderType>";
+            //requestXml = requestXml + "					<stdJobMaintenanceType>true</stdJobMaintenanceType>";
+            //requestXml = requestXml + "					<stdJobOriginatorPriority>true</stdJobOriginatorPriority>";
+            //requestXml = requestXml + "					<stdJobCompCode>true</stdJobCompCode>";
+            //requestXml = requestXml + "					<stdJobCompModCode>true</stdJobCompModCode>";
+            //requestXml = requestXml + "					<stdJobEstimatedDurationHours>true</stdJobEstimatedDurationHours>";
+            //requestXml = requestXml + "					<condMonPos>true</condMonPos>";
+            //requestXml = requestXml + "					<condMonType>true</condMonType>";
+            //requestXml = requestXml + "					<isInSeries>true</isInSeries>";
+            //requestXml = requestXml + "					<isInSuppressionSeries>true</isInSuppressionSeries>";
+            //requestXml = requestXml + "					<hideSuppressed>true</hideSuppressed>";
+            //requestXml = requestXml + "				</requiredAttributes>";
             requestXml = requestXml + "			</data>";
             requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
             requestXml = requestXml + "		</action>";

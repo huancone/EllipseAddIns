@@ -36,7 +36,7 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpMaintenanceScheduleTask = this.Factory.CreateRibbonGroup();
-            this.box1 = this.Factory.CreateRibbonBox();
+            this.boxFormat = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
@@ -45,12 +45,13 @@
             this.btnReReviewMst = this.Factory.CreateRibbonButton();
             this.btnCreateMst = this.Factory.CreateRibbonButton();
             this.btnUpdateMst = this.Factory.CreateRibbonButton();
+            this.btnUpdateMstPost = this.Factory.CreateRibbonButton();
             this.btnModifyNextSchedule = this.Factory.CreateRibbonButton();
             this.btnDeleteTask = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMaintenanceScheduleTask.SuspendLayout();
-            this.box1.SuspendLayout();
+            this.boxFormat.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabEllipse
@@ -62,17 +63,17 @@
             // 
             // grpMaintenanceScheduleTask
             // 
-            this.grpMaintenanceScheduleTask.Items.Add(this.box1);
+            this.grpMaintenanceScheduleTask.Items.Add(this.boxFormat);
             this.grpMaintenanceScheduleTask.Items.Add(this.drpEnvironment);
             this.grpMaintenanceScheduleTask.Items.Add(this.menuActions);
             this.grpMaintenanceScheduleTask.Label = "Maint.Sched.Task";
             this.grpMaintenanceScheduleTask.Name = "grpMaintenanceScheduleTask";
             // 
-            // box1
+            // boxFormat
             // 
-            this.box1.Items.Add(this.btnFormatSheet);
-            this.box1.Items.Add(this.btnAbout);
-            this.box1.Name = "box1";
+            this.boxFormat.Items.Add(this.btnFormatSheet);
+            this.boxFormat.Items.Add(this.btnAbout);
+            this.boxFormat.Name = "boxFormat";
             // 
             // btnFormatSheet
             // 
@@ -97,6 +98,7 @@
             this.menuActions.Items.Add(this.btnReReviewMst);
             this.menuActions.Items.Add(this.btnCreateMst);
             this.menuActions.Items.Add(this.btnUpdateMst);
+            this.menuActions.Items.Add(this.btnUpdateMstPost);
             this.menuActions.Items.Add(this.btnModifyNextSchedule);
             this.menuActions.Items.Add(this.btnDeleteTask);
             this.menuActions.Items.Add(this.btnStopThread);
@@ -131,6 +133,13 @@
             this.btnUpdateMst.ShowImage = true;
             this.btnUpdateMst.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateMst_Click);
             // 
+            // btnUpdateMstPost
+            // 
+            this.btnUpdateMstPost.Label = "Actualizar Tareas - Post";
+            this.btnUpdateMstPost.Name = "btnUpdateMstPost";
+            this.btnUpdateMstPost.ShowImage = true;
+            this.btnUpdateMstPost.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateMstPost_Click);
+            // 
             // btnModifyNextSchedule
             // 
             this.btnModifyNextSchedule.Label = "Ajustar &Programación";
@@ -162,8 +171,8 @@
             this.tabEllipse.PerformLayout();
             this.grpMaintenanceScheduleTask.ResumeLayout(false);
             this.grpMaintenanceScheduleTask.PerformLayout();
-            this.box1.ResumeLayout(false);
-            this.box1.PerformLayout();
+            this.boxFormat.ResumeLayout(false);
+            this.boxFormat.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -182,8 +191,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnModifyNextSchedule;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReReviewMst;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox boxFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateMstPost;
     }
 
     partial class ThisRibbonCollection

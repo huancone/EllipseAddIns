@@ -12,6 +12,7 @@ namespace System.Web.Services.Ellipse
         private Stream outwardStream;
 
         public override void Initialize(object initializer)
+
         {
         }
 

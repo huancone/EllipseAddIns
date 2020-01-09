@@ -505,7 +505,8 @@ namespace EllipseStandardJobsClassLibrary
                 job.CompCode = stdDataReader["COMP_CODE"].ToString().Trim();
                 job.CompModCode = stdDataReader["COMP_MOD_CODE"].ToString().Trim();
                 job.UnitOfWork = stdDataReader["UNIT_OF_WORK"].ToString().Trim();
-                job.UnitsRequired = stdDataReader["UNITS_REQUIRED"].ToString().Trim();
+                //El valor en base de datos de Units Required es cero cuando el UoW es nulo, pero si se envía un cero en actualización pide el UoW
+                job.UnitsRequired = string.IsNullOrWhiteSpace(stdDataReader["UNIT_OF_WORK"].ToString()) && stdDataReader["UNITS_REQUIRED"].ToString().Trim() == "0" ? null : stdDataReader["UNITS_REQUIRED"].ToString().Trim();
                 job.CalculatedDurationsHrsFlg = stdDataReader["CALC_DUR_HRS_SW"].ToString().Trim();
                 job.EstimatedDurationsHrs = stdDataReader["EST_DUR_HRS"].ToString().Trim();
 
@@ -569,7 +570,8 @@ namespace EllipseStandardJobsClassLibrary
                 CompCode = stdDataReader["COMP_CODE"].ToString().Trim(),
                 CompModCode = stdDataReader["COMP_MOD_CODE"].ToString().Trim(),
                 UnitOfWork = stdDataReader["UNIT_OF_WORK"].ToString().Trim(),
-                UnitsRequired = stdDataReader["UNITS_REQUIRED"].ToString().Trim(),
+                //El valor en base de datos de Units Required es cero cuando el UoW es nulo, pero si se envía un cero en actualización pide el UoW
+                UnitsRequired = string.IsNullOrWhiteSpace(stdDataReader["UNIT_OF_WORK"].ToString()) && stdDataReader["UNITS_REQUIRED"].ToString().Trim() == "0" ? null : stdDataReader["UNITS_REQUIRED"].ToString().Trim(),
                 CalculatedDurationsHrsFlg = stdDataReader["CALC_DUR_HRS_SW"].ToString().Trim(),
                 EstimatedDurationsHrs = stdDataReader["EST_DUR_HRS"].ToString().Trim(),
                 AccountCode = stdDataReader["ACCOUNT_CODE"].ToString().Trim(),
@@ -635,7 +637,8 @@ namespace EllipseStandardJobsClassLibrary
                 task.AssignPerson = "" + stdDataReader["ASSIGN_PERSON"].ToString().Trim();
                 task.EstimatedMachHrs = "" + stdDataReader["EST_MACH_HRS"].ToString().Trim();
                 task.UnitOfWork = "" + stdDataReader["UNIT_OF_WORK"].ToString().Trim();
-                task.UnitsRequired = "" + stdDataReader["UNITS_REQUIRED"].ToString().Trim();
+                //El valor en base de datos de Units Required es cero cuando el UoW es nulo, pero si se envía un cero en actualización pide el UoW
+                task.UnitsRequired = "" + (string.IsNullOrWhiteSpace(stdDataReader["UNIT_OF_WORK"].ToString()) && stdDataReader["UNITS_REQUIRED"].ToString().Trim() == "0" ? null : stdDataReader["UNITS_REQUIRED"].ToString().Trim());
                 task.UnitsPerDay = "" + stdDataReader["UNITS_PER_DAY"].ToString().Trim();
 
                 task.EstimatedDurationsHrs = "" + stdDataReader["EST_DUR_HRS"].ToString().Trim();

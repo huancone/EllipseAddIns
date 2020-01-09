@@ -36,6 +36,7 @@ namespace EllipseStandardJobsExcelAddIn
         private const string SheetNameQualRev = "SJRevisionCalidad";
         private const string SheetName05 = "SJRefCodes";
         private const string SheetName06 = "SJEquipments";
+        private const string ValidationSheetName = "ValidationSheet";
 
         private const int TitleRow01 = 8;
         private const int TitleRow02 = 6;
@@ -373,6 +374,7 @@ namespace EllipseStandardJobsExcelAddIn
                 // ReSharper disable once UseIndexedProperty
                 _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
+                _cells.CreateNewWorksheet(ValidationSheetName);//hoja de validación
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -398,8 +400,8 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
 
                 //Adicionar validaciones
-                _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), false);
-                _cells.SetValidationList(_cells.GetCell("B4"), Groups.GetWorkGroupList().Select(wg => wg.Name).ToList(), false);
+                _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList(), ValidationSheetName, 1, false);
+                _cells.SetValidationList(_cells.GetCell("B4"), Groups.GetWorkGroupList().Select(wg => wg.Name).ToList(), ValidationSheetName, 2, false);
 
                 _cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01).Style = StyleConstants.TitleRequired;
                 _cells.GetCell(5, TitleRow01 - 1)
@@ -451,9 +453,9 @@ namespace EllipseStandardJobsExcelAddIn
                 var mtTypeCodes = WoTypeMtType.GetMtTypeList();
 
                 _cells.GetCell(13, TitleRow01).Value = "WO_TYPE";
-                _cells.SetValidationList(_cells.GetCell(13, TitleRow01 + 1), new List<string>(woTypeCodes.Keys));
+                _cells.SetValidationList(_cells.GetCell(13, TitleRow01 + 1), new List<string>(woTypeCodes.Keys), ValidationSheetName, 3, false);
                 _cells.GetCell(14, TitleRow01).Value = "MT_TYPE";
-                _cells.SetValidationList(_cells.GetCell(14, TitleRow01 + 1), new List<string>(mtTypeCodes.Keys));
+                _cells.SetValidationList(_cells.GetCell(14, TitleRow01 + 1), new List<string>(mtTypeCodes.Keys), ValidationSheetName, 4, false);
 
                 _cells.GetCell(15, TitleRow01).Value = "COMP_CODE";
                 _cells.GetCell(16, TitleRow01).Value = "COMP_MOD_CODE";
@@ -555,7 +557,7 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell(5, TitleRow02).Value = "ACTION";
                 _cells.GetCell(5, TitleRow02).Style = StyleConstants.TitleAction;
                 _cells.GetCell(5, TitleRow02).AddComment("C: Crear \nM: Modificar \nD: Eliminar");
-                _cells.SetValidationList(_cells.GetCell(5, TitleRow02 + 1), new List<string> { "C", "M", "D" });
+                _cells.SetValidationList(_cells.GetCell(5, TitleRow02 + 1), new List<string> { "C", "M", "D" }, ValidationSheetName, 5, true);
                 //GENERAL
                 _cells.GetCell(6, TitleRow02 - 1).Value = "GENERAL";
                 _cells.GetRange(6, TitleRow02 - 1, 11, TitleRow02 - 1).Style = StyleConstants.Option;
@@ -656,7 +658,7 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell(6, TitleRow03).Value = "ACTION";
                 _cells.GetCell(6, TitleRow03).Style = StyleConstants.TitleAction;
                 _cells.GetCell(6, TitleRow03).AddComment("C: Crear Requerimiento \nM: Modificar Requerimiento \nD: Eliminar Requerimiento");
-                _cells.SetValidationList(_cells.GetCell(6, TitleRow03 + 1), new List<string> { "C", "M", "D" });
+                _cells.SetValidationList(_cells.GetCell(6, TitleRow03 + 1), new List<string> { "C", "M", "D" }, ValidationSheetName, 6);
                 //GENERAL
                 _cells.GetCell(7, TitleRow03 - 1).Value = "GENERAL";
                 _cells.GetRange(7, TitleRow03 - 1, 13, TitleRow03 - 1).Style = StyleConstants.Option;
@@ -664,7 +666,7 @@ namespace EllipseStandardJobsExcelAddIn
 
                 _cells.GetCell(7, TitleRow03).Value = "REQ_TYPE";
                 _cells.GetCell(7, TitleRow03).AddComment("LAB: LABOR\nMAT: MATERIAL");
-                _cells.SetValidationList(_cells.GetCell(7, TitleRow03 + 1), new List<string> { "LAB", "MAT" });
+                _cells.SetValidationList(_cells.GetCell(7, TitleRow03 + 1), new List<string> { "LAB", "MAT" }, ValidationSheetName, 7);
                 _cells.GetCell(8, TitleRow03).Value = "SEQ_NO";
                 _cells.GetCell(8, TitleRow03).AddComment("Aplica solo para Creación y Modificación de Requerimientos");
                 _cells.GetCell(9, TitleRow03).Value = "REQ_CODE";
@@ -719,9 +721,8 @@ namespace EllipseStandardJobsExcelAddIn
                     _cells.GetRange("B3", "B4").Style = StyleConstants.Select;
 
                     //Adicionar validaciones
-                    _cells.SetValidationList(_cells.GetCell("B3"), Districts.GetDistrictList());
-                    _cells.SetValidationList(_cells.GetCell("B4"),
-                        Groups.GetWorkGroupList().Select(wg => wg.Name).ToList());
+                    _cells.SetValidationList(_cells.GetCell("B3"), ValidationSheetName, 1, false);
+                    _cells.SetValidationList(_cells.GetCell("B4"), ValidationSheetName, 2, false);
 
                     _cells.GetRange(1, TitleRowQualRev, ResultColumnQualRev, TitleRowQualRev).Style =
                         StyleConstants.TitleRequired;
@@ -751,11 +752,9 @@ namespace EllipseStandardJobsExcelAddIn
                     //CONSULTA
                     _cells.GetCell(6, TitleRowQualRev).Value = "ORIG_PRIORITY";
                     _cells.GetCell(7, TitleRowQualRev).Value = "WO_TYPE";
-                    _cells.SetValidationList(_cells.GetCell(7, TitleRowQualRev + 1),
-                        new List<string>(woTypeCodes.Keys));
+                    _cells.SetValidationList(_cells.GetCell(7, TitleRowQualRev + 1), new List<string>(woTypeCodes.Keys), ValidationSheetName, 8);
                     _cells.GetCell(8, TitleRowQualRev).Value = "MT_TYPE";
-                    _cells.SetValidationList(_cells.GetCell(8, TitleRowQualRev + 1),
-                        new List<string>(mtTypeCodes.Keys));
+                    _cells.SetValidationList(_cells.GetCell(8, TitleRowQualRev + 1), new List<string>(mtTypeCodes.Keys), ValidationSheetName, 9);
                     _cells.GetCell(9, TitleRowQualRev).Value = "UNITS_OF_WORK";
                     _cells.GetCell(10, TitleRowQualRev).Value = "UNITS_REQUIRED";
                     _cells.GetCell(10, TitleRowQualRev).NumberFormat = NumberFormatConstants.Text;
@@ -932,7 +931,7 @@ namespace EllipseStandardJobsExcelAddIn
                 _cells.GetCell(9, TitleRow06).Style = StyleConstants.TitleInformation;
                 _cells.GetCell(10, TitleRow06).Style = StyleConstants.TitleAction;
                 _cells.GetCell(10, TitleRow06).AddComment("C: Crear \nD: Eliminar");
-                _cells.SetValidationList(_cells.GetCell(10, TitleRow06 + 1), new List<string> { "C", "D" });
+                _cells.SetValidationList(_cells.GetCell(10, TitleRow06 + 1), new List<string> { "C", "D" }, ValidationSheetName, 10);
 
                 _cells.GetCell(ResultColumn06, TitleRow06).Value = "RESULTADO";
 

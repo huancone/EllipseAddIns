@@ -135,7 +135,24 @@ namespace EllipseMstExcelAddIn
                 if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                 //si si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
-                _thread = new Thread(UpdateMstList);
+                _thread = new Thread(() => UpdateMstList(false));
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+        private void btnUpdateMstPost_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+            {
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                //si si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(() => UpdateMstList(true));
 
                 _thread.SetApartmentState(ApartmentState.STA);
                 _thread.Start();
@@ -533,7 +550,7 @@ namespace EllipseMstExcelAddIn
                         _cells.GetCell("B3").Value2 = "" + mst.DistrictCode;
                         _cells.GetCell(1, i).Value2 = "" + mst.WorkGroup;
                         _cells.GetCell(2, i).Value2 = "" + mst.RecType;
-                        _cells.GetCell(3, i).Value2 = mst.RecType == MstType.Equipment ? "" + mst.EquipmentNo : "" + mst.EquipmentGrpId;
+                        _cells.GetCell(3, i).Value2 = "'" + (mst.RecType == MstType.Equipment ? "" + mst.EquipmentNo : "" + mst.EquipmentGrpId);
                         _cells.GetCell(4, i).Value2 = "" + mst.CompCode;
                         _cells.GetCell(5, i).Value2 = "" + mst.CompModCode;
                         _cells.GetCell(6, i).Value2 = "" + mst.MaintenanceSchTask;
@@ -580,6 +597,8 @@ namespace EllipseMstExcelAddIn
                         else
                             freqDescription = "ERROR";
                         _cells.GetCell(21, i).Value2 = "" + freqDescription;
+
+                        _cells.GetCell(ResultColumn01, i).Value2 = "RECONSULTADA";
                     }
                     catch (Exception ex)
                     {
@@ -749,12 +768,23 @@ namespace EllipseMstExcelAddIn
             if (_cells != null) _cells.SetCursorDefault();
         }
 
-        public void UpdateMstList()
+        public void UpdateMstList(bool usePost = false)
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
+
+
+            if (usePost)
+            {
+                var alertResult = MessageBox.Show("Actualizar por post cambiará todos los encabezados de actualización a verdaderos, por lo que se actualizarán todos los datos de la hoja.\n¿Está seguro que desea continuar?", "Alerta de Actualización", MessageBoxButtons.YesNo);
+                if(alertResult == DialogResult.Yes)
+                    for (var k = 7; k < ResultColumn01; k++)
+                        _cells.GetCell(k, TitleRow01 - 1).Value = "true";
+                else
+                    return;
+            }
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
@@ -837,7 +867,10 @@ namespace EllipseMstExcelAddIn
 
                     if (string.IsNullOrWhiteSpace(mst.SchedInd))//No hay ajuste de indicador
                     {
-                        MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
+                        if (usePost)
+                            MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
+                        else
+                            MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
                     }
                     else if ( (indicator >= 1 && indicator <= 4) || indicator == 9 ) 
                     {
@@ -845,8 +878,11 @@ namespace EllipseMstExcelAddIn
                         mst.NextSchedValue = nextSchedValue;
                         mst.NextSchedDate = nextSchedDate;
                         mst.SchedFreq1 = frequency;
-                        MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
-                        //MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
+                        if(usePost)
+                            MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
+                        else
+                            MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
+                        
                     }
                     else if (indicator >= 7 && indicator <= 8)
                     {
@@ -856,9 +892,11 @@ namespace EllipseMstExcelAddIn
                         mst.SchedFreq1 = frequency;
                         mst.StartMonth = startMonth?.PadLeft(2, '0') ?? "";
                         mst.StartYear = startYear;
-
-                        MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
-                        //MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
+                        if(usePost)
+                            MstActions.ModifyMaintenanceScheduleTaskPost(_eFunctions, mst);
+                        else
+                            MstActions.ModifyMaintenanceScheduleTask(urlService, opSheet, mst);
+                        
                     }
                     else
                     {
@@ -1055,6 +1093,8 @@ namespace EllipseMstExcelAddIn
         {
             new AboutBoxExcelAddIn().ShowDialog();
         }
+
+
     }
 
 

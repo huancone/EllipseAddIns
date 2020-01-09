@@ -220,6 +220,8 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "   ELLIPSE.MSF232 RQR JOIN ELLIPSE.MSF140 RQ" +
                         "     ON RQ.DSTRCT_CODE = RQR.DSTRCT_CODE" +
                         "     AND SUBSTR(RQR.REQUISITION_NO, 1, 6) = RQ.IREQ_NO" +
+                        "     AND RQR.DSTRCT_CODE " + districtCode +
+                        "     AND RQR.REQ_232_TYPE = 'I'" +
                         "   LEFT JOIN ELLIPSE.MSF620 WO" +
                         "     ON RQR.WORK_ORDER = WO.WORK_ORDER" +
                         "     AND RQR.DSTRCT_CODE = WO.DSTRCT_CODE" +
@@ -229,7 +231,6 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         " " + queryCriteria1 +
                         " " + queryCriteria2 +
                         " " + statusRequirement +
-                        " AND WO.DSTRCT_CODE " + districtCode +
                         dateParameters;
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
@@ -429,6 +430,8 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "     ELLIPSE.MSF232 RQR JOIN ELLIPSE.MSF140 RQ" +
                         "       ON RQ.DSTRCT_CODE = RQR.DSTRCT_CODE" +
                         "       AND SUBSTR(RQR.REQUISITION_NO, 1, 6) = RQ.IREQ_NO" +
+                        "       AND RQR.DSTRCT_CODE " + districtCode +
+                        "       AND RQR.REQ_232_TYPE = 'I'" +
                         "     LEFT JOIN ELLIPSE.MSF620 WO" +
                         "       ON RQR.WORK_ORDER = WO.WORK_ORDER" +
                         "       AND RQR.DSTRCT_CODE = WO.DSTRCT_CODE" +
@@ -438,7 +441,7 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "   " + queryCriteria1 +
                         "   " + queryCriteria2 +
                         "   " + statusRequirement +
-                        "   AND WO.DSTRCT_CODE " + districtCode + dateParameters +
+                        dateParameters +
                         " )," +
                         " REALREQ AS (" +
                         "   SELECT RQWO.DSTRCT_CODE," +
@@ -453,11 +456,15 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "     RQI.STOCK_CODE," +
                         "     SUM(RQI.QTY_REQ) QTY_REQUIRED," +
                         "     SUM(RQI.QTY_ISSUED) QTY_ISSUED," +
-                        "     SUM(RQI.QTY_RECEIVED) QTY_RECEIVED" +
+                        "     SUM(RQI.QTY_RECEIVED) QTY_RECEIVED," +
+                        "     SCINV.INVENT_COST_PR PRICE_PR," +
+                        "     SCINV.INVENT_PRICE_S PRICE_SC" +
                         "   FROM " +
                         "     RQWO LEFT JOIN ELLIPSE.MSF141 RQI" +
                         "       ON RQWO.DSTRCT_CODE = RQI.DSTRCT_CODE" +
                         "       AND RQWO.IREQ_NO = RQI.IREQ_NO" +
+                        "     LEFT JOIN ELLIPSE.MSF170 SCINV" +
+                        "       ON RQI.STOCK_CODE = SCINV.STOCK_CODE AND RQWO.DSTRCT_CODE = SCINV.DSTRCT_CODE" +
                         "   GROUP BY " +
                         "     RQWO.DSTRCT_CODE," +
                         "     RQWO.WORK_GROUP," +
@@ -467,7 +474,9 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "     RQWO.PROJECT_NO," +
                         "     RQWO.GL_ACCOUNT," +
                         "     RQWO.WO_PLAN_STR_DATE," +
-                        "     RQI.STOCK_CODE" +
+                        "     RQI.STOCK_CODE," +
+                        "     SCINV.INVENT_COST_PR," +
+                        "     SCINV.INVENT_PRICE_S" +
                         " )," +
                         " PLANREQ AS(" +
                         "   SELECT " +
@@ -481,7 +490,9 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "     RQWO.WO_PLAN_STR_DATE," +
                         "     WORP.STOCK_CODE," +
                         "     SUM(WORP.UNIT_QTY_REQD) QTY_PLAN_REQUIRED," +
-                        "     SUM(WORP.QTY_REQUISITIONED) QTY_PLAN_REQUISITIONED" +
+                        "     SUM(WORP.QTY_REQUISITIONED) QTY_PLAN_REQUISITIONED," +
+                        "     SCINV.INVENT_COST_PR PRICE_PR," +
+                        "     SCINV.INVENT_PRICE_S PRICE_SC" +
                         "   FROM " +
                         "     RQWO JOIN ELLIPSE.MSF623 WOT" +
                         "       ON RQWO.WORK_ORDER   = WOT.WORK_ORDER" +
@@ -489,6 +500,8 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "     JOIN ELLIPSE.MSF734 WORP" +
                         "       ON RQWO.DSTRCT_CODE || RQWO.WORK_ORDER || WOT.WO_TASK_NO = WORP.CLASS_KEY" +
                         "       AND WORP.CLASS_TYPE = 'WT'" +
+                        "     LEFT JOIN ELLIPSE.MSF170 SCINV" +
+                        "       ON WORP.STOCK_CODE = SCINV.STOCK_CODE  AND RQWO.DSTRCT_CODE = SCINV.DSTRCT_CODE" +
                         "   GROUP BY " +
                         "     RQWO.DSTRCT_CODE," +
                         "     RQWO.WORK_GROUP," +
@@ -498,7 +511,9 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "     RQWO.PROJECT_NO," +
                         "     RQWO.GL_ACCOUNT," +
                         "     RQWO.WO_PLAN_STR_DATE," +
-                        "     WORP.STOCK_CODE" +
+                        "     WORP.STOCK_CODE," +
+                        "     SCINV.INVENT_COST_PR," +
+                        "     SCINV.INVENT_PRICE_S" +
                         " )" +
                         " SELECT " +
                         "   COALESCE(RQ.DSTRCT_CODE, PQ.DSTRCT_CODE) DSTRCT_CODE," +
@@ -515,7 +530,9 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "   NVL(PQ.QTY_PLAN_REQUISITIONED, 0) QTY_PLAN_REQUISITIONED," +
                         "   NVL(RQ.QTY_REQUIRED, 0) QTY_REQUIRED," +
                         "   NVL(RQ.QTY_ISSUED, 0) QTY_ISSUED," +
-                        "   NVL(RQ.QTY_RECEIVED, 0) QTY_RECEIVED" +
+                        "   NVL(RQ.QTY_RECEIVED, 0) QTY_RECEIVED," +
+                        "   COALESCE(RQ.PRICE_PR, PQ.PRICE_PR) PRICE_PR," +
+                        "   COALESCE(RQ.PRICE_SC, PQ.PRICE_SC) PRICE_SC" +
                         " FROM " +
                         "   REALREQ RQ FULL JOIN PLANREQ PQ" +
                         "     ON RQ.DSTRCT_CODE = PQ.DSTRCT_CODE" +

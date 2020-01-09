@@ -1298,6 +1298,7 @@ namespace EllipseLabourCostingExcelAddIn
                 completedCode = labourEmployee.CompletedCode
             };
 
+            LabourCostingTransServiceResult createResult;
             //Search Existing
             if (replaceExisting)
             {
@@ -1316,38 +1317,52 @@ namespace EllipseLabourCostingExcelAddIn
                 //La búsqueda solo toma en cuenta la fecha de transacción y el employee id
                 var replySearch = proxyLt.search(opContext, requestSearch, searchRestartDto);
                 //Existe un elemento
-                if (replySearch == null || replySearch.Length < 1) return proxyLt.create(opContext, requestLt);
-                foreach (var replyItem in replySearch)
+                if(replySearch != null && replySearch.Length >= 1)
                 {
-                    //Las comparaciones deben hacerse con LPAD para poder establecer bien las comparaciones númericas que trae ellipse en su información
-                    var equalTranDate =
-                        replyItem.labourCostingTransDTO.transactionDate.Equals(requestSearch.transactionDate);
-                    var equalEmployee = replyItem.labourCostingTransDTO.employee.PadLeft(20, '0')
-                        .Equals(requestSearch.employee.PadLeft(20, '0'));
-                    //posibles nulos de WorkOrders y/o Projects
-                    var equalWo = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrder) && replyItem
-                                      .labourCostingTransDTO.workOrder.PadLeft(20, '0')
-                                      .Equals(requestSearch.workOrder.PadLeft(20, '0'));
+                    foreach (var replyItem in replySearch)
+                    {
+                        //Las comparaciones deben hacerse con LPAD para poder establecer bien las comparaciones númericas que trae ellipse en su información
+                        var equalTranDate =
+                            replyItem.labourCostingTransDTO.transactionDate.Equals(requestSearch.transactionDate);
+                        var equalEmployee = replyItem.labourCostingTransDTO.employee.PadLeft(20, '0')
+                            .Equals(requestSearch.employee.PadLeft(20, '0'));
+                        //posibles nulos de WorkOrders y/o Projects
+                        var equalWo = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrder) && replyItem
+                                          .labourCostingTransDTO.workOrder.PadLeft(20, '0')
+                                          .Equals(requestSearch.workOrder.PadLeft(20, '0'));
 
-                    string itemTaskNo = string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrderTask) ? "000" : replyItem.labourCostingTransDTO.workOrderTask;
-                    var equalTask = itemTaskNo.Equals(!string.IsNullOrWhiteSpace(requestSearch.workOrderTask) ? requestSearch.workOrderTask.PadLeft(3, '0') : "000");
-                    var equalProject = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.project) &&
-                                       replyItem.labourCostingTransDTO.project.PadLeft(20, '0')
-                                           .Equals(requestSearch.project.PadLeft(20, '0'));
+                        string itemTaskNo = string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.workOrderTask) ? "000" : replyItem.labourCostingTransDTO.workOrderTask;
+                        var equalTask = itemTaskNo.Equals(!string.IsNullOrWhiteSpace(requestSearch.workOrderTask) ? requestSearch.workOrderTask.PadLeft(3, '0') : "000");
+                        var equalProject = !string.IsNullOrWhiteSpace(replyItem.labourCostingTransDTO.project) &&
+                                           replyItem.labourCostingTransDTO.project.PadLeft(20, '0')
+                                               .Equals(requestSearch.project.PadLeft(20, '0'));
 
-                    if (!equalTranDate || !equalEmployee || ((!equalWo || !equalTask) && !equalProject)) continue;
-                    var result = proxyLt.delete(opContext, replySearch[0].labourCostingTransDTO);
-                    break;
+                        if (!equalTranDate || !equalEmployee || ((!equalWo || !equalTask) && !equalProject)) continue;
+                        var delResult = proxyLt.delete(opContext, replySearch[0].labourCostingTransDTO);
+                        if(delResult.errors != null && delResult.errors.Length > 0)
+                        {
+                            var errorMessage = "";
+                            foreach (var error in delResult.errors)
+                                errorMessage += error.messageText + ". ";
+                            throw new Exception(errorMessage);
+                        }
+                        break;
+                    }
                 }
-
-                //se envía la acción
-                //return proxyLt.multipleCreate(opContext, multipleRequestLt);
-                return proxyLt.create(opContext, requestLt);
+                
             }
+            //se envía la acción
+            //return proxyLt.multipleCreate(opContext, multipleRequestLt);
+            createResult = proxyLt.create(opContext, requestLt);
 
-            return proxyLt.create(opContext, requestLt);
-
-
+            if (createResult.errors != null && createResult.errors.Length > 0)
+            {
+                var errorMessage = "";
+                foreach (var error in createResult.errors)
+                    errorMessage += error.messageText + ". ";
+                throw new Exception(errorMessage);
+            }
+            return createResult;
         }
 
         public LabourCostingTransServiceResult DeleteEmployeeMse(string urlService, OperationContext opContext, LabourEmployee labourEmployee)
@@ -1418,8 +1433,15 @@ namespace EllipseLabourCostingExcelAddIn
                                         .Equals(requestSearch.project.PadLeft(20, '0'));
 
                 if (!equalTranDate || !equalEmployee || ((!equalWo || !equalTask) && !equalProject)) continue;
-                var result = proxyLt.delete(opContext, replySearch[0].labourCostingTransDTO);
-                return result;
+                var delResult = proxyLt.delete(opContext, replySearch[0].labourCostingTransDTO);
+                if (delResult.errors != null && delResult.errors.Length > 0)
+                {
+                    var errorMessage = "";
+                    foreach (var error in delResult.errors)
+                        errorMessage += error.messageText + ". ";
+                    throw new Exception(errorMessage);
+                }
+                return delResult;
             }
             return null;
         }
