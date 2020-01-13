@@ -43,6 +43,7 @@
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoadEmulsion = this.Factory.CreateRibbonButton();
             this.btnLoadSolox = this.Factory.CreateRibbonButton();
+            this.btnDelete = this.Factory.CreateRibbonButton();
             this.btnGetModuleEmulsion = this.Factory.CreateRibbonButton();
             this.btnGetModuleSolox = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
@@ -92,6 +93,7 @@
             // 
             this.menuActions.Items.Add(this.btnLoadEmulsion);
             this.menuActions.Items.Add(this.btnLoadSolox);
+            this.menuActions.Items.Add(this.btnDelete);
             this.menuActions.Items.Add(this.btnGetModuleEmulsion);
             this.menuActions.Items.Add(this.btnGetModuleSolox);
             this.menuActions.Label = "&Acciones";
@@ -110,6 +112,13 @@
             this.btnLoadSolox.Name = "btnLoadSolox";
             this.btnLoadSolox.ShowImage = true;
             this.btnLoadSolox.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadSolox_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Label = "Eliminar Registro";
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.ShowImage = true;
+            this.btnDelete.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDelete_Click);
             // 
             // btnGetModuleEmulsion
             // 
@@ -154,6 +163,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadSolox;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetModuleEmulsion;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetModuleSolox;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDelete;
     }
 
     partial class ThisRibbonCollection

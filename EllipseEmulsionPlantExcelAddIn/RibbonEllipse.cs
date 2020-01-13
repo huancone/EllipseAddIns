@@ -173,7 +173,7 @@ namespace EllipseEmulsionPlantExcelAddIn
                 _cells.GetRange(1, titleRow, resultColumn, titleRow).Style = StyleConstants.TitleRequired;
 
                 //GENERAL
-                _cells.GetCell(1, titleRow).Value = "Fecha";
+                _cells.GetCell(1, titleRow).Value = "Fecha (YYYYMMDD)";
                 _cells.GetCell(2, titleRow).Value = "Turno";
                 _cells.GetCell(3, titleRow).Value = "Operador";
                 _cells.GetCell(4, titleRow).Value = "T.EM. Inicial";
@@ -236,7 +236,7 @@ namespace EllipseEmulsionPlantExcelAddIn
                 _cells.GetRange(1, titleRow, resultColumn, titleRow).Style = StyleConstants.TitleRequired;
 
                 //GENERAL
-                _cells.GetCell(1, titleRow).Value = "Fecha";
+                _cells.GetCell(1, titleRow).Value = "Fecha (YYYYMMDD)";
                 _cells.GetCell(2, titleRow).Value = "Turno";
                 _cells.GetCell(3, titleRow).Value = "Operador";
                 _cells.GetCell(4, titleRow).Value = "T.SOL. Inicial";
@@ -275,7 +275,43 @@ namespace EllipseEmulsionPlantExcelAddIn
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }
+        private void btnDelete_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName01))
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
 
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(DeleteEmulsionListData);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName02))
+                {
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(DeleteSolutionListData);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:LoadEmulsionListData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
         public void LoadEmulsionListData()
         {
             var tableName = TableName01;
@@ -469,7 +505,127 @@ namespace EllipseEmulsionPlantExcelAddIn
 
             if (_cells != null) _cells.SetCursorDefault();
         }
+        private void DeleteEmulsionListData()
+        {
+            var tableName = TableName01;
+            var resultColumn = ResultColumn01;
+            var titleRow = TitleRow01;
 
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _cells.ClearTableRangeColumn(tableName, resultColumn);
+
+            var i = titleRow + 1;
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService"; ;
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var opContext = new Screen.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var date = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
+                    var shiftCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
+                    var emulsionLog = new LogSheetItem("EMULPLANT", date, shiftCode);
+
+                    var result = LogSheetActions.DeleteLogSheet(_eFunctions, opContext, urlService, emulsionLog);
+                    var styleResult = StyleConstants.Success;
+                    if (result.StartsWith("WARNING"))
+                        styleResult = StyleConstants.Warning;
+
+                    _cells.GetCell(resultColumn, i).Style = styleResult;
+                    _cells.GetCell(resultColumn, i).Value = result;
+                    _cells.GetCell(resultColumn, i).Select();
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(resultColumn, i).Style = StyleConstants.Error;
+                    _cells.GetCell(resultColumn, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(resultColumn, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:LoadEmulsionListData()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(resultColumn, i).Select();
+                    i++;
+                    _eFunctions.CloseConnection();
+                }
+            }
+
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+        private void DeleteSolutionListData()
+        {
+            var tableName = TableName02;
+            var resultColumn = ResultColumn02;
+            var titleRow = TitleRow02;
+
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            _cells.ClearTableRangeColumn(tableName, resultColumn);
+
+            var i = titleRow + 1;
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService"; ;
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var opContext = new Screen.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings
+            };
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+            while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
+            {
+                try
+                {
+                    var date = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
+                    var shiftCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
+                    var emulsionLog = new LogSheetItem("EMULPLANT2", date, shiftCode);
+
+                    var result = LogSheetActions.DeleteLogSheet(_eFunctions, opContext, urlService, emulsionLog);
+                    var styleResult = StyleConstants.Success;
+                    if (result.StartsWith("WARNING"))
+                        styleResult = StyleConstants.Warning;
+
+                    _cells.GetCell(resultColumn, i).Style = styleResult;
+                    _cells.GetCell(resultColumn, i).Value = result;
+                    _cells.GetCell(resultColumn, i).Select();
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(resultColumn, i).Style = StyleConstants.Error;
+                    _cells.GetCell(resultColumn, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(resultColumn, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:LoadEmulsionListData()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(resultColumn, i).Select();
+                    i++;
+                    _eFunctions.CloseConnection();
+                }
+            }
+
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+        
         private void btnGetModuleEmulsion_Click(object sender, RibbonControlEventArgs e)
         {
             MessageBox.Show("No se ha definido una fuente de obtención automática");

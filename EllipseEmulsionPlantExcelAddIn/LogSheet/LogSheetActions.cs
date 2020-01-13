@@ -139,5 +139,79 @@ namespace EllipseEmulsionPlantExcelAddIn.LogSheet
 
             //---fin proceso del screen
         }
+        public static string DeleteLogSheet(EllipseFunctions eFunctions, Screen.OperationContext opContext, string urlService, LogSheetItem logSheet)
+        {
+            var requestSheet = new Screen.ScreenSubmitRequestDTO();
+
+            //Proceso del screen
+            var screenService = new Screen.ScreenService();
+            screenService.Url = urlService;
+            //Aseguro que no esté en alguna pantalla antigua
+            eFunctions.RevertOperation(opContext, screenService);
+            //ejecutamos el programa
+            var replySheet = screenService.executeScreen(opContext, "MSO435");
+
+            //validamos el ingreso al programa
+            if (replySheet.mapName != "MSM435A")
+                throw new Exception("No se pudo establecer comunicación con el servicio");
+
+            var arrayFields = new ArrayScreenNameValue();
+            arrayFields.Add("OPTION1I", "3");
+            arrayFields.Add("MODEL_CODE1I", logSheet.ModelName);
+            arrayFields.Add("STAT_DATE1I", logSheet.Date);
+            arrayFields.Add("SHIFT1I", logSheet.ShiftCode);
+            //arrayFields.Add("MODEL_MODE1I",""); //no usado
+            //arrayFields.Add("RUN_ID1I", ""); //no usado
+
+            requestSheet.screenFields = arrayFields.ToArray();
+            requestSheet.screenKey = "1";
+
+            replySheet = screenService.submit(opContext, requestSheet);
+
+            eFunctions.CheckReplyWarning(replySheet);//si hay debug activo muestra el warning de lo contrario depende del proceso del OP
+
+
+            if (replySheet == null)
+                throw new Exception("No se puede establecer conexión con el programa MSM435B");
+            if (eFunctions.CheckReplyError(replySheet) || replySheet.message.StartsWith("X2"))
+                throw new Exception("Se ha producido un error. " + replySheet.message);
+            if (replySheet.mapName != "MSM435B")
+                throw new Exception("No se ha podido acceder al programa MSM435B");
+
+            //Creamos la nueva pantalla de envío reutilizando las declaraciones anteriores
+            requestSheet = new Screen.ScreenSubmitRequestDTO();
+            arrayFields = new ArrayScreenNameValue();
+
+            //ingresamos los elementos (name, value) para los campos a enviar   
+            arrayFields.Add("STAT_DATE2I", logSheet.Date);
+            arrayFields.Add("SHIFT2I", logSheet.ShiftCode);
+            arrayFields.Add("DELETE2I", "Y");
+
+            requestSheet = new Screen.ScreenSubmitRequestDTO
+            {
+                screenFields = arrayFields.ToArray(),
+                screenKey = "1"
+            };
+
+            replySheet = screenService.submit(opContext, requestSheet);
+            //si hay debug activo muestra el warning de lo contrario depende del proceso del OP
+            eFunctions.CheckReplyWarning(replySheet);
+
+            if (replySheet == null || replySheet.mapName != "MSM435A")
+                throw new Exception("Se ha producido un error al enviar la solicitud de eliminación");
+
+            if(replySheet != null && replySheet.message.Contains("LOGSHEET HAS BEEN FLAGGED FOR DELETION"))
+                return "SUCCESS:" + replySheet.message;
+
+            if (eFunctions.CheckReplyError(replySheet) || replySheet.message.StartsWith("X2"))
+                throw new Exception(replySheet.message);
+            
+            if (replySheet != null && !eFunctions.CheckReplyError(replySheet) && replySheet.mapName == "MSM435A")
+                return "SUCCESS:" + "Se han cargado exitosamente los datos";
+
+            return "WARNING: No se ha recibido una respuesta del servicio. Por favor valide que los datos fueron cargados";
+
+            //---fin proceso del screen
+        }
     }
 }

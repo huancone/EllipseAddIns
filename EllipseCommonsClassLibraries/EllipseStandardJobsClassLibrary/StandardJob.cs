@@ -287,7 +287,7 @@ namespace EllipseStandardJobsClassLibrary
             requestStdJob.reallocAccCode = stdJob.ReallocAccCode ?? requestStdJob.reallocAccCode;
             requestStdJob.projectNo = stdJob.ProjectNo ?? requestStdJob.projectNo;
             requestStdJob.estimatedOtherCost = stdJob.EstimatedOtherCost != null ? Convert.ToDecimal(stdJob.EstimatedOtherCost) : default(decimal);
-            requestStdJob.estimatedOtherCostSpecified = stdJob.EstimatedOtherCostSpecified != null;
+            requestStdJob.estimatedOtherCostSpecified = stdJob.EstimatedOtherCost != null;
             requestStdJob.estimatedDurationsHrs = stdJob.EstimatedDurationsHrs != null ? Convert.ToDecimal(stdJob.EstimatedDurationsHrs) : default(decimal);
             requestStdJob.estimatedDurationsHrsSpecified = stdJob.EstimatedDurationsHrs != null;
             requestStdJob.calculatedDurationsHrsFlg = Convert.ToBoolean(stdJob.CalculatedDurationsHrsFlg);
