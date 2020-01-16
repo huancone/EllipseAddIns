@@ -57,6 +57,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuTasks = this.Factory.CreateRibbonMenu();
             this.btnReviewTasks = this.Factory.CreateRibbonButton();
             this.btnExecuteTaskActions = this.Factory.CreateRibbonButton();
+            this.btnValidateTaskPlanDates = this.Factory.CreateRibbonCheckBox();
             this.btnCleanTasksTable = this.Factory.CreateRibbonButton();
             this.menuRequirements = this.Factory.CreateRibbonMenu();
             this.btnReviewLabRequirements = this.Factory.CreateRibbonButton();
@@ -99,6 +100,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
             this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.btnFlagEstDuration = this.Factory.CreateRibbonCheckBox();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
@@ -195,6 +197,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuGeneral.Items.Add(this.btnReReview);
             this.menuGeneral.Items.Add(this.btnCreate);
             this.menuGeneral.Items.Add(this.btnUpdate);
+            this.menuGeneral.Items.Add(this.btnFlagEstDuration);
             this.menuGeneral.Items.Add(this.btnCleanWorkOrderSheet);
             this.menuGeneral.Label = "&WorkOrders";
             this.menuGeneral.Name = "menuGeneral";
@@ -239,6 +242,7 @@ namespace EllipseWorkOrderExcelAddIn
             // 
             this.menuTasks.Items.Add(this.btnReviewTasks);
             this.menuTasks.Items.Add(this.btnExecuteTaskActions);
+            this.menuTasks.Items.Add(this.btnValidateTaskPlanDates);
             this.menuTasks.Items.Add(this.btnCleanTasksTable);
             this.menuTasks.Label = "&Tareas";
             this.menuTasks.Name = "menuTasks";
@@ -257,6 +261,12 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnExecuteTaskActions.Name = "btnExecuteTaskActions";
             this.btnExecuteTaskActions.ShowImage = true;
             this.btnExecuteTaskActions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExecuteTaskActions_Click);
+            // 
+            // btnValidateTaskPlanDates
+            // 
+            this.btnValidateTaskPlanDates.Checked = true;
+            this.btnValidateTaskPlanDates.Label = "Validar Fechas Plan en OT";
+            this.btnValidateTaskPlanDates.Name = "btnValidateTaskPlanDates";
             // 
             // btnCleanTasksTable
             // 
@@ -573,6 +583,12 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // btnFlagEstDuration
+            // 
+            this.btnFlagEstDuration.Checked = true;
+            this.btnFlagEstDuration.Label = "Estimados de Horas Calculados";
+            this.btnFlagEstDuration.Name = "btnFlagEstDuration";
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -653,6 +669,8 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnDeleteToDo;
         internal RibbonButton btnCleanToDo;
         internal RibbonButton btnUpdateToDo;
+        internal RibbonCheckBox btnValidateTaskPlanDates;
+        internal RibbonCheckBox btnFlagEstDuration;
     }
 
     partial class ThisRibbonCollection

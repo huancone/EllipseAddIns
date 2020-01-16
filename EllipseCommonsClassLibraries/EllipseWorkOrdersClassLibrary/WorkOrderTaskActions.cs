@@ -71,13 +71,13 @@ namespace EllipseWorkOrdersClassLibrary
             return list;
         }
 
-        public static void ModifyWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
+        public static WorkOrderTaskServiceModifyReplyDTO ModifyWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
         {
-            var proxyWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
+            var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
             var requestWoTask = new WorkOrderTaskServiceModifyRequestDTO();
 
             //se cargan los parámetros de la orden
-            proxyWoTask.Url = urlService + "/WorkOrderTaskService";
+            serviceWoTask.Url = urlService + "/WorkOrderTaskService";
 
             //se cargan los parámetros de la orden
             requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
@@ -93,6 +93,9 @@ namespace EllipseWorkOrdersClassLibrary
             requestWoTask.estimatedMachHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
             requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs);
             requestWoTask.planStrDate = woTask.PlanStartDate ?? requestWoTask.planStrDate;
+            requestWoTask.planFinDate = woTask.PlanFinishDate ?? requestWoTask.planFinDate;
+            requestWoTask.planStrTime = woTask.PlanStartTime ?? requestWoTask.planStrTime;
+            requestWoTask.planFinTime = woTask.PlanFinishTime ?? requestWoTask.planFinTime;
             requestWoTask.tskDurationsHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
             requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs);
             requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
@@ -100,17 +103,17 @@ namespace EllipseWorkOrdersClassLibrary
             requestWoTask.APLCompCode = woTask.AplCompCode ?? requestWoTask.APLCompCode;
             requestWoTask.APLCompModCode = woTask.AplCompModCode ?? requestWoTask.APLCompModCode;
             requestWoTask.APLSeqNo = woTask.AplSeqNo ?? requestWoTask.APLSeqNo;
-
-            proxyWoTask.modify(opContext, requestWoTask);
+            
+            return serviceWoTask.modify(opContext, requestWoTask);
         }
 
-        public static void CreateWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
+        public static WorkOrderTaskServiceCreateReplyDTO CreateWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
         {
-            var proxywoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
+            var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
             var requestWoTask = new WorkOrderTaskServiceCreateRequestDTO();
 
             //se cargan los parámetros de la orden
-            proxywoTask.Url = urlService + "/WorkOrderTaskService";
+            serviceWoTask.Url = urlService + "/WorkOrderTaskService";
 
             //se cargan los parámetros de la orden
             requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
@@ -126,6 +129,10 @@ namespace EllipseWorkOrdersClassLibrary
             requestWoTask.assignPerson = woTask.AssignPerson ?? requestWoTask.assignPerson;
             requestWoTask.estimatedMachHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs) ? Convert.ToDecimal(woTask.EstimatedMachHrs) : default(decimal);
             requestWoTask.estimatedMachHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedMachHrs);
+            requestWoTask.planStrDate = woTask.PlanStartDate ?? requestWoTask.planStrDate;
+            requestWoTask.planStrTime = woTask.PlanStartTime ?? requestWoTask.planStrTime;
+            requestWoTask.planFinDate = woTask.PlanFinishDate ?? requestWoTask.planFinDate;
+            requestWoTask.planFinTime = woTask.PlanFinishTime ?? requestWoTask.planFinTime;
             requestWoTask.tskDurationsHrs = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs) ? Convert.ToDecimal(woTask.EstimatedDurationsHrs) : default(decimal);
             requestWoTask.tskDurationsHrsSpecified = !string.IsNullOrWhiteSpace(woTask.EstimatedDurationsHrs);
             requestWoTask.APLEquipmentGrpId = woTask.AplEquipmentGrpId ?? requestWoTask.APLEquipmentGrpId;
@@ -134,18 +141,18 @@ namespace EllipseWorkOrdersClassLibrary
             requestWoTask.APLCompModCode = woTask.AplCompModCode ?? requestWoTask.APLCompModCode;
             requestWoTask.APLSeqNo = woTask.AplSeqNo ?? requestWoTask.APLSeqNo;
 
-            proxywoTask.create(opContext, requestWoTask);
+            return serviceWoTask.create(opContext, requestWoTask);
         }
 
 
-        public static void DeleteWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
+        public static WorkOrderTaskServiceDeleteReplyCollectionDTO DeleteWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
         {
-            var proxywoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
+            var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
             var requestWoTask = new WorkOrderTaskServiceDeleteRequestDTO();
             var requestWoTaskList = new List<WorkOrderTaskServiceDeleteRequestDTO>();
 
             //se cargan los parámetros de la orden
-            proxywoTask.Url = urlService + "/WorkOrderTaskService";
+            serviceWoTask.Url = urlService + "/WorkOrderTaskService";
 
             //se cargan los parámetros de la orden
             requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
@@ -154,17 +161,17 @@ namespace EllipseWorkOrdersClassLibrary
 
             requestWoTaskList.Add(requestWoTask);
 
-            proxywoTask.multipleDelete(opContext, requestWoTaskList.ToArray());
+            return serviceWoTask.multipleDelete(opContext, requestWoTaskList.ToArray());
         }
 
         public static ReplyMessage CompleteWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
         {
-            var proxywoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
+            var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
             var requestWoTask = new WorkOrderTaskServiceCompleteRequestDTO();
             var requestWoTaskList = new List<WorkOrderTaskServiceCompleteRequestDTO>();
 
             //se cargan los parámetros de la orden
-            proxywoTask.Url = urlService + "/WorkOrderTaskService";
+            serviceWoTask.Url = urlService + "/WorkOrderTaskService";
 
             //se cargan los parámetros de la orden
             requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
@@ -174,7 +181,7 @@ namespace EllipseWorkOrdersClassLibrary
             requestWoTask.completedBy = woTask.CompletedBy;
             requestWoTask.closedDt = woTask.ClosedDate;
 
-            var serviceReply = proxywoTask.complete(opContext, requestWoTask);
+            var serviceReply = serviceWoTask.complete(opContext, requestWoTask);
 
             var reply = new ReplyMessage();
             reply.Message = "Completed " + serviceReply.workOrder.prefix + serviceReply.workOrder.no + " " + serviceReply.WOTaskNo + " Completed Code " + serviceReply.completedCode + " - " + serviceReply.completedCodeDescription;
@@ -182,18 +189,18 @@ namespace EllipseWorkOrdersClassLibrary
         }
         public static ReplyMessage ReOpenWorkOrderTask(string urlService, WorkOrderTaskService.OperationContext opContext, WorkOrderTask woTask)
         {
-            var proxywoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
+            var serviceWoTask = new WorkOrderTaskService.WorkOrderTaskService();//ejecuta las acciones del servicio
             var requestWoTask = new WorkOrderTaskServiceReopenRequestDTO();
 
             //se cargan los parámetros de la orden
-            proxywoTask.Url = urlService + "/WorkOrderTaskService";
+            serviceWoTask.Url = urlService + "/WorkOrderTaskService";
 
             //se cargan los parámetros de la orden
             requestWoTask.districtCode = woTask.DistrictCode ?? requestWoTask.districtCode;
             requestWoTask.workOrder = woTask.SetWorkOrderDto(woTask.WorkOrder);
             requestWoTask.WOTaskNo = woTask.WoTaskNo ?? requestWoTask.WOTaskNo.PadLeft(3, '0');
 
-            var serviceReply = proxywoTask.reopen(opContext, requestWoTask);
+            var serviceReply = serviceWoTask.reopen(opContext, requestWoTask);
 
             var reply = new ReplyMessage();
             reply.Message = "ReOpen " + serviceReply.workOrder.prefix + serviceReply.workOrder.no + " " + serviceReply.WOTaskNo;
@@ -219,9 +226,9 @@ namespace EllipseWorkOrdersClassLibrary
         /// 
         /// </summary>
 
-        public static void CreateTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        public static ResourceReqmntsServiceCreateReplyDTO CreateTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new ResourceReqmntsService.ResourceReqmntsService
+            var serviceTaskReq = new ResourceReqmntsService.ResourceReqmntsService
             {
                 Url = urlService + "/ResourceReqmntsService"
             }; //ejecuta las acciones del servicio
@@ -251,12 +258,12 @@ namespace EllipseWorkOrdersClassLibrary
                 classType = "WT",
                 enteredInd = "S"
             };
-            proxyTaskReq.create(opContext, requestTaskReq);
+            return serviceTaskReq.create(opContext, requestTaskReq);
         }
 
-        public static void CreateTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        public static MaterialReqmntsServiceCreateReplyDTO CreateTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new MaterialReqmntsService.MaterialReqmntsService
+            var serviceTaskReq = new MaterialReqmntsService.MaterialReqmntsService
             {
                 Url = urlService + "/MaterialReqmntsService"
             }; //ejecuta las acciones del servicio
@@ -293,12 +300,12 @@ namespace EllipseWorkOrdersClassLibrary
                 rateAmountSpecified = false,
                 unitQuantityReqd = !string.IsNullOrWhiteSpace(taskReq.QtyReq) ? Convert.ToDecimal(taskReq.QtyReq) : default(decimal),
             };
-            proxyTaskReq.create(opContext, requestTaskReq);
+            return serviceTaskReq.create(opContext, requestTaskReq);
         }
 
-        public static void CreateTaskEquipment(string urlService, EquipmentReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        public static EquipmentReqmntsServiceCreateReplyCollectionDTO CreateTaskEquipment(string urlService, EquipmentReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new EquipmentReqmntsService.EquipmentReqmntsService
+            var serviceTaskReq = new EquipmentReqmntsService.EquipmentReqmntsService
             {
                 Url = urlService + "/EquipmentReqmntsService"
             };
@@ -333,12 +340,12 @@ namespace EllipseWorkOrdersClassLibrary
             };
 
             requestTaskReqList.Add(requestTaskReq);
-            proxyTaskReq.multipleCreate(opContext, requestTaskReqList.ToArray());
+            return serviceTaskReq.multipleCreate(opContext, requestTaskReqList.ToArray());
         }
 
-        public static void ModifyTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        public static ResourceReqmntsServiceModifyReplyCollectionDTO ModifyTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new ResourceReqmntsService.ResourceReqmntsService
+            var serviceTaskReq = new ResourceReqmntsService.ResourceReqmntsService
             {
                 Url = urlService + "/ResourceReqmntsService"
             };
@@ -369,12 +376,12 @@ namespace EllipseWorkOrdersClassLibrary
 
             requestTaskReqList.Add(requestTaskReq);
 
-            proxyTaskReq.multipleModify(opContext, requestTaskReqList.ToArray());
+            return serviceTaskReq.multipleModify(opContext, requestTaskReqList.ToArray());
         }
 
-        public static void ModifyTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        public static MaterialReqmntsServiceModifyReplyCollectionDTO ModifyTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new MaterialReqmntsService.MaterialReqmntsService
+            var serviceTaskReq = new MaterialReqmntsService.MaterialReqmntsService
             {
                 Url = urlService + "/MaterialReqmntsService"
             };
@@ -410,12 +417,12 @@ namespace EllipseWorkOrdersClassLibrary
             };
 
             requestTaskReqList.Add(requestTaskReq);
-            proxyTaskReq.multipleModify(opContext, requestTaskReqList.ToArray());
+            return serviceTaskReq.multipleModify(opContext, requestTaskReqList.ToArray());
         }
 
-        public static void ModifyTaskEquipment(string urlService, EquipmentReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        public static EquipmentReqmntsServiceModifyReplyCollectionDTO ModifyTaskEquipment(string urlService, EquipmentReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new EquipmentReqmntsService.EquipmentReqmntsService
+            var serviceTaskReq = new EquipmentReqmntsService.EquipmentReqmntsService
             {
                 Url = urlService + "/EquipmentReqmntsService"
             };
@@ -450,12 +457,12 @@ namespace EllipseWorkOrdersClassLibrary
             };
 
             requestTaskReqList.Add(requestTaskReq);
-            proxyTaskReq.multipleModify(opContext, requestTaskReqList.ToArray());
+            return serviceTaskReq.multipleModify(opContext, requestTaskReqList.ToArray());
         }
 
-        public static void DeleteTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        public static ResourceReqmntsServiceDeleteReplyCollectionDTO DeleteTaskResource(string urlService, ResourceReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new ResourceReqmntsService.ResourceReqmntsService
+            var serviceTaskReq = new ResourceReqmntsService.ResourceReqmntsService
             {
                 Url = urlService + "/ResourceReqmntsService"
             };
@@ -480,12 +487,12 @@ namespace EllipseWorkOrdersClassLibrary
             };
             requestTaskReqList.Add(requestTaskReq);
 
-            proxyTaskReq.multipleDelete(opContext, requestTaskReqList.ToArray());
+            return serviceTaskReq.multipleDelete(opContext, requestTaskReqList.ToArray());
         }
 
-        public static void DeleteTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        public static MaterialReqmntsServiceDeleteReplyCollectionDTO DeleteTaskMaterial(string urlService, MaterialReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new MaterialReqmntsService.MaterialReqmntsService
+            var serviceTaskReq = new MaterialReqmntsService.MaterialReqmntsService
             {
                 Url = urlService + "/MaterialReqmntsService"
             };
@@ -511,12 +518,12 @@ namespace EllipseWorkOrdersClassLibrary
             };
 
             requestTaskReqList.Add(requestTaskReq);
-            proxyTaskReq.multipleDelete(opContext, requestTaskReqList.ToArray());
+            return serviceTaskReq.multipleDelete(opContext, requestTaskReqList.ToArray());
         }
 
-        public static void DeleteTaskEquipment(string urlService, EquipmentReqmntsService.OperationContext opContext, TaskRequirement taskReq)
+        public static EquipmentReqmntsServiceDeleteReplyCollectionDTO DeleteTaskEquipment(string urlService, EquipmentReqmntsService.OperationContext opContext, TaskRequirement taskReq)
         {
-            var proxyTaskReq = new EquipmentReqmntsService.EquipmentReqmntsService
+            var serviceTaskReq = new EquipmentReqmntsService.EquipmentReqmntsService
             {
                 Url = urlService + "/EquipmentReqmntsService"
             };
@@ -543,7 +550,7 @@ namespace EllipseWorkOrdersClassLibrary
             };
 
             requestTaskReqList.Add(requestTaskReq);
-            proxyTaskReq.multipleDelete(opContext, requestTaskReqList.ToArray());
+            return serviceTaskReq.multipleDelete(opContext, requestTaskReqList.ToArray());
         }
 
         public static List<WorkOrderTask> FetchWorkOrderTask(EllipseFunctions ef, string districtCode, string workOrder, string woTaskNo)
@@ -579,6 +586,9 @@ namespace EllipseWorkOrdersClassLibrary
                 task.AssignPerson = "" + stdDataReader["ASSIGN_PERSON"].ToString().Trim();
                 task.EstimatedMachHrs = "" + stdDataReader["EST_MACH_HRS"].ToString().Trim();
                 task.PlanStartDate = "" + stdDataReader["PLAN_STR_DATE"].ToString().Trim();
+                task.PlanStartTime = "" + stdDataReader["PLAN_STR_TIME"].ToString().Trim();
+                task.PlanFinishDate = "" + stdDataReader["PLAN_FIN_DATE"].ToString().Trim();
+                task.PlanFinishTime = "" + stdDataReader["PLAN_FIN_TIME"].ToString().Trim();
 
                 task.EstimatedDurationsHrs = "" + stdDataReader["TSK_DUR_HOURS"].ToString().Trim();
                 task.NoLabor = "" + stdDataReader["NO_REC_LABOR"].ToString().Trim();
@@ -589,7 +599,11 @@ namespace EllipseWorkOrdersClassLibrary
                 task.AplCompCode = "" + stdDataReader["COMP_CODE"].ToString().Trim();
                 task.AplCompModCode = "" + stdDataReader["COMP_MOD_CODE"].ToString().Trim();
                 task.AplSeqNo = "" + stdDataReader["APL_SEQ_NO"].ToString().Trim();
+                task.TaskStatusM = "" + stdDataReader["TASK_STATUS_M"].ToString().Trim();
                 task.ClosedStatus = "" + stdDataReader["CLOSED_STATUS"].ToString().Trim();
+                task.CompletedCode = "" + stdDataReader["COMPLETED_CODE"].ToString().Trim();
+                task.CompletedBy = "" + stdDataReader["COMPLETED_BY"].ToString().Trim();
+                task.ClosedDate = "" + stdDataReader["CLOSED_DT"].ToString().Trim();
 
                 list.Add(task);
             }
@@ -618,12 +632,19 @@ namespace EllipseWorkOrdersClassLibrary
                             "	WT.EST_MACH_HRS, " +
                             "	WT.TSK_DUR_HOURS, " +
                             "	WT.PLAN_STR_DATE, " +
+                            "	WT.PLAN_FIN_DATE, " +
+                            "	WT.PLAN_STR_TIME, " +
+                            "	WT.PLAN_FIN_TIME, " +
                             "	WT.EQUIP_GRP_ID, " +
                             "	WT.APL_TYPE, " +
                             "	WT.COMP_CODE, " +
                             "	WT.COMP_MOD_CODE, " +
                             "	WT.APL_SEQ_NO, " +
+                            "	WT.TASK_STATUS_M, " +
                             "	WT.CLOSED_STATUS, " +
+                            "	WT.COMPLETED_CODE, " +
+                            "	WT.COMPLETED_BY, " +
+                            "	WT.CLOSED_DT, " +
                             "	( " +
                             "		SELECT " +
                             "			COUNT(*) LABOR " +

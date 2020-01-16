@@ -19,6 +19,9 @@ namespace EllipseWorkOrdersClassLibrary
         public string AssignPerson;
         public string EstMachHrs;
         public string PlanStartDate;
+        public string PlanStartTime;
+        public string PlanFinishDate;
+        public string PlanFinishTime;
         public string EquipGrpId;
         public string AplType;
         public string CompCode;
@@ -36,6 +39,7 @@ namespace EllipseWorkOrdersClassLibrary
         public string EstimatedDurationsHrsSpecified;
         public string ExtTaskText;
         public string CompleteTaskText;
+        public string TaskStatusM;
         public string ClosedStatus;
         public string CompletedCode;
         public string CompletedBy;

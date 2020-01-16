@@ -445,7 +445,7 @@ namespace EllipseMaintSchedTaskClassLibrary
             requestXml = requestXml + "				<className>mfui.actions.detail::UpdateAction</className>";
             requestXml = requestXml + "				<returnWarnings>false</returnWarnings>";
             requestXml = requestXml + "				<dto>";//    uuid=\"" + Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
-            requestXml = requestXml + "					<assignPerson>JRODRIG4</assignPerson>";
+            requestXml = requestXml + "					<assignPerson>" + mst.AssignPerson + "</assignPerson>";
             requestXml = requestXml + "					<complTextCde/>";
             requestXml = requestXml + "					<completeInstr/>";
             requestXml = requestXml + (mst.ConAstSegFr != null ? "					<conAstSegFr>" + mst.ConAstSegFr + "</conAstSegFr>" : null);

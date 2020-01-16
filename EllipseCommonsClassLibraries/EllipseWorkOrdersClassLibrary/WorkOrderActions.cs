@@ -552,7 +552,7 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.location = wo.location ?? requestWo.location;
             requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
 
-            requestWo.calculatedDurationsFlag = Convert.ToBoolean(wo.calculatedDurationsFlag);
+            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, true);
             requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
             //
             if (wo.calculatedLabFlag == null && wo.calculatedMatFlag == null && wo.calculatedEquipmentFlag == null && wo.calculatedOtherFlag == null)
