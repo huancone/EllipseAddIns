@@ -2184,15 +2184,6 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.calculatedLabFlag = "true";
                     wo.calculatedDurationsFlag = btnFlagEstDuration.Checked.ToString();
 
-                    var reply = WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
-                    if (btnFlagEstDuration.Checked)
-                    {
-                        _cells.GetCell(28, i).Value = reply.planStrDate;
-                        _cells.GetCell(29, i).Value = reply.planStrTime;
-                        _cells.GetCell(30, i).Value = reply.planFinDate;
-                        _cells.GetCell(31, i).Value = reply.planFinTime;
-                    }
-
                     var extendedHeader = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(54, i).Value);
                     var extendedBody = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value);
                     wo.SetExtendedDescription(extendedHeader, extendedBody);
@@ -2212,6 +2203,13 @@ namespace EllipseWorkOrderExcelAddIn
                     if (ots != null && ots.Count > 0) continue;
                     var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
                     wo.SetWorkOrderDto(replySheet.workOrder.prefix, replySheet.workOrder.no);
+                    if (btnFlagEstDuration.Checked)
+                    {
+                        _cells.GetCell(28, i).Value = replySheet.planStrDate;
+                        _cells.GetCell(29, i).Value = replySheet.planStrTime;
+                        _cells.GetCell(30, i).Value = replySheet.planFinDate;
+                        _cells.GetCell(31, i).Value = replySheet.planFinTime;
+                    }
                     ReplyMessage replyExtended = WorkOrderActions.UpdateWorkOrderExtendedDescription(urlService, opSheet, district, wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no, extendedHeader, extendedBody);
 
                     var stringErrors = "";
@@ -3074,7 +3072,13 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.calculatedDurationsFlag = btnFlagEstDuration.Checked.ToString();
 
                     var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
-
+                    if (btnFlagEstDuration.Checked)
+                    {
+                        _cells.GetCell(28, i).Value = replySheet.planStrDate;
+                        _cells.GetCell(29, i).Value = replySheet.planStrTime;
+                        _cells.GetCell(30, i).Value = replySheet.planFinDate;
+                        _cells.GetCell(31, i).Value = replySheet.planFinTime;
+                    }
                     _cells.GetCell(ResultColumn01, i).Value = "CREADA " + replySheet.workOrder.prefix + replySheet.workOrder.no;
                     _cells.GetCell(2, i).Value = replySheet.workOrder.prefix + replySheet.workOrder.no;
                     _cells.GetCell(1, i).Style = StyleConstants.Success;

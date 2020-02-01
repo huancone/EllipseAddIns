@@ -1730,13 +1730,13 @@ namespace EllipseDownLostExcelAddIn
             {
                 k++;
 
-                if (k > 10)
-                {
-                    k = 1;
-                    //envíe a la siguiente pantalla
-                    request.screenKey = "1";
-                    reply = proxySheet.submit(opContext, request);
-                }
+                if (k <= 10) continue;
+                k = 1;
+                //envíe a la siguiente pantalla
+				request = new Screen.ScreenSubmitRequestDTO();
+                request.screenKey = "1";
+                reply = proxySheet.submit(opContext, request);
+				replyFields = new ArrayScreenNameValue(reply.screenFields);
             }
 
             if (reply.mapName != "MSM420A")
@@ -1802,8 +1802,10 @@ namespace EllipseDownLostExcelAddIn
                 if (k <= 10) continue;
                 k = 1;
                 //envíe a la siguiente pantalla
+				request = new Screen.ScreenSubmitRequestDTO();
                 request.screenKey = "1";
                 reply = proxySheet.submit(opContext, request);
+				replyFields = new ArrayScreenNameValue(reply.screenFields);
             }
 
             if (reply.mapName != "MSM470A")

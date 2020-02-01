@@ -53,6 +53,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReview = this.Factory.CreateRibbonButton();
             this.btnCreate = this.Factory.CreateRibbonButton();
             this.btnUpdate = this.Factory.CreateRibbonButton();
+            this.btnFlagEstDuration = this.Factory.CreateRibbonCheckBox();
             this.btnCleanWorkOrderSheet = this.Factory.CreateRibbonButton();
             this.menuTasks = this.Factory.CreateRibbonMenu();
             this.btnReviewTasks = this.Factory.CreateRibbonButton();
@@ -100,7 +101,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
             this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.btnFlagEstDuration = this.Factory.CreateRibbonCheckBox();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
@@ -230,6 +230,12 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.ShowImage = true;
             this.btnUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdate_Click);
+            // 
+            // btnFlagEstDuration
+            // 
+            this.btnFlagEstDuration.Checked = true;
+            this.btnFlagEstDuration.Label = "Estimados de Horas Calculados";
+            this.btnFlagEstDuration.Name = "btnFlagEstDuration";
             // 
             // btnCleanWorkOrderSheet
             // 
@@ -582,12 +588,6 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
-            // btnFlagEstDuration
-            // 
-            this.btnFlagEstDuration.Checked = true;
-            this.btnFlagEstDuration.Label = "Estimados de Horas Calculados";
-            this.btnFlagEstDuration.Name = "btnFlagEstDuration";
             // 
             // RibbonEllipse
             // 
