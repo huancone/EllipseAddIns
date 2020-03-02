@@ -47,6 +47,39 @@ namespace EllipseIncidentLogSheetClassLibraries
                    (string.IsNullOrWhiteSpace(item.CorrectiveDescription) || this.CorrectiveDescription == item.CorrectiveDescription) &&
                    (string.IsNullOrWhiteSpace(item.WorkOrder) || this.WorkOrder == item.WorkOrder))
                     return true;
+                //debugging
+                /*
+                var raisedTime = (string.IsNullOrWhiteSpace(item.RaisedTime) || this.RaisedTime == item.RaisedTime);
+                var incidentDescription = (string.IsNullOrWhiteSpace(item.IncidentDescription) || this.IncidentDescription == item.IncidentDescription);
+                var maintenanceType = (string.IsNullOrWhiteSpace(item.MaintenanceType) || this.MaintenanceType == item.MaintenanceType);
+                var originator = (string.IsNullOrWhiteSpace(item.Originator) || this.Originator == item.Originator);
+                var jobDurationFinish = (string.IsNullOrWhiteSpace(item.JobDurationFinish) || this.JobDurationFinish == item.JobDurationFinish);
+                var incidentStatus = (string.IsNullOrWhiteSpace(item.IncidentStatus) || this.IncidentStatus == item.IncidentStatus);
+                var equipmentReference = (string.IsNullOrWhiteSpace(item.EquipmentReference) || this.EquipmentReference == item.EquipmentReference);
+                var compCode = (string.IsNullOrWhiteSpace(item.ComponentCode) || this.ComponentCode == item.ComponentCode);
+                var modCode = (string.IsNullOrWhiteSpace(item.ModifierCode) || this.ModifierCode == item.ModifierCode);
+                var jobDurationCode = (string.IsNullOrWhiteSpace(item.JobDurationCode) || this.JobDurationCode == item.JobDurationCode);
+                var jobDurationHours = (string.IsNullOrWhiteSpace(item.DurationHours) || this.DurationHours == item.DurationHours);
+                var standardJob = (string.IsNullOrWhiteSpace(item.StandardJob) || this.StandardJob == item.StandardJob);
+                var correctiveDescription = (string.IsNullOrWhiteSpace(item.CorrectiveDescription) || this.CorrectiveDescription == item.CorrectiveDescription);
+                var workOrder = (string.IsNullOrWhiteSpace(item.WorkOrder) || this.WorkOrder == item.WorkOrder);
+
+                if (raisedTime &&
+                    incidentDescription &&
+                    maintenanceType &&
+                    originator &&
+                    jobDurationFinish &&
+                    incidentStatus &&
+                    equipmentReference &&
+                    compCode &&
+                    modCode &&
+                    jobDurationCode &&
+                    jobDurationHours &&
+                    standardJob &&
+                    correctiveDescription &&
+                    workOrder)
+                    return true;
+                    */
             }
             else
             {

@@ -210,6 +210,9 @@ namespace EllipseIncidentLogSheetClassLibraries
             item.CorrectiveDescription = replyFields.GetField("CORRECT_DESC2I" + i) != null ? replyFields.GetField("CORRECT_DESC2I" + i).value : null;
             item.WorkOrder = replyFields.GetField("WORK_ORDER2I" + i) != null ? replyFields.GetField("WORK_ORDER2I" + i).value : null;
 
+            if (item.RaisedTime != null)
+                item.RaisedTime = item.RaisedTime.Replace(":", "");
+
             return item;
         }
     }

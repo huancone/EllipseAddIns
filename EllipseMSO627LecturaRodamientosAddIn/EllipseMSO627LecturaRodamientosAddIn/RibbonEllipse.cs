@@ -89,10 +89,14 @@ namespace EllipseMSO627LecturaRodamientosAddIn
 
                 #endregion
 
+                _cells.GetCell("B1").AddComment("Valores Predeterminados \nWorkGroup: CTC," +
+                "MaintenanceType: PD," +
+                "Shift: ");
+
                 _cells.GetCell(1, titleRow).Value = "Fecha";
                 _cells.GetCell(1, titleRow).AddComment("YYYYMMDD");
                 _cells.GetCell(2, titleRow).Value = "Hora";
-                _cells.GetCell(2, titleRow).AddComment("HH:MM");
+                _cells.GetCell(2, titleRow).AddComment("HHMM");
                 _cells.GetCell(3, titleRow).Value = "Descripcion";
 
                 _cells.GetCell(4, titleRow).Value = "Equipo";
@@ -253,8 +257,6 @@ namespace EllipseMSO627LecturaRodamientosAddIn
 
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-
-
                 var currentRow = titleRow + 1;
                 while (_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) != "")
                 {
@@ -269,7 +271,7 @@ namespace EllipseMSO627LecturaRodamientosAddIn
                         item.RaisedTime = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
                         item.IncidentDescription = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
                         item.MaintenanceType = "PD";
-                        item.Originator = _frmAuth.EllipseUser;
+                        //item.Originator = _frmAuth.EllipseUser; //En Blanco para que pueda ser borrado por cualquier usuario
                         item.EquipmentReference = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
                         item.ComponentCode = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(5, currentRow).Value));
                         item.CorrectiveDescription = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value));
