@@ -7,11 +7,11 @@ using System.Security;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Coste de Labor")]
-[assembly: AssemblyDescription("Cargue masivo para coste de labor de empleados")]
+[assembly: AssemblyDescription("Cargue masivo para coste de labor de empleados y equipos")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hambings SAS/Cerrejon Ltda")]
 [assembly: AssemblyProduct("EllipseLabourCostingExcelAddIn")]
-[assembly: AssemblyCopyright("Copyright ©  2015-2017")]
+[assembly: AssemblyCopyright("Copyright ©  2015-2020")]
 [assembly: AssemblyTrademark("Hambings SAS")]
 [assembly: AssemblyCulture("")]
 
@@ -33,6 +33,6 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.0.15")]
-[assembly: AssemblyFileVersion("1.2.0.15")]
+[assembly: AssemblyVersion("1.2.1.0")]
+[assembly: AssemblyFileVersion("1.2.1.0")]
 

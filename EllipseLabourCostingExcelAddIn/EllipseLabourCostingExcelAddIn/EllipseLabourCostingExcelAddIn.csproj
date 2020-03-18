@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseLabourCostingExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.2.0.15</ApplicationVersion>
+    <ApplicationVersion>1.2.1.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -211,14 +211,25 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="EquipmentHireLibrary\EquipmentHire.cs" />
+    <Compile Include="EquipmentHireLibrary\EquipmentHireActions.cs" />
+    <Compile Include="LabourEmployeeLibrary\LabourEmployee.cs" />
+    <Compile Include="LabourEmployeeLibrary\LabourEmployeeActions.cs" />
+    <Compile Include="LabourSheetTypeConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Queries.cs" />
     <Compile Include="RibbonEllipse.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RibbonEllipse.Designer.cs">
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\EquipHireTranService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Compile Include="Web References\LabourCostingTransService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -271,6 +282,38 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <None Include="Web References\EquipHireTranService\EquipHireTranService.wsdl" />
+    <None Include="Web References\EquipHireTranService\EquipHireTranServiceCreateReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EquipHireTranService\EquipHireTranServiceCreateReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EquipHireTranService\EquipHireTranServiceDeleteReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EquipHireTranService\EquipHireTranServiceDeleteReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EquipHireTranService\EquipHireTranServiceModifyReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EquipHireTranService\EquipHireTranServiceModifyReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EquipHireTranService\EquipHireTranServiceReadReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EquipHireTranService\EquipHireTranServiceReadReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EquipHireTranService\EquipHireTranServiceRetrieveReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\EquipHireTranService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <None Include="Web References\LabourCostingTransService\LabourCostingTransHeaderServiceResult.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
@@ -386,6 +429,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipHireTranService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\EquipHireTranService\</RelPath>
+      <UpdateFromURL>http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipHireTranService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseLabourCostingExcelAddIn_EquipHireTranService_EquipHireTranService</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/LabourCostingTransService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\LabourCostingTransService\</RelPath>

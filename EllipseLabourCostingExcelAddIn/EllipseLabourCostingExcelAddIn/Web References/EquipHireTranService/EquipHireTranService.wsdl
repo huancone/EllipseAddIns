@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://ellipse.enterpriseservice.mincom.com" xmlns:tns="http://equiphiretran.ellipse.enterpriseservice.mincom.com" xmlns:ns5="http://exception.enterpriseservice.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns3="http://dto.dependant.ellipse.enterpriseservice.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns4="http://attribute.ellipse.mincom.com" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://equiphiretran.ellipse.enterpriseservice.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://equiphiretran.ellipse.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://exception.enterpriseservice.mincom.com" />
+      <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
+      <xsd:import namespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com" />
+      <xsd:simpleType name="accountCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="24" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="projectNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="statValue">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentRef">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WOTaskNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="prodDataType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="employee">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="tranSeqNo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="EquipHireTranServiceModifyRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="WOTaskNo" type="tns:WOTaskNo" />
+              <xsd:element minOccurs="0" name="accountCode" type="tns:accountCode" />
+              <xsd:element minOccurs="0" name="employee" type="tns:employee" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="prodDataType" type="tns:prodDataType" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:EquipHireTranServiceModifyRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="statValue" type="tns:statValue" />
+              <xsd:element minOccurs="0" name="tranDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranSeqNo" type="tns:tranSeqNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:WorkOrderDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EquipHireTranServiceModifyRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAccountCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPlantNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPostingStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProdDataType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjectNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatValue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubledgAccount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubledgType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTranDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTranSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWOTaskNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="modify">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:EquipHireTranServiceModifyRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:simpleType name="plantNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="subledgAccount">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="postingStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="subledgType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="EquipHireTranServiceModifyReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="WOTaskNo" type="tns:WOTaskNo" />
+              <xsd:element minOccurs="0" name="accountCode" type="tns:accountCode" />
+              <xsd:element minOccurs="0" name="employee" type="tns:employee" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="plantNo" type="tns:plantNo" />
+              <xsd:element minOccurs="0" name="postingStatus" type="tns:postingStatus" />
+              <xsd:element minOccurs="0" name="prodDataType" type="tns:prodDataType" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="statValue" type="tns:statValue" />
+              <xsd:element minOccurs="0" name="subledgAccount" type="tns:subledgAccount" />
+              <xsd:element minOccurs="0" name="subledgType" type="tns:subledgType" />
+              <xsd:element minOccurs="0" name="tranDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranSeqNo" type="tns:tranSeqNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:WorkOrderDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="modifyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:EquipHireTranServiceModifyReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EnterpriseServiceOperationException" type="ns5:EnterpriseServiceOperationException" />
+      <xsd:complexType name="ArrayOfEquipHireTranServiceModifyRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipHireTranServiceModifyRequestDTO" nillable="true" type="tns:EquipHireTranServiceModifyRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleModify">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfEquipHireTranServiceModifyRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="EquipHireTranServiceModifyReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfEquipHireTranServiceModifyReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfEquipHireTranServiceModifyReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipHireTranServiceModifyReplyDTO" nillable="true" type="tns:EquipHireTranServiceModifyReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleModifyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:EquipHireTranServiceModifyReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="EquipHireTranServiceReadRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="employee" type="tns:employee" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:EquipHireTranServiceReadRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="tranDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranSeqNo" type="tns:tranSeqNo" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="EquipHireTranServiceReadRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAccountCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPlantNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPostingStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProdDataType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjectNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatValue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubledgAccount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubledgType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTranDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTranSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWOTaskNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:EquipHireTranServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="EquipHireTranServiceReadReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="WOTaskNo" type="tns:WOTaskNo" />
+              <xsd:element minOccurs="0" name="accountCode" type="tns:accountCode" />
+              <xsd:element minOccurs="0" name="employee" type="tns:employee" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="plantNo" type="tns:plantNo" />
+              <xsd:element minOccurs="0" name="postingStatus" type="tns:postingStatus" />
+              <xsd:element minOccurs="0" name="prodDataType" type="tns:prodDataType" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="statValue" type="tns:statValue" />
+              <xsd:element minOccurs="0" name="subledgAccount" type="tns:subledgAccount" />
+              <xsd:element minOccurs="0" name="subledgType" type="tns:subledgType" />
+              <xsd:element minOccurs="0" name="tranDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranSeqNo" type="tns:tranSeqNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:WorkOrderDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:EquipHireTranServiceReadReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfEquipHireTranServiceDeleteRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipHireTranServiceDeleteRequestDTO" nillable="true" type="tns:EquipHireTranServiceDeleteRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EquipHireTranServiceDeleteRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="employee" type="tns:employee" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:EquipHireTranServiceDeleteRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="tranDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranSeqNo" type="tns:tranSeqNo" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="EquipHireTranServiceDeleteRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleDelete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfEquipHireTranServiceDeleteRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="EquipHireTranServiceDeleteReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfEquipHireTranServiceDeleteReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfEquipHireTranServiceDeleteReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipHireTranServiceDeleteReplyDTO" nillable="true" type="tns:EquipHireTranServiceDeleteReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EquipHireTranServiceDeleteReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="multipleDeleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:EquipHireTranServiceDeleteReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="EquipHireTranServiceCreateRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="WOTaskNo" type="tns:WOTaskNo" />
+              <xsd:element minOccurs="0" name="accountCode" type="tns:accountCode" />
+              <xsd:element minOccurs="0" name="employee" type="tns:employee" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="prodDataType" type="tns:prodDataType" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="requiredAttributes" type="tns:EquipHireTranServiceCreateRequiredAttributesDTO" />
+              <xsd:element minOccurs="0" name="statValue" type="tns:statValue" />
+              <xsd:element minOccurs="0" name="tranDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:WorkOrderDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="EquipHireTranServiceCreateRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAccountCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPlantNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPostingStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProdDataType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjectNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatValue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubledgAccount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubledgType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTranDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTranSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWOTaskNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="create">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:EquipHireTranServiceCreateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="EquipHireTranServiceCreateReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="WOTaskNo" type="tns:WOTaskNo" />
+              <xsd:element minOccurs="0" name="accountCode" type="tns:accountCode" />
+              <xsd:element minOccurs="0" name="employee" type="tns:employee" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="plantNo" type="tns:plantNo" />
+              <xsd:element minOccurs="0" name="postingStatus" type="tns:postingStatus" />
+              <xsd:element minOccurs="0" name="prodDataType" type="tns:prodDataType" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="statValue" type="tns:statValue" />
+              <xsd:element minOccurs="0" name="subledgAccount" type="tns:subledgAccount" />
+              <xsd:element minOccurs="0" name="subledgType" type="tns:subledgType" />
+              <xsd:element minOccurs="0" name="tranDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranSeqNo" type="tns:tranSeqNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:WorkOrderDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="createResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:EquipHireTranServiceCreateReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="EquipHireTranServiceRetrieveRequestDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="employee" type="tns:employee" />
+              <xsd:element minOccurs="0" name="tranDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranDateFrom" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranDateTo" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="EquipHireTranServiceRetrieveRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAccountCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEmployee" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnEquipmentRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPlantNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPostingStatus" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProdDataType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnProjectNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStatValue" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubledgAccount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSubledgType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTranDate" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTranDateFrom" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTranDateTo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnTranSeqNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWOTaskNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkOrder" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieve">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:EquipHireTranServiceRetrieveRequestDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requiredAttributes" nillable="true" type="tns:EquipHireTranServiceRetrieveRequiredAttributesDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restartInfo" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="EquipHireTranServiceRetrieveReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfEquipHireTranServiceRetrieveReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfEquipHireTranServiceRetrieveReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipHireTranServiceRetrieveReplyDTO" nillable="true" type="tns:EquipHireTranServiceRetrieveReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="EquipHireTranServiceRetrieveReplyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="WOTaskNo" type="tns:WOTaskNo" />
+              <xsd:element minOccurs="0" name="accountCode" type="tns:accountCode" />
+              <xsd:element minOccurs="0" name="employee" type="tns:employee" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="tns:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentRef" type="tns:equipmentRef" />
+              <xsd:element minOccurs="0" name="plantNo" type="tns:plantNo" />
+              <xsd:element minOccurs="0" name="postingStatus" type="tns:postingStatus" />
+              <xsd:element minOccurs="0" name="prodDataType" type="tns:prodDataType" />
+              <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
+              <xsd:element minOccurs="0" name="statValue" type="tns:statValue" />
+              <xsd:element minOccurs="0" name="subledgAccount" type="tns:subledgAccount" />
+              <xsd:element minOccurs="0" name="subledgType" type="tns:subledgType" />
+              <xsd:element minOccurs="0" name="tranDate" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranDateFrom" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranDateTo" type="xsd:string" />
+              <xsd:element minOccurs="0" name="tranSeqNo" type="tns:tranSeqNo" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:WorkOrderDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:element name="retrieveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:EquipHireTranServiceRetrieveReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfEquipHireTranServiceReadRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipHireTranServiceReadRequestDTO" nillable="true" type="tns:EquipHireTranServiceReadRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfEquipHireTranServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="EquipHireTranServiceReadReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfEquipHireTranServiceReadReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfEquipHireTranServiceReadReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipHireTranServiceReadReplyDTO" nillable="true" type="tns:EquipHireTranServiceReadReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:EquipHireTranServiceReadReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadWithPartialResults">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfEquipHireTranServiceReadRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadWithPartialResultsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:EquipHireTranServiceReadReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:EquipHireTranServiceDeleteRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:EquipHireTranServiceDeleteReplyDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfEquipHireTranServiceCreateRequestDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipHireTranServiceCreateRequestDTO" nillable="true" type="tns:EquipHireTranServiceCreateRequestDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleCreate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="requestParameters" nillable="true" type="tns:ArrayOfEquipHireTranServiceCreateRequestDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="EquipHireTranServiceCreateReplyCollectionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractReplyCollectionDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="replyElements" type="tns:ArrayOfEquipHireTranServiceCreateReplyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfEquipHireTranServiceCreateReplyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipHireTranServiceCreateReplyDTO" nillable="true" type="tns:EquipHireTranServiceCreateReplyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="multipleCreateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:EquipHireTranServiceCreateReplyCollectionDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ellipse.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="AbstractDTO" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="customAttributes" type="ns4:ArrayOfAttribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
+      <xsd:complexType name="AbstractReplyDTO" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="warningsAndInformation" type="ns2:ArrayOfWarningMessageDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarningMessageDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WarningMessageDTO" nillable="true" type="ns2:WarningMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="WarningMessageDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ApplicationMessageImpl" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ApplicationMessageImpl">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="code" type="xsd:string" />
+          <xsd:element minOccurs="0" name="dtoIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="fieldName" type="xsd:string" />
+          <xsd:element minOccurs="0" name="message" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfErrorMessageDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ErrorMessageDTO" nillable="true" type="ns2:ErrorMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ErrorMessageDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ApplicationMessageImpl" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractReplyCollectionDTO" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:import namespace="http://equiphiretran.ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns4:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
+          <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
+      <xsd:complexType name="WorkOrderDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="prefix" type="xsd:string" />
+          <xsd:element minOccurs="0" name="no" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://exception.enterpriseservice.mincom.com">
+      <xsd:import namespace="http://ellipse.enterpriseservice.mincom.com" />
+      <xsd:complexType name="EnterpriseServiceOperationException">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errorMessages" type="ns2:ArrayOfErrorMessageDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="parameters" element="tns:delete" />
+  </wsdl:message>
+  <wsdl:message name="retrieveResponse">
+    <wsdl:part name="parameters" element="tns:retrieveResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPartialResultsResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResultsResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadWithPartialResultsRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadWithPartialResults" />
+  </wsdl:message>
+  <wsdl:message name="EnterpriseServiceOperationException">
+    <wsdl:part name="EnterpriseServiceOperationException" element="tns:EnterpriseServiceOperationException" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="parameters" element="tns:deleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreate" />
+  </wsdl:message>
+  <wsdl:message name="multipleModifyResponse">
+    <wsdl:part name="parameters" element="tns:multipleModifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="retrieveRequest">
+    <wsdl:part name="parameters" element="tns:retrieve" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteRequest">
+    <wsdl:part name="parameters" element="tns:multipleDelete" />
+  </wsdl:message>
+  <wsdl:message name="modifyRequest">
+    <wsdl:part name="parameters" element="tns:modify" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse" />
+  </wsdl:message>
+  <wsdl:message name="modifyResponse">
+    <wsdl:part name="parameters" element="tns:modifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleModifyRequest">
+    <wsdl:part name="parameters" element="tns:multipleModify" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="createRequest">
+    <wsdl:part name="parameters" element="tns:create" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:portType name="EquipHireTran">
+    <wsdl:operation name="modify">
+      <wsdl:input name="modifyRequest" message="tns:modifyRequest" />
+      <wsdl:output name="modifyResponse" message="tns:modifyResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleModify">
+      <wsdl:input name="multipleModifyRequest" message="tns:multipleModifyRequest" />
+      <wsdl:output name="multipleModifyResponse" message="tns:multipleModifyResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdl:input name="multipleDeleteRequest" message="tns:multipleDeleteRequest" />
+      <wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input name="createRequest" message="tns:createRequest" />
+      <wsdl:output name="createResponse" message="tns:createResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="retrieve">
+      <wsdl:input name="retrieveRequest" message="tns:retrieveRequest" />
+      <wsdl:output name="retrieveResponse" message="tns:retrieveResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadWithPartialResults">
+      <wsdl:input name="multipleReadWithPartialResultsRequest" message="tns:multipleReadWithPartialResultsRequest" />
+      <wsdl:output name="multipleReadWithPartialResultsResponse" message="tns:multipleReadWithPartialResultsResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input name="deleteRequest" message="tns:deleteRequest" />
+      <wsdl:output name="deleteResponse" message="tns:deleteResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
+      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
+      <wsdl:fault name="EnterpriseServiceOperationException" message="tns:EnterpriseServiceOperationException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EquipHireTranServiceHttpBinding" type="tns:EquipHireTran">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="modify">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="modifyRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="modifyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleModify">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleModifyRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleModifyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieve">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="retrieveRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="retrieveResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadWithPartialResults">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadWithPartialResultsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadWithPartialResultsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="EnterpriseServiceOperationException">
+        <wsdlsoap:fault use="literal" name="EnterpriseServiceOperationException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EquipHireTranService">
+    <wsdl:port name="EquipHireTranServiceHttpPort" binding="tns:EquipHireTranServiceHttpBinding">
+      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipHireTranService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

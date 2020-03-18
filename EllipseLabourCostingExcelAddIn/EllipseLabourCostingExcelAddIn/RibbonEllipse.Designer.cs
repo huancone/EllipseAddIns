@@ -43,6 +43,7 @@
             this.btnFormatDefault = this.Factory.CreateRibbonButton();
             this.btnFormatMso850 = this.Factory.CreateRibbonButton();
             this.btnFormatElecsa = this.Factory.CreateRibbonButton();
+            this.btnFormatEquipmentHire = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
@@ -84,6 +85,7 @@
             this.menuFormat.Items.Add(this.menuGroupFormat);
             this.menuFormat.Items.Add(this.btnFormatMso850);
             this.menuFormat.Items.Add(this.btnFormatElecsa);
+            this.menuFormat.Items.Add(this.btnFormatEquipmentHire);
             this.menuFormat.Label = "&Formato";
             this.menuFormat.Name = "menuFormat";
             // 
@@ -122,6 +124,13 @@
             this.btnFormatElecsa.Name = "btnFormatElecsa";
             this.btnFormatElecsa.ShowImage = true;
             this.btnFormatElecsa.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatElecsa_Click);
+            // 
+            // btnFormatEquipmentHire
+            // 
+            this.btnFormatEquipmentHire.Label = "Formato Equipos";
+            this.btnFormatEquipmentHire.Name = "btnFormatEquipmentHire";
+            this.btnFormatEquipmentHire.ShowImage = true;
+            this.btnFormatEquipmentHire.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatEquipmentLabour_Click);
             // 
             // btnAbout
             // 
@@ -230,6 +239,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbReplaceExisting;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAutoTaskAssigment;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDeleteLaborSheet;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatEquipmentHire;
     }
 
     partial class ThisRibbonCollection
