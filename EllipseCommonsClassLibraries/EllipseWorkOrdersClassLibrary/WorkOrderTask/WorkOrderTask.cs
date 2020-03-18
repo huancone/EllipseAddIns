@@ -71,21 +71,5 @@ namespace EllipseWorkOrdersClassLibrary
         }
     }
 
-    public class TaskRequirement
-    {
-        public string WorkOrder;
-        public string DistrictCode;
-        public string WorkGroup;
-        public string WoTaskDesc;
-        public string WoTaskNo;
-        public string ReqType;
-        public string SeqNo;
-        public string ReqCode;
-        public string ReqDesc;
-        public string QtyReq;
-        public string QtyIss;
-        public string HrsReq;
-        public string HrsReal;
-        public string UoM;
-    }
+
 }

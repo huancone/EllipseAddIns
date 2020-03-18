@@ -1204,47 +1204,47 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetRange(1, titleRow, resultColumn - 1, titleRow).Style = StyleConstants.TitleRequired;
 
                 //STANDARD
-                _cells.GetCell(1, titleRow - 1).Value = "WO / TASK";
+                _cells.GetCell(1, titleRow - 1).Value = "ORDEN DE TRABAJO/ TAREA";
                 _cells.GetRange(1, titleRow - 1, 6, titleRow - 1).Style = StyleConstants.Option;
                 _cells.GetRange(1, titleRow - 1, 6, titleRow - 1).Merge();
 
-                _cells.GetCell(1, titleRow).Value = "DISTRICT";       //_cells.GetCell(1, i).Value = req.DistrictCode; 
-                _cells.GetCell(2, titleRow).Value = "WORK_GROUP";     //_cells.GetCell(2, i).Value = req.WorkGroup;    
-                _cells.GetCell(3, titleRow).Value = "WO_NO";          //_cells.GetCell(3, i).Value = req.WorkOrder;    
-                _cells.GetCell(4, titleRow).Value = "TASK_NO";        //_cells.GetCell(4, i).Value = req.WoTaskNo;     
-                _cells.GetCell(5, titleRow).Value = "WO_TASK_DESC";   //_cells.GetCell(5, i).Value = req.WoTaskDesc;    
+                _cells.GetCell(1, titleRow).Value = "Distrito";       //_cells.GetCell(1, i).Value = req.DistrictCode; 
+                _cells.GetCell(2, titleRow).Value = "Grupo/UAS";     //_cells.GetCell(2, i).Value = req.WorkGroup;    
+                _cells.GetCell(3, titleRow).Value = "OrdenTrabajo";          //_cells.GetCell(3, i).Value = req.WorkOrder;    
+                _cells.GetCell(4, titleRow).Value = "Tarea No.";        //_cells.GetCell(4, i).Value = req.WoTaskNo;     
+                _cells.GetCell(5, titleRow).Value = "Desc. Tarea";   //_cells.GetCell(5, i).Value = req.WoTaskDesc;    
 
                 //ACTION
-                _cells.GetCell(6, titleRow).Value = "ACTION";
+                _cells.GetCell(6, titleRow).Value = "Acción";
                 _cells.GetCell(6, titleRow).Style = StyleConstants.TitleAction;
                 _cells.GetCell(6, titleRow).AddComment("C: Crear Requerimiento \nM: Modificar Requerimiento \nD: Eliminar Requerimiento");
                 _cells.SetValidationList(_cells.GetCell(6, titleRow + 1), new List<string> { "C", "M", "D" });
                 //GENERAL
-                _cells.GetCell(7, titleRow - 1).Value = "GENERAL";
-                _cells.GetRange(7, titleRow - 1, 14, titleRow - 1).Style = StyleConstants.Option;
-                _cells.GetRange(7, titleRow - 1, 14, titleRow - 1).Merge();
+                _cells.GetCell(7, titleRow - 1).Value = "INFORMACIÓN DEL RECURSO";
+                _cells.GetRange(7, titleRow - 1, 15, titleRow - 1).Style = StyleConstants.Option;
+                _cells.GetRange(7, titleRow - 1, 15, titleRow - 1).Merge();
 
-                _cells.GetCell(7, titleRow).Value = "REQ_TYPE";       //_cells.GetCell(7, i).Value = "" + req.ReqType;
-                _cells.GetCell(7, titleRow).AddComment("LAB: LABOR\nMAT: MATERIAL");
-                _cells.SetValidationList(_cells.GetCell(7, titleRow + 1), new List<string> { "LAB", "MAT" });
-
-
-                _cells.GetCell(8, titleRow).Value = "SEQ_NO";         //_cells.GetCell(8, i).Value = req.SeqNo;    
-                _cells.GetCell(9, titleRow).Value = "REQ_CODE";       //_cells.GetCell(9, i).Value = req.ReqCode;  
-                _cells.GetCell(10, titleRow).Value = "DESCRIPTION";   //_cells.GetCell(10, i).Value = req.ReqDesc; 
-                _cells.GetCell(11, titleRow).Value = "UOM";           //_cells.GetCell(11, i).Value = req.UoM;  
-                _cells.GetCell(12, titleRow).Value = "QTY REQ";       //_cells.GetCell(11, i).Value = req.QtyReq;  
-                _cells.GetCell(13, titleRow).Value = "QTY ISS";       //_cells.GetCell(12, i).Value = req.QtyIss;  
-                _cells.GetCell(14, titleRow).Value = "HRS_REQ";       //_cells.GetCell(13, i).Value = req.HrsReq;  
-                _cells.GetCell(15, titleRow).Value = "HRS_REAL";      //_cells.GetCell(14, i).Value = req.HrsReal; 
+                _cells.GetCell(7, titleRow).Value = "Tipo Recurso";       //_cells.GetCell(7, i).Value = "" + req.ReqType;
+                _cells.GetCell(7, titleRow).AddComment("LAB: Labor\nMAT: Material\nEQP: Equipos");
+                _cells.SetValidationList(_cells.GetCell(7, titleRow + 1), new List<string> { RequirementType.Labour.Key, RequirementType.Material.Key, RequirementType.Equipment.Key});
 
 
+                _cells.GetCell(8, titleRow).Value = "Seq. No.";         //_cells.GetCell(8, i).Value = req.SeqNo;    
                 _cells.GetCell(8, titleRow).AddComment("Aplica solo para Creación y Modificación de Requerimientos");
-                _cells.GetCell(9, titleRow).AddComment("Recurso: Class+Code (Ver hoja de recursos) \nMaterial: StockCode");
-                _cells.GetCell(12, titleRow).AddComment("Horas requeridas del recurso. (Solo aplica para labor)");
-                _cells.GetCell(13, titleRow).AddComment("Horas Reales del recurso. (Solo aplica para labor)");
-                _cells.GetCell(14, titleRow).AddComment("Unidad de Medida. (Solo aplica para Equipos)");
-
+                _cells.GetCell(9, titleRow).Value = "Req.Code/StockCode\nEquip.Type";       //_cells.GetCell(9, i).Value = req.ReqCode;  
+                _cells.GetCell(9, titleRow).AddComment("Recurso: Class+Code (Ver hoja de recursos) \nMaterial: StockCode\nEquipos: Equipment Type");
+                _cells.GetCell(10, titleRow).Value = "Desc. Recurso";   //_cells.GetCell(10, i).Value = req.ReqDesc; 
+                _cells.GetCell(11, titleRow).Value = "UoM";           //_cells.GetCell(11, i).Value = req.UoM;  
+                _cells.GetCell(12, titleRow).Value = "Tamaño Estimado";       //_cells.GetCell(11, i).Value = req.QtyReq;  
+                _cells.GetCell(12, titleRow).AddComment("Labor: Tamaño de Personal \nEquipo: Tamaño de Flota\nMateriales: N/A Siempre será 1");
+                _cells.GetCell(13, titleRow).Value = "Un. Est.";       //_cells.GetCell(12, i).Value = req.QtyIss;  
+                _cells.GetCell(13, titleRow).AddComment("Unidades Estimadas del recurso");
+                _cells.GetCell(14, titleRow).Value = "Und. Real";      //_cells.GetCell(14, i).Value = req.HrsReal; 
+                _cells.GetCell(14, titleRow).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(14, titleRow).AddComment("Unidades Reales del recurso. Los recursos reales de materiales y equipos son compartidos entre las diferentes tareas de la orden que tengan el mismo stock code. Se resaltarán cuando esto ocurra");
+                _cells.GetCell(15, titleRow).Value = "Compartido";      //_cells.GetCell(14, i).Value = req.HrsReal; 
+                _cells.GetCell(15, titleRow).Style = StyleConstants.TitleInformation;
+                _cells.GetCell(15, titleRow).AddComment("Entre cuántas tareas se comparte este recurso. Si el valor es 0 es porque no es un recurso estimado");
 
                 //RESULTADO
                 _cells.GetCell(resultColumn, titleRow).Value = "RESULTADO";
@@ -4876,11 +4876,11 @@ namespace EllipseWorkOrderExcelAddIn
 
         private void btnReviewRequirements_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
             {
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
-                _thread = new Thread(ReviewLabRequirements);
+                _thread = new Thread(() => ReviewRequirements(RequirementType.All.Key));
 
                 _thread.SetApartmentState(ApartmentState.STA);
                 _thread.Start();
@@ -4889,17 +4889,101 @@ namespace EllipseWorkOrderExcelAddIn
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
         }
 
-        private void ReviewLabRequirements()
+
+        private void ReviewRequirements(string requirementType)
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
+            _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
             _cells.ClearTableRange(TableName03);
+            var woCells = new ExcelStyleCells(_excelApp, SheetName01);
+            woCells.SetAlwaysActiveSheet(false);
 
+            var resultColumn = ResultColumn03;
+            var j = TitleRow01 + 1;//itera según cada orden
+            var i = TitleRow03 + 1;//itera la celda para cada requerimiento
+
+            var list = new List<TaskRequirement>();
+
+            while (!string.IsNullOrEmpty("" + woCells.GetCell(3, j).Value) && !string.IsNullOrEmpty("" + woCells.GetCell(6, j).Value))
+            {
+                list.Add(new TaskRequirement
+                {
+                    DistrictCode = _cells.GetEmptyIfNull(woCells.GetCell("B3").Value2),
+                    WorkGroup = _cells.GetEmptyIfNull(woCells.GetCell(1, j).Value2),
+                    WorkOrder = _cells.GetEmptyIfNull(woCells.GetCell(2, j).Value2),
+                });
+                j++;
+            }
+
+            var distinctItems = list.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder}).Select(y => y.First());
+
+            foreach (var d in distinctItems)
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(d.DistrictCode))
+                        d.DistrictCode = "ICOR";
+                    var reqList = WorkOrderTaskActions.FetchRequirements(_eFunctions, d.DistrictCode, d.WorkGroup, d.WorkOrder, requirementType, null);
+
+                    var distinctReqList = reqList.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo, x.ReqCode }).Select(y => y.First());
+
+                    foreach (var req in distinctReqList)
+                    {
+                        _cells.GetRange(1, i, resultColumn, i).ClearFormats();
+                        //GENERAL
+                        _cells.GetCell(1, i).Value = "" + req.DistrictCode; //DistrictCode
+                        _cells.GetCell(2, i).Value = "" + req.WorkGroup;    //WorkGroup
+                        _cells.GetCell(3, i).Value = "'" + req.WorkOrder;    //WorkOrder 
+                        _cells.GetCell(4, i).Value = "'" + req.WoTaskNo;     //WoTaskNo 
+                        _cells.GetCell(5, i).Value = "" + req.WoTaskDesc;   //WoTaskDesc 
+                        _cells.GetCell(6, i).Value = "M";
+                        _cells.GetCell(7, i).Value = "" + req.ReqType;      //ReqType 
+                        _cells.GetCell(8, i).Value = "" + req.SeqNo;        //SeqNo 
+                        _cells.GetCell(9, i).Value = "" + req.ReqCode;      //ReqCode
+                        _cells.GetCell(10, i).Value = "" + req.ReqDesc;     //ReqDesc
+                        _cells.GetCell(11, i).Value = "" + req.UoM;         //UoM
+                        _cells.GetCell(12, i).Value = "" + req.EstSize;      //EstSize
+                        _cells.GetCell(13, i).Value = "" + req.UnitsQty;      //UnitsQty
+                        _cells.GetCell(14, i).Value = "" + req.RealQty;     //RealQty
+                        _cells.GetCell(15, i).Value = "" + req.SharedTasks;     //SharedTask
+                        if (Convert.ToInt16(req.SharedTasks) != 1)
+                            _cells.GetRange(14, i, 15, i).Style = StyleConstants.Warning;
+                        _cells.GetCell(ResultColumn03, i).Select();
+                        i++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(1, i).Style = StyleConstants.Error;
+                    _cells.GetCell(1, i).Value = d.DistrictCode;
+                    _cells.GetCell(2, i).Value = d.WorkGroup;
+                    _cells.GetCell(3, i).Value = d.WorkOrder;
+                    _cells.GetCell(4, i).Value = d.WoTaskNo;
+                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
+                    _cells.GetCell(ResultColumn03, i).Select();
+                    Debugger.LogError("RibbonEllipse.cs:ReviewRequirements()", ex.Message);
+                    i++;
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+
+        private void ReviewTaskRequirements(string requirementType)
+        {
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+            _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
+            _cells.ClearTableRange(TableName03);
             var taskCells = new ExcelStyleCells(_excelApp, SheetName02);
             taskCells.SetAlwaysActiveSheet(false);
 
+            var resultColumn = ResultColumn03;
             var j = TitleRow02 + 1;//itera según cada tarea
             var i = TitleRow03 + 1;//itera la celda para cada requerimiento
 
@@ -4923,12 +5007,13 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 try
                 {
-                    var reqList = WorkOrderTaskActions.FetchTaskRequirements(_eFunctions, d.DistrictCode, d.WorkGroup, d.WorkOrder, "LAB", d.WoTaskNo);
+                    var reqList = WorkOrderTaskActions.FetchRequirements(_eFunctions, d.DistrictCode, d.WorkGroup, d.WorkOrder, requirementType, d.WoTaskNo);
 
                     var distinctReqList = reqList.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo, x.ReqCode}).Select(y => y.First());
 
                     foreach (var req in distinctReqList)
                     {
+                        _cells.GetRange(1, i, resultColumn, i).ClearFormats();
                         //GENERAL
                         _cells.GetCell(1, i).Value = "" + req.DistrictCode; //DistrictCode
                         _cells.GetCell(2, i).Value = "" + req.WorkGroup;    //WorkGroup
@@ -4941,10 +5026,12 @@ namespace EllipseWorkOrderExcelAddIn
                         _cells.GetCell(9, i).Value = "" + req.ReqCode;      //ReqCode
                         _cells.GetCell(10, i).Value = "" + req.ReqDesc;     //ReqDesc
                         _cells.GetCell(11, i).Value = "" + req.UoM;         //UoM
-                        _cells.GetCell(12, i).Value = "" + req.QtyReq;      //QtyReq
-                        _cells.GetCell(13, i).Value = "" + req.QtyIss;      //QtyIss
-                        _cells.GetCell(14, i).Value = "" + req.HrsReq;      //HrsReq
-                        _cells.GetCell(15, i).Value = "" + req.HrsReal;     //HrsReal
+                        _cells.GetCell(12, i).Value = "" + req.EstSize;      //EstSize
+                        _cells.GetCell(13, i).Value = "" + req.UnitsQty;      //UnitsQty
+                        _cells.GetCell(14, i).Value = "" + req.RealQty;     //RealQty
+                        _cells.GetCell(15, i).Value = "" + req.SharedTasks;     //SharedTask
+                        if (Convert.ToInt16(req.SharedTasks) != 1)
+                            _cells.GetRange(14, i, 15, i).Style = StyleConstants.Warning;
                         _cells.GetCell(ResultColumn03, i).Select();
                         i++;
                     }
@@ -4958,7 +5045,7 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(4, i).Value = d.WoTaskNo;
                     _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
                     _cells.GetCell(ResultColumn03, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:ReviewLabRequirements()", ex.Message);
+                    Debugger.LogError("RibbonEllipse.cs:ReviewTaskRequirements()", ex.Message);
                     i++;
                 }
             }
@@ -5186,52 +5273,51 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     // ReSharper disable once UseObjectOrCollectionInitializer
                     var taskReq = new TaskRequirement();
-                    string action = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);                         //_cells.GetCell(6, i).Value = "M";
+                    string action = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value);                         
 
-                    taskReq.DistrictCode = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);                  //_cells.GetCell(1, i).Value = "" + req.DistrictCode; 
-                    taskReq.WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);                     //_cells.GetCell(2, i).Value = "" + req.WorkGroup;    
-                    taskReq.WorkOrder = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);                     //_cells.GetCell(3, i).Value = "" + req.WorkOrder;     
-                    taskReq.WoTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value);                      //_cells.GetCell(4, i).Value = "" + req.WoTaskNo;      
+                    taskReq.DistrictCode = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);                  
+                    taskReq.WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);                     
+                    taskReq.WorkOrder = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);                     
+                    taskReq.WoTaskNo = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value);                      
                     taskReq.WoTaskNo = string.IsNullOrWhiteSpace(taskReq.WoTaskNo) ? "001" : taskReq.WoTaskNo;
-                    taskReq.WoTaskDesc = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);                    //_cells.GetCell(5, i).Value = "" + req.WoTaskDesc;
-                    taskReq.ReqType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);                       //_cells.GetCell(7, i).Value = "" + req.ReqType;       
-                    taskReq.SeqNo = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);                         //_cells.GetCell(8, i).Value = "" + req.SeqNo;         
-                    taskReq.ReqCode = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value);                       //_cells.GetCell(9, i).Value = "" + req.ReqCode;      
-                    taskReq.ReqDesc = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value);                      //_cells.GetCell(10, i).Value = "" + req.ReqDesc;
-                    taskReq.UoM = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value);                          //_cells.GetCell(11, i).Value = "" + req.UoM;
-                    taskReq.QtyReq = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value);                       //_cells.GetCell(12, i).Value = "" + req.QtyReq;       
-                    taskReq.QtyIss = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value);                       //_cells.GetCell(13, i).Value = "" + req.QtyIss;      
-                    taskReq.HrsReq = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value);                       //_cells.GetCell(14, i).Value = "" + req.HrsReq;      
-                    taskReq.HrsReal = _cells.GetEmptyIfNull(_cells.GetCell(15, i).Value);                      //_cells.GetCell(15, i).Value = "" + req.HrsReal;     
+                    taskReq.WoTaskDesc = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);                    
+                    taskReq.ReqType = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value);                       
+                    taskReq.SeqNo = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);                         
+                    taskReq.ReqCode = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value);                       
+                    taskReq.ReqDesc = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value);                      
+                    taskReq.UoM = _cells.GetEmptyIfNull(_cells.GetCell(11, i).Value);                          
+                    taskReq.EstSize = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value);                        
+                    taskReq.UnitsQty = _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value);                        
+                    taskReq.RealQty = _cells.GetEmptyIfNull(_cells.GetCell(14, i).Value);                      
 
 
                     if (string.IsNullOrWhiteSpace(action))
                         continue;
                     else if (action.Equals("C"))
                     {
-                        if (taskReq.ReqType.Equals("LAB"))
+                        if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
                             WorkOrderTaskActions.CreateTaskResource(urlService, opSheetResource, taskReq);
-                        else if (taskReq.ReqType.Equals("MAT"))
+                        else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
                             WorkOrderTaskActions.CreateTaskMaterial(urlService, opSheetMaterial, taskReq);
-                        else if (taskReq.ReqType.Equals("EQU"))
+                        else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
                             WorkOrderTaskActions.CreateTaskEquipment(urlService, opSheetEquipment, taskReq);
                     }
                     else if (action.Equals("M"))
                     {
-                        if (taskReq.ReqType.Equals("LAB"))
+                        if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
                             WorkOrderTaskActions.ModifyTaskResource(urlService, opSheetResource, taskReq);
-                        else if (taskReq.ReqType.Equals("MAT"))
+                        else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
                             WorkOrderTaskActions.ModifyTaskMaterial(urlService, opSheetMaterial, taskReq);
-                        else if (taskReq.ReqType.Equals("EQU"))
+                        else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
                             WorkOrderTaskActions.ModifyTaskEquipment(urlService, opSheetEquipment, taskReq);
                     }
                     else if (action.Equals("D"))
                     {
-                        if (taskReq.ReqType.Equals("LAB"))
+                        if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
                             WorkOrderTaskActions.DeleteTaskResource(urlService, opSheetResource, taskReq);
-                        else if (taskReq.ReqType.Equals("MAT"))
+                        else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
                             WorkOrderTaskActions.DeleteTaskMaterial(urlService, opSheetMaterial, taskReq);
-                        else if (taskReq.ReqType.Equals("EQU"))
+                        else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
                             WorkOrderTaskActions.DeleteTaskEquipment(urlService, opSheetEquipment, taskReq);
                     }
                     _cells.GetCell(ResultColumn03, i).Value = "OK";
@@ -5257,11 +5343,25 @@ namespace EllipseWorkOrderExcelAddIn
 
         private void btnReviewMatRequirements_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
             {
                 //si ya hay un thread corriendo que no se ha detenido
                 if (_thread != null && _thread.IsAlive) return;
-                _thread = new Thread(ReviewMatRequirements);
+                _thread = new Thread(() => ReviewRequirements(RequirementType.Material.Key));
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+        private void btnReviewEqpRequirements_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            {
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(() => ReviewRequirements(RequirementType.Equipment.Key));
 
                 _thread.SetApartmentState(ApartmentState.STA);
                 _thread.Start();
@@ -5270,81 +5370,19 @@ namespace EllipseWorkOrderExcelAddIn
                 MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
         }
 
-        private void ReviewMatRequirements()
+        private void btnReviewLabRequirements_Click(object sender, RibbonControlEventArgs e)
         {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
-            _cells.SetCursorWait();
-            _cells.ClearTableRange(TableName03);
-
-            var taskCells = new ExcelStyleCells(_excelApp, SheetName02);
-            taskCells.SetAlwaysActiveSheet(false);
-
-            var j = TitleRow02 + 1;//itera según cada tarea
-            var i = TitleRow03 + 1;//itera la celda para cada requerimiento
-
-            var list = new List<TaskRequirement>();
-
-            while (!string.IsNullOrEmpty("" + taskCells.GetCell(3, j).Value) && !string.IsNullOrEmpty("" + taskCells.GetCell(6, j).Value))
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
             {
-                list.Add(new TaskRequirement
-                {
-                    DistrictCode = _cells.GetEmptyIfNull(taskCells.GetCell(1, j).Value2),
-                    WorkGroup = _cells.GetEmptyIfNull(taskCells.GetCell(2, j).Value2),
-                    WorkOrder = _cells.GetEmptyIfNull(taskCells.GetCell(3, j).Value2),
-                    WoTaskNo = _cells.GetEmptyIfNull(taskCells.GetCell(6, j).Value2)
-                });
-                j++;
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(() => ReviewRequirements(RequirementType.Labour.Key));
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
             }
-
-            var distinctItems = list.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo }).Select(y => y.First());
-
-            foreach (var d in distinctItems)
-            {
-                try
-                {
-                    var reqList = WorkOrderTaskActions.FetchTaskRequirements(_eFunctions, d.DistrictCode, d.WorkGroup, d.WorkOrder, "MAT", d.WoTaskNo);
-
-                    var distinctReqList = reqList.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo, x.ReqCode }).Select(y => y.First());
-
-                    foreach (var req in distinctReqList)
-                    {
-                        //GENERAL
-                        _cells.GetCell(1, i).Value = "" + req.DistrictCode; //DistrictCode
-                        _cells.GetCell(2, i).Value = "" + req.WorkGroup;    //WorkGroup
-                        _cells.GetCell(3, i).Value = "" + req.WorkOrder;    //WorkOrder 
-                        _cells.GetCell(4, i).Value = "" + req.WoTaskNo;     //WoTaskNo 
-                        _cells.GetCell(5, i).Value = "" + req.WoTaskDesc;   //WoTaskDesc 
-                        _cells.GetCell(6, i).Value = "M";
-                        _cells.GetCell(7, i).Value = "" + req.ReqType;      //ReqType 
-                        _cells.GetCell(8, i).Value = "" + req.SeqNo;        //SeqNo 
-                        _cells.GetCell(9, i).Value = "" + req.ReqCode;      //ReqCode
-                        _cells.GetCell(10, i).Value = "" + req.ReqDesc;     //ReqDesc
-                        _cells.GetCell(11, i).Value = "" + req.UoM;         //UoM
-                        _cells.GetCell(12, i).Value = "" + req.QtyReq;      //QtyReq
-                        _cells.GetCell(13, i).Value = "" + req.QtyIss;      //QtyIss
-                        _cells.GetCell(14, i).Value = "" + req.HrsReq;      //HrsReq
-                        _cells.GetCell(15, i).Value = "" + req.HrsReal;     //HrsReal
-                        _cells.GetCell(ResultColumn03, i).Select();
-                        i++;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _cells.GetCell(1, i).Style = StyleConstants.Error;
-                    _cells.GetCell(1, i).Value = d.DistrictCode;
-                    _cells.GetCell(2, i).Value = d.WorkGroup;
-                    _cells.GetCell(3, i).Value = d.WorkOrder;
-                    _cells.GetCell(4, i).Value = d.WoTaskNo;
-                    _cells.GetCell(ResultColumn03, i).Value = "ERROR: " + ex.Message;
-                    _cells.GetCell(ResultColumn03, i).Select();
-                    Debugger.LogError("RibbonEllipse.cs:ReviewLabRequirements()", ex.Message);
-                    i++;
-                }
-            }
-            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
         }
 
         private void btnToDoReviewWorkOrders_Click(object sender, RibbonControlEventArgs e)
@@ -5503,6 +5541,66 @@ namespace EllipseWorkOrderExcelAddIn
                 Debugger.LogError("RibbonEllipse.cs:UpdateWoToDoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
+        }
+
+        private void btnReviewTaskRequirements_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            {
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(() => ReviewTaskRequirements(RequirementType.All.Key));
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+        private void btnReviewTaskLabRequirements_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            {
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(() => ReviewTaskRequirements(RequirementType.Labour.Key));
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+        private void btnReviewTaskMatRequirements_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            {
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(() => ReviewTaskRequirements(RequirementType.Material.Key));
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+        }
+
+        private void btnReviewTaskEqpRequirements_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName03)
+            {
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _thread = new Thread(() => ReviewTaskRequirements(RequirementType.Equipment.Key));
+
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+            }
+            else
+                MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
         }
     }
 
