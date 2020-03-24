@@ -4398,10 +4398,10 @@ namespace EllipseWorkOrderExcelAddIn
                         //PLANNING
                         _cells.GetCell(12, i).Value = "" + task.AssignPerson;
                         _cells.GetCell(13, i).Value = "'" + task.EstimatedMachHrs;
-                        _cells.GetCell(14, i).Value = "'" + task.PlanStartDate;
-                        _cells.GetCell(15, i).Value = "'" + task.PlanStartTime;
-                        _cells.GetCell(16, i).Value = "'" + task.PlanFinishDate;
-                        _cells.GetCell(17, i).Value = "'" + task.PlanFinishTime;
+                        _cells.GetCell(14, i).Value = task.PlanStartDate;   //Se deben dejar numéricos para que se conserve la validación por calculado de la OT
+                        _cells.GetCell(15, i).Value = task.PlanStartTime;   //Se deben dejar numéricos para que se conserve la validación por calculado de la OT
+                        _cells.GetCell(16, i).Value = task.PlanFinishDate;  //Se deben dejar numéricos para que se conserve la validación por calculado de la OT
+                        _cells.GetCell(17, i).Value = task.PlanFinishTime;  //Se deben dejar numéricos para que se conserve la validación por calculado de la OT
                         //Valida que las fechas de plan de la tarea estén dentro de las fechas de la orden
                         if (btnValidateTaskPlanDates.Checked && (!string.IsNullOrWhiteSpace(woPlanStartDate) && !string.IsNullOrWhiteSpace(woPlanFinishDate)))
                         {
