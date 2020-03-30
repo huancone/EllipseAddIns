@@ -853,6 +853,11 @@ namespace EllipseMstExcelAddIn
 
                     mst.StatutoryFlg = "N";
 
+                    if (mst.SchedInd == "3" || mst.SchedInd == "4")
+                        mst.AllowMultiple = "N";
+                    else
+                        mst.AllowMultiple = "Y";
+
                     var indicator = Convert.ToInt16(mst.SchedInd);
                     var frequency = MyUtilities.IsTrue(_cells.GetCell(13, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(13, i).Value) : null;
                     var nextSchedStat = MyUtilities.IsTrue(_cells.GetCell(22, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(22, i).Value) : null;
@@ -956,6 +961,7 @@ namespace EllipseMstExcelAddIn
                     mst.CompModCode = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value2);
                     mst.MaintenanceSchTask = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value2);
                     mst.SchedInd = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value2);
+                    mst.AllowMultiple = "Y"
                     var indicator = Convert.ToInt16(mst.SchedInd);
 
                     var nextSchedStat = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value2);
