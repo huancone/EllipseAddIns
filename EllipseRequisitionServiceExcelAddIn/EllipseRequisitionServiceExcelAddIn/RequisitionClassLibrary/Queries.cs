@@ -164,7 +164,9 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
             if (string.IsNullOrWhiteSpace(endDate))
                 endDate = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
 
-            if (dateCriteriaKey == SearchDateCriteriaType.Creation.Key)
+            if (searchCriteriaKey1 == SearchFieldCriteriaType.WorkOrder.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                dateParameters = "";
+            else if (dateCriteriaKey == SearchDateCriteriaType.Creation.Key)
                 dateParameters = " AND RQ.CREATION_DATE BETWEEN '" + startDate + "' AND '" + endDate + "'";
             else if (dateCriteriaKey == SearchDateCriteriaType.Required.Key)
                 dateParameters = " AND RQ.REQ_BY_DATE BETWEEN '" + startDate + "' AND '" + endDate + "'";
@@ -374,7 +376,9 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
             if (string.IsNullOrWhiteSpace(endDate))
                 endDate = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
 
-            if (dateCriteriaKey == SearchDateCriteriaType.Creation.Key)
+            if (searchCriteriaKey1 == SearchFieldCriteriaType.WorkOrder.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                dateParameters = "";
+            else if (dateCriteriaKey == SearchDateCriteriaType.Creation.Key)
                 dateParameters = " AND RQ.CREATION_DATE BETWEEN '" + startDate + "' AND '" + endDate + "'";
             else if (dateCriteriaKey == SearchDateCriteriaType.Required.Key)
                 dateParameters = " AND RQ.REQ_BY_DATE BETWEEN '" + startDate + "' AND '" + endDate + "'";
@@ -454,11 +458,13 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "     RQWO.WO_PLAN_STR_DATE," +
                         "     LISTAGG(RQWO.IREQ_NO, ',') WITHIN GROUP(ORDER BY RQWO.IREQ_NO) AS IREQS_NO," +
                         "     RQI.STOCK_CODE," +
+                        "     RQWO.REQ_BY_DATE," +
                         "     SUM(RQI.QTY_REQ) QTY_REQUIRED," +
                         "     SUM(RQI.QTY_ISSUED) QTY_ISSUED," +
                         "     SUM(RQI.QTY_RECEIVED) QTY_RECEIVED," +
-                        "     SCINV.INVENT_COST_PR PRICE_PR," +
-                        "     SCINV.INVENT_PRICE_S PRICE_SC" +
+                        "     RQI.ITEM_PRICE," + //Precio de Compra
+                        "     SCINV.INVENT_COST_PR INV_PRICE_PR," + // Precio de Inventario Primario
+                        "     SCINV.INVENT_PRICE_S INV_PRICE_SC" +// Precio de Inventario Secundario
                         "   FROM " +
                         "     RQWO LEFT JOIN ELLIPSE.MSF141 RQI" +
                         "       ON RQWO.DSTRCT_CODE = RQI.DSTRCT_CODE" +
@@ -475,6 +481,8 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "     RQWO.GL_ACCOUNT," +
                         "     RQWO.WO_PLAN_STR_DATE," +
                         "     RQI.STOCK_CODE," +
+                        "     RQWO.REQ_BY_DATE," +
+                        "     RQI.ITEM_PRICE," +
                         "     SCINV.INVENT_COST_PR," +
                         "     SCINV.INVENT_PRICE_S" +
                         " )," +
@@ -489,10 +497,11 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "     RQWO.GL_ACCOUNT," +
                         "     RQWO.WO_PLAN_STR_DATE," +
                         "     WORP.STOCK_CODE," +
+                        "     RQWO.REQ_BY_DATE," +
                         "     SUM(WORP.UNIT_QTY_REQD) QTY_PLAN_REQUIRED," +
                         "     SUM(WORP.QTY_REQUISITIONED) QTY_PLAN_REQUISITIONED," +
-                        "     SCINV.INVENT_COST_PR PRICE_PR," +
-                        "     SCINV.INVENT_PRICE_S PRICE_SC" +
+                        "     SCINV.INVENT_COST_PR INV_PRICE_PR," +
+                        "     SCINV.INVENT_PRICE_S INV_PRICE_SC" +
                         "   FROM " +
                         "     RQWO JOIN ELLIPSE.MSF623 WOT" +
                         "       ON RQWO.WORK_ORDER   = WOT.WORK_ORDER" +
@@ -512,6 +521,7 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "     RQWO.GL_ACCOUNT," +
                         "     RQWO.WO_PLAN_STR_DATE," +
                         "     WORP.STOCK_CODE," +
+                        "     RQWO.REQ_BY_DATE," +
                         "     SCINV.INVENT_COST_PR," +
                         "     SCINV.INVENT_PRICE_S" +
                         " )" +
@@ -526,13 +536,15 @@ namespace EllipseRequisitionServiceExcelAddIn.RequisitionClassLibrary
                         "   COALESCE(RQ.WO_PLAN_STR_DATE, PQ.WO_PLAN_STR_DATE) WO_PLAN_STAR_DATE," +
                         "   RQ.IREQS_NO," +
                         "   COALESCE(RQ.STOCK_CODE, PQ.STOCK_CODE) STOCK_CODE," +
+                        "   COALESCE(RQ.REQ_BY_DATE, PQ.REQ_BY_DATE) REQ_BY_DATE," +
                         "   NVL(PQ.QTY_PLAN_REQUIRED, 0) QTY_PLAN_REQUIRED," +
                         "   NVL(PQ.QTY_PLAN_REQUISITIONED, 0) QTY_PLAN_REQUISITIONED," +
                         "   NVL(RQ.QTY_REQUIRED, 0) QTY_REQUIRED," +
                         "   NVL(RQ.QTY_ISSUED, 0) QTY_ISSUED," +
                         "   NVL(RQ.QTY_RECEIVED, 0) QTY_RECEIVED," +
-                        "   COALESCE(RQ.PRICE_PR, PQ.PRICE_PR) PRICE_PR," +
-                        "   COALESCE(RQ.PRICE_SC, PQ.PRICE_SC) PRICE_SC" +
+                        "   RQ.ITEM_PRICE," +
+                        "   COALESCE(RQ.INV_PRICE_PR, PQ.INV_PRICE_PR) INV_PRICE_PR," +
+                        "   COALESCE(RQ.INV_PRICE_SC, PQ.INV_PRICE_SC) INV_PRICE_SC" +
                         " FROM " +
                         "   REALREQ RQ FULL JOIN PLANREQ PQ" +
                         "     ON RQ.DSTRCT_CODE = PQ.DSTRCT_CODE" +

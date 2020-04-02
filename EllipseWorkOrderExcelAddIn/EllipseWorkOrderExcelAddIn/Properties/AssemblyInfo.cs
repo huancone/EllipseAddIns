@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hambings SAS/Cerrejon Ltda")]
 [assembly: AssemblyProduct("EllipseWorkOrderExcelAddIn")]
-[assembly: AssemblyCopyright("Copyright ©  2015-2017")]
+[assembly: AssemblyCopyright("Copyright ©  2015-2020")]
 [assembly: AssemblyTrademark("Hambings SAS")]
 [assembly: AssemblyCulture("")]
 

@@ -53,6 +53,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReReview = this.Factory.CreateRibbonButton();
             this.btnCreate = this.Factory.CreateRibbonButton();
             this.btnUpdate = this.Factory.CreateRibbonButton();
+            this.separator6 = this.Factory.CreateRibbonSeparator();
             this.btnFlagEstDuration = this.Factory.CreateRibbonCheckBox();
             this.btnCleanWorkOrderSheet = this.Factory.CreateRibbonButton();
             this.menuTasks = this.Factory.CreateRibbonMenu();
@@ -65,14 +66,22 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReviewLabRequirements = this.Factory.CreateRibbonButton();
             this.btnReviewMatRequirements = this.Factory.CreateRibbonButton();
             this.btnReviewEqpRequirements = this.Factory.CreateRibbonButton();
+            this.separator3 = this.Factory.CreateRibbonSeparator();
+            this.btnReviewTaskRequirements = this.Factory.CreateRibbonButton();
+            this.btnReviewTaskLabRequirements = this.Factory.CreateRibbonButton();
+            this.btnReviewTaskMatRequirements = this.Factory.CreateRibbonButton();
+            this.btnReviewTaskEqpRequirements = this.Factory.CreateRibbonButton();
+            this.separator2 = this.Factory.CreateRibbonSeparator();
             this.btnExecuteRequirements = this.Factory.CreateRibbonButton();
             this.btnGetAplRequirements = this.Factory.CreateRibbonButton();
+            this.separator5 = this.Factory.CreateRibbonSeparator();
             this.btnCleanRequirementTable = this.Factory.CreateRibbonButton();
             this.menuComplete = this.Factory.CreateRibbonMenu();
             this.btnClose = this.Factory.CreateRibbonButton();
             this.btnReOpen = this.Factory.CreateRibbonButton();
             this.btnReviewCloseText = this.Factory.CreateRibbonButton();
             this.btnUpdateCloseText = this.Factory.CreateRibbonButton();
+            this.separator4 = this.Factory.CreateRibbonSeparator();
             this.cbIgnoreClosedStatus = this.Factory.CreateRibbonCheckBox();
             this.btnCleanCloseSheets = this.Factory.CreateRibbonButton();
             this.menuDurations = this.Factory.CreateRibbonMenu();
@@ -102,17 +111,8 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReviewCriticalControls = this.Factory.CreateRibbonButton();
             this.btnReReviewCritialControls = this.Factory.CreateRibbonButton();
             this.btnExportCriticalControls = this.Factory.CreateRibbonButton();
-            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.separator1 = this.Factory.CreateRibbonSeparator();
-            this.separator2 = this.Factory.CreateRibbonSeparator();
-            this.separator3 = this.Factory.CreateRibbonSeparator();
-            this.btnReviewTaskRequirements = this.Factory.CreateRibbonButton();
-            this.btnReviewTaskLabRequirements = this.Factory.CreateRibbonButton();
-            this.btnReviewTaskMatRequirements = this.Factory.CreateRibbonButton();
-            this.btnReviewTaskEqpRequirements = this.Factory.CreateRibbonButton();
-            this.separator4 = this.Factory.CreateRibbonSeparator();
-            this.separator5 = this.Factory.CreateRibbonSeparator();
-            this.separator6 = this.Factory.CreateRibbonSeparator();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
@@ -245,6 +245,10 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnUpdate.ShowImage = true;
             this.btnUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdate_Click);
             // 
+            // separator6
+            // 
+            this.separator6.Name = "separator6";
+            // 
             // btnFlagEstDuration
             // 
             this.btnFlagEstDuration.Checked = true;
@@ -343,6 +347,42 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnReviewEqpRequirements.ShowImage = true;
             this.btnReviewEqpRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewEqpRequirements_Click);
             // 
+            // separator3
+            // 
+            this.separator3.Name = "separator3";
+            // 
+            // btnReviewTaskRequirements
+            // 
+            this.btnReviewTaskRequirements.Label = "Recursos por Tarea";
+            this.btnReviewTaskRequirements.Name = "btnReviewTaskRequirements";
+            this.btnReviewTaskRequirements.ShowImage = true;
+            this.btnReviewTaskRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewTaskRequirements_Click);
+            // 
+            // btnReviewTaskLabRequirements
+            // 
+            this.btnReviewTaskLabRequirements.Label = "Labor por Tarea";
+            this.btnReviewTaskLabRequirements.Name = "btnReviewTaskLabRequirements";
+            this.btnReviewTaskLabRequirements.ShowImage = true;
+            this.btnReviewTaskLabRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewTaskLabRequirements_Click);
+            // 
+            // btnReviewTaskMatRequirements
+            // 
+            this.btnReviewTaskMatRequirements.Label = "Materiales por Tarea";
+            this.btnReviewTaskMatRequirements.Name = "btnReviewTaskMatRequirements";
+            this.btnReviewTaskMatRequirements.ShowImage = true;
+            this.btnReviewTaskMatRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewTaskMatRequirements_Click);
+            // 
+            // btnReviewTaskEqpRequirements
+            // 
+            this.btnReviewTaskEqpRequirements.Label = "Equipos por Tarea";
+            this.btnReviewTaskEqpRequirements.Name = "btnReviewTaskEqpRequirements";
+            this.btnReviewTaskEqpRequirements.ShowImage = true;
+            this.btnReviewTaskEqpRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewTaskEqpRequirements_Click);
+            // 
+            // separator2
+            // 
+            this.separator2.Name = "separator2";
+            // 
             // btnExecuteRequirements
             // 
             this.btnExecuteRequirements.Label = "Ejecutar Acciones";
@@ -355,6 +395,10 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnGetAplRequirements.Label = "Traer Recursos de APLs";
             this.btnGetAplRequirements.Name = "btnGetAplRequirements";
             this.btnGetAplRequirements.ShowImage = true;
+            // 
+            // separator5
+            // 
+            this.separator5.Name = "separator5";
             // 
             // btnCleanRequirementTable
             // 
@@ -403,6 +447,10 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnUpdateCloseText.Name = "btnUpdateCloseText";
             this.btnUpdateCloseText.ShowImage = true;
             this.btnUpdateCloseText.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateCloseText_Click);
+            // 
+            // separator4
+            // 
+            this.separator4.Name = "separator4";
             // 
             // cbIgnoreClosedStatus
             // 
@@ -620,64 +668,16 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnExportCriticalControls.ShowImage = true;
             this.btnExportCriticalControls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExportCriticalControls_Click);
             // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
+            // 
             // btnStopThread
             // 
             this.btnStopThread.Label = "Detener &Proceso";
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
-            // 
-            // separator1
-            // 
-            this.separator1.Name = "separator1";
-            // 
-            // separator2
-            // 
-            this.separator2.Name = "separator2";
-            // 
-            // separator3
-            // 
-            this.separator3.Name = "separator3";
-            // 
-            // btnReviewTaskRequirements
-            // 
-            this.btnReviewTaskRequirements.Label = "Recursos por Tarea";
-            this.btnReviewTaskRequirements.Name = "btnReviewTaskRequirements";
-            this.btnReviewTaskRequirements.ShowImage = true;
-            this.btnReviewTaskRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewTaskRequirements_Click);
-            // 
-            // btnReviewTaskLabRequirements
-            // 
-            this.btnReviewTaskLabRequirements.Label = "Labor por Tarea";
-            this.btnReviewTaskLabRequirements.Name = "btnReviewTaskLabRequirements";
-            this.btnReviewTaskLabRequirements.ShowImage = true;
-            this.btnReviewTaskLabRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewTaskLabRequirements_Click);
-            // 
-            // btnReviewTaskMatRequirements
-            // 
-            this.btnReviewTaskMatRequirements.Label = "Materiales por Tarea";
-            this.btnReviewTaskMatRequirements.Name = "btnReviewTaskMatRequirements";
-            this.btnReviewTaskMatRequirements.ShowImage = true;
-            this.btnReviewTaskMatRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewTaskMatRequirements_Click);
-            // 
-            // btnReviewTaskEqpRequirements
-            // 
-            this.btnReviewTaskEqpRequirements.Label = "Equipos por Tarea";
-            this.btnReviewTaskEqpRequirements.Name = "btnReviewTaskEqpRequirements";
-            this.btnReviewTaskEqpRequirements.ShowImage = true;
-            this.btnReviewTaskEqpRequirements.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewTaskEqpRequirements_Click);
-            // 
-            // separator4
-            // 
-            this.separator4.Name = "separator4";
-            // 
-            // separator5
-            // 
-            this.separator5.Name = "separator5";
-            // 
-            // separator6
-            // 
-            this.separator6.Name = "separator6";
             // 
             // RibbonEllipse
             // 
