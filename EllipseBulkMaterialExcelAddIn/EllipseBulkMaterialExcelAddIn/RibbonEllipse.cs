@@ -561,20 +561,22 @@ namespace EllipseBulkMaterialExcelAddIn
 
         }
 
-        private void CreateBulkMaterialSheet(BMUService.BulkMaterialUsageSheetService sheetService, BMUService.OperationContext opContext, BMUItemService.BulkMaterialUsageSheetItemService itemService, BMUItemService.OperationContext opItem, BulkMaterial.BulkMaterialUsageSheet currentSheetHeader, List<BulkMaterial.BulkMaterialUsageSheetItem> itemList, int currentHeaderRow, int currentRow, string serviceType)
+        private void CreateBulkMaterialSheet(BMUService.BulkMaterialUsageSheetService sheetService, BMUService.OperationContext opContext, BMUItemService.BulkMaterialUsageSheetItemService itemService, BMUItemService.OperationContext opItem, BulkMaterial.BulkMaterialUsageSheet sheetHeader, List<BulkMaterial.BulkMaterialUsageSheetItem> itemList, int headerRow, int currentRow, string serviceType)
         {
             DateTime usageDate;
-            if (!DateTime.TryParseExact(currentSheetHeader.DefaultUsageDate, "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, out usageDate))
+            if (!DateTime.TryParseExact(sheetHeader.DefaultUsageDate, "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, out usageDate))
                 throw new Exception("Se ha ingresado una fecha inválida");
 
             if (itemList.Count <= 0)
                 throw new Exception("No hay items para agregar en esta hoja");
 
             string newSheetId = "";
+            if(!string.IsNullOrWhiteSpace(sheetHeader.BulkMaterialUsageSheetId) && sheetHeader.BulkMaterialUsageSheetId.Length > 32)
+                throw new Exception("El Id de la hoja no puede tener más de 32 caracteres");
 
             if (serviceType == "POST")
             {
-                var replySheet = BulkMaterialActions.CreateHeaderPost(_eFunctions, currentSheetHeader.ToDto());
+                var replySheet = BulkMaterialActions.CreateHeaderPost(_eFunctions, sheetHeader.ToDto());
 
                 //valido que no haya errores en la creación del encabezado
                 if (replySheet.Errors != null && replySheet.Errors.Length > 0)
@@ -590,7 +592,7 @@ namespace EllipseBulkMaterialExcelAddIn
             }
             else
             {
-                var replySheet = BulkMaterialActions.CreateHeader(sheetService, opContext, currentSheetHeader.ToDto());
+                var replySheet = BulkMaterialActions.CreateHeader(sheetService, opContext, sheetHeader.ToDto());
 
                 //valido que no haya errores en la creación del encabezado
                 if (replySheet.errors != null && replySheet.errors.Length > 0)
@@ -604,10 +606,10 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 newSheetId = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
             }
-            currentSheetHeader.BulkMaterialUsageSheetId = newSheetId;
+            sheetHeader.BulkMaterialUsageSheetId = newSheetId;
 
-            _cells.GetRange(1, currentHeaderRow, 1, currentRow).Value = currentSheetHeader.BulkMaterialUsageSheetId;
-            _cells.GetRange(1, currentHeaderRow, 6, currentRow).Style = StyleConstants.Success;
+            _cells.GetRange(1, headerRow, 1, currentRow).Value = sheetHeader.BulkMaterialUsageSheetId;
+            _cells.GetRange(1, headerRow, 6, currentRow).Style = StyleConstants.Success;
 
             bool existItemError = false;
 
@@ -616,7 +618,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 try
                 {
                     if (string.IsNullOrWhiteSpace(item.BulkMaterialUsageSheetId))
-                        item.BulkMaterialUsageSheetId = currentSheetHeader.BulkMaterialUsageSheetId;
+                        item.BulkMaterialUsageSheetId = sheetHeader.BulkMaterialUsageSheetId;
 
                     if (serviceType == "POST")
                     {
@@ -645,16 +647,16 @@ namespace EllipseBulkMaterialExcelAddIn
                             throw new Exception(errorMessage);
                         }
                     }
-                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Value = "OK";
-                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Style = StyleConstants.Success;
-                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Select();
+                    _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Value = "OK";
+                    _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Select();
                 }
                 catch (Exception ex)
                 {
                     existItemError = true;
-                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Value = ex.Message;
-                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Style = StyleConstants.Error;
-                    _cells.GetCell(ResultColumn01, currentHeaderRow + itemList.IndexOf(item)).Select();
+                    _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Value = ex.Message;
+                    _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Select();
                 }
                 finally
                 {
@@ -665,14 +667,14 @@ namespace EllipseBulkMaterialExcelAddIn
             }
 
             if (serviceType == "POST")
-                BulkMaterialActions.ApplyHeaderPost(_eFunctions, currentSheetHeader.ToDto());
+                BulkMaterialActions.ApplyHeaderPost(_eFunctions, sheetHeader.ToDto());
             else
-                BulkMaterialActions.ApplyHeader(sheetService, opContext, currentSheetHeader.ToDto());
-            _cells.GetRange(1, currentHeaderRow, ResultColumn01 - 1, currentRow).Style = StyleConstants.Success;
-            _cells.GetRange(1, currentHeaderRow, 6, currentRow).Select();
+                BulkMaterialActions.ApplyHeader(sheetService, opContext, sheetHeader.ToDto());
+            _cells.GetRange(1, headerRow, ResultColumn01 - 1, currentRow).Style = StyleConstants.Success;
+            _cells.GetRange(1, headerRow, 6, currentRow).Select();
 
             _eFunctions.CloseConnection();
-            currentSheetHeader = null;
+            sheetHeader = null;
             itemList.Clear();
         }
 
