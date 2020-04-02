@@ -223,6 +223,7 @@
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="EllipsePlannerExcelAddIn_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -264,11 +265,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>EllipsePlannerExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0D4FBACA8743D0AE7D90940C6B7049305CBCB2B8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>F8DCFDC36221D7BCBE138F95350DF8F7DC8AB5CE</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>

@@ -26,7 +26,7 @@
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>EllipseTransaccionesStockCodesExcelAddIn</RootNamespace>
-    <AssemblyName>EllipseTransaccionesStockCodesExcelAddIn</AssemblyName>
+    <AssemblyName>EllipseTransaccionesStockCodesExcelAddin</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <IsWebBootstrapper>False</IsWebBootstrapper>
@@ -40,8 +40,8 @@
     <PublishUrl>D:\Projects\Release\Financiera\EllipseTransaccionesStockCodesExcelAddin\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.0.8</ApplicationVersion>
-    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <ApplicationVersion>1.1.0.12</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
@@ -168,7 +168,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -224,6 +224,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="EllipseTransaccionesStockCodesExcelAddIn_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -276,11 +277,13 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>EllipseTransaccionesStockCodesExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0D4FBACA8743D0AE7D90940C6B7049305CBCB2B8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>8B674F04BCE85F71511193ADC5C85341D3650390</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

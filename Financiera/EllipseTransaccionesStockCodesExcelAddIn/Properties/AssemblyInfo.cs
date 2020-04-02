@@ -9,7 +9,7 @@ using System.Security;
 [assembly: AssemblyTitle("EllipseTransaccionesStockCodesExcelAddIn")]
 [assembly: AssemblyDescription("Consulta y Actualización de Vales y Órdenes de Compras")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hambings SAS/Cerrejón Ltda")]
+[assembly: AssemblyCompany("Hambings SAS/Cerrejón Limited")]
 [assembly: AssemblyProduct("EllipseTransaccionesStockCodesExcelAddIn")]
 [assembly: AssemblyCopyright("Copyright ©  2015-2017")]
 [assembly: AssemblyTrademark("Hambins SAS")]
