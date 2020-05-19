@@ -53,6 +53,7 @@
             this.btnRemoveFromList = this.Factory.CreateRibbonButton();
             this.cbAutoSortItems = this.Factory.CreateRibbonCheckBox();
             this.cbIgnoreItemError = this.Factory.CreateRibbonCheckBox();
+            this.cbAccountElementOverride = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpBulkMaterial.SuspendLayout();
@@ -107,6 +108,7 @@
             this.menuActions.Items.Add(this.menuListActions);
             this.menuActions.Items.Add(this.cbAutoSortItems);
             this.menuActions.Items.Add(this.cbIgnoreItemError);
+            this.menuActions.Items.Add(this.cbAccountElementOverride);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Actions";
             this.menuActions.Name = "menuActions";
@@ -195,6 +197,13 @@
             this.cbIgnoreItemError.Label = "Ignorar Errores en Ítems";
             this.cbIgnoreItemError.Name = "cbIgnoreItemError";
             // 
+            // cbAccountElementOverride
+            // 
+            this.cbAccountElementOverride.Label = "Autoasignar Centro de Costo";
+            this.cbAccountElementOverride.Name = "cbAccountElementOverride";
+            this.cbAccountElementOverride.ScreenTip = "Asignará el Centro de Costo ignorando el escrito y utilizará el relacionado con e" +
+    "l equipo y el tipo de material";
+            // 
             // btnStopThread
             // 
             this.btnStopThread.Label = "&Detener Proceso";
@@ -240,6 +249,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreItemError;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAutoSortItems;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadSecond;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAccountElementOverride;
     }
 
     partial class ThisRibbonCollection

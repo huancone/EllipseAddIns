@@ -254,6 +254,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnFlagEstDuration.Checked = true;
             this.btnFlagEstDuration.Label = "Estimados de Horas Calculados";
             this.btnFlagEstDuration.Name = "btnFlagEstDuration";
+            this.btnFlagEstDuration.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFlagEstDuration_Click);
             // 
             // btnCleanWorkOrderSheet
             // 

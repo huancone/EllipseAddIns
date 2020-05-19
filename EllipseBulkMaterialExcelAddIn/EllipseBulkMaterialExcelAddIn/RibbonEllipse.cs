@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using EllipseBulkMaterialExcelAddIn.Properties;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
-
+using EllipseCommonsClassLibrary.Utilities;
 using EllipseCommonsClassLibrary.Connections;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
@@ -442,7 +442,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 BulkMaterial.BulkMaterialUsageSheet currentSheetHeader = null;
                 BulkMaterial.BulkMaterialUsageSheet newSheetHeader = null;
                 var itemList = new List<BulkMaterial.BulkMaterialUsageSheetItem>();
-
+                
                 while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
                 {
                     try
@@ -458,7 +458,12 @@ namespace EllipseBulkMaterialExcelAddIn
 
                         newSheetHeader.DefaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);//DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture);
                         newSheetHeader.DefaultAccountCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value);
-                        newSheetHeader.DefaultAccountCode = newSheetHeader.DefaultAccountCode ?? BulkMaterialActions.GetBulkAccountCode(_eFunctions, _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
+
+                        string itemAccountCode = null;
+                        var materialTypeId = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull("" + _cells.GetCell(11, currentRow).Value));
+                        if (cbAccountElementOverride.Checked || string.IsNullOrWhiteSpace(newSheetHeader.DefaultAccountCode))
+                            itemAccountCode = BulkMaterialActions.GetBulkAccountCode(_eFunctions, _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value), materialTypeId);
+                        newSheetHeader.DefaultAccountCode = newSheetHeader.DefaultAccountCode ?? itemAccountCode;
 
                         if (currentSheetHeader == null)
                         {
@@ -483,13 +488,14 @@ namespace EllipseBulkMaterialExcelAddIn
                             EquipmentReference = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(8, currentRow).Value),
                             ComponentCode = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(9, currentRow).Value),
                             Modifier = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(10, currentRow).Value),
-                            BulkMaterialTypeId = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(11, currentRow).Value),
+                            BulkMaterialTypeId = materialTypeId,
                             ConditionMonitoringAction = (_cells.GetEmptyIfNull(_cells.GetCell(12, currentRow).Value) == "Fuel/Diesel") || (_cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(12, currentRow).Value) == null) ? null : "" + _cells.GetCell(12, currentRow).Value.ToString().Substring(0, 1),
                             Quantity = "" + _cells.GetCell(13, currentRow).Value,
                             UsageDate = _cells.GetEmptyIfNull("" + _cells.GetCell(14, currentRow).Value),
                             UsageTime = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(15, currentRow).Value),
                             OperationStatisticType = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(16, currentRow).Value),
                             MeterReading = "" + _cells.GetCell(17, currentRow).Value,
+                            AccountCode = itemAccountCode
                         };
 
                         itemList.Add(requestItem);

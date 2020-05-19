@@ -4413,18 +4413,18 @@ namespace EllipseWorkOrderExcelAddIn
 
                             if (!string.IsNullOrWhiteSpace(task.PlanStartDate))
                             {
-                                if (Convert.ToDouble(string.Concat(tkPlanStartDate,tkPlanStartTime)) < Convert.ToDouble(string.Concat(woPlanStartDate, woPlanStartTime)))
+                                if ((Convert.ToDouble(string.Concat(tkPlanStartDate,tkPlanStartTime)) < Convert.ToDouble(string.Concat(woPlanStartDate, woPlanStartTime))) || (Convert.ToDouble(string.Concat(tkPlanStartDate, tkPlanStartTime)) > Convert.ToDouble(string.Concat(woPlanFinishDate, woPlanFinishTime))))
                                 {
                                     _cells.GetCell(14, i).Style = StyleConstants.Error;
-                                    _cells.GetCell(14, i).AddComment("WoPlanStartDate: " + woPlanStartDate + " " + woPlanStartTime);
+                                    _cells.GetCell(14, i).AddComment("WoPlanStartDate: " + woPlanStartDate + " " + woPlanStartTime + "\nWoPlanFinishDate: " + woPlanFinishDate + " " + woPlanFinishTime);
                                 }
                             }
                             if (!string.IsNullOrWhiteSpace(task.PlanFinishDate))
                             {
-                                if (Convert.ToDouble(string.Concat(tkPlanFinishDate, tkPlanFinishTime)) < Convert.ToDouble(string.Concat(woPlanFinishDate, woPlanFinishTime)))
+                                if ((Convert.ToDouble(string.Concat(tkPlanFinishDate, tkPlanFinishTime)) < Convert.ToDouble(string.Concat(woPlanStartDate, woPlanStartTime))) || (Convert.ToDouble(string.Concat(tkPlanFinishDate, tkPlanFinishTime)) > Convert.ToDouble(string.Concat(woPlanFinishDate, woPlanFinishTime))))
                                 {
                                     _cells.GetCell(16, i).Style = StyleConstants.Error;
-                                    _cells.GetCell(16, i).AddComment("WoPlanFinishDate: " + woPlanFinishDate + " " + woPlanFinishTime);
+                                    _cells.GetCell(16, i).AddComment("WoPlanStartDate: " + woPlanStartDate + " " + woPlanStartTime + "\nWoPlanFinishDate: " + woPlanFinishDate + " " + woPlanFinishTime);
                                 }
                             }
                         }

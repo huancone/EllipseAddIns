@@ -66,7 +66,6 @@ namespace EllipseBulkMaterialExcelAddIn.BulkMaterial
             item.usageDate = UsageDate;
             item.usageTime = UsageTime;
             item.useByDate = UseByDate;
-
             item.customAttributes = customAttributes;
 
             return item;

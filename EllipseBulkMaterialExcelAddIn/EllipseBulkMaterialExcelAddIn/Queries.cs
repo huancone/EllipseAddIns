@@ -32,13 +32,12 @@ namespace EllipseBulkMaterialExcelAddIn
                 "    AND RCD.REF_NO = '003' " +
                 "  ) " +
                 "SELECT " +
-                "  EQUIP_NO, " +
-                "  BULK_ACCOUNT " +
+                "  EQ.EQUIP_NO, EQ.EQUIP_CLASS, " +
+                "  EQ.ACCOUNT_CODE, RF.BULK_ACCOUNT  " +
                 "FROM " +
-                "  REFERENCE " +
+                "  " + dbReference + ".MSF600" + dbLink + " EQ LEFT JOIN REFERENCE RF ON EQ.EQUIP_NO = RF.EQUIP_NO AND RF.FECHA = RF.MAX_FECHA  " +
                 "WHERE " +
-                "  FECHA = MAX_FECHA " +
-                "AND EQUIP_NO = '" + equipNo + "'";
+                "  EQUIP_NO = '" + equipNo + "'";
 
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 

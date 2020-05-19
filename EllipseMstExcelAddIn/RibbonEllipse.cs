@@ -961,7 +961,7 @@ namespace EllipseMstExcelAddIn
                     mst.CompModCode = _cells.GetEmptyIfNull(_cells.GetCell(4, i).Value2);
                     mst.MaintenanceSchTask = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value2);
                     mst.SchedInd = _cells.GetEmptyIfNull(_cells.GetCell(6, i).Value2);
-                    mst.AllowMultiple = "Y"
+                    mst.AllowMultiple = "Y";
                     var indicator = Convert.ToInt16(mst.SchedInd);
 
                     var nextSchedStat = _cells.GetEmptyIfNull(_cells.GetCell(7, i).Value2);

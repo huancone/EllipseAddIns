@@ -75,14 +75,14 @@ namespace EllipseLabourCostingExcelAddIn
             FormatSheetHeaderData();
         }
 
-        private void btnFormatDefault_Click(object sender, RibbonControlEventArgs e)
+        private void btnFormatGroupEmployee_Click(object sender, RibbonControlEventArgs e)
         {
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Contains(SheetName01))
             {
                 var groupName = "" + _cells.GetCell("B4").Value;
 
                 if (!groupName.Equals(""))
-                    FormatGroupDefault(groupName);
+                    FormatGroupEmployees(groupName);
                 else
                     MessageBox.Show(@"No se ha seleccionado ningún grupo");
             }
@@ -201,7 +201,7 @@ namespace EllipseLabourCostingExcelAddIn
                 MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
             }
         }
-        public void FormatGroupDefault(string groupName)
+        public void FormatGroupEmployees(string groupName)
         {
             try
             {
@@ -308,10 +308,8 @@ namespace EllipseLabourCostingExcelAddIn
                 {
                     while (drEmployees.Read())
                     {
-                        _cells.GetCell(1, titleRow + 1 + lengthEmployees).Value =
-                            drEmployees["NOMBRE"].ToString().Trim();
-                        _cells.GetCell(2, titleRow + 1 + lengthEmployees).Value =
-                            drEmployees["CEDULA"].ToString().Trim();
+                        _cells.GetCell(1, titleRow + 1 + lengthEmployees).Value = drEmployees["NOMBRE"].ToString().Trim();
+                        _cells.GetCell(2, titleRow + 1 + lengthEmployees).Value = "'" + drEmployees["CEDULA"].ToString().Trim();
                         lengthEmployees++;
                     }
                 }

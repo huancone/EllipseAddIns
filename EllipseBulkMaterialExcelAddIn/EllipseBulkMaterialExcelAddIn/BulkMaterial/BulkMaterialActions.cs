@@ -395,7 +395,7 @@ namespace EllipseBulkMaterialExcelAddIn
             }
         }
 
-        public static string GetBulkAccountCode(EllipseFunctions eFunctions, string equipNo)
+        public static string GetBulkAccountCode(EllipseFunctions eFunctions, string equipNo, string materialTypeId)
         {
             try
             {
@@ -407,9 +407,48 @@ namespace EllipseBulkMaterialExcelAddIn
                 if (!drQuery.Read()) return "";
 
                 if (!drQuery.IsClosed && drQuery.HasRows)
+                {
+                    var equipClass = drQuery["EQUIP_CLASS"];
+                    var bulkAccount = drQuery["BULK_ACCOUNT"];
+                    var accountCode = drQuery["ACCOUNT_CODE"];
+
+                    //Es de mantenimiento 19 - MT
+                    if(equipClass.Equals("19"))
+                    {
+                        if (materialTypeId.Equals("ACPM"))
+                            return drQuery["BULK_ACCOUNT"].ToString();
+                        else if (materialTypeId.Equals("B2"))
+                            return drQuery["BULK_ACCOUNT"].ToString();
+                        else if (materialTypeId.Equals("B5"))
+                            return drQuery["BULK_ACCOUNT"].ToString();
+                        else if (materialTypeId.Equals("X15W40"))
+                            return drQuery["ACCOUNT_CODE"].ToString();
+                        else if (materialTypeId.Equals("SAE10"))
+                            return drQuery["ACCOUNT_CODE"].ToString();
+                        else if (materialTypeId.Equals("SAE30"))
+                            return drQuery["ACCOUNT_CODE"].ToString();
+                        else if (materialTypeId.Equals("SAE40"))
+                            return drQuery["ACCOUNT_CODE"].ToString();
+                        else if (materialTypeId.Equals("TO460"))
+                            return drQuery["ACCOUNT_CODE"].ToString();
+                        else if (materialTypeId.Equals("TO410"))
+                            return drQuery["ACCOUNT_CODE"].ToString();
+                        else if (materialTypeId.Equals("TO430"))
+                            return drQuery["ACCOUNT_CODE"].ToString();
+                        else if (materialTypeId.Equals("TO450"))
+                            return drQuery["ACCOUNT_CODE"].ToString();
+                        else
+                            throw new ArgumentException("NO HAY RELACIÓN DE CENTRO DE COSTO PARA EQUIPO IDENTIFICADO CON CÓDIGO 19 DE MANTENIMIENTO. POR FAVOR INGRESE CENTRO DE COSTO");
+                    }
+
                     return drQuery["BULK_ACCOUNT"].ToString();
+                }
                 else
                     return "";
+            }
+            catch(ArgumentException ex)
+            {
+                throw ex;
             }
             catch(Exception ex)
             {

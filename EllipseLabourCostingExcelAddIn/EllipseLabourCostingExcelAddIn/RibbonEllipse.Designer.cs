@@ -40,7 +40,7 @@
             this.menuFormat = this.Factory.CreateRibbonMenu();
             this.menuGroupFormat = this.Factory.CreateRibbonMenu();
             this.btnFormatHeader = this.Factory.CreateRibbonButton();
-            this.btnFormatDefault = this.Factory.CreateRibbonButton();
+            this.btnFormatGroupEmployees = this.Factory.CreateRibbonButton();
             this.btnFormatMso850 = this.Factory.CreateRibbonButton();
             this.btnFormatElecsa = this.Factory.CreateRibbonButton();
             this.btnFormatEquipmentHire = this.Factory.CreateRibbonButton();
@@ -92,7 +92,7 @@
             // menuGroupFormat
             // 
             this.menuGroupFormat.Items.Add(this.btnFormatHeader);
-            this.menuGroupFormat.Items.Add(this.btnFormatDefault);
+            this.menuGroupFormat.Items.Add(this.btnFormatGroupEmployees);
             this.menuGroupFormat.Label = "Formato &Grupo";
             this.menuGroupFormat.Name = "menuGroupFormat";
             this.menuGroupFormat.ShowImage = true;
@@ -104,12 +104,12 @@
             this.btnFormatHeader.ShowImage = true;
             this.btnFormatHeader.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatHeader_Click);
             // 
-            // btnFormatDefault
+            // btnFormatGroupEmployees
             // 
-            this.btnFormatDefault.Label = "Formato &Predeterminado";
-            this.btnFormatDefault.Name = "btnFormatDefault";
-            this.btnFormatDefault.ShowImage = true;
-            this.btnFormatDefault.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatDefault_Click);
+            this.btnFormatGroupEmployees.Label = "Obtener Empleados de Grupo";
+            this.btnFormatGroupEmployees.Name = "btnFormatGroupEmployees";
+            this.btnFormatGroupEmployees.ShowImage = true;
+            this.btnFormatGroupEmployees.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatGroupEmployee_Click);
             // 
             // btnFormatMso850
             // 
@@ -225,7 +225,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuGroupFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatHeader;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatDefault;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatGroupEmployees;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatMso850;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormatElecsa;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
