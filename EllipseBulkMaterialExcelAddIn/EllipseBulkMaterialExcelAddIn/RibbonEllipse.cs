@@ -361,9 +361,9 @@ namespace EllipseBulkMaterialExcelAddIn
             {
                 try
                 {
-                    _cells.GetCell(3, currentRow).Value = bulkMaterial.WarehouseId;
+                    _cells.GetCell(3, currentRow).Value = "'" + bulkMaterial.WarehouseId;
                     _cells.GetCell(4, currentRow).Value = DateTime.ParseExact(bulkMaterial.DefaultUsageDate, @"MM/dd/yy", CultureInfo.CurrentCulture).ToString("yyyyMMdd");
-                    _cells.GetCell(8, currentRow).Value = bulkMaterial.EquipmentReference;
+                    _cells.GetCell(8, currentRow).Value = "'" + bulkMaterial.EquipmentReference;
                     _cells.GetCell(11, currentRow).Value = bulkMaterial.BulkMaterialTypeId;
                     _cells.GetCell(13, currentRow).Value = bulkMaterial.Quantity;
                 }

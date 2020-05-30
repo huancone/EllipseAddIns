@@ -132,7 +132,10 @@ namespace EllipseEqOperStatisticsExcelAddIn
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
-
+                var entryList = new List<string>();
+                entryList.Add("D - Diario/Daily");
+                entryList.Add("M - Medidor/Meter");
+                _cells.SetValidationList(_cells.GetCell(6, TitleRow01 + 1), entryList);
 
 
                 var table = _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1), TableName01);
@@ -161,16 +164,16 @@ namespace EllipseEqOperStatisticsExcelAddIn
                         _cells = new ExcelStyleCells(_excelApp);
                     _cells.SetCursorWait();
 
-                    var proxySheet = new EquipmentOperatingStatisticsService.EquipmentOperatingStatisticsService();
-                    proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) +
+                    var statService = new EquipmentOperatingStatisticsService.EquipmentOperatingStatisticsService();
+                    statService.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) +
                                      "/EquipmentOperatingStatistics";
 
-                    var opSheet = new OperationContext();
+                    var opContext = new OperationContext();
 
-                    opSheet.district = _frmAuth.EllipseDsct;
-                    opSheet.position = _frmAuth.EllipsePost;
-                    opSheet.maxInstances = 100;
-                    opSheet.returnWarnings = Debugger.DebugWarnings;
+                    opContext.district = _frmAuth.EllipseDsct;
+                    opContext.position = _frmAuth.EllipsePost;
+                    opContext.maxInstances = 100;
+                    opContext.returnWarnings = Debugger.DebugWarnings;
                     ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
                     const int startRow = 5;
                     var i = startRow;
@@ -189,7 +192,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             reqItem.equipmentNumber = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
                             reqItem.operationStatisticType = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
 
-                            if (_cells.GetEmptyIfNull(_cells.GetCell(6, i).Value) == "D")
+                            if (_cells.GetEmptyIfNull(MyUtilities.GetCodeKey(_cells.GetCell(6, i).Value)) == "D")
                             {
                                 var lastMeter =
                                     GetEquipmentLastMeterValue(_cells.GetEmptyIfNull(_cells.GetCell(3, i).Value2),
@@ -206,7 +209,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             reqItem.meterReadingSpecified = true;
 
                             request.Add(reqItem);
-                            var replySheet = proxySheet.multipleAdjust(opSheet, request.ToArray());
+                            var replySheet = statService.multipleAdjust(opContext, request.ToArray());
                             foreach (var reply in replySheet)
                             {
                                 if (reply.errors.Length > 0)
@@ -459,8 +462,6 @@ namespace EllipseEqOperStatisticsExcelAddIn
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
 
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-
                     var i = TitleRow01 + 1;
                     while ("" + _cells.GetCell(1, i).Value != "")
                     {
@@ -476,14 +477,14 @@ namespace EllipseEqOperStatisticsExcelAddIn
                                 returnWarningsSpecified = true
                             };
 
-                            var proxySheet = new Screen.ScreenService();
+                            var screenService = new Screen.ScreenService();
 
                             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-                            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
-                            _eFunctions.RevertOperation(opContext, proxySheet);
+                            screenService.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+                            _eFunctions.RevertOperation(opContext, screenService);
                             //ejecutamos el programa
-                            Screen.ScreenDTO reply = proxySheet.executeScreen(opContext, "MSO400");
+                            Screen.ScreenDTO reply = screenService.executeScreen(opContext, "MSO400");
                             //Validamos el ingreso
                             if (reply.mapName != "MSM400A") continue;
 
@@ -505,7 +506,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                                 screenFields = arrayFields.ToArray(),
                                 screenKey = "1"
                             };
-                            reply = proxySheet.submit(opContext, request);
+                            reply = screenService.submit(opContext, request);
 
                             if (reply != null && !_eFunctions.CheckReplyError(reply) && !_eFunctions.CheckReplyWarning(reply))
                             {
@@ -518,7 +519,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                                     screenKey = "1"
                                 };
 
-                                reply = proxySheet.submit(opContext, request);
+                                reply = screenService.submit(opContext, request);
 
                                 if (reply != null && (_eFunctions.CheckReplyError(reply) && reply.mapName == "MSM400A"))
                                     throw new ArgumentException(reply.message);
