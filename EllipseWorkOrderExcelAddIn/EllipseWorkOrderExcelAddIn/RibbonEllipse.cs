@@ -2182,7 +2182,7 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.calculatedMatFlag = "true";
                     wo.calculatedOtherFlag = "true";
                     wo.calculatedLabFlag = "true";
-                    wo.calculatedDurationsFlag = btnFlagEstDuration.Checked.ToString();
+                    wo.calculatedDurationsFlag = cbFlagEstDuration.Checked.ToString();
 
                     var extendedHeader = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(54, i).Value);
                     var extendedBody = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(55, i).Value);
@@ -2203,7 +2203,7 @@ namespace EllipseWorkOrderExcelAddIn
                     if (ots != null && ots.Count > 0) continue;
                     var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
                     wo.SetWorkOrderDto(replySheet.workOrder.prefix, replySheet.workOrder.no);
-                    if (btnFlagEstDuration.Checked)
+                    if (cbFlagEstDuration.Checked)
                     {
                         _cells.GetCell(28, i).Value = replySheet.planStrDate;
                         _cells.GetCell(29, i).Value = replySheet.planStrTime;
@@ -2349,10 +2349,10 @@ namespace EllipseWorkOrderExcelAddIn
                     //wo.calculatedMatFlag = "true";
                     //wo.calculatedOtherFlag = "true";
                     //wo.calculatedLabFlag = "true";
-                    wo.calculatedDurationsFlag = btnFlagEstDuration.Checked.ToString();
+                    wo.calculatedDurationsFlag = cbFlagEstDuration.Checked.ToString();
 
                     var reply = WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
-                    if (btnFlagEstDuration.Checked)
+                    if (cbFlagEstDuration.Checked)
                     {
                         _cells.GetCell(28, i).Value = reply.planStrDate;
                         _cells.GetCell(29, i).Value = reply.planStrTime;
@@ -3069,10 +3069,10 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.calculatedMatFlag = "true";
                     wo.calculatedOtherFlag = "true";
                     wo.calculatedLabFlag = "true";
-                    wo.calculatedDurationsFlag = btnFlagEstDuration.Checked.ToString();
+                    wo.calculatedDurationsFlag = cbFlagEstDuration.Checked.ToString();
 
                     var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
-                    if (btnFlagEstDuration.Checked)
+                    if (cbFlagEstDuration.Checked)
                     {
                         _cells.GetCell(28, i).Value = replySheet.planStrDate;
                         _cells.GetCell(29, i).Value = replySheet.planStrTime;
@@ -3211,10 +3211,10 @@ namespace EllipseWorkOrderExcelAddIn
                     //wo.calculatedMatFlag = "true";
                     //wo.calculatedOtherFlag = "true";
                     //wo.calculatedLabFlag = "true";
-                    wo.calculatedDurationsFlag = btnFlagEstDuration.Checked.ToString();
+                    wo.calculatedDurationsFlag = cbFlagEstDuration.Checked.ToString();
 
                     var reply = WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
-                    if(btnFlagEstDuration.Checked)
+                    if(cbFlagEstDuration.Checked)
                     {
                         _cells.GetCell(28, i).Value = reply.planStrDate;
                         _cells.GetCell(29, i).Value = reply.planStrTime;
@@ -5146,7 +5146,7 @@ namespace EllipseWorkOrderExcelAddIn
                     if (action.Equals(WorkOrderTaskActions.Modify))
                     {
                         var reply = WorkOrderTaskActions.ModifyWorkOrderTask(urlService, opSheet, woTask);
-                        if (btnFlagEstDuration.Checked)
+                        if (cbFlagEstDuration.Checked)
                         {
                             _cells.GetCell(14, i).Value = reply.planStrDate;
                             _cells.GetCell(15, i).Value = reply.planStrTime;
@@ -5158,7 +5158,7 @@ namespace EllipseWorkOrderExcelAddIn
                     else if (action.Equals(WorkOrderTaskActions.Create))
                     {
                         var reply = WorkOrderTaskActions.CreateWorkOrderTask(urlService, opSheet, woTask);
-                        if (btnFlagEstDuration.Checked)
+                        if (cbFlagEstDuration.Checked)
                         {
                             _cells.GetCell(14, i).Value = reply.planStrDate;
                             _cells.GetCell(15, i).Value = reply.planStrTime;

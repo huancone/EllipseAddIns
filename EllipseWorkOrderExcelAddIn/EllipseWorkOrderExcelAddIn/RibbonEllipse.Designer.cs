@@ -54,7 +54,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnCreate = this.Factory.CreateRibbonButton();
             this.btnUpdate = this.Factory.CreateRibbonButton();
             this.separator6 = this.Factory.CreateRibbonSeparator();
-            this.btnFlagEstDuration = this.Factory.CreateRibbonCheckBox();
+            this.cbFlagEstDuration = this.Factory.CreateRibbonCheckBox();
             this.btnCleanWorkOrderSheet = this.Factory.CreateRibbonButton();
             this.menuTasks = this.Factory.CreateRibbonMenu();
             this.btnReviewTasks = this.Factory.CreateRibbonButton();
@@ -211,7 +211,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuGeneral.Items.Add(this.btnCreate);
             this.menuGeneral.Items.Add(this.btnUpdate);
             this.menuGeneral.Items.Add(this.separator6);
-            this.menuGeneral.Items.Add(this.btnFlagEstDuration);
+            this.menuGeneral.Items.Add(this.cbFlagEstDuration);
             this.menuGeneral.Items.Add(this.btnCleanWorkOrderSheet);
             this.menuGeneral.Label = "&WorkOrders";
             this.menuGeneral.Name = "menuGeneral";
@@ -249,12 +249,11 @@ namespace EllipseWorkOrderExcelAddIn
             // 
             this.separator6.Name = "separator6";
             // 
-            // btnFlagEstDuration
+            // cbFlagEstDuration
             // 
-            this.btnFlagEstDuration.Checked = true;
-            this.btnFlagEstDuration.Label = "Estimados de Horas Calculados";
-            this.btnFlagEstDuration.Name = "btnFlagEstDuration";
-            this.btnFlagEstDuration.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFlagEstDuration_Click);
+            this.cbFlagEstDuration.Checked = true;
+            this.cbFlagEstDuration.Label = "Estimados de Horas Calculados";
+            this.cbFlagEstDuration.Name = "cbFlagEstDuration";
             // 
             // btnCleanWorkOrderSheet
             // 
@@ -761,7 +760,7 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnCleanToDo;
         internal RibbonButton btnUpdateToDo;
         internal RibbonCheckBox btnValidateTaskPlanDates;
-        internal RibbonCheckBox btnFlagEstDuration;
+        internal RibbonCheckBox cbFlagEstDuration;
         internal RibbonButton btnReviewLabRequirements;
         internal RibbonButton btnReviewEqpRequirements;
         internal RibbonSeparator separator1;
