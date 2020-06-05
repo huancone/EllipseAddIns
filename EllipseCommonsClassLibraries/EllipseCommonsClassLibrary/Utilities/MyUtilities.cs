@@ -1,15 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml;
 using EllipseCommonsClassLibrary.Classes;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
-
+using EllipseCommonsClassLibrary.Utilities.MyDateTime;
 
 namespace EllipseCommonsClassLibrary.Utilities
 {
-    public class MyUtilities
+    public static partial class MyUtilities
     {
+        public static class ConversionConstants
+        {
+            public const int DEFAULT_NORMAL = 0;
+            public const int DEFAULT_EMPTY_ONLY = 1;
+            public const int DEFAULT_NULL_AND_EMPTY = 2;
+            public const int DEFAULT_ALL_NON_NULL_VALUES = 3;
+
+            public static bool IsValidDefaultNullableConstant(int defaultConstant)
+            {
+                bool isValid = false;
+                switch (defaultConstant)
+                {
+                    case DEFAULT_NORMAL:
+                    case DEFAULT_EMPTY_ONLY:
+                    case DEFAULT_NULL_AND_EMPTY:
+                    case DEFAULT_ALL_NON_NULL_VALUES:
+                        isValid = true;
+                        break;
+                    default:
+                        isValid = false;
+                        break;
+                }
+
+                return isValid;
+            }
+            
+        }
+
         /// <summary>
         ///     Obtiene una cadena con el nombre de una variable dada
         /// </summary>
@@ -116,17 +146,24 @@ namespace EllipseCommonsClassLibrary.Utilities
         ///     Obtiene el valor verdadero según el criterio de entrada. Si value es TRUE, VERDADERO, Y, YES, SI, ó 1
         /// </summary>
         /// <param name="value">Object: valor a analizar</param>
-        /// <param name="nullable">bool: indica si se asume nulo/vacío como verdadero. True null es true, false null es false</param>
+        /// <param name="nullOrEmpty">ConversionConstants: indica si se asume nulo/vacío como predeterminado (falso)</param>
         /// <returns>boolean: true si value es TRUE, VERDADERO, Y, YES, SI ó 1</returns>
-        public static bool IsTrue(object value, bool nullable = false)
+        public static bool IsTrue(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL)
         {
             try
             {
-                if (value == null)
-                    return nullable;
+                if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                {
+                    var errorMessage = "Error al intentar determinar si un valor es verdadero. Parámetro de nullOrEmpty no válido.";
+                    Debugger.LogError("MyUtilities.IsTrue", errorMessage);
+                    throw new ArgumentException(errorMessage);
+                }
+
+                if (value == null && (nullOrEmpty == ConversionConstants.DEFAULT_NORMAL || nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY))
+                    return false;
                 var stringValue = Convert.ToString(value);
-                if (string.IsNullOrWhiteSpace(stringValue))
-                    return nullable;
+                if (value != null && string.IsNullOrWhiteSpace(stringValue) && nullOrEmpty == ConversionConstants.DEFAULT_NORMAL)
+                    return false;
 
                 stringValue = stringValue.Trim();
                 return stringValue.ToUpper().Equals("TRUE") ||
@@ -141,6 +178,88 @@ namespace EllipseCommonsClassLibrary.Utilities
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        ///     Convierte un objeto a Decimal.
+        /// </summary>
+        /// <param name="value">Object: valor a analizar</param>
+        /// <param name="nullOrEmpty">ConversionConstants: Indica si se toma el valor nulo y/o vacío como predeterminado decimal (0)</param>
+        /// <param name="cultureInfo">CultureInfo: Indica el tipo de convención de signos para números (Default: en-US. Coma , para miles y . para decimales</param>
+        /// <returns>decimal. Puede retornar una excepción si el valor es nulo o vacío según el criterio del parámetro nullOrEmpty</returns>
+        public static decimal ToDecimal(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        {
+            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                throw new ArgumentException("Error al intentar convertir un valor a decimal. Parámetro de conversión a decimal nullOrEmpty no válido.");
+            if(cultureInfo == null)
+                cultureInfo = CultureInfo.CurrentCulture;
+
+            if (value == null && nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+                return default(decimal);
+
+            var stringValue = Convert.ToString(value);
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY || nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY))
+                return default(decimal);
+            
+            return Convert.ToDecimal(value, cultureInfo);
+        }
+
+        public static System.DateTime ToDateTime(object value)
+        {
+            var format = DateTime.DateDefaultFormat;
+            var cultureInfo = CultureInfo.CurrentCulture;
+            return ToDateTime(value, format, cultureInfo);
+        }
+        public static System.DateTime ToDateTime(object value, string format)
+        {
+            var cultureInfo = CultureInfo.CurrentCulture;
+            return ToDateTime(value, format, cultureInfo);
+        }
+        public static System.DateTime ToDateTime(object value, string format, CultureInfo cultureInfo)
+        {
+            try
+            {
+                var stringValue = Convert.ToString(value);
+                return System.DateTime.ParseExact(stringValue, format, cultureInfo);
+            }
+            catch (Exception ex)
+            {
+                throw new FormatException("Unable to convert value to a date. Please be sure to provide a date value with format " + format + ". " + ex.Message);
+            }
+        }
+
+        public static string ToString(System.DateTime date)
+        {
+            var format = DateTime.DateDefaultFormat;
+            return ToString(date, format);
+        }
+        public static string ToString(System.DateTime date, string format)
+        {
+            var cultureInfo = CultureInfo.CurrentCulture;
+            return ToString(date, format, cultureInfo);
+        }
+
+        public static string ToString(System.DateTime date, string format, CultureInfo cultureInfo)
+        {
+            return date.ToString(format, cultureInfo);
+        }
+
+        public static string ToString(System.TimeSpan time)
+        {
+            var format = DateTime.TimeDefaultFormat;
+            return ToString(time, format);
+        }
+
+        public static string ToString(System.TimeSpan time, string format)
+        {
+            
+            var cultureInfo = CultureInfo.CurrentCulture;
+            return ToString(time, format, cultureInfo);
+        }
+
+        public static string ToString(System.TimeSpan time, string format, CultureInfo cultureInfo)
+        {
+            return time.ToString(format, cultureInfo);
         }
 
         /// <summary>

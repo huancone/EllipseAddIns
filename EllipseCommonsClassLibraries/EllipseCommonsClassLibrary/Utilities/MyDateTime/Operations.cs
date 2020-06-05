@@ -5,9 +5,56 @@ using EllipseCommonsClassLibrary.Utilities.Shifts;
 
 namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
 {
+    [Obsolete("Class is deprecated. Please refer to MyUtilities and MyUtilities.DateTime for methods")]
     public static class Operations
     {
-        public static List<Slot> GetSlots(Slot[] shifts, DateTime startEvent, DateTime endEvent)
+        #region obsoleteMethods
+
+        /// <summary>
+        ///     Convierte una hora en formato de número (3, 1.6, 36.3) a formato HHMM (03:00, 01:36, 12:18). Si la hora ingresada
+        ///     excede el valor de 24 horas, esta es truncada al día.
+        /// </summary>
+        /// <param name="hourTime">Hora de forma numérica (Ej: 11, 8.4, 3.1, 28.4) </param>
+        /// <param name="separator"></param>
+        // ReSharper disable once InconsistentNaming
+        [Obsolete("ConvertDecimalHourToHHMM is deprecated, please use MyUtilities.DateTime.ConvertDecimalHourToHHMM")]
+        public static string ConvertDecimalHourToHHMM(string hourTime, string separator = null)
+        {
+            if (separator == null)
+                separator = ":";
+            if (string.IsNullOrWhiteSpace(hourTime))
+                return "00" + separator + "00";
+
+            var hh = Convert.ToDecimal(hourTime) % 24;
+            var mm = hh - Math.Truncate(hh);
+
+            mm = Math.Abs(Math.Truncate(mm * 60));
+            hh = Math.Truncate(hh);
+
+            var newHour = Convert.ToInt32(hh).ToString("D2") + separator + Convert.ToInt32(mm).ToString("D2");
+            return newHour;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="hourTime">Hora de forma numérica (Ej: 11, 8.4, 3.1, 28.4) </param>
+        /// <param name="separator"></param>
+        // ReSharper disable once InconsistentNaming
+        [Obsolete("ConvertDecimalHourToHHMM is deprecated, please use MyUtilities.DateTime.ConvertDecimalHourToHHMM")]
+        public static string ConvertDecimalHourToHHMM(float hourTime, char separator)
+        {
+            var hh = Convert.ToDecimal(hourTime) % 24;
+            var mm = hh - Math.Truncate(hh);
+
+            mm = Math.Abs(Math.Truncate(mm * 60));
+            hh = Math.Truncate(hh);
+
+            var newHour = Convert.ToInt32(hh).ToString("D2") + separator + Convert.ToInt32(mm).ToString("D2");
+            return newHour;
+        }
+
+        [Obsolete("GetSlots is deprecated, please use MyUtilities.DateTime.GetSlots")]
+        public static List<Slot> GetSlots(Slot[] shifts, System.DateTime startEvent, System.DateTime endEvent)
         {
             if (endEvent < startEvent)
                 throw new ArgumentException("La fecha final no puede ser menor a la fecha inicial");
@@ -91,54 +138,14 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
         }
 
         /// <summary>
-        ///     Convierte una hora en formato de número (3, 1.6, 36.3) a formato HHMM (03:00, 01:36, 12:18). Si la hora ingresada
-        ///     excede el valor de 24 horas, esta es truncada al día.
-        /// </summary>
-        /// <param name="hourTime">Hora de forma numérica (Ej: 11, 8.4, 3.1, 28.4) </param>
-        /// <param name="separator"></param>
-        // ReSharper disable once InconsistentNaming
-        public static string ConvertDecimalHourToHHMM(string hourTime, string separator = null)
-        {
-            if (separator == null)
-                separator = ":";
-            if (string.IsNullOrWhiteSpace(hourTime))
-                return "00" + separator + "00";
-
-            var hh = Convert.ToDecimal(hourTime) % 24;
-            var mm = hh - Math.Truncate(hh);
-
-            mm = Math.Abs(Math.Truncate(mm * 60));
-            hh = Math.Truncate(hh);
-
-            var newHour = Convert.ToInt32(hh).ToString("D2") + separator + Convert.ToInt32(mm).ToString("D2");
-            return newHour;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="hourTime">Hora de forma numérica (Ej: 11, 8.4, 3.1, 28.4) </param>
-        /// <param name="separator"></param>
-        // ReSharper disable once InconsistentNaming
-        public static string ConvertDecimalHourToHHMM(float hourTime, char separator)
-        {
-            var hh = Convert.ToDecimal(hourTime) % 24;
-            var mm = hh - Math.Truncate(hh);
-
-            mm = Math.Abs(Math.Truncate(mm * 60));
-            hh = Math.Truncate(hh);
-
-            var newHour = Convert.ToInt32(hh).ToString("D2") + separator + Convert.ToInt32(mm).ToString("D2");
-            return newHour;
-        }
-
-        /// <summary>
         ///     Formatea un DateTime a String con el format especificado en format
         /// </summary>
         /// <param name="date">DateTime</param>
         /// <param name="format">DateTime.Formats</param>
         /// <param name="dateSeparator">string separator for format (-, /). Default no separator</param>
         /// <returns></returns>
-        public static string FormatDateToString(DateTime date, string format, string dateSeparator = "")
+        [Obsolete("FormatStringToDateTime is deprecated, MyUtilities.ToDateTime.")]
+        public static string FormatDateToString(System.DateTime date, string format, string dateSeparator = "")
         {
             if (format.Equals(Formats.DateYYMMDD))
                 return "" + date.Year.ToString("0000").Substring(2) + dateSeparator + date.Month.ToString("00") +
@@ -169,7 +176,8 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
             throw new ArgumentException("Not a valid Date format", "format");
         }
 
-        public static string FormatDateTimeToString(DateTime date, string format, string dateSeparator = null,
+        [Obsolete("FormatStringToDateTime is deprecated, MyUtilities.ToDateTime.")]
+        public static string FormatDateTimeToString(System.DateTime date, string format, string dateSeparator = null,
             string timeSeparator = null, string splitSeparator = null)
         {
             dateSeparator = dateSeparator ?? "";
@@ -196,18 +204,20 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
             throw new ArgumentException("Not a valid DateTime format", "format");
         }
 
+        [Obsolete("FormatStringToDateTime is deprecated, MyUtilities.ToDateTime.")]
         public static string FormatDateTimeToString(TimeSpan time, string format, string dateSeparator = null,
             string timeSeparator = null, string splitSeparator = null)
         {
-            var date = new DateTime();
+            var date = new System.DateTime();
             date = date.Add(time);
 
             return FormatDateTimeToString(date, format, dateSeparator, timeSeparator, splitSeparator);
         }
 
+        [Obsolete("FormatTimeToString is deprecated, MyUtilities.ToString.")]
         public static string FormatTimeToString(TimeSpan time, string format, string timeSeparator)
         {
-            var date = new DateTime();
+            var date = new System.DateTime();
             date = date.Add(time);
 
             if (format.Equals(Formats.TimeHHMMSS))
@@ -219,11 +229,12 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
             throw new ArgumentException("Not a valid Time format", "format");
         }
 
-        public static DateTime FormatStringToDateTime(string dateTime, string format, string dateSeparator = null)
+        [Obsolete("FormatStringToDateTime is deprecated, MyUtilities.ToDateTime.")]
+        public static System.DateTime FormatStringToDateTime(string dateTime, string format, string dateSeparator = null)
         {
             if (string.IsNullOrWhiteSpace(dateTime))
                 throw new ArgumentNullException("dateTime");
-            var date = new DateTime();
+            var date = new System.DateTime();
             dateSeparator = string.IsNullOrWhiteSpace(dateSeparator) ? "" : dateSeparator;
 
 
@@ -237,7 +248,7 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
                 var month = Convert.ToInt32(dateTime.Substring(monthStartIndex, 2));
                 var day = Convert.ToInt32(dateTime.Substring(dayStartIndex, 2));
 
-                date = new DateTime(year, month, day);
+                date = new System.DateTime(year, month, day);
             }
             else
                 throw new Exception("Formato de conversión de fecha no válido");
@@ -252,10 +263,12 @@ namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
         /// <param name="date">string: fecha en formato yyyyMMdd</param>
         /// <param name="daysLimit">int: número de días permitidos</param>
         /// <returns></returns>
+        [Obsolete("ValidateUserStatus is deprecated, please use MyUtilities.DateTime.IsDateValid")]
         public static bool ValidateUserStatus(string date, int daysLimit)
         {
-            var datetime = DateTime.ParseExact(date, "yyyyMMdd", CultureInfo.InvariantCulture);
-            return DateTime.Today.Subtract(datetime).TotalDays <= daysLimit;
+            var datetime = System.DateTime.ParseExact(date, "yyyyMMdd", CultureInfo.InvariantCulture);
+            return System.DateTime.Today.Subtract(datetime).TotalDays <= daysLimit;
         }
+        #endregion
     }
 }

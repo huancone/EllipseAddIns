@@ -1,8 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [Obsolete("Clase está obsoleta, Por favor usar MyUtilities.DateTime")]
     public static class Formats
     {
         public static string DateYYMMDD = "YY-MM-DD";

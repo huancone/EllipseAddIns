@@ -7,7 +7,7 @@ using System.Xml;
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 // ReSharper disable LoopCanBeConvertedToQuery
 
-namespace EllipseCommonsClassLibrary.Utilities.RuntimeConfigSettings
+namespace EllipseCommonsClassLibrary.Utilities
 {
     public class RuntimeConfigSettings
     {

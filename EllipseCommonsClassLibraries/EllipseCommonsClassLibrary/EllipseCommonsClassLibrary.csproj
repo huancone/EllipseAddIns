@@ -98,13 +98,14 @@
     <Compile Include="SettingsBox.Designer.cs">
       <DependentUpon>SettingsBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\DateTime.cs" />
     <Compile Include="Utilities\EncryptString.cs" />
     <Compile Include="Utilities\MyDateTime\Formats.cs" />
     <Compile Include="Utilities\MyDateTime\Operations.cs" />
     <Compile Include="Utilities\FileWriter.cs" />
     <Compile Include="Utilities\MyKeyValuePair.cs" />
     <Compile Include="Utilities\MyMath.cs" />
-    <Compile Include="Utilities\RuntimeConfigSettings\RuntimeConfigSettings.cs" />
+    <Compile Include="Utilities\RuntimeConfigSettings.cs" />
     <Compile Include="Utilities\Shifts\ShiftCodes.cs" />
     <Compile Include="Utilities\Shifts\ShiftPeriods.cs" />
     <Compile Include="Utilities\Shifts\Slot.cs" />
@@ -204,6 +205,7 @@
       <Name>System.Web.Services.Ellipse</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

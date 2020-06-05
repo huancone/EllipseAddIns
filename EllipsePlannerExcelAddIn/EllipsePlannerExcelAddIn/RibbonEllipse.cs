@@ -480,7 +480,7 @@ namespace EllipsePlannerExcelAddIn
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //consumo de servicio de msewts
-                List<Jobs> ellipseJobs = JobActions.FetchJobsPost(_eFunctions, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
+                List<JobTask> ellipseJobs = JobActions.FetchJobsTasksPost(_eFunctions, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
 
                 //consulta sobre tabla de Ellipse mso720
                 List<LabourResources> ellipseResources = JobActions.GetEllipseResources(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
@@ -768,13 +768,13 @@ namespace EllipsePlannerExcelAddIn
                 //Hoja de Tareas
                 _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
                 var i = TitleRowResources + 1;
-                var tasksToSave = new List<Jobs>();
+                var tasksToSave = new List<JobTask>();
                 while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value) != null &
                        _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value) != null &
                        _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value) != null &
                        _cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, i).Value) != null)
                 {
-                    var j = new Jobs();
+                    var j = new JobTask();
                     j.WorkGroup = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value.ToString());
                     j.PlanStrDate = _cells.GetEmptyIfNull(_cells.GetCell(12, i).Value.ToString());
                     j.WorkOrder = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value.ToString());

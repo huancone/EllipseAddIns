@@ -3,8 +3,9 @@ using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Utilities.MyDateTime;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
+using EllipseCommonsClassLibrary.Utilities.MyDateTime;
+using DateTime = EllipseCommonsClassLibrary.Utilities;
 
 namespace EllipseCommonsClassLibrary
 {
@@ -35,14 +36,14 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 var errorFilePath = Configuration.LocalDataPath + @"logs\";
-                var errorFileName = @"error" + Operations.FormatDateToString(DateTime.Today, Formats.DateYYYYMMDD) +
+                var errorFileName = @"error" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYDDMM) +
                                     ".txt";
 
                 var lastError = new DebugError
                 {
                     CustomDetails = customDetails,
                     ErrorMessage = errorMessage,
-                    DateTime = "" + DateTime.Now,
+                    DateTime = "" + System.DateTime.Now,
                     UrlLocation = errorFilePath + errorFileName
                 };
 
@@ -71,14 +72,14 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 var warningFilePath = Configuration.LocalDataPath + @"logs\";
-                var warningFileName = @"warning" + Operations.FormatDateToString(DateTime.Today, Formats.DateYYYYMMDD) +
+                var warningFileName = @"warning" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYDDMM) +
                                       ".txt";
 
                 var lastWarning = new DebugError
                 {
                     CustomDetails = customDetails,
                     ErrorMessage = warningMessage,
-                    DateTime = "" + DateTime.Now,
+                    DateTime = "" + System.DateTime.Now,
                     UrlLocation = warningFilePath + warningFileName
                 };
 
@@ -112,10 +113,10 @@ namespace EllipseCommonsClassLibrary
                     return;
 
                 var queryFilePath = Configuration.LocalDataPath + @"queries\";
-                var queryFileName = @"queries" + Operations.FormatDateToString(DateTime.Today, Formats.DateYYYYMMDD) +
+                var queryFileName = @"queries" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYDDMM) +
                                     ".txt";
-
-                var dateTime = "" + DateTime.Now;
+                
+                var dateTime = "" + System.DateTime.Now;
 
                 var stringQuery = dateTime + "  : " + query;
 

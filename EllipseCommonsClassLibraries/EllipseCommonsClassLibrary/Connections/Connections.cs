@@ -22,8 +22,17 @@ namespace EllipseCommonsClassLibrary.Connections
         public static string EllipseTest = "Test";
 
         public static string SigcorProductivo = "SIGCOR";
+        public static string SigmanProductivo = "SIGMANPRD";
+        public static string SigmanTest = "SIGMANTST";
+        public static string EllipseSigmanProductivo = "Ellipse-Sigman-PRD";
+        public static string EllipseSigmanTest = "Ellipse-Sigman-TST";
         public static string ScadaRdb = "SCADARDB";
         public static string CustomDatabase = "Personalizada";
+        
+        private static string EllProd = "ellprod";
+        private static string EllCont = "ellcont";
+        private static string EllDesa = "elldesa";
+        private static string EllTest = "elltest";
 
         public const string DefaultDbReferenceName = "ELLIPSE";
 
@@ -178,7 +187,7 @@ namespace EllipseCommonsClassLibrary.Connections
                 }
                 else
                 {
-                    if (environment == EllipseProductivo)
+                    if (environment.Equals(EllipseProductivo) || environment.Equals(EllProd))
                     {
                         dbItem.Name = EllipseProductivo;
                         dbItem.DbName = "EL8PROD";
@@ -187,7 +196,7 @@ namespace EllipseCommonsClassLibrary.Connections
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
-                    else if (environment == EllipseDesarrollo)
+                    else if (environment.Equals(EllipseDesarrollo) || environment.Equals(EllDesa))
                     {
                         dbItem.Name = EllipseDesarrollo;
                         dbItem.DbName = "EL8DESA";
@@ -196,7 +205,7 @@ namespace EllipseCommonsClassLibrary.Connections
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
-                    else if (environment == EllipseContingencia)
+                    else if (environment.Equals(EllipseContingencia) || environment.Equals(EllCont))
                     {
                         dbItem.Name = EllipseContingencia;
                         dbItem.DbName = "EL8PROD";
@@ -205,7 +214,7 @@ namespace EllipseCommonsClassLibrary.Connections
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
-                    else if (environment == EllipseTest)
+                    else if (environment.Equals(EllipseTest) || environment.Equals(EllTest))
                     {
                         dbItem.Name = EllipseTest;
                         dbItem.DbName = "EL8TEST";
@@ -222,6 +231,47 @@ namespace EllipseCommonsClassLibrary.Connections
                         dbItem.DbPassword = "consulbo";
                         dbItem.DbLink = "@DBLELLIPSE8";
                         dbItem.DbReference = DefaultDbReferenceName;
+                    }
+                    else if (environment == SigmanProductivo)
+                    {
+                        dbItem.Name = SigmanProductivo;
+                        dbItem.DbName = "SIGCOPRD";
+                        dbItem.DbUser = "SIGMAN";
+                        dbItem.DbPassword = "sig0679";
+                        dbItem.DbLink = "@DBLELLIPSE8";
+                        dbItem.DbReference = DefaultDbReferenceName;
+                    }
+                    else if (environment == SigmanTest)
+                    {
+                        dbItem.Name = SigmanTest;
+                        dbItem.DbName = "SIGCOPRD";
+                        dbItem.DbUser = "SIGMAN";
+                        dbItem.DbPassword = "sig0679";
+                        dbItem.DbLink = "@DBLELLIPSE8";
+                        dbItem.DbReference = DefaultDbReferenceName;
+                    }
+                    else if (environment == EllipseSigmanProductivo)
+                    {
+                        dbItem.Name = EllipseSigmanProductivo;
+                        dbItem.DbName = "EL8PROD";
+                        dbItem.DbUser = "CONSULBO";
+                        dbItem.DbPassword = "ventyx15";
+                        dbItem.DbLink = "";
+                        dbItem.DbReference = DefaultDbReferenceName;
+                        dbItem.SecondaryDbLink = "@DBLSIGMAN";
+                        dbItem.SecondaryDbReference = DefaultDbReferenceName;
+                    }
+                    else if (environment == EllipseSigmanTest)
+                    {
+                        dbItem.Name = EllipseSigmanTest;
+                        dbItem.DbName = "EL8TEST";
+                        dbItem.DbUser = "CONSULBO";
+                        dbItem.DbPassword = "ventyx";
+                        dbItem.DbLink = "";
+                        dbItem.DbReference = DefaultDbReferenceName;
+                        dbItem.SecondaryDbLink = "@DBLSIGMAN"; //o @DBLSIG
+                        dbItem.SecondaryDbReference = DefaultDbReferenceName;
+
                     }
                     else if (environment == ScadaRdb)
                     {

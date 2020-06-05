@@ -13,14 +13,66 @@ using EllipseWorkOrdersClassLibrary;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using TaskRequirement = EllipseStandardJobsClassLibrary.TaskRequirement;
 using System.Diagnostics;
+using System.Web.Services.Description;
 
-//si es screen service
+// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace EllipseJobsClassLibrary
 {
     public static class JobActions
     {
-        public static List<Jobs> FetchJobsPost(EllipseFunctions ef, string district, string dateInclude, int searchCriteriaKey1, string searchCriteriaValue1, string startDate, string endDate)
+        public static List<Jobs> FetchJobs(string urlService, JobsMWPService.OperationContext opContext, JobSearchParam searchParam)
+        {
+            var jobList = new List<Jobs>();
+
+            var service = new JobsMWPService.JobsMWPService();
+            service.Url = urlService + "JobsMWPService";
+            var jobDto = new JobsMWPService.JobsMWPDTO();
+
+            switch (searchParam.DateIncludes)
+            {
+                case "Backlog":
+                    searchParam.DateIncludes = "BI";
+                    break;
+                case "Unscheduled":
+                    searchParam.DateIncludes = "UI";
+                    break;
+                case "Backlog and Unscheduled":
+                    searchParam.DateIncludes = "BU";
+                    break;
+                case "Backlog Only":
+                    searchParam.DateIncludes = "BO";
+                    break;
+                case "Unscheduled Only":
+                    searchParam.DateIncludes = "UO";
+                    break;
+                case "Backlog and Unscheduled Only":
+                    searchParam.DateIncludes = "UB";
+                    break;
+            }
+
+            switch (searchParam.SearchEntity)
+            {
+                case "Work Orders Only":
+                    searchParam.DateIncludes = "W";
+                    break;
+                case "MST Forecast Only":
+                    searchParam.DateIncludes = "M";
+                    break;
+                case "Work Orders and MST Forecast":
+                    searchParam.DateIncludes = "A";
+                    break;
+            }
+
+            var result = service.jobsSearch(opContext, searchParam.ToDto(), jobDto);
+            foreach (var item in result)
+            {
+                if(item != null && item.jobsMWPDTO != null)
+                    jobList.Add(new Jobs(item.jobsMWPDTO));
+            }
+            return jobList;
+        }
+        public static List<JobTask> FetchJobsTasksPost(EllipseFunctions ef, string district, string dateInclude, int searchCriteriaKey1, string searchCriteriaValue1, string startDate, string endDate)
         {
 
             ef.InitiatePostConnection();
@@ -128,7 +180,7 @@ namespace EllipseJobsClassLibrary
             var xElement = XDocument.Parse(responseDto.ResponseString).Root;
             if (xElement == null) return null;
 
-            var jobs = xElement.Descendants("dto").Select(dto => new Jobs
+            var jobs = xElement.Descendants("dto").Select(dto => new JobTask
             {
                 AssignPerson = (string)dto.Element("assignPerson"),
                 DstrctAcctCode = (string)dto.Element("dstrctAcctCode"),
@@ -304,7 +356,7 @@ namespace EllipseJobsClassLibrary
             }
         }
 
-        public static void SaveTasks(List<Jobs> tasksToSave)
+        public static void SaveTasks(List<JobTask> tasksToSave)
         {
             var ef = new EllipseFunctions();
             ef.SetDBSettings(Environments.SigcorProductivo);
@@ -489,7 +541,7 @@ namespace EllipseJobsClassLibrary
             return query;
         }
 
-        public static string SaveTaskQuery(string dbReference, Jobs t)
+        public static string SaveTaskQuery(string dbReference, JobTask t)
         {
             var query = "MERGE INTO SIGMDC.SEG_PROGRAMACION T USING " +
                          "(SELECT " +

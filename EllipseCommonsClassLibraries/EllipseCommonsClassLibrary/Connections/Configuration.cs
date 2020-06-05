@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Utilities.RuntimeConfigSettings;
 
 namespace EllipseCommonsClassLibrary.Connections
 {
@@ -237,7 +236,7 @@ namespace EllipseCommonsClassLibrary.Connections
                                         " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
                 if (File.Exists(TnsnamesFilePath + TnsnamesFileName))
                     FileWriter.MoveFileToDirectory(TnsnamesFileName, TnsnamesFilePath,
-                        TnsnamesFileName + DateTime.Today.Year + DateTime.Today.Month + DateTime.Today.Day + ".BAK",
+                        TnsnamesFileName + System.DateTime.Today.Year + System.DateTime.Today.Month + System.DateTime.Today.Day + ".BAK",
                         TnsnamesFilePath);
                 var configFilePath = FileWriter.NormalizePath(targetUrl, true);
                 const string configFileName = TnsnamesFileName;
@@ -388,7 +387,9 @@ namespace EllipseCommonsClassLibrary.Connections
         public string DbReference;
         public string DbUser;
         public string Name;
-
+        public string SecondaryDbLink;
+        public string SecondaryDbReference;
+        
         public DatabaseItem(string name, string dbName, string dbUser, string dbPassword, string dbReference)
         {
             SetDataBaseItem(name, dbName, dbUser, dbPassword, dbReference, null, null);

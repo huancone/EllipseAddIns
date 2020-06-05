@@ -403,51 +403,51 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var sqlQuery = Queries.GetBulkAccountCode(equipNo, eFunctions.dbReference, eFunctions.dbLink);
                 var drQuery = eFunctions.GetQueryResult(sqlQuery);
+                string selectedAccountCode = "";
 
-                if (!drQuery.Read()) return "";
-
-                if (!drQuery.IsClosed && drQuery.HasRows)
+                if (!drQuery.IsClosed && drQuery.HasRows && drQuery.Read())
                 {
-                    var equipClass = drQuery["EQUIP_CLASS"];
-                    var classCode19 = drQuery["EQUIP_CLASSIFX19"];
-                    var bulkAccount = drQuery["BULK_ACCOUNT"];
-                    var accountCode = drQuery["ACCOUNT_CODE"];
+                    var equipClass = drQuery["EQUIP_CLASS"].ToString();
+                    var classCode19 = drQuery["EQUIP_CLASSIFX19"].ToString();
+                    var bulkAccount = drQuery["BULK_ACCOUNT"].ToString();
+                    var accountCode = drQuery["ACCOUNT_CODE"].ToString();
 
                     //Es de mantenimiento 19 - MT
                     if(classCode19.Equals("MT"))
                     {
-                        string selectedAccountCode = "";
                         if (materialTypeId.Equals("ACPM"))
-                            selectedAccountCode = drQuery["BULK_ACCOUNT"].ToString();
+                            selectedAccountCode = bulkAccount;
                         else if (materialTypeId.Equals("B2"))
-                            selectedAccountCode = drQuery["BULK_ACCOUNT"].ToString();
+                            selectedAccountCode = bulkAccount;
                         else if (materialTypeId.Equals("B5"))
-                            selectedAccountCode = drQuery["BULK_ACCOUNT"].ToString();
+                            selectedAccountCode = bulkAccount;
                         else if (materialTypeId.Equals("X15W40"))
-                            selectedAccountCode = drQuery["ACCOUNT_CODE"].ToString();
+                            selectedAccountCode = accountCode;
                         else if (materialTypeId.Equals("SAE10"))
-                            selectedAccountCode = drQuery["ACCOUNT_CODE"].ToString();
+                            selectedAccountCode = accountCode;
                         else if (materialTypeId.Equals("SAE30"))
-                            selectedAccountCode = drQuery["ACCOUNT_CODE"].ToString();
+                            selectedAccountCode = accountCode;
                         else if (materialTypeId.Equals("SAE40"))
-                            selectedAccountCode = drQuery["ACCOUNT_CODE"].ToString();
+                            selectedAccountCode = accountCode;
                         else if (materialTypeId.Equals("TO460"))
-                            selectedAccountCode = drQuery["ACCOUNT_CODE"].ToString();
+                            selectedAccountCode = accountCode;
                         else if (materialTypeId.Equals("TO410"))
-                            selectedAccountCode = drQuery["ACCOUNT_CODE"].ToString();
+                            selectedAccountCode = accountCode;
                         else if (materialTypeId.Equals("TO430"))
-                            selectedAccountCode = drQuery["ACCOUNT_CODE"].ToString();
+                            selectedAccountCode = accountCode;
                         else if (materialTypeId.Equals("TO450"))
-                            selectedAccountCode = drQuery["ACCOUNT_CODE"].ToString();
-                        
-                        if(string.IsNullOrWhiteSpace(selectedAccountCode))
+                            selectedAccountCode = accountCode;
+
+                        if (string.IsNullOrWhiteSpace(selectedAccountCode))
                             throw new ArgumentException("NO HAY RELACIÓN DE CENTRO DE COSTO PARA EQUIPO IDENTIFICADO CON CÓDIGO 19 DE MANTENIMIENTO. POR FAVOR INGRESE CENTRO DE COSTO");
+                        
+                        return selectedAccountCode;
                     }
 
-                    return drQuery["BULK_ACCOUNT"].ToString();
+                    selectedAccountCode = bulkAccount;
                 }
-                else
-                    return "";
+                
+                return selectedAccountCode;
             }
             catch(ArgumentException ex)
             {

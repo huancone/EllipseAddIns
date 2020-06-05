@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities.RuntimeConfigSettings;
+using EllipseCommonsClassLibrary.Utilities;
 
 namespace EllipseCommonsClassLibrary
 {

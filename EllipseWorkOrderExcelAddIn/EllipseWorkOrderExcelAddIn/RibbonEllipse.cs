@@ -2077,6 +2077,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2201,7 +2202,7 @@ namespace EllipseWorkOrderExcelAddIn
                     }
 
                     if (ots != null && ots.Count > 0) continue;
-                    var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
+                    var replySheet = WorkOrderActions.CreateWorkOrder(urlService), opSheet, wo);
                     wo.SetWorkOrderDto(replySheet.workOrder.prefix, replySheet.workOrder.no);
                     if (cbFlagEstDuration.Checked)
                     {
