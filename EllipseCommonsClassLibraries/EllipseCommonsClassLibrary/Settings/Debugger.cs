@@ -18,6 +18,7 @@ namespace EllipseCommonsClassLibrary
         public static bool DebugWarnings = false;
         public static bool DebugQueries = false;
         public static bool ForceRegionalization = false;
+        public static bool DebugginMode = false;
 
         private static DebugError _lastError;
         private static DebugError _lastWarning;
@@ -36,7 +37,7 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 var errorFilePath = Configuration.LocalDataPath + @"logs\";
-                var errorFileName = @"error" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYDDMM) +
+                var errorFileName = @"error" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                     ".txt";
 
                 var lastError = new DebugError
@@ -72,7 +73,7 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 var warningFilePath = Configuration.LocalDataPath + @"logs\";
-                var warningFileName = @"warning" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYDDMM) +
+                var warningFileName = @"warning" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                       ".txt";
 
                 var lastWarning = new DebugError
@@ -113,7 +114,7 @@ namespace EllipseCommonsClassLibrary
                     return;
 
                 var queryFilePath = Configuration.LocalDataPath + @"queries\";
-                var queryFileName = @"queries" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYDDMM) +
+                var queryFileName = @"queries" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                     ".txt";
                 
                 var dateTime = "" + System.DateTime.Now;
@@ -126,6 +127,31 @@ namespace EllipseCommonsClassLibrary
             catch (Exception ex)
             {
                 MessageBox.Show("No se puede crear el Log del query consultado\n" + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static void LogDebugging(string content)
+        {
+            try
+            {
+                if (!DebugginMode)
+                    return;
+
+                var debugFilePath = Configuration.LocalDataPath + @"logs\";
+                var debugFileName = @"debug" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
+                                    ".txt";
+
+                var dateTime = "" + System.DateTime.Now;
+
+                var stringContent = dateTime + "  : " + content;
+
+                FileWriter.CreateDirectory(debugFilePath);
+                FileWriter.AppendTextToFile(stringContent, debugFileName, debugFilePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se puede crear el Log del contenido consultado\n" + ex.Message, "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

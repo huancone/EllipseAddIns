@@ -7,6 +7,7 @@
         public static string district;
         public static string position;
         //TO DO New District Variable
+        public static bool debuggingMode;
 
         public static void authenticate(string username, string password, string district, string position)
         {
@@ -21,5 +22,15 @@
             ClientConversation.username = username;
             ClientConversation.password = password;
         }
+
+        public static void StartDebugging()
+        {
+            ClientConversation.debuggingMode = true;
+        }
+        public static void StopDebugging()
+        {
+            ClientConversation.debuggingMode = false;
+        }
+
     }
 }

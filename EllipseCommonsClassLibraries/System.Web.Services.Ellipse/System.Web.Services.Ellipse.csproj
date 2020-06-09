@@ -56,12 +56,8 @@
   <ItemGroup>
     <Compile Include="AuthenticationExtension.cs" />
     <Compile Include="ClientConversation.cs" />
-    <Compile Include="EllipseBehaviorExtensionElement.cs" />
-    <Compile Include="EllipseHeaderBehavior.cs" />
-    <Compile Include="EllipseMessageInspector.cs" />
+    <Compile Include="FileWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SecurityHeader.cs" />
-    <Compile Include="ValueHeader.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -46,8 +46,7 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute, Version=1.0.5.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
       <HintPath>Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
@@ -58,14 +57,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBoxExcelAddIn.cs">
+    <Compile Include="Settings\AboutBoxExcelAddIn.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBoxExcelAddIn.Designer.cs">
+    <Compile Include="Settings\AboutBoxExcelAddIn.Designer.cs">
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\ArrayScreenNameValue.cs" />
-    <Compile Include="Debugger.cs" />
+    <Compile Include="Settings\AssemblyItem.cs" />
+    <Compile Include="Settings\Setting.cs" />
+    <Compile Include="Settings\Debugger.cs" />
     <Compile Include="Connections\Connections.cs" />
     <Compile Include="Constants\Districts.cs" />
     <Compile Include="Classes\EllipseCodeItem.cs" />
@@ -79,6 +80,8 @@
     <Compile Include="Constants\Groups.cs" />
     <Compile Include="Classes\InputBox.cs" />
     <Compile Include="Constants\ManagementArea.cs" />
+    <Compile Include="PrimitiveClasses\JobsMwpDto.cs" />
+    <Compile Include="PrimitiveClasses\TaskMwpDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -92,10 +95,10 @@
     </Compile>
     <Compile Include="Constants\QuarterMasters.cs" />
     <Compile Include="Classes\ReplyMessage.cs" />
-    <Compile Include="SettingsBox.cs">
+    <Compile Include="Settings\SettingsBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsBox.Designer.cs">
+    <Compile Include="Settings\SettingsBox.Designer.cs">
       <DependentUpon>SettingsBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DateTime.cs" />
@@ -123,7 +126,7 @@
     <Compile Include="Constants\WoTypeMtType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AboutBoxExcelAddIn.resx">
+    <EmbeddedResource Include="Settings\AboutBoxExcelAddIn.resx">
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAuthenticate.resx">
@@ -133,7 +136,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsBox.resx">
+    <EmbeddedResource Include="Settings\SettingsBox.resx">
       <DependentUpon>SettingsBox.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

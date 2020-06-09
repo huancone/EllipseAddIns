@@ -3,6 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
 {
+    // Clase en espera de eliminación en una versión posterior
+    // 20200605
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [Obsolete("Clase está obsoleta, Por favor usar MyUtilities.DateTime")]
     public static class Formats

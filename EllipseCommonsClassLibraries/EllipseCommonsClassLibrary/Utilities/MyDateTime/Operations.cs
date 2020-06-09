@@ -5,6 +5,8 @@ using EllipseCommonsClassLibrary.Utilities.Shifts;
 
 namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
 {
+    // Clase en espera de eliminación en una versión posterior
+    // 20200605
     [Obsolete("Class is deprecated. Please refer to MyUtilities and MyUtilities.DateTime for methods")]
     public static class Operations
     {

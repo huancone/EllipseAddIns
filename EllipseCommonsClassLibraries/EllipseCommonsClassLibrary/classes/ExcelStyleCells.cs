@@ -224,6 +224,7 @@ namespace EllipseCommonsClassLibrary.Classes
         public Range GetRange(long startColumn, long startRow, long endColumn, long endRow)
         {
             Worksheet excelSheet = (_alwaysActiveSheet && _excelSheet != null) ? (Worksheet)_excelApp.ActiveWorkbook.ActiveSheet : _excelSheet;
+
             return excelSheet != null ? excelSheet.Range[GetCell(startColumn, startRow), GetCell(endColumn, endRow)] : null;
         }
 

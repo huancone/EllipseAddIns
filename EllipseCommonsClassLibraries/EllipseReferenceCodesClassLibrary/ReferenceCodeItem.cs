@@ -175,7 +175,7 @@ namespace EllipseReferenceCodesClassLibrary
             }
             private void UpdateRefCode()
             {
-                RefCode = Operations.FormatDateToString(_date, Formats.DateYYYYMMDD);
+                RefCode = MyUtilities.ToString(_date);
             }
 
             public string GetRefCode()
@@ -293,7 +293,7 @@ namespace EllipseReferenceCodesClassLibrary
             }
             private void UpdateRefCode()
             {
-                RefCode = Operations.FormatTimeToString(_time, Formats.TimeHHMM, ":");
+                RefCode = MyUtilities.ToString(_time, "hh:mm");
             }
             public string GetRefCode()
             {

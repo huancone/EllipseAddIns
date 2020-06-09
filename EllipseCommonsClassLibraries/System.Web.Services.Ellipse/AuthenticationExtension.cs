@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Web.Services.Protocols;
 using System.Xml;
 using SoapMessage = System.Web.Services.Protocols.SoapMessage;
@@ -10,7 +13,8 @@ namespace System.Web.Services.Ellipse
     {
         private Stream inwardStream;
         private Stream outwardStream;
-
+        private static bool _debugginMode = false;
+        private static string _logPath = @"c:\ellipse\logs";
         public override void Initialize(object initializer)
 
         {
@@ -26,6 +30,7 @@ namespace System.Web.Services.Ellipse
             return (object) null;
         }
 
+
         public override Stream ChainStream(Stream stream)
         { 
             this.outwardStream = stream;
@@ -37,18 +42,34 @@ namespace System.Web.Services.Ellipse
         {
             if (!(message is SoapClientMessage))
                 return;
+            _debugginMode = ClientConversation.debuggingMode;
+
             switch (message.Stage)
             {
+                case SoapMessageStage.BeforeSerialize:
+                    if (_debugginMode)
+                        Log(message, "BeforeSerialize");
+                    break;
                 case SoapMessageStage.AfterSerialize:
-                    this.afterSerialize();
+                    this.AfterSerialize();
+                    if (_debugginMode)
+                        Log(message, "AfterSerialize");
                     break;
                 case SoapMessageStage.BeforeDeserialize:
-                    this.beforeDeserialize();
+                    this.BeforeDeserialize();
+                    if (_debugginMode)
+                        Log(message, "BeforeDeserialize");
+                    break;
+                case SoapMessageStage.AfterDeserialize:
+                    if (_debugginMode)
+                        Log(message, "AfterDeserialize");
                     break;
             }
+
+            
         }
 
-        private void beforeDeserialize()
+        private void BeforeDeserialize()
         {
             StreamReader streamReader = new StreamReader(this.outwardStream);
             StreamWriter streamWriter = new StreamWriter(this.inwardStream);
@@ -58,7 +79,7 @@ namespace System.Web.Services.Ellipse
             this.inwardStream.Position = 0L;
         }
 
-        private void afterSerialize()
+        private void AfterSerialize()
         {
             XmlDocument xDoc = new XmlDocument();
             this.inwardStream.Position = 0L;
@@ -76,7 +97,53 @@ namespace System.Web.Services.Ellipse
             streamWriter.Write(innerXml);
             streamWriter.Flush();
         }
+
+        #region debuggingMethods
+        private static void LogDebugging(string content)
+        {
+            try
+            {
+                if (!_debugginMode)
+                    return;
+
+                var debugFilePath = _logPath;
+                var debugFileName = @"debug" + System.DateTime.Today.ToString("yyyyMMdd") + ".txt";
+
+                var dateTime = System.DateTime.Now.ToString("yyyyMMdd hhmmss");
+
+                var stringContent = dateTime + "  : " + content;
+
+                FileWriter.CreateDirectory(debugFilePath);
+                FileWriter.AppendTextToFile(stringContent, debugFileName, debugFilePath);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        private void Log(SoapMessage message, string stage)
+        {
+
+            inwardStream.Position = 0;
+            string contents = (message is SoapServerMessage) ? "SoapRequest " : "SoapResponse ";
+            contents += stage + ";";
+
+            StreamReader reader = new StreamReader(inwardStream);
+
+            contents += reader.ReadToEnd();
+
+            inwardStream.Position = 0;
+
+            //log.Debug(contents);
+            LogDebugging("url:" + message.Url);
+            LogDebugging(contents);
+        }
+
+        #endregion debuggingMethods
     }
+
+    #region xmlHandlers
     public class QName
     {
         public string name;
@@ -130,4 +197,5 @@ namespace System.Web.Services.Ellipse
             return new XmlNodeEx(this, element);
         }
     }
+    #endregion
 }

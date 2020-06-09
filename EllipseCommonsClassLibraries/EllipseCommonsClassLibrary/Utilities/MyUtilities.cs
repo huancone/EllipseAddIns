@@ -228,6 +228,15 @@ namespace EllipseCommonsClassLibrary.Utilities
             }
         }
 
+        public static string ToString(bool value)
+        {
+            return "" + value;
+        }
+
+        public static string ToString(decimal value)
+        {
+            return "" + value;
+        }
         public static string ToString(System.DateTime date)
         {
             var format = DateTime.DateDefaultFormat;

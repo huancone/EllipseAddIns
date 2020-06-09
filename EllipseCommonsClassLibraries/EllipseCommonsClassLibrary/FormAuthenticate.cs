@@ -50,7 +50,7 @@ namespace EllipseCommonsClassLibrary
                 }
 
                 authSer.Url = _eFunctions.GetServicesUrl(SelectedEnvironment) + "/AuthenticatorService";
-                ClientConversation.authenticate(EllipseUser, EllipsePswd);
+                ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDsct, EllipsePost);
                 authSer.authenticate(opAuth);
 
                 #region Form Population

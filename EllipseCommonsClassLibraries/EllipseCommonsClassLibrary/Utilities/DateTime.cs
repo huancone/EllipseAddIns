@@ -14,23 +14,23 @@ namespace EllipseCommonsClassLibrary.Utilities
             public static string DateDefaultFormat = "yyyyMMdd";
             public static string DateTimeDefaultFormat = "yyyyMMdd hhmmss";
             public static string TimeDefaultFormat = "hhmmss";
-            public static string DateYYMMDD = "YY-MM-DD";
-            public static string DateYYDDMM = "YY-DD-MM";
-            public static string DateMMDDYY = "MM-DD-YY";
-            public static string DateDDMMYY = "DD-MM-YY";
+            public static string DateYYMMDD = "yy-MM-dd";
+            public static string DateYYDDMM = "yy-dd-MM";
+            public static string DateMMDDYY = "MM-dd-yy";
+            public static string DateDDMMYY = "dd-MM-yy";
 
-            public static string DateYYYYMMDD = "YYYY-MM-DD";
-            public static string DateYYYYDDMM = "YYYY-DD-MM";
-            public static string DateMMDDYYYY = "MM-DD-YYYY";
-            public static string DateDDMMYYYY = "DD-MM-YYYY";
+            public static string DateYYYYMMDD = "yyyy-MM-dd";
+            public static string DateYYYYDDMM = "yyyy-dd-MM";
+            public static string DateMMDDYYYY = "MM-dd-yyyy";
+            public static string DateDDMMYYYY = "dd-MM-yyyy";
 
-            public static string DateTimeYYYYMMDD_HHMM = "YYYY-MM-DD_HH-MM";
-            public static string DateTimeYYYYMMDD_HHMMSS = "YYYY-MM-DD_HH-MM-SS";
-            public static string DateTimeYYYYDDMM_HHMM = "YYYY-DD-MM_HH-MM";
-            public static string DateTimeYYYYDDMM_HHMMSS = "YYYY-DD-MM_HH-MM-SS";
+            public static string DateTimeYYYYMMDD_HHMM = "yyyy-MM-dd_hh-mm";
+            public static string DateTimeYYYYMMDD_HHMMSS = "yyyy-MM-dd_hh-mm-ss";
+            public static string DateTimeYYYYDDMM_HHMM = "yyyy-dd-MM_hh-mm";
+            public static string DateTimeYYYYDDMM_HHMMSS = "yyyy-dd-MM_hh-mm-ss";
 
-            public static string TimeHHMM = "HH-MM";
-            public static string TimeHHMMSS = "HH-MM-SS";
+            public static string TimeHHMM = "hh-mm";
+            public static string TimeHHMMSS = "hh-mm-ss";
 
             public static List<Slot> GetSlots(Slot[] shifts, System.DateTime startEvent, System.DateTime endEvent)
             {
