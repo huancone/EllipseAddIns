@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseBulkMaterialExcelAddIn.Properties;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Utilities;
@@ -18,6 +17,7 @@ using BMUItemService = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemS
 using EllipseEquipmentClassLibrary;
 using ListService = EllipseEquipmentClassLibrary.EquipmentListService;
 using System.Threading;
+using EllipseCommonsClassLibrary.Settings;
 
 namespace EllipseBulkMaterialExcelAddIn
 {
@@ -40,7 +40,7 @@ namespace EllipseBulkMaterialExcelAddIn
         private List<string> _optionList;
         private const string ValidationSheetName = "ValidationListSheet";
         private Thread _thread;
-
+        private CommonSettings _settings;
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             _excelApp = Globals.ThisAddIn.Application;
@@ -52,8 +52,37 @@ namespace EllipseBulkMaterialExcelAddIn
                 drpItem.Label = item;
                 drpEnvironment.Items.Add(drpItem);
             }
+
+            LoadSettings();
         }
 
+        public void LoadSettings()
+        {
+            var defaultConfig = new CommonSettings.Options();
+            defaultConfig.SetOption("AutoSort", "Y");
+            defaultConfig.SetOption("OverrideAccountCode", "Maintenance");
+            defaultConfig.SetOption("IgnoreItemError", "N");
+            _settings = new CommonSettings(defaultConfig);
+            var config = _settings.Configuration;
+
+            //Setting of Configuration Options from Config File (or default)
+            var overrideAccountCode = config.GetOptionValue("OverrideAccountCode");
+            if (overrideAccountCode.Equals("Maintenance"))
+                cbAccountElementOverrideMntto.Checked = true;
+            else if (overrideAccountCode.Equals("Disable"))
+                cbAccountElementOverrideDisable.Checked = true;
+            else if (overrideAccountCode.Equals("Alwats"))
+                cbAccountElementOverrideAlways.Checked = true;
+            else if (overrideAccountCode.Equals("Default"))
+                cbAccountElementOverrideDefault.Checked = true;
+            else
+                cbAccountElementOverrideDefault.Checked = true;
+            cbAutoSortItems.Checked = MyUtilities.IsTrue(config.GetOptionValue(defaultConfig.GetOption("AutoSort")));
+            cbIgnoreItemError.Checked = MyUtilities.IsTrue(config.GetOptionValue(defaultConfig.GetOption("IgnoreItemError")));
+
+            _settings.UpdateSettings();
+            //
+        }
         private void btnLoad_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -461,8 +490,8 @@ namespace EllipseBulkMaterialExcelAddIn
 
                         string itemAccountCode = null;
                         var materialTypeId = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull("" + _cells.GetCell(11, currentRow).Value));
-                        if (cbAccountElementOverride.Checked || string.IsNullOrWhiteSpace(newSheetHeader.DefaultAccountCode))
-                            itemAccountCode = BulkMaterialActions.GetBulkAccountCode(_eFunctions, _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value), materialTypeId);
+                        var equipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value);
+                        itemAccountCode = GetItemAccountCode(_eFunctions, newSheetHeader.DefaultAccountCode, equipNo, materialTypeId);
                         newSheetHeader.DefaultAccountCode = newSheetHeader.DefaultAccountCode ?? itemAccountCode;
 
                         if (currentSheetHeader == null)
@@ -485,7 +514,7 @@ namespace EllipseBulkMaterialExcelAddIn
                         var requestItem = new BulkMaterial.BulkMaterialUsageSheetItem
                         {
                             BulkMaterialUsageSheetId = "" + currentSheetHeader.BulkMaterialUsageSheetId,
-                            EquipmentReference = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(8, currentRow).Value),
+                            EquipmentReference = equipNo,
                             ComponentCode = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(9, currentRow).Value),
                             Modifier = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(10, currentRow).Value),
                             BulkMaterialTypeId = materialTypeId,
@@ -1311,6 +1340,89 @@ namespace EllipseBulkMaterialExcelAddIn
                 Debugger.LogError("RibbonEllipse:BulkMaterialExcecute()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
+        }
+
+        private string GetItemAccountCode(EllipseFunctions ef, string defaultAccountCode, string equipNo, string materialTypeId)
+        {
+            
+            if (cbAccountElementOverrideDisable.Checked)
+                return defaultAccountCode;
+            if (cbAccountElementOverrideDefault.Checked && !string.IsNullOrWhiteSpace(defaultAccountCode))
+                return defaultAccountCode;
+
+            var bulkItem = BulkMaterialActions.GetEquipmentBulkItem(_eFunctions, equipNo, materialTypeId);
+
+            if (bulkItem == null || bulkItem.EquipClassCode19 == null) return null;
+
+            if (cbAccountElementOverrideMntto.Checked && !bulkItem.EquipClassCode19.Equals("MT") && !string.IsNullOrWhiteSpace(defaultAccountCode))
+                return defaultAccountCode;
+
+            return bulkItem.PreferredAccountCode;
+
+        }
+
+        private bool CheckOverrideAccountCheckBoxes()
+        {
+            return (cbAccountElementOverrideDisable.Checked || 
+                   cbAccountElementOverrideAlways.Checked ||
+                   cbAccountElementOverrideDefault.Checked||
+                   cbAccountElementOverrideMntto.Checked);
+
+        }
+        private void cbAccountElementOverrideMntto_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("OverrideAccountCode", "Maintenance");
+            _settings.UpdateSettings();
+            cbAccountElementOverrideDisable.Checked = false;
+            cbAccountElementOverrideAlways.Checked = false;
+            cbAccountElementOverrideDefault.Checked = false;
+            if (!CheckOverrideAccountCheckBoxes())
+                cbAccountElementOverrideMntto.Checked = true;
+        }
+
+        private void cbAccountElementOverrideDisable_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("OverrideAccountCode", "Disable");
+            _settings.UpdateSettings();
+            cbAccountElementOverrideAlways.Checked = false;
+            cbAccountElementOverrideDefault.Checked = false;
+            cbAccountElementOverrideMntto.Checked = false;
+            if (!CheckOverrideAccountCheckBoxes())
+                cbAccountElementOverrideDisable.Checked = true;
+        }
+
+        private void cbAccountElementOverrideDefault_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("OverrideAccountCode", "Default");
+            _settings.UpdateSettings();
+            cbAccountElementOverrideDisable.Checked = false;
+            cbAccountElementOverrideAlways.Checked = false;
+            cbAccountElementOverrideMntto.Checked = false;
+            if (!CheckOverrideAccountCheckBoxes())
+                cbAccountElementOverrideDefault.Checked = true;
+        }
+
+        private void cbAccountElementOverrideAlways_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("OverrideAccountCode", "Always");
+            _settings.UpdateSettings();
+            cbAccountElementOverrideDisable.Checked = false;
+            cbAccountElementOverrideDefault.Checked = false;
+            cbAccountElementOverrideMntto.Checked = false;
+            if (!CheckOverrideAccountCheckBoxes())
+                cbAccountElementOverrideAlways.Checked = true;
+        }
+
+        private void cbAutoSortItems_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("AutoSort", MyUtilities.ToString(cbAutoSortItems.Checked));
+            _settings.UpdateSettings();
+        }
+
+        private void cbIgnoreItemError_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("IgnoreItemError", MyUtilities.ToString(cbIgnoreItemError.Checked));
+            _settings.UpdateSettings();
         }
     }
 }

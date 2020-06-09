@@ -11,7 +11,7 @@ using System.Security;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hambings SAS / Cerrejón Ltda")]
 [assembly: AssemblyProduct("EllipseBulkMaterialExcelAddIn")]
-[assembly: AssemblyCopyright("Copyright ©  2015-2017")]
+[assembly: AssemblyCopyright("Copyright ©  2015-2020")]
 [assembly: AssemblyTrademark("Hambings SAS")]
 [assembly: AssemblyCulture("")]
 
@@ -33,6 +33,6 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.2.0.5")]
-[assembly: AssemblyFileVersion("2.2.0.5")]
+[assembly: AssemblyVersion("2.2.0.6")]
+[assembly: AssemblyFileVersion("2.2.0.6")]
 

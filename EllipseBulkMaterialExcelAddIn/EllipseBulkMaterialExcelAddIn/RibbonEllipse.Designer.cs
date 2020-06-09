@@ -43,17 +43,22 @@
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoad = this.Factory.CreateRibbonButton();
             this.btnLoadSecond = this.Factory.CreateRibbonButton();
+            this.btnUnApplyDelete = this.Factory.CreateRibbonButton();
             this.btnValidateStats = this.Factory.CreateRibbonButton();
             this.btnImport = this.Factory.CreateRibbonButton();
-            this.btnUnApplyDelete = this.Factory.CreateRibbonButton();
             this.menuListActions = this.Factory.CreateRibbonMenu();
             this.btnReviewEquipList = this.Factory.CreateRibbonButton();
             this.btnReviewFromBulkSheet = this.Factory.CreateRibbonButton();
             this.btnAddToList = this.Factory.CreateRibbonButton();
             this.btnRemoveFromList = this.Factory.CreateRibbonButton();
+            this.menuOptions = this.Factory.CreateRibbonMenu();
+            this.menuAutoasignAccountCode = this.Factory.CreateRibbonMenu();
+            this.cbAccountElementOverrideDisable = this.Factory.CreateRibbonCheckBox();
+            this.cbAccountElementOverrideDefault = this.Factory.CreateRibbonCheckBox();
+            this.cbAccountElementOverrideAlways = this.Factory.CreateRibbonCheckBox();
+            this.cbAccountElementOverrideMntto = this.Factory.CreateRibbonCheckBox();
             this.cbAutoSortItems = this.Factory.CreateRibbonCheckBox();
             this.cbIgnoreItemError = this.Factory.CreateRibbonCheckBox();
-            this.cbAccountElementOverride = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpBulkMaterial.SuspendLayout();
@@ -102,13 +107,11 @@
             // 
             this.menuActions.Items.Add(this.btnLoad);
             this.menuActions.Items.Add(this.btnLoadSecond);
+            this.menuActions.Items.Add(this.btnUnApplyDelete);
             this.menuActions.Items.Add(this.btnValidateStats);
             this.menuActions.Items.Add(this.btnImport);
-            this.menuActions.Items.Add(this.btnUnApplyDelete);
             this.menuActions.Items.Add(this.menuListActions);
-            this.menuActions.Items.Add(this.cbAutoSortItems);
-            this.menuActions.Items.Add(this.cbIgnoreItemError);
-            this.menuActions.Items.Add(this.cbAccountElementOverride);
+            this.menuActions.Items.Add(this.menuOptions);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Actions";
             this.menuActions.Name = "menuActions";
@@ -127,6 +130,13 @@
             this.btnLoadSecond.ShowImage = true;
             this.btnLoadSecond.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadSecond_Click);
             // 
+            // btnUnApplyDelete
+            // 
+            this.btnUnApplyDelete.Label = "Unapply - Delete";
+            this.btnUnApplyDelete.Name = "btnUnApplyDelete";
+            this.btnUnApplyDelete.ShowImage = true;
+            this.btnUnApplyDelete.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUnApplyDelete_Click);
+            // 
             // btnValidateStats
             // 
             this.btnValidateStats.Label = "Validate Stats";
@@ -140,13 +150,6 @@
             this.btnImport.Name = "btnImport";
             this.btnImport.ShowImage = true;
             this.btnImport.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnImport_Click);
-            // 
-            // btnUnApplyDelete
-            // 
-            this.btnUnApplyDelete.Label = "Unapply - Delete";
-            this.btnUnApplyDelete.Name = "btnUnApplyDelete";
-            this.btnUnApplyDelete.ShowImage = true;
-            this.btnUnApplyDelete.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUnApplyDelete_Click);
             // 
             // menuListActions
             // 
@@ -186,23 +189,67 @@
             this.btnRemoveFromList.ShowImage = true;
             this.btnRemoveFromList.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnRemoveFromList_Click);
             // 
+            // menuOptions
+            // 
+            this.menuOptions.Items.Add(this.menuAutoasignAccountCode);
+            this.menuOptions.Items.Add(this.cbAutoSortItems);
+            this.menuOptions.Items.Add(this.cbIgnoreItemError);
+            this.menuOptions.Label = "Opciones";
+            this.menuOptions.Name = "menuOptions";
+            this.menuOptions.ShowImage = true;
+            // 
+            // menuAutoasignAccountCode
+            // 
+            this.menuAutoasignAccountCode.Items.Add(this.cbAccountElementOverrideDisable);
+            this.menuAutoasignAccountCode.Items.Add(this.cbAccountElementOverrideDefault);
+            this.menuAutoasignAccountCode.Items.Add(this.cbAccountElementOverrideAlways);
+            this.menuAutoasignAccountCode.Items.Add(this.cbAccountElementOverrideMntto);
+            this.menuAutoasignAccountCode.Label = "Centro de Costo";
+            this.menuAutoasignAccountCode.Name = "menuAutoasignAccountCode";
+            this.menuAutoasignAccountCode.ShowImage = true;
+            // 
+            // cbAccountElementOverrideDisable
+            // 
+            this.cbAccountElementOverrideDisable.Label = "Autosignar Desactivado";
+            this.cbAccountElementOverrideDisable.Name = "cbAccountElementOverrideDisable";
+            this.cbAccountElementOverrideDisable.ScreenTip = "Asignará el Centro de Costo ignorando el escrito y utilizará el relacionado con e" +
+    "l equipo y el tipo de material";
+            this.cbAccountElementOverrideDisable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbAccountElementOverrideDisable_Click);
+            // 
+            // cbAccountElementOverrideDefault
+            // 
+            this.cbAccountElementOverrideDefault.Label = "Autosignar Predeterminado";
+            this.cbAccountElementOverrideDefault.Name = "cbAccountElementOverrideDefault";
+            this.cbAccountElementOverrideDefault.ScreenTip = "Solo si no existe para el encabezado";
+            this.cbAccountElementOverrideDefault.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbAccountElementOverrideDefault_Click);
+            // 
+            // cbAccountElementOverrideAlways
+            // 
+            this.cbAccountElementOverrideAlways.Label = "Autosignar Siempre";
+            this.cbAccountElementOverrideAlways.Name = "cbAccountElementOverrideAlways";
+            this.cbAccountElementOverrideAlways.ScreenTip = "Ignora el Centro de Costo escrito y busca siempre el del item";
+            this.cbAccountElementOverrideAlways.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbAccountElementOverrideAlways_Click);
+            // 
+            // cbAccountElementOverrideMntto
+            // 
+            this.cbAccountElementOverrideMntto.Label = "Autosignar Mantenimiento";
+            this.cbAccountElementOverrideMntto.Name = "cbAccountElementOverrideMntto";
+            this.cbAccountElementOverrideMntto.ScreenTip = "Ignora el centro de costo escrito y busca el del ítem si pertenece a Mantenimient" +
+    "o. Predeterminado para los demás casos";
+            this.cbAccountElementOverrideMntto.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbAccountElementOverrideMntto_Click);
+            // 
             // cbAutoSortItems
             // 
             this.cbAutoSortItems.Checked = true;
             this.cbAutoSortItems.Label = "Ordenar Automáticamente";
             this.cbAutoSortItems.Name = "cbAutoSortItems";
+            this.cbAutoSortItems.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbAutoSortItems_Click);
             // 
             // cbIgnoreItemError
             // 
             this.cbIgnoreItemError.Label = "Ignorar Errores en Ítems";
             this.cbIgnoreItemError.Name = "cbIgnoreItemError";
-            // 
-            // cbAccountElementOverride
-            // 
-            this.cbAccountElementOverride.Label = "Autoasignar Centro de Costo";
-            this.cbAccountElementOverride.Name = "cbAccountElementOverride";
-            this.cbAccountElementOverride.ScreenTip = "Asignará el Centro de Costo ignorando el escrito y utilizará el relacionado con e" +
-    "l equipo y el tipo de material";
+            this.cbIgnoreItemError.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbIgnoreItemError_Click);
             // 
             // btnStopThread
             // 
@@ -249,7 +296,12 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreItemError;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAutoSortItems;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadSecond;
-        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAccountElementOverride;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAccountElementOverrideDisable;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAccountElementOverrideMntto;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAutoasignAccountCode;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAccountElementOverrideDefault;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAccountElementOverrideAlways;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuOptions;
     }
 
     partial class ThisRibbonCollection

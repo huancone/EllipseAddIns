@@ -296,7 +296,8 @@ namespace EllipseBulkMaterialExcelAddIn
             requestXml = requestXml + "						<bulkMaterialTypeId>" + requestItem.bulkMaterialTypeId + "</bulkMaterialTypeId>";
             requestXml = requestXml + "						<quantity displayMask=\"#########.##\">" + requestItem.quantity + "</quantity>";
             requestXml = requestXml + "						<unitPrice/>";
-            requestXml = requestXml + "						<meterReading>" + requestItem.meterReading + "</meterReading>";
+            if(requestItem.meterReadingSpecified)
+                requestXml = requestXml + "						<meterReading>" + requestItem.meterReading + "</meterReading>";
             requestXml = requestXml + "						<operationStatisticType>" + requestItem.operationStatisticType + "</operationStatisticType>";
             requestXml = requestXml + "						<componentCode>" + requestItem.componentCode + "</componentCode>";
             requestXml = requestXml + "						<modifier>" + requestItem.modifier + "</modifier>";
@@ -395,68 +396,76 @@ namespace EllipseBulkMaterialExcelAddIn
             }
         }
 
-        public static string GetBulkAccountCode(EllipseFunctions eFunctions, string equipNo, string materialTypeId)
+        public class EquipmentBulkItem
+        {
+            public string EquipNo;
+            public string EquipClass;
+            public string EquipClassCode19;
+            public string BulkAccount;
+            public string AccountCode;
+            public string PreferredAccountCode;
+        }
+
+        public static EquipmentBulkItem GetEquipmentBulkItem(EllipseFunctions eFunctions, string equipNo, string materialTypeId)
         {
             try
             {
-                if (string.IsNullOrEmpty(equipNo)) return "";
-
+                if (string.IsNullOrEmpty(equipNo)) return null;
+                
+                var item = new EquipmentBulkItem();
                 var sqlQuery = Queries.GetBulkAccountCode(equipNo, eFunctions.dbReference, eFunctions.dbLink);
                 var drQuery = eFunctions.GetQueryResult(sqlQuery);
-                string selectedAccountCode = "";
 
                 if (!drQuery.IsClosed && drQuery.HasRows && drQuery.Read())
                 {
-                    var equipClass = drQuery["EQUIP_CLASS"].ToString();
-                    var classCode19 = drQuery["EQUIP_CLASSIFX19"].ToString();
-                    var bulkAccount = drQuery["BULK_ACCOUNT"].ToString();
-                    var accountCode = drQuery["ACCOUNT_CODE"].ToString();
+                    item.EquipClass = drQuery["EQUIP_CLASS"].ToString();
+                    item.EquipClassCode19 =  drQuery["EQUIP_CLASSIFX19"].ToString();
+                    item.BulkAccount =  drQuery["BULK_ACCOUNT"].ToString();
+                    item.AccountCode = drQuery["ACCOUNT_CODE"].ToString();
 
                     //Es de mantenimiento 19 - MT
-                    if(classCode19.Equals("MT"))
+                    if (item.EquipClassCode19.Equals("MT"))
                     {
                         if (materialTypeId.Equals("ACPM"))
-                            selectedAccountCode = bulkAccount;
+                            item.PreferredAccountCode = item.BulkAccount;
                         else if (materialTypeId.Equals("B2"))
-                            selectedAccountCode = bulkAccount;
+                            item.PreferredAccountCode = item.BulkAccount;
                         else if (materialTypeId.Equals("B5"))
-                            selectedAccountCode = bulkAccount;
+                            item.PreferredAccountCode = item.BulkAccount;
                         else if (materialTypeId.Equals("X15W40"))
-                            selectedAccountCode = accountCode;
+                            item.PreferredAccountCode = item.AccountCode;
                         else if (materialTypeId.Equals("SAE10"))
-                            selectedAccountCode = accountCode;
+                            item.PreferredAccountCode = item.AccountCode;
                         else if (materialTypeId.Equals("SAE30"))
-                            selectedAccountCode = accountCode;
+                            item.PreferredAccountCode = item.AccountCode;
                         else if (materialTypeId.Equals("SAE40"))
-                            selectedAccountCode = accountCode;
+                            item.PreferredAccountCode = item.AccountCode;
                         else if (materialTypeId.Equals("TO460"))
-                            selectedAccountCode = accountCode;
+                            item.PreferredAccountCode = item.AccountCode;
                         else if (materialTypeId.Equals("TO410"))
-                            selectedAccountCode = accountCode;
+                            item.PreferredAccountCode = item.AccountCode;
                         else if (materialTypeId.Equals("TO430"))
-                            selectedAccountCode = accountCode;
+                            item.PreferredAccountCode = item.AccountCode;
                         else if (materialTypeId.Equals("TO450"))
-                            selectedAccountCode = accountCode;
+                            item.PreferredAccountCode = item.AccountCode;
 
-                        if (string.IsNullOrWhiteSpace(selectedAccountCode))
+                        if (string.IsNullOrWhiteSpace(item.PreferredAccountCode))
                             throw new ArgumentException("NO HAY RELACIÓN DE CENTRO DE COSTO PARA EQUIPO IDENTIFICADO CON CÓDIGO 19 DE MANTENIMIENTO. POR FAVOR INGRESE CENTRO DE COSTO");
-                        
-                        return selectedAccountCode;
                     }
-
-                    selectedAccountCode = bulkAccount;
+                    else
+                        item.PreferredAccountCode = item.BulkAccount;
                 }
-                
-                return selectedAccountCode;
+
+                return item;
             }
-            catch(ArgumentException ex)
+            catch (ArgumentException ex)
             {
                 throw ex;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Debugger.LogError("BulkMaterialActions.cs::GetBulkAccountCode", ex.Message);
-                return "";
+                return null;
             }
         }
     }
