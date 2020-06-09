@@ -264,14 +264,14 @@ namespace EllipseFotoPlanificacionExcelAddIn
             var selectedEnvironment = drpEnvironment.SelectedItem.Label;
 
             var urlService = _eFunctions.GetServicesUrl(selectedEnvironment);
-            //var urlServicePost = _eFunctions.GetServicesUrl(selectedEnvironment, ServiceType.PostService);
-            //_eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
+            var urlServicePost = _eFunctions.GetServicesUrl(selectedEnvironment, ServiceType.PostService);
+            _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
             //_eFunctions.SetDBSettings(selectedEnvironment);
 
             
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
+            ClientConversation.StartDebugging();
             #region searchParams
             var workGroupCriteriaKeyText = _cells.GetEmptyIfNull(_cells.GetCell("A3").Value);
             var workGroupCriteriaValue = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
@@ -288,7 +288,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
             #endregion
             try
             {
-                List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, startDate, finishDate, workGroupCriteriaKey, workGroupCriteriaValue, searchEntities, additionalJobs);
+                //List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, startDate, finishDate, workGroupCriteriaKey, workGroupCriteriaValue, searchEntities, additionalJobs);
+                List<PlannerItem> ellipseJobs = PlannerActions.Test(_eFunctions, urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, startDate, finishDate, workGroupCriteriaKey, workGroupCriteriaValue, searchEntities, additionalJobs);
                 var i = TitleRow01 + 1;
                 foreach (var item in ellipseJobs)
                 {
@@ -299,7 +300,6 @@ namespace EllipseFotoPlanificacionExcelAddIn
                         //GENERAL
                         _cells.GetCell(01, i).Value = "" + item.WorkGroup;
                         _cells.GetCell(02, i).Value = "" + item.EquipNo;
-                        /*
                         _cells.GetCell(03, i).Value = "" + item.CompCode;
                         _cells.GetCell(04, i).Value = "" + item.CompModCode;
                         _cells.GetCell(05, i).Value = "" + item.WorkOrder;
@@ -310,8 +310,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                         _cells.GetCell(10, i).Value = "" + item.NextSchedDate;
                         _cells.GetCell(11, i).Value = "" + item.LastPerfDate;
                         _cells.GetCell(12, i).Value = "" + item.DurationHours;
-                        _cells.GetCell(13, i).Value = "" + item.LaboutHors;
-                        */
+                        _cells.GetCell(13, i).Value = "" + item.LabourHours;
                     }
                     catch (Exception ex)
                     {

@@ -221,6 +221,10 @@
       <Project>{838948ce-353c-41fe-904e-753b4678aeeb}</Project>
       <Name>EllipseJobsClassLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseMaintSchedTaskClassLibrary\EllipseMaintSchedTaskClassLibrary.csproj">
+      <Project>{250f108b-496b-4c5a-a9ae-56bad5716b60}</Project>
+      <Name>EllipseMaintSchedTaskClassLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
       <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
       <Name>System.Web.Services.Ellipse</Name>

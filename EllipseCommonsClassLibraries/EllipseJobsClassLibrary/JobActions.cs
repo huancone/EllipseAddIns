@@ -26,7 +26,7 @@ namespace EllipseJobsClassLibrary
             var jobList = new List<Jobs>();
 
             var service = new JobsMWPService.JobsMWPService();
-            service.Url = urlService + "JobsMWPService";
+            service.Url = urlService + "/JobsMWPService";
             var jobDto = new JobsMWPService.JobsMWPDTO();
 
             switch (searchParam.DateIncludes)
@@ -54,17 +54,19 @@ namespace EllipseJobsClassLibrary
             switch (searchParam.SearchEntity)
             {
                 case "Work Orders Only":
-                    searchParam.DateIncludes = "W";
+                    searchParam.SearchEntity = "W";
                     break;
                 case "MST Forecast Only":
-                    searchParam.DateIncludes = "M";
+                    searchParam.SearchEntity = "M";
                     break;
                 case "Work Orders and MST Forecast":
-                    searchParam.DateIncludes = "A";
+                    searchParam.SearchEntity = "A";
                     break;
             }
 
-            var result = service.jobsSearch(opContext, searchParam.ToDto(), jobDto);
+            var searchParamDto = searchParam.ToDto();
+            var result = service.jobsSearch(opContext, searchParamDto, jobDto);
+            
             foreach (var item in result)
             {
                 if(item != null && item.jobsMWPDTO != null)

@@ -6,6 +6,9 @@ using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Utilities;
 using EllipseMaintSchedTaskClassLibrary.MaintSchedTskService;
 using System.Web.Services.Ellipse.Post;
+using EllipseCommonsClassLibrary.ScreenService;
+using EllipseMaintSchedTaskClassLibrary.MstService;
+using OperationContext = EllipseMaintSchedTaskClassLibrary.MaintSchedTskService.OperationContext;
 
 namespace EllipseMaintSchedTaskClassLibrary
 {
@@ -135,7 +138,7 @@ namespace EllipseMaintSchedTaskClassLibrary
         public static MaintSchedTskServiceCreateReplyDTO CreateMaintenanceScheduleTask(string urlService, OperationContext opContext, MaintenanceScheduleTask mst)
         {
 
-            var proxyEquip = new MaintSchedTskService.MaintSchedTskService { Url = urlService + "/MaintSchedTskService" };
+            var service = new MaintSchedTskService.MaintSchedTskService { Url = urlService + "/MaintSchedTskService" };
             var request = new MaintSchedTskServiceCreateRequestDTO
             {
                 equipmentGrpId = mst.EquipmentGrpId,
@@ -217,14 +220,14 @@ namespace EllipseMaintSchedTaskClassLibrary
             };
             //
             request.customAttributes = attributeList;
-            return proxyEquip.create(opContext, request);
+            return service.create(opContext, request);
         }
 
         [Obsolete("ModifyMaintenanceScheduleTask is deprecated, please use ModifyMaintenanceScheduleTaskPost instead.")]
         public static MaintSchedTskServiceModifyReplyDTO ModifyMaintenanceScheduleTask(string urlService, OperationContext opContext, MaintenanceScheduleTask mst)
         {
 
-            var proxyEquip = new MaintSchedTskService.MaintSchedTskService();
+            var service = new MaintSchedTskService.MaintSchedTskService();
             var request = new MaintSchedTskServiceModifyRequestDTO
             {
                 equipmentGrpId = mst.EquipmentGrpId,
@@ -328,8 +331,8 @@ namespace EllipseMaintSchedTaskClassLibrary
 
             request.customAttributes = attributeList.ToArray();
             
-            proxyEquip.Url = urlService + "/MaintSchedTskService";
-            return proxyEquip.modify(opContext, request);
+            service.Url = urlService + "/MaintSchedTskService";
+            return service.modify(opContext, request);
         }
 
         public static void CreateMaintenanceScheduleTaskPost(EllipseFunctions ef, MaintenanceScheduleTask mst)
@@ -665,7 +668,7 @@ namespace EllipseMaintSchedTaskClassLibrary
 
         public static MaintSchedTskServiceDeleteReplyDTO DeleteMaintenanceScheduleTask(string urlService, OperationContext opContext, MaintenanceScheduleTask mst)
         {
-            var proxyEquip = new MaintSchedTskService.MaintSchedTskService { Url = urlService + "/MaintSchedTskService" };
+            var service = new MaintSchedTskService.MaintSchedTskService { Url = urlService + "/MaintSchedTskService" };
 
             //actualizamos primero el indicador y eliminamos la frecuencia
             var requestUpdate = new MaintSchedTskServiceModifyRequestDTO
@@ -711,8 +714,192 @@ namespace EllipseMaintSchedTaskClassLibrary
                 maintenanceSchTask = mst.MaintenanceSchTask
             };
 
-            proxyEquip.modify(opContext, requestUpdate);
-            return proxyEquip.delete(opContext, request);
+            service.modify(opContext, requestUpdate);
+            return service.delete(opContext, request);
+        }
+
+        public static OperationContext GetMaintSchedTskServiceOperationContext(string district, string position)
+        {
+            var maxInstances = 100;
+            var returnWarnings = false;
+            
+            var opContext = new MaintSchedTskService.OperationContext()
+            {
+                district = district,
+                position = position,
+                maxInstances = maxInstances,
+                maxInstancesSpecified = true,
+                returnWarnings = returnWarnings,
+                returnWarningsSpecified = true
+            };
+            return opContext;
+        }
+        public static OperationContext GetMaintSchedTskServiceOperationContext(string district, string position, int maxInstances, bool returnWarnings)
+        {
+            var opContext = new MaintSchedTskService.OperationContext()
+            {
+                district = district,
+                position = position,
+                maxInstances = maxInstances,
+                maxInstancesSpecified = true,
+                returnWarnings = returnWarnings,
+                returnWarningsSpecified = true
+            };
+            return opContext;
+        }
+
+        public static MstService.OperationContext GetMstServiceOperationContext(string district, string position)
+        {
+            var maxInstances = 100;
+            var returnWarnings = false;
+
+            var opContext = new MstService.OperationContext()
+            {
+                district = district,
+                position = position,
+                maxInstances = maxInstances,
+                maxInstancesSpecified = true,
+                returnWarnings = returnWarnings,
+                returnWarningsSpecified = true
+            };
+            return opContext;
+        }
+        public static MstService.OperationContext GetMstServiceOperationContext(string district, string position, int maxInstances, bool returnWarnings)
+        {
+            var opContext = new MstService.OperationContext()
+            {
+                district = district,
+                position = position,
+                maxInstances = maxInstances,
+                maxInstancesSpecified = true,
+                returnWarnings = returnWarnings,
+                returnWarningsSpecified = true
+            };
+            return opContext;
+        }
+
+        public static void ForecastMaintenanceScheduleTaskPost(EllipseFunctions ef, MstForecast mstForecast)
+        {
+            var list = new List<Mst>();
+
+            /*
+            foreach (var item in result)
+            {
+                var mstItem = new Mst(item.MSTiMWPDTO);
+                list.Add(mstItem);
+            }*/
+            //
+
+            var operationId1 = Util.GetNewOperationId();
+            //var operationId2 = Util.GetNewOperationId();
+
+            var responseDto = ef.InitiatePostConnection();
+            if (responseDto.GotErrorMessages())
+                throw new Exception(responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text)));
+            var requestXml = "";
+            requestXml = requestXml + "<interaction>";
+            requestXml = requestXml + "<actions>";
+            requestXml = requestXml + "     <action>";
+            requestXml = requestXml + "         <name>service</name>";
+            requestXml = requestXml + "         <data>";
+            requestXml = requestXml + "             <name>com.mincom.ellipse.service.m8mwp.mst.MSTService</name>";
+            requestXml = requestXml + "             <operation>forecast</operation>";
+            requestXml = requestXml + "             <className>mfui.actions.grid::ParentChildSearchAction</className>";
+            requestXml = requestXml + "             <returnWarnings>true</returnWarnings>";
+            requestXml = requestXml + "             <dto uuid=\"" + Util.GetNewOperationId() + "\">";
+            requestXml = requestXml + "                <maintSchTask>" + mstForecast.MaintSchTask + "</maintSchTask>";
+            requestXml = requestXml + "                <equipNo>" + mstForecast.EquipNo + "</equipNo>";
+            requestXml = requestXml + "                <nInstances>" + mstForecast.Ninstances + "</nInstances>";
+            requestXml = requestXml + "                <showRelated>" + mstForecast.ShowRelated + "</showRelated>";
+            requestXml = requestXml + "                <hideSuppressed>" + mstForecast.HideSuppressed + "</hideSuppressed>";
+            requestXml = requestXml + "                <compCode>" + mstForecast.CompCode + "</compCode>";
+            requestXml = requestXml + "                <compModCode>" + mstForecast.CompModCode+ "</compModCode>";
+            requestXml = requestXml + "                <rec700Type>" + mstForecast.Rec700Type + "</rec700Type>";
+            requestXml = requestXml + "             </dto>";
+            //requestXml = requestXml + "             <requiredAttributes>";
+            //requestXml = requestXml + "                <reference>true</reference>";
+            //requestXml = requestXml + "                <plannedStartDate>true</plannedStartDate>";
+            //requestXml = requestXml + "                <plannedStartTime>true</plannedStartTime>";
+            //requestXml = requestXml + "                <woDesc>true</woDesc>";
+            //requestXml = requestXml + "                <tolerancePC>true</tolerancePC>";
+            //requestXml = requestXml + "                <toleranceDays>true</toleranceDays>";
+            //requestXml = requestXml + "                <maintSchTask>true</maintSchTask>";
+            //requestXml = requestXml + "                <equipNo>true</equipNo>";
+            //requestXml = requestXml + "                <nInstances>true</nInstances>";
+            //requestXml = requestXml + "                <showRelated>true</showRelated>";
+            //requestXml = requestXml + "                <hideSuppressed>true</hideSuppressed>";
+            //requestXml = requestXml + "                <compCode>true</compCode>";
+            //requestXml = requestXml + "                <compModCode>true</compModCode>";
+            //requestXml = requestXml + "                <rec700Type>true</rec700Type>";
+            //requestXml = requestXml + "             </requiredAttributes>";
+            //requestXml = requestXml + "             <maxInstances>50</maxInstances>";
+            requestXml = requestXml + "         </data>";
+            requestXml = requestXml + "         <id>" + operationId1 + "</id>";
+            requestXml = requestXml + "     </action>";
+            //requestXml = requestXml + "     <action>";
+            //requestXml = requestXml + "     	<name>csbDirectiveForGrid</name>";
+            //requestXml = requestXml + "     	<data>";
+            //requestXml = requestXml + "     		<applicationName>msemst</applicationName>";
+            //requestXml = requestXml + "     		<applicationPage>detail</applicationPage>";
+            //requestXml = requestXml + "     		<gridId>forecastGrid</gridId>";
+            //requestXml = requestXml + "     		<metadata>";
+            //requestXml = requestXml + "     			<applicationName>msemst</applicationName>";
+            //requestXml = requestXml + "     			<applicationPage>detail</applicationPage>";
+            //requestXml = requestXml + "     			<applicationCustomName/>";
+            //requestXml = requestXml + "     			<isCustomised>false</isCustomised>";
+            //requestXml = requestXml + "     			<applicationCode/>";
+            //requestXml = requestXml + "     		</metadata>";
+            //requestXml = requestXml + "     	</data>";
+            //requestXml = requestXml + "     	<id>" + operationId2 + "</id>";
+            //requestXml = requestXml + "     </action>";
+            requestXml = requestXml + "</actions>";
+            requestXml = requestXml + "<chains>";
+            //requestXml = requestXml + "	<chain>";
+            //requestXml = requestXml + "		<fieldPairings/>";
+            //requestXml = requestXml + "		<mapping/>";
+            //requestXml = requestXml + "		<fromAction>" + operationId1 + "</fromAction>";
+            //requestXml = requestXml + "		<toAction>" + operationId2 + "</toAction>";
+            //requestXml = requestXml + "	</chain>";
+            requestXml = requestXml + "</chains>";
+            requestXml = requestXml + "<connectionId>" + ef.PostServiceProxy.ConnectionId + "</connectionId>";
+            requestXml = requestXml + "<application>msemst</application>";
+            requestXml = requestXml + "<applicationPage>read</applicationPage>";
+            requestXml = requestXml + "</interaction>";
+
+
+            requestXml = requestXml.Replace("&", "&amp;");
+            //requestXml = requestXml.Replace("\t", "");
+            responseDto = ef.ExecutePostRequest(requestXml);
+
+            MSTiMWPServiceResult [] serviceResult;
+            
+
+            if (!responseDto.GotErrorMessages()) return;
+            var errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
+            if (!errorMessage.Equals(""))
+                throw new Exception(errorMessage);
+
+            //return list;
+        }
+        public static List<Mst> ForecastMaintenanceScheduleTask(string urlService, MstService.OperationContext opContext, MstForecast mstForecast)
+        {
+            var list = new List<Mst>();
+            var service = new MstService.MSTService() { Url = urlService + "/MSTService" };
+
+
+            var searchParams = mstForecast.ToDto();
+
+            var mstMwRestart = new MstService.MSTiMWPDTO();
+
+            var result = service.forecast(opContext, searchParams, null);
+
+            foreach (var item in result)
+            {
+                var mstItem = new Mst(item.MSTiMWPDTO);
+                list.Add(mstItem);
+            }
+
+            return list;
         }
 
         public static class Queries
