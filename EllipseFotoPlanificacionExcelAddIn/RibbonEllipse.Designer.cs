@@ -45,6 +45,7 @@
             this.btnReviewSigman = this.Factory.CreateRibbonButton();
             this.btnUpdateSigman = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.cbIgnoreNextTask = this.Factory.CreateRibbonCheckBox();
             this.tabEllipse.SuspendLayout();
             this.grpPhotoPlanner.SuspendLayout();
             this.box1.SuspendLayout();
@@ -93,6 +94,7 @@
             this.menuActions.Items.Add(this.btnReviewEllipse);
             this.menuActions.Items.Add(this.btnReviewSigman);
             this.menuActions.Items.Add(this.btnUpdateSigman);
+            this.menuActions.Items.Add(this.cbIgnoreNextTask);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "&Acciones";
             this.menuActions.Name = "menuActions";
@@ -125,6 +127,11 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // cbIgnoreNextTask
+            // 
+            this.cbIgnoreNextTask.Label = "Ignorar Siguiente Fecha";
+            this.cbIgnoreNextTask.Name = "cbIgnoreNextTask";
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -154,6 +161,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReviewSigman;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateSigman;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreNextTask;
     }
 
     partial class ThisRibbonCollection

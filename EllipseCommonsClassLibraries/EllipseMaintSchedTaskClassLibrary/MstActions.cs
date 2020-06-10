@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Utilities;
 using EllipseMaintSchedTaskClassLibrary.MaintSchedTskService;
 using System.Web.Services.Ellipse.Post;
+using System.Xml;
 using EllipseCommonsClassLibrary.ScreenService;
 using EllipseMaintSchedTaskClassLibrary.MstService;
 using OperationContext = EllipseMaintSchedTaskClassLibrary.MaintSchedTskService.OperationContext;
@@ -778,18 +780,8 @@ namespace EllipseMaintSchedTaskClassLibrary
             return opContext;
         }
 
-        public static void ForecastMaintenanceScheduleTaskPost(EllipseFunctions ef, MstForecast mstForecast)
+        public static List<Mst> ForecastMaintenanceScheduleTaskPost(EllipseFunctions ef, MstForecast mstForecast)
         {
-            var list = new List<Mst>();
-
-            /*
-            foreach (var item in result)
-            {
-                var mstItem = new Mst(item.MSTiMWPDTO);
-                list.Add(mstItem);
-            }*/
-            //
-
             var operationId1 = Util.GetNewOperationId();
             //var operationId2 = Util.GetNewOperationId();
 
@@ -871,16 +863,25 @@ namespace EllipseMaintSchedTaskClassLibrary
             //requestXml = requestXml.Replace("\t", "");
             responseDto = ef.ExecutePostRequest(requestXml);
 
-            MSTiMWPServiceResult [] serviceResult;
             
-
-            if (!responseDto.GotErrorMessages()) return;
             var errorMessage = responseDto.Errors.Aggregate("", (current, msg) => current + (msg.Field + " " + msg.Text));
             if (!errorMessage.Equals(""))
                 throw new Exception(errorMessage);
 
-            //return list;
+            var mstList = new List<Mst>();
+            var xPath = "/interaction/actions/action/data/result/dto";
+            var xnList = MyUtilities.Xml.GetNodeList(responseDto.ResponseXML, xPath);
+            foreach (XmlNode xn in xnList)
+            {
+                var myObject = new Mst();
+                myObject = (Mst)MyUtilities.Xml.DeSerializeXmlNodeToObject(xn, myObject.GetType());
+                mstList.Add(myObject);
+            }
+            return mstList;
         }
+
+        /*
+
         public static List<Mst> ForecastMaintenanceScheduleTask(string urlService, MstService.OperationContext opContext, MstForecast mstForecast)
         {
             var list = new List<Mst>();
@@ -900,7 +901,7 @@ namespace EllipseMaintSchedTaskClassLibrary
             }
 
             return list;
-        }
+        }*/
 
         public static class Queries
         {

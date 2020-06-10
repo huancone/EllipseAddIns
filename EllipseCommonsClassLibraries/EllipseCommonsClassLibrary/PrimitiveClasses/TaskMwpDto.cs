@@ -1,304 +1,307 @@
 ﻿
+using System.Xml.Serialization;
+
 namespace EllipseCommonsClassLibrary.PrimitiveClasses
 {
     public class TaskMwpDto : JobsMwpDto
     {
-        public string AccountCodeDescription;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("accountCodeDescription")] public string AccountCodeDescription;//Agregado para MstService.MSTiMWPDTO
 
-        public string ActLabHrs;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("actLabHrs")] public string ActLabHrs;//Agregado para MstService.MSTiMWPDTO
 
-        public string ActualCostReallocation;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("actualCostReallocation")] public string ActualCostReallocation;//Agregado para MstService.MSTiMWPDTO
 
-        public string ActualTotalCost;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("actualTotalCost")] public string ActualTotalCost;//Agregado para MstService.MSTiMWPDTO
 
-        public string AssocEquipmentItemNo;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("assocEquipmentItemNo")] public string AssocEquipmentItemNo;//Agregado para MstService.MSTiMWPDTO
 
-        public string AssociatedEquipment;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("associatedEquipment")] public string AssociatedEquipment;//Agregado para MstService.MSTiMWPDTO
 
-        public string AuthsdBy;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("authsdBy")] public string AuthsdBy;//Agregado para MstService.MSTiMWPDTO
 
-        public string BillableInd;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("billableInd")] public string BillableInd;//Agregado para MstService.MSTiMWPDTO
 
-        public string BillingLvlInd;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("billingLvlInd")] public string BillingLvlInd;//Agregado para MstService.MSTiMWPDTO
 
-        public string CalculatedEquipmentFlag;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("calculatedEquipmentFlag")] public string CalculatedEquipmentFlag;//Agregado para MstService.MSTiMWPDTO
 
-        public string CalculatedLabFlag;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("calculatedLabFlag")] public string CalculatedLabFlag;//Agregado para MstService.MSTiMWPDTO
 
-        public string CalculatedMatFlag;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("calculatedMatFlag")] public string CalculatedMatFlag;//Agregado para MstService.MSTiMWPDTO
 
-        public string CalculatedOtherFlag;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("calculatedOtherFlag")] public string CalculatedOtherFlag;//Agregado para MstService.MSTiMWPDTO
 
-        public string CalculatedTotalFlag;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("calculatedTotalFlag")] public string CalculatedTotalFlag;//Agregado para MstService.MSTiMWPDTO
 
-        public string ClosedStatus;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("closedStatus")] public string ClosedStatus;//Agregado para MstService.MSTiMWPDTO
 
-        public string CompletedBy;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("completedBy")] public string CompletedBy;//Agregado para MstService.MSTiMWPDTO
 
-        public string CompletionText;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("completionText")] public string CompletionText;//Agregado para MstService.MSTiMWPDTO
 
-        public string CompletionTextExists;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("completionTextExists")] public string CompletionTextExists;//Agregado para MstService.MSTiMWPDTO
 
-        public string ConAstSegLength;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("conAstSegLength")] public string ConAstSegLength;//Agregado para MstService.MSTiMWPDTO
 
-        public string CreationDate;//Agregado para MstService.MSTiMWPDTO
-        
-        public string CreationTime;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("creationDate")] public string CreationDate;//Agregado para MstService.MSTiMWPDTO
 
-        public string CurrentStatDate1;//Agregado para MstService.MSTiMWPDTO
-        
-        public string CurrentStatDate2;//Agregado para MstService.MSTiMWPDTO
-        
-        public string CurrentStatType1;//Agregado para MstService.MSTiMWPDTO
-        
-        public string CurrentStatType2;//Agregado para MstService.MSTiMWPDTO
-        
-        public string CurrentStatValue1;//Agregado para MstService.MSTiMWPDTO
-        
-        public string CurrentStatValue2;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("creationTime")] public string CreationTime;//Agregado para MstService.MSTiMWPDTO
 
-        public string EquipmentClassDescription;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("currentStatDate1")] public string CurrentStatDate1;//Agregado para MstService.MSTiMWPDTO
 
-        public string ExistingPlannedFinishDate;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("currentStatDate2")] public string CurrentStatDate2;//Agregado para MstService.MSTiMWPDTO
 
-        public string ExistingPlannedFinishTime;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("currentStatType1")] public string CurrentStatType1;//Agregado para MstService.MSTiMWPDTO
 
-        public string ExistingPlannedStartDate;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("currentStatType2")] public string CurrentStatType2;//Agregado para MstService.MSTiMWPDTO
 
-        public string ExistingPlannedStartTime;//Agregado para MstService.MSTiMWPDTO
-        
-        public string EstimateDescription;//Agregado para MstService.MSTiMWPDTO
-        
-        public string EstimateNo;//Agregado para MstService.MSTiMWPDTO
-        
-        public string EstimatedTotalCost;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("currentStatValue1")] public string CurrentStatValue1;//Agregado para MstService.MSTiMWPDTO
 
-        public string ExtendedText;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("currentStatValue2")] public string CurrentStatValue2;//Agregado para MstService.MSTiMWPDTO
 
-        public string ExtendedTextExists;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("equipmentClassDescription")] public string EquipmentClassDescription;//Agregado para MstService.MSTiMWPDTO
 
-        public string FinalCostIndicator;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("existingPlannedFinishDate")] public string ExistingPlannedFinishDate;//Agregado para MstService.MSTiMWPDTO
 
-        public string ImmediateInspections;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("existingPlannedFinishTime")] public string ExistingPlannedFinishTime;//Agregado para MstService.MSTiMWPDTO
 
-        public string LastModifiedDate;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("existingPlannedStartDate")] public string ExistingPlannedStartDate;//Agregado para MstService.MSTiMWPDTO
 
-        public string LastModifiedTime;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("existingPlannedStartTime")] public string ExistingPlannedStartTime;//Agregado para MstService.MSTiMWPDTO
 
-        public string LastTranRloc;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("estimateDescription")] public string EstimateDescription;//Agregado para MstService.MSTiMWPDTO
 
-        public string LinkOffsetType;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("estimateNo")] public string EstimateNo;//Agregado para MstService.MSTiMWPDTO
 
-        public string LinkScheduleType;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("estimatedTotalCost")] public string EstimatedTotalCost;//Agregado para MstService.MSTiMWPDTO
 
-        public string MaintTypeDescription;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("extendedText")] public string ExtendedText;//Agregado para MstService.MSTiMWPDTO
 
-        public string MustStartInd;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("extendedTextExists")] public string ExtendedTextExists;//Agregado para MstService.MSTiMWPDTO
 
-        public string NoTasksCompl;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("finalCostIndicator")] public string FinalCostIndicator;//Agregado para MstService.MSTiMWPDTO
 
-        public string OrigSchedDate;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("immediateInspections")] public string ImmediateInspections;//Agregado para MstService.MSTiMWPDTO
 
-        public string OutServDate;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("lastModifiedDate")] public string LastModifiedDate;//Agregado para MstService.MSTiMWPDTO
 
-        public string OutServTime;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("lastModifiedTime")] public string LastModifiedTime;//Agregado para MstService.MSTiMWPDTO
 
-        public string OutageDescription;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("lastTranRloc")] public string LastTranRloc;//Agregado para MstService.MSTiMWPDTO
 
-        public string OutageReference;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("linkOffsetType")] public string LinkOffsetType;//Agregado para MstService.MSTiMWPDTO
 
-        public string OutageStatus;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("linkScheduleType")] public string LinkScheduleType;//Agregado para MstService.MSTiMWPDTO
 
-        public string PaperHist;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("maintTypeDescription")] public string MaintTypeDescription;//Agregado para MstService.MSTiMWPDTO
 
-        public string ParentWoDescription;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("mustStartInd")] public string MustStartInd;//Agregado para MstService.MSTiMWPDTO
 
-        public string PartsAvailabe;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("noTasksCompl")] public string NoTasksCompl;//Agregado para MstService.MSTiMWPDTO
 
-        public string PermitReqdSw;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("origSchedDate")] public string OrigSchedDate;//Agregado para MstService.MSTiMWPDTO
 
-        public string PlanOffsetSw;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("outServDate")] public string OutServDate;//Agregado para MstService.MSTiMWPDTO
 
-        public string QuoteValue;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("outServTime")] public string OutServTime;//Agregado para MstService.MSTiMWPDTO
 
-        public string ReallocationCostAccount;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("outageDescription")] public string OutageDescription;//Agregado para MstService.MSTiMWPDTO
 
-        public string ReallocationCrEe;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("outageReference")] public string OutageReference;//Agregado para MstService.MSTiMWPDTO
 
-        public string ReallocationFreqInd;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("outageStatus")] public string OutageStatus;//Agregado para MstService.MSTiMWPDTO
 
-        public string ReallocationLimitVal;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("paperHist")] public string PaperHist;//Agregado para MstService.MSTiMWPDTO
 
-        public string ReallocationMarginPc;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("parentWoDescription")] public string ParentWoDescription;//Agregado para MstService.MSTiMWPDTO
 
-        public string ReallocationMethod;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("partsAvailabe")] public string PartsAvailabe;//Agregado para MstService.MSTiMWPDTO
 
-        public string ReallocationProject;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("permitReqdSw")] public string PermitReqdSw;//Agregado para MstService.MSTiMWPDTO
 
-        public string ReallocationVarAccount;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("planOffsetSw")] public string PlanOffsetSw;//Agregado para MstService.MSTiMWPDTO
 
-        public string ReallocationWo;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("quoteValue")] public string QuoteValue;//Agregado para MstService.MSTiMWPDTO
 
-        public string RelatedWo;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("reallocationCostAccount")] public string ReallocationCostAccount;//Agregado para MstService.MSTiMWPDTO
 
-        public string RespondedDate;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("reallocationCrEe")] public string ReallocationCrEe;//Agregado para MstService.MSTiMWPDTO
 
-        public string RespondedTime;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("reallocationFreqInd")] public string ReallocationFreqInd;//Agregado para MstService.MSTiMWPDTO
 
-        public string RestartMstiTaskNo;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("reallocationLimitVal")] public string ReallocationLimitVal;//Agregado para MstService.MSTiMWPDTO
 
-        public string RevenueCode;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("reallocationMarginPc")] public string ReallocationMarginPc;//Agregado para MstService.MSTiMWPDTO
 
-        public string SchSegLength;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("reallocationMethod")] public string ReallocationMethod;//Agregado para MstService.MSTiMWPDTO
 
-        public string SegmentUom;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("reallocationProject")] public string ReallocationProject;//Agregado para MstService.MSTiMWPDTO
 
-        public string ServiceOffDate;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("reallocationVarAccount")] public string ReallocationVarAccount;//Agregado para MstService.MSTiMWPDTO
 
-        public string ServiceOffTime;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("reallocationWo")] public string ReallocationWo;//Agregado para MstService.MSTiMWPDTO
 
-        public string ServiceOnDate;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("relatedWo")] public string RelatedWo;//Agregado para MstService.MSTiMWPDTO
 
-        public string ServiceOnTime;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("respondedDate")] public string RespondedDate;//Agregado para MstService.MSTiMWPDTO
 
-        public string ShutdownEquipmentNo;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("respondedTime")] public string RespondedTime;//Agregado para MstService.MSTiMWPDTO
 
-        public string ShutdownEquipmentRef;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("restartMstiTaskNo")] public string RestartMstiTaskNo;//Agregado para MstService.MSTiMWPDTO
 
-        public string UpperCostLimit;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("revenueCode")] public string RevenueCode;//Agregado para MstService.MSTiMWPDTO
 
-        public string WoStatusMDescription;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("schSegLength")] public string SchSegLength;//Agregado para MstService.MSTiMWPDTO
 
-        public string WoStatusUDescription;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("segmentUom")] public string SegmentUom;//Agregado para MstService.MSTiMWPDTO
 
-        public string WoTypeDescription;//Agregado para MstService.MSTiMWPDTO
+        [XmlElement("serviceOffDate")] public string ServiceOffDate;//Agregado para MstService.MSTiMWPDTO
 
-        public string WorkRequestNumber;//Agregado para MstService.MSTiMWPDTO
-        
-        public string AplCompCode;
+        [XmlElement("serviceOffTime")] public string ServiceOffTime;//Agregado para MstService.MSTiMWPDTO
 
-        public string AplEgi;
+        [XmlElement("serviceOnDate")] public string ServiceOnDate;//Agregado para MstService.MSTiMWPDTO
 
-        public string AplEquipment;
+        [XmlElement("serviceOnTime")] public string ServiceOnTime;//Agregado para MstService.MSTiMWPDTO
 
-        public string AplModCode;
+        [XmlElement("shutdownEquipmentNo")] public string ShutdownEquipmentNo;//Agregado para MstService.MSTiMWPDTO
 
-        public string AplSequenceNumber;
+        [XmlElement("shutdownEquipmentRef")] public string ShutdownEquipmentRef;//Agregado para MstService.MSTiMWPDTO
 
-        public string AplType;
+        [XmlElement("upperCostLimit")] public string UpperCostLimit;//Agregado para MstService.MSTiMWPDTO
 
-        public string AssignPersonForTasks;
+        [XmlElement("woStatusMDescription")] public string WoStatusMDescription;//Agregado para MstService.MSTiMWPDTO
 
-        public string AssignPersonName;
+        [XmlElement("woStatusUDescription")] public string WoStatusUDescription;//Agregado para MstService.MSTiMWPDTO
 
-        public string CalculatedTotalCosts;
+        [XmlElement("woTypeDescription")] public string WoTypeDescription;//Agregado para MstService.MSTiMWPDTO
 
-        public string CompletionComments;
+        [XmlElement("workRequestNumber")] public string WorkRequestNumber;//Agregado para MstService.MSTiMWPDTO
 
-        public string CompletionCommentsHeader;
+        [XmlElement("aplCompCode")] public string AplCompCode;
 
-        public string CompletionInstruction;
+        [XmlElement("aplEgi")] public string AplEgi;
 
-        public string CrewForTasks;
+        [XmlElement("aplEquipment")] public string AplEquipment;
 
-        public string CrewTypeForTasks;
+        [XmlElement("aplModCode")] public string AplModCode;
 
-        public string EarliestFinDate;
+        [XmlElement("aplSequenceNumber")] public string AplSequenceNumber;
 
-        public string EarliestFinTime;
+        [XmlElement("aplType")] public string AplType;
 
-        public string EarliestStrDate;
+        [XmlElement("assignPersonForTasks")] public string AssignPersonForTasks;
 
-        public string EarliestStrTime;
+        [XmlElement("assignPersonName")] public string AssignPersonName;
 
-        public string EstimatedLabourHours;
+        [XmlElement("calculatedTotalCosts")] public string CalculatedTotalCosts;
 
-        public string EstimatedTotalCosts;
+        [XmlElement("completionComments")] public string CompletionComments;
 
-        public string FloatDays;
+        [XmlElement("completionCommentsHeader")] public string CompletionCommentsHeader;
 
-        public string JobDescCode;
+        [XmlElement("completionInstruction")] public string CompletionInstruction;
 
-        public string JobDescCodeDescription;
+        [XmlElement("crewForTasks")] public string CrewForTasks;
 
-        public string JobInstructions;
+        [XmlElement("crewTypeForTasks")] public string CrewTypeForTasks;
 
-        public string LatestStrDate;
+        [XmlElement("earliestFinDate")] public string EarliestFinDate;
 
-        public string LatestStrTime;
+        [XmlElement("earliestFinTime")] public string EarliestFinTime;
 
-        public string LinkedTaskInd;
+        [XmlElement("earliestStrDate")] public string EarliestStrDate;
 
-        public string MachineHoursEstimated;
+        [XmlElement("earliestStrTime")] public string EarliestStrTime;
 
-        public string ResourceGroups;
+        [XmlElement("estimatedLabourHours")] public string EstimatedLabourHours;
 
-        public string RestartChildTaskNumber;
+        [XmlElement("estimatedTotalCosts")] public string EstimatedTotalCosts;
 
-        public string RestartParentTaskNumber;
+        [XmlElement("floatDays")] public string FloatDays;
 
-        public string SafetyInstruction;
+        [XmlElement("jobDescCode")] public string JobDescCode;
 
-        public string ScheduledUnitsDay;
+        [XmlElement("jobDescCodeDescription")] public string JobDescCodeDescription;
 
-        public string StatusDescription;
+        [XmlElement("jobInstructions")] public string JobInstructions;
 
-        public string TaskActualFinishDate;
+        [XmlElement("latestStrDate")] public string LatestStrDate;
 
-        public string TaskActualFinishTime;
+        [XmlElement("latestStrTime")] public string LatestStrTime;
 
-        public string TaskActualStartDate;
+        [XmlElement("linkedTaskInd")] public string LinkedTaskInd;
 
-        public string TaskActualStartTime;
+        [XmlElement("machineHoursEstimated")] public string MachineHoursEstimated;
 
-        public string TaskComplete;
+        [XmlElement("resourceGroups")] public string ResourceGroups;
 
-        public string TaskCompletionText;
+        [XmlElement("restartChildTaskNumber")] public string RestartChildTaskNumber;
 
-        public string TaskCreationDate;
+        [XmlElement("restartParentTaskNumber")] public string RestartParentTaskNumber;
 
-        public string TaskCreationTime;
+        [XmlElement("safetyInstruction")] public string SafetyInstruction;
 
-        public string TaskDescription;
+        [XmlElement("scheduledUnitsDay")] public string ScheduledUnitsDay;
 
-        public string TaskEffort;
+        [XmlElement("statusDescription")] public string StatusDescription;
 
-        public string TaskJobDescription;
+        [XmlElement("taskActualFinishDate")] public string TaskActualFinishDate;
 
-        public string TaskLocationFrom;
+        [XmlElement("taskActualFinishTime")] public string TaskActualFinishTime;
 
-        public string TaskLocationTo;
+        [XmlElement("taskActualStartDate")] public string TaskActualStartDate;
 
-        public string TaskNotes;
+        [XmlElement("taskActualStartTime")] public string TaskActualStartTime;
 
-        public string TaskPlannerPriority;
+        [XmlElement("taskComplete")] public string TaskComplete;
 
-        public string TaskResources;
+        [XmlElement("taskCompletionText")] public string TaskCompletionText;
 
-        public string TaskUnitsComplete;
+        [XmlElement("taskCreationDate")] public string TaskCreationDate;
 
-        public string TaskUnitsRequired;
+        [XmlElement("taskCreationTime")] public string TaskCreationTime;
 
-        public string TemplateType;
+        [XmlElement("taskDescription")] public string TaskDescription;
 
-        public string UncompletedTodos;
+        [XmlElement("taskEffort")] public string TaskEffort;
 
-        public string UnitsPerDay;
+        [XmlElement("taskJobDescription")] public string TaskJobDescription;
 
-        public string UserStatus;
+        [XmlElement("taskLocationFrom")] public string TaskLocationFrom;
 
-        public string UserStatusDescription;
+        [XmlElement("taskLocationTo")] public string TaskLocationTo;
 
-        public string WoTaskDesc;
+        [XmlElement("taskNotes")] public string TaskNotes;
 
-        public string WorkActivityClassification;
+        [XmlElement("taskPlannerPriority")] public string TaskPlannerPriority;
 
-        public string WorkCentre;
+        [XmlElement("taskResources")] public string TaskResources;
 
-        public string WorkGroupForTasks;
+        [XmlElement("taskUnitsComplete")] public string TaskUnitsComplete;
 
-        public string WorkRelease;
+        [XmlElement("taskUnitsRequired")] public string TaskUnitsRequired;
 
-        public string WorkReleasePrior;
+        [XmlElement("templateType")] public string TemplateType;
+
+        [XmlElement("uncompletedTodos")] public string UncompletedTodos;
+
+        [XmlElement("unitsPerDay")] public string UnitsPerDay;
+
+        [XmlElement("userStatus")] public string UserStatus;
+
+        [XmlElement("userStatusDescription")] public string UserStatusDescription;
+
+        [XmlElement("woTaskDesc")] public string WoTaskDesc;
+
+        [XmlElement("workActivityClassification")] public string WorkActivityClassification;
+
+        [XmlElement("workCentre")] public string WorkCentre;
+
+        [XmlElement("workGroupForTasks")] public string WorkGroupForTasks;
+
+        [XmlElement("workRelease")] public string WorkRelease;
+
+        [XmlElement("workReleasePrior")] public string WorkReleasePrior;
+
     }
 }

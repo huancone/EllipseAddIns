@@ -60,37 +60,23 @@ namespace System.Web.Services.Ellipse
 
         public static void CreateDirectory(string directoryPath)
         {
-            try
-            {
-                // Determine whether the directory exists.
-                if (Directory.Exists(directoryPath))
-                    return;
+            // Determine whether the directory exists.
+            if (Directory.Exists(directoryPath))
+                return;
 
-                // Try to create the directory.
-                Directory.CreateDirectory(directoryPath);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            // Try to create the directory.
+            Directory.CreateDirectory(directoryPath);
         }
 
         public static void DeleteDirectory(string directoryPath)
         {
-            try
-            {
-                // Determine whether the directory exists.
-                if (!Directory.Exists(directoryPath))
-                    return;
+            // Determine whether the directory exists.
+            if (!Directory.Exists(directoryPath))
+                return;
 
-                // Try to delete the directory.
-                var di = new DirectoryInfo(directoryPath);
-                di.Delete();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            // Try to delete the directory.
+            var di = new DirectoryInfo(directoryPath);
+            di.Delete();
         }
 
         public static void DeleteFile(string directoryPath, string fileName)
@@ -100,65 +86,37 @@ namespace System.Web.Services.Ellipse
 
         public static void DeleteFile(string urlFileName)
         {
-            try
-            {
-                // Determine whether the file exists.
-                if (!File.Exists(urlFileName))
-                    return;
+            // Determine whether the file exists.
+            if (!File.Exists(urlFileName))
+                return;
 
-                // Try to delete the file.
-                var fi = new FileInfo(urlFileName);
-                fi.Delete();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            // Try to delete the file.
+            var fi = new FileInfo(urlFileName);
+            fi.Delete();
         }
 
         public static bool CheckDirectoryExist(string directoryPath)
         {
-            try
-            {
-                // Determine whether the directory exists.
-                return Directory.Exists(directoryPath);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            // Determine whether the directory exists.
+            return Directory.Exists(directoryPath);
         }
 
         public static void CopyFileToDirectory(string fileName, string sourcePath, string targetPath,
             bool overwrite = true)
         {
-            try
-            {
-                var sourceFile = Path.Combine(sourcePath, fileName);
-                var destFile = Path.Combine(targetPath, fileName);
+            var sourceFile = Path.Combine(sourcePath, fileName);
+            var destFile = Path.Combine(targetPath, fileName);
 
-                File.Copy(sourceFile, destFile, overwrite);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            File.Copy(sourceFile, destFile, overwrite);
         }
 
         public static void MoveFileToDirectory(string sourceFileName, string sourcePath, string targetFileName,
             string targetPath)
         {
-            try
-            {
-                var sourceFile = Path.Combine(sourcePath, sourceFileName);
-                var destFile = Path.Combine(targetPath, targetFileName);
+            var sourceFile = Path.Combine(sourcePath, sourceFileName);
+            var destFile = Path.Combine(targetPath, targetFileName);
 
-                File.Move(sourceFile, destFile);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            File.Move(sourceFile, destFile);
         }
     }
 }

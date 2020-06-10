@@ -60,7 +60,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
             return list;
         }
 
-        public static List<PlannerItem> FetchEllipsePlannerItems(string urlService, string district, string position, string startDate, string finishDate, int workGroupCriteriaKey, string workGroupCriteriaValue, string searchEntities, string additionalJobs)
+        public static List<PlannerItem> FetchEllipsePlannerItems(EllipseFunctions ef, string urlService, string district, string position, JobSearchParam searchParam, bool ignoreNextTask)
         {
             var plannerList = new List<PlannerItem>();
 
@@ -74,28 +74,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 returnWarningsSpecified = true
             };
 
-            List<string> groupList = null;
-            if (workGroupCriteriaKey == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(workGroupCriteriaValue))
-            {
-                groupList = Groups.GetWorkGroupList(workGroupCriteriaValue).Select(g => g.Name).ToList(); ;
-            }
-            else if (workGroupCriteriaKey == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(workGroupCriteriaValue))
-            {
-                groupList = Groups.GetWorkGroupList().Where(g => g.Details == workGroupCriteriaValue).Select(g => g.Name).ToList();
-            }
-            else
-            {
-                groupList = new List<string>();
-                groupList.Add(workGroupCriteriaValue);
-            }
 
-
-            var searchParam = new JobSearchParam();
-            searchParam.PlanStrDate = startDate;
-            searchParam.PlanFinDate = finishDate;
-            searchParam.WorkGroups = groupList.ToArray();
-            searchParam.DateIncludes = additionalJobs;
-            searchParam.SearchEntity = searchEntities;
 
 
             var jobList = JobActions.FetchJobs(urlService, opContext, searchParam);
@@ -111,37 +90,46 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 item.CompModCode  = "" + job.CompModCode;
                 item.WorkOrder  = "" + job.WorkOrder;
                 item.MaintSchedTask  = "" + job.MaintSchTask;
-                item.MonitoringPeriod  = "" + job.PlanStrDate;
+                item.MonitoringPeriod  = !string.IsNullOrWhiteSpace(job.PlanStrDate) ? "" + job.PlanStrDate.Substring(0, 6) : job.PlanStrDate;
                 item.CreationDate  = "" + job.RaisedDate;
                 item.PlanDate  = "" + job.PlanStrDate;
                 item.NextSchedDate = "";
                 item.LastPerfDate  = "" + job.LastPerformedDate;
                 item.DurationHours  = "" + job.EstDurHrs;
                 item.LabourHours  = "" + job.EstLabHrs;
-
+                
                 var forecastSearch = new MstForecast();
                 forecastSearch.CompCode = item.CompCode;
                 forecastSearch.EquipNo = item.EquipNo;
                 forecastSearch.MaintSchTask = item.MaintSchedTask;
                 forecastSearch.CompModCode = item.CompModCode;
                 forecastSearch.HideSuppressed = "Y";
-                forecastSearch.Ninstances = "1";
+                forecastSearch.Ninstances = "10";
                 forecastSearch.Rec700Type = "ES";
                 forecastSearch.ShowRelated = "N";
 
-                try
+                if (!ignoreNextTask)
                 {
-                    var fcList = MstActions.ForecastMaintenanceScheduleTask(urlService, fcOpContext, forecastSearch);
-                    if (fcList != null && fcList.Count >= 1)
+                    try
                     {
-                        item.NextSchedDate = fcList[0].PlanStrDate;
-                        item.LastPerfDate = string.IsNullOrWhiteSpace(item.LastPerfDate) ? fcList[0].LastPerformedDate : item.LastPerfDate;
+                        var fcList = MstActions.ForecastMaintenanceScheduleTaskPost(ef, forecastSearch);
+                        foreach (var mst in fcList)
+                        {
+                            if (MyUtilities.ToInteger(mst.PlanStrDate) > MyUtilities.ToInteger(item.PlanDate))
+                            {
+                                item.NextSchedDate = mst.PlanStrDate;
+                                item.LastPerfDate = string.IsNullOrWhiteSpace(item.LastPerfDate) ? mst.LastPerformedDate : item.LastPerfDate;
+                                break;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        item.NextSchedDate = ex.Message;
                     }
                 }
-                catch (Exception ex)
-                {
-                    item.NextSchedDate = ex.Message;
-                }
+                else
+                    item.NextSchedDate = "IGNORED DATE";
 
                 plannerList.Add(item);
             }
@@ -175,7 +163,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
             forecastSearch.MaintSchTask = item.MaintSchedTask;
             forecastSearch.CompModCode = item.CompModCode;
             forecastSearch.HideSuppressed = "Y";
-            forecastSearch.Ninstances = "1";
+            forecastSearch.Ninstances = "3";
             forecastSearch.Rec700Type = "ES";
             forecastSearch.ShowRelated = "N";
 
@@ -190,7 +178,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 }
                 */
                 
-                MstActions.ForecastMaintenanceScheduleTaskPost(ef, forecastSearch);
+               MstActions.ForecastMaintenanceScheduleTaskPost(ef, forecastSearch);
             }
             catch (Exception ex)
             {

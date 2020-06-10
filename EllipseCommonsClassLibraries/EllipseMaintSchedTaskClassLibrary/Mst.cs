@@ -2,41 +2,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 using EllipseCommonsClassLibrary.PrimitiveClasses;
 using EllipseCommonsClassLibrary.Utilities;
 
 namespace EllipseMaintSchedTaskClassLibrary
 {
+    [XmlRoot(ElementName = "dto")]
     public class Mst : TaskMwpDto
     {
-        public string AddedToOutage;
+        [XmlElement("addedToOutage")] public string AddedToOutage;
 
-        public string AutoReqInd;
+        [XmlElement("autoReqInd")] public string AutoReqInd;
 
-        public string CommitStartDate;
+        [XmlElement("commitStartDate")] public string CommitStartDate;
 
-        public string CommitStartTime;
+        [XmlElement("commitStartTime")] public string CommitStartTime;
 
-        public string FixedScheduling;
+        [XmlElement("fixedScheduling")] public string FixedScheduling;
 
-        public string ForceConversion;
+        [XmlElement("forceConversion")] public string ForceConversion;
 
-        public string Overriding;
+        [XmlElement("overriding")] public string Overriding;
 
-        public string PlannedStartDate;
+        [XmlElement("plannedStartDate")] public string PlannedStartDate;
 
-        public string PlannedStartTime;
+        [XmlElement("plannedStartTime")] public string PlannedStartTime;
 
-        public string PrintJobCard;
+        [XmlElement("printJobCard")] public string PrintJobCard;
 
-        public string SchedInd700;
+        [XmlElement("schedInd700")] public string SchedInd700;
 
-        public string ToleranceDays;
+        [XmlElement("toleranceDays")] public string ToleranceDays;
 
-        public string TolerancePc;
+        [XmlElement("tolerancePc")] public string TolerancePc;
 
-        public string UnitsScale;
+        [XmlElement("unitsScale")] public string UnitsScale;
 
+        public Mst()
+        {
+
+        }
         public Mst(MstService.MSTiMWPDTO mstiMwpDto)
         {
 

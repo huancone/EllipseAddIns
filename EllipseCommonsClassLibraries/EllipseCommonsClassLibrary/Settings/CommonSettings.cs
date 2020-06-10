@@ -71,11 +71,11 @@ namespace EllipseCommonsClassLibrary.Settings
                 var c = Deserialize(path + @"\config.xml");
                 return c;
             }
-            catch (DirectoryNotFoundException ex)
+            catch (DirectoryNotFoundException)
             {
                 return UpdateSettings(defaultOptions);
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
                 return UpdateSettings(defaultOptions);
             }

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
+﻿using System.IO;
 using System.Web.Services.Protocols;
 using System.Xml;
-using SoapMessage = System.Web.Services.Protocols.SoapMessage;
 
 namespace System.Web.Services.Ellipse
 {
@@ -116,9 +111,9 @@ namespace System.Web.Services.Ellipse
                 FileWriter.CreateDirectory(debugFilePath);
                 FileWriter.AppendTextToFile(stringContent, debugFileName, debugFilePath);
             }
-            catch (Exception ex)
+            catch
             {
-                throw;
+                // ignored
             }
         }
 
@@ -146,39 +141,39 @@ namespace System.Web.Services.Ellipse
     #region xmlHandlers
     public class QName
     {
-        public string name;
-        public string uri;
+        public string Name;
+        public string Uri;
 
         public QName(string name, string uri)
         {
-            this.name = name;
-            this.uri = uri;
+            this.Name = name;
+            this.Uri = uri;
         }
     }
     public class XmlNodeEx
     {
-        private XmlDocumentEx doc;
-        private XmlElement node;
+        private XmlDocumentEx Doc;
+        private XmlElement Node;
 
         public XmlNodeEx(XmlDocumentEx doc, XmlElement node)
         {
-            this.doc = doc;
-            this.node = node;
+            this.Doc = doc;
+            this.Node = node;
         }
 
         public XmlNodeEx AppendChild(QName qname)
         {
-            return this.doc.AppendChild((XmlNode)this.node, qname);
+            return this.Doc.AppendChild((XmlNode)this.Node, qname);
         }
 
         public void SetNode(QName qname, string value)
         {
-            this.AppendChild(qname).node.InnerText = value;
+            this.AppendChild(qname).Node.InnerText = value;
         }
 
         public void SetAttribute(string name, string value)
         {
-            this.node.SetAttribute(name, value);
+            this.Node.SetAttribute(name, value);
         }
     }
     public class XmlDocumentEx
@@ -192,7 +187,7 @@ namespace System.Web.Services.Ellipse
 
         public XmlNodeEx AppendChild(XmlNode parent, QName qname)
         {
-            XmlElement element = this.xDoc.CreateElement(qname.name, qname.uri);
+            XmlElement element = this.xDoc.CreateElement(qname.Name, qname.Uri);
             parent.InsertBefore((XmlNode)element, parent.FirstChild);
             return new XmlNodeEx(this, element);
         }

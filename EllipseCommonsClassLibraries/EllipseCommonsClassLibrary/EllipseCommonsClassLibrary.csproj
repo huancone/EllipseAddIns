@@ -65,7 +65,7 @@
     </Compile>
     <Compile Include="Classes\ArrayScreenNameValue.cs" />
     <Compile Include="Settings\AssemblyItem.cs" />
-    <Compile Include="Settings\Setting.cs" />
+    <Compile Include="Settings\CommonSettings.cs" />
     <Compile Include="Settings\Debugger.cs" />
     <Compile Include="Connections\Connections.cs" />
     <Compile Include="Constants\Districts.cs" />
@@ -101,6 +101,7 @@
     <Compile Include="Settings\SettingsBox.Designer.cs">
       <DependentUpon>SettingsBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Xml.cs" />
     <Compile Include="Utilities\DateTime.cs" />
     <Compile Include="Utilities\EncryptString.cs" />
     <Compile Include="Utilities\MyDateTime\Formats.cs" />
@@ -208,7 +209,6 @@
       <Name>System.Web.Services.Ellipse</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

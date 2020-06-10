@@ -13,6 +13,9 @@ using System.Windows.Forms;
 using System.Threading;
 using Microsoft.Office.Interop.Excel;
 using EllipseJobsClassLibrary;
+using System.Xml;
+using System.Xml.Serialization;
+using EllipseCommonsClassLibrary.Utilities;
 
 namespace EllipseFotoPlanificacionExcelAddIn
 {
@@ -43,6 +46,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
         }
 
         #region Buttons
+
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -136,10 +140,10 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 _excelApp.Workbooks.Add();
                 while (_excelApp.ActiveWorkbook.Sheets.Count < 3)
                     _excelApp.ActiveWorkbook.Worksheets.Add();
-                if (_cells == null)
-                    _cells = new ExcelStyleCells(_excelApp);
+                _cells = new ExcelStyleCells(_excelApp, false);
 
                 #region CONSTRUYO LA HOJA 1
+
                 var titleRow = TitleRow01;
                 var resultColumn = ResultColumn01;
                 var tableName = TableName01;
@@ -148,7 +152,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 _cells.SetCursorWait();
 
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = sheetName;
-                _cells.CreateNewWorksheet(ValidationSheetName);//hoja de validación
+                _cells.CreateNewWorksheet(ValidationSheetName); //hoja de validación
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
                 _cells.GetCell("A1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -170,22 +174,23 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 //_cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
 
-                var workGroupList = Groups.GetWorkGroupList(ManagementArea.Mantenimiento.Key).Select(g => g.Name).ToList(); ;
-                var searchEntitiesList = new List<string> { "Work Orders Only", "MST Forecast Only", "Work Orders and MST Forecast" };
-                var aditionalJobsList = new List<string> { "Backlog", "Unscheduled", "Backlog and Unscheduled", "Backlog Only", "Unscheduled Only", "Backlog and Unscheduled Only" };
+                var workGroupList = Groups.GetWorkGroupList(ManagementArea.Mantenimiento.Key).Select(g => g.Name).ToList();
+                ;
+                var searchEntitiesList = new List<string> {"Work Orders Only", "MST Forecast Only", "Work Orders and MST Forecast"};
+                var aditionalJobsList = new List<string> {"Backlog", "Unscheduled", "Backlog and Unscheduled", "Backlog Only", "Unscheduled Only", "Backlog and Unscheduled Only"};
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
 
                 _cells.GetCell("A3").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("A3").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
-                    "INST: IMIS, MINA\n" +
-                    "" + ManagementArea.ManejoDeCarbon.Key + ": " + QuarterMasters.Ferrocarril.Key + ", " + QuarterMasters.PuertoBolivar.Key + ", " + QuarterMasters.PlantasDeCarbon.Key + "\n" +
-                    "" + ManagementArea.Mantenimiento.Key + ": MINA\n" +
-                    "" + ManagementArea.SoporteOperacion.Key + ": ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
+                                                "INST: IMIS, MINA\n" +
+                                                "" + ManagementArea.ManejoDeCarbon.Key + ": " + QuarterMasters.Ferrocarril.Key + ", " + QuarterMasters.PuertoBolivar.Key + ", " + QuarterMasters.PlantasDeCarbon.Key + "\n" +
+                                                "" + ManagementArea.Mantenimiento.Key + ": MINA\n" +
+                                                "" + ManagementArea.SoporteOperacion.Key + ": ENERGIA, LIVIANOS, MEDIANOS, GRUAS, ENERGIA");
                 _cells.GetCell("A3").Comment.Shape.TextFrame.AutoSize = true;
                 _cells.GetCell("A4").Value = "Tipo de Búsqueda";
                 _cells.GetCell("B4").Value = searchEntitiesList.ToArray()[2];
                 _cells.GetCell("A5").Value = "Trabajos Adicionales";
-                
+
 
 
                 _cells.SetValidationList(_cells.GetCell("A3"), searchCriteriaList, ValidationSheetName, 2);
@@ -238,6 +243,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 _cells.GetRange(1, titleRow + 1, resultColumn, titleRow + 1).NumberFormat = NumberFormatConstants.Text;
                 _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), tableName);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+
                 #endregion
 
                 _excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
@@ -255,8 +261,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
         private void ReviewEllipse()
         {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
+            _cells = new ExcelStyleCells(_excelApp, false);
             _cells.SetCursorWait();
 
             _cells.ClearTableRange(TableName01);
@@ -268,11 +273,13 @@ namespace EllipseFotoPlanificacionExcelAddIn
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
             //_eFunctions.SetDBSettings(selectedEnvironment);
 
-            
+
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             ClientConversation.StartDebugging();
+
             #region searchParams
+
             var workGroupCriteriaKeyText = _cells.GetEmptyIfNull(_cells.GetCell("A3").Value);
             var workGroupCriteriaValue = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
             var searchEntities = "" + _cells.GetCell("B4").Value;
@@ -283,13 +290,39 @@ namespace EllipseFotoPlanificacionExcelAddIn
             var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
             var workGroupCriteriaKey = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(workGroupCriteriaKeyText)).Key;
 
-            
-            
+            List<string> groupList = null;
+            if (workGroupCriteriaKey == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(workGroupCriteriaValue))
+            {
+                foreach (var item in Groups.GetWorkGroupList(workGroupCriteriaValue))
+                {
+                    groupList.Add(item.Name);
+                }
+            }
+            else if (workGroupCriteriaKey == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(workGroupCriteriaValue))
+            {
+                groupList = Groups.GetWorkGroupList().Where(g => g.Details == workGroupCriteriaValue).Select(g => g.Name).ToList();
+            }
+            else
+            {
+                string[] groupArray = workGroupCriteriaValue.Split(';');
+                groupList = new List<string>();
+                foreach (var g in groupArray)
+                    groupList.Add(g.Trim());
+            }
+
+
+            var searchParam = new JobSearchParam();
+            searchParam.PlanStrDate = startDate;
+            searchParam.PlanFinDate = finishDate;
+            searchParam.WorkGroups = groupList.ToArray();
+            searchParam.DateIncludes = additionalJobs;
+            searchParam.SearchEntity = searchEntities;
             #endregion
+
             try
             {
                 //List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, startDate, finishDate, workGroupCriteriaKey, workGroupCriteriaValue, searchEntities, additionalJobs);
-                List<PlannerItem> ellipseJobs = PlannerActions.Test(_eFunctions, urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, startDate, finishDate, workGroupCriteriaKey, workGroupCriteriaValue, searchEntities, additionalJobs);
+                List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(_eFunctions, urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, searchParam, cbIgnoreNextTask.Checked);
                 var i = TitleRow01 + 1;
                 foreach (var item in ellipseJobs)
                 {
@@ -324,6 +357,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                         i++;
                     }
                 }
+
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             }
             catch (Exception ex)
@@ -340,8 +374,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
         private void ReviewSigman()
         {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
+            _cells = new ExcelStyleCells(_excelApp, false);
             _cells.SetCursorWait();
 
             _cells.ClearTableRange(TableName01);
@@ -356,10 +389,13 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 _eFunctions.SetDBSettings(selectedEnvironment);
 
             #region searchParams
+
             var district = "ICOR";
             var monitoringPeriod = "" + _cells.GetCell("D3").Value;
             var workGroup = "" + _cells.GetCell("B3").Value;
+
             #endregion
+
             try
             {
                 var itemList = PlannerActions.FetchSigmanPhotoItems(_eFunctions, district, monitoringPeriod, workGroup);
@@ -397,6 +433,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                         i++;
                     }
                 }
+
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             }
             catch (Exception ex)

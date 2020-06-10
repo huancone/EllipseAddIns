@@ -203,7 +203,60 @@ namespace EllipseCommonsClassLibrary.Utilities
             
             return Convert.ToDecimal(value, cultureInfo);
         }
+        public static short ToInteger16(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        {
+            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                throw new ArgumentException("Error al intentar convertir un valor a entero. Parámetro de conversión a entero nullOrEmpty no válido.");
+            if (cultureInfo == null)
+                cultureInfo = CultureInfo.CurrentCulture;
 
+            if (value == null && nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+                return default(int);
+
+            var stringValue = Convert.ToString(value);
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY || nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY))
+                return default(int);
+
+            return Convert.ToInt16(value, cultureInfo);
+        }
+        public static int ToInteger32(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        {
+            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                throw new ArgumentException("Error al intentar convertir un valor a entero. Parámetro de conversión a entero nullOrEmpty no válido.");
+            if (cultureInfo == null)
+                cultureInfo = CultureInfo.CurrentCulture;
+
+            if (value == null && nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+                return default(int);
+
+            var stringValue = Convert.ToString(value);
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY || nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY))
+                return default(int);
+
+            return Convert.ToInt32(value, cultureInfo);
+        }
+
+        public static int ToInteger(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        {
+            return ToInteger32(value, nullOrEmpty, cultureInfo);
+        }
+
+        public static long ToInteger64(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        {
+            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                throw new ArgumentException("Error al intentar convertir un valor a entero. Parámetro de conversión a entero nullOrEmpty no válido.");
+            if (cultureInfo == null)
+                cultureInfo = CultureInfo.CurrentCulture;
+
+            if (value == null && nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+                return default(int);
+
+            var stringValue = Convert.ToString(value);
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY || nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY))
+                return default(int);
+
+            return Convert.ToInt64(value, cultureInfo);
+        }
         public static System.DateTime ToDateTime(object value)
         {
             var format = DateTime.DateDefaultFormat;
