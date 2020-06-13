@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 
 namespace EllipseCommonsClassLibrary.Constants
 {
@@ -72,12 +73,14 @@ namespace EllipseCommonsClassLibrary.Constants
 
                 
             };
-            IEnumerable<WorkGroup> matchingGroups = null;
+            //IEnumerable<WorkGroup> matchingGroups = null;
+            var matchingGroups = new List<WorkGroup>();
             if (!string.IsNullOrWhiteSpace(managementArea))
-                matchingGroups = groupList.Where(group => group.Area.Equals(managementArea));
+                matchingGroups.AddRange(groupList.Where(@group => @group.Area.Equals(managementArea)));
             else
-                matchingGroups = groupList.OrderBy(group => group.Name);
-            return matchingGroups.ToList();
+                matchingGroups = groupList;
+
+            return matchingGroups.OrderBy(g => g.Name).ToList();
         }
 
 

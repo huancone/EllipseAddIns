@@ -7,7 +7,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 {
     public class PlannerItem
     {
-        public string MonitoringPeriod;
+        public string Period;
         public string WorkGroup;
         public string EquipNo;
         public string CompCode;
@@ -15,7 +15,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
         public string WorkOrder;
         public string MaintSchedTask;
 
-        public string CreationDate;
+        public string RaisedDate;
         public string PlanDate;
         public string NextSchedDate;
         public string LastPerfDate;
@@ -23,13 +23,9 @@ namespace EllipseFotoPlanificacionExcelAddIn
         public string DurationHours;
         public string LabourHours;
 
-        public string OriginatorUser;
-        public string OriginatorPosition;
-        public string OriginatorItemDate;
         public string LastModUser;
-        public string LastModPosition;
         public string LastModItemDate;
 
-        public string ItemStatus;
+        public string RecordStatus;
     }
 }

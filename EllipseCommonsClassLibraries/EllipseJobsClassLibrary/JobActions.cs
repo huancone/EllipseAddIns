@@ -271,7 +271,7 @@ namespace EllipseJobsClassLibrary
 
         public static List<LabourResources> GetEllipseResources(EllipseFunctions ef, string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
-            var sqlQuery = Queries.GetEllipseResourcesQuery(ef.dbReference, ef.dbLink, district, primakeryKey, primaryValue, startDate, endDate);
+            var sqlQuery = Queries.GetEllipseResourcesQuery(ef.DbReference, ef.DbLink, district, primakeryKey, primaryValue, startDate, endDate);
             var drResources = ef.GetQueryResult(sqlQuery);
             var list = new List<LabourResources>();
 
@@ -297,7 +297,7 @@ namespace EllipseJobsClassLibrary
         {
             var ef = new EllipseFunctions();
             ef.SetDBSettings(Environments.SigcorProductivo);
-            var sqlQuery = Queries.GetPsoftResourcesQuery(ef.dbReference, ef.dbLink, district, primakeryKey, primaryValue, startDate, endDate);
+            var sqlQuery = Queries.GetPsoftResourcesQuery(ef.DbReference, ef.DbLink, district, primakeryKey, primaryValue, startDate, endDate);
             var drResources = ef.GetQueryResult(sqlQuery);
             var list = new List<LabourResources>();
 
@@ -320,7 +320,7 @@ namespace EllipseJobsClassLibrary
 
         public static List<DailyJobs> GetEllipseSingleTask(EllipseFunctions ef, string district, string reference, string referenceTask, string referenceStartDate, string referenceStartHour, string referenceFinDate, string referenceFinHour, string startDate, string finDate, string resourceCode)
         {
-            var sqlQuery = Queries.GetEllipseSingleTaskQuery(ef.dbReference, ef.dbLink, district, reference, referenceTask, referenceStartDate, referenceStartHour, referenceFinDate, referenceFinHour, startDate, finDate, resourceCode);
+            var sqlQuery = Queries.GetEllipseSingleTaskQuery(ef.DbReference, ef.DbLink, district, reference, referenceTask, referenceStartDate, referenceStartHour, referenceFinDate, referenceFinHour, startDate, finDate, resourceCode);
             
             var drResources = ef.GetQueryResult(sqlQuery);
             var list = new List<DailyJobs>();
@@ -352,7 +352,7 @@ namespace EllipseJobsClassLibrary
         {
             var ef = new EllipseFunctions();
             ef.SetDBSettings(Environments.SigcorProductivo);
-            foreach (var sqlQuery in resourcesToSave.Select(r => Queries.SaveResourcesQuery(ef.dbReference, r)))
+            foreach (var sqlQuery in resourcesToSave.Select(r => Queries.SaveResourcesQuery(ef.DbReference, r)))
             {
                 ef.GetQueryResult(sqlQuery);
             }
@@ -362,7 +362,7 @@ namespace EllipseJobsClassLibrary
         {
             var ef = new EllipseFunctions();
             ef.SetDBSettings(Environments.SigcorProductivo);
-            foreach (var sqlQuery in tasksToSave.Select(r => Queries.SaveTaskQuery(ef.dbReference, r)))
+            foreach (var sqlQuery in tasksToSave.Select(r => Queries.SaveTaskQuery(ef.DbReference, r)))
             {
                 ef.GetQueryResult(sqlQuery);
             }

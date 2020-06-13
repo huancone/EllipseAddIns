@@ -64,6 +64,7 @@ namespace EllipseBulkMaterialExcelAddIn
             defaultConfig.SetOption("IgnoreItemError", "N");
             _settings = new CommonSettings(defaultConfig);
             var config = _settings.Configuration;
+			config.SetDefaultOptions(defaultConfig);
 
             //Setting of Configuration Options from Config File (or default)
             var overrideAccountCode = config.GetOptionValue("OverrideAccountCode");
@@ -418,10 +419,10 @@ namespace EllipseBulkMaterialExcelAddIn
                 var excelBook = _excelApp.ActiveWorkbook;
                 Worksheet excelSheet = excelBook.ActiveSheet;
                 _cells.SetCursorWait();
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 //
-                var urlServicePost = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
+                var urlServicePost = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
                 _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
                 //
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
@@ -758,7 +759,7 @@ namespace EllipseBulkMaterialExcelAddIn
                     position = _frmAuth.EllipsePost,
                     returnWarnings = false,
                 };
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                 if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
                 service.Url = urlService + "/BulkMaterialUsageSheet";
@@ -837,7 +838,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 var stats = new Stats();
                 if (string.IsNullOrEmpty(equipNo) || string.IsNullOrEmpty(statType)) stats.Error = "Error";
 
-                var sqlQuery = Queries.GetLastStatistic(equipNo, statType, statDate, _eFunctions.dbReference, _eFunctions.dbLink);
+                var sqlQuery = Queries.GetLastStatistic(equipNo, statType, statDate, _eFunctions.DbReference, _eFunctions.DbLink);
 
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
@@ -892,7 +893,7 @@ namespace EllipseBulkMaterialExcelAddIn
         private List<string> GetListIdList(string listType)
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var sqlQuery = Queries.GetListIdList(_eFunctions.dbReference, _eFunctions.dbLink, listType);
+            var sqlQuery = Queries.GetListIdList(_eFunctions.DbReference, _eFunctions.DbLink, listType);
             var drItem = _eFunctions.GetQueryResult(sqlQuery);
 
             var list = new List<string>();
@@ -1207,7 +1208,7 @@ namespace EllipseBulkMaterialExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                     var equiplist = new EquipListItem()
                     {
                         EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
@@ -1285,7 +1286,7 @@ namespace EllipseBulkMaterialExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                     var equiplist = new EquipListItem()
                     {
                         EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),

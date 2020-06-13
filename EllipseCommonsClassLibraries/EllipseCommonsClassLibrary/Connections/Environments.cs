@@ -5,7 +5,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 // ReSharper disable PossibleNullReferenceException
-// ReSharper disable LoopCanBeConvertedToQuery
 
 namespace EllipseCommonsClassLibrary.Connections
 {
@@ -36,6 +35,12 @@ namespace EllipseCommonsClassLibrary.Connections
 
         public const string DefaultDbReferenceName = "ELLIPSE";
 
+        /// <summary>
+        /// Obtiene la URL de conexión al servicio web de Ellipse
+        /// </summary>
+        /// <param name="environment">Nombre del ambiente al que se va a conectar (EnvironmentConstants.Ambiente)</param>
+        /// <param name="serviceType">Tipo de conexión a realizar EWS/POST. Localizada en EnvironmentConstans.ServiceType</param>
+        /// <returns>string: URL de la conexión</returns>
         public static string GetServiceUrl(string environment, string serviceType = null)
         {
             var urlService = SelectServiceUrl(environment, serviceType);

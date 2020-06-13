@@ -12,7 +12,7 @@ namespace EllipseCommonsClassLibrary
         public string EllipseDsct = "";
 
         // ReSharper disable once FieldCanBeMadeReadOny.Local
-        EllipseFunctions _eFunctions = new EllipseFunctions();
+        //EllipseFunctions _eFunctions = new EllipseFunctions();
         public string SelectedEnvironment = null;
 
         public FormAuthenticate()
@@ -49,7 +49,7 @@ namespace EllipseCommonsClassLibrary
                     return;
                 }
 
-                authSer.Url = _eFunctions.GetServicesUrl(SelectedEnvironment) + "/AuthenticatorService";
+                authSer.Url = Connections.Environments.GetServiceUrl(SelectedEnvironment) + "/AuthenticatorService";
                 ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDsct, EllipsePost);
                 authSer.authenticate(opAuth);
 

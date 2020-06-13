@@ -24,7 +24,7 @@ namespace EllipseEquipmentClassLibrary
 
             var drEquipments =
                 ef.GetQueryResult(
-                    Queries.GetEquipReferencesQuery(ef.dbReference, ef.dbLink, districtCode, equipmentRef));
+                    Queries.GetEquipReferencesQuery(ef.DbReference, ef.DbLink, districtCode, equipmentRef));
             // ReSharper disable once InvertIf
             if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
                 while (drEquipments.Read())
@@ -42,7 +42,7 @@ namespace EllipseEquipmentClassLibrary
         {
             var equipmentList = new List<string>();
 
-            var drEquipments = ef.GetQueryResult(Queries.GetEgiEquipmentsQuery(ef.dbReference, ef.dbLink, egi));
+            var drEquipments = ef.GetQueryResult(Queries.GetEgiEquipmentsQuery(ef.DbReference, ef.DbLink, egi));
             // ReSharper disable once InvertIf
             if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
                 while (drEquipments.Read())
@@ -62,7 +62,7 @@ namespace EllipseEquipmentClassLibrary
             var equipmentList = new List<string>();
 
             var drEquipments =
-                ef.GetQueryResult(Queries.GetListEquipmentsQuery(ef.dbReference, ef.dbLink, listType, listId));
+                ef.GetQueryResult(Queries.GetListEquipmentsQuery(ef.DbReference, ef.DbLink, listType, listId));
             // ReSharper disable once InvertIf
             if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
                 while (drEquipments.Read())
@@ -85,7 +85,7 @@ namespace EllipseEquipmentClassLibrary
 
             var drEquipments =
                 ef.GetQueryResult(
-                    Queries.GetProductiveUnitEquipmentsQuery(ef.dbReference, ef.dbLink, district, productiveUnit));
+                    Queries.GetProductiveUnitEquipmentsQuery(ef.DbReference, ef.DbLink, district, productiveUnit));
             // ReSharper disable once InvertIf
             if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
                 while (drEquipments.Read())
@@ -119,7 +119,7 @@ namespace EllipseEquipmentClassLibrary
         public static List<Equipment> FetchEquipmentDataList(EllipseFunctions ef, string district, int primakeryKey,
             string primaryValue, int secondarykey, string secondaryValue, string eqStatus)
         {
-            var sqlQuery = Queries.GetFetchEquipmentDataQuery(ef.dbReference, ef.dbLink, district, primakeryKey,
+            var sqlQuery = Queries.GetFetchEquipmentDataQuery(ef.DbReference, ef.DbLink, district, primakeryKey,
                 primaryValue, secondarykey, secondaryValue, eqStatus);
             var drEquipments = ef.GetQueryResult(sqlQuery);
             var list = new List<Equipment>();
@@ -216,7 +216,7 @@ namespace EllipseEquipmentClassLibrary
 
         public static Equipment FetchEquipmentData(EllipseFunctions ef, string equipmentNo)
         {
-            var sqlQuery = Queries.GetFetchEquipmentDataQuery(ef.dbReference, ef.dbLink, equipmentNo);
+            var sqlQuery = Queries.GetFetchEquipmentDataQuery(ef.DbReference, ef.DbLink, equipmentNo);
             var drEquipments = ef.GetQueryResult(sqlQuery);
 
             if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
@@ -633,7 +633,7 @@ namespace EllipseEquipmentClassLibrary
         public static string GetFetchLastInstallation(EllipseFunctions ef, string district, string equipmentNo,
             string component, string position)
         {
-            var sqlQuery = Queries.GetFetchLastInstallationQuery(ef.dbReference, ef.dbLink, district, equipmentNo,
+            var sqlQuery = Queries.GetFetchLastInstallationQuery(ef.DbReference, ef.DbLink, district, equipmentNo,
                 component, position);
             var drLastInstallation = ef.GetQueryResult(sqlQuery);
 

@@ -19,6 +19,7 @@ namespace EllipseJobsClassLibrary
         public string ConAstSegTo;
         public string[] Crews;
 
+        public string DateTypeSearch;//Solo para el AddIn
         public string Data1732;
         public string DateIncludes;
         public string DateIncrement;

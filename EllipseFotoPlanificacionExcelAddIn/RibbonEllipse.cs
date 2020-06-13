@@ -16,6 +16,7 @@ using EllipseJobsClassLibrary;
 using System.Xml;
 using System.Xml.Serialization;
 using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Settings;
 
 namespace EllipseFotoPlanificacionExcelAddIn
 {
@@ -28,10 +29,11 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
         private const string SheetName01 = "FotoPlanificación";
         private const int TitleRow01 = 9;
-        private const int ResultColumn01 = 13;
+        private const int ResultColumn01 = 14;
         private const string TableName01 = "FotoPlannerTable";
         private const string ValidationSheetName = "ValidationSheet";
         private Thread _thread;
+        private CommonSettings _settings;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
@@ -43,6 +45,36 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
+
+            LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            var defaultConfig = new CommonSettings.Options();
+            defaultConfig.SetOption("IgnoreNextTask", "N");
+            defaultConfig.SetOption("IgnoreUpdateSigmanTaskError", "N");
+            defaultConfig.SetOption("UpdateExistingAction", "Disable");
+            
+            _settings = new CommonSettings(defaultConfig);
+            var config = _settings.Configuration;
+            config.SetDefaultOptions(defaultConfig);
+            //Setting of Configuration Options from Config File (or default)
+            cbIgnoreNextTask.Checked = MyUtilities.IsTrue(config.GetOptionValue("IgnoreNextTask"));
+            cbIgnoreUpdateError.Checked = MyUtilities.IsTrue(config.GetOptionValue("IgnoreUpdateSigmanTaskError"));
+
+            var existingAction = config.GetOptionValue("UpdateExistingAction");
+            if (existingAction.Equals("Delete"))
+                cbDeleteExisting.Checked = true;
+            else if (existingAction.Equals("Disable"))
+                cbDeactivateExisting.Checked = true;
+            else if (existingAction.Equals("Ignore"))
+                cbIgnoreExisting.Checked = true;
+            else
+                cbDeactivateExisting.Checked = true;
+
+            _settings.UpdateSettings();
+            //
         }
 
         #region Buttons
@@ -114,6 +146,9 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 {
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(() => UpdateSigman());
 
                     _thread.SetApartmentState(ApartmentState.STA);
@@ -179,7 +214,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 var searchEntitiesList = new List<string> {"Work Orders Only", "MST Forecast Only", "Work Orders and MST Forecast"};
                 var aditionalJobsList = new List<string> {"Backlog", "Unscheduled", "Backlog and Unscheduled", "Backlog Only", "Unscheduled Only", "Backlog and Unscheduled Only"};
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
-
+                var searchDateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
                 _cells.GetCell("A3").Value = SearchFieldCriteriaType.WorkGroup.Value;
                 _cells.GetCell("A3").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
                                                 "INST: IMIS, MINA\n" +
@@ -197,6 +232,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B3"), workGroupList, ValidationSheetName, 3, false);
                 _cells.SetValidationList(_cells.GetCell("B4"), searchEntitiesList, ValidationSheetName, 4, false);
                 _cells.SetValidationList(_cells.GetCell("B5"), aditionalJobsList, ValidationSheetName, 5, false);
+                _cells.SetValidationList(_cells.GetCell("D3"), searchDateCriteriaList, ValidationSheetName, 6, false);
 
                 _cells.GetRange("A3", "A5").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B5").Style = _cells.GetStyle(StyleConstants.Select);
@@ -264,19 +300,147 @@ namespace EllipseFotoPlanificacionExcelAddIn
             _cells = new ExcelStyleCells(_excelApp, false);
             _cells.SetCursorWait();
 
-            _cells.ClearTableRange(TableName01);
+            var titleRow = TitleRow01;
+            var resultColumn = ResultColumn01;
+            var tableName = TableName01;
+
+            _cells.ClearTableRange(tableName);
 
             var selectedEnvironment = drpEnvironment.SelectedItem.Label;
 
-            var urlService = _eFunctions.GetServicesUrl(selectedEnvironment);
-            var urlServicePost = _eFunctions.GetServicesUrl(selectedEnvironment, ServiceType.PostService);
+            var urlService = Environments.GetServiceUrl(selectedEnvironment);
+            var urlServicePost = Environments.GetServiceUrl(selectedEnvironment, ServiceType.PostService);
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
             //_eFunctions.SetDBSettings(selectedEnvironment);
 
 
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            ClientConversation.StartDebugging();
+
+            #region searchParams
+
+            var workGroupCriteriaKeyText = _cells.GetEmptyIfNull(_cells.GetCell("A3").Value);
+            var workGroupCriteriaValue = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            var searchEntities = "" + _cells.GetCell("B4").Value;
+            var additionalJobs = "" + _cells.GetCell("B5").Value;
+            var dateType = "" + _cells.GetCell("D3").Value;
+            var startDate = "" + _cells.GetCell("D4").Value;
+            var finishDate = "" + _cells.GetCell("D5").Value;
+            var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
+            var workGroupCriteriaKey = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(workGroupCriteriaKeyText)).Key;
+
+            var groupList = new List<string>();
+            if (workGroupCriteriaKey == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(workGroupCriteriaValue))
+            {
+                foreach (var item in Groups.GetWorkGroupList(workGroupCriteriaValue))
+                {
+                    groupList.Add(item.Name);
+                }
+            }
+            else if (workGroupCriteriaKey == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(workGroupCriteriaValue))
+            {
+                groupList = Groups.GetWorkGroupList().Where(g => g.Details == workGroupCriteriaValue).Select(g => g.Name).ToList();
+            }
+            else if (!string.IsNullOrWhiteSpace(workGroupCriteriaValue))
+            {
+                string[] groupArray = workGroupCriteriaValue.Split(';');
+                groupList = new List<string>();
+                foreach (var g in groupArray)
+                    groupList.Add(g.Trim());
+            }
+
+            if (dateType.Equals(SearchDateCriteriaType.Period.Value))
+            {
+                startDate = string.Format("{0:0000}", startDate.Substring(0, 4)) + string.Format("{0:00}", startDate.Substring(4, 2)) + string.Format("{0:00}", "01");
+                if (string.IsNullOrWhiteSpace(finishDate))
+                    finishDate = startDate;
+                finishDate = string.Format("{0:0000}", finishDate.Substring(0, 4)) + string.Format("{0:00}", finishDate.Substring(4, 2)) + string.Format("{0:00}", DateTime.DaysInMonth(MyUtilities.ToInteger32(finishDate.Substring(0, 4)), MyUtilities.ToInteger32(finishDate.Substring(4, 2))));
+            }
+
+            var searchParam = new JobSearchParam();
+            searchParam.DateTypeSearch = dateType;
+            searchParam.PlanStrDate = startDate;
+            searchParam.PlanFinDate = finishDate;
+            searchParam.WorkGroups = groupList != null ? groupList.ToArray() : null;
+            searchParam.DateIncludes = additionalJobs;
+            searchParam.SearchEntity = searchEntities;
+            #endregion
+
+            try
+            {
+                //List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, startDate, finishDate, workGroupCriteriaKey, workGroupCriteriaValue, searchEntities, additionalJobs);
+                List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(_eFunctions, urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, searchParam, cbIgnoreNextTask.Checked);
+                var i = titleRow + 1;
+                foreach (var item in ellipseJobs)
+                {
+                    try
+                    {
+                        //Para resetear el estilo
+                        _cells.GetRange(1, i, resultColumn, i).Style = StyleConstants.Normal;
+                        //GENERAL
+                        _cells.GetCell(01, i).Value = "" + item.WorkGroup;
+                        _cells.GetCell(02, i).Value = "" + item.EquipNo;
+                        _cells.GetCell(03, i).Value = "" + item.CompCode;
+                        _cells.GetCell(04, i).Value = "" + item.CompModCode;
+                        _cells.GetCell(05, i).Value = "" + item.WorkOrder;
+                        _cells.GetCell(06, i).Value = "" + item.MaintSchedTask;
+                        _cells.GetCell(07, i).Value = "" + item.Period;
+                        _cells.GetCell(08, i).Value = "" + item.RaisedDate;
+                        _cells.GetCell(09, i).Value = "" + item.PlanDate;
+                        _cells.GetCell(10, i).Value = "" + item.NextSchedDate;
+                        _cells.GetCell(11, i).Value = "" + item.LastPerfDate;
+                        _cells.GetCell(12, i).Value = "" + item.DurationHours;
+                        _cells.GetCell(13, i).Value = "" + item.LabourHours;
+
+                        if (string.IsNullOrWhiteSpace(item.NextSchedDate) && !string.IsNullOrWhiteSpace(item.MaintSchedTask))
+                            _cells.GetCell(10, i).Style = StyleConstants.Warning;
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(1, i).Style = StyleConstants.Error;
+                        _cells.GetCell(resultColumn, i).Value = "ERROR: " + ex.Message;
+                        Debugger.LogError("RibbonEllipse.cs:ReviewEllipse()", ex.Message);
+                    }
+                    finally
+                    {
+                        _cells.GetCell(2, i).Select();
+                        i++;
+                    }
+                }
+
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:UpdateSigman()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+            finally
+            {
+                if (_cells != null) _cells.SetCursorDefault();
+                _eFunctions.CloseConnection();
+            }
+        }
+
+        private void ReviewSigman()
+        {
+            _cells = new ExcelStyleCells(_excelApp, false);
+            _cells.SetCursorWait();
+            
+            var titleRow = TitleRow01;
+            var resultColumn = ResultColumn01;
+            var tableName = TableName01;
+
+            _cells.ClearTableRange(tableName);
+
+            var selectedEnvironment = drpEnvironment.SelectedItem.Label;
+
+            if (selectedEnvironment.Equals(Environments.EllipseProductivo) || selectedEnvironment.Equals(Environments.EllipseContingencia))
+                _eFunctions.SetDBSettings(Environments.SigmanProductivo);
+            else if (selectedEnvironment.Equals(Environments.EllipseTest) || selectedEnvironment.Equals(Environments.EllipseDesarrollo))
+                _eFunctions.SetDBSettings(Environments.SigmanProductivo);
+            else
+                _eFunctions.SetDBSettings(selectedEnvironment);
 
             #region searchParams
 
@@ -304,32 +468,42 @@ namespace EllipseFotoPlanificacionExcelAddIn
             }
             else
             {
-                string[] groupArray = workGroupCriteriaValue.Split(';');
-                groupList = new List<string>();
-                foreach (var g in groupArray)
-                    groupList.Add(g.Trim());
+                if (!string.IsNullOrWhiteSpace(workGroupCriteriaValue))
+                {
+                    string[] groupArray = workGroupCriteriaValue.Split(';');
+                    groupList = new List<string>();
+                    foreach (var g in groupArray)
+                        groupList.Add(g.Trim());
+                }
             }
 
+            if (dateType.Equals(SearchDateCriteriaType.Period.Value))
+            {
+                startDate = string.Format("{0:0000}", startDate.Substring(0, 4)) + string.Format("{0:00}", startDate.Substring(4, 2)) + string.Format("{0:00}", "01");
+                if (string.IsNullOrWhiteSpace(finishDate))
+                    finishDate = startDate;
+                finishDate = string.Format("{0:0000}", finishDate.Substring(0, 4)) + string.Format("{0:00}", finishDate.Substring(4, 2)) + string.Format("{0:00}", DateTime.DaysInMonth(MyUtilities.ToInteger32(finishDate.Substring(0, 4)), MyUtilities.ToInteger32(finishDate.Substring(4, 2))));
+            }
 
             var searchParam = new JobSearchParam();
+            searchParam.DateTypeSearch = dateType;
             searchParam.PlanStrDate = startDate;
             searchParam.PlanFinDate = finishDate;
-            searchParam.WorkGroups = groupList.ToArray();
+            searchParam.WorkGroups = groupList != null ? groupList.ToArray() : null;
             searchParam.DateIncludes = additionalJobs;
             searchParam.SearchEntity = searchEntities;
             #endregion
 
             try
             {
-                //List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, startDate, finishDate, workGroupCriteriaKey, workGroupCriteriaValue, searchEntities, additionalJobs);
-                List<PlannerItem> ellipseJobs = PlannerActions.FetchEllipsePlannerItems(_eFunctions, urlService, _frmAuth.EllipseDsct, _frmAuth.EllipsePost, searchParam, cbIgnoreNextTask.Checked);
-                var i = TitleRow01 + 1;
+                List<PlannerItem> ellipseJobs = PlannerActions.FetchSigmanPhotoItems(_eFunctions,_frmAuth.EllipseDsct, searchParam);
+                var i = titleRow + 1;
                 foreach (var item in ellipseJobs)
                 {
                     try
                     {
                         //Para resetear el estilo
-                        _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
+                        _cells.GetRange(1, i, resultColumn, i).Style = StyleConstants.Normal;
                         //GENERAL
                         _cells.GetCell(01, i).Value = "" + item.WorkGroup;
                         _cells.GetCell(02, i).Value = "" + item.EquipNo;
@@ -337,18 +511,21 @@ namespace EllipseFotoPlanificacionExcelAddIn
                         _cells.GetCell(04, i).Value = "" + item.CompModCode;
                         _cells.GetCell(05, i).Value = "" + item.WorkOrder;
                         _cells.GetCell(06, i).Value = "" + item.MaintSchedTask;
-                        _cells.GetCell(07, i).Value = "" + item.MonitoringPeriod;
-                        _cells.GetCell(08, i).Value = "" + item.CreationDate;
+                        _cells.GetCell(07, i).Value = "" + item.Period;
+                        _cells.GetCell(08, i).Value = "" + item.RaisedDate;
                         _cells.GetCell(09, i).Value = "" + item.PlanDate;
                         _cells.GetCell(10, i).Value = "" + item.NextSchedDate;
                         _cells.GetCell(11, i).Value = "" + item.LastPerfDate;
                         _cells.GetCell(12, i).Value = "" + item.DurationHours;
                         _cells.GetCell(13, i).Value = "" + item.LabourHours;
+
+                        if (string.IsNullOrWhiteSpace(item.NextSchedDate) && !string.IsNullOrWhiteSpace(item.MaintSchedTask))
+                            _cells.GetCell(10, i).Style = StyleConstants.Warning;
                     }
                     catch (Exception ex)
                     {
                         _cells.GetCell(1, i).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
+                        _cells.GetCell(resultColumn, i).Value = "ERROR: " + ex.Message;
                         Debugger.LogError("RibbonEllipse.cs:ReviewSigman()", ex.Message);
                     }
                     finally
@@ -362,7 +539,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:UpdateSigman()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse.cs:ReviewSigman()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
             finally
@@ -372,12 +549,13 @@ namespace EllipseFotoPlanificacionExcelAddIn
             }
         }
 
-        private void ReviewSigman()
+        private void UpdateSigman()
         {
             _cells = new ExcelStyleCells(_excelApp, false);
             _cells.SetCursorWait();
 
-            _cells.ClearTableRange(TableName01);
+            var titleRow = TitleRow01;
+            var resultColumn = ResultColumn01;
 
             var selectedEnvironment = drpEnvironment.SelectedItem.Label;
 
@@ -390,42 +568,148 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
             #region searchParams
 
-            var district = "ICOR";
-            var monitoringPeriod = "" + _cells.GetCell("D3").Value;
-            var workGroup = "" + _cells.GetCell("B3").Value;
+            var workGroupCriteriaKeyText = _cells.GetEmptyIfNull(_cells.GetCell("A3").Value);
+            var workGroupCriteriaValue = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            var searchEntities = "" + _cells.GetCell("B4").Value;
+            var additionalJobs = "" + _cells.GetCell("B5").Value;
+            var dateType = "" + _cells.GetCell("D3").Value;
+            var startDate = "" + _cells.GetCell("D4").Value;
+            var finishDate = "" + _cells.GetCell("D5").Value;
+            var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
+            var workGroupCriteriaKey = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(workGroupCriteriaKeyText)).Key;
 
+            List<string> groupList = null;
+            if (workGroupCriteriaKey == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(workGroupCriteriaValue))
+            {
+                foreach (var item in Groups.GetWorkGroupList(workGroupCriteriaValue))
+                {
+                    groupList.Add(item.Name);
+                }
+            }
+            else if (workGroupCriteriaKey == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(workGroupCriteriaValue))
+            {
+                groupList = Groups.GetWorkGroupList().Where(g => g.Details == workGroupCriteriaValue).Select(g => g.Name).ToList();
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(workGroupCriteriaValue))
+                {
+                    string[] groupArray = workGroupCriteriaValue.Split(';');
+                    groupList = new List<string>();
+                    foreach (var g in groupArray)
+                        groupList.Add(g.Trim());
+                }
+            }
+
+            if (dateType.Equals(SearchDateCriteriaType.Period.Value))
+            {
+                startDate = string.Format("{0:0000}", startDate.Substring(0, 4)) + string.Format("{0:00}", startDate.Substring(4, 2)) + string.Format("{0:00}", "01");
+                if (string.IsNullOrWhiteSpace(finishDate))
+                    finishDate = startDate;
+                finishDate = string.Format("{0:0000}", finishDate.Substring(0, 4)) + string.Format("{0:00}", finishDate.Substring(4, 2)) + string.Format("{0:00}", DateTime.DaysInMonth(MyUtilities.ToInteger32(finishDate.Substring(0, 4)), MyUtilities.ToInteger32(finishDate.Substring(4, 2))));
+            }
+
+            var searchParam = new JobSearchParam();
+            searchParam.DateTypeSearch = dateType;
+            searchParam.PlanStrDate = startDate;
+            searchParam.PlanFinDate = finishDate;
+            searchParam.WorkGroups = groupList != null ? groupList.ToArray() : null;
+            searchParam.DateIncludes = additionalJobs;
+            searchParam.SearchEntity = searchEntities;
             #endregion
 
+            
+            var recordsAffectedMsg = " registros ";
+            var recordsAffectedQty = 0;
+            var recordsInsertedMsg = " registros nuevos insertados";
+            var recordsInsertedQty = 0;
             try
             {
-                var itemList = PlannerActions.FetchSigmanPhotoItems(_eFunctions, district, monitoringPeriod, workGroup);
-                var i = TitleRow01 + 1;
-                foreach (var item in itemList)
+                //Pre-revisión
+                var i = titleRow + 1;
+
+                var textMessage = @"Se actualizarán los registros existentes para los grupos seleccionados en los siguientes periodos." +
+                                  "\n\nGrupos: " + (groupList != null ? string.Join(", ", groupList) : "TODOS LOS GRUPOS DEL PERIODO") +
+                                  "\nDesde: " + startDate + " Hasta: " + finishDate + 
+                                  "\n\n¿Está seguro que desea continuar ?";
+                const string textTitle = @"Actualizar Datos de Planeación";
+                if (DialogResult.No.Equals(MessageBox.Show(textMessage, textTitle, MessageBoxButtons.YesNo)))
+                {
+                    if (_cells != null) _cells.SetCursorDefault();
+                    return;
+                }
+
+                _eFunctions.BeginTransaction();
+                if (cbDeleteExisting.Checked)
+                {
+                    recordsAffectedQty = PlannerActions.DeleteSigmanTask(_eFunctions, searchParam);
+                    recordsAffectedMsg += "eliminados";
+                }
+                else if (cbDeactivateExisting.Checked)
+                {
+                    recordsAffectedQty = PlannerActions.DisableSigmanTask(_eFunctions, searchParam);
+                    recordsAffectedMsg += "desactivados";
+                }
+                else if (cbIgnoreExisting.Checked)
+                {
+                    recordsAffectedMsg += "afectados";
+                }
+
+                i = titleRow + 1;
+                var lastUser = _frmAuth.EllipseUser;
+                var lastModDate = MyUtilities.ToString(DateTime.Today);
+
+                //Si tanto como la OT como la MST están vacíos (no hay más registros)
+                while (!string.IsNullOrWhiteSpace(_cells.GetCell(05, i).Value) || !string.IsNullOrWhiteSpace(_cells.GetCell(06, i).Value))
                 {
                     try
                     {
+                        var item = new PlannerItem();
                         //Para resetear el estilo
-                        _cells.GetRange(1, i, ResultColumn01, i).Style = StyleConstants.Normal;
+                        _cells.GetCell(resultColumn, i).Style = StyleConstants.Normal;
                         //GENERAL
-                        _cells.GetCell(01, i).Value = "" + item.WorkGroup;
-                        _cells.GetCell(02, i).Value = "" + item.EquipNo;
-                        _cells.GetCell(03, i).Value = "" + item.CompCode;
-                        _cells.GetCell(04, i).Value = "" + item.CompModCode;
-                        _cells.GetCell(05, i).Value = "" + item.WorkOrder;
-                        _cells.GetCell(06, i).Value = "" + item.MaintSchedTask;
-                        _cells.GetCell(07, i).Value = "" + item.MonitoringPeriod;
-                        _cells.GetCell(08, i).Value = "" + item.CreationDate;
-                        _cells.GetCell(09, i).Value = "" + item.PlanDate;
-                        _cells.GetCell(10, i).Value = "" + item.NextSchedDate;
-                        _cells.GetCell(11, i).Value = "" + item.LastPerfDate;
-                        _cells.GetCell(12, i).Value = "" + item.DurationHours;
-                        _cells.GetCell(13, i).Value = "" + item.LaboutHors;
+                        item.WorkGroup = "" + _cells.GetCell(01, i).Value;
+                        item.EquipNo = "" + _cells.GetCell(02, i).Value;
+                        item.CompCode = "" + _cells.GetCell(03, i).Value;
+                        item.CompModCode = "" + _cells.GetCell(04, i).Value;
+                        item.WorkOrder = "" + _cells.GetCell(05, i).Value;
+                        item.MaintSchedTask = "" + _cells.GetCell(06, i).Value;
+                        item.Period = "" + _cells.GetCell(07, i).Value;
+                        item.RaisedDate = "" + _cells.GetCell(08, i).Value;
+                        item.PlanDate = "" + _cells.GetCell(09, i).Value;
+                        item.NextSchedDate = "" + _cells.GetCell(10, i).Value;
+                        item.LastPerfDate = "" + _cells.GetCell(11, i).Value;
+                        item.DurationHours = "" + _cells.GetCell(12, i).Value;
+                        item.LabourHours = "" + _cells.GetCell(13, i).Value;
+                        item.LastModItemDate = lastModDate;
+                        item.LastModUser = lastUser;
+                        item.RecordStatus = "1";
+
+                        var resultInt = PlannerActions.InsertItemIntoSigman(_eFunctions, item);
+                        if (resultInt == 1)
+                        {
+                            _cells.GetCell(ResultColumn01, i).Value = "REGISTRO INGRESADO";
+                            _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
+                            recordsInsertedQty++;
+                        }
+                        else if (resultInt == 0)
+                        {
+                            _cells.GetCell(ResultColumn01, i).Value = "NO SE HA PODIDO INGRESAR EL REGISTRO";
+                            _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
+                        }
                     }
                     catch (Exception ex)
                     {
-                        _cells.GetCell(1, i).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                        Debugger.LogError("RibbonEllipse.cs:ReviewSigman()", ex.Message);
+                        _cells.GetCell(resultColumn, i).Style = StyleConstants.Error;
+                        _cells.GetCell(resultColumn, i).Value = "ERROR: " + ex.Message;
+                        Debugger.LogError("RibbonEllipse.cs:UpdateSigman:InnerItem()", ex.Message);
+                        if (!cbIgnoreUpdateError.Checked)
+                        {
+                            recordsAffectedQty = 0;
+                            recordsInsertedQty = 0;
+                            _eFunctions.RollBack();
+                            throw;
+                        }
                     }
                     finally
                     {
@@ -433,8 +717,6 @@ namespace EllipseFotoPlanificacionExcelAddIn
                         i++;
                     }
                 }
-
-                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             }
             catch (Exception ex)
             {
@@ -444,12 +726,10 @@ namespace EllipseFotoPlanificacionExcelAddIn
             finally
             {
                 if (_cells != null) _cells.SetCursorDefault();
+                _eFunctions.Commit();
                 _eFunctions.CloseConnection();
+                MessageBox.Show(recordsAffectedQty + recordsAffectedMsg + "\n" + recordsInsertedQty + recordsInsertedMsg, "Actualización SIGMAN");
             }
-        }
-
-        private void UpdateSigman()
-        {
 
         }
 
@@ -465,6 +745,60 @@ namespace EllipseFotoPlanificacionExcelAddIn
             {
                 MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
             }
+        }
+
+        private void cbIgnoreNextTask_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("IgnoreNextTask", MyUtilities.ToString(cbIgnoreNextTask.Checked));
+            _settings.UpdateSettings();
+        }
+
+        private bool CheckExistingActionCheckBoxes()
+        {
+            return (cbDeactivateExisting.Checked ||
+                    cbDeleteExisting.Checked ||
+                    cbIgnoreExisting.Checked);
+
+        }
+        private void cbDeactivateExisting_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("UpdateExistingAction", "Disable");
+            _settings.UpdateSettings();
+
+            cbDeleteExisting.Checked = false;
+            cbIgnoreExisting.Checked = false;
+            if(CheckExistingActionCheckBoxes())
+                cbDeactivateExisting.Checked = true;
+
+        }
+
+        private void cbDeleteExisting_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("UpdateExistingAction", "Delete");
+            _settings.UpdateSettings();
+
+            cbDeactivateExisting.Checked = false;
+            cbIgnoreExisting.Checked = false;
+            if (CheckExistingActionCheckBoxes())
+                cbDeleteExisting.Checked = true;
+        }
+
+        private void cbIgnoreExisting_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("UpdateExistingAction", "Ignore");
+            _settings.UpdateSettings();
+
+            cbDeactivateExisting.Checked = false;
+            cbDeleteExisting.Checked = false;
+            if (CheckExistingActionCheckBoxes())
+                cbIgnoreExisting.Checked = true;
+
+        }
+
+        private void cbIgnoreUpdateError_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("IgnoreUpdateSigmanTaskError", MyUtilities.ToString(cbIgnoreNextTask.Checked));
+            _settings.UpdateSettings();
         }
     }
 }

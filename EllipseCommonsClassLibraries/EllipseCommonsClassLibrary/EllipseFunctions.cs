@@ -8,33 +8,35 @@ using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Utilities;
 using System.Threading;
+using EllipseCommonsClassLibrary.Connections;
 using Oracle.ManagedDataAccess.Client;
 
 namespace EllipseCommonsClassLibrary
 {
     public class EllipseFunctions
     {
-        private string _dbname;
-        private string _dbuser; //Ej. SIGCON, CONSULBO
-        private string _dbpass;
-        private string _dbcatalog; //para algunas bases de datos
-        // ReSharper disable once InconsistentNaming
-        public string dbLink; //Ej. @DBLMIMS, @DBLELLIPSE8
-        // ReSharper disable once InconsistentNaming
-        public string dbReference; //Ej. ELLIPSE, MIMSPROD
+        private DatabaseItem _dbItem;
 
         private SqlConnection _sqlConn;
         private SqlCommand _sqlComm;
-        private OracleConnection _sqlOracleConn;
-        private OracleCommand _sqlOracleComm;
+        //private OracleConnection _sqlOracleConn;
+        //private OracleCommand _sqlOracleComm;
         private string _currentConnectionString;
         private string _currentEnvironment;
-
+        private OracleConnector _oracleConnector;
         private int _connectionTimeOut = 30;//default ODP 15
         private bool _poolingDataBase = true;//default ODP true
         public PostService PostServiceProxy;
         private int _queryAttempt;
 
+        public string DbLink
+        {
+            get { return _dbItem.DbLink; }
+        }
+        public string DbReference
+        {
+            get { return _dbItem.DbReference; }
+        }
         /// <summary>
         /// Constructor de la clase. Inicia la clase con el nombre de ambientes disponibles (Ej. Productivo, Test, etc) y sus respectivas direcciones web de conexión a los web services
         /// </summary>
@@ -53,12 +55,19 @@ namespace EllipseCommonsClassLibrary
         /// </summary>
         private void CleanDbSettings()
         {
-            _dbname = null;
-            _dbuser = null;
-            _dbcatalog = null;
-            _dbpass = null;
-            dbLink = null;
-            dbReference = null;
+            if (_dbItem != null)
+            {
+                _dbItem.Name = null;
+                _dbItem.DbName = null;
+                _dbItem.DbUser = null;
+                _dbItem.DbCatalog = null;
+                _dbItem.DbPassword = null;
+                _dbItem.DbLink = null;
+                _dbItem.DbReference = null;
+            }
+
+            if(_oracleConnector != null)
+                _oracleConnector.CloseConnection(true);
             SetCurrentEnvironment(null);
         }
         /// <summary>
@@ -74,42 +83,11 @@ namespace EllipseCommonsClassLibrary
             if(dbItem == null || dbItem.Name.Equals(null))
                 throw new NullReferenceException("No se puede encontrar la base de datos seleccionada. Verifique que eligió un servidor de ellipse válido y que la base de datos relacionada existe");
 
-            _dbname = dbItem.DbName;
-            _dbuser = dbItem.DbUser;
-            _dbpass = dbItem.DbPassword;
-            dbLink = dbItem.DbLink;
-            dbReference = dbItem.DbReference;
-            _dbcatalog = dbItem.DbCatalog;
+            _dbItem = dbItem;
+            _oracleConnector = new OracleConnector(_dbItem);
 
             SetCurrentEnvironment(environment);
             return true;
-        }
-
-        public void SetConnectionTimeOut(int timeout)
-        {
-            _connectionTimeOut = timeout;
-        }
-
-        public int GetConnectionTimeOut()
-        {
-            return _connectionTimeOut;
-        }
-        public void SetConnectionPoolingType(bool pooling)
-        {
-            _poolingDataBase = pooling;
-        }
-
-        public bool GetConnectionPoolingType()
-        {
-            return _poolingDataBase;
-        }
-        public string GetCurrentEnvironment()
-        {
-            return _currentEnvironment;
-        }
-        public void SetCurrentEnvironment(string environment)
-        {
-            _currentEnvironment = environment;
         }
         /// <summary>
         /// Establece la base de datos según la información ingresada
@@ -125,12 +103,8 @@ namespace EllipseCommonsClassLibrary
         public bool SetDBSettings(string dbname, string dbuser, string dbpass, string dblink, string dbreference, string dbcatalog = null)
         {
             CleanDbSettings();
-            _dbname = dbname;
-            _dbuser = dbuser;
-            _dbcatalog = dbcatalog;
-            _dbpass = dbpass;
-            dbLink = dblink;
-            dbReference = dbreference;
+            _dbItem = new DatabaseItem(dbname, dbuser, dbpass, dblink, dbreference, dbcatalog);
+            _oracleConnector = new OracleConnector(_dbItem);
             SetCurrentEnvironment(Connections.Environments.CustomDatabase);
             return true;
         }
@@ -147,14 +121,40 @@ namespace EllipseCommonsClassLibrary
         public bool SetDBSettings(string dbname, string dbuser, string dbpass, string dbcatalog = null)
         {
             CleanDbSettings();
-            _dbname = dbname;
-            _dbuser = dbuser;
-            _dbcatalog = dbcatalog;
-            _dbpass = dbpass;
-            dbLink = "";
-            dbReference = Connections.Environments.DefaultDbReferenceName;
+            _dbItem = new DatabaseItem(dbname, dbuser, dbpass, Environments.DefaultDbReferenceName, "", dbcatalog);
+            _oracleConnector = new OracleConnector(_dbItem);
             SetCurrentEnvironment(Connections.Environments.CustomDatabase);
             return true;
+        }
+        public void SetConnectionTimeOut(int timeout)
+        {
+            _connectionTimeOut = timeout;
+            if (_oracleConnector != null)
+                _oracleConnector.ConnectionTimeOut = _connectionTimeOut;
+        }
+
+        public int GetConnectionTimeOut()
+        {
+            return _connectionTimeOut;
+        }
+        public void SetConnectionPoolingType(bool pooling)
+        {
+            _poolingDataBase = pooling;
+            if (_oracleConnector != null)
+                _oracleConnector.PoolingDataBase = pooling;
+        }
+
+        public bool GetConnectionPoolingType()
+        {
+            return _poolingDataBase;
+        }
+        public string GetCurrentEnvironment()
+        {
+            return _currentEnvironment;
+        }
+        public void SetCurrentEnvironment(string environment)
+        {
+            _currentEnvironment = environment;
         }
         /// <summary>
         /// Obtiene la URL de conexión al servicio web de Ellipse
@@ -162,6 +162,7 @@ namespace EllipseCommonsClassLibrary
         /// <param name="environment">Nombre del ambiente al que se va a conectar (EnvironmentConstants.Ambiente)</param>
         /// <param name="serviceType">Tipo de conexión a realizar EWS/POST. Localizada en EnvironmentConstans.ServiceType</param>
         /// <returns>string: URL de la conexión</returns>
+        [Obsolete("Function is deprecated. Please use EllipseCommonsClassLibrary.Connections.Environments.GetServiceUrl")]
         public string GetServicesUrl(string environment, string serviceType = null)
         {
             return Connections.Environments.GetServiceUrl(environment, serviceType);
@@ -175,43 +176,9 @@ namespace EllipseCommonsClassLibrary
         /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
         public OracleDataReader GetQueryResult(string sqlQuery, string customConnectionString = null)
         {
-            Debugger.LogQuery(sqlQuery);
-            var defaultConnString = "Data Source=" + _dbname + ";User ID=" + _dbuser + ";Password=" + _dbpass + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
-
-            var connectionString = customConnectionString ?? defaultConnString;
-
-            if (_sqlOracleConn == null || _currentConnectionString != connectionString)
-                _sqlOracleConn = new OracleConnection(connectionString);
-            _currentConnectionString = connectionString;
-            
-            _sqlOracleComm = new OracleCommand();
-
-            _queryAttempt++;
-
-            try
-            {
-                if (_sqlOracleConn.State != ConnectionState.Open)
-                    _sqlOracleConn.Open();
-                _sqlOracleComm.Connection = _sqlOracleConn;
-                _sqlOracleComm.CommandText = sqlQuery;
-
-                _queryAttempt = 0;
-                return _sqlOracleComm.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                _queryAttempt++;
-                if (ex.Message.Contains("ORA-12516") && _queryAttempt < 3)
-                {
-                    Thread.Sleep(_connectionTimeOut * 10);
-                    GetQueryResult(sqlQuery, customConnectionString);
-                }
-                
-                Debugger.LogError("EllipseFunctions:GetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-
-                _queryAttempt = 0;
-                throw;
-            }
+            if(!string.IsNullOrWhiteSpace(customConnectionString))
+                _oracleConnector.StartConnection(customConnectionString);
+            return _oracleConnector.GetQueryResult(sqlQuery);
         }
         /// <summary>
         /// Obtiene el data set con los resultados de una consulta
@@ -221,46 +188,28 @@ namespace EllipseCommonsClassLibrary
         /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
         public DataSet GetDataSetQueryResult(string sqlQuery, string customConnectionString = null)
         {
-            Debugger.LogQuery(sqlQuery);
-            var defaultConnString = "Data Source=" + _dbname + ";User ID=" + _dbuser + ";Password=" + _dbpass + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
+            if (!string.IsNullOrWhiteSpace(customConnectionString))
+                _oracleConnector.StartConnection(customConnectionString);
+            return _oracleConnector.GetDataSetQueryResult(sqlQuery);
+        }
+        public int ExecuteQuery(string sqlQuery, string customConnectionString = null)
+        {
+            if (!string.IsNullOrWhiteSpace(customConnectionString))
+                _oracleConnector.StartConnection(customConnectionString);
+            return _oracleConnector.ExecuteQuery(sqlQuery);
+        }
 
-            var connectionString = customConnectionString ?? defaultConnString;
-
-            if (_sqlOracleConn == null || _currentConnectionString != connectionString)
-                _sqlOracleConn = new OracleConnection(connectionString);
-            _currentConnectionString = connectionString;
-
-            _sqlOracleComm = new OracleCommand();
-
-            _queryAttempt++;
-            try
-            {
-                if (_sqlOracleConn.State != ConnectionState.Open)
-                    _sqlOracleConn.Open();
-                _sqlOracleComm.Connection = _sqlOracleConn;
-                _sqlOracleComm.CommandText = sqlQuery;
-
-                _queryAttempt = 0;
-                var ds = new DataSet();
-                var adapter = new OracleDataAdapter(_sqlOracleComm);
-                adapter.Fill(ds);
-                CloseConnection(false);
-                return ds;
-            }
-            catch (Exception ex)
-            {
-                _queryAttempt++;
-                if (ex.Message.Contains("ORA-12516") && _queryAttempt < 3)
-                {
-                    Thread.Sleep(_connectionTimeOut);
-                    GetQueryResult(sqlQuery, customConnectionString);
-                }
-
-                Debugger.LogError("EllipseFunctions:GetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-
-                _queryAttempt = 0;
-                throw;
-            }
+        public void BeginTransaction()
+        {
+            _oracleConnector.BeginTransaction();
+        }
+        public void Commit()
+        {
+            _oracleConnector.Commit();
+        }
+        public void RollBack()
+        {
+            _oracleConnector.Rollback();
         }
         /// <summary>
         /// Obtiene el data reader con los resultados de una consulta
@@ -272,9 +221,9 @@ namespace EllipseCommonsClassLibrary
         {
             Debugger.LogQuery(sqlQuery);
             var dbcatalog = "";
-            if (_dbcatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
-                dbcatalog = "Initial Catalog=" + _dbcatalog + "; ";
-            var defaultConnectionString = "Data Source=" + _dbname + "; " + dbcatalog + "User Id=" + _dbuser + "; Password=" + _dbpass + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
+            if (_dbItem.DbCatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
+                dbcatalog = "Initial Catalog=" + _dbItem.DbCatalog + "; ";
+            var defaultConnectionString = "Data Source=" + _dbItem.DbName + "; " + dbcatalog + "User Id=" + _dbItem.DbUser + "; Password=" + _dbItem.DbPassword + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
 
             var connectionString = customConnectionString ?? defaultConnectionString;
 
@@ -282,7 +231,8 @@ namespace EllipseCommonsClassLibrary
                 _sqlConn = new SqlConnection(connectionString);
             _currentConnectionString = connectionString;
 
-            _sqlComm = new SqlCommand();
+            if(_sqlComm == null)
+                _sqlComm = new SqlCommand();
             _queryAttempt++;
             try
             {
@@ -304,9 +254,9 @@ namespace EllipseCommonsClassLibrary
         {
             Debugger.LogQuery(sqlQuery);
             var dbcatalog = "";
-            if (_dbcatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
-                dbcatalog = "Initial Catalog=" + _dbcatalog + "; ";
-            var defaultConnectionString = "Data Source=" + _dbname + "; " + dbcatalog + "User Id=" + _dbuser + "; Password=" + _dbpass + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
+            if (_dbItem.DbCatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
+                dbcatalog = "Initial Catalog=" + _dbItem.DbCatalog + "; ";
+            var defaultConnectionString = "Data Source=" + _dbItem.DbName + "; " + dbcatalog + "User Id=" + _dbItem.DbUser + "; Password=" + _dbItem.DbPassword + "; Connection Timeout=" + _connectionTimeOut + "; Pooling=" + _poolingDataBase.ToString().ToLower();
 
             var connectionString = customConnectionString ?? defaultConnectionString;
 
@@ -314,7 +264,8 @@ namespace EllipseCommonsClassLibrary
                 _sqlConn = new SqlConnection(connectionString);
             _currentConnectionString = connectionString;
 
-            _sqlComm = new SqlCommand();
+            if(_sqlComm == null)
+                _sqlComm = new SqlCommand();
             _queryAttempt++;
             try
             {
@@ -326,7 +277,6 @@ namespace EllipseCommonsClassLibrary
                 var ds = new DataSet();
                 var adapter = new SqlDataAdapter(_sqlComm);
                 adapter.Fill(ds);
-                CloseConnection(false);
                 return ds;
             }
             catch (Exception ex)
@@ -341,29 +291,24 @@ namespace EllipseCommonsClassLibrary
         /// </summary>
         public void CloseConnection(bool dispose = true)
         {
-            if (_sqlOracleConn != null && _sqlOracleConn.State != ConnectionState.Closed)
+            if(_oracleConnector != null)
+                _oracleConnector.CloseConnection(dispose);
+
+            if (_sqlConn != null)
             {
-                _sqlOracleConn.Close();
-                if (dispose)
-                {
-                    _sqlOracleComm.Dispose();
-                    _sqlOracleConn.Dispose();
-                    _sqlOracleComm = null;
-                    _sqlOracleConn = null;
-                }
-            }
-            // ReSharper disable once InvertIf
-            if (_sqlConn != null && _sqlConn.State != ConnectionState.Closed)
-            {
-                _sqlConn.Close();
-                // ReSharper disable once InvertIf
+                if (_sqlConn.State != ConnectionState.Closed)
+                    _sqlConn.Close();
                 if (dispose)
                 {
                     _sqlConn.Dispose();
-                    _sqlComm.Dispose();
                     _sqlConn = null;
-                    _sqlComm = null;
                 }
+            }
+            // ReSharper disable once InvertIf
+            if (_sqlComm != null && dispose)
+            {
+                _sqlComm.Dispose();
+                _sqlComm = null;
             }
         }
 
@@ -530,7 +475,7 @@ namespace EllipseCommonsClassLibrary
             var listItems = new List<EllipseCodeItem>();
             var paramActiveOnly = activeOnly ? " AND ACTIVE_FLAG = 'Y'" : "";
 
-            var query = "SELECT * FROM " + dbReference + ".MSF010" + dbLink + " WHERE TABLE_TYPE = '" + tableType + "'" +
+            var query = "SELECT * FROM " + _dbItem.DbReference + ".MSF010" + _dbItem.DbLink + " WHERE TABLE_TYPE = '" + tableType + "'" +
                         paramActiveOnly + " " + additionalQueryParameters;
             query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             

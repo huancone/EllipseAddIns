@@ -18,7 +18,7 @@ namespace EllipseMaintSchedTaskClassLibrary
     {
         public static List<MaintenanceScheduleTask> FetchMaintenanceScheduleTask(EllipseFunctions ef, string districtCode, string workGroup, string equipmentNo, string compCode, string compModCode, string taskNo, string schedIndicator)
         {
-            var sqlQuery = Queries.GetFetchMstListQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, equipmentNo, compCode, compModCode, taskNo, schedIndicator);
+            var sqlQuery = Queries.GetFetchMstListQuery(ef.DbReference, ef.DbLink, districtCode, workGroup, equipmentNo, compCode, compModCode, taskNo, schedIndicator);
             var mstDataReader = ef.GetQueryResult(sqlQuery);
 
             var list = new List<MaintenanceScheduleTask>();
@@ -81,7 +81,7 @@ namespace EllipseMaintSchedTaskClassLibrary
         }
         public static MaintenanceScheduleTask FetchMaintenanceScheduleTask(EllipseFunctions ef, string districtCode, string workGroup, string equipmentNo, string compCode, string compModCode, string taskNo)
         {
-            var sqlQuery = Queries.GetFetchMstListQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, equipmentNo, compCode, compModCode, taskNo);
+            var sqlQuery = Queries.GetFetchMstListQuery(ef.DbReference, ef.DbLink, districtCode, workGroup, equipmentNo, compCode, compModCode, taskNo);
             var mstDataReader = ef.GetQueryResult(sqlQuery);
 
             if (mstDataReader == null || mstDataReader.IsClosed || !mstDataReader.HasRows || !mstDataReader.Read())

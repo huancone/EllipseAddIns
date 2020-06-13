@@ -375,7 +375,7 @@ namespace EllipseBulkMaterialExcelAddIn
             if (string.IsNullOrEmpty(equipNo))
                 profile.Error = "Se requiere un número de equipo válido para determinar su capacidad";
 
-            var sqlQuery = Queries.GetFuelCapacity(equipNo, eFunctions.dbReference, eFunctions.dbLink);
+            var sqlQuery = Queries.GetFuelCapacity(equipNo, eFunctions.DbReference, eFunctions.DbLink);
             var drEquipCapacity = eFunctions.GetQueryResult(sqlQuery);
 
             if (!drEquipCapacity.Read())
@@ -413,7 +413,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 if (string.IsNullOrEmpty(equipNo)) return null;
                 
                 var item = new EquipmentBulkItem();
-                var sqlQuery = Queries.GetBulkAccountCode(equipNo, eFunctions.dbReference, eFunctions.dbLink);
+                var sqlQuery = Queries.GetBulkAccountCode(equipNo, eFunctions.DbReference, eFunctions.DbLink);
                 var drQuery = eFunctions.GetQueryResult(sqlQuery);
 
                 if (!drQuery.IsClosed && drQuery.HasRows && drQuery.Read())

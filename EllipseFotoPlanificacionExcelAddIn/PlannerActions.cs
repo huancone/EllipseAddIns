@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using System.Web.Services.Ellipse;
+using System.Windows.Forms.VisualStyles;
 using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
 using EllipseJobsClassLibrary;
 using EllipseMaintSchedTaskClassLibrary;
@@ -16,9 +11,28 @@ namespace EllipseFotoPlanificacionExcelAddIn
 {
     public static class PlannerActions
     {
-        public static List<PlannerItem> FetchSigmanPhotoItems(EllipseFunctions ef, string district, string monitoringPeriod, string workGroup)
+        public static int DeleteSigmanTask(EllipseFunctions ef, JobSearchParam searchParam)
         {
-            var sqlQuery = Queries.GetFetchSigmanPhotoQuery(ef.dbReference, ef.dbLink, district, monitoringPeriod, workGroup);
+
+            var sqlQuery = Queries.GetDeleteTaskQuery(ef.DbReference, ef.DbLink, searchParam.DateTypeSearch, searchParam.PlanStrDate, searchParam.PlanFinDate, searchParam.WorkGroups);
+
+            return ef.ExecuteQuery(sqlQuery);
+        }
+        public static int DisableSigmanTask(EllipseFunctions ef, JobSearchParam searchParam)
+        {
+
+            var sqlQuery = Queries.GetDisableTaskStatusQuery(ef.DbReference, ef.DbLink, searchParam.DateTypeSearch, searchParam.PlanStrDate, searchParam.PlanFinDate, searchParam.WorkGroups);
+
+            return ef.ExecuteQuery(sqlQuery);
+        }
+        public static int InsertItemIntoSigman(EllipseFunctions ef, PlannerItem item)
+        {
+            var sqlQuery = Queries.InsertSigmanItemQuery(ef.DbReference, ef.DbLink, item);
+            return ef.ExecuteQuery(sqlQuery);
+        }
+        public static List<PlannerItem> FetchSigmanPhotoItems(EllipseFunctions ef, string district, JobSearchParam searchParam)
+        {
+            var sqlQuery = Queries.GetFetchSigmanPhotoQuery(ef.DbReference, ef.DbLink, searchParam.SearchEntity, searchParam.DateTypeSearch, searchParam.PlanStrDate, searchParam.PlanFinDate, searchParam.WorkGroups);
             var drItems = ef.GetQueryResult(sqlQuery);
             var list = new List<PlannerItem>();
 
@@ -28,31 +42,26 @@ namespace EllipseFotoPlanificacionExcelAddIn
             {
                 var item = new PlannerItem
                 {
-                    MonitoringPeriod = drItems["PERIODO_MONITOREO"].ToString().Trim(),
-                    WorkGroup = drItems["WORK_GROUP"].ToString().Trim(),
-                    EquipNo = drItems["EQUIP_NO"].ToString().Trim(),
-                    CompCode = drItems["COMPONENT_CODE"].ToString().Trim(),
-                    CompModCode = drItems["MODIFIED_CODE"].ToString().Trim(),
-                    //workOrder = drItems["DSTRCT_CODE"].ToString().Trim(),
-                    MaintSchedTask = drItems["MAINT_SCH_TASK"].ToString().Trim(),
+                    Period = "" + drItems["PERIOD"].ToString().Trim(),
+                    WorkGroup = "" + drItems["WORK_GROUP"].ToString().Trim(),
+                    EquipNo = "" + drItems["EQUIP_NO"].ToString().Trim(),
+                    CompCode = "" + drItems["COMP_CODE"].ToString().Trim(),
+                    CompModCode = "" + drItems["COMP_MOD_CODE"].ToString().Trim(),
+                    WorkOrder = "" + drItems["WORK_ORDER"].ToString().Trim(),
+                    MaintSchedTask = "" + drItems["MAINT_SCH_TASK"].ToString().Trim(),
 
-                    //creationDate = drItems["DSTRCT_CODE"].ToString().Trim(),
-                    //planDate = drItems["DSTRCT_CODE"].ToString().Trim(),
-                    NextSchedDate = drItems["NEXT_SCH_DATE"].ToString().Trim(),
-                    LastPerfDate = drItems["LAST_PERF_DATE"].ToString().Trim(),
+                    RaisedDate = "" + drItems["RAISED_DATE"].ToString().Trim(),
+                    PlanDate = "" + drItems["PLAN_STR_DATE"].ToString().Trim(),
+                    NextSchedDate = "" + drItems["NEXT_SCH_DATE"].ToString().Trim(),
+                    LastPerfDate = "" + drItems["LAST_PERF_DATE"].ToString().Trim(),
 
-                    //DurationHours = drItems["DSTRCT_CODE"].ToString().Trim(),
-                    //LaboutHors = drItems["DSTRCT_CODE"].ToString().Trim(),
+                    DurationHours = "" + drItems["DURATION_HOURS"].ToString().Trim(),
+                    LabourHours = "" + drItems["LABOUR_HOURS"].ToString().Trim(),
 
-                    //originatorUser = drItems["DSTRCT_CODE"].ToString().Trim(),
-                    //originatorPosition = drItems["DSTRCT_CODE"].ToString().Trim(),
-                    OriginatorItemDate = drItems["FECHA_FOTO"].ToString().Trim(),
-                    //lastModUser = drItems["DSTRCT_CODE"].ToString().Trim(),
-                    //lastModPosition = drItems["DSTRCT_CODE"].ToString().Trim(),
-                    //lastModItemDate = drItems["DSTRCT_CODE"].ToString().Trim(),
+                    LastModUser = "" + drItems["LAST_MOD_USER"].ToString().Trim(),
+                    LastModItemDate = "" + drItems["LAST_MOD_DATE"].ToString().Trim(),
 
-                    //itemStatus = drItems["DSTRCT_CODE"].ToString().Trim(),
-
+                    RecordStatus = "" + drItems["RECORD_STATUS"].ToString().Trim(),
                 };
 
                 list.Add(item);
@@ -79,8 +88,6 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
             var jobList = JobActions.FetchJobs(urlService, opContext, searchParam);
 
-            var fcOpContext = MstActions.GetMstServiceOperationContext(district, position);
-
             foreach (var job in jobList)
             {
                 var item = new PlannerItem();
@@ -90,8 +97,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 item.CompModCode  = "" + job.CompModCode;
                 item.WorkOrder  = "" + job.WorkOrder;
                 item.MaintSchedTask  = "" + job.MaintSchTask;
-                item.MonitoringPeriod  = !string.IsNullOrWhiteSpace(job.PlanStrDate) ? "" + job.PlanStrDate.Substring(0, 6) : job.PlanStrDate;
-                item.CreationDate  = "" + job.RaisedDate;
+                item.Period  = !string.IsNullOrWhiteSpace(job.PlanStrDate) ? "" + job.PlanStrDate.Substring(0, 6) : job.PlanStrDate;
+                item.RaisedDate  = "" + job.RaisedDate;
                 item.PlanDate  = "" + job.PlanStrDate;
                 item.NextSchedDate = "";
                 item.LastPerfDate  = "" + job.LastPerformedDate;
@@ -136,58 +143,5 @@ namespace EllipseFotoPlanificacionExcelAddIn
             return plannerList;
         }
 
-        public static List<PlannerItem> Test(EllipseFunctions ef, string urlService, string district, string position, string startDate, string finishDate, int workGroupCriteriaKey, string workGroupCriteriaValue, string searchEntities, string additionalJobs)
-        {
-            var plannerList = new List<PlannerItem>();
-
-            var fcOpContext = MstActions.GetMstServiceOperationContext(district, position);
-
-            var item = new PlannerItem();
-            item.WorkGroup = "CTC";
-            item.EquipNo = "1400000";
-            item.CompCode = "";
-            item.CompModCode = "";
-            item.WorkOrder = "";
-            item.MaintSchedTask = "CV3";
-            item.MonitoringPeriod = "20200630";
-            item.CreationDate = "";
-            item.PlanDate = "20200630";
-            item.NextSchedDate = "";
-            item.LastPerfDate = "20200530";
-            item.DurationHours = "31.5";
-            item.LabourHours = "";
-
-            var forecastSearch = new MstForecast();
-            forecastSearch.CompCode = item.CompCode;
-            forecastSearch.EquipNo = item.EquipNo;
-            forecastSearch.MaintSchTask = item.MaintSchedTask;
-            forecastSearch.CompModCode = item.CompModCode;
-            forecastSearch.HideSuppressed = "Y";
-            forecastSearch.Ninstances = "3";
-            forecastSearch.Rec700Type = "ES";
-            forecastSearch.ShowRelated = "N";
-
-            try
-            {
-                /*var fcList = MstActions.ForecastMaintenanceScheduleTask(urlService, fcOpContext, forecastSearch);
-                
-                if (fcList != null && fcList.Count >= 1)
-                {
-                    item.NextSchedDate = fcList[0].PlanStrDate;
-                    item.LastPerfDate = string.IsNullOrWhiteSpace(item.LastPerfDate) ? fcList[0].LastPerformedDate : item.LastPerfDate;
-                }
-                */
-                
-               MstActions.ForecastMaintenanceScheduleTaskPost(ef, forecastSearch);
-            }
-            catch (Exception ex)
-            {
-                item.NextSchedDate = ex.Message;
-            }
-
-            plannerList.Add(item);
-            
-            return plannerList;
-        }
     }
 }

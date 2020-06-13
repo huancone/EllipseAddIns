@@ -21,10 +21,11 @@ namespace EllipseJobsClassLibrary
     public static class SearchDateCriteriaType
     {
         public static KeyValuePair<int, string> PlannedStart = new KeyValuePair<int, string>(1, "PlannedStart");
+        public static KeyValuePair<int, string> Period = new KeyValuePair<int, string>(2, "Period");
 
         public static List<KeyValuePair<int, string>> GetSearchDateCriteriaTypes(bool keyOrder = true)
         {
-            var list = new List<KeyValuePair<int, string>> { PlannedStart };
+            var list = new List<KeyValuePair<int, string>> { PlannedStart, Period };
 
             return keyOrder ? list.OrderBy(x => x.Key).ToList() : list.OrderBy(x => x.Value).ToList();
         }

@@ -13,7 +13,7 @@ namespace EllipseReferenceCodesClassLibrary
 
         public static List<ReferenceCodeEntity> FetchReferenceCodeEntities(EllipseFunctions ef, string entityType)
         {
-            var sqlQuery = Queries.FetchReferenceCodeEntities(ef.dbReference, ef.dbLink, entityType);
+            var sqlQuery = Queries.FetchReferenceCodeEntities(ef.DbReference, ef.DbLink, entityType);
             var drReference = ef.GetQueryResult(sqlQuery);
             var entityList = new List<ReferenceCodeEntity>();
 
@@ -39,7 +39,7 @@ namespace EllipseReferenceCodesClassLibrary
 
         public static List<ReferenceCodeItem> FetchReferenceCodeItems(EllipseFunctions ef, string urlService, RefCodesService.OperationContext opContext, string entityType, string entityValue, string refNo = null)
         {
-            var sqlQuery = Queries.FetchReferenceCodeItems(ef.dbReference, ef.dbLink, entityType, entityValue, refNo);
+            var sqlQuery = Queries.FetchReferenceCodeItems(ef.DbReference, ef.DbLink, entityType, entityValue, refNo);
             var drReference = ef.GetQueryResult(sqlQuery);
             var itemList = new List<ReferenceCodeItem>();
 
@@ -68,7 +68,7 @@ namespace EllipseReferenceCodesClassLibrary
 
         public static ReferenceCodeItem FetchReferenceCodeItem(EllipseFunctions ef, string urlService, RefCodesService.OperationContext opContext, string entityType, string entityValue, string refNo, string seqNum)
         {
-            var sqlQuery = Queries.FetchReferenceCodeItems(ef.dbReference, ef.dbLink, entityType, entityValue, refNo, seqNum);
+            var sqlQuery = Queries.FetchReferenceCodeItems(ef.DbReference, ef.DbLink, entityType, entityValue, refNo, seqNum);
             var drReference = ef.GetQueryResult(sqlQuery);
 
             if (drReference == null || drReference.IsClosed || !drReference.HasRows) return new ReferenceCodeItem();

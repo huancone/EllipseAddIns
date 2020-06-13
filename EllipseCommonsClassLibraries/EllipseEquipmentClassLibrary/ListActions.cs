@@ -9,7 +9,7 @@ namespace EllipseEquipmentClassLibrary
     {
         public static List<EquipListItem> FetchListEquipmentsList(EllipseFunctions ef, int primakeryKey, string primaryValue, int secondarykey, string secondaryValue, string statusValue)
         {
-            var sqlQuery = Queries.GetFetchListEquipmentsListQuery(ef.dbReference, ef.dbLink, primakeryKey, primaryValue, secondarykey, secondaryValue, statusValue);
+            var sqlQuery = Queries.GetFetchListEquipmentsListQuery(ef.DbReference, ef.DbLink, primakeryKey, primaryValue, secondarykey, secondaryValue, statusValue);
             var drItem = ef.GetQueryResult(sqlQuery);
             var list = new List<EquipListItem>();
 

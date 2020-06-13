@@ -32,6 +32,9 @@
     <WarningLevel>1</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -57,6 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connections\DatabaseItem.cs" />
+    <Compile Include="Connections\OracleConnector.cs" />
     <Compile Include="Settings\AboutBoxExcelAddIn.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,7 +72,7 @@
     <Compile Include="Settings\AssemblyItem.cs" />
     <Compile Include="Settings\CommonSettings.cs" />
     <Compile Include="Settings\Debugger.cs" />
-    <Compile Include="Connections\Connections.cs" />
+    <Compile Include="Connections\Environments.cs" />
     <Compile Include="Constants\Districts.cs" />
     <Compile Include="Classes\EllipseCodeItem.cs" />
     <Compile Include="Connections\Configuration.cs" />
@@ -208,6 +213,9 @@
       <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
       <Name>System.Web.Services.Ellipse</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

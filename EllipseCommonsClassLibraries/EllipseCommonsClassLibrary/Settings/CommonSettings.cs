@@ -115,7 +115,8 @@ namespace EllipseCommonsClassLibrary.Settings
         [Serializable]
         public class Options
         {
-            public List<ConfigValuePair<string, string>> settings;
+            public List<ConfigValuePair<string, string>> Settings;
+            private Options _defaultOptions;
             public Options(string fileName)
             {
                 Serialize(fileName, this);
@@ -127,25 +128,29 @@ namespace EllipseCommonsClassLibrary.Settings
             }
             public void SetOption(string key, string value)
             {
-                if (settings == null)
-                    settings = new List<ConfigValuePair<string, string>>();
+                if (Settings == null)
+                    Settings = new List<ConfigValuePair<string, string>>();
 
 
                 //Valido primeramente si existe y lo reemplazo si existe
-                foreach (var item in settings)
+                foreach (var item in Settings)
                 {
-                    if (item.Key.Equals(key))
+                    if (item.Key != null && item.Key.Equals(key))
                     {
                         var newItem = new ConfigValuePair<string, string>(item.Key, value);
-                        settings[settings.IndexOf(item)] = newItem;
+                        Settings[Settings.IndexOf(item)] = newItem;
                         return;
                     }
                 }
 
                 //Lo agrego si no existe
-                settings.Add(new ConfigValuePair<string, string>(key, value));
+                Settings.Add(new ConfigValuePair<string, string>(key, value));
             }
 
+            public void SetDefaultOptions(Options defaultOptions)
+            {
+                _defaultOptions = defaultOptions;
+            }
             public string GetOptionValue(ConfigValuePair<string, string> defaultItem)
             {
                 var currentItemValue = GetOptionValue(defaultItem.Key);
@@ -157,18 +162,38 @@ namespace EllipseCommonsClassLibrary.Settings
 
             public string  GetOptionValue(string key)
             {
-                foreach (var item in settings)
+                foreach (var item in Settings)
                     if (item.Key.Equals(key))
                         return item.Value;
+
+                if (_defaultOptions != null)
+                {
+
+                    var defaultItem = _defaultOptions.GetOption(key);
+                    if (defaultItem.Key != null)
+                    {
+                        SetOption(defaultItem.Key, defaultItem.Value);
+                        return defaultItem.Value;
+                    }
+                }
 
                 return null;
             }
 
             public ConfigValuePair<string, string> GetOption(string key)
             {
-                foreach (var item in settings)
+                foreach (var item in Settings)
                     if (item.Key.Equals(key))
                         return item;
+                if (_defaultOptions != null)
+                {
+                    var defaultItem = _defaultOptions.GetOption(key);
+                    if (defaultItem.Key != null)
+                    {
+                        SetOption(defaultItem.Key, defaultItem.Value);
+                        return defaultItem;
+                    }
+                }
 
                 return new ConfigValuePair<string, string>();
             }
