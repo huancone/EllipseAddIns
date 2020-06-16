@@ -34,9 +34,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\EllipseCommonsClassLibrary\bin\Debug\EllipseCommonsClassLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="EllipseReferenceCodesClassLibrary">
-      <HintPath>..\EllipseReferenceCodesClassLibrary\bin\Debug\EllipseReferenceCodesClassLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="EllipseStdTextClassLibrary">
       <HintPath>..\EllipseStdTextClassLibrary\bin\Debug\EllipseStdTextClassLibrary.dll</HintPath>
     </Reference>
@@ -50,10 +47,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\System.Web.Services.Ellipse\bin\Debug\System.Web.Services.Ellipse.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
       <HintPath>..\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
     </Reference>
@@ -448,6 +441,16 @@
     <None Include="Web References\StandardJobTaskService\StandardJobTaskServiceRetrieveResEstimatesReplyDTO.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj">
+      <Project>{093ec04e-6e92-4e59-848b-5b79277ffe9b}</Project>
+      <Name>EllipseReferenceCodesClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
+      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
+      <Name>System.Web.Services.Ellipse</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

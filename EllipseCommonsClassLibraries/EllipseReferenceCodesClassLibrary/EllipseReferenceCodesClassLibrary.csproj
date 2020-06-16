@@ -125,16 +125,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
-      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
-      <Name>EllipseCommonsClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
-      <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
-      <Name>EllipseStdTextClassLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/RefCodesService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\RefCodesService\</RelPath>
@@ -146,6 +136,16 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseReferenceCodesClassLibrary_RefCodesService_RefCodesService</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
+      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
+      <Name>EllipseCommonsClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
+      <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
+      <Name>EllipseStdTextClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

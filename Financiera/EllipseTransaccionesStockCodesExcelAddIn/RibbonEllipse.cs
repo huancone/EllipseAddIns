@@ -850,10 +850,10 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     scCells.GetCell(2, j).Value = "CONSULTA DE VALES-ITEMS";
                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(SheetName0101))
                         scCells.GetCell(1, j).Select();
-                    _eFunctions.CloseConnection();
                     j++; //aumenta SC
                 }
 
+            _eFunctions.CloseConnection();
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             _cells.SetCursorDefault();
         }

@@ -581,8 +581,6 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 }
                 else
                     MessageBox.Show(@"No se han encontrado datos para el modelo especificado");
-                _eFunctions.CloseConnection();
-
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             }
             catch (Exception ex)
@@ -592,6 +590,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             }
             finally
             {
+				_eFunctions.CloseConnection();
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }
@@ -617,19 +616,17 @@ namespace EllipseLogSheetStatisticsExcelAddIn
         }
         public List<string> GetModelEquipments(string modelCode)
         {
+			var conn = new OracleConnector(Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label));
             try
             {
                 List<string> equipmentList = null;
-                var ef = new EllipseFunctions();
                 //Igual que el query sqlQuery2 de setSheetModelData
                 var sqlQuery = Queries.GetQueryDefaultModelData(modelCode, _eFunctions.dbReference, _eFunctions.dbLink);
 
                 if (Debugger.DebugQueries)
                     _cells.GetCell("M1").Value = sqlQuery;
 
-                ef.SetDBSettings(drpEnvironment.SelectedItem.Label);
-
-                var drEquipments = ef.GetQueryResult(sqlQuery);
+                var drEquipments = conn.GetQueryResult(sqlQuery);
 
                 if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
                 {
@@ -637,7 +634,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     while (drEquipments.Read())
                         equipmentList.Add("" + drEquipments["ENTRY_GRP"].ToString().Trim());
                 }
-                ef.CloseConnection();
+                conn.CloseConnection(true);
 
                 return equipmentList;
             }

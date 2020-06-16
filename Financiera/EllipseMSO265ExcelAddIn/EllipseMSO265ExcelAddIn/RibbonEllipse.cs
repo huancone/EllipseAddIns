@@ -549,10 +549,7 @@ namespace EllipseMSO265ExcelAddIn
                     var dataReader = _eFunctions.GetQueryResult(sqlQuery);
 
                     if (dataReader == null || dataReader.IsClosed || !dataReader.HasRows)
-                    {
-                        _eFunctions.CloseConnection();
                         throw new Exception("No se ha encontrado una combinación válida para el supplier y la referencia ingresada");
-                    }
 
                     dataReader.Read();
 
@@ -581,9 +578,9 @@ namespace EllipseMSO265ExcelAddIn
 
                     _cells.GetCell(1, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
+			_eFunctions.CloseConnection();
             //_excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
@@ -1093,6 +1090,7 @@ namespace EllipseMSO265ExcelAddIn
                     startRow = currentRow;
                 }
             }
+			_eFunctions.CloseConnection();
             _cells.SetCursorDefault();
         }
         
@@ -1235,6 +1233,7 @@ namespace EllipseMSO265ExcelAddIn
                     startRow = currentRow;
                 }
             }
+			_eFunctions.CloseConnection();
             _cells.SetCursorDefault();
         }
 

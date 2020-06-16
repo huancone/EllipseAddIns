@@ -146,7 +146,7 @@ namespace EllipseCommonsClassLibrary.Utilities
         ///     Obtiene el valor verdadero según el criterio de entrada. Si value es TRUE, VERDADERO, Y, YES, SI, ó 1
         /// </summary>
         /// <param name="value">Object: valor a analizar</param>
-        /// <param name="nullOrEmpty">ConversionConstants: indica si se asume nulo/vacío como predeterminado (falso)</param>
+        /// <param name="nullOrEmpty">ConversionConstants: indica si se asume nulo/vacío como predeterminado ConversionConstants.DEFAULT_NORMAL</param>
         /// <returns>boolean: true si value es TRUE, VERDADERO, Y, YES, SI ó 1</returns>
         public static bool IsTrue(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL)
         {
@@ -256,6 +256,22 @@ namespace EllipseCommonsClassLibrary.Utilities
                 return default(int);
 
             return Convert.ToInt64(value, cultureInfo);
+        }
+        public static double ToDouble(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        {
+            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                throw new ArgumentException("Error al intentar convertir un valor a double. Parámetro de conversión a entero nullOrEmpty no válido.");
+            if (cultureInfo == null)
+                cultureInfo = CultureInfo.CurrentCulture;
+
+            if (value == null && nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+                return default(double);
+
+            var stringValue = Convert.ToString(value);
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY || nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY))
+                return default(double);
+
+            return Convert.ToDouble(value, cultureInfo);
         }
         public static System.DateTime ToDateTime(object value)
         {

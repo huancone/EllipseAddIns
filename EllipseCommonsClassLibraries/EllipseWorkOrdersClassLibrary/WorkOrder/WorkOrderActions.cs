@@ -37,7 +37,7 @@ namespace EllipseWorkOrdersClassLibrary
         /// <returns></returns>
         public static List<WorkOrder> FetchWorkOrder(EllipseFunctions ef, string district, int primakeryKey, string primaryValue, int secondarykey, string secondaryValue, int dateKey, string startDate, string endDate, string woStatus)
         {
-            var sqlQuery = Queries.GetFetchWoQuery(ef.dbReference, ef.dbLink, district, primakeryKey, primaryValue, secondarykey, secondaryValue, dateKey, startDate, endDate, woStatus);
+            var sqlQuery = Queries.GetFetchWoQuery(ef.DbReference, ef.DbLink, district, primakeryKey, primaryValue, secondarykey, secondaryValue, dateKey, startDate, endDate, woStatus);
             var drWorkOrder = ef.GetQueryResult(sqlQuery);
             var list = new List<WorkOrder>();
 
@@ -140,7 +140,7 @@ namespace EllipseWorkOrdersClassLibrary
         public static List<string> FetchOrigDocNo(EllipseFunctions ef, string districtCode, string workGroup,
             string origDocType, string origDocNo)
         {
-            var sqlQuery = Queries.GetFetchOrigDocNo(ef.dbReference, ef.dbLink, districtCode, workGroup, origDocType,
+            var sqlQuery = Queries.GetFetchOrigDocNo(ef.DbReference, ef.DbLink, districtCode, workGroup, origDocType,
                 origDocNo);
             var list = new List<string>();
             var drWorkOrder = ef.GetQueryResult(sqlQuery);
@@ -180,7 +180,7 @@ namespace EllipseWorkOrdersClassLibrary
             if (long.TryParse(workOrder, out number1))
                 workOrder = workOrder.PadLeft(8, '0');
 
-            var sqlQuery = Queries.GetFetchWoQuery(ef.dbReference, ef.dbLink, district, workOrder);
+            var sqlQuery = Queries.GetFetchWoQuery(ef.DbReference, ef.DbLink, district, workOrder);
             var drWorkOrder = ef.GetQueryResult(sqlQuery);
 
             if (drWorkOrder == null || drWorkOrder.IsClosed || !drWorkOrder.HasRows || !drWorkOrder.Read()) return null;
@@ -459,15 +459,15 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.location = wo.location ?? requestWo.location;
             requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
 
-            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, true);
+            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
             requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
-            requestWo.calculatedLabFlag = MyUtilities.IsTrue(wo.calculatedLabFlag, true);
+            requestWo.calculatedLabFlag = MyUtilities.IsTrue(wo.calculatedLabFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
             requestWo.calculatedLabFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedLabFlag);
-            requestWo.calculatedMatFlag = MyUtilities.IsTrue(wo.calculatedMatFlag, true);
+            requestWo.calculatedMatFlag = MyUtilities.IsTrue(wo.calculatedMatFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
             requestWo.calculatedMatFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedMatFlag);
-            requestWo.calculatedEquipmentFlag = MyUtilities.IsTrue(wo.calculatedEquipmentFlag, true);
+            requestWo.calculatedEquipmentFlag = MyUtilities.IsTrue(wo.calculatedEquipmentFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
             requestWo.calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag);
-            requestWo.calculatedOtherFlag = MyUtilities.IsTrue(wo.calculatedOtherFlag, true);
+            requestWo.calculatedOtherFlag = MyUtilities.IsTrue(wo.calculatedOtherFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
             requestWo.calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag);
 
             //se envía la acción
@@ -552,7 +552,7 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.location = wo.location ?? requestWo.location;
             requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
 
-            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, true);
+            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
             requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
             //
             if (wo.calculatedLabFlag == null && wo.calculatedMatFlag == null && wo.calculatedEquipmentFlag == null && wo.calculatedOtherFlag == null)
@@ -1009,7 +1009,6 @@ namespace EllipseWorkOrdersClassLibrary
             woRefCodes.CalificacionCalidadPor = item035.RefCode;//035_001
             woRefCodes.SecuenciaOt = item036.RefCode;//036_001
 
-            newef.CloseConnection();
             return woRefCodes;
         }
 

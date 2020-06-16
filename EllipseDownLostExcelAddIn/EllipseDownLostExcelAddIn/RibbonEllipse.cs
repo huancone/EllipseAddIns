@@ -792,7 +792,6 @@ namespace EllipseDownLostExcelAddIn
                         cells.GetCell(14, currentRow).Style = StyleConstants.Warning;
                     currentRow++;
                 }
-                _eFunctions.CloseConnection();
             }
             catch (Exception ex)
             {
@@ -802,6 +801,7 @@ namespace EllipseDownLostExcelAddIn
             }
             finally
             {
+				_eFunctions.CloseConnection();
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }
@@ -909,10 +909,7 @@ namespace EllipseDownLostExcelAddIn
                             }
                         }
                     }
-                    _eFunctions.CloseConnection();
                 }
-
-                _eFunctions.CloseConnection();
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             }
             catch (Exception ex)
@@ -923,6 +920,7 @@ namespace EllipseDownLostExcelAddIn
             }
             finally
             {
+				_eFunctions.CloseConnection();
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }

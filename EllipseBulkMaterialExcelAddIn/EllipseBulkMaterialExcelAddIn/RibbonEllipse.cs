@@ -709,7 +709,6 @@ namespace EllipseBulkMaterialExcelAddIn
             _cells.GetRange(1, headerRow, ResultColumn01 - 1, currentRow).Style = StyleConstants.Success;
             _cells.GetRange(1, headerRow, 6, currentRow).Select();
 
-            _eFunctions.CloseConnection();
             sheetHeader = null;
             itemList.Clear();
         }

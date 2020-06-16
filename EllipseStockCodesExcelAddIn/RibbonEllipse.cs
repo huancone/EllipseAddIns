@@ -272,7 +272,6 @@ namespace EllipseStockCodesExcelAddIn
                     finally
                     {
                         rowParam++;
-                        _eFunctions.CloseConnection();
                     }
                 }
             }

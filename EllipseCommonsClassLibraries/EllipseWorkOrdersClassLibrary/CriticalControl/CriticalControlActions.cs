@@ -14,7 +14,7 @@ namespace EllipseWorkOrdersClassLibrary
     {
         public static List<CriticalControl> FetchCriticalControl(EllipseFunctions ef, string urlService, OperationContext opContext, string district, int primakeryKey, string primaryValue)
         {
-            var sqlQuery = Queries.GetFetchCriticalControlsQuery(ef.dbReference, ef.dbLink, district, primakeryKey, primaryValue, 0, "", 0, "", "", "");
+            var sqlQuery = Queries.GetFetchCriticalControlsQuery(ef.DbReference, ef.DbLink, district, primakeryKey, primaryValue, 0, "", 0, "", "", "");
             var drCriticalControl = ef.GetQueryResult(sqlQuery);
             var list = new List<CriticalControl>();
 
@@ -57,7 +57,7 @@ namespace EllipseWorkOrdersClassLibrary
         }
         public static CriticalControl FetchCriticalControl(EllipseFunctions ef, string urlService, OperationContext opContext, string district, string workOrder, string woTask)
         {
-            var sqlQuery = Queries.GetFetchCriticalControlsQuery(ef.dbReference, ef.dbLink, district, workOrder, woTask);
+            var sqlQuery = Queries.GetFetchCriticalControlsQuery(ef.DbReference, ef.DbLink, district, workOrder, woTask);
             var drCriticalControl = ef.GetQueryResult(sqlQuery);
             CriticalControl control = new CriticalControl();
 
@@ -94,7 +94,7 @@ namespace EllipseWorkOrdersClassLibrary
 
                 control.InstructionsText = StdText.GetText(urlService, stOpContext, control.InstructionsCode);
             }
-            newef.CloseConnection();
+
             return control;
         }
 

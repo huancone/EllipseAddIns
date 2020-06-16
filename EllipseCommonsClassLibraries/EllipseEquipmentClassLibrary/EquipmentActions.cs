@@ -663,18 +663,26 @@ namespace EllipseEquipmentClassLibrary
             var newef = new EllipseFunctions(eFunctions);
             newef.SetConnectionPoolingType(false);
             //
-            var item001001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "001");
-            var item002001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "002", "001");
-            var item003001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "003", "001");
-            var item004001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "004", "001");
-            var item200001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "200", "001");
-
-            eqRefCodes.EquipmentCapacity = item001001.RefCode;
-            eqRefCodes.RefrigerantType = item002001.RefCode;
-            eqRefCodes.FuelCostCenter = item003001.RefCode;
-            eqRefCodes.ReconstructedComponent = item004001.RefCode;
-            eqRefCodes.XerasModel = item200001.RefCode;
-            newef.CloseConnection();
+			try
+			{
+				var item001001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "001");
+				var item002001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "002", "001");
+				var item003001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "003", "001");
+				var item004001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "004", "001");
+				var item200001 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "200", "001");
+	
+				eqRefCodes.EquipmentCapacity = item001001.RefCode;
+				eqRefCodes.RefrigerantType = item002001.RefCode;
+				eqRefCodes.FuelCostCenter = item003001.RefCode;
+				eqRefCodes.ReconstructedComponent = item004001.RefCode;
+				eqRefCodes.XerasModel = item200001.RefCode;
+				newef.CloseConnection(true);
+			}
+			catch
+			{
+				newef.CloseConnection(true);
+				throw;
+			}
             return eqRefCodes;
         }
         public static ReplyMessage CreateReferenceCodes(EllipseFunctions eFunctions, string urlService, OperationContext opContext, string equipmentNo, Equipment.EquipmentReferenceCodes equipmentReferenceCodes)

@@ -1214,8 +1214,6 @@ namespace EllipseRequisitionServiceExcelAddIn
                     item.UnitOfMeasure = "" + odr["UNIT_OF_ISSUE"];
             }
 
-            _eFunctions.CloseConnection();
-
             return item;
         }
 

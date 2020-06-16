@@ -24,10 +24,7 @@ namespace EllipseMaintSchedTaskClassLibrary
             var list = new List<MaintenanceScheduleTask>();
 
             if (mstDataReader == null || mstDataReader.IsClosed || !mstDataReader.HasRows)
-            {
-                ef.CloseConnection();
                 return list;
-            }
             while (mstDataReader.Read())
             {
                 // ReSharper disable once UseObjectOrCollectionInitializer

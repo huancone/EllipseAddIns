@@ -136,13 +136,6 @@
     This section specifies references for the project.
   -->
   <ItemGroup>
-    <Reference Include="EllipseCommonsClassLibrary, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\bin\Debug\EllipseCommonsClassLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="EllipseWorkOrdersClassLibrary">
-      <HintPath>..\..\EllipseCommonsClassLibraries\ReleasedLibraries\EllipseWorkOrdersClassLibrary\v1.2.2.1\EllipseWorkOrdersClassLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="LINQtoCSV, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LINQtoCSV.1.5.0.0\lib\net35\LINQtoCSV.dll</HintPath>
       <Private>True</Private>
@@ -155,10 +148,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\bin\Debug\System.Web.Services.Ellipse.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
       <HintPath>..\..\EllipseCommonsClassLibraries\ReleasedLibraries\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
     </Reference>
@@ -220,7 +209,6 @@
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="EllipsePlannerExcelAddIn_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -249,17 +237,25 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ventyx_logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
+      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
+      <Name>EllipseCommonsClassLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseJobsClassLibrary\EllipseJobsClassLibrary.csproj">
       <Project>{838948ce-353c-41fe-904e-753b4678aeeb}</Project>
       <Name>EllipseJobsClassLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseStandardJobsClassLibrary\EllipseStandardJobsClassLibrary.csproj">
-      <Project>{d83698a3-3b22-4af7-b92a-26e2a05b1764}</Project>
-      <Name>EllipseStandardJobsClassLibrary</Name>
+    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseWorkOrdersClassLibrary\EllipseWorkOrdersClassLibrary.csproj">
+      <Project>{b08f098e-e4de-4431-8cf1-0e3156b96a00}</Project>
+      <Name>EllipseWorkOrdersClassLibrary</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ventyx_logo.ico" />
+    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
+      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
+      <Name>System.Web.Services.Ellipse</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

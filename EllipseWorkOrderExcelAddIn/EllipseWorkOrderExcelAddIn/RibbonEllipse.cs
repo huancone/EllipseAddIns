@@ -2734,9 +2734,9 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     _cells.GetCell(2, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
+			_eFunctions.CloseConnection();
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
@@ -3356,7 +3356,6 @@ namespace EllipseWorkOrderExcelAddIn
                     if (!ignoreClosedStatus)
                     {
                         var woData = WorkOrderActions.FetchWorkOrder(_eFunctions, wo.districtCode, wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no);
-                        _eFunctions.CloseConnection();
                         if (!WoStatusList.ClosedCode.Equals(woData.workOrderStatusM.Trim()) && !WoStatusList.CancelledCode.Equals(woData.workOrderStatusM.Trim()))
                             throw new Exception("La orden " + wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no + " ya está abierta como " + WoStatusList.GetStatusName(woData.workOrderStatusM.Trim()));
                     }
@@ -3379,6 +3378,7 @@ namespace EllipseWorkOrderExcelAddIn
                     i++;
                 }
             }
+			_eFunctions.CloseConnection();
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
@@ -3741,9 +3741,9 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     _cells.GetCell(2, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
+			_eFunctions.CloseConnection();
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
@@ -4468,9 +4468,9 @@ namespace EllipseWorkOrderExcelAddIn
                 finally
                 {
                     j++;//aumenta wo
-                    _eFunctions.CloseConnection();
                 }
             }
+			_eFunctions.CloseConnection();
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             _cells.SetCursorDefault();
         }
@@ -4706,9 +4706,9 @@ namespace EllipseWorkOrderExcelAddIn
                 finally
                 {
                     j++;//aumenta wo
-                    _eFunctions.CloseConnection();
                 }
             }
+			_eFunctions.CloseConnection();
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             _cells.SetCursorDefault();
         }
@@ -4791,9 +4791,9 @@ namespace EllipseWorkOrderExcelAddIn
                 finally
                 {
                     j++;//aumenta wo
-                    _eFunctions.CloseConnection();
                 }
             }
+            _eFunctions.CloseConnection();
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             _cells.SetCursorDefault();
         }

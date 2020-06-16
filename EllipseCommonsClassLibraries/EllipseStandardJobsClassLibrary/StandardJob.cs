@@ -468,8 +468,8 @@ namespace EllipseStandardJobsClassLibrary
         {
 
             var sqlQuery = quickReview
-                ? Queries.GetFetchQuickStandardQuery(ef.dbReference, ef.dbLink, districtCode, workGroup)
-                : Queries.GetFetchStandardQuery(ef.dbReference, ef.dbLink, districtCode, workGroup);
+                ? Queries.GetFetchQuickStandardQuery(ef.DbReference, ef.DbLink, districtCode, workGroup)
+                : Queries.GetFetchStandardQuery(ef.DbReference, ef.DbLink, districtCode, workGroup);
 
             var stdDataReader =
                 ef.GetQueryResult(sqlQuery);
@@ -477,10 +477,8 @@ namespace EllipseStandardJobsClassLibrary
             var list = new List<StandardJob>();
 
             if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows)
-            {
-                ef.CloseConnection();
                 return list;
-            }
+            
             while (stdDataReader.Read())
             {
 
@@ -537,20 +535,18 @@ namespace EllipseStandardJobsClassLibrary
 
                 list.Add(job);
             }
-            ef.CloseConnection();
+
             return list;
         }
 
         public static StandardJob FetchStandardJob(EllipseFunctions ef, string districtCode, string workGroup, string stdJob)
         {
             var stdDataReader =
-                ef.GetQueryResult(Queries.GetFetchStandardQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob));
+                ef.GetQueryResult(Queries.GetFetchStandardQuery(ef.DbReference, ef.DbLink, districtCode, workGroup, stdJob));
 
             if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows || !stdDataReader.Read())
-            {
-                ef.CloseConnection();
                 return null;
-            }
+
             var job = new StandardJob
             {
                 DistrictCode = stdDataReader["DSTRCT_CODE"].ToString().Trim(),
@@ -599,23 +595,19 @@ namespace EllipseStandardJobsClassLibrary
 
 
             //job.totalUpdateFlag =; //no se encuentran en la base de datos. Al parecer son calculados según la selección de los anteriores
-
-            ef.CloseConnection();
             return job;
         }
 
         public static List<StandardJobTask> FetchStandardJobTask(EllipseFunctions ef, string districtCode, string workGroup, string stdJob)
         {
             var stdDataReader =
-                ef.GetQueryResult(Queries.GetFetchStandardJobTasksQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob));
+                ef.GetQueryResult(Queries.GetFetchStandardJobTasksQuery(ef.DbReference, ef.DbLink, districtCode, workGroup, stdJob));
 
             var list = new List<StandardJobTask>();
 
             if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows)
-            {
-                ef.CloseConnection();
                 return list;
-            }
+
             while (stdDataReader.Read())
             {
 
@@ -653,24 +645,22 @@ namespace EllipseStandardJobsClassLibrary
 
                 list.Add(task);
             }
-            ef.CloseConnection();
+
             return list;
         }
 
         public static List<TaskRequirement> FetchTaskRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string taskNo = null)
         {
-            var sqlQuery = (taskNo == null) ? Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob)
-                                          : Queries.GetFetchStdJobTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, workGroup, stdJob, taskNo.PadLeft(3, '0'));
+            var sqlQuery = (taskNo == null) ? Queries.GetFetchStdJobTaskRequirementsQuery(ef.DbReference, ef.DbLink, districtCode, workGroup, stdJob)
+                                          : Queries.GetFetchStdJobTaskRequirementsQuery(ef.DbReference, ef.DbLink, districtCode, workGroup, stdJob, taskNo.PadLeft(3, '0'));
 
             var stdDataReader = ef.GetQueryResult(sqlQuery);
 
             var list = new List<TaskRequirement>();
 
             if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows)
-            {
-                ef.CloseConnection();
                 return list;
-            }
+
             while (stdDataReader.Read())
             {
 
@@ -691,7 +681,7 @@ namespace EllipseStandardJobsClassLibrary
 
                 list.Add(taskReq);
             }
-            ef.CloseConnection();
+
             return list;
         }
 
@@ -1601,7 +1591,6 @@ namespace EllipseStandardJobsClassLibrary
             stdRefCodes.Departamento = item030.RefCode; //030_9001
             stdRefCodes.Localizacion = item031.RefCode; //031_9001
 
-            newef.CloseConnection();
             return stdRefCodes;
         }
 

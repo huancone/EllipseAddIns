@@ -33,22 +33,20 @@ namespace EllipseWorkOrdersClassLibrary
             return list;
         }
 
-        public static List<TaskRequirement> FetchRequirements(EllipseFunctions ef, string districtCode, string workGroup, string stdJob, string reqType, string taskNo)
+        public static List<TaskRequirement> FetchRequirements(EllipseFunctions ef, string districtCode, string workOrder, string reqType, string taskNo)
         {
             string sqlQuery = "";
             if (string.IsNullOrWhiteSpace(taskNo))
-                sqlQuery = Queries.GetFetchWoRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, stdJob, reqType, string.IsNullOrWhiteSpace(taskNo) ? null : taskNo.PadLeft(3, '0'));
+                sqlQuery = Queries.GetFetchWoRequirementsQuery(ef.DbReference, ef.DbLink, districtCode, workOrder, reqType, string.IsNullOrWhiteSpace(taskNo) ? null : taskNo.PadLeft(3, '0'));
             else
-                sqlQuery = Queries.GetFetchWoTaskRequirementsQuery(ef.dbReference, ef.dbLink, districtCode, stdJob, reqType, string.IsNullOrWhiteSpace(taskNo) ? null : taskNo.PadLeft(3, '0'));
+                sqlQuery = Queries.GetFetchWoTaskRequirementsQuery(ef.DbReference, ef.DbLink, districtCode, workOrder, reqType, string.IsNullOrWhiteSpace(taskNo) ? null : taskNo.PadLeft(3, '0'));
             var woTaskDataReader = ef.GetQueryResult(sqlQuery);
 
             var list = new List<TaskRequirement>();
 
             if (woTaskDataReader == null || woTaskDataReader.IsClosed || !woTaskDataReader.HasRows)
-            {
-                ef.CloseConnection();
                 return list;
-            }
+            
             while (woTaskDataReader.Read())
             {
                 var taskReq = new TaskRequirement
@@ -71,8 +69,7 @@ namespace EllipseWorkOrdersClassLibrary
                 };
                 list.Add(taskReq);
             }
-            ef.CloseConnection();
-           
+
             return list;
         }
 
@@ -565,15 +562,13 @@ namespace EllipseWorkOrdersClassLibrary
         public static List<WorkOrderTask> FetchWorkOrderTask(EllipseFunctions ef, string districtCode, string workOrder, string woTaskNo)
         {
             var stdDataReader =
-                ef.GetQueryResult(Queries.GetFetchWorkOrderTasksQuery(ef.dbReference, ef.dbLink, districtCode, workOrder, woTaskNo));
+                ef.GetQueryResult(Queries.GetFetchWorkOrderTasksQuery(ef.DbReference, ef.DbLink, districtCode, workOrder, woTaskNo));
 
             var list = new List<WorkOrderTask>();
 
             if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows)
-            {
-                ef.CloseConnection();
                 return list;
-            }
+
             while (stdDataReader.Read())
             {
 
@@ -616,7 +611,7 @@ namespace EllipseWorkOrdersClassLibrary
 
                 list.Add(task);
             }
-            ef.CloseConnection();
+
             return list;
         }
 

@@ -466,7 +466,7 @@ namespace EllipsePlannerExcelAddIn
                 ////hoja de Tareas
                 _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
 
-                var urlServicePost = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
+                var urlServicePost = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
                 var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
                 var searchCriteriaKey1Text = _cells.GetEmptyIfNull(_cells.GetCell("A4").Value);
@@ -711,7 +711,7 @@ namespace EllipsePlannerExcelAddIn
                 _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
 
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
                 var opContext = new Screen.OperationContext
                 {
                     district = _frmAuth.EllipseDsct,
@@ -826,7 +826,7 @@ namespace EllipsePlannerExcelAddIn
             _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opContext = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -854,22 +854,22 @@ namespace EllipsePlannerExcelAddIn
                         WorkOrder = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value),
                         WoTaskNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value),
                         ReqCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value),
-                        HrsReq = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value)
+                        UnitsQty = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, i).Value)
                     };
 
                     if (string.IsNullOrWhiteSpace(action))
                         continue;
                     else if (action.Equals("C"))
                     {
-                        WorkOrderActions.CreateTaskResource(urlService, opContext, taskReq);
+                        WorkOrderTaskActions.CreateTaskResource(urlService, opContext, taskReq);
                     }
                     else if (action.Equals("M"))
                     {
-                        WorkOrderActions.ModifyTaskResource(urlService, opContext, taskReq);
+                        WorkOrderTaskActions.ModifyTaskResource(urlService, opContext, taskReq);
                     }
                     else if (action.Equals("D"))
                     {
-                        WorkOrderActions.DeleteTaskResource(urlService, opContext, taskReq);
+                        WorkOrderTaskActions.DeleteTaskResource(urlService, opContext, taskReq);
                     }
                     else if (action.Equals("Close Task"))
                     {
@@ -892,7 +892,7 @@ namespace EllipsePlannerExcelAddIn
                             ClosedDate = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, i).Value))
                         };
 
-                        WorkOrderActions.CompleteWorkOrderTask(urlService, taskOpContext, woTask);
+                        WorkOrderTaskActions.CompleteWorkOrderTask(urlService, taskOpContext, woTask);
                     }
                     _cells.GetCell(ResultColumnResources, i).Value = "OK";
                     _cells.GetCell(ResultColumnResources, i).Style = StyleConstants.Success;

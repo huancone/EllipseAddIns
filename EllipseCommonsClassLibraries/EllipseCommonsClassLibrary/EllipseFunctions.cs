@@ -311,7 +311,19 @@ namespace EllipseCommonsClassLibrary
                 _sqlComm = null;
             }
         }
+        /// <summary>
+        /// Cancela la acción que esté realizando la conexión, pero no cierra la conexión
+        /// </summary>
+        public void CancelConnection()
+        {
+            if (_oracleConnector != null)
+                _oracleConnector.CancelConnection();
 
+            if (_sqlConn != null && _sqlComm != null)
+            {
+                _sqlComm.Cancel();
+            }
+        }
         /// <summary>
         /// Revertir Operación. Solo aplica para ScreenService (MSO)
         /// </summary>
@@ -459,7 +471,6 @@ namespace EllipseCommonsClassLibrary
 
             var result = !(dReader == null || dReader.IsClosed || !dReader.HasRows || !dReader.Read());
             
-            CloseConnection();
             return result;
         }
 

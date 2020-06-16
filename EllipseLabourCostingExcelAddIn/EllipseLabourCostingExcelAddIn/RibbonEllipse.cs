@@ -316,7 +316,7 @@ namespace EllipseLabourCostingExcelAddIn
                 else
                     MessageBox.Show(@"No se han encontrado datos para el modelo especificado");
 
-                _eFunctions.CloseConnection();
+                
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             }
             catch (Exception ex)
@@ -327,6 +327,7 @@ namespace EllipseLabourCostingExcelAddIn
             }
             finally
             {
+				_eFunctions.CloseConnection();
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }

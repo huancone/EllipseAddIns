@@ -249,7 +249,6 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
                 else
                     MessageBox.Show(@"No se han encontrado datos para el grupo especificado");
 
-                _eFunctions.CloseConnection();
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             }
             catch (Exception ex)
@@ -260,6 +259,7 @@ namespace EllipseInstDemorasEnOTsExcelAddIn
             }
             finally
             {
+				_eFunctions.CloseConnection();
                 if (_cells != null) _cells.SetCursorDefault();
             }
         }

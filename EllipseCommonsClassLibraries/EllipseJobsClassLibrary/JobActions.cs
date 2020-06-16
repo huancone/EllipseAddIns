@@ -226,23 +226,20 @@ namespace EllipseJobsClassLibrary
                 //si es una orden de trabajo.
                 if (job.WorkOrder != null)
                 {
-                    var reqList = WorkOrderActions.FetchTaskRequirements(ef, job.DstrctCode, job.WorkGroup, job.WorkOrder, job.WoTaskNo);
+                    var reqList = WorkOrderTaskActions.FetchRequirements(ef, job.DstrctCode, job.WorkOrder, RequirementType.Labour.Key, job.WoTaskNo);
 
-                    foreach (var requirement in from req in reqList
-                                                let requirement = new LabourResources
-                                                {
-                                                    WorkGroup = req.WorkGroup,
-                                                    ResourceCode = req.ReqCode,
-                                                    Date = job.PlanStrDate,
-                                                    EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDouble(req.HrsReq) : 0,
-                                                    RealLabourHours = !string.IsNullOrEmpty(req.HrsReal) ? Convert.ToDouble(req.HrsReal) : 0
-                                                }
-                                                where req.ReqType == "LAB"
-                                                select requirement)
+                    foreach (var req in reqList)
                     {
+                        var requirement = new LabourResources
+                        {
+                            WorkGroup = req.WorkGroup,
+                            ResourceCode = req.ReqCode,
+                            Date = job.PlanStrDate,
+                            EstimatedLabourHours = MyUtilities.ToDouble(req.UnitsQty, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY),
+                            RealLabourHours = MyUtilities.ToDouble(req.RealQty, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+                        };
                         job.LabourResourcesList.Add(requirement);
                     }
-
                 }
                 else if (job.StdJobNo != null)
                 {
@@ -295,27 +292,36 @@ namespace EllipseJobsClassLibrary
 
         public static List<LabourResources> GetPsoftResources(string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
-            var ef = new EllipseFunctions();
-            ef.SetDBSettings(Environments.SigcorProductivo);
-            var sqlQuery = Queries.GetPsoftResourcesQuery(ef.DbReference, ef.DbLink, district, primakeryKey, primaryValue, startDate, endDate);
-            var drResources = ef.GetQueryResult(sqlQuery);
-            var list = new List<LabourResources>();
-
-            if (drResources == null || drResources.IsClosed || !drResources.HasRows) return list;
-            while (drResources.Read())
+            var conn = new OracleConnector(Environments.GetDatabaseItem(Environments.SigcorProductivo));
+            try
             {
-                var res = new LabourResources
+                var sqlQuery = Queries.GetPsoftResourcesQuery(conn.DbReference, conn.DbLink, district, primakeryKey, primaryValue, startDate, endDate);
+                var drResources = conn.GetQueryResult(sqlQuery);
+                var list = new List<LabourResources>();
+
+                if (drResources == null || drResources.IsClosed || !drResources.HasRows) return list;
+                while (drResources.Read())
                 {
-                    WorkGroup = drResources["GRUPO"].ToString().Trim(),
-                    Date = drResources["FECHA"].ToString().Trim(),
-                    ResourceCode = drResources["RECURSO"].ToString().Trim(),
-                    EmployeeId = drResources["CEDULA"].ToString().Trim(),
-                    EmployeeName = drResources["NOMBRE"].ToString().Trim(),
-                    AvailableLabourHours = !string.IsNullOrEmpty(drResources["HORAS"].ToString().Trim()) ? Convert.ToDouble(drResources["HORAS"].ToString().Trim()) : 0
-                };
-                list.Add(res);
+                    var res = new LabourResources
+                    {
+                        WorkGroup = drResources["GRUPO"].ToString().Trim(),
+                        Date = drResources["FECHA"].ToString().Trim(),
+                        ResourceCode = drResources["RECURSO"].ToString().Trim(),
+                        EmployeeId = drResources["CEDULA"].ToString().Trim(),
+                        EmployeeName = drResources["NOMBRE"].ToString().Trim(),
+                        AvailableLabourHours = !string.IsNullOrEmpty(drResources["HORAS"].ToString().Trim()) ? Convert.ToDouble(drResources["HORAS"].ToString().Trim()) : 0
+                    };
+                    list.Add(res);
+                }
+                conn.CloseConnection(true);
+
+                return list;
             }
-            return list;
+            catch
+            {
+                conn.CloseConnection(true);
+                throw;
+            }
         }
 
         public static List<DailyJobs> GetEllipseSingleTask(EllipseFunctions ef, string district, string reference, string referenceTask, string referenceStartDate, string referenceStartHour, string referenceFinDate, string referenceFinHour, string startDate, string finDate, string resourceCode)

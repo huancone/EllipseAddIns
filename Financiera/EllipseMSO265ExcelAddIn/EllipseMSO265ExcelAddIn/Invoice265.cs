@@ -120,10 +120,7 @@ namespace EllipseMSO265ExcelAddIn
             var dataReader = eFunctions.GetQueryResult(Queries.GetTaxGroupCodeListQuery(taxGroupCodeParamList));
 
             if (dataReader == null || dataReader.IsClosed || !dataReader.HasRows)
-            {
-                eFunctions.CloseConnection();
                 return taxList;
-            }
 
             while (dataReader.Read())
             {
@@ -140,8 +137,6 @@ namespace EllipseMSO265ExcelAddIn
 
                 taxList.Add(tax);
             }
-
-            eFunctions.CloseConnection();
             return taxList;
         }
         
@@ -152,14 +147,10 @@ namespace EllipseMSO265ExcelAddIn
             var dataReader = eFunctions.GetQueryResult(Queries.GetTaxCodeListQuery(taxCodesParamList, taxGroupCode));
 
             if (dataReader == null || dataReader.IsClosed || !dataReader.HasRows)
-            {
-                eFunctions.CloseConnection();
                 return taxList;
-            }
 
             while (dataReader.Read())
             {
-
                 // ReSharper disable once UseObjectOrCollectionInitializer
                 var tax = new TaxCodeItem();
                 tax.TaxCode = dataReader["ATAX_CODE"].ToString().Trim();
@@ -173,7 +164,6 @@ namespace EllipseMSO265ExcelAddIn
                 taxList.Add(tax);
             }
 
-            eFunctions.CloseConnection();
             return taxList;
         }
         public class Supplier
@@ -189,17 +179,12 @@ namespace EllipseMSO265ExcelAddIn
                 var drSupplierInfo = eFunctions.GetQueryResult(sqlQuery);
 
                 if (!drSupplierInfo.Read())
-                {
-                    eFunctions.CloseConnection();
                     throw new Exception("No se han econtrado datos para el Supplier Ingresado");
-                }
 
                 var cant = Convert.ToInt16(drSupplierInfo["CANTIDAD_REGISTROS"].ToString());
                 if (cant > 1)
-                {
-                    eFunctions.CloseConnection();
                     throw new Exception("Se ha encontrado más de un registro activo para el Supplier Ingresado");
-                }
+
                 SupplierNo = drSupplierInfo["SUPPLIER_NO"].ToString();
                 TaxFileNo = drSupplierInfo["TAX_FILE_NO"].ToString();
                 StAdress = drSupplierInfo["ST_ADRESS"].ToString();
@@ -211,8 +196,6 @@ namespace EllipseMSO265ExcelAddIn
                 BankBranchCode = drSupplierInfo["DEF_BRANCH_CODE"].ToString();
                 BankBranchAccountNo = drSupplierInfo["DEF_BANK_ACCT_NO"].ToString();
                 Status = drSupplierInfo["SUP_STATUS"].ToString();
-
-                eFunctions.CloseConnection();
             }
 
             public string SupplierNo;

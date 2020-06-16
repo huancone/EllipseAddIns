@@ -148,6 +148,8 @@ namespace EllipseCommonsClassLibrary.Connections
 
             try
             {
+                if(OracleComm == null || OracleConn == null)
+                    throw new ArgumentException("Database connection error: Make sure the Database connector is set and the connection is not disposed");
                 if (OracleConn.State != ConnectionState.Open && _transaction == null)
                     OracleConn.Open();
                 OracleComm.Connection = OracleConn;
@@ -184,6 +186,8 @@ namespace EllipseCommonsClassLibrary.Connections
             _queryAttempt++;
             try
             {
+                if (OracleComm == null || OracleConn == null)
+                    throw new ArgumentException("Database connection error: Make sure the Database connector is set and the connection is not disposed");
                 if (OracleConn.State != ConnectionState.Open && _transaction == null)
                     OracleConn.Open();
                 OracleComm.Connection = OracleConn;
@@ -220,6 +224,8 @@ namespace EllipseCommonsClassLibrary.Connections
 
             try
             {
+                if (OracleComm == null || OracleConn == null)
+                    throw new ArgumentException("Database connection error: Make sure the Database connector is set and the connection is not disposed");
                 if (OracleConn.State != ConnectionState.Open && _transaction == null)
                     OracleConn.Open();
                 OracleComm.Connection = OracleConn;
@@ -245,6 +251,11 @@ namespace EllipseCommonsClassLibrary.Connections
             }
         }
 
+        public void CancelConnection()
+        {
+            if(OracleConn != null && OracleComm != null)
+                OracleComm.Cancel();
+        }
         /// <summary>
         /// Cierra la conexión realizada para la consulta
         /// </summary>
@@ -252,7 +263,7 @@ namespace EllipseCommonsClassLibrary.Connections
         public void CloseConnection(bool dispose = false)
         {
             //This will avoid the default autocommit behaviour when connection closes
-            if (_transaction != null)
+            if (_transaction != null && OracleConn != null)
             {
                 Rollback();
                 _transaction.Dispose();

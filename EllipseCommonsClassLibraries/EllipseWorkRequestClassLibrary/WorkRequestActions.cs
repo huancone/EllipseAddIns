@@ -174,38 +174,46 @@ namespace EllipseWorkRequestClassLibrary
             var newef = new EllipseFunctions(eFunctions);
             newef.SetConnectionPoolingType(false);
             //
-            var item001_01 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "001");
-            var item001_02 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "002");
-            var item001_03 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "003");
-            var item001_04 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "004");
-            var item001_05 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "005");
-            var item006 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "006", "001");
-            var item007 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "007", "001");
-            var item008 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "008", "001");
-            var item009 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "009", "001");
-            var item010 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "010", "001");
-            var item011 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "011", "001");
-
-
-            wrRefCodes.StockCode1 = item001_01.RefCode; //001_9001
-            wrRefCodes.StockCode1Qty = item001_01.StdText; //001_9001
-            wrRefCodes.StockCode2 = item001_02.RefCode; //001_9002
-            wrRefCodes.StockCode2Qty = item001_02.StdText; //001_9002
-            wrRefCodes.StockCode3 = item001_03.RefCode; //001_9003
-            wrRefCodes.StockCode3Qty = item001_03.StdText; //001_9003
-            wrRefCodes.StockCode4 = item001_04.RefCode; //001_9004
-            wrRefCodes.StockCode4Qty = item001_04.StdText; //001_9004
-            wrRefCodes.StockCode5 = item001_05.RefCode; //001_9005
-            wrRefCodes.StockCode5Qty = item001_05.StdText; //001_9005
-            wrRefCodes.HorasHombre = item006.RefCode; //006_9001
-            wrRefCodes.HorasQty = item006.StdText; //006_9001
-            wrRefCodes.DuracionTarea = item007.RefCode; //007_001
-            wrRefCodes.EquipoDetenido = item008.RefCode; //008_001
-            wrRefCodes.RaisedReprogramada = item009.RefCode; //009_001
-            wrRefCodes.WorkOrderOrigen = item010.RefCode; //010_001
-            wrRefCodes.CambioHora = item011.RefCode; //011_001
-
-            newef.CloseConnection();
+			try
+			{
+                var item001_01 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "001");
+                var item001_02 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "002");
+                var item001_03 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "003");
+                var item001_04 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "004");
+                var item001_05 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "001", "005");
+                var item006 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "006", "001");
+                var item007 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "007", "001");
+                var item008 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "008", "001");
+                var item009 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "009", "001");
+                var item010 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "010", "001");
+                var item011 = ReferenceCodeActions.FetchReferenceCodeItem(newef, urlService, rcOpContext, entityType, entityValue, "011", "001");
+			    
+			    
+                wrRefCodes.StockCode1 = item001_01.RefCode; //001_9001
+                wrRefCodes.StockCode1Qty = item001_01.StdText; //001_9001
+                wrRefCodes.StockCode2 = item001_02.RefCode; //001_9002
+                wrRefCodes.StockCode2Qty = item001_02.StdText; //001_9002
+                wrRefCodes.StockCode3 = item001_03.RefCode; //001_9003
+                wrRefCodes.StockCode3Qty = item001_03.StdText; //001_9003
+                wrRefCodes.StockCode4 = item001_04.RefCode; //001_9004
+                wrRefCodes.StockCode4Qty = item001_04.StdText; //001_9004
+                wrRefCodes.StockCode5 = item001_05.RefCode; //001_9005
+                wrRefCodes.StockCode5Qty = item001_05.StdText; //001_9005
+                wrRefCodes.HorasHombre = item006.RefCode; //006_9001
+                wrRefCodes.HorasQty = item006.StdText; //006_9001
+                wrRefCodes.DuracionTarea = item007.RefCode; //007_001
+                wrRefCodes.EquipoDetenido = item008.RefCode; //008_001
+                wrRefCodes.RaisedReprogramada = item009.RefCode; //009_001
+                wrRefCodes.WorkOrderOrigen = item010.RefCode; //010_001
+                wrRefCodes.CambioHora = item011.RefCode; //011_001
+			    newef.CloseConnection(true);
+			}
+			catch
+			{
+				newef.CloseConnection(true);
+				throw;
+			}
+            
             return wrRefCodes;
         }
         /// <summary>
