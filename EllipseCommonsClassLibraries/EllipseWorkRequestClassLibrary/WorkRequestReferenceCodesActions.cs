@@ -27,7 +27,7 @@ namespace EllipseWorkRequestClassLibrary
             var riStockCode04 = new ReferenceCodeItem(entityType, entityValue, "001", "004", wrRefCodes.StockCode4, null, wrRefCodes.StockCode4Qty) { ShortName = "StockCode 04" };
             var riStockCode05 = new ReferenceCodeItem(entityType, entityValue, "001", "005", wrRefCodes.StockCode5, null, wrRefCodes.StockCode5Qty) { ShortName = "StockCode 05" };
 
-            var riHorasHombre = new ReferenceCodeItem(entityType, entityValue, "006", "001", wrRefCodes.HorasHombre, null, wrRefCodes.HorasQty) { ShortName = "Horas Hombre" };
+            var riHorasHombre = new ReferenceCodeItem(entityType, entityValue, "006", "001", wrRefCodes.HorasQty, null, wrRefCodes.HorasHombre) { ShortName = "Horas Hombre" };
             var riDuracionTarea = new ReferenceCodeItem(entityType, entityValue, "007", "001", wrRefCodes.DuracionTarea) { ShortName = "Duracion Tarea" };
             var riEquipoDetenido = new ReferenceCodeItem(entityType, entityValue, "008", "001", wrRefCodes.EquipoDetenido) { ShortName = "Equipo Detenido" };
             var riWorkOrderOrigen = new ReferenceCodeItem(entityType, entityValue, "009", "001", wrRefCodes.WorkOrderOrigen) { ShortName = "OT de Inspección" };
@@ -51,7 +51,7 @@ namespace EllipseWorkRequestClassLibrary
             if (!(wrRefCodes.StockCode5 == null && wrRefCodes.StockCode5Qty == null))
                 refItemList.Add(riStockCode05);
 
-            if (wrRefCodes.HorasHombre != null)
+            if (wrRefCodes.HorasHombre != null || wrRefCodes.HorasQty != null)
                 refItemList.Add(riHorasHombre);
             if (wrRefCodes.DuracionTarea != null)
                 refItemList.Add(riDuracionTarea);
@@ -170,8 +170,8 @@ namespace EllipseWorkRequestClassLibrary
             wrRefCodes.StockCode5 = item001_05.RefCode;            /*    wrRefCodes.StockCode5;             //001_9005  */
             wrRefCodes.StockCode5Qty = item001_05.StdText;         /*    wrRefCodes.StockCode5Qty;          //001_005   */
             wrRefCodes.NumeroComponente = item002.RefCode;         /*    wrRefCodes.NumeroComponente;       //002_001   */
-            wrRefCodes.HorasHombre = item006.RefCode;              /*    wrRefCodes.HorasHombre;            //006_9001  */
-            wrRefCodes.HorasQty = item006.StdText;                 /*    wrRefCodes.HorasQty;               //006_001   */
+            wrRefCodes.HorasHombre = item006.StdText;              /*    wrRefCodes.HorasHombre;            //006_9001  */
+            wrRefCodes.HorasQty = item006.RefCode;                 /*    wrRefCodes.HorasQty;               //006_001   */
             wrRefCodes.DuracionTarea = item007.RefCode;            /*    wrRefCodes.DuracionTarea;          //007_001   */
             wrRefCodes.EquipoDetenido = item008.RefCode;           /*    wrRefCodes.EquipoDetenido;         //008_001   */
             wrRefCodes.WorkOrderOrigen = item009.RefCode;          /*    wrRefCodes.WorkOrderOrigen;        //009_001   */

@@ -319,8 +319,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
             #region searchParams
 
-            var workGroupCriteriaKeyText = _cells.GetEmptyIfNull(_cells.GetCell("A3").Value);
-            var workGroupCriteriaValue = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+            var workGroupCriteriaKeyText = "" + _cells.GetEmptyIfNull(_cells.GetCell("A3").Value);
+            var workGroupCriteriaValue = "" + _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
             var searchEntities = "" + _cells.GetCell("B4").Value;
             var additionalJobs = "" + _cells.GetCell("B5").Value;
             var dateType = "" + _cells.GetCell("D3").Value;
@@ -621,7 +621,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
             
             var recordsAffectedMsg = " registros ";
             var recordsAffectedQty = 0;
-            var recordsInsertedMsg = " registros nuevos insertados";
+            var recordsInsertedMsg = " registros actualizados/ingresados";
             var recordsInsertedQty = 0;
             try
             {
@@ -660,7 +660,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 var lastModDate = MyUtilities.ToString(DateTime.Today);
 
                 //Si tanto como la OT como la MST están vacíos (no hay más registros)
-                while (!string.IsNullOrWhiteSpace(_cells.GetCell(05, i).Value) || !string.IsNullOrWhiteSpace(_cells.GetCell(06, i).Value))
+                while (!string.IsNullOrWhiteSpace("" + _cells.GetCell(05, i).Value) || !string.IsNullOrWhiteSpace("" + _cells.GetCell(06, i).Value))
                 {
                     try
                     {
@@ -684,6 +684,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                         item.LastModItemDate = lastModDate;
                         item.LastModUser = lastUser;
                         item.RecordStatus = "1";
+
 
                         var resultInt = PlannerActions.InsertItemIntoSigman(_eFunctions, item);
                         if (resultInt == 1)
@@ -767,7 +768,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
             cbDeleteExisting.Checked = false;
             cbIgnoreExisting.Checked = false;
-            if(CheckExistingActionCheckBoxes())
+            if(!CheckExistingActionCheckBoxes())
                 cbDeactivateExisting.Checked = true;
 
         }
@@ -779,7 +780,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
             cbDeactivateExisting.Checked = false;
             cbIgnoreExisting.Checked = false;
-            if (CheckExistingActionCheckBoxes())
+            if (!CheckExistingActionCheckBoxes())
                 cbDeleteExisting.Checked = true;
         }
 
@@ -790,7 +791,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 
             cbDeactivateExisting.Checked = false;
             cbDeleteExisting.Checked = false;
-            if (CheckExistingActionCheckBoxes())
+            if (!CheckExistingActionCheckBoxes())
                 cbIgnoreExisting.Checked = true;
 
         }

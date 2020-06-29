@@ -7,10 +7,13 @@ namespace EllipseJobsClassLibrary
 {
     public class JobTask
     {
+        public JobTaskAdditional Additional;
         public string AssignPerson { get; set; }
         public string DstrctAcctCode { get; set; }
         public string DstrctCode { get; set; }
         public string EquipNo { get; set; }
+        public string CompCode { get; set; }
+        public string CompModCode { get; set; }
         public string ItemName1 { get; set; }
         public string ItemName2 { get; set; }
         public string JobId { get; set; }

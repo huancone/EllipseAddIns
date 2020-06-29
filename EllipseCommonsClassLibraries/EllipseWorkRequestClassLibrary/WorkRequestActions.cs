@@ -17,7 +17,7 @@ namespace EllipseWorkRequestClassLibrary
     {
         public static List<WorkRequest> FetchWorkRequest(EllipseFunctions ef, int searchCriteria1Key, string searchCriteria1Value, int searchCriteria2Key, string searchCriteria2Value, int dateCriteriaKey, string startDate, string endDate, string wrStatus)
         {
-            var sqlQuery = Queries.GetFetchWorkRequest(ef.dbReference, ef.dbLink, searchCriteria1Key,
+            var sqlQuery = Queries.GetFetchWorkRequest(ef.DbReference, ef.DbLink, searchCriteria1Key,
                 searchCriteria1Value, searchCriteria2Key, searchCriteria2Value, dateCriteriaKey, startDate, endDate, wrStatus);
             var drWorkRequest = ef.GetQueryResult(sqlQuery);
             var list = new List<WorkRequest>();
@@ -90,7 +90,7 @@ namespace EllipseWorkRequestClassLibrary
             if (long.TryParse(requestId, out defaultLong))
                 requestId = requestId.PadLeft(12, '0');
 
-            var sqlQuery = Queries.GetFetchWorkRequest(ef.dbReference, ef.dbLink, requestId);
+            var sqlQuery = Queries.GetFetchWorkRequest(ef.DbReference, ef.DbLink, requestId);
             var drWorkRequest = ef.GetQueryResult(sqlQuery);
             var request = new WorkRequest();
             if (drWorkRequest == null || drWorkRequest.IsClosed || !drWorkRequest.HasRows) return request;
@@ -530,7 +530,7 @@ namespace EllipseWorkRequestClassLibrary
 
         public static class Queries
         {
-            public static string GetFetchWorkRequest(string dbReference, string dbLink, int searchCriteria1Key, string searchCriteria1Value, int searchCriteria2Key, string searchCriteria2Value, int dateCriteriaKey, string startDate, string endDate, string wrStatus)
+            public static string GetFetchWorkRequest(string DbReference, string dbLink, int searchCriteria1Key, string searchCriteria1Value, int searchCriteria2Key, string searchCriteria2Value, int dateCriteriaKey, string startDate, string endDate, string wrStatus)
             {
 
                 var paramCriteria1 = "";
@@ -540,7 +540,7 @@ namespace EllipseWorkRequestClassLibrary
                 else if (searchCriteria1Key == SearchFieldCriteriaType.EquipmentReference.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
                     paramCriteria1 = " AND WR.EQUIP_NO = '" + searchCriteria1Value + "'";//Falta buscar el equip ref //to do
                 else if (searchCriteria1Key == SearchFieldCriteriaType.ProductiveUnit.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NP FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteria1Value + "')";
+                    paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NP FROM " + DbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteria1Value + "')";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.Originator.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
                     paramCriteria1 = " AND WR.CREATION_USER = '" + searchCriteria1Value + "'";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.CompletedBy.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
@@ -552,21 +552,21 @@ namespace EllipseWorkRequestClassLibrary
                 else if (searchCriteria1Key == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
                 {
                     if (searchCriteria2Key == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
+                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + DbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
                     else if (searchCriteria2Key != SearchFieldCriteriaType.ListId.Key || string.IsNullOrWhiteSpace(searchCriteria2Value))
-                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "')";
+                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + DbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "')";
                 }
                 else if (searchCriteria1Key == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
                 {
                     if (searchCriteria2Key == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
+                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + DbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
                     else if (searchCriteria2Key != SearchFieldCriteriaType.ListType.Key || string.IsNullOrWhiteSpace(searchCriteria2Value))
-                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
+                        paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + DbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
                 }
                 else if (searchCriteria1Key == SearchFieldCriteriaType.Egi.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_GRP_ID = '" + searchCriteria1Value + "')";
+                    paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + DbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_GRP_ID = '" + searchCriteria1Value + "')";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                    paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteria1Value + "')";
+                    paramCriteria1 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + DbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteria1Value + "')";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
                     paramCriteria1 = " AND WR.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Details == searchCriteria1Value).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else if (searchCriteria1Key == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
@@ -582,7 +582,7 @@ namespace EllipseWorkRequestClassLibrary
                 else if (searchCriteria2Key == SearchFieldCriteriaType.EquipmentReference.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                     paramCriteria2 = " AND WR.EQUIP_NO = '" + searchCriteria2Value + "'";//Falta buscar el equip ref //to do
                 else if (searchCriteria2Key == SearchFieldCriteriaType.ProductiveUnit.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteria2Value + "')";
+                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + DbReference + ".MSF600" + dbLink + " EQ WHERE EQ.PARENT_EQUIP = '" + searchCriteria2Value + "')";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Originator.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                     paramCriteria2 = " AND WR.CREATION_USER = '" + searchCriteria2Value + "'";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.CompletedBy.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
@@ -594,21 +594,21 @@ namespace EllipseWorkRequestClassLibrary
                 else if (searchCriteria2Key == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                 {
                     if (searchCriteria1Key == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
+                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + DbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria1Value + "')";
                     else if (searchCriteria1Key != SearchFieldCriteriaType.ListId.Key || string.IsNullOrWhiteSpace(searchCriteria1Value))
-                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "')";
+                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + DbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria2Value + "')";
                 }
                 else if (searchCriteria2Key == SearchFieldCriteriaType.ListId.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                 {
                     if (searchCriteria1Key == SearchFieldCriteriaType.ListType.Key && !string.IsNullOrWhiteSpace(searchCriteria1Value))
-                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
+                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + DbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_TYP) = '" + searchCriteria1Value + "' AND TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
                     else if (searchCriteria1Key != SearchFieldCriteriaType.ListType.Key || string.IsNullOrWhiteSpace(searchCriteria1Value))
-                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + dbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
+                        paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT DISTINCT TRIM(LI.MEM_EQUIP_GRP) EQUIP_NO FROM " + DbReference + ".MSF607" + dbLink + " LI WHERE TRIM(LI.LIST_ID) = '" + searchCriteria2Value + "')";
                 }
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Egi.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_GRP_ID = '" + searchCriteria2Value + "')";
+                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + DbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_GRP_ID = '" + searchCriteria2Value + "')";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.EquipmentClass.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
-                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + dbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteria2Value + "')";
+                    paramCriteria2 = " AND WR.EQUIP_NO IN (SELECT EQ.EQUIP_NO FROM " + DbReference + ".MSF600" + dbLink + "EQ WHERE EQ.EQUIP_CLASS = '" + searchCriteria2Value + "')";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Quartermaster.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
                     paramCriteria2 = " AND WR.WORK_GROUP IN (" + MyUtilities.GetListInSeparator(Groups.GetWorkGroupList().Where(g => g.Details == searchCriteria2Value).Select(g => g.Name).ToList(), ",", "'") + ")";
                 else if (searchCriteria2Key == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteria2Value))
@@ -702,18 +702,18 @@ namespace EllipseWorkRequestClassLibrary
                             "   WR.SLA_WARN_TIME," +
                             "   WR.SLA_WARN_HOURS" +
                             " FROM" +
-                            "   " + dbReference + ".MSF541" + dbLink + " WR" +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "   " + DbReference + ".MSF541" + dbLink + " WR" +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " RQCL ON WR.WORK_REQ_CLASSIF = RQCL.TABLE_CODE AND RQCL.TABLE_TYPE = 'RQCL' " +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " RQWO ON WR.WORK_REQ_TYPE = RQWO.TABLE_CODE AND RQWO.TABLE_TYPE = 'WO' " +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " RQWS ON WR.REQUEST_USTAT = RQWS.TABLE_CODE AND RQWS.TABLE_TYPE = 'WS' " +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " RQPY ON WR.PRIORITY_CDE_541 = RQPY.TABLE_CODE AND RQPY.TABLE_TYPE = 'PY' " +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " REGN ON WR.REGION = REGN.TABLE_CODE AND REGN.TABLE_TYPE = 'REGN' " +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " RQSC ON WR.WORK_REQ_SOURCE = RQSC.TABLE_CODE AND RQSC.TABLE_TYPE = 'RQSC' " +
                             " WHERE" +
                             "" + paramCriteria1 +
@@ -725,7 +725,7 @@ namespace EllipseWorkRequestClassLibrary
 
                 return query;
             }
-            public static string GetFetchWorkRequest(string dbReference, string dbLink, string requestId)
+            public static string GetFetchWorkRequest(string DbReference, string dbLink, string requestId)
             {
                 long defaultLong;
                 if (long.TryParse(requestId, out defaultLong))
@@ -781,18 +781,18 @@ namespace EllipseWorkRequestClassLibrary
                             "   WR.SLA_WARN_TIME," +
                             "   WR.SLA_WARN_HOURS" +
                             " FROM" +
-                            "   " + dbReference + ".MSF541" + dbLink + " WR" +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "   " + DbReference + ".MSF541" + dbLink + " WR" +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " RQCL ON WR.WORK_REQ_CLASSIF = RQCL.TABLE_CODE AND RQCL.TABLE_TYPE = 'RQCL' " +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " RQWO ON WR.WORK_REQ_TYPE = RQWO.TABLE_CODE AND RQWO.TABLE_TYPE = 'WO' " +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " RQWS ON WR.REQUEST_USTAT = RQWS.TABLE_CODE AND RQWS.TABLE_TYPE = 'WS' " +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " RQPY ON WR.PRIORITY_CDE_541 = RQPY.TABLE_CODE AND RQPY.TABLE_TYPE = 'PY' " +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " REGN ON WR.REGION = REGN.TABLE_CODE AND REGN.TABLE_TYPE = 'REGN' " +
-                            "     LEFT JOIN " + dbReference + ".MSF010" + dbLink +
+                            "     LEFT JOIN " + DbReference + ".MSF010" + dbLink +
                             " RQSC ON WR.WORK_REQ_SOURCE = RQSC.TABLE_CODE AND RQSC.TABLE_TYPE = 'RQSC' " +
                             " WHERE" +
                             "   WR.REQUEST_ID = '" + requestId + "'";

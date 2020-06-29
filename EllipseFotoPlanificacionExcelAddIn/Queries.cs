@@ -14,19 +14,30 @@ namespace EllipseFotoPlanificacionExcelAddIn
     {
         public static string InsertSigmanItemQuery(string dbReference, string dbLink, PlannerItem item)
         {
-            var query = "INSERT INTO SIGMAN.CUMPLIMIENTO_PLAN " +
-                             "   (PERIOD, WORK_GROUP, EQUIP_NO, COMP_CODE, COMP_MOD_CODE, "+
-                             "   WORK_ORDER, MAINT_SCH_TASK, RAISED_DATE, " +
-                             "   PLAN_STR_DATE, NEXT_SCH_DATE, LAST_PERF_DATE, DURATION_HOURS, LABOUR_HOURS, " +
-                             "   LAST_MOD_USER, LAST_MOD_DATE, RECORD_STATUS)" +
-                             " VALUES "+
-                             "   ('" + item.Period + "', '" + item.WorkGroup + "', '" + item.EquipNo + "', '" + item.CompCode + "', '" + item.CompModCode + "', " +
-                             "    '" + item.WorkOrder + "', '" + item.MaintSchedTask + "', '" + item.RaisedDate + "', " +
-                             "    '" + item.PlanDate + "', '" + item.NextSchedDate + "', '" + item.LastPerfDate + "', '" + item.DurationHours + "', '" + item.LabourHours + "', " +
-                             "    '" + item.LastModUser + "', '" + item.LastModItemDate + "', '" + item.RecordStatus + "')";
+            //Se usa en la validación la funcíon NVL para comparación segura de nulls. Para Oracle NULL != NULL
+            var query = " MERGE INTO SIGMAN.CUMPLIMIENTO_PLAN CP USING " +
+                        " (SELECT " +
+                        "    '" + item.Period + "' PERIOD, '" + item.WorkGroup + "' WORK_GROUP, '" + item.EquipNo + "' EQUIP_NO, '" + item.CompCode + "' COMP_CODE, '" + item.CompModCode + "' COMP_MOD_CODE, " +
+                        "    '" + item.WorkOrder + "' WORK_ORDER, '" + item.MaintSchedTask + "' MAINT_SCH_TASK, '" + item.RaisedDate + "' RAISED_DATE, " +
+                        "    '" + item.PlanDate + "' PLAN_STR_DATE, '" + item.NextSchedDate + "' NEXT_SCH_DATE, '" + item.LastPerfDate + "' LAST_PERF_DATE, '" + item.DurationHours + "' DURATION_HOURS, '" + item.LabourHours + "' LABOUR_HOURS, " +
+                        "    '" + item.LastModUser + "' LAST_MOD_USER, '" + item.LastModItemDate + "' LAST_MOD_DATE, '" + item.RecordStatus + "' RECORD_STATUS FROM DUAL) REG ON (" +
+                        "    NVL(TRIM(CP.PERIOD), ' ') = NVL(TRIM(REG.PERIOD), ' ') AND NVL(TRIM(CP.WORK_GROUP), ' ') = NVL(TRIM(REG.WORK_GROUP), ' ') " +
+                        "    AND NVL(TRIM(CP.EQUIP_NO), ' ') = NVL(TRIM(REG.EQUIP_NO), ' ') AND NVL(TRIM(CP.COMP_CODE), ' ') = NVL(TRIM(REG.COMP_CODE), ' ') AND NVL(TRIM(CP.COMP_MOD_CODE), ' ') = NVL(TRIM(REG.COMP_MOD_CODE), ' ') " + "" +
+                        "    AND NVL(TRIM(CP.WORK_ORDER), ' ') = NVL(TRIM(REG.WORK_ORDER), ' ') AND NVL(TRIM(CP.MAINT_SCH_TASK), ' ') = NVL(TRIM(REG.MAINT_SCH_TASK), ' ') " +
+                        "    AND NVL(TRIM(CP.RAISED_DATE), ' ') = NVL(TRIM(REG.RAISED_DATE), ' ') AND NVL(TRIM(CP.RECORD_STATUS), '0') = NVL(TRIM(REG.RECORD_STATUS), '0')) " +
+                        " WHEN MATCHED THEN UPDATE SET CP.PLAN_STR_DATE = TRIM(REG.PLAN_STR_DATE), CP.NEXT_SCH_DATE = TRIM(REG.NEXT_SCH_DATE), CP.LAST_PERF_DATE = TRIM(REG.LAST_PERF_DATE), CP.DURATION_HOURS = NVL(TRIM(REG.DURATION_HOURS), '0'), CP.LABOUR_HOURS = NVL(TRIM(REG.LABOUR_HOURS), '0')" +
+                        " WHEN NOT MATCHED THEN INSERT " +
+                        "   (PERIOD, WORK_GROUP, EQUIP_NO, COMP_CODE, COMP_MOD_CODE, " +
+                        "   WORK_ORDER, MAINT_SCH_TASK, RAISED_DATE, " +
+                        "   PLAN_STR_DATE, NEXT_SCH_DATE, LAST_PERF_DATE, DURATION_HOURS, LABOUR_HOURS, " +
+                        "   LAST_MOD_USER, LAST_MOD_DATE, RECORD_STATUS)" +
+                        " VALUES " +
+                        "   (TRIM(REG.PERIOD), TRIM(REG.WORK_GROUP), TRIM(REG.EQUIP_NO), TRIM(REG.COMP_CODE), TRIM(REG.COMP_MOD_CODE), " +
+                        "    TRIM(REG.WORK_ORDER), TRIM(REG.MAINT_SCH_TASK), TRIM(REG.RAISED_DATE), " +
+                        "    TRIM(REG.PLAN_STR_DATE), TRIM(REG.NEXT_SCH_DATE), TRIM(REG.LAST_PERF_DATE), NVL(TRIM(REG.DURATION_HOURS), '0'), NVL(TRIM(REG.LABOUR_HOURS), '0'), " +
+                        "    TRIM(REG.LAST_MOD_USER), TRIM(REG.LAST_MOD_DATE), NVL(TRIM(REG.RECORD_STATUS), '0'))";
 
-
-            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+                        query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
             return query;
         }

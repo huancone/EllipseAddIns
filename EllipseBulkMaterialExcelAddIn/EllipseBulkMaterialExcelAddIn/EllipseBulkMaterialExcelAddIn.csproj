@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseBulkMaterialExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>2.2.0.7</ApplicationVersion>
+    <ApplicationVersion>2.2.0.8</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>

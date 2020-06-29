@@ -44,7 +44,7 @@
             this.btnReviewEllipse = this.Factory.CreateRibbonButton();
             this.btnReviewSigman = this.Factory.CreateRibbonButton();
             this.btnUpdateSigman = this.Factory.CreateRibbonButton();
-            this.menuUpdateExisting = this.Factory.CreateRibbonMenu();
+            this.menuUpdateOptions = this.Factory.CreateRibbonMenu();
             this.cbIgnoreUpdateError = this.Factory.CreateRibbonCheckBox();
             this.separator1 = this.Factory.CreateRibbonSeparator();
             this.cbDeactivateExisting = this.Factory.CreateRibbonCheckBox();
@@ -100,7 +100,7 @@
             this.menuActions.Items.Add(this.btnReviewEllipse);
             this.menuActions.Items.Add(this.btnReviewSigman);
             this.menuActions.Items.Add(this.btnUpdateSigman);
-            this.menuActions.Items.Add(this.menuUpdateExisting);
+            this.menuActions.Items.Add(this.menuUpdateOptions);
             this.menuActions.Items.Add(this.cbIgnoreNextTask);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "&Acciones";
@@ -127,16 +127,16 @@
             this.btnUpdateSigman.ShowImage = true;
             this.btnUpdateSigman.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateSigman_Click);
             // 
-            // menuUpdateExisting
+            // menuUpdateOptions
             // 
-            this.menuUpdateExisting.Items.Add(this.cbIgnoreUpdateError);
-            this.menuUpdateExisting.Items.Add(this.separator1);
-            this.menuUpdateExisting.Items.Add(this.cbDeactivateExisting);
-            this.menuUpdateExisting.Items.Add(this.cbDeleteExisting);
-            this.menuUpdateExisting.Items.Add(this.cbIgnoreExisting);
-            this.menuUpdateExisting.Label = "Actualizar Existentes";
-            this.menuUpdateExisting.Name = "menuUpdateExisting";
-            this.menuUpdateExisting.ShowImage = true;
+            this.menuUpdateOptions.Items.Add(this.cbIgnoreUpdateError);
+            this.menuUpdateOptions.Items.Add(this.separator1);
+            this.menuUpdateOptions.Items.Add(this.cbDeactivateExisting);
+            this.menuUpdateOptions.Items.Add(this.cbDeleteExisting);
+            this.menuUpdateOptions.Items.Add(this.cbIgnoreExisting);
+            this.menuUpdateOptions.Label = "Opciones de Actualización";
+            this.menuUpdateOptions.Name = "menuUpdateOptions";
+            this.menuUpdateOptions.ShowImage = true;
             // 
             // cbIgnoreUpdateError
             // 
@@ -151,7 +151,7 @@
             // 
             // cbDeactivateExisting
             // 
-            this.cbDeactivateExisting.Label = "Desactivar";
+            this.cbDeactivateExisting.Label = "Desactivar Existentes";
             this.cbDeactivateExisting.Name = "cbDeactivateExisting";
             this.cbDeactivateExisting.ScreenTip = "Se desactivarán los registros existentes que coincidan con los periodos y grupos " +
     "seleccionados";
@@ -159,7 +159,7 @@
             // 
             // cbDeleteExisting
             // 
-            this.cbDeleteExisting.Label = "Eliminar";
+            this.cbDeleteExisting.Label = "Eliminar Existentes";
             this.cbDeleteExisting.Name = "cbDeleteExisting";
             this.cbDeleteExisting.ScreenTip = "Se eliminarán los registros existentes que coincidan con los periodos y grupos se" +
     "leccionados";
@@ -167,9 +167,9 @@
             // 
             // cbIgnoreExisting
             // 
-            this.cbIgnoreExisting.Label = "No Cambiar";
+            this.cbIgnoreExisting.Label = "No Cambiar Existentes";
             this.cbIgnoreExisting.Name = "cbIgnoreExisting";
-            this.cbIgnoreExisting.ScreenTip = "No hay cambios en los registros existentes. Solo se crearán nuevos registros";
+            this.cbIgnoreExisting.ScreenTip = "Solo se ingresarán registros nuevos (se reemplazarán registros coincidentes)";
             this.cbIgnoreExisting.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbIgnoreExisting_Click);
             // 
             // cbIgnoreNextTask
@@ -215,7 +215,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateSigman;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreNextTask;
-        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuUpdateExisting;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuUpdateOptions;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbDeactivateExisting;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbDeleteExisting;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreExisting;

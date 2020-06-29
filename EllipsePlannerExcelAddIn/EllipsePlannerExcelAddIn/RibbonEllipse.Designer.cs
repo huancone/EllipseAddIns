@@ -36,17 +36,24 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpProyecto = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReviewJobs = this.Factory.CreateRibbonButton();
             this.btnLoadData = this.Factory.CreateRibbonButton();
             this.btnUpdateEllipse = this.Factory.CreateRibbonButton();
             this.btnUpdateOrder = this.Factory.CreateRibbonButton();
+            this.menu1 = this.Factory.CreateRibbonMenu();
+            this.cbDeviationStats = this.Factory.CreateRibbonCheckBox();
+            this.cbSplitTaskByResource = this.Factory.CreateRibbonCheckBox();
             this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.btnAbout = this.Factory.CreateRibbonButton();
+            this.cbOverlappingDateSearch = this.Factory.CreateRibbonCheckBox();
+            this.cbIncludeMsts = this.Factory.CreateRibbonCheckBox();
             this.tabEllipse.SuspendLayout();
             this.grpProyecto.SuspendLayout();
+            this.box1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabEllipse
@@ -58,12 +65,17 @@
             // 
             // grpProyecto
             // 
-            this.grpProyecto.Items.Add(this.btnFormatSheet);
+            this.grpProyecto.Items.Add(this.box1);
             this.grpProyecto.Items.Add(this.drpEnvironment);
             this.grpProyecto.Items.Add(this.menuActions);
-            this.grpProyecto.Items.Add(this.btnAbout);
             this.grpProyecto.Label = "Job Planner";
             this.grpProyecto.Name = "grpProyecto";
+            // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormatSheet);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
             // 
             // btnFormatSheet
             // 
@@ -71,6 +83,12 @@
             this.btnFormatSheet.Name = "btnFormatSheet";
             this.btnFormatSheet.ShowImage = true;
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnvironment
             // 
@@ -83,6 +101,7 @@
             this.menuActions.Items.Add(this.btnLoadData);
             this.menuActions.Items.Add(this.btnUpdateEllipse);
             this.menuActions.Items.Add(this.btnUpdateOrder);
+            this.menuActions.Items.Add(this.menu1);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "&Acciones";
             this.menuActions.Name = "menuActions";
@@ -115,6 +134,30 @@
             this.btnUpdateOrder.ShowImage = true;
             this.btnUpdateOrder.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateOrder_Click);
             // 
+            // menu1
+            // 
+            this.menu1.Items.Add(this.cbDeviationStats);
+            this.menu1.Items.Add(this.cbSplitTaskByResource);
+            this.menu1.Items.Add(this.cbIncludeMsts);
+            this.menu1.Items.Add(this.cbOverlappingDateSearch);
+            this.menu1.Label = "Opciones";
+            this.menu1.Name = "menu1";
+            this.menu1.ShowImage = true;
+            // 
+            // cbDeviationStats
+            // 
+            this.cbDeviationStats.Checked = true;
+            this.cbDeviationStats.Label = "Estadísticas de Desviación";
+            this.cbDeviationStats.Name = "cbDeviationStats";
+            this.cbDeviationStats.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbDeviationStats_Click);
+            // 
+            // cbSplitTaskByResource
+            // 
+            this.cbSplitTaskByResource.Checked = true;
+            this.cbSplitTaskByResource.Label = "Separar Tareas Por Recurso";
+            this.cbSplitTaskByResource.Name = "cbSplitTaskByResource";
+            this.cbSplitTaskByResource.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbSplitTaskByResource_Click);
+            // 
             // btnStopThread
             // 
             this.btnStopThread.Label = "&Detener Proceso";
@@ -122,11 +165,17 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
-            // btnAbout
+            // cbOverlappingDateSearch
             // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
+            this.cbOverlappingDateSearch.Label = "Búsqueda Traslapada de Fechas";
+            this.cbOverlappingDateSearch.Name = "cbOverlappingDateSearch";
+            this.cbOverlappingDateSearch.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbOverlappingDateSearch_Click);
+            // 
+            // cbIncludeMsts
+            // 
+            this.cbIncludeMsts.Label = "Incluír Msts";
+            this.cbIncludeMsts.Name = "cbIncludeMsts";
+            this.cbIncludeMsts.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbIncludeMsts_Click);
             // 
             // RibbonEllipse
             // 
@@ -138,6 +187,8 @@
             this.tabEllipse.PerformLayout();
             this.grpProyecto.ResumeLayout(false);
             this.grpProyecto.PerformLayout();
+            this.box1.ResumeLayout(false);
+            this.box1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -155,6 +206,12 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadData;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateOrder;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbDeviationStats;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbSplitTaskByResource;
+        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbOverlappingDateSearch;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIncludeMsts;
     }
 
     partial class ThisRibbonCollection

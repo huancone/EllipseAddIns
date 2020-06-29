@@ -10,6 +10,7 @@ using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Settings;
 using EllipseJobsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
 using Microsoft.Office.Interop.Excel;
@@ -35,6 +36,7 @@ namespace EllipsePlannerExcelAddIn
         private Application _excelApp;
         private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
         private Thread _thread;
+        private CommonSettings _settings;
 
         //Hojas
         private const string ValidationSheetName = "Validacion";
@@ -56,7 +58,7 @@ namespace EllipsePlannerExcelAddIn
         private const int TitleRowEllipse = 6;
 
         //Columnas de Resultado
-        private const int ResultColumnResources = 19;
+        private const int ResultColumnResources = 29;
         private const int ResultColumnEllipse = 5;
         private const int ActionColumn = 15;
 
@@ -70,8 +72,31 @@ namespace EllipsePlannerExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
+            LoadSettings();
         }
 
+        private void LoadSettings()
+        {
+            var defaultConfig = new CommonSettings.Options();
+            defaultConfig.SetOption("DeviationStats", "Y");
+            defaultConfig.SetOption("SplitByResource", "Y");
+            defaultConfig.SetOption("IncludeMsts", "Y");
+            defaultConfig.SetOption("OverlappingDateSearch", "N");
+
+            _settings = new CommonSettings(defaultConfig);
+            var config = _settings.Configuration;
+            config.SetDefaultOptions(defaultConfig);
+            //Setting of Configuration Options from Config File (or default)
+            cbDeviationStats.Checked = MyUtilities.IsTrue(config.GetOptionValue("DeviationStats"));
+            cbSplitTaskByResource.Checked = MyUtilities.IsTrue(config.GetOptionValue("SplitByResource"));
+            cbIncludeMsts.Checked = MyUtilities.IsTrue(config.GetOptionValue("IncludeMsts"));
+            cbOverlappingDateSearch.Checked = MyUtilities.IsTrue(config.GetOptionValue("OverlappingDateSearch"));
+
+            _settings.UpdateSettings();
+            //
+        }
+
+        #region Buttons
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();
@@ -186,8 +211,8 @@ namespace EllipsePlannerExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
-
-        private void FormatSheet()
+        #endregion
+private void FormatSheet()
         {
 
             try
@@ -293,6 +318,16 @@ namespace EllipsePlannerExcelAddIn
                 _cells.GetCell(16, TitleRowResources).Value = "Codigo de Cierre";
                 _cells.GetCell(17, TitleRowResources).Value = "Fecha de Cierre";
                 _cells.GetCell(18, TitleRowResources).Value = "Asignado";
+                _cells.GetCell(19, TitleRowResources).Value = "Tipo MT";
+                _cells.GetCell(20, TitleRowResources).Value = "Job Code";
+                _cells.GetCell(21, TitleRowResources).Value = "Estad. Pr.";
+                _cells.GetCell(22, TitleRowResources).Value = "Fecha Original";
+                _cells.GetCell(23, TitleRowResources).Value = "Mínima Fecha";
+                _cells.GetCell(24, TitleRowResources).Value = "Máxima Fecha";
+                _cells.GetCell(25, TitleRowResources).Value = "Estad. Original";
+                _cells.GetCell(26, TitleRowResources).Value = "Estad. Actual";
+                _cells.GetCell(27, TitleRowResources).Value = "Mínima Estad.";
+                _cells.GetCell(28, TitleRowResources).Value = "Máxima Estad.";
                 _cells.GetCell(ResultColumnResources, TitleRowResources).Value = "Resultado";
 
 
@@ -465,7 +500,7 @@ namespace EllipsePlannerExcelAddIn
 
                 ////hoja de Tareas
                 _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
-
+                var taskSearchParam = new TaskSearchParam();
                 var urlServicePost = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
                 var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
@@ -476,11 +511,14 @@ namespace EllipsePlannerExcelAddIn
                 var endDate = _cells.GetEmptyIfNull(_cells.GetCell("D5").Value);
                 var searchCriteriaKey1 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey1Text)).Key;
 
+                taskSearchParam.AdditionalInformation = cbDeviationStats.Checked;
+                taskSearchParam.IncludeMst = cbIncludeMsts.Checked;
+                taskSearchParam.OverlappingDates = cbOverlappingDateSearch.Checked;
                 _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                 //consumo de servicio de msewts
-                List<JobTask> ellipseJobs = JobActions.FetchJobsTasksPost(_eFunctions, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
+                List<JobTask> ellipseJobTasks = JobActions.FetchJobsTasksPost(_eFunctions, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate, taskSearchParam);
 
                 //consulta sobre tabla de Ellipse mso720
                 List<LabourResources> ellipseResources = JobActions.GetEllipseResources(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
@@ -493,7 +531,7 @@ namespace EllipsePlannerExcelAddIn
 
 
                 //recursos planeados ellipse agrupados por grupo/fecha/recurso
-                var ellipseTotalresource = (from jobs in ellipseJobs from resources in jobs.LabourResourcesList select resources).GroupBy(l => new { l.WorkGroup, l.Date, l.ResourceCode })
+                var ellipseTotalresource = (from task in ellipseJobTasks from resources in task.LabourResourcesList select resources).GroupBy(l => new { l.WorkGroup, l.Date, l.ResourceCode })
                     .Select(cl => new LabourResources
                     {
                         WorkGroup = cl.First().WorkGroup,
@@ -543,49 +581,80 @@ namespace EllipsePlannerExcelAddIn
 
                 _cells.ClearTableRange(TableJobResources);
                 var i = TitleRowResources + 1;
-                foreach (var j in ellipseJobs)
+                foreach (var jt in ellipseJobTasks)
                 {
-                    if (j.LabourResourcesList.Count > 0)
+                    if (jt.LabourResourcesList.Count > 0 && cbSplitTaskByResource.Checked)
                     {
-                        foreach (var r in j.LabourResourcesList)
+                        foreach (var r in jt.LabourResourcesList)
                         {
-                            _cells.GetCell(1, i).Value = j.WorkGroup;
-                            _cells.GetCell(2, i).Value = j.EquipNo;
-                            _cells.GetCell(3, i).Value = j.ItemName1;
-                            _cells.GetCell(4, i).Value = j.MaintSchTask;
-                            _cells.GetCell(5, i).Value = j.WorkOrder ?? j.StdJobNo;
-                            _cells.GetCell(6, i).Value = j.WoTaskNo ?? j.StdJobTask;
-                            _cells.GetCell(7, i).Value = j.WoTaskDesc ?? j.WoDesc ;
+                            _cells.GetCell(1, i).Value = jt.WorkGroup;
+                            _cells.GetCell(2, i).Value = jt.EquipNo;
+                            _cells.GetCell(3, i).Value = jt.ItemName1;
+                            _cells.GetCell(4, i).Value = jt.MaintSchTask;
+                            _cells.GetCell(5, i).Value = jt.WorkOrder ?? jt.StdJobNo;
+                            _cells.GetCell(6, i).Value = jt.WoTaskNo ?? jt.StdJobTask;
+                            _cells.GetCell(7, i).Value = jt.WoTaskDesc ?? jt.WoDesc ;
                             _cells.GetCell(8, i).Value = r.ResourceCode;
                             _cells.GetCell(9, i).Value = r.EstimatedLabourHours;
                             _cells.GetCell(10, i).Value = r.RealLabourHours;
                             _cells.GetCell(11, i).Value = r.EstimatedLabourHours - r.RealLabourHours;
-                            _cells.GetCell(12, i).Value = j.PlanStrDate;
-                            _cells.GetCell(13, i).Value = j.PlanStrTime;
-                            _cells.GetCell(14, i).Value = j.EstimatedDurationsHrs;
-                            _cells.GetCell(18, i).Value = j.AssignPerson;
+                            _cells.GetCell(12, i).Value = jt.PlanStrDate;
+                            _cells.GetCell(13, i).Value = jt.PlanStrTime;
+                            _cells.GetCell(14, i).Value = jt.EstimatedDurationsHrs;
+                            _cells.GetCell(18, i).Value = jt.AssignPerson;
+                            if (jt.Additional != null)
+                            {
+                                if(string.IsNullOrWhiteSpace(jt.AssignPerson))
+                                    _cells.GetCell(18, i).Value = string.IsNullOrWhiteSpace(jt.Additional.AssignPerson) ? jt.Additional.WorkOrderAssignPerson : jt.Additional.AssignPerson;
+                                _cells.GetCell(19, i).Value = "" + jt.Additional.WorkOrderType;
+                                _cells.GetCell(20, i).Value = "" + jt.Additional.JobDescCode;
+                                _cells.GetCell(21, i).Value = "" + jt.Additional.EquipPrimaryStatType;
+                                _cells.GetCell(22, i).Value = "" + jt.Additional.OriginalSchedDate;
+                                _cells.GetCell(23, i).Value = "" + jt.Additional.MinSchedDate;
+                                _cells.GetCell(24, i).Value = "" + jt.Additional.MaxSchedDate;
+                                _cells.GetCell(25, i).Value = "" + jt.Additional.ScheduleStatValue;
+                                _cells.GetCell(26, i).Value = "" + jt.Additional.ActualStatValue;
+                                _cells.GetCell(27, i).Value = "" + jt.Additional.MinSchedStat;
+                                _cells.GetCell(28, i).Value = "" + jt.Additional.MaxSchedStat;
+                            }
                             i++;
                         }
                     }
                     else
                     {
-                        _cells.GetCell(1, i).Value = j.WorkGroup;
-                        _cells.GetCell(2, i).Value = j.EquipNo;
-                        _cells.GetCell(3, i).Value = j.ItemName1;
-                        _cells.GetCell(4, i).Value = j.MaintSchTask;
-                        _cells.GetCell(5, i).Value = j.WorkOrder ?? j.StdJobNo;
-                        _cells.GetCell(6, i).Value = j.WoTaskNo ?? j.StdJobTask;
-                        _cells.GetCell(7, i).Value = j.WoDesc;
-                        _cells.GetCell(12, i).Value = j.PlanStrDate;
-                        _cells.GetCell(13, i).Value = j.PlanStrTime;
-                        _cells.GetCell(14, i).Value = j.EstimatedDurationsHrs;
-                        _cells.GetCell(18, i).Value = j.AssignPerson;
+                        _cells.GetCell(1, i).Value = jt.WorkGroup;
+                        _cells.GetCell(2, i).Value = jt.EquipNo;
+                        _cells.GetCell(3, i).Value = jt.ItemName1;
+                        _cells.GetCell(4, i).Value = jt.MaintSchTask;
+                        _cells.GetCell(5, i).Value = jt.WorkOrder ?? jt.StdJobNo;
+                        _cells.GetCell(6, i).Value = jt.WoTaskNo ?? jt.StdJobTask;
+                        _cells.GetCell(7, i).Value = jt.WoDesc;
+                        _cells.GetCell(12, i).Value = jt.PlanStrDate;
+                        _cells.GetCell(13, i).Value = jt.PlanStrTime;
+                        _cells.GetCell(14, i).Value = jt.EstimatedDurationsHrs;
+                        _cells.GetCell(18, i).Value = jt.AssignPerson;
+                        if (jt.Additional != null)
+                        {
+                            if (string.IsNullOrWhiteSpace(jt.AssignPerson))
+                                _cells.GetCell(18, i).Value = string.IsNullOrWhiteSpace(jt.Additional.AssignPerson) ? jt.Additional.WorkOrderAssignPerson : jt.Additional.AssignPerson;
+                            _cells.GetCell(19, i).Value = "" + jt.Additional.WorkOrderType;
+                            _cells.GetCell(20, i).Value = "" + jt.Additional.JobDescCode;
+                            _cells.GetCell(21, i).Value = "" + jt.Additional.EquipPrimaryStatType;
+                            _cells.GetCell(22, i).Value = "" + jt.Additional.OriginalSchedDate;
+                            _cells.GetCell(23, i).Value = "" + jt.Additional.MinSchedDate;
+                            _cells.GetCell(24, i).Value = "" + jt.Additional.MaxSchedDate;
+                            _cells.GetCell(25, i).Value = "" + jt.Additional.ScheduleStatValue;
+                            _cells.GetCell(26, i).Value = "" + jt.Additional.ActualStatValue;
+                            _cells.GetCell(27, i).Value = "" + jt.Additional.MinSchedStat;
+                            _cells.GetCell(28, i).Value = "" + jt.Additional.MaxSchedStat;
+                        }
                         i++;
                     }
                 }
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
-                //hoja de ellipse
+                #region Hoja 2 - Estimados
+
                 _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
 
                 _cells.ClearTableRange(TableEllipseResources);
@@ -642,7 +711,9 @@ namespace EllipsePlannerExcelAddIn
                     chart.ChartWizard(range);
                 }
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                #endregion
 
+                #region Hoja 3 - PeopleSoft
                 //hoja de ellipse
                 _excelApp.ActiveWorkbook.Sheets.get_Item(3).Activate();
 
@@ -659,21 +730,24 @@ namespace EllipsePlannerExcelAddIn
                     _cells.GetCell(6, i).Value = r.AvailableLabourHours;
                     i++;
                 }
+                #endregion
+
+                #region Hoja 4 - Plan Diario
                 _excelApp.ActiveWorkbook.Sheets.get_Item(4).Activate();
 
                 i = TitleRowEllipse + 1;
-                foreach (var j in ellipseJobs)
+                foreach (var jt in ellipseJobTasks)
                 {
-                    if (j.LabourResourcesList.Count <= 0) continue;
-                    foreach (var r in j.LabourResourcesList)
+                    if (jt.LabourResourcesList.Count <= 0) continue;
+                    foreach (var r in jt.LabourResourcesList)
                     {
-                        List<DailyJobs> singleTask = JobActions.GetEllipseSingleTask(_eFunctions, district, j.WorkOrder ?? j.StdJobNo, j.WoTaskNo ?? j.StdJobTask, j.PlanStrDate, j.PlanStrTime, j.PlanFinDate, j.PlanFinTime, startDate, endDate, r.ResourceCode);
+                        List<DailyJobs> singleTask = JobActions.GetEllipseSingleTask(_eFunctions, district, jt.WorkOrder ?? jt.StdJobNo, jt.WoTaskNo ?? jt.StdJobTask, jt.PlanStrDate, jt.PlanStrTime, jt.PlanFinDate, jt.PlanFinTime, startDate, endDate, r.ResourceCode);
                         foreach (var k in singleTask)
                         {
                             _cells.GetCell(1, i).Value = k.WorkGroup;                       //"Grupo"
-                            _cells.GetCell(2, i).Value = j.EquipNo;                         //"Equipo"
-                            _cells.GetCell(3, i).Value = j.ItemName1;                       //"Eq Desc"
-                            _cells.GetCell(4, i).Value = j.MaintSchTask;                    //"MST"
+                            _cells.GetCell(2, i).Value = jt.EquipNo;                         //"Equipo"
+                            _cells.GetCell(3, i).Value = jt.ItemName1;                       //"Eq Desc"
+                            _cells.GetCell(4, i).Value = jt.MaintSchTask;                    //"MST"
                             _cells.GetCell(5, i).Value = k.WorkOrder;                       //"Referencia"
                             _cells.GetCell(6, i).Value = k.WoTaskNo;                        //"Ref Desc"
                             _cells.GetCell(7, i).Value = k.WoTaskDesc;                      //"Tarea"
@@ -687,6 +761,7 @@ namespace EllipsePlannerExcelAddIn
                         }
                     }
                 }
+                #endregion
             }
             catch (Exception ex)
             {
@@ -696,6 +771,7 @@ namespace EllipsePlannerExcelAddIn
             finally
             {
                 if (_cells != null) _cells.SetCursorDefault();
+                _eFunctions.CloseConnection();
             }
         }
 
@@ -911,6 +987,30 @@ namespace EllipsePlannerExcelAddIn
                 }
             }
             _cells.SetCursorDefault();
+        }
+
+        private void cbDeviationStats_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("DeviationStats", MyUtilities.ToString(cbDeviationStats.Checked));
+            _settings.UpdateSettings();
+        }
+
+        private void cbSplitTaskByResource_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("SplitByResource", MyUtilities.ToString(cbSplitTaskByResource.Checked));
+            _settings.UpdateSettings();
+        }
+
+        private void cbOverlappingDateSearch_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("OverlappingDateSearch", MyUtilities.ToString(cbSplitTaskByResource.Checked));
+            _settings.UpdateSettings();
+        }
+
+        private void cbIncludeMsts_Click(object sender, RibbonControlEventArgs e)
+        {
+            _settings.Configuration.SetOption("IncludeMsts", MyUtilities.ToString(cbSplitTaskByResource.Checked));
+            _settings.UpdateSettings();
         }
     }
 }

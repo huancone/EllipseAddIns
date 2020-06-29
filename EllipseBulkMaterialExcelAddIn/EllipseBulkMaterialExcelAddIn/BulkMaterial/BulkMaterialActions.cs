@@ -416,7 +416,10 @@ namespace EllipseBulkMaterialExcelAddIn
                 var sqlQuery = Queries.GetBulkAccountCode(equipNo, eFunctions.DbReference, eFunctions.DbLink);
                 var drQuery = eFunctions.GetQueryResult(sqlQuery);
 
-                if (!drQuery.IsClosed && drQuery.HasRows && drQuery.Read())
+                if(drQuery == null)
+                    throw new Exception("Se ha producido un error de conexión al intentar obtener la información del equipo para la categoría y centro de costo");
+
+                if (drQuery != null && !drQuery.IsClosed && drQuery.HasRows && drQuery.Read())
                 {
                     item.EquipClass = drQuery["EQUIP_CLASS"].ToString();
                     item.EquipClassCode19 =  drQuery["EQUIP_CLASSIFX19"].ToString();

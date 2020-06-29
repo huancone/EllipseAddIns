@@ -545,18 +545,18 @@ namespace EllipseBulkMaterialExcelAddIn
                     {
                         var exceptionMessage = "";
                         var exceptionType = StyleConstants.Error;
-
+                        Debugger.LogError("RibbonEllipse:BulkMaterialExcecute(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                         if (ex.Message.Equals("The operation has timed out"))
                         {
                             exceptionMessage = " - Hoja " + currentSheetHeader.BulkMaterialUsageSheetId + " Completada. No se recibió respuesta de Ellipse, por lo que se recomienda verificar la completación";
                             exceptionType = StyleConstants.Warning;
                         }
-                        else if(ex.Message.Equals(" - A record with the same key already exists in table [BulkMaterialUsageSheet]."))
+                        else if(ex.Message.Contains("record with the same key already exists in table [BulkMaterialUsageSheet]."))
                         {
                             exceptionMessage = "El id ingresado ya existe. " + currentSheetHeader.BulkMaterialUsageSheetId;
                             exceptionType = StyleConstants.Error;
                         }
-                        else if(ex.Message.Equals("Object reference not set to an instance of an object."))
+                        else if(ex.Message.Contains("reference not set to an instance of an object"))
                         {
                             exceptionMessage = ex.Message;
                             exceptionType = StyleConstants.Error;
@@ -1352,6 +1352,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
             var bulkItem = BulkMaterialActions.GetEquipmentBulkItem(_eFunctions, equipNo, materialTypeId);
 
+            //Si EquipClassCode19 es nulo es porque no pudo hacer la conexión o xq no encontró el item o reference code
             if (bulkItem == null || bulkItem.EquipClassCode19 == null) return null;
 
             if (cbAccountElementOverrideMntto.Checked && !bulkItem.EquipClassCode19.Equals("MT") && !string.IsNullOrWhiteSpace(defaultAccountCode))

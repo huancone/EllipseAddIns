@@ -301,7 +301,35 @@ namespace EllipseCommonsClassLibrary.Utilities
         {
             return "" + value;
         }
+        public static string ToString(bool value, string type)
+        {
+            var typeValue = "";
 
+            if (!string.IsNullOrWhiteSpace(type))
+            {
+                type = type.ToUpper();
+                typeValue = type;
+
+                if (value && (typeValue.Equals("Y") || typeValue.Equals("N")))
+                    return "Y";
+                if (!value && (typeValue.Equals("Y") || typeValue.Equals("N")))
+                    return "N";
+                if (value && (typeValue.Equals("YES") || typeValue.Equals("NO")))
+                    return "YES";
+                if (!value && (typeValue.Equals("YES") || typeValue.Equals("NO")))
+                    return "NO";
+                if (value && (typeValue.Equals("S") || typeValue.Equals("N")))
+                    return "S";
+                if (!value && (typeValue.Equals("S") || typeValue.Equals("N")))
+                    return "N";
+                if (value && (typeValue.Equals("SI") || typeValue.Equals("NO")))
+                    return "SI";
+                if (!value && (typeValue.Equals("SI") || typeValue.Equals("NO")))
+                    return "NO";
+            }
+
+            return "" + value;
+        }
         public static string ToString(decimal value)
         {
             return "" + value;

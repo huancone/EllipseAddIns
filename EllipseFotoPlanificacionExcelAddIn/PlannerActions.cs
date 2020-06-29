@@ -27,6 +27,12 @@ namespace EllipseFotoPlanificacionExcelAddIn
         }
         public static int InsertItemIntoSigman(EllipseFunctions ef, PlannerItem item)
         {
+            if (item != null && !string.IsNullOrWhiteSpace(item.WorkOrder))
+            {
+                long number1;
+                if (long.TryParse(item.WorkOrder, out number1))
+                    item.WorkOrder = item.WorkOrder.PadLeft(8, '0');
+            }
             var sqlQuery = Queries.InsertSigmanItemQuery(ef.DbReference, ef.DbLink, item);
             return ef.ExecuteQuery(sqlQuery);
         }
@@ -97,7 +103,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 item.CompModCode  = "" + job.CompModCode;
                 item.WorkOrder  = "" + job.WorkOrder;
                 item.MaintSchedTask  = "" + job.MaintSchTask;
-                item.Period  = !string.IsNullOrWhiteSpace(job.PlanStrDate) ? "" + job.PlanStrDate.Substring(0, 6) : job.PlanStrDate;
+                item.Period  = "" + (!string.IsNullOrWhiteSpace(job.PlanStrDate) ? job.PlanStrDate.Substring(0, 6) : job.PlanStrDate);
                 item.RaisedDate  = "" + job.RaisedDate;
                 item.PlanDate  = "" + job.PlanStrDate;
                 item.NextSchedDate = "";
@@ -124,8 +130,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
                         {
                             if (MyUtilities.ToInteger(mst.PlanStrDate) > MyUtilities.ToInteger(item.PlanDate))
                             {
-                                item.NextSchedDate = mst.PlanStrDate;
-                                item.LastPerfDate = string.IsNullOrWhiteSpace(item.LastPerfDate) ? mst.LastPerformedDate : item.LastPerfDate;
+                                item.NextSchedDate = "" + mst.PlanStrDate;
+                                item.LastPerfDate = "" + (string.IsNullOrWhiteSpace(item.LastPerfDate) ? mst.LastPerformedDate : item.LastPerfDate);
                                 break;
                             }
                         }
