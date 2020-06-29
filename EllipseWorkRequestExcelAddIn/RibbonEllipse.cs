@@ -9,8 +9,10 @@ using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
+using EllipseCommonsClassLibrary.Settings;
 using EllipseWorkRequestClassLibrary;
 using EllipseWorkRequestClassLibrary.WorkRequestService;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 
@@ -209,7 +211,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -627,7 +629,7 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.SetCursorWait();
                 _cells.ClearTableRangeColumn(TableName03, ResultColumn03);
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 var opContext = new OperationContext
                 {
                     district = _frmAuth.EllipseDsct,
@@ -1492,7 +1494,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRange(TableNamePfc01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -1565,7 +1567,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRange(TableNameM01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -1780,7 +1782,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -1838,7 +1840,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRangeColumn(TableNameM01, ResultColumnM01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -1960,7 +1962,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRange(TableName03);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2060,7 +2062,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRangeColumn(TableName03, ResultColumn03);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2142,7 +2144,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2235,7 +2237,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableNameM01, ResultColumnM01);
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2396,7 +2398,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2486,7 +2488,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2561,7 +2563,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableNameM01, ResultColumnM01);
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2722,7 +2724,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
 
             var i = TitleRow02 + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2772,7 +2774,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRangeColumn(TableNameM02, ResultColumnM02);
 
             var i = TitleRowM02 + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2822,7 +2824,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
 
             var i = TitleRow02 + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2870,7 +2872,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRangeColumn(TableNameM02, ResultColumnM02);
 
             var i = TitleRowM02 + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2918,7 +2920,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
             var i = TitleRow01 + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2965,7 +2967,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRangeColumn(TableNamePfc01, ResultColumnPfc01);
 
             var i = TitleRow01 + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -3012,7 +3014,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.ClearTableRangeColumn(TableNameM01, ResultColumnM01);
 
             var i = TitleRowM01 + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -3060,7 +3062,7 @@ namespace EllipseWorkRequestExcelAddIn
 
             var i = TitleRow01 + 1;
             const int validationRow = TitleRow01 - 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -3121,7 +3123,7 @@ namespace EllipseWorkRequestExcelAddIn
 
             var i = TitleRowM01 + 1;
             const int validationRow = TitleRowM01 - 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -3181,7 +3183,7 @@ namespace EllipseWorkRequestExcelAddIn
 
             var i = TitleRow01 + 1;
             const int validationRow = TitleRow01 - 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -3241,7 +3243,7 @@ namespace EllipseWorkRequestExcelAddIn
 
             var i = TitleRowM01 + 1;
             const int validationRow = TitleRowM01 - 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -3441,7 +3443,7 @@ namespace EllipseWorkRequestExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableNameV01, ResultColumnV01);
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new OperationContext
             {
                 district = _frmAuth.EllipseDsct,

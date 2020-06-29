@@ -41,7 +41,7 @@
     <PublishUrl>D:\Projects\Release\EllipseWorkRequestExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.2.0.17</ApplicationVersion>
+    <ApplicationVersion>1.2.0.18</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -176,10 +176,6 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\bin\Debug\System.Web.Services.Ellipse.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
       <HintPath>..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
     </Reference>
@@ -261,6 +257,9 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ventyx_logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
       <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
       <Name>EllipseCommonsClassLibrary</Name>
@@ -277,9 +276,10 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
       <Project>{cf40c48d-2609-4ea1-ac2f-f43dece39e95}</Project>
       <Name>EllipseWorkRequestClassLibrary</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ventyx_logo.ico" />
+    <ProjectReference Include="..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
+      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
+      <Name>System.Web.Services.Ellipse</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -291,7 +291,7 @@ Creación, actualización, eliminación, establecimiento de SLA y otros.</Office
   <PropertyGroup>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>64018B59CF0F6F722C0F1529A19071BB0634113F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>3341D344812B4BDA526FA3ACB32E55B923CEF2B6</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>
