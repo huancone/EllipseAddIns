@@ -216,7 +216,8 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
                 var searchDateCriteriaList = SearchDateCriteriaType.GetSearchDateCriteriaTypes().Select(g => g.Value).ToList();
                 _cells.GetCell("A3").Value = SearchFieldCriteriaType.WorkGroup.Value;
-                _cells.GetCell("A3").AddComment("--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
+                _cells.GetCell("A3").AddComment("--WorkGroup: GRUPO1; GRUPO2; GRUPO3--\n" +
+                                                "--ÁREA GERENCIAL/SUPERINTENDENCIA--\n" +
                                                 "INST: IMIS, MINA\n" +
                                                 "" + ManagementArea.ManejoDeCarbon.Key + ": " + QuarterMasters.Ferrocarril.Key + ", " + QuarterMasters.PuertoBolivar.Key + ", " + QuarterMasters.PlantasDeCarbon.Key + "\n" +
                                                 "" + ManagementArea.Mantenimiento.Key + ": MINA\n" +
@@ -377,6 +378,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                     {
                         //Para resetear el estilo
                         _cells.GetRange(1, i, resultColumn, i).Style = StyleConstants.Normal;
+                        _cells.GetRange(1, i, 6, i).NumberFormat = "@";
                         //GENERAL
                         _cells.GetCell(01, i).Value = "" + item.WorkGroup;
                         _cells.GetCell(02, i).Value = "" + item.EquipNo;
@@ -504,6 +506,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
                     {
                         //Para resetear el estilo
                         _cells.GetRange(1, i, resultColumn, i).Style = StyleConstants.Normal;
+                        _cells.GetRange(1, i, 6, i).NumberFormat = "@";
                         //GENERAL
                         _cells.GetCell(01, i).Value = "" + item.WorkGroup;
                         _cells.GetCell(02, i).Value = "" + item.EquipNo;

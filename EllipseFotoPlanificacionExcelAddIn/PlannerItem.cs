@@ -7,6 +7,7 @@ namespace EllipseFotoPlanificacionExcelAddIn
 {
     public class PlannerItem
     {
+        public string DistrictCode;
         public string Period;
         public string WorkGroup;
         public string EquipNo;

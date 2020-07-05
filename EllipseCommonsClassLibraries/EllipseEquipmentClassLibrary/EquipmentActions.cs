@@ -754,7 +754,7 @@ namespace EllipseEquipmentClassLibrary
             {
                 string districtParam;
                 //establecemos los parámetrode de distrito
-                if (string.IsNullOrEmpty(districtCode))
+                if (string.IsNullOrWhiteSpace(districtCode))
                     districtParam = " IN (" + MyUtilities.GetListInSeparator(Districts.GetDistrictList(), ",", "'") +
                                     ")";
                 else

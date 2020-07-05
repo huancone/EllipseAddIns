@@ -33,7 +33,7 @@
     <PublishUrl>D:\Projects\Release\EllipseFotoPlanificacionExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.2</ApplicationVersion>
+    <ApplicationVersion>1.0.0.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -234,6 +234,10 @@
     <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
       <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
       <Name>EllipseCommonsClassLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseEquipmentClassLibrary\EllipseEquipmentClassLibrary.csproj">
+      <Project>{864f90d8-5073-4f1c-83f6-e1b8b28b0a33}</Project>
+      <Name>EllipseEquipmentClassLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseJobsClassLibrary\EllipseJobsClassLibrary.csproj">
       <Project>{838948ce-353c-41fe-904e-753b4678aeeb}</Project>

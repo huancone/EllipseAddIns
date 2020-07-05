@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms.VisualStyles;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Utilities;
+using EllipseEquipmentClassLibrary;
 using EllipseJobsClassLibrary;
 using EllipseMaintSchedTaskClassLibrary;
 using JobsMWPService = EllipseJobsClassLibrary.JobsMWPService;
@@ -32,6 +33,14 @@ namespace EllipseFotoPlanificacionExcelAddIn
                 long number1;
                 if (long.TryParse(item.WorkOrder, out number1))
                     item.WorkOrder = item.WorkOrder.PadLeft(8, '0');
+            }
+            if (item != null && !string.IsNullOrWhiteSpace(item.EquipNo))
+            {
+                var eqList = EquipmentActions.GetEquipmentList(ef, item.DistrictCode, item.EquipNo);
+                if (eqList != null && eqList.Count > 0)
+                    item.EquipNo = eqList[0];
+                else
+                    throw new ArgumentException("No se ha podido encontrar en Ellipse el equipo ingresado");
             }
             var sqlQuery = Queries.InsertSigmanItemQuery(ef.DbReference, ef.DbLink, item);
             return ef.ExecuteQuery(sqlQuery);
