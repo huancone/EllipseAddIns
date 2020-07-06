@@ -184,6 +184,7 @@ namespace EllipseJobsClassLibrary
                         "     WHERE " +
                         "         ST.DSTRCT_CODE = 'ICOR' " +
                         "         AND ST.STD_JOB_NO = '" + reference + "' " +
+                        "         AND ST.STD_JOB_TASK = '" + referenceTask + "' " +
                         " ),SHIFT_TASKS AS ( " +
                         "     SELECT " +
                         "         TASKS.DSTRCT_CODE, " +

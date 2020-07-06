@@ -48,9 +48,9 @@
             this.menu1 = this.Factory.CreateRibbonMenu();
             this.cbDeviationStats = this.Factory.CreateRibbonCheckBox();
             this.cbSplitTaskByResource = this.Factory.CreateRibbonCheckBox();
-            this.btnStopThread = this.Factory.CreateRibbonButton();
-            this.cbOverlappingDateSearch = this.Factory.CreateRibbonCheckBox();
             this.cbIncludeMsts = this.Factory.CreateRibbonCheckBox();
+            this.cbOverlappingDateSearch = this.Factory.CreateRibbonCheckBox();
+            this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpProyecto.SuspendLayout();
             this.box1.SuspendLayout();
@@ -158,12 +158,11 @@
             this.cbSplitTaskByResource.Name = "cbSplitTaskByResource";
             this.cbSplitTaskByResource.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbSplitTaskByResource_Click);
             // 
-            // btnStopThread
+            // cbIncludeMsts
             // 
-            this.btnStopThread.Label = "&Detener Proceso";
-            this.btnStopThread.Name = "btnStopThread";
-            this.btnStopThread.ShowImage = true;
-            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
+            this.cbIncludeMsts.Label = "Incluír Msts";
+            this.cbIncludeMsts.Name = "cbIncludeMsts";
+            this.cbIncludeMsts.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbIncludeMsts_Click);
             // 
             // cbOverlappingDateSearch
             // 
@@ -171,11 +170,12 @@
             this.cbOverlappingDateSearch.Name = "cbOverlappingDateSearch";
             this.cbOverlappingDateSearch.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbOverlappingDateSearch_Click);
             // 
-            // cbIncludeMsts
+            // btnStopThread
             // 
-            this.cbIncludeMsts.Label = "Incluír Msts";
-            this.cbIncludeMsts.Name = "cbIncludeMsts";
-            this.cbIncludeMsts.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbIncludeMsts_Click);
+            this.btnStopThread.Label = "&Detener Proceso";
+            this.btnStopThread.Name = "btnStopThread";
+            this.btnStopThread.ShowImage = true;
+            this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
             // RibbonEllipse
             // 
