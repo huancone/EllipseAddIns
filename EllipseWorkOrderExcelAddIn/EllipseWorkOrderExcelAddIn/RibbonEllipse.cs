@@ -11,7 +11,6 @@ using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Utilities.MyDateTime;
 using EllipseWorkOrdersClassLibrary;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -584,7 +583,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -663,7 +662,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -1833,7 +1832,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRange(TableName01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -1960,7 +1959,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRangeColumn(TableNameD01, ResultColumnD01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2076,7 +2075,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRangeColumn(TableNameD01, ResultColumnD01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             var opSheet = new WorkOrderService.OperationContext
             {
@@ -2202,7 +2201,7 @@ namespace EllipseWorkOrderExcelAddIn
                     }
 
                     if (ots != null && ots.Count > 0) continue;
-                    var replySheet = WorkOrderActions.CreateWorkOrder(urlService), opSheet, wo);
+                    var replySheet = WorkOrderActions.CreateWorkOrder(urlService, opSheet, wo);
                     wo.SetWorkOrderDto(replySheet.workOrder.prefix, replySheet.workOrder.no);
                     if (cbFlagEstDuration.Checked)
                     {
@@ -2247,7 +2246,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRangeColumn(TableNameD01, ResultColumnD01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2352,7 +2351,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //wo.calculatedLabFlag = "true";
                     wo.calculatedDurationsFlag = cbFlagEstDuration.Checked.ToString();
 
-                    var reply = WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
+                    var reply = WorkOrderActions.ModifyWorkOrder(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
                     if (cbFlagEstDuration.Checked)
                     {
                         _cells.GetCell(28, i).Value = reply.planStrDate;
@@ -2365,7 +2364,7 @@ namespace EllipseWorkOrderExcelAddIn
                     var extendedBody = MyUtilities.IsTrue(_cells.GetCell(55, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(55, i).Value) : null;
                     wo.SetExtendedDescription(extendedHeader, extendedBody);
 
-                    WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
+                    WorkOrderActions.ModifyWorkOrder(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
                     var replyExtended = WorkOrderActions.UpdateWorkOrderExtendedDescription(urlService, opSheet, district, wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no, extendedHeader, extendedBody);
                     var stringErrors = "";
 
@@ -3072,7 +3071,7 @@ namespace EllipseWorkOrderExcelAddIn
                     wo.calculatedLabFlag = "true";
                     wo.calculatedDurationsFlag = cbFlagEstDuration.Checked.ToString();
 
-                    var replySheet = WorkOrderActions.CreateWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
+                    var replySheet = WorkOrderActions.CreateWorkOrder(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
                     if (cbFlagEstDuration.Checked)
                     {
                         _cells.GetCell(28, i).Value = replySheet.planStrDate;
@@ -3214,7 +3213,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //wo.calculatedLabFlag = "true";
                     wo.calculatedDurationsFlag = cbFlagEstDuration.Checked.ToString();
 
-                    var reply = WorkOrderActions.ModifyWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
+                    var reply = WorkOrderActions.ModifyWorkOrder(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
                     if(cbFlagEstDuration.Checked)
                     {
                         _cells.GetCell(28, i).Value = reply.planStrDate;
@@ -3288,7 +3287,7 @@ namespace EllipseWorkOrderExcelAddIn
                         if (WoStatusList.ClosedCode.Equals(woData.workOrderStatusM.Trim()) || WoStatusList.CancelledCode.Equals(woData.workOrderStatusM.Trim()))
                             throw new Exception("La orden " + wo.workOrder.prefix + wo.workOrder.no + " ya está cerrada como " + WoStatusList.GetStatusName(woData.workOrderStatusM.Trim()) + " con código " + woData.completedCode);
                     }
-                    var reply = WorkOrderActions.CompleteWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
+                    var reply = WorkOrderActions.CompleteWorkOrder(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
                     if (reply.completedCode.Trim() == wo.completedCode.Trim() && reply.closedDate == wo.closedDate)
                     {
                         _cells.GetCell(ResultColumn04, i).Value = "COMPLETADA";
@@ -3359,7 +3358,7 @@ namespace EllipseWorkOrderExcelAddIn
                         if (!WoStatusList.ClosedCode.Equals(woData.workOrderStatusM.Trim()) && !WoStatusList.CancelledCode.Equals(woData.workOrderStatusM.Trim()))
                             throw new Exception("La orden " + wo.GetWorkOrderDto().prefix + wo.GetWorkOrderDto().no + " ya está abierta como " + WoStatusList.GetStatusName(woData.workOrderStatusM.Trim()));
                     }
-                    WorkOrderActions.ReOpenWorkOrder(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
+                    WorkOrderActions.ReOpenWorkOrder(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, wo);
 
                     _cells.GetCell(ResultColumn04, i).Value = "REABIERTA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -3402,7 +3401,7 @@ namespace EllipseWorkOrderExcelAddIn
                     //GENERAL
                     var wo = WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
                     string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-                    var closeText = WorkOrderActions.GetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo);
+                    var closeText = WorkOrderActions.GetWorkOrderCloseText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo);
                     var workOrder = WorkOrderActions.FetchWorkOrder(_eFunctions, districtCode, wo);
 
                     _cells.GetCell(2, i).Value = closeText;
@@ -3459,8 +3458,8 @@ namespace EllipseWorkOrderExcelAddIn
                     var wo = WorkOrderActions.GetNewWorkOrderDto(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value));
                     var closeText = _cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value2);
                     var districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-                    //WorkOrderActions.SetWorkOrderCloseText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo, closeText);
-                    WorkOrderActions.AppendTextToCloseComment(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, districtCode, wo.prefix + wo.no, closeText);
+                    //WorkOrderActions.SetWorkOrderCloseText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), districtCode, _frmAuth.EllipsePost, Debugger.DebugWarnings, wo, closeText);
+                    WorkOrderActions.AppendTextToCloseComment(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, districtCode, wo.prefix + wo.no, closeText);
 
                     _cells.GetCell(ResultColumn05, i).Value = "ACTUALIZADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -3510,7 +3509,7 @@ namespace EllipseWorkOrderExcelAddIn
 
                 var i = TitleRow01 + 1;
                 var k = TitleRow06 + 1;
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                 while (!string.IsNullOrWhiteSpace(_cells.GetNullOrTrimmedValue(woCell.GetCell(2, i).Value)))
                 {
@@ -3575,7 +3574,7 @@ namespace EllipseWorkOrderExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var i = TitleRow06 + 1;
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             while (!string.IsNullOrWhiteSpace(_cells.GetNullOrTrimmedValue(_cells.GetCell(2, i).Value)))
             {
@@ -3599,7 +3598,7 @@ namespace EllipseWorkOrderExcelAddIn
                     else if(string.IsNullOrWhiteSpace(startTime) && string.IsNullOrWhiteSpace(finishTime) && !string.IsNullOrWhiteSpace(stringHoursTime))
                     {
                         startTime = "000000";
-                        finishTime = EllipseCommonsClassLibrary.Utilities.MyDateTime.Operations.ConvertDecimalHourToHHMM(stringHoursTime, "") + "00";
+                        finishTime = MyUtilities.DateTime.ConvertDecimalHourToHHMM(stringHoursTime, "") + "00";
                     }
 
                     //Ellipse presenta problemas cuando los segundos ingresados son diferentes de 0
@@ -3659,7 +3658,7 @@ namespace EllipseWorkOrderExcelAddIn
         private void ReviewRefCodesList()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -3750,7 +3749,7 @@ namespace EllipseWorkOrderExcelAddIn
         private void UpdateReferenceCodes()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -3988,7 +3987,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRange(TableNameCc01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -4088,7 +4087,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -4350,7 +4349,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRange(TableName02);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
             _excelApp.ActiveWorkbook.Sheets.get_Item(2).Activate();
             var woCells = new ExcelStyleCells(_excelApp, SheetName01);
@@ -4483,7 +4482,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             var tableName = TableName08;
             var resultColumn = ResultColumn08;
@@ -4508,9 +4507,9 @@ namespace EllipseWorkOrderExcelAddIn
                     toDo.Sequence = !string.IsNullOrWhiteSpace(_cells.GetCell(4, i).Value) ? Convert.ToDecimal(_cells.GetCell(4, i).Value) : default(decimal);
                     toDo.SequenceSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(4, i).Value);
                     toDo.ItemName = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
-                    toDo.RequiredByDate = Operations.FormatStringToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value), Formats.DateYYYYMMDD);
+                    toDo.RequiredByDate = MyUtilities.ToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value));
                     toDo.RequiredByDateSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(6, i).Value);
-                    toDo.ExpirationDate = Operations.FormatStringToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value), Formats.DateYYYYMMDD);
+                    toDo.ExpirationDate = MyUtilities.ToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value));
                     toDo.ExpirationDateSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(7, i).Value);
                     toDo.NeededForRelease = MyUtilities.IsTrue(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
                     toDo.NeededForReleaseSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(8, i).Value);
@@ -4526,8 +4525,8 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(3, i).Value = "'" + replyItem.WorkOrderTask;
                     _cells.GetCell(4, i).Value = "'" + replyItem.Sequence;
                     _cells.GetCell(5, i).Value = "'" + replyItem.ItemName;
-                    _cells.GetCell(6, i).Value = "'" + Operations.FormatDateToString(replyItem.RequiredByDate, Formats.DateYYYYMMDD);
-                    _cells.GetCell(7, i).Value = "'" + Operations.FormatDateToString(replyItem.ExpirationDate, Formats.DateYYYYMMDD);
+                    _cells.GetCell(6, i).Value = "'" + MyUtilities.ToString(replyItem.RequiredByDate);
+                    _cells.GetCell(7, i).Value = "'" + MyUtilities.ToString(replyItem.ExpirationDate);
                     _cells.GetCell(8, i).Value = "'" + (replyItem.NeededForRelease ? "Y" : "N");
                     _cells.GetCell(9, i).Value = "'" + replyItem.ExternalReference;
                     _cells.GetCell(10, i).Value = "'" + replyItem.Owner;
@@ -4560,7 +4559,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             var tableName = TableName08;
             var resultColumn = ResultColumn08;
@@ -4585,9 +4584,9 @@ namespace EllipseWorkOrderExcelAddIn
                     toDo.Sequence = !string.IsNullOrWhiteSpace(_cells.GetCell(4, i).Value) ? Convert.ToDecimal(_cells.GetCell(4, i).Value) : default(decimal);
                     toDo.SequenceSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(4, i).Value);
                     toDo.ItemName = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
-                    toDo.RequiredByDate = Operations.FormatStringToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value), Formats.DateYYYYMMDD);
+                    toDo.RequiredByDate = MyUtilities.ToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value));
                     toDo.RequiredByDateSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(6, i).Value);
-                    toDo.ExpirationDate = Operations.FormatStringToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value), Formats.DateYYYYMMDD);
+                    toDo.ExpirationDate = MyUtilities.ToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value));
                     toDo.ExpirationDateSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(7, i).Value);
                     toDo.NeededForRelease = MyUtilities.IsTrue(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
                     toDo.NeededForReleaseSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(8, i).Value);
@@ -4603,8 +4602,8 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(3, i).Value = "'" + replyItem.WorkOrderTask;
                     _cells.GetCell(4, i).Value = "'" + replyItem.Sequence;
                     _cells.GetCell(5, i).Value = "'" + replyItem.ItemName;
-                    _cells.GetCell(6, i).Value = "'" + Operations.FormatDateToString(replyItem.RequiredByDate, Formats.DateYYYYMMDD);
-                    _cells.GetCell(7, i).Value = "'" + Operations.FormatDateToString(replyItem.ExpirationDate, Formats.DateYYYYMMDD);
+                    _cells.GetCell(6, i).Value = "'" + MyUtilities.ToString(replyItem.RequiredByDate);
+                    _cells.GetCell(7, i).Value = "'" + MyUtilities.ToString(replyItem.ExpirationDate);
                     _cells.GetCell(8, i).Value = "'" + (replyItem.NeededForRelease ? "Y" : "N");
                     _cells.GetCell(9, i).Value = "'" + replyItem.ExternalReference;
                     _cells.GetCell(10, i).Value = "'" + replyItem.Owner;
@@ -4644,7 +4643,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRange(tableName);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -4681,8 +4680,8 @@ namespace EllipseWorkOrderExcelAddIn
                         tdCells.GetCell(3, i).Value = "'" + toDo.WorkOrderTask;
                         tdCells.GetCell(4, i).Value = "'" + toDo.Sequence;
                         tdCells.GetCell(5, i).Value = "'" + toDo.ItemName;
-                        tdCells.GetCell(6, i).Value = "'" + Operations.FormatDateToString(toDo.RequiredByDate, Formats.DateYYYYMMDD);
-                        tdCells.GetCell(7, i).Value = "'" + Operations.FormatDateToString(toDo.ExpirationDate, Formats.DateYYYYMMDD);
+                        tdCells.GetCell(6, i).Value = "'" + MyUtilities.ToString(toDo.RequiredByDate);
+                        tdCells.GetCell(7, i).Value = "'" + MyUtilities.ToString(toDo.ExpirationDate);
                         tdCells.GetCell(8, i).Value = "'" + (toDo.NeededForRelease ? "Y" : "N");
                         tdCells.GetCell(9, i).Value = "'" + toDo.ExternalReference;
                         tdCells.GetCell(10, i).Value = "'" + toDo.Owner;
@@ -4728,7 +4727,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.ClearTableRange(tableName);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = WorkOrderToDoActions.GetOperationContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -4766,8 +4765,8 @@ namespace EllipseWorkOrderExcelAddIn
                         tdCells.GetCell(3, i).Value = "'" + toDo.WorkOrderTask;
                         tdCells.GetCell(4, i).Value = "'" + toDo.Sequence;
                         tdCells.GetCell(5, i).Value = "'" + toDo.ItemName;
-                        tdCells.GetCell(6, i).Value = "'" + Operations.FormatDateToString(toDo.RequiredByDate, Formats.DateYYYYMMDD);
-                        tdCells.GetCell(7, i).Value = "'" + Operations.FormatDateToString(toDo.ExpirationDate, Formats.DateYYYYMMDD);
+                        tdCells.GetCell(6, i).Value = "'" + MyUtilities.ToString(toDo.RequiredByDate);
+                        tdCells.GetCell(7, i).Value = "'" + MyUtilities.ToString(toDo.ExpirationDate);
                         tdCells.GetCell(8, i).Value = "'" + (toDo.NeededForRelease ? "Y" : "N");
                         tdCells.GetCell(9, i).Value = "'" + toDo.ExternalReference;
                         tdCells.GetCell(10, i).Value = "'" + toDo.Owner;
@@ -4806,7 +4805,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             var tableName = TableName08;
             var resultColumn = ResultColumn08;
@@ -4831,9 +4830,9 @@ namespace EllipseWorkOrderExcelAddIn
                     toDo.Sequence = !string.IsNullOrWhiteSpace(_cells.GetCell(4, i).Value) ? Convert.ToDecimal(_cells.GetCell(4, i).Value) : default(decimal);
                     toDo.SequenceSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(4, i).Value);
                     toDo.ItemName = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
-                    toDo.RequiredByDate = Operations.FormatStringToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value), Formats.DateYYYYMMDD);
+                    toDo.RequiredByDate = MyUtilities.ToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value));
                     toDo.RequiredByDateSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(6, i).Value);
-                    toDo.ExpirationDate = Operations.FormatStringToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value), Formats.DateYYYYMMDD);
+                    toDo.ExpirationDate = MyUtilities.ToDateTime(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, i).Value));
                     toDo.ExpirationDateSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(7, i).Value);
                     toDo.NeededForRelease = MyUtilities.IsTrue(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, i).Value));
                     toDo.NeededForReleaseSpecified = !string.IsNullOrWhiteSpace(_cells.GetCell(8, i).Value);
@@ -4849,8 +4848,8 @@ namespace EllipseWorkOrderExcelAddIn
                     _cells.GetCell(3, i).Value = "'" + replyItem.WorkOrderTask;
                     _cells.GetCell(4, i).Value = "'" + replyItem.Sequence;
                     _cells.GetCell(5, i).Value = "'" + replyItem.ItemName;
-                    _cells.GetCell(6, i).Value = "'" + Operations.FormatDateToString(replyItem.RequiredByDate, Formats.DateYYYYMMDD);
-                    _cells.GetCell(7, i).Value = "'" + Operations.FormatDateToString(replyItem.ExpirationDate, Formats.DateYYYYMMDD);
+                    _cells.GetCell(6, i).Value = "'" + MyUtilities.ToString(replyItem.RequiredByDate);
+                    _cells.GetCell(7, i).Value = "'" + MyUtilities.ToString(replyItem.ExpirationDate);
                     _cells.GetCell(8, i).Value = "'" + (replyItem.NeededForRelease ? "Y" : "N");
                     _cells.GetCell(9, i).Value = "'" + replyItem.ExternalReference;
                     _cells.GetCell(10, i).Value = "'" + replyItem.Owner;
@@ -4927,7 +4926,7 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     if (string.IsNullOrWhiteSpace(d.DistrictCode))
                         d.DistrictCode = "ICOR";
-                    var reqList = WorkOrderTaskActions.FetchRequirements(_eFunctions, d.DistrictCode, d.WorkGroup, d.WorkOrder, requirementType, null);
+                    var reqList = WorkOrderTaskActions.FetchRequirements(_eFunctions, d.DistrictCode, d.WorkOrder, requirementType, null);
 
                     var distinctReqList = reqList.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo, x.ReqCode }).Select(y => y.First());
 
@@ -5008,7 +5007,7 @@ namespace EllipseWorkOrderExcelAddIn
             {
                 try
                 {
-                    var reqList = WorkOrderTaskActions.FetchRequirements(_eFunctions, d.DistrictCode, d.WorkGroup, d.WorkOrder, requirementType, d.WoTaskNo);
+                    var reqList = WorkOrderTaskActions.FetchRequirements(_eFunctions, d.DistrictCode, d.WorkOrder, requirementType, d.WoTaskNo);
 
                     var distinctReqList = reqList.GroupBy(x => new { x.DistrictCode, x.WorkGroup, x.WorkOrder, x.WoTaskNo, x.ReqCode}).Select(y => y.First());
 
@@ -5097,7 +5096,7 @@ namespace EllipseWorkOrderExcelAddIn
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -5154,7 +5153,7 @@ namespace EllipseWorkOrderExcelAddIn
                             _cells.GetCell(16, i).Value = reply.planFinDate;
                             _cells.GetCell(17, i).Value = reply.planFinTime;
                         }
-                        WorkOrderTaskActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        WorkOrderTaskActions.SetWorkOrderTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else if (action.Equals(WorkOrderTaskActions.Create))
                     {
@@ -5166,7 +5165,7 @@ namespace EllipseWorkOrderExcelAddIn
                             _cells.GetCell(16, i).Value = reply.planFinDate;
                             _cells.GetCell(17, i).Value = reply.planFinTime;
                         }
-                        WorkOrderTaskActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        WorkOrderTaskActions.SetWorkOrderTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else if (action.Equals(WorkOrderTaskActions.Delete))
                     {
@@ -5175,7 +5174,7 @@ namespace EllipseWorkOrderExcelAddIn
                     else if (action.Equals(WorkOrderTaskActions.Close))
                     {
                         replyMsg = WorkOrderTaskActions.CompleteWorkOrderTask(urlService, opSheet, woTask);
-                        WorkOrderTaskActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        WorkOrderTaskActions.SetWorkOrderTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
                     }
                     else if (action.Equals(WorkOrderTaskActions.ReOpen))
                     {
@@ -5267,7 +5266,7 @@ namespace EllipseWorkOrderExcelAddIn
 
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             while (!string.IsNullOrEmpty("" + _cells.GetCell(3, i).Value) && !string.IsNullOrEmpty("" + _cells.GetCell(4, i).Value))
             {
                 try
