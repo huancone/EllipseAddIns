@@ -36,8 +36,8 @@
         {
             this.tab1 = this.Factory.CreateRibbonTab();
             this.grpDocumentGenerator = this.Factory.CreateRibbonGroup();
-            this.btnAction = this.Factory.CreateRibbonButton();
             this.btnFormat = this.Factory.CreateRibbonButton();
+            this.btnAction = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.grpDocumentGenerator.SuspendLayout();
             this.SuspendLayout();
@@ -56,17 +56,17 @@
             this.grpDocumentGenerator.Label = "Document Generator";
             this.grpDocumentGenerator.Name = "grpDocumentGenerator";
             // 
-            // btnAction
-            // 
-            this.btnAction.Label = "Acción";
-            this.btnAction.Name = "btnAction";
-            this.btnAction.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAction_Click);
-            // 
             // btnFormat
             // 
             this.btnFormat.Label = "Formatear";
             this.btnFormat.Name = "btnFormat";
             this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
+            // 
+            // btnAction
+            // 
+            this.btnAction.Label = "Acción";
+            this.btnAction.Name = "btnAction";
+            this.btnAction.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAction_Click);
             // 
             // RibbonContracts
             // 

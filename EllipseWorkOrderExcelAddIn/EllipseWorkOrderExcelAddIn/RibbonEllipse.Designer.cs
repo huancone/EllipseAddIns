@@ -59,7 +59,7 @@ namespace EllipseWorkOrderExcelAddIn
             this.menuTasks = this.Factory.CreateRibbonMenu();
             this.btnReviewTasks = this.Factory.CreateRibbonButton();
             this.btnExecuteTaskActions = this.Factory.CreateRibbonButton();
-            this.btnValidateTaskPlanDates = this.Factory.CreateRibbonCheckBox();
+            this.cbValidateTaskPlanDates = this.Factory.CreateRibbonCheckBox();
             this.btnCleanTasksTable = this.Factory.CreateRibbonButton();
             this.menuRequirements = this.Factory.CreateRibbonMenu();
             this.btnReviewRequirements = this.Factory.CreateRibbonButton();
@@ -266,7 +266,7 @@ namespace EllipseWorkOrderExcelAddIn
             // 
             this.menuTasks.Items.Add(this.btnReviewTasks);
             this.menuTasks.Items.Add(this.btnExecuteTaskActions);
-            this.menuTasks.Items.Add(this.btnValidateTaskPlanDates);
+            this.menuTasks.Items.Add(this.cbValidateTaskPlanDates);
             this.menuTasks.Items.Add(this.btnCleanTasksTable);
             this.menuTasks.Label = "&Tareas";
             this.menuTasks.Name = "menuTasks";
@@ -286,11 +286,11 @@ namespace EllipseWorkOrderExcelAddIn
             this.btnExecuteTaskActions.ShowImage = true;
             this.btnExecuteTaskActions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExecuteTaskActions_Click);
             // 
-            // btnValidateTaskPlanDates
+            // cbValidateTaskPlanDates
             // 
-            this.btnValidateTaskPlanDates.Checked = true;
-            this.btnValidateTaskPlanDates.Label = "Validar Fechas Plan en OT";
-            this.btnValidateTaskPlanDates.Name = "btnValidateTaskPlanDates";
+            this.cbValidateTaskPlanDates.Checked = true;
+            this.cbValidateTaskPlanDates.Label = "Validar Fechas Plan en OT";
+            this.cbValidateTaskPlanDates.Name = "cbValidateTaskPlanDates";
             // 
             // btnCleanTasksTable
             // 
@@ -759,7 +759,7 @@ namespace EllipseWorkOrderExcelAddIn
         internal RibbonButton btnDeleteToDo;
         internal RibbonButton btnCleanToDo;
         internal RibbonButton btnUpdateToDo;
-        internal RibbonCheckBox btnValidateTaskPlanDates;
+        internal RibbonCheckBox cbValidateTaskPlanDates;
         internal RibbonCheckBox cbFlagEstDuration;
         internal RibbonButton btnReviewLabRequirements;
         internal RibbonButton btnReviewEqpRequirements;

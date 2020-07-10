@@ -4369,10 +4369,10 @@ namespace EllipseWorkOrderExcelAddIn
                     var woPlanFinishDate = _cells.GetEmptyIfNull(woCells.GetCell(30, j).Value2);
                     var woPlanFinishTime = _cells.GetEmptyIfNull(woCells.GetCell(31, j).Value2);
 
-                    woPlanStartDate = string.IsNullOrWhiteSpace(woPlanStartDate) ? "000000" : woPlanStartDate;
-                    woPlanStartTime = string.IsNullOrWhiteSpace(woPlanStartTime) ? "000000" : woPlanStartTime;
-                    woPlanFinishDate = string.IsNullOrWhiteSpace(woPlanFinishDate) ? "000000" : woPlanFinishDate;
-                    woPlanFinishTime = string.IsNullOrWhiteSpace(woPlanFinishTime) ? "000000" : woPlanFinishTime;
+                    woPlanStartDate = string.IsNullOrWhiteSpace(woPlanStartDate) ? "000000" : woPlanStartDate.PadLeft(8, '0'); ;
+                    woPlanStartTime = string.IsNullOrWhiteSpace(woPlanStartTime) ? "000000" : woPlanStartTime.PadLeft(6, '0'); ;
+                    woPlanFinishDate = string.IsNullOrWhiteSpace(woPlanFinishDate) ? "000000" : woPlanFinishDate.PadLeft(8, '0'); ;
+                    woPlanFinishTime = string.IsNullOrWhiteSpace(woPlanFinishTime) ? "000000" : woPlanFinishTime.PadLeft(6, '0'); ;
 
                     var taskList = WorkOrderTaskActions.FetchWorkOrderTask(_eFunctions, districtCode, workOrder, "");
 
@@ -4398,18 +4398,18 @@ namespace EllipseWorkOrderExcelAddIn
                         //PLANNING
                         _cells.GetCell(12, i).Value = "" + task.AssignPerson;
                         _cells.GetCell(13, i).Value = "'" + task.EstimatedMachHrs;
-                        _cells.GetCell(14, i).Value = task.PlanStartDate;   //Se deben dejar numéricos para que se conserve la validación por calculado de la OT
-                        _cells.GetCell(15, i).Value = task.PlanStartTime;   //Se deben dejar numéricos para que se conserve la validación por calculado de la OT
-                        _cells.GetCell(16, i).Value = task.PlanFinishDate;  //Se deben dejar numéricos para que se conserve la validación por calculado de la OT
-                        _cells.GetCell(17, i).Value = task.PlanFinishTime;  //Se deben dejar numéricos para que se conserve la validación por calculado de la OT
+                        _cells.GetCell(14, i).Value = "'" + task.PlanStartDate; 
+                        _cells.GetCell(15, i).Value = "'" + task.PlanStartTime; 
+                        _cells.GetCell(16, i).Value = "'" + task.PlanFinishDate;
+                        _cells.GetCell(17, i).Value = "'" + task.PlanFinishTime;
                         //Valida que las fechas de plan de la tarea estén dentro de las fechas de la orden
-                        if (btnValidateTaskPlanDates.Checked && (!string.IsNullOrWhiteSpace(woPlanStartDate) && !string.IsNullOrWhiteSpace(woPlanFinishDate)))
+                        if (cbValidateTaskPlanDates.Checked && (!string.IsNullOrWhiteSpace(woPlanStartDate) && !string.IsNullOrWhiteSpace(woPlanFinishDate)))
                         {
                             _cells.GetRange(14, i, 17, i).ClearComments();
-                            var tkPlanStartDate = string.IsNullOrWhiteSpace(task.PlanStartDate) ? "000000" : task.PlanStartDate;
-                            var tkPlanStartTime = string.IsNullOrWhiteSpace(task.PlanStartTime) ? "000000" : task.PlanStartTime;
-                            var tkPlanFinishDate = string.IsNullOrWhiteSpace(task.PlanFinishDate) ? "000000" : task.PlanFinishDate;
-                            var tkPlanFinishTime = string.IsNullOrWhiteSpace(task.PlanFinishTime) ? "000000" : task.PlanFinishTime;
+                            var tkPlanStartDate = string.IsNullOrWhiteSpace(task.PlanStartDate) ? "000000" : task.PlanStartDate.PadLeft(8, '0');
+                            var tkPlanStartTime = string.IsNullOrWhiteSpace(task.PlanStartTime) ? "000000" : task.PlanStartTime.PadLeft(6, '0');
+                            var tkPlanFinishDate = string.IsNullOrWhiteSpace(task.PlanFinishDate) ? "000000" : task.PlanFinishDate.PadLeft(8, '0');
+                            var tkPlanFinishTime = string.IsNullOrWhiteSpace(task.PlanFinishTime) ? "000000" : task.PlanFinishTime.PadLeft(6, '0');
 
                             if (!string.IsNullOrWhiteSpace(task.PlanStartDate))
                             {
@@ -5136,6 +5136,12 @@ namespace EllipseWorkOrderExcelAddIn
                         CompleteTaskText = _cells.GetEmptyIfNull(_cells.GetCell(30, i).Value)
                     };
 
+                    if (!string.IsNullOrWhiteSpace(woTask.PlanStartTime))
+                        woTask.PlanFinishTime = woTask.PlanStartTime.PadLeft(6, '0');
+
+                    if (!string.IsNullOrWhiteSpace(woTask.PlanFinishTime))
+                        woTask.PlanFinishTime = woTask.PlanFinishTime.PadLeft(6, '0');
+            
                     woTask.SetWorkOrderDto(woTask.WorkOrder);
 
                     if (string.IsNullOrWhiteSpace(action))

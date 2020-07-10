@@ -135,6 +135,8 @@ namespace EllipseBulkMaterialExcelAddIn
         private void btnBulkMaterialFormatMultiple_Click(object sender, RibbonControlEventArgs e)
         {
             BulkMaterialFormatMultiple();
+            if (!_cells.IsDecimalDotSeparator())
+                MessageBox.Show(@"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse", @"ADVERTENCIA");
         }
 
         private void BulkMaterialFormatMultiple()
@@ -353,6 +355,17 @@ namespace EllipseBulkMaterialExcelAddIn
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
+            #region AlertaDecimal
+            if (!_cells.IsDecimalDotSeparator())
+            {
+                const string message = @"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse";
+
+                var dialogResult = MessageBox.Show(message + "\n\n¿Está seguro que desea continuar?", "ADVERTENCIA - Separador Decimal", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                if (dialogResult == DialogResult.No)
+                    return;
+            }
+            #endregion
+
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
 
@@ -416,6 +429,17 @@ namespace EllipseBulkMaterialExcelAddIn
             {
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
+
+                #region AlertaDecimal
+                if (!_cells.IsDecimalDotSeparator())
+                {
+                    const string message = @"El separador decimal configurado actualmente no es el punto. Se recomienda ajustar antes esta configuración para evitar que se ingresen valores que no corresponden con los del sistema Ellipse";
+
+                    var dialogResult = MessageBox.Show(message + "\n\n¿Está seguro que desea continuar?", "ADVERTENCIA - Separador Decimal", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                    if (dialogResult == DialogResult.No)
+                        return;
+                }
+                #endregion 
                 var excelBook = _excelApp.ActiveWorkbook;
                 Worksheet excelSheet = excelBook.ActiveSheet;
                 _cells.SetCursorWait();

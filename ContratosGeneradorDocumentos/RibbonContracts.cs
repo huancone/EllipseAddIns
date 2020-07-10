@@ -29,7 +29,7 @@ namespace ContratosGeneradorDocumentos
         private const string ValidationSheetName = "Validacion";
         private const string SheetName01 = "Planeados";
         private const string TableName01 = "JobResources";
-        private const int TitleRow01 = 7;
+        private const int TitleRow01 = 8;
         private const int ResultColumn01 = 4;
 
 
@@ -45,21 +45,17 @@ namespace ContratosGeneradorDocumentos
         }
         private void btnAction_Click(object sender, RibbonControlEventArgs e)
         {
-            var fileUrl = "" + _cells.GetCell(2, 3).Value;
-            var fileName = "" + _cells.GetCell(4, 3).Value;
+            var fileUrl = "" + _cells.GetCell(2, 4).Value;
+            var fileName = "" + _cells.GetCell(3, 4).Value;
 
-            var destUrl = "" + _cells.GetCell(2, 4).Value;
-            var destName = "" + _cells.GetCell(4, 4).Value;
+            var destUrl = "" + _cells.GetCell(2, 5).Value;
+            var destName = "" + _cells.GetCell(3, 5).Value;
 
             var list = new List<KeyValuePair<string, string>>();
-            list.Add(new KeyValuePair<string, string>("firstName", "" + _cells.GetCell(3, TitleRow01 + 1).Value));
-            list.Add(new KeyValuePair<string, string>("surName", "" + _cells.GetCell(3, TitleRow01 + 2).Value));
-            list.Add(new KeyValuePair<string, string>("address", "" + _cells.GetCell(3, TitleRow01 + 3).Value));
-            list.Add(new KeyValuePair<string, string>("city", "" + _cells.GetCell(3, TitleRow01 + 4).Value));
-            list.Add(new KeyValuePair<string, string>("zipCode", "" + _cells.GetCell(3, TitleRow01 + 5).Value));
-            list.Add(new KeyValuePair<string, string>("phone", "" + _cells.GetCell(3, TitleRow01 + 6).Value));
-            list.Add(new KeyValuePair<string, string>("email", "" + _cells.GetCell(3, TitleRow01 + 7).Value));
-            list.Add(new KeyValuePair<string, string>("webSite", @"" + _cells.GetCell(3, TitleRow01 + 8).Value));
+            for (int i = 1; i <= 13; i++)
+            {
+                list.Add(new KeyValuePair<string, string>(_cells.GetCell(2, TitleRow01 + i).Value, "" + _cells.GetCell(3, TitleRow01 + i).Value));
+            }
             
             Finder.Execute(fileUrl, fileName, destUrl, destName, list);
 
@@ -97,14 +93,20 @@ namespace ContratosGeneradorDocumentos
                 _cells.GetRange("A1", "B1").Style = StyleConstants.HeaderDefault;
                 _cells.GetRange("B1", "D1").Merge();
 
-                _cells.GetCell("A3").Value = "Ruta Original";
-                _cells.GetCell("B3").Value = @"c:\ellipse";
-                _cells.GetCell("A4").Value = "Ruta Destino";
+                _cells.GetCell("A3").Value = "TIPO";
+                _cells.GetCell("B3").Value = "RUTA";
+                _cells.GetCell("C3").Value = "NOMBRE ARCHIVO";
+                _cells.GetCell("A4").Value = "Plantilla";
                 _cells.GetCell("B4").Value = @"c:\ellipse";
-                _cells.GetCell("C3").Value = "Nombre Original";
-                _cells.GetCell("D3").Value = @"prueba.docx";
-                _cells.GetCell("C4").Value = "Nombre Destino";
-                _cells.GetCell("D4").Value = @"resultado";
+                _cells.GetCell("C4").Value = @"Plantilla.docx";
+                _cells.GetCell("A5").Value = "Destino";
+                _cells.GetCell("B5").Value = @"c:\ellipse";
+                _cells.GetCell("C5").Value = @"Resultado";
+
+                _cells.GetRange("A3", "C3").Style = StyleConstants.TitleOptional;
+                _cells.GetRange("A4", "A5").Style = StyleConstants.Option;
+                _cells.GetRange("B4", "C5").Style = StyleConstants.Select;
+
 
                 _cells.GetCell(1, titleRow).Value = "Descripción";
                 _cells.GetCell(2, titleRow).Value = "Etiqueta";
@@ -132,30 +134,64 @@ namespace ContratosGeneradorDocumentos
 
                 _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), tableName);
 
-                _cells.GetCell(1, titleRow + 1).Value = "Nombre";
-                _cells.GetCell(2, titleRow + 1).Value = "firstName";
-                _cells.GetCell(3, titleRow + 1).Value = "Jessica";
-                _cells.GetCell(1, titleRow + 2).Value = "Apellido";
-                _cells.GetCell(2, titleRow + 2).Value = "surName";
-                _cells.GetCell(3, titleRow + 2).Value = "Videz";
-                _cells.GetCell(1, titleRow + 3).Value = "Dirección";
-                _cells.GetCell(2, titleRow + 3).Value = "address";
-                _cells.GetCell(3, titleRow + 3).Value = "Casita de Dios";
-                _cells.GetCell(1, titleRow + 4).Value = "Ciudad";
-                _cells.GetCell(2, titleRow + 4).Value = "city";
-                _cells.GetCell(3, titleRow + 4).Value = "Medellín";
-                _cells.GetCell(1, titleRow + 5).Value = "Código Postal";
-                _cells.GetCell(2, titleRow + 5).Value = "zipCode";
-                _cells.GetCell(3, titleRow + 5).Value = "0012345";
-                _cells.GetCell(1, titleRow + 6).Value = "Teléfono";
-                _cells.GetCell(2, titleRow + 6).Value = "phone";
-                _cells.GetCell(3, titleRow + 6).Value = "555 77 88";
-                _cells.GetCell(1, titleRow + 7).Value = "Correo";
-                _cells.GetCell(2, titleRow + 7).Value = "email";
-                _cells.GetCell(3, titleRow + 7).Value = "mamasita@bella.com";
-                _cells.GetCell(1, titleRow + 8).Value = "Sitio";
-                _cells.GetCell(2, titleRow + 8).Value = "webSite";
-                _cells.GetCell(3, titleRow + 8).Value = @"http://www.dejaelchisme.com";
+                _cells.GetCell(1, titleRow + 1).Value = "Contrato";
+                _cells.GetCell(2, titleRow + 1).Value = "nroContrato";
+                _cells.GetCell(3, titleRow + 1).Value = "123456789";
+
+                _cells.GetCell(1, titleRow + 2).Value = "Tipo de Anexo";
+                _cells.GetCell(2, titleRow + 2).Value = "tituloAnexo";
+                _cells.GetCell(3, titleRow + 2).Value = "ALCANCE DE LOS SERVICIOS";
+
+                _cells.GetCell(1, titleRow + 3).Value = "Objeto del Contrato";
+                _cells.GetCell(2, titleRow + 3).Value = "objetoContrato";
+                _cells.GetCell(3, titleRow + 3).Value = "SOPORTE EN DESARROLLO SOFTWARE PARE LA GENERACIÓN AUTOMÁTICA DE DOCUMENTOS";
+
+                _cells.GetCell(1, titleRow + 4).Value = "Duración (Número)";
+                _cells.GetCell(2, titleRow + 4).Value = "duracionNumero";
+                _cells.GetCell(3, titleRow + 4).Value = "4";
+
+                _cells.GetCell(1, titleRow + 5).Value = "Duración (Letras)";
+                _cells.GetCell(2, titleRow + 5).Value = "duracionLetras";
+                _cells.GetCell(3, titleRow + 5).Value = "cuatro";
+
+                _cells.GetCell(1, titleRow + 6).Value = "Unidades (Días, Semanas, Meses, Años)";
+                _cells.GetCell(2, titleRow + 6).Value = "duracionUnidades";
+                _cells.GetCell(3, titleRow + 6).Value = "semanas";
+
+                var unitsList = new List<string> {"Días", "Semanas", "Meses", "Años"};
+                _cells.SetValidationList(_cells.GetCell(3, titleRow + 6), unitsList);
+
+
+                _cells.GetCell(1, titleRow + 7).Value = "Prórroga (Número)";
+                _cells.GetCell(2, titleRow + 7).Value = "duracionProrrogaNumero";
+                _cells.GetCell(3, titleRow + 7).Value = "2";
+
+                _cells.GetCell(1, titleRow + 8).Value = "Descripción del Servicio";
+                _cells.GetCell(2, titleRow + 8).Value = "descripcionServicios";
+                _cells.GetCell(3, titleRow + 8).Value = "Soporte en el desarrollo de una aplicación para la generación automática de documentos para los anexos de contratos";
+
+                _cells.GetCell(1, titleRow + 9).Value = "Lugar";
+                _cells.GetCell(2, titleRow + 9).Value = "lugarContrato";
+                _cells.GetCell(3, titleRow + 9).Value = "";
+
+                var locList = new List<string> { "LA MINA", "BARRANQUILLA", "BOGOTÁ", "LA MINA Y PUERTO BOLÍVAR", "PUERTO BOLÍVAR" };
+                _cells.SetValidationList(_cells.GetCell(3, titleRow + 9), locList);
+
+                _cells.GetCell(1, titleRow + 10).Value = "Perfil Profesional 1";
+                _cells.GetCell(2, titleRow + 10).Value = "perfilProfesional:1";
+                _cells.GetCell(3, titleRow + 10).Value = "Profesional";
+
+                _cells.GetCell(1, titleRow + 11).Value = "Descripción Perfil 1";
+                _cells.GetCell(2, titleRow + 11).Value = "perfilProfesionalDesc:1";
+                _cells.GetCell(3, titleRow + 11).Value = @"Ingeniero de sistemas, con competencias y demostrados conocimientos en las herramientas relacionadas y experiencia mínima de cinco(5) años en manejo de sistemas de información de mantenimiento.";
+
+                _cells.GetCell(1, titleRow + 12).Value = "Perfil Profesional 2";
+                _cells.GetCell(2, titleRow + 12).Value = "perfilProfesional:2";
+                _cells.GetCell(3, titleRow + 12).Value = "Desarrollador";
+
+                _cells.GetCell(1, titleRow + 13).Value = "Descripción Perfil 2";
+                _cells.GetCell(2, titleRow + 13).Value = "perfilProfesionalDesc:2";
+                _cells.GetCell(3, titleRow + 13).Value = "Desarrollador software con competencias en c#, vsto, arquitectura de software y certificación de base de datos.";
 
 
                 ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
