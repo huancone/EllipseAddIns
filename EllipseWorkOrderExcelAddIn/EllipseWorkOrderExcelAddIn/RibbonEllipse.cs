@@ -3283,7 +3283,8 @@ namespace EllipseWorkOrderExcelAddIn
                     if (!ignoreClosedStatus)
                     {
                         var woData = WorkOrderActions.FetchWorkOrder(_eFunctions, wo.districtCode, wo.workOrder.prefix + wo.workOrder.no);
-                        _eFunctions.CloseConnection();
+                        if(woData == null)
+                            throw new Exception("La orden " + wo.workOrder.prefix + wo.workOrder.no + " no existe o no ha sido encontrada");
                         if (WoStatusList.ClosedCode.Equals(woData.workOrderStatusM.Trim()) || WoStatusList.CancelledCode.Equals(woData.workOrderStatusM.Trim()))
                             throw new Exception("La orden " + wo.workOrder.prefix + wo.workOrder.no + " ya está cerrada como " + WoStatusList.GetStatusName(woData.workOrderStatusM.Trim()) + " con código " + woData.completedCode);
                     }
@@ -3320,6 +3321,7 @@ namespace EllipseWorkOrderExcelAddIn
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
+            _eFunctions.CloseConnection();
         }
         private void ReOpenWoList()
         {
@@ -4907,7 +4909,7 @@ namespace EllipseWorkOrderExcelAddIn
 
             var list = new List<TaskRequirement>();
 
-            while (!string.IsNullOrEmpty("" + woCells.GetCell(3, j).Value) && !string.IsNullOrEmpty("" + woCells.GetCell(6, j).Value))
+            while (!string.IsNullOrEmpty("" + woCells.GetCell(3, j).Value))
             {
                 list.Add(new TaskRequirement
                 {
