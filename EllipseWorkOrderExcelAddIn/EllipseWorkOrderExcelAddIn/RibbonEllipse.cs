@@ -2059,9 +2059,9 @@ namespace EllipseWorkOrderExcelAddIn
                 {
                     _cells.GetCell(2, i).Select();
                     i++;
-                    _eFunctions.CloseConnection();
                 }
             }
+            _eFunctions.CloseConnection();
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }

@@ -1073,6 +1073,15 @@ namespace EllipseCommonsClassLibrary.Classes
 
         }
 
+
+        public Range GetTableRangeColumn(string tableRangeName, int columnIndex)
+        {
+            var tableRange = GetRange(tableRangeName);
+            return GetRange(tableRange.ListObject.ListColumns[columnIndex].Range.Column,
+                tableRange.ListObject.ListColumns[columnIndex].Range.Row + 1,
+                tableRange.ListObject.ListColumns[columnIndex].Range.Column,
+                tableRange.ListObject.ListColumns[columnIndex].Range.Row + tableRange.ListObject.ListRows.Count);
+        }
         /// <summary>
         /// Obtiene la letra de una columna Excel según el índice ingresado (Ej. columnNumber: 8, resultado: H)
         /// </summary>

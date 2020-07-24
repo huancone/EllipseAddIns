@@ -3,7 +3,6 @@ using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Utilities;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary.Utilities.MyDateTime;
 using DateTime = EllipseCommonsClassLibrary.Utilities;
 
@@ -22,7 +21,7 @@ namespace EllipseCommonsClassLibrary
 
         private static DebugError _lastError;
         private static DebugError _lastWarning;
-
+        /*
         public static void DebugScreen(Screen.ScreenSubmitRequestDTO request, Screen.ScreenDTO reply, string filename)
         {
             var requestJson = new JavaScriptSerializer().Serialize(request.screenFields);
@@ -30,7 +29,7 @@ namespace EllipseCommonsClassLibrary
             var filePath = Configuration.LocalDataPath + @"debugger\";
             FileWriter.AppendTextToFile(requestJson, "ScreenRequest.txt", filePath);
             FileWriter.AppendTextToFile(replyJson, "ScreenReply.txt", filePath);
-        }
+        }*/
 
         public static void LogError(string customDetails, string errorMessage)
         {
