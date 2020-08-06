@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Web.Services.Ellipse;
@@ -13,11 +14,10 @@ using System.Windows.Forms;
 using EllipseEqOperStatisticsExcelAddIn.EquipmentOperatingStatisticsService;
 using Microsoft.Office.Tools.Excel;
 using System.Threading;
+using EllipseEqOperStatisticsExcelAddIn.EllipseEqOperStatisticsClassLibrary;
 
 namespace EllipseEqOperStatisticsExcelAddIn
 {
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
-    [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     [SuppressMessage("ReSharper", "LoopCanBeConvertedToQuery")]
     public partial class RibbonEllipse
     {
@@ -27,9 +27,10 @@ namespace EllipseEqOperStatisticsExcelAddIn
         Excel.Application _excelApp;
 
         private const string SheetName01 = "OperationStatistics";
-        private const int TitleRow01 = 4;
+        private const int TitleRow01 = 6;
         private const int ResultColumn01 = 10;
         private const string TableName01 = "OperationStatisticsTable";
+        private const string ValidationSheetName = "ValidationSheet";
 
         private Thread _thread;
 
@@ -79,6 +80,28 @@ namespace EllipseEqOperStatisticsExcelAddIn
             }
         }
 
+        private void btnReview_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
+                {
+                    //si si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReviewStatisticList);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:LoadStatistics()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
         /// <summary>
         /// Establece el formato de la hoja para el cargue de estadísticas de operación
         /// </summary>
@@ -92,6 +115,9 @@ namespace EllipseEqOperStatisticsExcelAddIn
                     _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
+                _cells.CreateNewWorksheet(ValidationSheetName);
+
+
                 _excelApp.ActiveWorkbook.ActiveSheet.Name = SheetName01;
 
                 _cells.GetCell("A1").Value = "CERREJÓN";
@@ -109,6 +135,25 @@ namespace EllipseEqOperStatisticsExcelAddIn
                 _cells.GetCell("K3").Value = "INFORMATIVO";
                 _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
 
+                _cells.GetCell("A3").Value = "EQUIPO";
+                _cells.GetCell("A4").Value = "ESTADÍSTICA";
+                _cells.GetRange("A3", "A4").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
+
+                _cells.GetCell("C3").Value = "DESDE";
+                _cells.GetCell("C4").Value = "HASTA";
+                _cells.GetRange("C3", "C4").Style = _cells.GetStyle(StyleConstants.Option);
+                _cells.GetRange("D3", "D4").Style = _cells.GetStyle(StyleConstants.Select);
+                _cells.GetCell("D3").AddComment("yyyyMMdd");
+                _cells.GetCell("D4").AddComment("yyyyMMdd");
+                
+                _cells.GetCell("D3").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
+                _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+
+                var statsList = _eFunctions.GetItemCodes("SS").Select(item => item.code + " - " + item.description).ToList();
+                _cells.SetValidationList(_cells.GetCell("B4"), statsList, ValidationSheetName, 1, false);//TIPO ESTAD
+
+
                 _cells.GetRange(1, TitleRow01, 7, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleRequired);
                 _cells.GetCell(1, TitleRow01).Value = "FECHA";
                 _cells.GetCell(1, TitleRow01).AddComment("yyyyMMdd");
@@ -118,7 +163,14 @@ namespace EllipseEqOperStatisticsExcelAddIn
                 _cells.GetCell(4, TitleRow01).Value = "DESCRIPCIÓN";
                 _cells.GetCell(4, TitleRow01).Style = StyleConstants.TitleInformation;
                 _cells.GetCell(5, TitleRow01).Value = "TIPO ESTAD.";
-                _cells.GetCell(5, TitleRow01).AddComment("Ej: HR");
+                _cells.GetCell(5, TitleRow01).AddComment("Ej: HR - Horas" +
+                                                         "\nR1 - HR MOTOR BABOR          " +
+                                                         "\nR2 - HR MOTOR ESTRIBOR       " +
+                                                         "\nR3 - HR GENERADOR BABOR      " +
+                                                         "\nR4 - HR GENERADOR ESTRIBOR   " +
+                                                         "\nR5 - HR COMPRESOR POPA       " +
+                                                         "\nR6 - HR COMPRESOR PROA       " +
+                                                         "\nR7 - HR MOTOR MONITOR		");
                 _cells.GetCell(6, TitleRow01).Value = "TIPO ENTRADA";
                 _cells.GetCell(6, TitleRow01).AddComment("Ej: D - DAYLY, M - METER. Predeterminado M");
                 _cells.GetCell(7, TitleRow01).Value = "FECHA ÚLTIMA EST.";
@@ -132,16 +184,21 @@ namespace EllipseEqOperStatisticsExcelAddIn
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
+                var shiftList = _eFunctions.GetItemCodes("SH").Select(item => item.code + " - " + item.description).ToList();
+
                 var entryList = new List<string>();
                 entryList.Add("D - Diario/Daily");
                 entryList.Add("M - Medidor/Meter");
-                _cells.SetValidationList(_cells.GetCell(6, TitleRow01 + 1), entryList);
 
+                _cells.SetValidationList(_cells.GetCell(2, TitleRow01 + 1), shiftList, ValidationSheetName, 2, false);//TURNO
+                _cells.SetValidationList(_cells.GetCell(5, TitleRow01 + 1), ValidationSheetName, 1, false);//TIPO ESTAD
+                _cells.SetValidationList(_cells.GetCell(6, TitleRow01 + 1), entryList, ValidationSheetName, 3, false);//TIPO ENTRADA
 
                 var table = _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1), TableName01);
                 //búsquedas especiales de tabla
                 var tableObject = Globals.Factory.GetVstoObject(table);
                 tableObject.Change += GetTableChangedValue;
+
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             }
             catch (Exception ex)
@@ -158,89 +215,81 @@ namespace EllipseEqOperStatisticsExcelAddIn
         {
             try
             {
-                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                _cells.SetCursorWait();
+
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+                var statService = new EquipmentOperatingStatisticsService.EquipmentOperatingStatisticsService();
+                statService.Url = urlService + "/EquipmentOperatingStatistics";
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                var opContext = new OperationContext
                 {
-                    if (_cells == null)
-                        _cells = new ExcelStyleCells(_excelApp);
-                    _cells.SetCursorWait();
-
-                    var statService = new EquipmentOperatingStatisticsService.EquipmentOperatingStatisticsService();
-                    statService.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) +
-                                     "/EquipmentOperatingStatistics";
-
-                    var opContext = new OperationContext();
-
-                    opContext.district = _frmAuth.EllipseDsct;
-                    opContext.position = _frmAuth.EllipsePost;
-                    opContext.maxInstances = 100;
-                    opContext.returnWarnings = Debugger.DebugWarnings;
-                    ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-                    const int startRow = 5;
-                    var i = startRow;
-                    while ("" + _cells.GetCell(1, i).Value != "")
+                    district = _frmAuth.EllipseDsct,
+                    position = _frmAuth.EllipsePost,
+                    maxInstances = 100,
+                    maxInstancesSpecified = true,
+                    returnWarnings = Debugger.DebugWarnings,
+                    returnWarningsSpecified = true
+                };
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+                var currentRow = TitleRow01 + 1;
+                while ("" + _cells.GetCell(1, currentRow).Value != "")
+                {
+                    try
                     {
-                        try
+
+                        var request = new List<EquipmentOperatingStatisticsDTO>();
+
+                        var reqItem = new EquipmentOperatingStatisticsDTO();
+
+
+                        reqItem.statisticDate = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
+                        reqItem.shiftCode = MyUtilities.GetCodeKey(_cells.GetCell(2, currentRow).Value);
+                        reqItem.equipmentNumber = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+                        reqItem.operationStatisticType = MyUtilities.GetCodeKey(_cells.GetCell(5, currentRow).Value);
+                        var entryType = "" + MyUtilities.GetCodeKey(_cells.GetCell(6, currentRow).Value);
+                        if (entryType.Equals("D"))
                         {
+                            var statRegister = EqOperStatisticsActions.GetEquipmentLastStat(_eFunctions, reqItem.equipmentNumber, reqItem.operationStatisticType, reqItem.statisticDate);
+                            var lastMeter = statRegister.MeterValue;
+                            reqItem.meterReading = Convert.ToDecimal(_cells.GetCell(9, currentRow).Value) + Convert.ToDecimal(lastMeter);
+                        }
+                        else
+                        {
+                            reqItem.meterReading = Convert.ToDecimal(_cells.GetCell(9, currentRow).Value);
+                        }
 
-                            var request = new List<EquipmentOperatingStatisticsDTO>();
+                        reqItem.meterReadingSpecified = true;
 
-                            var reqItem = new EquipmentOperatingStatisticsDTO();
-
-
-                            reqItem.statisticDate = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
-                            reqItem.shiftCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
-                            reqItem.equipmentNumber = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
-                            reqItem.operationStatisticType = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
-
-                            if (_cells.GetEmptyIfNull(MyUtilities.GetCodeKey(_cells.GetCell(6, i).Value)) == "D")
+                        request.Add(reqItem);
+                        var replySheet = statService.multipleAdjust(opContext, request.ToArray());
+                        foreach (var reply in replySheet)
+                        {
+                            if (reply.errors.Length > 0)
                             {
-                                var lastMeter =
-                                    GetEquipmentLastMeterValue(_cells.GetEmptyIfNull(_cells.GetCell(3, i).Value2),
-                                        _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value2),
-                                        _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value2));
-                                reqItem.meterReading = Convert.ToDecimal(_cells.GetCell(9, i).Value) +
-                                                       Convert.ToDecimal(lastMeter);
-                            }
-                            else
-                            {
-                                reqItem.meterReading = Convert.ToDecimal(_cells.GetCell(9, i).Value);
-                            }
-
-                            reqItem.meterReadingSpecified = true;
-
-                            request.Add(reqItem);
-                            var replySheet = statService.multipleAdjust(opContext, request.ToArray());
-                            foreach (var reply in replySheet)
-                            {
-                                if (reply.errors.Length > 0)
-                                {
-                                    var errors = "";
-                                    foreach (var er in reply.errors)
-                                        errors = errors + "/" + er.messageText;
-                                    throw new Exception(errors);
-                                }
-                                _cells.GetCell(ResultColumn01, i).Value = "ENVIADO";
-                                _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
+                                var errors = "";
+                                foreach (var er in reply.errors)
+                                    errors = errors + "/" + er.messageText;
+                                throw new Exception(errors);
                             }
 
+                            _cells.GetCell(ResultColumn01, currentRow).Value = "ENVIADO";
+                            _cells.GetCell(ResultColumn01, currentRow).Style = StyleConstants.Success;
                         }
-                        catch (Exception ex)
-                        {
-                            _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-                            _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
-                        }
-                        finally
-                        {
-                            _cells.GetCell(ResultColumn01, i).Select();
-                            i++;
-                        }
-                    } //--while de registros
-                } //---if no se está en un ambiente válido
-                else
-                {
-                    MessageBox.Show(@"\nSeleccione un ambiente válido", @"Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(ResultColumn01, currentRow).Value = "ERROR: " + ex.Message;
+                        _cells.GetCell(ResultColumn01, currentRow).Style = StyleConstants.Error;
+                    }
+                    finally
+                    {
+                        _cells.GetCell(ResultColumn01, currentRow).Select();
+                        currentRow++;
+                    }
+                } //--while de registros
             }
             catch (Exception ex)
             {
@@ -261,18 +310,23 @@ namespace EllipseEqOperStatisticsExcelAddIn
         /// <param name="changedRanges"></param>
         void GetTableChangedValue(Excel.Range target, ListRanges changedRanges)//Excel.Range target)
         {
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             switch (target.Column)
             {
-                case 3:
+                case 3://Equipo
                     try
                     {
+                        if (string.IsNullOrWhiteSpace("" + target.Value))
+                        {
+                            _cells.GetCell(target.Column + 1, target.Row).Value = "";
+                            break;
+                        }
+
                         _cells.GetCell(target.Column + 1, target.Row).Value = "Buscando Equipo...";
-                        string description = GetEquipmentDescription("" + target.Value);
+                        string description = EqOperStatisticsActions.GetEquipmentDescription(_eFunctions, "" + target.Value);
 
                         _cells.GetCell(target.Column + 1, target.Row).Value = !string.IsNullOrWhiteSpace(description) ? description.Trim() : "Equipo no encontrado";
-
                         _cells.GetCell(target.Column + 1, target.Row).Columns.AutoFit();
-
                     }
                     catch (NullReferenceException ex)
                     {
@@ -285,14 +339,28 @@ namespace EllipseEqOperStatisticsExcelAddIn
                         _cells.GetCell(target.Column + 1, target.Row).Value = "No fue Posible Obtener Informacion!";
                     }
                     break;
-                case 5:
+                case 5://Estadística
                     try
                     {
-                        var description = GetEquipmentLastStat(_cells.GetCell(3, target.Row).Value2, _cells.GetCell(5, target.Row).Value2, _cells.GetEmptyIfNull(_cells.GetCell(1, target.Row).Value2));
+                        var equipNo = ""  + _cells.GetCell(3, target.Row).Value;
+                        var statType = "" + MyUtilities.GetCodeKey(_cells.GetCell(5, target.Row).Value);
 
-                        _cells.GetCell(7, target.Row).Value = !string.IsNullOrWhiteSpace(description[0]) ? description[0].Trim() : "";
+                        var statDate = "" + _cells.GetCell(1, target.Row).Value;
+
+                        if (string.IsNullOrWhiteSpace(equipNo) || string.IsNullOrWhiteSpace(statType) || string.IsNullOrWhiteSpace(statDate))
+                        {
+                            _cells.GetCell(7, target.Row).Value = "No fue Posible Obtener Información";
+                            _cells.GetCell(8, target.Row).Value = "No fue Posible Obtener Información";
+                        }
+                        else
+                        {
+                            var lastStatReg = EqOperStatisticsActions.GetEquipmentLastStat(_eFunctions, equipNo, statType, statDate);
+
+                            _cells.GetCell(7, target.Row).Value = !string.IsNullOrWhiteSpace(lastStatReg.StatDate) ? lastStatReg.StatDate.Trim() : "";
+                            _cells.GetCell(8, target.Row).Value = !string.IsNullOrWhiteSpace(lastStatReg.MeterValue) ? lastStatReg.MeterValue.Trim() : "";
+                            
+                        }
                         _cells.GetCell(7, target.Row).Columns.AutoFit();
-                        _cells.GetCell(8, target.Row).Value = !string.IsNullOrWhiteSpace(description[1]) ? description[1].Trim() : "";
                         _cells.GetCell(8, target.Row).Columns.AutoFit();
                     }
                     catch (NullReferenceException ex)
@@ -309,114 +377,9 @@ namespace EllipseEqOperStatisticsExcelAddIn
             }
         }
 
-        /// <summary>
-        /// Obtiene la descripción del equipo a partir del número de equipo
-        /// </summary>
-        /// <param name="equipNo">string: EquipmentNo para obtener la descripción</param>
-        /// <returns>string: EquipmentNo. Null si el equipo no existe</returns>
-        string GetEquipmentDescription(string equipNo)
-        {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var dbReference = _eFunctions.dbReference;
-            var dbLink = _eFunctions.dbLink;
+        
 
-            var query = "SELECT EQ.* FROM " + dbReference + ".MSF600" + dbLink + " EQ WHERE TRIM(EQ.EQUIP_NO) = '" + equipNo + "'";
-
-            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-
-            var drEquipments = _eFunctions.GetQueryResult(query);
-
-            if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
-
-            while (drEquipments.Read())
-                return ("" + drEquipments["ITEM_NAME_1"]).Trim() + " " + ("" + drEquipments["ITEM_NAME_2"]).Trim();
-            return null;
-        }
-
-        /// <summary>
-        /// Obtiene la descripción del equipo a partir del número de equipo
-        /// </summary>
-        /// <param name="equipNo">object: EquipmentNo para obtener la descripción</param>
-        /// <param name="statType">object: Tipo de estadística a obtener</param>
-        /// <param name="statDate">Fecha digitada el la columna 1</param>
-        /// <returns>string[2]: {fecha, medidor}. Null si no existe</returns>
-        string[] GetEquipmentLastStat(object equipNo, object statType, object statDate)
-        {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var dbReference = _eFunctions.dbReference;
-            var dbLink = _eFunctions.dbLink;
-
-            var query = "" +
-                            " SELECT" +
-                            "   STAT_DATE," +
-                            "   METER_VALUE" +
-                            " FROM" +
-                            "   (" +
-                            "     SELECT" +
-                            "       METER_VALUE," +
-                            "       STAT_DATE || SHIFT_SEQ_NO STAT_DATE," +
-                            "       MAX(STAT_DATE || SHIFT_SEQ_NO) OVER(PARTITION BY EQUIP_NO) MAX_FECHA" +
-                            "     FROM" +
-                            "       " + dbReference + ".MSF400" + dbLink +
-                            "     WHERE" +
-                            "       STAT_TYPE = '" + statType + "'" +
-                            "     AND KEY_400_TYPE = 'E'" +
-                            "     AND EQUIP_NO = '" + equipNo + "' AND STAT_DATE <= '" + statDate + "'" +
-                            "   )" +
-                            " WHERE" +
-                            "   STAT_DATE = MAX_FECHA";
-
-            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-
-            var drEquipments = _eFunctions.GetQueryResult(query);
-
-            if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
-
-            drEquipments.Read();
-
-            var stat = new string[2];
-            stat[0] = ("" + drEquipments["STAT_DATE"]).Trim();
-            stat[1] = ("" + drEquipments["METER_VALUE"]).Trim();
-            return stat;
-        }
-
-        string GetEquipmentLastMeterValue(object equipNo, object statType, object statDate)
-        {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var dbReference = _eFunctions.dbReference;
-            var dbLink = _eFunctions.dbLink;
-
-            var query = "" +
-                            " SELECT" +
-                            "   METER_VALUE" +
-                            " FROM" +
-                            "   (" +
-                            "     SELECT" +
-                            "       METER_VALUE," +
-                            "       STAT_DATE || SHIFT_SEQ_NO STAT_DATE," +
-                            "       MAX(STAT_DATE || SHIFT_SEQ_NO) OVER(PARTITION BY EQUIP_NO) MAX_FECHA" +
-                            "     FROM" +
-                            "       " + dbReference + ".MSF400" + dbLink +
-                            "     WHERE" +
-                            "       STAT_TYPE = '" + statType + "'" +
-                            "     AND KEY_400_TYPE = 'E'" +
-                            "     AND EQUIP_NO = '" + equipNo + "' AND STAT_DATE <= '" + statDate + "'" +
-                            "   )" +
-                            " WHERE" +
-                            "   STAT_DATE = MAX_FECHA";
-
-            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-
-            var drEquipments = _eFunctions.GetQueryResult(query);
-
-            if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
-
-            drEquipments.Read();
-
-
-            var stat = drEquipments["METER_VALUE"].ToString();
-            return stat;
-        }
+        
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
@@ -450,6 +413,90 @@ namespace EllipseEqOperStatisticsExcelAddIn
             
         }
 
+        private void ReviewStatisticList()
+        {
+            try
+            {
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                _cells.SetCursorWait();
+
+                _cells.ClearTableRange(TableName01);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
+
+                _excelApp.EnableEvents = false;
+                var resultColumn = ResultColumn01;
+
+                //Obtengo los valores de las opciones de búsqueda
+                var equipNo = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
+                var statType = _cells.GetEmptyIfNull(_cells.GetCell("B4").Value);
+                var startDate = _cells.GetEmptyIfNull(_cells.GetCell("D3").Value);
+                var finishDate = _cells.GetEmptyIfNull(_cells.GetCell("D4").Value);
+
+                if (string.IsNullOrWhiteSpace(equipNo) || (string.IsNullOrWhiteSpace(startDate) && string.IsNullOrWhiteSpace(finishDate)))
+                {
+                    MessageBox.Show("Debe escribir un equipo y por lo menos una fecha de búsqueda", "Error de Consulta");
+                    if (_cells != null) _cells.SetCursorDefault();
+                    return;
+                }
+
+                List<StatRegister> statsList = EqOperStatisticsActions.ReviewEquipmentOperStatistics(_eFunctions, equipNo, statType, startDate, finishDate);
+                var i = TitleRow01 + 1;
+                foreach (var os in statsList)
+                {
+                    try
+                    {
+                        //Para resetear el estilo
+                        _cells.GetRange(1, i, resultColumn, i).Style = StyleConstants.Normal;
+
+                        var selectedValue = "";
+                        if (os.EntryType.Equals("C"))
+                            selectedValue = os.CumValue;
+                        else if (os.EntryType.Equals("D"))
+                            selectedValue = os.StatValue;
+                        else if (os.EntryType.Equals("M"))
+                            selectedValue = os.MeterValue;
+                        else
+                            selectedValue = os.MeterValue;
+
+                        _cells.GetCell(1, i).Value = "" + os.StatDate;
+                        _cells.GetCell(2, i).Value = "'" + os.Shift;
+                        _cells.GetCell(3, i).Value = "'" + os.EquipNo;
+                        _cells.GetCell(4, i).Value = "" + os.EquipDesc1 + " " +os.EquipDesc2;
+                        _cells.GetCell(5, i).Value = "'" + os.StatType;
+                        _cells.GetCell(6, i).Value = "'" + os.EntryType;
+                        _cells.GetCell(7, i).Value = "" + "CONSULTA MEDIDOR/VALOR";
+                        _cells.GetCell(8, i).Value = "" + os.MeterValue;
+                        _cells.GetCell(9, i).Value = "" + selectedValue;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        _cells.GetCell(1, i).Style = StyleConstants.Error;
+                        _cells.GetCell(resultColumn, i).Value = "ERROR: " + ex.Message;
+                        Debugger.LogError("RibbonEllipse.cs:ReviewStatisticList()", ex.Message);
+                    }
+                    finally
+                    {
+                        _cells.GetCell(2, i).Select();
+                        i++;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error", ex.Message);
+                Debugger.LogError("RibbonEllipse.cs:ReviewStatisticList()", ex.Message);
+            }
+            finally
+            {
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                if (_cells != null) _cells.SetCursorDefault();
+                _excelApp.EnableEvents = true;
+            }
+        }
+
         private void DeleteStatistics()
         {
             try
@@ -461,6 +508,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                     _cells.SetCursorWait();
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                     var i = TitleRow01 + 1;
                     while ("" + _cells.GetCell(1, i).Value != "")
@@ -481,7 +529,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
 
                             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-                            screenService.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+                            screenService.Url = urlService + "/ScreenService";
                             _eFunctions.RevertOperation(opContext, screenService);
                             //ejecutamos el programa
                             Screen.ScreenDTO reply = screenService.executeScreen(opContext, "MSO400");
@@ -489,9 +537,9 @@ namespace EllipseEqOperStatisticsExcelAddIn
                             if (reply.mapName != "MSM400A") continue;
 
                             var statisticDate = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
-                            var shift = _cells.GetEmptyIfNull(_cells.GetCell(2, i).Value);
+                            var shift = "" + "" + MyUtilities.GetCodeKey(_cells.GetCell(2, i).Value);
                             var equipmentNumber = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value);
-                            var operationStatisticType = _cells.GetEmptyIfNull(_cells.GetCell(5, i).Value);
+                            var operationStatisticType = "" + MyUtilities.GetCodeKey(_cells.GetCell(5, i).Value);
                             
 
                             var arrayFields = new ArrayScreenNameValue();
@@ -572,6 +620,29 @@ namespace EllipseEqOperStatisticsExcelAddIn
             {
                 MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
             }
+        }
+
+        private void btnRestoreEvents_Click(object sender, RibbonControlEventArgs e)
+        {
+            RestoreEvents();
+        }
+
+        public void RestoreEvents()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            var table = _cells.GetRange(TableName01).Worksheet.ListObjects[TableName01];
+            var tableObject = Globals.Factory.GetVstoObject(table);
+            try
+            {
+                tableObject.Change -= GetTableChangedValue;
+            }
+            catch
+            {
+                //ignored
+            }
+            tableObject.Change += GetTableChangedValue;
+
         }
     }
 }

@@ -459,15 +459,15 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.location = wo.location ?? requestWo.location;
             requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
 
-            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
+            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
             requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
-            requestWo.calculatedLabFlag = MyUtilities.IsTrue(wo.calculatedLabFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
+            requestWo.calculatedLabFlag = MyUtilities.IsTrue(wo.calculatedLabFlag, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
             requestWo.calculatedLabFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedLabFlag);
-            requestWo.calculatedMatFlag = MyUtilities.IsTrue(wo.calculatedMatFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
+            requestWo.calculatedMatFlag = MyUtilities.IsTrue(wo.calculatedMatFlag, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
             requestWo.calculatedMatFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedMatFlag);
-            requestWo.calculatedEquipmentFlag = MyUtilities.IsTrue(wo.calculatedEquipmentFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
+            requestWo.calculatedEquipmentFlag = MyUtilities.IsTrue(wo.calculatedEquipmentFlag, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
             requestWo.calculatedEquipmentFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedEquipmentFlag);
-            requestWo.calculatedOtherFlag = MyUtilities.IsTrue(wo.calculatedOtherFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
+            requestWo.calculatedOtherFlag = MyUtilities.IsTrue(wo.calculatedOtherFlag, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
             requestWo.calculatedOtherFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedOtherFlag);
 
             //se envía la acción
@@ -552,7 +552,7 @@ namespace EllipseWorkOrdersClassLibrary
             requestWo.location = wo.location ?? requestWo.location;
             requestWo.noticeLocn = wo.noticeLocn ?? requestWo.noticeLocn;
 
-            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY);
+            requestWo.calculatedDurationsFlag = MyUtilities.IsTrue(wo.calculatedDurationsFlag, MyUtilities.ConversionConstants.DefaultNullAndEmpty);
             requestWo.calculatedDurationsFlagSpecified = !string.IsNullOrWhiteSpace(wo.calculatedDurationsFlag);
             //
             if (wo.calculatedLabFlag == null && wo.calculatedMatFlag == null && wo.calculatedEquipmentFlag == null && wo.calculatedOtherFlag == null)

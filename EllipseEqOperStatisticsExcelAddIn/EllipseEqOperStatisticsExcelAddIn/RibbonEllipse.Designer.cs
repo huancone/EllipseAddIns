@@ -42,7 +42,9 @@
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoadStatistics = this.Factory.CreateRibbonButton();
+            this.btnReview = this.Factory.CreateRibbonButton();
             this.btnDelete = this.Factory.CreateRibbonButton();
+            this.btnRestoreEvents = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpEqOperStatistics.SuspendLayout();
@@ -90,7 +92,9 @@
             // menuActions
             // 
             this.menuActions.Items.Add(this.btnLoadStatistics);
+            this.menuActions.Items.Add(this.btnReview);
             this.menuActions.Items.Add(this.btnDelete);
+            this.menuActions.Items.Add(this.btnRestoreEvents);
             this.menuActions.Items.Add(this.btnStopThread);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
@@ -102,12 +106,26 @@
             this.btnLoadStatistics.ShowImage = true;
             this.btnLoadStatistics.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadStatistics_Click);
             // 
+            // btnReview
+            // 
+            this.btnReview.Label = "Consultar Estadísticas";
+            this.btnReview.Name = "btnReview";
+            this.btnReview.ShowImage = true;
+            this.btnReview.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReview_Click);
+            // 
             // btnDelete
             // 
             this.btnDelete.Label = "Eliminar Estadisticas";
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.ShowImage = true;
             this.btnDelete.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDelete_Click);
+            // 
+            // btnRestoreEvents
+            // 
+            this.btnRestoreEvents.Label = "Restaurar AutoConsultas";
+            this.btnRestoreEvents.Name = "btnRestoreEvents";
+            this.btnRestoreEvents.ShowImage = true;
+            this.btnRestoreEvents.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnRestoreEvents_Click);
             // 
             // btnStopThread
             // 
@@ -144,6 +162,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDelete;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReview;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnRestoreEvents;
     }
 
     partial class ThisRibbonCollection

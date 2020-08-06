@@ -791,6 +791,57 @@ namespace EllipseCommonsClassLibrary.Classes
             return false;
         }
 
+
+        /// <summary>
+        /// Adiciona un límite de caracteres máximo a la celda o rango especificada
+        /// </summary>
+        /// <param name="targetRange">targetRange: Celda o rango para adicionarle la lista de validación</param>
+        /// <param name="length">int: longitud máxima permitida</param>
+        /// <param name="showError">bool: Indica si muestra o no el diálogo de error al ingresar un valor erróneo</param>
+        public void SetValidationLength(Range targetRange, int length, bool showError = true)
+        {
+            targetRange.Validation.Delete();
+            targetRange.Validation.Add(
+                XlDVType.xlValidateTextLength,
+                XlDVAlertStyle.xlValidAlertStop,
+                XlFormatConditionOperator.xlLessEqual, length);
+            //targetRange.Validation.InputMessage = "Enter a name.";
+            targetRange.Validation.ErrorMessage = "Please enter a value with " + length + " or less characters.";
+            targetRange.Validation.ShowError = showError;
+        }
+
+        /// <summary>
+        /// Adiciona una condición con límite de caracteres a la celda o rango especificada
+        /// </summary>
+        /// <param name="targetRange">targetRange: Celda o rango para adicionarle la lista de validación</param>
+        /// <param name="operator">XlFormatConditionOperator: Tipo de Operador</param>
+        /// <param name="length">int: longitud máxima permitida</param>
+        /// <param name="showError">bool: Indica si muestra o no el diálogo de error al ingresar un valor erróneo</param>
+        public void SetValidationLength(Range targetRange, XlFormatConditionOperator conditionOperator, int length, bool showError = true)
+        {
+            targetRange.Validation.Delete();
+            targetRange.Validation.Add(
+                XlDVType.xlValidateTextLength,
+                XlDVAlertStyle.xlValidAlertStop,
+                conditionOperator, length);
+            //targetRange.Validation.InputMessage = "Enter a name.";
+            if(conditionOperator == XlFormatConditionOperator.xlEqual)
+                targetRange.Validation.ErrorMessage = "Please enter a value with " + length + " characters.";
+            else if (conditionOperator == XlFormatConditionOperator.xlNotEqual)
+                targetRange.Validation.ErrorMessage = "Please enter a value different than " + length + " characters.";
+            else if (conditionOperator == XlFormatConditionOperator.xlLess)
+                targetRange.Validation.ErrorMessage = "Please enter a value with less than " + length + " characters.";
+            else if (conditionOperator == XlFormatConditionOperator.xlLessEqual)
+                targetRange.Validation.ErrorMessage = "Please enter a value with " + length + " or less characters.";
+            else if (conditionOperator == XlFormatConditionOperator.xlGreater)
+                targetRange.Validation.ErrorMessage = "Please enter a value with more than " + length + " characters.";
+            else if (conditionOperator == XlFormatConditionOperator.xlGreaterEqual)
+                targetRange.Validation.ErrorMessage = "Please enter a value with " + length + " or more characters.";
+            else
+                throw new ArgumentException("Invalid conditional operator", nameof(conditionOperator));
+            targetRange.Validation.ShowError = showError;
+        }
+
         /// <summary>
         /// Adiciona una lista de validación a la celda o rango especificada
         /// </summary>
@@ -818,7 +869,7 @@ namespace EllipseCommonsClassLibrary.Classes
             targetRange.Validation.Delete();
             targetRange.Validation.Add(XlDVType.xlValidateList, XlDVAlertStyle.xlValidAlertStop, XlFormatConditionOperator.xlBetween, list, Type.Missing);
             targetRange.Validation.IgnoreBlank = true;
-            targetRange.Validation.ShowError = true;
+            targetRange.Validation.ShowError = showError;
         }
 
         /// <summary>

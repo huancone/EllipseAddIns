@@ -340,4 +340,7 @@
         AwD//3wAHwAHAP////////8A/////////wD/////////AA==
 </value>
   </data>
+  <data name="Invalid_conditional_operator" xml:space="preserve">
+    <value>Invalid conditional operator</value>
+  </data>
 </root>

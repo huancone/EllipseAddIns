@@ -378,7 +378,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            var environment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var environment = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
             {
                 try

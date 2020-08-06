@@ -39,9 +39,9 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpWorkOrder = this.Factory.CreateRibbonGroup();
+            this.box2 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
             this.butAbout = this.Factory.CreateRibbonButton();
-            this.box2 = this.Factory.CreateRibbonBox();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnReview = this.Factory.CreateRibbonButton();
@@ -52,6 +52,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             this.tabEllipse.SuspendLayout();
             this.grpWorkOrder.SuspendLayout();
             this.box2.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -68,6 +69,12 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             this.grpWorkOrder.Label = "Finalize Orders";
             this.grpWorkOrder.Name = "grpWorkOrder";
             // 
+            // box2
+            // 
+            this.box2.Items.Add(this.btnFormatSheet);
+            this.box2.Items.Add(this.butAbout);
+            this.box2.Name = "box2";
+            // 
             // btnFormatSheet
             // 
             this.btnFormatSheet.Label = "&Formatear Hoja";
@@ -79,12 +86,6 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             this.butAbout.Label = "?";
             this.butAbout.Name = "butAbout";
             this.butAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.butAbout_Click);
-            // 
-            // box2
-            // 
-            this.box2.Items.Add(this.btnFormatSheet);
-            this.box2.Items.Add(this.butAbout);
-            this.box2.Name = "box2";
             // 
             // drpEnvironment
             // 
@@ -148,6 +149,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             this.grpWorkOrder.PerformLayout();
             this.box2.ResumeLayout(false);
             this.box2.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

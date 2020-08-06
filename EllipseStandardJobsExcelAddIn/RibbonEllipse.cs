@@ -2063,7 +2063,7 @@ namespace EllipseStandardJobsExcelAddIn
 
                 try
                 {
-                    var sqlQuery = Queries.GetAplRequirementsQuery(_eFunctions.dbReference, _eFunctions.dbLink, aplEgi, aplType, aplCompCode, aplCompModCode, seqNo);
+                    var sqlQuery = Queries.GetAplRequirementsQuery(_eFunctions.DbReference, _eFunctions.DbLink, aplEgi, aplType, aplCompCode, aplCompModCode, seqNo);
 
                     var reqDataReader = _eFunctions.GetQueryResult(sqlQuery);
 

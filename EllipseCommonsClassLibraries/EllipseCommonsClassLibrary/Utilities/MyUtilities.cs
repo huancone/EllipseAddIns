@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 using System.Xml;
 using EllipseCommonsClassLibrary.Classes;
@@ -10,34 +12,36 @@ using Microsoft.Office.Interop.Excel;
 
 namespace EllipseCommonsClassLibrary.Utilities
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public static partial class MyUtilities
     {
+
         public static class ConversionConstants
         {
-            public const int DEFAULT_NORMAL = 0;
-            public const int DEFAULT_EMPTY_ONLY = 1;
-            public const int DEFAULT_NULL_AND_EMPTY = 2;
-            public const int DEFAULT_ALL_NON_NULL_VALUES = 3;
+            public static readonly IxConversionConstant DefaultNormal = 0;
+            public static readonly IxConversionConstant DefaultEmptyOnly = 1;
+            public static readonly IxConversionConstant DefaultNullAndEmpty = 2;
+            public static readonly IxConversionConstant DefaultAllNonNullValues = 3;
 
             public static bool IsValidDefaultNullableConstant(int defaultConstant)
             {
-                bool isValid = false;
-                switch (defaultConstant)
-                {
-                    case DEFAULT_NORMAL:
-                    case DEFAULT_EMPTY_ONLY:
-                    case DEFAULT_NULL_AND_EMPTY:
-                    case DEFAULT_ALL_NON_NULL_VALUES:
-                        isValid = true;
-                        break;
-                    default:
-                        isValid = false;
-                        break;
-                }
-
-                return isValid;
+                return IsValidDefaultNullableConstant(new IxConversionConstant(defaultConstant));
             }
-            
+            public static bool IsValidDefaultNullableConstant(IxConversionConstant defaultConstant)
+            {
+                if (defaultConstant == null)
+                    return true;
+                if (defaultConstant.Equals(DefaultNormal))
+                    return true;
+                if (defaultConstant.Equals(DefaultEmptyOnly))
+                    return true;
+                if (defaultConstant.Equals(DefaultNullAndEmpty))
+                    return true;
+                if (defaultConstant.Equals(DefaultAllNonNullValues))
+                    return true;
+
+                return false;
+            }
         }
 
         /// <summary>
@@ -148,10 +152,12 @@ namespace EllipseCommonsClassLibrary.Utilities
         /// <param name="value">Object: valor a analizar</param>
         /// <param name="nullOrEmpty">ConversionConstants: indica si se asume nulo/vacío como predeterminado ConversionConstants.DEFAULT_NORMAL</param>
         /// <returns>boolean: true si value es TRUE, VERDADERO, Y, YES, SI ó 1</returns>
-        public static bool IsTrue(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL)
+        public static bool IsTrue(object value, IxConversionConstant nullOrEmpty = null)
         {
             try
             {
+                if (nullOrEmpty == null)
+                    nullOrEmpty = ConversionConstants.DefaultNormal;
                 if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
                 {
                     var errorMessage = "Error al intentar determinar si un valor es verdadero. Parámetro de nullOrEmpty no válido.";
@@ -159,19 +165,21 @@ namespace EllipseCommonsClassLibrary.Utilities
                     throw new ArgumentException(errorMessage);
                 }
 
-                if (value == null && (nullOrEmpty == ConversionConstants.DEFAULT_NORMAL || nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY))
+                if (value == null && (nullOrEmpty == ConversionConstants.DefaultNormal || nullOrEmpty == ConversionConstants.DefaultEmptyOnly))
                     return false;
                 var stringValue = Convert.ToString(value);
-                if (value != null && string.IsNullOrWhiteSpace(stringValue) && nullOrEmpty == ConversionConstants.DEFAULT_NORMAL)
+                if (value != null && string.IsNullOrWhiteSpace(stringValue) && nullOrEmpty == ConversionConstants.DefaultNormal)
                     return false;
 
                 stringValue = stringValue.Trim();
-                return stringValue.ToUpper().Equals("TRUE") ||
+                return stringValue.ToUpper().Equals("T") || 
+                       stringValue.ToUpper().Equals("TRUE") ||
+                       stringValue.ToUpper().Equals("V") ||
                        stringValue.ToUpper().Equals("VERDADERO") ||
                        stringValue.ToUpper().Equals("Y") ||
                        stringValue.ToUpper().Equals("YES") ||
-                       stringValue.ToUpper().Equals("SI") ||
                        stringValue.ToUpper().Equals("S") ||
+                       stringValue.ToUpper().Equals("SI") ||
                        stringValue.ToUpper().Equals("1");
             }
             catch (Exception)
@@ -187,88 +195,100 @@ namespace EllipseCommonsClassLibrary.Utilities
         /// <param name="nullOrEmpty">ConversionConstants: Indica si se toma el valor nulo y/o vacío como predeterminado decimal (0)</param>
         /// <param name="cultureInfo">CultureInfo: Indica el tipo de convención de signos para números (Default: en-US. Coma , para miles y . para decimales</param>
         /// <returns>decimal. Puede retornar una excepción si el valor es nulo o vacío según el criterio del parámetro nullOrEmpty</returns>
-        public static decimal ToDecimal(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        public static decimal ToDecimal(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
+            if(nullOrEmpty == null)
+                nullOrEmpty = ConversionConstants.DefaultNormal;
             if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a decimal. Parámetro de conversión a decimal nullOrEmpty no válido.");
             if(cultureInfo == null)
                 cultureInfo = CultureInfo.CurrentCulture;
 
-            if (value == null && nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+            if (value == null && nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
                 return default(decimal);
 
             var stringValue = Convert.ToString(value);
-            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY || nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY))
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DefaultEmptyOnly || nullOrEmpty == ConversionConstants.DefaultNullAndEmpty))
                 return default(decimal);
             
             return Convert.ToDecimal(value, cultureInfo);
         }
-        public static short ToInteger16(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        public static short ToInteger16(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
+            if (nullOrEmpty == null)
+                nullOrEmpty = ConversionConstants.DefaultNormal;
             if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a entero. Parámetro de conversión a entero nullOrEmpty no válido.");
             if (cultureInfo == null)
                 cultureInfo = CultureInfo.CurrentCulture;
 
-            if (value == null && nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+            if (value == null && nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
                 return default(int);
 
             var stringValue = Convert.ToString(value);
-            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY || nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY))
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DefaultEmptyOnly || nullOrEmpty == ConversionConstants.DefaultNullAndEmpty))
                 return default(int);
 
             return Convert.ToInt16(value, cultureInfo);
         }
-        public static int ToInteger32(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        public static int ToInteger32(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
+            if (nullOrEmpty == null)
+                nullOrEmpty = ConversionConstants.DefaultNormal;
             if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a entero. Parámetro de conversión a entero nullOrEmpty no válido.");
             if (cultureInfo == null)
                 cultureInfo = CultureInfo.CurrentCulture;
 
-            if (value == null && nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+            if (value == null && nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
                 return default(int);
 
             var stringValue = Convert.ToString(value);
-            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY || nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY))
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DefaultEmptyOnly || nullOrEmpty == ConversionConstants.DefaultNullAndEmpty))
                 return default(int);
 
             return Convert.ToInt32(value, cultureInfo);
         }
 
-        public static int ToInteger(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        public static int ToInteger(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
+            if (nullOrEmpty == null)
+                nullOrEmpty = ConversionConstants.DefaultNormal;
             return ToInteger32(value, nullOrEmpty, cultureInfo);
         }
 
-        public static long ToInteger64(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        public static long ToInteger64(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
+            if (nullOrEmpty == null)
+                nullOrEmpty = ConversionConstants.DefaultNormal;
             if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a entero. Parámetro de conversión a entero nullOrEmpty no válido.");
             if (cultureInfo == null)
                 cultureInfo = CultureInfo.CurrentCulture;
 
-            if (value == null && nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+            if (value == null && nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
                 return default(int);
 
             var stringValue = Convert.ToString(value);
-            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY || nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY))
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DefaultEmptyOnly || nullOrEmpty == ConversionConstants.DefaultNullAndEmpty))
                 return default(int);
 
             return Convert.ToInt64(value, cultureInfo);
         }
-        public static double ToDouble(object value, int nullOrEmpty = ConversionConstants.DEFAULT_NORMAL, CultureInfo cultureInfo = null)
+        public static double ToDouble(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
+            if (nullOrEmpty == null)
+                nullOrEmpty = ConversionConstants.DefaultNormal;
             if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
                 throw new ArgumentException("Error al intentar convertir un valor a double. Parámetro de conversión a entero nullOrEmpty no válido.");
             if (cultureInfo == null)
                 cultureInfo = CultureInfo.CurrentCulture;
 
-            if (value == null && nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+            if (value == null && nullOrEmpty == ConversionConstants.DefaultNullAndEmpty)
                 return default(double);
 
             var stringValue = Convert.ToString(value);
-            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DEFAULT_EMPTY_ONLY || nullOrEmpty == ConversionConstants.DEFAULT_NULL_AND_EMPTY))
+            if (value != null && string.IsNullOrWhiteSpace(stringValue) && (nullOrEmpty == ConversionConstants.DefaultEmptyOnly || nullOrEmpty == ConversionConstants.DefaultNullAndEmpty))
                 return default(double);
 
             return Convert.ToDouble(value, cultureInfo);
@@ -316,30 +336,29 @@ namespace EllipseCommonsClassLibrary.Utilities
         }
         public static string ToString(bool value, string type)
         {
+            if (string.IsNullOrWhiteSpace(type)) return "" + value;
+            
             var typeValue = "";
 
-            if (!string.IsNullOrWhiteSpace(type))
-            {
-                type = type.ToUpper();
-                typeValue = type;
+            type = type.ToUpper();
+            typeValue = type;
 
-                if (value && (typeValue.Equals("Y") || typeValue.Equals("N")))
-                    return "Y";
-                if (!value && (typeValue.Equals("Y") || typeValue.Equals("N")))
-                    return "N";
-                if (value && (typeValue.Equals("YES") || typeValue.Equals("NO")))
-                    return "YES";
-                if (!value && (typeValue.Equals("YES") || typeValue.Equals("NO")))
-                    return "NO";
-                if (value && (typeValue.Equals("S") || typeValue.Equals("N")))
-                    return "S";
-                if (!value && (typeValue.Equals("S") || typeValue.Equals("N")))
-                    return "N";
-                if (value && (typeValue.Equals("SI") || typeValue.Equals("NO")))
-                    return "SI";
-                if (!value && (typeValue.Equals("SI") || typeValue.Equals("NO")))
-                    return "NO";
-            }
+            if (value && (typeValue.Equals("Y") || typeValue.Equals("N")))
+                return "Y";
+            if (!value && (typeValue.Equals("Y") || typeValue.Equals("N")))
+                return "N";
+            if (value && (typeValue.Equals("YES") || typeValue.Equals("NO")))
+                return "YES";
+            if (!value && (typeValue.Equals("YES") || typeValue.Equals("NO")))
+                return "NO";
+            if (value && (typeValue.Equals("S") || typeValue.Equals("N")))
+                return "S";
+            if (!value && (typeValue.Equals("S") || typeValue.Equals("N")))
+                return "N";
+            if (value && (typeValue.Equals("SI") || typeValue.Equals("NO")))
+                return "SI";
+            if (!value && (typeValue.Equals("SI") || typeValue.Equals("NO")))
+                return "NO";
 
             return "" + value;
         }
