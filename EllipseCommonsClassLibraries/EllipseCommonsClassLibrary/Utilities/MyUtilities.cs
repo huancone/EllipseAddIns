@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Utilities.MyDateTime;
-using Microsoft.Office.Interop.Excel;
 
 namespace EllipseCommonsClassLibrary.Utilities
 {
@@ -299,24 +298,13 @@ namespace EllipseCommonsClassLibrary.Utilities
             var cultureInfo = CultureInfo.CurrentCulture;
             return ToDateTime(value, format, cultureInfo);
         }
+
         public static System.DateTime ToDateTime(object value, string format)
         {
             var cultureInfo = CultureInfo.CurrentCulture;
             return ToDateTime(value, format, cultureInfo);
         }
 
-        public static System.DateTime ToDateTime(Range range)
-        {
-            object value = range.Value2;
-           
-            if (value != null)
-            {
-                if (value is double)
-                    return System.DateTime.FromOADate((double)value);
-            }
-
-            return ToDateTime(value);
-        }
         public static System.DateTime ToDateTime(object value, string format, CultureInfo cultureInfo)
         {
             try

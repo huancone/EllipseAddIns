@@ -238,8 +238,8 @@ namespace EllipseJobsClassLibrary
                             WorkGroup = req.WorkGroup,
                             ResourceCode = req.ReqCode,
                             Date = task.PlanStrDate,
-                            EstimatedLabourHours = MyUtilities.ToDouble(req.UnitsQty, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY),
-                            RealLabourHours = MyUtilities.ToDouble(req.RealQty, MyUtilities.ConversionConstants.DEFAULT_NULL_AND_EMPTY)
+                            EstimatedLabourHours = MyUtilities.ToDouble(req.UnitsQty, MyUtilities.ConversionConstants.DefaultNullAndEmpty),
+                            RealLabourHours = MyUtilities.ToDouble(req.RealQty, MyUtilities.ConversionConstants.DefaultNullAndEmpty)
                         };
                         task.LabourResourcesList.Add(requirement);
                     }
