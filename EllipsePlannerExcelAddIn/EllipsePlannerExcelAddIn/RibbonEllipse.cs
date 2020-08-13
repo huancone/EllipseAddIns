@@ -621,7 +621,7 @@ private void FormatSheet()
                             {
                                 if(string.IsNullOrWhiteSpace(jt.AssignPerson))
                                     _cells.GetCell(20, i).Value = string.IsNullOrWhiteSpace(jt.Additional.AssignPerson) ? jt.Additional.WorkOrderAssignPerson : jt.Additional.AssignPerson;
-                                _cells.GetCell(11, i).Value = "" + jt.Additional.WorkOrderType;
+                                _cells.GetCell(21, i).Value = "" + jt.Additional.WorkOrderType;
                                 _cells.GetCell(22, i).Value = "" + jt.Additional.JobDescCode;
                                 _cells.GetCell(23, i).Value = "" + jt.Additional.EquipPrimaryStatType;
                                 _cells.GetCell(24, i).Value = "" + jt.Additional.OriginalSchedDate;
@@ -637,6 +637,18 @@ private void FormatSheet()
                     }
                     else
                     {
+                        double estimatedLabHours = 0;
+                        double realLabHours = 0;
+                        string resourceCode = "";
+                        foreach (var r in jt.LabourResourcesList)
+                        {
+                            resourceCode += " " + r.ResourceCode;
+                            estimatedLabHours += r.EstimatedLabourHours;
+                            realLabHours += r.RealLabourHours;
+                        }
+
+                        resourceCode = resourceCode.Trim();
+                            
                         _cells.GetCell(1, i).Value = jt.WorkGroup;
                         _cells.GetCell(2, i).Value = jt.EquipNo;
                         _cells.GetCell(3, i).Value = jt.CompCode;
@@ -646,6 +658,10 @@ private void FormatSheet()
                         _cells.GetCell(7, i).Value = jt.WorkOrder ?? jt.StdJobNo;
                         _cells.GetCell(8, i).Value = jt.WoTaskNo ?? jt.StdJobTask;
                         _cells.GetCell(9, i).Value = jt.WoDesc;
+                        _cells.GetCell(10, i).Value = resourceCode;
+                        _cells.GetCell(11, i).Value = estimatedLabHours;
+                        _cells.GetCell(12, i).Value = realLabHours;
+                        _cells.GetCell(13, i).Value = estimatedLabHours - realLabHours;
                         _cells.GetCell(14, i).Value = jt.PlanStrDate;
                         _cells.GetCell(15, i).Value = jt.PlanStrTime;
                         _cells.GetCell(16, i).Value = jt.EstimatedDurationsHrs;
