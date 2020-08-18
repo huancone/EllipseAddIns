@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using EllipseCommonsClassLibrary.Utilities;
 using Microsoft.Office.Interop.Word;
 
 namespace DocumentGeneratorClassLibrary
@@ -42,23 +43,39 @@ namespace DocumentGeneratorClassLibrary
         }
 
 
-        public static void Execute(string urlPath, string fileName, string destPath, string destFileName, List<KeyValuePair<string, string>> variableList)
+        public static void Execute(string urlPath, string fileName, string destPath, string destFileName, List<KeyValuePair<string, string>> variableList, string docType)
         {
+            var destPathNormalized = FileWriter.NormalizePath(destPath);
+
+            FileWriter.CreateDirectory(destPathNormalized);
             Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application { Visible = true };
             Microsoft.Office.Interop.Word.Document aDoc = wordApp.Documents.Open(Path.Combine(urlPath, fileName), ReadOnly: false, Visible: true);
-            aDoc.Activate();
-
-            foreach (var item in variableList)
+            try
             {
-                //HeaderFooterFindAndReplace(wordApp, "{{$" + item.Key + "}}", item.Value);
-                if (item.Key.Equals("objetoContrato"))
-                    FindAndReplace(wordApp, "{{$" + item.Key + "}}", item.Value, WdUnits.wdLine);
-                else
-                    FindAndReplace(wordApp, "{{$" + item.Key + "}}", item.Value);
-            }
+                //aDoc.Activate();
 
-            SaveAs(aDoc, Path.Combine(destPath, destFileName), WdSaveFormat.wdFormatDocumentDefault, new SaveAsParameters());
-            wordApp.Quit();
+                foreach (var item in variableList)
+                {
+                    //HeaderFooterFindAndReplace(wordApp, "{{$" + item.Key + "}}", item.Value);
+                    if (item.Key.Equals("objetoContrato"))
+                        FindAndReplace(wordApp, "{{$" + item.Key + "}}", item.Value, WdUnits.wdLine);
+                    else
+                        FindAndReplace(wordApp, "{{$" + item.Key + "}}", item.Value);
+                }
+
+                var fileType = WdSaveFormat.wdFormatDocumentDefault;
+                if (docType.Equals("PDF"))
+                    fileType = WdSaveFormat.wdFormatPDF;
+
+                SaveAs(aDoc, Path.Combine(destPathNormalized, destFileName), fileType, new SaveAsParameters());
+                wordApp.Quit();
+            }
+            catch
+            {
+                aDoc.Close();
+                wordApp.Quit();
+                throw;
+            }
         }
 
 

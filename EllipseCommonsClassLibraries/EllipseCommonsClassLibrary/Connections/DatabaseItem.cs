@@ -27,18 +27,18 @@ namespace EllipseCommonsClassLibrary.Connections
         public DatabaseItem(string dbName, string dbUser, string dbPassword, string dbReference,
             string dbLink)
         {
-            SetDataBaseItem(dbName, dbUser, dbPassword, dbLink, dbReference, null);
+            SetDataBaseItem(dbName, dbUser, dbPassword, dbReference, dbLink, null);
         }
 
         public DatabaseItem(string dbName, string dbUser, string dbPassword, string dbReference,
             string dbLink, string dbCatalog)
         {
-            SetDataBaseItem(dbName, dbUser, dbPassword, dbLink, dbReference, dbCatalog);
+            SetDataBaseItem(dbName, dbUser, dbPassword, dbReference, dbLink, dbCatalog);
         }
         public DatabaseItem(string name, string dbName, string dbUser, string dbPassword, string dbReference,
             string dbLink, string dbCatalog)
         {
-            SetDataBaseItem(name, dbName, dbUser, dbPassword, dbLink, dbReference, dbCatalog);
+            SetDataBaseItem(name, dbName, dbUser, dbPassword, dbReference, dbLink, dbCatalog);
         }
         public DatabaseItem()
         {

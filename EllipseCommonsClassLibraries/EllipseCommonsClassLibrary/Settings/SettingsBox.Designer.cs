@@ -27,7 +27,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsBox));
             this.labelProductName = new System.Windows.Forms.Label();
             this.okButton = new System.Windows.Forms.Button();
@@ -60,7 +59,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.btnDeleteCustomDb = new System.Windows.Forms.Button();
             this.btnGenerateCustomDb = new System.Windows.Forms.Button();
-            this.ttSettings = new System.Windows.Forms.ToolTip(this.components);
+            this.ttSettings = new System.Windows.Forms.ToolTip();
             this.gbServiceDatabaseRelation = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.gbDebugging.SuspendLayout();

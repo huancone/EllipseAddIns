@@ -155,10 +155,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/AuthenticatorService%3fWSDL">
+    <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/AuthenticatorService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\AuthenticatorService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/AuthenticatorService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/AuthenticatorService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

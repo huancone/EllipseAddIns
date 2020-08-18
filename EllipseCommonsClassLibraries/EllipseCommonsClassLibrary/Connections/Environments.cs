@@ -164,7 +164,8 @@ namespace EllipseCommonsClassLibrary.Connections
                 if (Configuration.IsServiceListForced)
                 {
                     var xmlDoc = new XmlDocument();
-                    var urlPath = Configuration.LocalDataPath + Configuration.DatabaseXmlFileName;
+                    var urlPath = Path.Combine(Configuration.LocalDataPath, Configuration.DatabaseXmlFileName);
+                    
                     xmlDoc.Load(urlPath);
 
                     const string fullNode = "//ellipse/connections";
@@ -294,7 +295,7 @@ namespace EllipseCommonsClassLibrary.Connections
             }
             catch (Exception ex)
             {
-                Debugger.LogError("Connections:GetDatabaseItem(string) " + ex.Message, "No se ha encontrado el archivo xml de base de datos o el entorno seleccionado no existe en este archivo. Verifique la ruta del archivo y compruebe que la información del servidor existe");
+                Debugger.LogError("Connections:GetDatabaseItem(string) " + ex.Message, "Ha ocurrido un error al intentar conectarse al entorno del archivo xml. Asegúrese de que la base de datos o el entorno seleccionado sea válida. Verifique la ruta del archivo xml y compruebe que la información del servidor existe");
                 return null;
             }
         }

@@ -52,5 +52,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveAsParameters.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\EllipseTutorial\CommonClassLibrary\CommonClassLibrary.csproj">
+      <Project>{E312AAA2-7244-4380-8AE9-154EF8D44720}</Project>
+      <Name>CommonClassLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

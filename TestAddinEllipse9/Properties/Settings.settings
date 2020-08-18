@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TestAddinEllipse9.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TestAddinEllipse9_WorkOrderService_WorkOrderService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderService</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
