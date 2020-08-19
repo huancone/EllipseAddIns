@@ -68,7 +68,7 @@ namespace EllipseMSO010ExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:CreateWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse.cs:CreadeCodeList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -116,7 +116,7 @@ namespace EllipseMSO010ExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse.cs:CreateWoList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse.cs:ModifyCodeList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
@@ -191,6 +191,8 @@ namespace EllipseMSO010ExcelAddIn
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = StyleConstants.TitleResult;
 
+                var actStatusList = new List<string> {"Y - Active", "N - Inactive"};
+                _cells.SetValidationList(_cells.GetCell(04, TitleRow01 + 1), typeCriteriaList, ValidationSheetName, 4);
                 _cells.FormatAsTable(_cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01 + 1), TableName01);
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
@@ -199,7 +201,7 @@ namespace EllipseMSO010ExcelAddIn
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:FormatQuality()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja" + "\n" + ex.Message);
             }
         }
        
@@ -298,7 +300,7 @@ namespace EllipseMSO010ExcelAddIn
                     item.Type = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value).ToUpper();
                     item.TypeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
                     item.Code = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value).ToUpper();
-                    item.ActiveStatus = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value);
+                    item.ActiveStatus = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value));
                     item.Description = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
                     item.AssocRec = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
 
@@ -362,7 +364,7 @@ namespace EllipseMSO010ExcelAddIn
                     item.Type = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value).ToUpper();
                     item.TypeDescription = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
                     item.Code = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value).ToUpper();
-                    item.ActiveStatus = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value);
+                    item.ActiveStatus = MyUtilities.GetCodeKey(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, i).Value));
                     item.Description = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, i).Value);
                     item.AssocRec = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, i).Value);
 
@@ -531,7 +533,7 @@ namespace EllipseMSO010ExcelAddIn
 
         public List<ItemCode> GetItemList(EllipseFunctions ef, int searchCriteriaKey1, int typeCriteriaKey1, string searchCriteriaValue1, int searchCriteriaKey2, int typeCriteriaKey2, string searchCriteriaValue2, int statusCriteriaKey)
         {
-            var sqlQuery = Queries.GetItemCodeList(ef.dbReference, ef.dbLink, searchCriteriaKey1, typeCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, typeCriteriaKey2, searchCriteriaValue2, statusCriteriaKey);
+            var sqlQuery = Queries.GetItemCodeList(ef.DbReference, ef.DbLink, searchCriteriaKey1, typeCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, typeCriteriaKey2, searchCriteriaValue2, statusCriteriaKey);
             var drItem = ef.GetQueryResult(sqlQuery);
             var list = new List<ItemCode>();
 
