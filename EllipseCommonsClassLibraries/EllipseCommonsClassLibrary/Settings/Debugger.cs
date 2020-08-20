@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using CommonsClassLibrary.Connections;
+using CommonsClassLibrary.Utilities;
 
-namespace EllipseCommonsClassLibrary
+namespace CommonsClassLibrary
 {
     /// <summary>
     ///     Debugger para gestionar los logs de errores
     /// </summary>
-    public static class Debugger
+    public class Debugger
     {
         public static bool DebugErrors = false;
         public static bool DebugWarnings = false;
@@ -18,21 +18,12 @@ namespace EllipseCommonsClassLibrary
 
         private static DebugError _lastError;
         private static DebugError _lastWarning;
-        /*
-        public static void DebugScreen(Screen.ScreenSubmitRequestDTO request, Screen.ScreenDTO reply, string filename)
-        {
-            var requestJson = new JavaScriptSerializer().Serialize(request.screenFields);
-            var replyJson = new JavaScriptSerializer().Serialize(reply.screenFields);
-            var filePath = Configuration.LocalDataPath + @"debugger\";
-            FileWriter.AppendTextToFile(requestJson, "ScreenRequest.txt", filePath);
-            FileWriter.AppendTextToFile(replyJson, "ScreenReply.txt", filePath);
-        }*/
 
         public static void LogError(string customDetails, string errorMessage)
         {
             try
             {
-                var errorFilePath = Configuration.LocalDataPath + @"logs\";
+                var errorFilePath = Settings.CurrentSettings.LocalDataPath + @"logs\";
                 var errorFileName = @"error" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                     ".txt";
 
@@ -68,7 +59,7 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                var warningFilePath = Configuration.LocalDataPath + @"logs\";
+                var warningFilePath = Settings.CurrentSettings.LocalDataPath + @"logs\";
                 var warningFileName = @"warning" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                       ".txt";
 
@@ -109,7 +100,7 @@ namespace EllipseCommonsClassLibrary
                 if (!DebugQueries)
                     return;
 
-                var queryFilePath = Configuration.LocalDataPath + @"queries\";
+                var queryFilePath = Settings.CurrentSettings.LocalDataPath + @"queries\";
                 var queryFileName = @"queries" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                     ".txt";
                 
@@ -134,7 +125,7 @@ namespace EllipseCommonsClassLibrary
                 if (!DebugginMode)
                     return;
 
-                var debugFilePath = Configuration.LocalDataPath + @"logs\";
+                var debugFilePath = Settings.CurrentSettings.LocalDataPath + @"logs\";
                 var debugFileName = @"debug" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                     ".txt";
 

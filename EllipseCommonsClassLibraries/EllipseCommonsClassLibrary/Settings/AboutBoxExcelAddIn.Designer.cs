@@ -1,6 +1,6 @@
-﻿namespace EllipseCommonsClassLibrary
+﻿namespace CommonsClassLibrary
 {
-    public partial class AboutBoxExcelAddIn
+    public abstract partial class AboutBoxExcelAddIn
     {
         /// <summary>
         /// Required designer variable.
@@ -33,14 +33,14 @@
             this.labelCopyright = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
             this.labelProductName = new System.Windows.Forms.Label();
-            this.logoPictureBox = new System.Windows.Forms.PictureBox();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
             this.labelDeveloper1 = new System.Windows.Forms.Label();
             this.labelDeveloper2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.btnRepository = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
+            this.logoPictureBox = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // okButton
@@ -103,19 +103,6 @@
             this.labelProductName.Text = "Product Name";
             this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.labelProductName.Click += new System.EventHandler(this.labelProductName_Click);
-            // 
-            // logoPictureBox
-            // 
-            this.logoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logoPictureBox.ErrorImage = null;
-            this.logoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("logoPictureBox.Image")));
-            this.logoPictureBox.Location = new System.Drawing.Point(3, 3);
-            this.logoPictureBox.Name = "logoPictureBox";
-            this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 3);
-            this.logoPictureBox.Size = new System.Drawing.Size(131, 60);
-            this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.logoPictureBox.TabIndex = 12;
-            this.logoPictureBox.TabStop = false;
             // 
             // textBoxDescription
             // 
@@ -199,6 +186,18 @@
             this.btnRepository.UseVisualStyleBackColor = true;
             this.btnRepository.Click += new System.EventHandler(this.btnRepository_Click);
             // 
+            // logoPictureBox
+            // 
+            this.logoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logoPictureBox.ErrorImage = null;
+            this.logoPictureBox.Location = new System.Drawing.Point(3, 3);
+            this.logoPictureBox.Name = "logoPictureBox";
+            this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 3);
+            this.logoPictureBox.Size = new System.Drawing.Size(131, 60);
+            this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.logoPictureBox.TabIndex = 12;
+            this.logoPictureBox.TabStop = false;
+            // 
             // AboutBoxExcelAddIn
             // 
             this.AcceptButton = this.okButton;
@@ -216,9 +215,9 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "AboutBoxExcelAddIn";
-            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -230,12 +229,11 @@
         private System.Windows.Forms.Label labelCopyright;
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.Label labelProductName;
-        private System.Windows.Forms.PictureBox logoPictureBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
         private System.Windows.Forms.Label labelDeveloper2;
         private System.Windows.Forms.Label labelDeveloper1;
         private System.Windows.Forms.TextBox textBoxDescription;
         private System.Windows.Forms.Button btnRepository;
-
+        private System.Windows.Forms.PictureBox logoPictureBox;
     }
 }

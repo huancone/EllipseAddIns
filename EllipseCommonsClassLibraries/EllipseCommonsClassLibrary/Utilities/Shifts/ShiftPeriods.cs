@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EllipseCommonsClassLibrary.Utilities.Shifts
+namespace CommonsClassLibrary.Utilities.Shifts
 {
-    public static class ShiftPeriods
+    public class ShiftPeriods
     {
         public static Slot[] GetHourToHourSlots()
         {

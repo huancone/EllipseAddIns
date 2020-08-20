@@ -22,39 +22,39 @@ namespace EllipseCommonsClassLibrary
             cbDebugErrors.Checked = Debugger.DebugErrors;
             cbDebugWarnings.Checked = Debugger.DebugWarnings;
             cbDebugQueries.Checked = Debugger.DebugQueries;
-            tbLocalDataPath.Text = Configuration.LocalDataPath;
-            tbServiceFileNetworkUrl.Text = Configuration.ServiceFilePath;
-            tbTnsNameUrl.Text = Configuration.TnsnamesFilePath;
+            tbLocalDataPath.Text = Settings.CurrentSettings.LocalDataPath;
+            tbServiceFileNetworkUrl.Text = Settings.CurrentSettings.ServiceFilePath;
+            tbTnsNameUrl.Text = Settings.CurrentSettings.TnsnamesFilePath;
             cbForceRegionConfig.Checked = Debugger.ForceRegionalization;
-            cbForceServerList.Checked = Configuration.IsServiceListForced;
+            cbForceServerList.Checked = Settings.CurrentSettings.IsServiceListForced;
         }
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            Configuration.LocalDataPath = tbLocalDataPath.Text;
+            Settings.CurrentSettings.LocalDataPath = tbLocalDataPath.Text;
             Debugger.DebugErrors = cbDebugErrors.Checked;
             Debugger.DebugWarnings = cbDebugWarnings.Checked;
             Debugger.DebugQueries = cbDebugQueries.Checked;
-            Configuration.ServiceFilePath = tbServiceFileNetworkUrl.Text;
+            Settings.CurrentSettings.ServiceFilePath = tbServiceFileNetworkUrl.Text;
             Debugger.DebugErrors = cbDebugErrors.Checked;
             Debugger.ForceRegionalization = cbForceRegionConfig.Checked;
             RuntimeConfigSettings.UpdateTnsUrlValue(tbTnsNameUrl.Text);
 
-            if (!Configuration.IsServiceListForced.Equals(cbForceServerList.Checked))
+            if (!Settings.CurrentSettings.IsServiceListForced.Equals(cbForceServerList.Checked))
                 MessageBox.Show(
                     @"La configuración de Forzar Lista de Servidores ha cambiado. Debe reinicar la aplicación para que los cambios surjan efecto");
-            Configuration.IsServiceListForced = cbForceServerList.Checked;
+            Settings.CurrentSettings.IsServiceListForced = cbForceServerList.Checked;
         }
 
         private void btnGenerateFromUrl_Click(object sender, EventArgs e)
         {
             try
             {
-                Configuration.GenerateEllipseConfigurationXmlFile(Configuration.DefaultServiceFilePath,
+                Settings.CurrentSettings.GenerateEllipseConfigurationXmlFile(Settings.CurrentSettings.DefaultServiceFilePath,
                     tbServiceFileNetworkUrl.Text);
                 MessageBox.Show(
                     @"Se ha generado el archivo local de configuración de Ellipse a partir del archivo de red " +
-                    Configuration.DefaultServiceFilePath + Configuration.ConfigXmlFileName +
+                    Settings.CurrentSettings.DefaultServiceFilePath + Settings.CurrentSettings.ServicesConfigXmlFileName +
                     @" al directorio especificado", @"Generate Local Ellipse Settings File", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
             }
@@ -69,7 +69,7 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                Configuration.GenerateEllipseConfigurationXmlFile(tbServiceFileNetworkUrl.Text);
+                Settings.CurrentSettings.GenerateEllipseConfigurationXmlFile(tbServiceFileNetworkUrl.Text);
                 MessageBox.Show(@"Se ha generado el archivo local de configuración de Ellipse de forma predeterminada",
                     @"Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -84,8 +84,8 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                Configuration.DeleteEllipseConfigurationXmlFile();
-                tbServiceFileNetworkUrl.Text = Configuration.ServiceFilePath;
+                Settings.CurrentSettings.DeleteEllipseConfigurationXmlFile();
+                tbServiceFileNetworkUrl.Text = Settings.CurrentSettings.ServiceFilePath;
                 MessageBox.Show(
                     @"Se ha restaurado la dirección del archivo de configuración de los Servicios de Ellipse",
                     @"Restore Ellipse Service File", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -99,7 +99,7 @@ namespace EllipseCommonsClassLibrary
 
         private void btnRestoreLocalPath_Click(object sender, EventArgs e)
         {
-            tbLocalDataPath.Text = Configuration.DefaultLocalDataPath;
+            tbLocalDataPath.Text = Settings.CurrentSettings.DefaultLocalDataPath;
         }
 
         private void btnOpenTnsnamesPath_Click(object sender, EventArgs e)
@@ -149,7 +149,7 @@ namespace EllipseCommonsClassLibrary
             try
             {
                 RuntimeConfigSettings.UpdateTnsUrlValue(tbTnsNameUrl.Text);
-                Configuration.GenerateEllipseTnsnamesFile(Configuration.TnsnamesFilePath);
+                Settings.CurrentSettings.GenerateEllipseTnsnamesFile(Settings.CurrentSettings.TnsnamesFilePath);
                 MessageBox.Show(@"Se ha generado el archivo local de TNSNAMES de forma predeterminada",
                     @"Generate Local Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -164,8 +164,8 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                RuntimeConfigSettings.UpdateTnsUrlValue(Configuration.DefaultTnsnamesFilePath);
-                tbTnsNameUrl.Text = Configuration.DefaultTnsnamesFilePath;
+                RuntimeConfigSettings.UpdateTnsUrlValue(Settings.CurrentSettings.DefaultTnsnamesFilePath);
+                tbTnsNameUrl.Text = Settings.CurrentSettings.DefaultTnsnamesFilePath;
                 MessageBox.Show(
                     @"Se ha restaurado la ruta del archivo de TNSNAMES a su ubicación predeterminada. En caso de que este archivo no exista comuníquese con el administrador de sistemas",
                     @"Restore Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -179,14 +179,14 @@ namespace EllipseCommonsClassLibrary
 
         private void btnGenerateCustomDb_Click(object sender, EventArgs e)
         {
-            Configuration.GenerateEllipseDatabaseFile();
+            Settings.CurrentSettings.GenerateEllipseDatabaseFile();
         }
 
         private void btnDeleteCustomDb_Click(object sender, EventArgs e)
         {
             try
             {
-                Configuration.DeleteEllipseDatabaseFile();
+                Settings.CurrentSettings.DeleteEllipseDatabaseFile();
                 MessageBox.Show(@"Se ha eliminado el archivo local de bases de datos de Ellipse",
                     @"Delete Local Ellipse Database File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

@@ -6,16 +6,15 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 using System.Xml;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Utilities.MyDateTime;
+using CommonsClassLibrary.Classes;
 
-namespace EllipseCommonsClassLibrary.Utilities
+namespace CommonsClassLibrary.Utilities
 {
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public static partial class MyUtilities
+    public partial class MyUtilities
     {
 
-        public static class ConversionConstants
+        public class ConversionConstants
         {
             public static readonly IxConversionConstant DefaultNormal = 0;
             public static readonly IxConversionConstant DefaultEmptyOnly = 1;
@@ -440,19 +439,6 @@ namespace EllipseCommonsClassLibrary.Utilities
             return codeKeyValue.Value;
         }
 
-        /// <summary>
-        ///     Obtiene una lista de tipo string a partir de la llave y valor del listado de keyValuePairList
-        /// </summary>
-        /// <param name="ellipseCodeItemsList">
-        ///     List(EllipseCodeItem{string, string}): Listado tipo EllipseCodeItem con los datos de
-        ///     llaves y valores
-        /// </param>
-        /// <param name="separator">string: separador de llave/descripción (Ej. " - ", "-", "/")</param>
-        /// <returns>string: List{code - description}</returns>
-        public static List<string> GetCodeList(List<EllipseCodeItem> ellipseCodeItemsList, string separator = " - ")
-        {
-            return ellipseCodeItemsList.Select(item => item.code + separator + item.description).ToList();
-        }
 
         /// <summary>
         ///     Obtiene una lista de tipo string a partir de la llave y valor del listado de keyValuePairList

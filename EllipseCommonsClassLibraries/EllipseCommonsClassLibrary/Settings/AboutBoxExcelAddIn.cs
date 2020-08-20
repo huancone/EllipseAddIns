@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Settings;
 
 // ReSharper disable ConvertPropertyToExpressionBody
 
-namespace EllipseCommonsClassLibrary
+namespace CommonsClassLibrary
 {
-    public partial class AboutBoxExcelAddIn : Form
+    public abstract partial class AboutBoxExcelAddIn : Form
     {
         private int _indexSettings;
-        private AssemblyItem addinAssembly;
+        private Settings.AssemblyItem addinAssembly;
         public AboutBoxExcelAddIn()
         {
-            addinAssembly = new AssemblyItem(Assembly.GetCallingAssembly());
-
+            //addinAssembly = new Settings.AssemblyItem(Assembly.GetCallingAssembly());
+            addinAssembly = new Settings.AssemblyItem(Settings.GetLastAssembly());
             InitializeComponent();
             Text = string.Format("About {0}", addinAssembly.AssemblyTitle);
             labelProductName.Text = addinAssembly.AssemblyProduct;
@@ -30,7 +29,8 @@ namespace EllipseCommonsClassLibrary
 
         public AboutBoxExcelAddIn(string developerName1, string developerName2)
         {
-            addinAssembly = new AssemblyItem(Assembly.GetCallingAssembly());
+            //addinAssembly = new Settings.AssemblyItem(Assembly.GetCallingAssembly());
+            addinAssembly = new Settings.AssemblyItem(Settings.GetLastAssembly());
 
             InitializeComponent();
             Text = string.Format("About {0}", addinAssembly.AssemblyTitle);
@@ -41,6 +41,8 @@ namespace EllipseCommonsClassLibrary
             textBoxDescription.Text = addinAssembly.AssemblyDescription;
             labelDeveloper1.Text = developerName1;
             labelDeveloper2.Text = developerName2;
+            //logoPictureBox.Image = Resources.ResourceManager.GetObject();
+                
         }
 
         private void tableLayoutPanel_Paint(object sender, PaintEventArgs e)
@@ -49,18 +51,16 @@ namespace EllipseCommonsClassLibrary
 
         private void labelProductName_Click(object sender, EventArgs e)
         {
-            //var productLabel = addinAssembly.AssemblyProduct;
-            var commonAssembly = new AssemblyItem(Assembly.GetExecutingAssembly());
-            var productLabel = commonAssembly.AssemblyProduct + " v" + commonAssembly.AssemblyVersion;
             _indexSettings++;
-            if (_indexSettings > 3) new SettingsBox(productLabel).ShowDialog();
+            if (_indexSettings > 3)
+                ShowAdditionalOptions();
         }
 
         private void btnRepository_Click(object sender, EventArgs e)
         {
             try
             {
-                Process.Start(Configuration.DefaultRepositoryFilePath);
+                Process.Start(Settings.CurrentSettings.DefaultRepositoryFilePath);
             }
             catch (Exception ex)
             {
@@ -69,6 +69,17 @@ namespace EllipseCommonsClassLibrary
                     ex.Message, @"Abrir directorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        public void UpdatePictureBox(Image img)
+        {
+            logoPictureBox.Image = img;
+        }
+
+        public void UpdatePictureBox(string url)
+        {
+            logoPictureBox.ImageLocation = url;
+        }
+        public abstract void ShowAdditionalOptions();
 
     }
 }

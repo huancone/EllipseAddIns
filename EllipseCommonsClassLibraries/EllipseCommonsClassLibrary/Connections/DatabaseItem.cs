@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EllipseCommonsClassLibrary.Utilities;
+using CommonsClassLibrary.Utilities;
 
-namespace EllipseCommonsClassLibrary.Connections
+namespace CommonsClassLibrary.Connections
 {
     public class DatabaseItem
     {
@@ -49,14 +49,14 @@ namespace EllipseCommonsClassLibrary.Connections
             get
             {
                 return string.IsNullOrWhiteSpace(_dbPassword)
-                    ? EncryptString.Decrypt(DbEncodedPassword, Configuration.EncryptPassPhrase)
+                    ? Utilities.Encryption.Decrypt(DbEncodedPassword, Utilities.Encryption.EncryptPassPhrase)
                     : _dbPassword;
             }
             set
             {
                 _dbPassword = value;
                 if(_dbPassword != null)
-                    _dbEncodedPassword = EncryptString.Encrypt(value, Configuration.EncryptPassPhrase);
+                    _dbEncodedPassword = Utilities.Encryption.Encrypt(value, Utilities.Encryption.EncryptPassPhrase);
             }
         }
 
@@ -67,7 +67,7 @@ namespace EllipseCommonsClassLibrary.Connections
             {
                 _dbEncodedPassword = value;
                 if (_dbEncodedPassword != null)
-                    _dbPassword = EncryptString.Decrypt(value, Configuration.EncryptPassPhrase);
+                    _dbPassword = Encryption.Decrypt(value, Utilities.Encryption.EncryptPassPhrase);
             }
         }
         private void SetDataBaseItem(string name, string dbName, string dbUser, string dbPassword, string dbReference,

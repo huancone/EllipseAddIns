@@ -4,9 +4,9 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace EllipseCommonsClassLibrary.Utilities
+namespace CommonsClassLibrary.Utilities
 {
-    public static partial class MyUtilities
+    public partial class MyUtilities
     {
         public static class Xml
         {
@@ -59,7 +59,15 @@ namespace EllipseCommonsClassLibrary.Utilities
                 }
                 return resultNode;
             }
-
+            public static void SerializeObjectToXml(string file, object obj)
+            {
+                System.Xml.Serialization.XmlSerializer xs
+                    = new System.Xml.Serialization.XmlSerializer(obj.GetType());
+                StreamWriter writer = File.CreateText(file);
+                xs.Serialize(writer, obj);
+                writer.Flush();
+                writer.Close();
+            }
 
             public static Object DeSerializeXmlNodeToObject(XmlNode node, Type objectType)
             {
@@ -83,6 +91,22 @@ namespace EllipseCommonsClassLibrary.Utilities
                         Debugger.LogError("MyUtilities.Xml.cs:DeSerializeXmlNodeToObject()", ex.Message);
                         return objectType.IsByRef ? null : Activator.CreateInstance(objectType);
                     }
+                }
+            }
+
+            public static Object DeserializeXmlToObject(string file, Type objectType)
+            {
+                var xs = new XmlSerializer(objectType);
+                StreamReader reader = File.OpenText(file);
+
+                try
+                {
+                    return xs.Deserialize(reader);
+                }
+                catch (Exception ex)
+                {
+                    Debugger.LogError("MyUtilities.Xml.cs:DeserializeXmlToObject()", ex.Message);
+                    return objectType.IsByRef ? null : Activator.CreateInstance(objectType);
                 }
             }
         }

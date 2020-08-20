@@ -4,9 +4,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace EllipseCommonsClassLibrary.Utilities
+namespace CommonsClassLibrary.Utilities
 {
-    internal class EncryptString
+    public class Encryption
     {
         // This constant is used to determine the keysize of the encryption algorithm in bits.
         // We divide this by 8 within the code below to get the equivalent number of bytes.
@@ -14,6 +14,8 @@ namespace EllipseCommonsClassLibrary.Utilities
 
         // This constant determines the number of iterations for the password bytes generation function.
         private const int DerivationIterations = 1000;
+        public static string EncryptPassPhrase = "hambingsdevel";
+
 
         public static string Encrypt(string plainText, string passPhrase)
         {
@@ -103,4 +105,5 @@ namespace EllipseCommonsClassLibrary.Utilities
             return randomBytes;
         }
     }
+
 }

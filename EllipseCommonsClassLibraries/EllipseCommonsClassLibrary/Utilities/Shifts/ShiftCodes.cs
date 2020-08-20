@@ -1,6 +1,6 @@
-﻿namespace EllipseCommonsClassLibrary.Utilities.Shifts
+﻿namespace CommonsClassLibrary.Utilities.Shifts
 {
-    public static class ShiftCodes
+    public class ShiftCodes
     {
         public static string HourToHourCode = "HH";
         public static string DailyZeroCode = "A24";

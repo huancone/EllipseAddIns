@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EllipseCommonsClassLibrary.Utilities
+namespace CommonsClassLibrary.Utilities
 {
-    public static class MyMath
+    public class Math
     {
         /// <summary>
         ///     Indica si un número está dentro del rango aceptado con respecto a otro. Si compareNumber está dentro de los valores
@@ -26,12 +26,12 @@ namespace EllipseCommonsClassLibrary.Utilities
             var num1 = Convert.ToDecimal(baseNumber);
             var num2 = Convert.ToDecimal(compareNumber);
             var th = Convert.ToDecimal(threshold);
-            var abs = Math.Abs(num1 - num2);
+            var abs = System.Math.Abs(num1 - num2);
 
             return num1 * th >= abs;
         }
 
-        public static string ToOrdinal(this long number)
+        public static string ToOrdinal(long number)
         {
             if (number < 0) return number.ToString();
             var rem = number % 100;
@@ -50,12 +50,12 @@ namespace EllipseCommonsClassLibrary.Utilities
             }
         }
 
-        public static string ToOrdinal(this int number)
+        public static string ToOrdinal(int number)
         {
-            return ((long) number).ToOrdinal();
+            return ToOrdinal((long)number);
         }
 
-        public static string ToOrdinal(this string number)
+        public static string ToOrdinal(string number)
         {
             if (string.IsNullOrEmpty(number)) return number;
 

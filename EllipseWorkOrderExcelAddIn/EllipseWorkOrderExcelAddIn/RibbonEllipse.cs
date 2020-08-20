@@ -30,8 +30,8 @@ namespace EllipseWorkOrderExcelAddIn
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
-        private EllipseFunctions _eFunctions = new EllipseFunctions();
-        private FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private Application _excelApp;
 
         private const string SheetName01 = "WorkOrders";
@@ -104,8 +104,8 @@ namespace EllipseWorkOrderExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
             _excelApp = Globals.ThisAddIn.Application;
-
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -113,9 +113,32 @@ namespace EllipseWorkOrderExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-
         }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
 
+            var defaultConfig = new Settings.Options();
+            defaultConfig.SetOption("FlagEstDuration", "Y");
+            defaultConfig.SetOption("ValidateTaskPlanDates", "Y");
+            defaultConfig.SetOption("IgnoreClosedStatus", "N");
+            
+            var options = settings.GetOptionsSettings(defaultConfig);
+
+            //Setting of Configuration Options from Config File (or default)
+            var flagEstDur = MyUtilities.IsTrue(options.GetOptionValue("FlagEstDuration"));
+            var valdTaskPlanDates = MyUtilities.IsTrue(options.GetOptionValue("ValidateTaskPlanDates"));
+            var ignoreCldStat = MyUtilities.IsTrue(options.GetOptionValue("IgnoreClosedStatus"));
+
+            cbFlagEstDuration.Checked = flagEstDur;
+            cbValidateTaskPlanDates.Checked = valdTaskPlanDates;
+            cbIgnoreClosedStatus.Checked = ignoreCldStat;
+
+            //
+            settings.UpdateOptionsSettings(options);
+        }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();

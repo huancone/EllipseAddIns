@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EllipseCommonsClassLibrary.Utilities.Shifts
+namespace CommonsClassLibrary.Utilities.Shifts
 {
     public class Slot
     {

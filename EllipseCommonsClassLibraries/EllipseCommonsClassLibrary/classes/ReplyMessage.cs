@@ -1,4 +1,4 @@
-﻿namespace EllipseCommonsClassLibrary.Classes
+﻿namespace CommonsClassLibrary.Classes
 {
     public class ReplyMessage
     {

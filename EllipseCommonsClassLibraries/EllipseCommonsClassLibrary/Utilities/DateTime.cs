@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using EllipseCommonsClassLibrary.Utilities.Shifts;
+using CommonsClassLibrary.Utilities.Shifts;
 
-namespace EllipseCommonsClassLibrary.Utilities
+namespace CommonsClassLibrary.Utilities
 {
-    public static partial class MyUtilities
+    public partial class MyUtilities
     {
-        public static class DateTime
+        public class DateTime
         {
             public static string DateDefaultFormat = "yyyyMMdd";
             public static string DateTimeDefaultFormat = "yyyyMMdd hhmmss";
@@ -176,10 +176,10 @@ namespace EllipseCommonsClassLibrary.Utilities
                     return "00" + separator + "00";
 
                 var hh = Convert.ToDecimal(hourTime) % 24;
-                var mm = hh - Math.Truncate(hh);
+                var mm = hh - System.Math.Truncate(hh);
 
-                mm = Math.Abs(Math.Truncate(mm * 60));
-                hh = Math.Truncate(hh);
+                mm = System.Math.Abs(System.Math.Truncate(mm * 60));
+                hh = System.Math.Truncate(hh);
 
                 var newHour = Convert.ToInt32(hh).ToString("D2") + separator + Convert.ToInt32(mm).ToString("D2");
                 return newHour;
@@ -193,10 +193,10 @@ namespace EllipseCommonsClassLibrary.Utilities
             public static string ConvertDecimalHourToHHMM(float hourTime, char separator)
             {
                 var hh = Convert.ToDecimal(hourTime) % 24;
-                var mm = hh - Math.Truncate(hh);
+                var mm = hh - System.Math.Truncate(hh);
 
-                mm = Math.Abs(Math.Truncate(mm * 60));
-                hh = Math.Truncate(hh);
+                mm = System.Math.Abs(System.Math.Truncate(mm * 60));
+                hh = System.Math.Truncate(hh);
 
                 var newHour = Convert.ToInt32(hh).ToString("D2") + separator + Convert.ToInt32(mm).ToString("D2");
                 return newHour;

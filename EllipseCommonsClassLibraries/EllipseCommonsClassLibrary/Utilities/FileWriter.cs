@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace EllipseCommonsClassLibrary.Utilities
+namespace CommonsClassLibrary.Utilities
 {
-    public static class FileWriter
+    public class FileWriter
     {
         public static string NormalizePath(string path)
         {

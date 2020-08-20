@@ -3,7 +3,7 @@ using System.Data;
 using System.Threading;
 using Oracle.ManagedDataAccess.Client;
 
-namespace EllipseCommonsClassLibrary.Connections
+namespace CommonsClassLibrary.Connections
 {
     public class OracleConnector
     {
@@ -22,6 +22,8 @@ namespace EllipseCommonsClassLibrary.Connections
         private int _queryAttempt;
         private OracleTransaction _transaction;
 
+        public OracleConnector()
+        {}
         public OracleConnector(string dbName, string dbUser, string dbPass)
         {
             DbName = dbName;
@@ -54,7 +56,7 @@ namespace EllipseCommonsClassLibrary.Connections
             MaxQueryAttempts = 3;
             StartConnection();
         }
-        private void StartConnection()
+        public void StartConnection()
         {
             var connectionString = "Data Source=" + DbName + ";User ID=" + DbUser + ";Password=" + DbPassword + "; Connection Timeout=" + ConnectionTimeOut + "; Pooling=" + PoolingDataBase.ToString().ToLower();
             StartConnection(connectionString);
@@ -168,7 +170,7 @@ namespace EllipseCommonsClassLibrary.Connections
                     GetQueryResult(sqlQuery);
                 }
 
-                Debugger.LogError("EllipseFunctions:GetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("OracleConnector:GetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                 _queryAttempt = 0;
                 throw;
@@ -209,7 +211,7 @@ namespace EllipseCommonsClassLibrary.Connections
                     GetDataSetQueryResult(sqlQuery);
                 }
 
-                Debugger.LogError("EllipseFunctions:GetDataSetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("OracleConnector:GetDataSetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                 _queryAttempt = 0;
                 throw;
@@ -244,7 +246,7 @@ namespace EllipseCommonsClassLibrary.Connections
                     GetDataSetQueryResult(sqlQuery);
                 }
 
-                Debugger.LogError("EllipseFunctions:GetDataSetQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("OracleConnector:ExecuteQuery(string, string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                 _queryAttempt = 0;
                 throw;

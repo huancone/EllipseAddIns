@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EllipseCommonsClassLibrary.Utilities
+namespace CommonsClassLibrary.Utilities
 {
-    public class MyKeyValuePair<Key, Val>
+    public class MyKeyValuePair<TKey, TVal>
     {
-        public Key Id { get; set; }
-        public Val Value { get; set; }
+        public TKey Id { get; set; }
+        public TVal Value { get; set; }
 
         public MyKeyValuePair() { }
 
-        public MyKeyValuePair(Key key, Val val)
+        public MyKeyValuePair(TKey key, TVal val)
         {
             this.Id = key;
             this.Value = val;

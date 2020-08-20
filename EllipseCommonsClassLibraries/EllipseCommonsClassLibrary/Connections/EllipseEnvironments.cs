@@ -5,6 +5,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 // ReSharper disable PossibleNullReferenceException
+// ReSharper disable AccessToStaticMemberViaDerivedType
 
 namespace EllipseCommonsClassLibrary.Connections
 {
@@ -15,23 +16,23 @@ namespace EllipseCommonsClassLibrary.Connections
     }
     public static class Environments
     {
-        public static string EllipseProductivo = "Productivo";
-        public static string EllipseContingencia = "Contingencia";
-        public static string EllipseDesarrollo = "Desarrollo";
-        public static string EllipseTest = "Test";
+        public const string EllipseProductivo = "Productivo";
+        public const string EllipseContingencia = "Contingencia";
+        public const string EllipseDesarrollo = "Desarrollo";
+        public const string EllipseTest = "Test";
 
-        public static string SigcorProductivo = "SIGCOR";
-        public static string SigmanProductivo = "SIGMANPRD";
-        public static string SigmanTest = "SIGMANTST";
-        public static string EllipseSigmanProductivo = "Ellipse-Sigman-PRD";
-        public static string EllipseSigmanTest = "Ellipse-Sigman-TST";
-        public static string ScadaRdb = "SCADARDB";
-        public static string CustomDatabase = "Personalizada";
+        public const string SigcorProductivo = "SIGCOR";
+        public const string SigmanProductivo = "SIGMANPRD";
+        public const string SigmanTest = "SIGMANTST";
+        public const string EllipseSigmanProductivo = "Ellipse-Sigman-PRD";
+        public const string EllipseSigmanTest = "Ellipse-Sigman-TST";
+        public const string ScadaRdb = "SCADARDB";
+        public const string CustomDatabase = "Personalizada";
         
-        private static string EllProd = "ellprod";
-        private static string EllCont = "ellcont";
-        private static string EllDesa = "elldesa";
-        private static string EllTest = "elltest";
+        private const string EllProd = "ellprod";
+        private const string EllCont = "ellcont";
+        private const string EllDesa = "elldesa";
+        private const string EllTest = "elltest";
 
         public const string DefaultDbReferenceName = "ELLIPSE";
 
@@ -54,9 +55,9 @@ namespace EllipseCommonsClassLibrary.Connections
             if (serviceType == null)
                 serviceType = ServiceType.EwsService;
 
-            var serviceFile = Configuration.ServiceFilePath + "\\" + Configuration.ConfigXmlFileName;
-            var serviceFileBackUp = Configuration.BackUpServiceFilePath + "\\" + Configuration.ConfigXmlFileName;
-            var serviceFileLocal = Configuration.DefaultLocalDataPath + "\\" + Configuration.ConfigXmlFileName;
+            var serviceFile = Settings.CurrentSettings.ServiceFilePath + "\\" + Settings.CurrentSettings.ServicesConfigXmlFileName;
+            var serviceFileBackUp = Settings.CurrentSettings.BackUpServiceFilePath + "\\" + Settings.CurrentSettings.ServicesConfigXmlFileName;
+            var serviceFileLocal = Settings.CurrentSettings.DefaultLocalDataPath + "\\" + Settings.CurrentSettings.ServicesConfigXmlFileName;
 
             XDocument xmlDoc;
             if (File.Exists(serviceFile))
@@ -114,12 +115,12 @@ namespace EllipseCommonsClassLibrary.Connections
         public static List<string> GetEnvironmentList()
         {
             var environmentList = new List<string>();
-            if (Configuration.IsServiceListForced)
+            if (Settings.CurrentSettings.IsServiceListForced)
             {
                 var xmlDoc = new XmlDocument();
-                var urlPath = Configuration.ServiceFilePath + Configuration.ConfigXmlFileName;
-                var urlPathBackUp = Configuration.SecondaryServiceFilePath + Configuration.ConfigXmlFileName;
-                var urlLocalPath = Configuration.DefaultLocalDataPath + Configuration.ConfigXmlFileName;
+                var urlPath = Settings.CurrentSettings.ServiceFilePath + Settings.CurrentSettings.ServicesConfigXmlFileName;
+                var urlPathBackUp = Settings.CurrentSettings.SecondaryServiceFilePath + Settings.CurrentSettings.ServicesConfigXmlFileName;
+                var urlLocalPath = Settings.CurrentSettings.DefaultLocalDataPath + Settings.CurrentSettings.ServicesConfigXmlFileName;
 
                 if (File.Exists(urlPath))
                 {
@@ -136,11 +137,13 @@ namespace EllipseCommonsClassLibrary.Connections
                 else
                 {
                     throw new Exception("No se puede leer el archivo de configuración de servicios de Ellipse. Asegúrese de que el archivo exista o cree un archivo local.");
-                }const string fullNode = "//ellipse/url";
-                    var nodeItemList = xmlDoc.SelectSingleNode(fullNode).ChildNodes;
+                }
+                
+                const string fullNode = "//ellipse/url"; 
+                var nodeItemList = xmlDoc.SelectSingleNode(fullNode).ChildNodes;
 
-                    foreach (XmlNode item in nodeItemList)
-                        environmentList.Add(item.Name);
+                foreach (XmlNode item in nodeItemList)
+                    environmentList.Add(item.Name);
             }
             else
             {
@@ -161,10 +164,10 @@ namespace EllipseCommonsClassLibrary.Connections
 
             try
             {
-                if (Configuration.IsServiceListForced)
+                if (Settings.CurrentSettings.IsServiceListForced)
                 {
                     var xmlDoc = new XmlDocument();
-                    var urlPath = Path.Combine(Configuration.LocalDataPath, Configuration.DatabaseXmlFileName);
+                    var urlPath = Path.Combine(Settings.CurrentSettings.LocalDataPath, Settings.CurrentSettings.DatabaseXmlFileName);
                     
                     xmlDoc.Load(urlPath);
 

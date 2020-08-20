@@ -60,7 +60,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\EllipseClasses.cs" />
+    <Compile Include="Classes\StyleConstants.cs" />
     <Compile Include="Connections\DatabaseItem.cs" />
+    <Compile Include="Connections\EllipseConnections.cs" />
+    <Compile Include="Connections\EllipseUrlServices.cs" />
     <Compile Include="Connections\OracleConnector.cs" />
     <Compile Include="Settings\AboutBoxExcelAddIn.cs">
       <SubType>Form</SubType>
@@ -68,14 +72,16 @@
     <Compile Include="Settings\AboutBoxExcelAddIn.Designer.cs">
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
     </Compile>
-    <Compile Include="Classes\ArrayScreenNameValue.cs" />
+    <Compile Include="Classes\EllipseArrayScreenNameValue.cs" />
     <Compile Include="Settings\AssemblyItem.cs" />
-    <Compile Include="Settings\CommonSettings.cs" />
+    <Compile Include="Settings\EllipseAboutBoxExcelAddIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\Settings.cs" />
     <Compile Include="Settings\Debugger.cs" />
-    <Compile Include="Connections\Environments.cs" />
+    <Compile Include="Connections\EllipseEnvironments.cs" />
     <Compile Include="Constants\Districts.cs" />
     <Compile Include="Classes\EllipseCodeItem.cs" />
-    <Compile Include="Connections\Configuration.cs" />
     <Compile Include="EllipseFunctions.cs" />
     <Compile Include="Classes\ExcelStyleCells.cs" />
     <Compile Include="FormAuthenticate.cs">
@@ -83,7 +89,10 @@
     </Compile>
     <Compile Include="FormAuthenticate.Designer.cs" />
     <Compile Include="Constants\Groups.cs" />
-    <Compile Include="Classes\InputBox.cs" />
+    <Compile Include="Settings\EllipseDebugger.cs" />
+    <Compile Include="Settings\EllipseSettings.cs" />
+    <Compile Include="Utilities\EllipseUtilities.cs" />
+    <Compile Include="Utilities\InputBox.cs" />
     <Compile Include="Constants\ManagementArea.cs" />
     <Compile Include="PrimitiveClasses\JobsMwpDto.cs" />
     <Compile Include="PrimitiveClasses\TaskMwpDto.cs" />
@@ -109,13 +118,13 @@
     <Compile Include="Utilities\IConstants.cs" />
     <Compile Include="Utilities\Xml.cs" />
     <Compile Include="Utilities\DateTime.cs" />
-    <Compile Include="Utilities\EncryptString.cs" />
-    <Compile Include="Utilities\MyDateTime\Formats.cs" />
-    <Compile Include="Utilities\MyDateTime\Operations.cs" />
+    <Compile Include="Utilities\Encryption.cs" />
+    <Compile Include="Utilities\MyDateTime\EllipseFormats.cs" />
+    <Compile Include="Utilities\MyDateTime\EllipseOperations.cs" />
     <Compile Include="Utilities\FileWriter.cs" />
     <Compile Include="Utilities\MyKeyValuePair.cs" />
-    <Compile Include="Utilities\MyMath.cs" />
-    <Compile Include="Utilities\RuntimeConfigSettings.cs" />
+    <Compile Include="Utilities\Math.cs" />
+    <Compile Include="Settings\RuntimeConfigSettings.cs" />
     <Compile Include="Utilities\Shifts\ShiftCodes.cs" />
     <Compile Include="Utilities\Shifts\ShiftPeriods.cs" />
     <Compile Include="Utilities\Shifts\Slot.cs" />
@@ -205,12 +214,13 @@
     <None Include="Web References\ScreenService\ScreenService.wsdl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\cerrejon_logo.png" />
+    <EmbeddedResource Include="Resources\cerrejon_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\tnsnames.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\aboutPictureBox.png" />
     <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <ItemGroup>

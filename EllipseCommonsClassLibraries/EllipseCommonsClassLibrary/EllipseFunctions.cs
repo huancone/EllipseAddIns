@@ -42,7 +42,7 @@ namespace EllipseCommonsClassLibrary
         /// </summary>
         public EllipseFunctions()
         {
-            if(!Connections.Configuration.IsServiceListForced)
+            if(!Settings.CurrentSettings.IsServiceListForced)
               SetDBSettings(Connections.Environments.EllipseProductivo);
         }
 
