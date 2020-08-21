@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using CommonsClassLibrary.Connections;
 using CommonsClassLibrary.Utilities;
@@ -8,7 +9,7 @@ namespace CommonsClassLibrary
     /// <summary>
     ///     Debugger para gestionar los logs de errores
     /// </summary>
-    public class Debugger
+    public abstract class Debugger
     {
         public static bool DebugErrors = false;
         public static bool DebugWarnings = false;
@@ -18,12 +19,16 @@ namespace CommonsClassLibrary
 
         private static DebugError _lastError;
         private static DebugError _lastWarning;
-
+        public static string LocalDataPath = "";
+        public static string LogErrorFolder = @"logs\";
+        public static string LogQueriesFolder = @"logs\";
+        public static string LogDebugFolder = @"logs\";
         public static void LogError(string customDetails, string errorMessage)
         {
             try
             {
-                var errorFilePath = Settings.CurrentSettings.LocalDataPath + @"logs\";
+                
+                var errorFilePath = Path.Combine(LocalDataPath, LogErrorFolder);
                 var errorFileName = @"error" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                     ".txt";
 
@@ -59,7 +64,7 @@ namespace CommonsClassLibrary
         {
             try
             {
-                var warningFilePath = Settings.CurrentSettings.LocalDataPath + @"logs\";
+                var warningFilePath = Path.Combine(LocalDataPath, LogErrorFolder);
                 var warningFileName = @"warning" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                       ".txt";
 
@@ -99,8 +104,8 @@ namespace CommonsClassLibrary
             {
                 if (!DebugQueries)
                     return;
-
-                var queryFilePath = Settings.CurrentSettings.LocalDataPath + @"queries\";
+                
+                var queryFilePath = Path.Combine(LocalDataPath, LogQueriesFolder);
                 var queryFileName = @"queries" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                     ".txt";
                 
@@ -125,7 +130,7 @@ namespace CommonsClassLibrary
                 if (!DebugginMode)
                     return;
 
-                var debugFilePath = Settings.CurrentSettings.LocalDataPath + @"logs\";
+                var debugFilePath = Path.Combine(LocalDataPath, LogDebugFolder);
                 var debugFileName = @"debug" + MyUtilities.ToString(System.DateTime.Today, MyUtilities.DateTime.DateYYYYMMDD) +
                                     ".txt";
 

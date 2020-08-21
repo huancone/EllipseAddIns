@@ -7,7 +7,7 @@ using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Utilities;
 using System.Reflection;
 using System.Xml.Serialization;
-
+using CommonsClassLibrary.Connections;
 // ReSharper disable AccessToStaticMemberViaDerivedType
 
 namespace EllipseCommonsClassLibrary
@@ -52,6 +52,7 @@ namespace EllipseCommonsClassLibrary
             DefaultTnsnamesFilePath = @"c:\oracle\product\11.2.0\client\network\ADMIN\";
 
             //StaticReference Through All the Project
+            EllipseCommonsClassLibrary.Debugger.LocalDataPath = LocalDataPath;
             CurrentSettings = this;
             //Options
             OptionsSettings = GetOptionsSettings(defaultProgramOptions);
@@ -81,12 +82,23 @@ namespace EllipseCommonsClassLibrary
 
             try
             {
-                if (FileWriter.NormalizePath(targetUrl, true)
-                    .Equals(FileWriter.NormalizePath(CurrentSettings.DefaultServiceFilePath, true)))
-                    throw new Exception(
-                        "No se puede reemplazar el archivo de configuración original del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
+                //iniciamos las variables de directorio y archivos
                 var configFilePath = FileWriter.NormalizePath(targetUrl, true);
+                var defaultFilePath = FileWriter.NormalizePath(CurrentSettings.DefaultServiceFilePath, true);
                 var configFileName = CurrentSettings.ServicesConfigXmlFileName;
+
+                //comprobamos que la ruta no corresponda a la ruta predeterminada
+                if (configFilePath.Equals(defaultFilePath))
+                    throw new Exception("No se puede reemplazar el archivo " + configFileName + " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
+
+                //creamos una copia de seguridad si el archivo existe
+                if (FileWriter.CheckFileExist(Path.Combine(configFilePath, configFileName)))
+                {
+                    var backupFileName = configFileName + "_" + System.DateTime.Today.Year + System.DateTime.Today.Month + System.DateTime.Today.Day + ".BAK";
+                    if (!FileWriter.CheckFileExist(Path.Combine(configFilePath, backupFileName)))
+                        FileWriter.MoveFileToDirectory(configFileName, configFilePath, backupFileName, configFilePath);
+                }
+
 
                 FileWriter.CreateDirectory(configFilePath);
                 FileWriter.WriteTextToFile(xmlFile, configFileName, configFilePath);
@@ -103,14 +115,25 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                if (FileWriter.NormalizePath(targetUrl, true)
-                    .Equals(FileWriter.NormalizePath(CurrentSettings.DefaultServiceFilePath, true)))
-                    throw new Exception(
-                        "No se puede reemplazar el archivo de configuración original del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
+                //iniciamos las variables de directorio y archivos
                 var configFilePath = FileWriter.NormalizePath(targetUrl, true);
+                var defaultFilePath = FileWriter.NormalizePath(CurrentSettings.DefaultServiceFilePath, true);
                 var sourceFilePath = FileWriter.NormalizePath(sourceUrl, true);
                 var configFileName = CurrentSettings.ServicesConfigXmlFileName;
 
+                //comprobamos que la ruta no corresponda a la ruta predeterminada
+                if (configFilePath.Equals(defaultFilePath))
+                    throw new Exception("No se puede reemplazar el archivo " + configFileName + " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
+
+                //creamos una copia de seguridad si el archivo existe
+                if (FileWriter.CheckFileExist(Path.Combine(configFilePath, configFileName)))
+                {
+                    var backupFileName = configFileName + "_" + System.DateTime.Today.Year + System.DateTime.Today.Month + System.DateTime.Today.Day + ".BAK";
+                    if (!FileWriter.CheckFileExist(Path.Combine(configFilePath, backupFileName)))
+                        FileWriter.MoveFileToDirectory(configFileName, configFilePath, backupFileName, configFilePath);
+                }
+
+                //realizamos la acción
                 FileWriter.CreateDirectory(configFilePath);
                 FileWriter.CopyFileToDirectory(configFileName, sourceFilePath, configFilePath);
             }
@@ -126,12 +149,18 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                if (FileWriter.NormalizePath(CurrentSettings.ServiceFilePath, true)
-                    .Equals(FileWriter.NormalizePath(CurrentSettings.DefaultServiceFilePath, true)))
-                    throw new Exception(
-                        "No se puede eliminar el archivo de configuración original del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
+                //iniciamos las variables de directorio y archivos
                 var configFilePath = FileWriter.NormalizePath(CurrentSettings.ServiceFilePath, true);
-                FileWriter.DeleteFile(configFilePath, CurrentSettings.ServicesConfigXmlFileName);
+                var defaultFilePath = FileWriter.NormalizePath(CurrentSettings.DefaultServiceFilePath, true);
+                var configFileName = CurrentSettings.ServicesConfigXmlFileName;
+
+                //comprobamos que la ruta no corresponda a la ruta predeterminada
+                if (configFilePath.Equals(defaultFilePath))
+                    throw new Exception("No se puede reemplazar el archivo " + configFileName + " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
+
+                //realizamos la acción
+                FileWriter.DeleteFile(configFilePath, configFileName);
+                //restablecemos al valor predeterminado
                 CurrentSettings.ServiceFilePath = CurrentSettings.DefaultServiceFilePath;
             }
             catch (Exception ex)
@@ -145,17 +174,24 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                if (FileWriter.NormalizePath(targetUrl, true)
-                    .Equals(FileWriter.NormalizePath(CurrentSettings.DefaultTnsnamesFilePath, true)))
-                    throw new Exception("No se puede reemplazar el archivo " + CurrentSettings.TnsnamesFileName +
-                                        " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
-                if (File.Exists(CurrentSettings.TnsnamesFilePath + CurrentSettings.TnsnamesFileName))
-                    FileWriter.MoveFileToDirectory(CurrentSettings.TnsnamesFileName, CurrentSettings.TnsnamesFilePath,
-                        CurrentSettings.TnsnamesFileName + System.DateTime.Today.Year + System.DateTime.Today.Month + System.DateTime.Today.Day + ".BAK",
-                        CurrentSettings.TnsnamesFilePath);
+                //iniciamos las variables de directorio y archivos
                 var configFilePath = FileWriter.NormalizePath(targetUrl, true);
+                var defaultFilePath = FileWriter.NormalizePath(CurrentSettings.DefaultTnsnamesFilePath, true);
                 var configFileName = CurrentSettings.TnsnamesFileName;
 
+                //comprobamos que la ruta no corresponda a la ruta predeterminada
+                if (configFilePath.Equals(defaultFilePath))
+                    throw new Exception("No se puede reemplazar el archivo " + configFileName + " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
+
+                //creamos una copia de seguridad si el archivo existe
+                if (FileWriter.CheckFileExist(Path.Combine(configFilePath, configFileName)))
+                {
+                    var backupFileName = configFileName + "_" + System.DateTime.Today.Year + System.DateTime.Today.Month + System.DateTime.Today.Day + ".BAK";
+                    if (!FileWriter.CheckFileExist(Path.Combine(configFilePath, backupFileName)))
+                        FileWriter.MoveFileToDirectory(configFileName, configFilePath, backupFileName, configFilePath);
+                }
+
+                //realizamos la acción
                 var assembly = Assembly.GetExecutingAssembly();
                 var resourceName = "EllipseCommonsClassLibrary.Resources.tnsnames.txt";
                 using (var stream = assembly.GetManifestResourceStream(resourceName))
@@ -178,14 +214,25 @@ namespace EllipseCommonsClassLibrary
         {
             try
             {
-                if (FileWriter.NormalizePath(targetUrl, true)
-                    .Equals(FileWriter.NormalizePath(CurrentSettings.DefaultTnsnamesFilePath, true)))
-                    throw new Exception("No se puede reemplazar el archivo " + CurrentSettings.TnsnamesFileName +
-                                        " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
+                //iniciamos las variables de directorio y archivo
                 var configFilePath = FileWriter.NormalizePath(targetUrl, true);
+                var defaultFilePath = FileWriter.NormalizePath(CurrentSettings.DefaultTnsnamesFilePath, true);
                 var sourceFilePath = FileWriter.NormalizePath(sourceUrl, true);
                 var configFileName = CurrentSettings.TnsnamesFileName;
 
+                //comprobamos que la ruta no corresponda a la ruta predeterminada
+                if (configFilePath.Equals(defaultFilePath))
+                    throw new Exception("No se puede reemplazar el archivo " + configFileName + " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
+
+                //creamos una copia de seguridad si el archivo existe
+                if (FileWriter.CheckFileExist(Path.Combine(configFilePath, configFileName)))
+                {
+                    var backupFileName = configFileName + "_" + System.DateTime.Today.Year + System.DateTime.Today.Month + System.DateTime.Today.Day + ".BAK";
+                    if (!FileWriter.CheckFileExist(Path.Combine(configFilePath, backupFileName)))
+                        FileWriter.MoveFileToDirectory(configFileName, configFilePath,backupFileName, configFilePath);
+                }
+
+                //realizamos la acción
                 FileWriter.CreateDirectory(configFilePath);
                 FileWriter.CopyFileToDirectory(configFileName, sourceFilePath, configFilePath);
             }
@@ -197,7 +244,7 @@ namespace EllipseCommonsClassLibrary
             }
         }
 
-        public void GenerateEllipseDatabaseFile()
+        public void GenerateEllipseDatabaseFile(string targetUrl = null)
         {
             var databaseList = new List<DatabaseItem>();
             databaseList.Add(new DatabaseItem("Productivo", "EL8PROD", "SIGCON", "ventyx", "ELLIPSE", null, null));
@@ -230,9 +277,21 @@ namespace EllipseCommonsClassLibrary
 
             try
             {
-                var configFilePath = FileWriter.NormalizePath(CurrentSettings.LocalDataPath, true);
+                //iniciamos las variables de directorio y archivo
+                if (targetUrl == null)
+                    targetUrl = CurrentSettings.LocalDataPath;
+                var configFilePath = FileWriter.NormalizePath(targetUrl, true);
                 var configFileName = CurrentSettings.DatabaseXmlFileName;
+                
+                //creamos una copia de seguridad si el archivo existe
+                if (FileWriter.CheckFileExist(Path.Combine(configFilePath, configFileName)))
+                {
+                    var backupFileName = configFileName + "_" + System.DateTime.Today.Year + System.DateTime.Today.Month + System.DateTime.Today.Day + ".BAK";
+                    if (!FileWriter.CheckFileExist(Path.Combine(configFilePath, backupFileName)))
+                        FileWriter.MoveFileToDirectory(configFileName, configFilePath, backupFileName, configFilePath);
+                }
 
+                //realizamos la acción
                 FileWriter.CreateDirectory(configFilePath);
                 FileWriter.WriteTextToFile(xmlFile, configFileName, configFilePath);
             }
@@ -244,12 +303,17 @@ namespace EllipseCommonsClassLibrary
             }
         }
 
-        public void DeleteEllipseDatabaseFile()
+        public void DeleteEllipseDatabaseFile(string targetUrl = null)
         {
             try
             {
-                var configFilePath = FileWriter.NormalizePath(CurrentSettings.ServiceFilePath, true);
-                FileWriter.DeleteFile(configFilePath, CurrentSettings.DatabaseXmlFileName);
+                //iniciamos las variables de directorio y archivo
+                if (targetUrl == null)
+                    targetUrl = CurrentSettings.LocalDataPath;
+                var configFilePath = FileWriter.NormalizePath(targetUrl, true);
+                var configFileName = CurrentSettings.DatabaseXmlFileName;
+                
+                FileWriter.DeleteFile(configFilePath, configFileName);
             }
             catch (Exception ex)
             {

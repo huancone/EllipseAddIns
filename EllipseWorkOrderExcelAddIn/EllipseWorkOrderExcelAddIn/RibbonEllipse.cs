@@ -139,6 +139,8 @@ namespace EllipseWorkOrderExcelAddIn
             //
             settings.UpdateOptionsSettings(options);
         }
+        
+ #region -- buttonActions -- 
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -498,8 +500,7 @@ namespace EllipseWorkOrderExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
-
-
+        
         private void btnUpdateUnitsProgress_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -553,6 +554,125 @@ namespace EllipseWorkOrderExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+
+        private void btnCleanWorkOrderSheet_Click(object sender, RibbonControlEventArgs e)
+        {
+            CleanTable(TableName01);
+            CleanTable(TableNameD01);
+            CleanTable(TableNameD02);
+            CleanTable(TableNameD03);
+            CleanTable(TableNameD04);
+        }
+
+        private void btnCleanCloseSheets_Click(object sender, RibbonControlEventArgs e)
+        {
+            CleanTable(TableName04);
+            CleanTable(TableName05);
+        }
+        private void btnCleanDuration_Click(object sender, RibbonControlEventArgs e)
+        {
+            CleanTable(TableName06);
+        }
+        private void btnReviewReferenceCodes_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameD04))
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(ReviewRefCodesList);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+        private void btnUpdateReferenceCodes_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameD04))
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                    _thread = new Thread(UpdateReferenceCodes);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+        private void btnCleanQualitySheet_Click(object sender, RibbonControlEventArgs e)
+        {
+            CleanTable(TableNameQ01);
+        }
+        private void btnReviewQuality_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameQ01))
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReviewQualityList);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReviewQuality()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+        private void btnReReviewQuality_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameQ01))
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(ReReviewQualityList);
+
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:ReReviewQuality()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
+
+        #endregion
         private void ReviewWorkProgress()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
@@ -735,123 +855,8 @@ namespace EllipseWorkOrderExcelAddIn
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             if (_cells != null) _cells.SetCursorDefault();
         }
-        private void btnCleanWorkOrderSheet_Click(object sender, RibbonControlEventArgs e)
-        {
-            CleanTable(TableName01);
-            CleanTable(TableNameD01);
-            CleanTable(TableNameD02);
-            CleanTable(TableNameD03);
-            CleanTable(TableNameD04);
-        }
-
-        private void btnCleanCloseSheets_Click(object sender, RibbonControlEventArgs e)
-        {
-            CleanTable(TableName04);
-            CleanTable(TableName05);
-        }
-        private void btnCleanDuration_Click(object sender, RibbonControlEventArgs e)
-        {
-            CleanTable(TableName06);
-        }
-        private void btnReviewReferenceCodes_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameD04))
-                {
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                    _thread = new Thread(ReviewRefCodesList);
-
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-            }
-        }
-        private void btnUpdateReferenceCodes_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameD04))
-                {
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                    _thread = new Thread(UpdateReferenceCodes);
-
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("RibbonEllipse.cs:ReviewRefCodesList()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-            }
-        }
-
-        private void btnCleanQualitySheet_Click(object sender, RibbonControlEventArgs e)
-        {
-            CleanTable(TableNameQ01);
-        }
-        private void btnReviewQuality_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameQ01))
-                {
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(ReviewQualityList);
-
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("RibbonEllipse.cs:ReviewQuality()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-            }
-        }
-        private void btnReReviewQuality_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetNameQ01))
-                {
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(ReReviewQualityList);
-
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("RibbonEllipse.cs:ReReviewQuality()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-            }
-        }
+        
+        
         private void FormatSheet()
         {
             try

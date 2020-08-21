@@ -14,7 +14,6 @@ namespace CommonsClassLibrary
         private Settings.AssemblyItem addinAssembly;
         public AboutBoxExcelAddIn()
         {
-            //addinAssembly = new Settings.AssemblyItem(Assembly.GetCallingAssembly());
             addinAssembly = new Settings.AssemblyItem(Settings.GetLastAssembly());
             InitializeComponent();
             Text = string.Format("About {0}", addinAssembly.AssemblyTitle);
@@ -25,11 +24,12 @@ namespace CommonsClassLibrary
             textBoxDescription.Text = addinAssembly.AssemblyDescription;
             labelDeveloper1.Text = addinAssembly.AssemblyDeveloper1;
             labelDeveloper2.Text = addinAssembly.AssemblyDeveloper2;
+            //var resourceFile = "CommonsClassLibrary.Resources.aboutPictureBox.png";
+            //logoPictureBox.Image = Image.FromStream(assembly.GetManifestResourceStream(resourceFile));
         }
 
         public AboutBoxExcelAddIn(string developerName1, string developerName2)
         {
-            //addinAssembly = new Settings.AssemblyItem(Assembly.GetCallingAssembly());
             addinAssembly = new Settings.AssemblyItem(Settings.GetLastAssembly());
 
             InitializeComponent();
@@ -41,8 +41,8 @@ namespace CommonsClassLibrary
             textBoxDescription.Text = addinAssembly.AssemblyDescription;
             labelDeveloper1.Text = developerName1;
             labelDeveloper2.Text = developerName2;
-            //logoPictureBox.Image = Resources.ResourceManager.GetObject();
-                
+            //var resourceFile = "CommonsClassLibrary.Resources.aboutPictureBox.png";
+            //logoPictureBox.Image = Image.FromStream(assembly.GetManifestResourceStream(resourceFile));
         }
 
         private void tableLayoutPanel_Paint(object sender, PaintEventArgs e)
@@ -58,16 +58,7 @@ namespace CommonsClassLibrary
 
         private void btnRepository_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Process.Start(Settings.CurrentSettings.DefaultRepositoryFilePath);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    @"No se puede abrir la ruta especificada. Asegúrese que la ruta es correcta e intente de nuevo." +
-                    ex.Message, @"Abrir directorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            OpenRepository();
         }
 
         public void UpdatePictureBox(Image img)
@@ -80,6 +71,23 @@ namespace CommonsClassLibrary
             logoPictureBox.ImageLocation = url;
         }
         public abstract void ShowAdditionalOptions();
+        public abstract void OpenRepository();
 
+        /*
+        //Método de Ejemplo Para Abrir Enlace de Repositorio
+        public void OpenRepository()
+        {
+            try
+            {
+                Process.Start(Settings.CurrentSettings.DefaultRepositoryFilePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    @"No se puede abrir la ruta especificada. Asegúrese que la ruta es correcta e intente de nuevo." +
+                    ex.Message, @"Abrir directorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        */
     }
 }

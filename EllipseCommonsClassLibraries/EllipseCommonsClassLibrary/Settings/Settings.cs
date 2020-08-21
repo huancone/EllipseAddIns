@@ -48,28 +48,29 @@ namespace CommonsClassLibrary
         {
             AssemblyProgram = new Settings.AssemblyItem(GetLastAssembly());
             //GeneralFolder
-            DefaultLocalDataPath = @"c:\ellipse\";
-            GeneralConfigFolder = @"addins\" + AssemblyProgram.AssemblyTitle;
-            GeneralConfigFileName = "config.xml";
-            DefaultRepositoryFilePath = @"\\lmnoas02\Shared\Sistemas\Mina\Proyecto Ellipse\Ellipse 8\ExcelAddIn_E8 (Loaders)\";
+            DefaultLocalDataPath = @"c:\project\";
+            GeneralConfigFolder = @"apps\" + AssemblyProgram.AssemblyTitle;
+            GeneralConfigFileName = "settings.xml";
+            DefaultRepositoryFilePath = @"\\project\repository\";
 
             //Windows Environment Variables
             ProgramEnvironmentHomeVariable = AssemblyProgram.AssemblyTitle + "Home";
-            HomeEnvironmentVariable = "EllipseAddInsHome";
-            ServicesEnvironmentVariable = "EllipseServiceUrlFile";
-            SecondaryServicesEnvironmentVariable = "EllipseSecondaryServiceUrlFile";
+            HomeEnvironmentVariable = "ProjectHome";
+            ServicesEnvironmentVariable = "ProjectServiceUrlFile";
+            SecondaryServicesEnvironmentVariable = "ProjectSecondaryServiceUrlFile";
 
             //Services & Databases Information
-            ServicesForcedList = "EllipseServiceForcedList";
-            ServicesConfigXmlFileName = "EllipseConfiguration.xml";
+            ServicesForcedList = "ProjectServiceForcedList";
+            ServicesConfigXmlFileName = "ProjectServices.xml";
             TnsnamesFileName = "tnsnames.ora";
-            DatabaseXmlFileName = "EllipseDatabases.xml";
+            DatabaseXmlFileName = "ProjectDatabases.xml";
 
-            DefaultServiceFilePath = @"\\lmnoas02\SideLine\EllipsePopups\Ellipse8\";
-            SecondaryServiceFilePath = @"\\pbvshr01\SideLine\EllipsePopups\Ellipse8\";
-            DefaultTnsnamesFilePath = @"c:\oracle\product\11.2.0\client\network\ADMIN\";
+            DefaultServiceFilePath = @"\\project\";
+            SecondaryServiceFilePath = @"\\project\";
+            DefaultTnsnamesFilePath = @"c:\project\network\ADMIN\";
 
             //StaticReference Through All the Project
+            Debugger.LocalDataPath = LocalDataPath;
             CurrentSettings = this;
             //Options
             OptionsSettings = GetOptionsSettings(defaultProgramOptions);
@@ -248,22 +249,22 @@ namespace CommonsClassLibrary
             }
             set
             {
-                var currentVar =
-                    Environment.GetEnvironmentVariable(HomeEnvironmentVariable, EnvironmentVariableTarget.User);
+                var currentVar = Environment.GetEnvironmentVariable(HomeEnvironmentVariable, EnvironmentVariableTarget.User);
                 //no existe y es igual a _origen -> no hace nada
                 if (string.IsNullOrWhiteSpace(currentVar) && value.Equals(DefaultLocalDataPath))
                     return;
-                //no existe y es diferente a _origen -> actualiza
-                if (string.IsNullOrWhiteSpace(currentVar) && !value.Equals(DefaultLocalDataPath))
-                    Environment.SetEnvironmentVariable(HomeEnvironmentVariable, value,
-                        EnvironmentVariableTarget.User);
+
                 //existe y es igual a environment -> no hace nada
                 if (!string.IsNullOrWhiteSpace(currentVar) && value.Equals(currentVar))
                     return;
+
+                //no existe y es diferente a _origen -> actualiza
+                if (string.IsNullOrWhiteSpace(currentVar) && !value.Equals(DefaultLocalDataPath))
+                    Environment.SetEnvironmentVariable(HomeEnvironmentVariable, value, EnvironmentVariableTarget.User);
+
                 //existe y es diferente a environment -> actualiza
-                if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
-                    Environment.SetEnvironmentVariable(HomeEnvironmentVariable, value,
-                        EnvironmentVariableTarget.User);
+                else if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
+                    Environment.SetEnvironmentVariable(HomeEnvironmentVariable, value, EnvironmentVariableTarget.User);
             }
         }
 
@@ -283,17 +284,15 @@ namespace CommonsClassLibrary
                 //no existe y es igual a _origen -> no hace nada
                 if (string.IsNullOrWhiteSpace(currentVar) && value.Equals(SecondaryServiceFilePath))
                     return;
-                //no existe y es diferente a _origen -> actualiza
-                if (string.IsNullOrWhiteSpace(currentVar) && !value.Equals(SecondaryServiceFilePath))
-                    Environment.SetEnvironmentVariable(SecondaryServicesEnvironmentVariable, value,
-                        EnvironmentVariableTarget.User);
                 //existe y es igual a environment -> no hace nada
                 if (!string.IsNullOrWhiteSpace(currentVar) && value.Equals(currentVar))
                     return;
+                //no existe y es diferente a _origen -> actualiza
+                if (string.IsNullOrWhiteSpace(currentVar) && !value.Equals(SecondaryServiceFilePath))
+                    Environment.SetEnvironmentVariable(SecondaryServicesEnvironmentVariable, value, EnvironmentVariableTarget.User);
                 //existe y es diferente a environment -> actualiza
-                if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
-                    Environment.SetEnvironmentVariable(SecondaryServicesEnvironmentVariable, value,
-                        EnvironmentVariableTarget.User);
+                else if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
+                    Environment.SetEnvironmentVariable(SecondaryServicesEnvironmentVariable, value, EnvironmentVariableTarget.User);
             }
         }
 
@@ -313,17 +312,15 @@ namespace CommonsClassLibrary
                 //no existe y es igual a _origen -> no hace nada
                 if (string.IsNullOrWhiteSpace(currentVar) && value.Equals(DefaultServiceFilePath))
                     return;
-                //no existe y es diferente a _origen -> actualiza
-                if (string.IsNullOrWhiteSpace(currentVar) && !value.Equals(DefaultServiceFilePath))
-                    Environment.SetEnvironmentVariable(ServicesEnvironmentVariable, value,
-                        EnvironmentVariableTarget.User);
                 //existe y es igual a environment -> no hace nada
                 if (!string.IsNullOrWhiteSpace(currentVar) && value.Equals(currentVar))
                     return;
+                //no existe y es diferente a _origen -> actualiza
+                if (string.IsNullOrWhiteSpace(currentVar) && !value.Equals(DefaultServiceFilePath))
+                    Environment.SetEnvironmentVariable(ServicesEnvironmentVariable, value, EnvironmentVariableTarget.User);
                 //existe y es diferente a environment -> actualiza
-                if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
-                    Environment.SetEnvironmentVariable(ServicesEnvironmentVariable, value,
-                        EnvironmentVariableTarget.User);
+                else if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
+                    Environment.SetEnvironmentVariable(ServicesEnvironmentVariable, value, EnvironmentVariableTarget.User);
             }
         }
 

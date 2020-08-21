@@ -6,10 +6,10 @@ using System.Linq;
 using System.Web.Services.Ellipse.Post;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Utilities;
-using System.Threading;
+using CommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Connections;
 using Oracle.ManagedDataAccess.Client;
+using MyUtilities = CommonsClassLibrary.Utilities.MyUtilities;
 
 namespace EllipseCommonsClassLibrary
 {
@@ -43,7 +43,7 @@ namespace EllipseCommonsClassLibrary
         public EllipseFunctions()
         {
             if(!Settings.CurrentSettings.IsServiceListForced)
-              SetDBSettings(Connections.Environments.EllipseProductivo);
+              SetDBSettings(Environments.EllipseProductivo);
         }
 
         public EllipseFunctions(EllipseFunctions ellipseFunctions)
@@ -79,7 +79,7 @@ namespace EllipseCommonsClassLibrary
         public bool SetDBSettings(string environment)
         {
             CleanDbSettings();
-            var dbItem = Connections.Environments.GetDatabaseItem(environment);
+            var dbItem = Environments.GetDatabaseItem(environment);
             if(dbItem == null || dbItem.Name.Equals(null))
                 throw new NullReferenceException("No se puede encontrar la base de datos seleccionada. Verifique que eligió un servidor de ellipse válido y que la base de datos relacionada existe");
 
@@ -105,7 +105,7 @@ namespace EllipseCommonsClassLibrary
             CleanDbSettings();
             _dbItem = new DatabaseItem(dbname, dbuser, dbpass, dblink, dbreference, dbcatalog);
             _oracleConnector = new OracleConnector(_dbItem);
-            SetCurrentEnvironment(Connections.Environments.CustomDatabase);
+            SetCurrentEnvironment(Environments.CustomDatabase);
             return true;
         }
 
@@ -123,7 +123,7 @@ namespace EllipseCommonsClassLibrary
             CleanDbSettings();
             _dbItem = new DatabaseItem(dbname, dbuser, dbpass, Environments.DefaultDbReferenceName, "", dbcatalog);
             _oracleConnector = new OracleConnector(_dbItem);
-            SetCurrentEnvironment(Connections.Environments.CustomDatabase);
+            SetCurrentEnvironment(Environments.CustomDatabase);
             return true;
         }
         public void SetConnectionTimeOut(int timeout)
@@ -165,7 +165,7 @@ namespace EllipseCommonsClassLibrary
         [Obsolete("Function is deprecated. Please use EllipseCommonsClassLibrary.Connections.Environments.GetServiceUrl")]
         public string GetServicesUrl(string environment, string serviceType = null)
         {
-            return Connections.Environments.GetServiceUrl(environment, serviceType);
+            return Environments.GetServiceUrl(environment, serviceType);
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace EllipseCommonsClassLibrary
         /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
         public SqlDataReader GetSqlQueryResult(string sqlQuery, string customConnectionString = null)
         {
-            Debugger.LogQuery(sqlQuery);
+            CommonsClassLibrary.Debugger.LogQuery(sqlQuery);
             var dbcatalog = "";
             if (_dbItem.DbCatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
                 dbcatalog = "Initial Catalog=" + _dbItem.DbCatalog + "; ";
@@ -245,14 +245,14 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                CommonsClassLibrary.Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 _queryAttempt = 0;
                 throw;
             }
         }
         public DataSet GetDataSetSqlQueryResult(string sqlQuery, string customConnectionString = null)
         {
-            Debugger.LogQuery(sqlQuery);
+            CommonsClassLibrary.Debugger.LogQuery(sqlQuery);
             var dbcatalog = "";
             if (_dbItem.DbCatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
                 dbcatalog = "Initial Catalog=" + _dbItem.DbCatalog + "; ";
@@ -281,7 +281,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                CommonsClassLibrary.Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 _queryAttempt = 0;
                 throw;
             }
@@ -349,7 +349,7 @@ namespace EllipseCommonsClassLibrary
                 }
                 catch (Exception ex)
                 {
-                    Debugger.LogError("RibbonEllipse:revertOperation(Screen.OperationContext, Screen.ScreenService)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                    CommonsClassLibrary.Debugger.LogError("RibbonEllipse:revertOperation(Screen.OperationContext, Screen.ScreenService)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                     prevProgram = actualProgram;
 
                 }
@@ -367,13 +367,13 @@ namespace EllipseCommonsClassLibrary
             //Si no existe un reply es error de ejecución. O si el reply tiene un error de datos
             if (reply == null)
             {
-                Debugger.LogError("RibbonEllipse:checkReplyError(Screen.ScreenDTO)", "Se ha producido un error en tiempo de ejecución: null reply error");
+                CommonsClassLibrary.Debugger.LogError("RibbonEllipse:checkReplyError(Screen.ScreenDTO)", "Se ha producido un error en tiempo de ejecución: null reply error");
                 return true;
             }
             // ReSharper disable once InvertIf
             if (reply.message.Length >= 2 && reply.message.Substring(0, 2) == "X2")
             {
-                Debugger.LogError("RibbonEllipse: checkReplyError(Screen.ScreenDTO)", reply.message);
+                CommonsClassLibrary.Debugger.LogError("RibbonEllipse: checkReplyError(Screen.ScreenDTO)", reply.message);
                 return true;
             }
             return false;
@@ -388,19 +388,19 @@ namespace EllipseCommonsClassLibrary
             //Si no existe un reply es error de ejecución. O si el reply tiene un warning de datos
             if (reply == null)
             {
-                Debugger.LogError("RibbonEllipse:checkReplyWarning(Screen.ScreenDTO)", "Se ha producido un error en tiempo de ejecución: null reply error");
+                CommonsClassLibrary.Debugger.LogError("RibbonEllipse:checkReplyWarning(Screen.ScreenDTO)", "Se ha producido un error en tiempo de ejecución: null reply error");
                 return true;
             }
             if (reply.message != null && reply.message.Length >= 2 && reply.message.Substring(0, 2) == "W2")
             {
-                Debugger.LogWarning("Warning", reply.message);
+                CommonsClassLibrary.Debugger.LogWarning("Warning", reply.message);
 
                 return true;
             }
             if (reply.message == null || reply.functionKeys == null || !reply.functionKeys.StartsWith("XMIT-WARNING"))
                 return false;
 
-            Debugger.LogWarning("Warning", reply.functionKeys);
+            CommonsClassLibrary.Debugger.LogWarning("Warning", reply.functionKeys);
             return true;
         }
 
@@ -488,7 +488,7 @@ namespace EllipseCommonsClassLibrary
 
             var query = "SELECT * FROM " + _dbItem.DbReference + ".MSF010" + _dbItem.DbLink + " WHERE TABLE_TYPE = '" + tableType + "'" +
                         paramActiveOnly + " " + additionalQueryParameters;
-            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = EllipseCommonsClassLibrary.Utilities.MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             var drItemCodes = GetQueryResult(query);
 

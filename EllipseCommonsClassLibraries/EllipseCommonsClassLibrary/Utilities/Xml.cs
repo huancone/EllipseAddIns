@@ -84,7 +84,9 @@ namespace CommonsClassLibrary.Utilities
                     XmlReader reader = XmlReader.Create(memoryStream);
                     try
                     {
-                        return xmlSerializer.Deserialize(reader);
+                        var deserializedObject = xmlSerializer.Deserialize(reader);
+                        reader.Close();
+                        return deserializedObject;
                     }
                     catch(Exception ex)
                     {
@@ -101,7 +103,9 @@ namespace CommonsClassLibrary.Utilities
 
                 try
                 {
-                    return xs.Deserialize(reader);
+                    var deserializedObject = xs.Deserialize(reader);
+                    reader.Close();
+                    return deserializedObject;
                 }
                 catch (Exception ex)
                 {

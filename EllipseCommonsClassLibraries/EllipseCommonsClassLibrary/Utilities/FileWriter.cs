@@ -132,7 +132,19 @@ namespace CommonsClassLibrary.Utilities
                 throw;
             }
         }
-
+        public static bool CheckFileExist(string filePath)
+        {
+            try
+            {
+                // Determine whether the directory exists.
+                return File.Exists(filePath);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("FileWriter:CheckFileExist::" + filePath, ex.Message);
+                throw;
+            }
+        }
         public static void CopyFileToDirectory(string fileName, string sourcePath, string targetPath,
             bool overwrite = true)
         {

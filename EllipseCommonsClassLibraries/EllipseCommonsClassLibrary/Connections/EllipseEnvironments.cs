@@ -4,6 +4,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using CommonsClassLibrary.Connections;
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable AccessToStaticMemberViaDerivedType
 

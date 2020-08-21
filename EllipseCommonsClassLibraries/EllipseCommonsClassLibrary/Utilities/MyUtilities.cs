@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
-using System.Xml;
-using CommonsClassLibrary.Classes;
 
 namespace CommonsClassLibrary.Utilities
 {
