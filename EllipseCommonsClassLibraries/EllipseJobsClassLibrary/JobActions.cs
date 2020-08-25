@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using EllipseCommonsClassLibrary;
 using EllipseCommonsClassLibrary.Classes;
 using EllipseCommonsClassLibrary.Connections;
+using CommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
 using EllipseStandardJobsClassLibrary;
@@ -120,7 +121,7 @@ namespace EllipseJobsClassLibrary
             requestXml = requestXml + "				<name>com.mincom.ellipse.service.m8mwp.workordertaskmwp.WorkOrderTaskMWPService</name>";
             requestXml = requestXml + "				<operation>tasksSearch</operation>";
             requestXml = requestXml + "				<returnWarnings>true</returnWarnings>";
-            requestXml = requestXml + "				<dto uuid=\"" + Util.GetNewOperationId() + "\" deleted=\"true\" modified=\"false\">";
+            requestXml = requestXml + "				<dto uuid=\"" + PostService.GetNewConnectionId() + "\" deleted=\"true\" modified=\"false\">";
             requestXml = requestXml + "					<taskSearchType>T</taskSearchType>";
             requestXml = requestXml + "					<isTaskSearch>Y</isTaskSearch>";
             requestXml = requestXml + "                 <workOrderSearchMethod>EM</workOrderSearchMethod>";
@@ -159,7 +160,7 @@ namespace EllipseJobsClassLibrary
             requestXml = requestXml + "				</dto>";
             requestXml = requestXml + "				<maxInstances>1000</maxInstances>";
             requestXml = requestXml + "			</data>";
-            requestXml = requestXml + "			<id>" + Util.GetNewOperationId() + "</id>";
+            requestXml = requestXml + "			<id>" + PostService.GetNewConnectionId() + "</id>";
             requestXml = requestXml + "		</action>";
             requestXml = requestXml + "	</actions>";
             requestXml = requestXml + "	<chains/>";

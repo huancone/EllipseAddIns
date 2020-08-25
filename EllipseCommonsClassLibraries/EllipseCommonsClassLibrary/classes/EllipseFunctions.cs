@@ -404,7 +404,8 @@ namespace EllipseCommonsClassLibrary
             return true;
         }
 
-        public bool CheckReplyError(ResponseDTO reply)
+        [Obsolete("CheckReplyError(ResponseDto) is deprecated, please use System.Web.Services.Ellipse.Post.ResponseDto GotErrorMessages() or GetStringErrorMessages()")]
+        public bool CheckReplyError(ResponseDto reply)
         {
             
             if (!reply.GotErrorMessages()) return true;
@@ -415,7 +416,9 @@ namespace EllipseCommonsClassLibrary
                 throw new Exception(errorMessage);
             return false;
         }
-        public bool CheckReplyWarning(ResponseDTO reply)
+
+        [Obsolete("CheckReplyWarning(ResponseDto) is deprecated, please use System.Web.Services.Ellipse.Post.ResponseDto GotWarningMessages() or GetStringWarningMessages()")]
+        public bool CheckReplyWarning(ResponseDto reply)
         {
             
             if (!reply.GotWarningMessages()) return true;
@@ -518,19 +521,20 @@ namespace EllipseCommonsClassLibrary
             return itemList.ToDictionary(item => item.code, item => item.description);
         }
 
-        public void SetPostService(string ellipseUser, string ellipsePswd, string ellipsePost, string ellipseDsct, string urlService)
+        public PostService SetPostService(string ellipseUser, string ellipsePswd, string ellipsePost, string ellipseDsct, string urlService)
         {
             PostServiceProxy = new PostService(ellipseUser, ellipsePswd, ellipsePost, ellipseDsct, urlService);
+            return PostServiceProxy;
         }
 
-        public ResponseDTO InitiatePostConnection()
+        public ResponseDto InitiatePostConnection()
         {
             if(PostServiceProxy == null)
                 throw new Exception("No se puede iniciar un servicio post no establecido");
             return PostServiceProxy.InitConexion();
         }
 
-        public ResponseDTO ExecutePostRequest(string xmlRequest)
+        public ResponseDto ExecutePostRequest(string xmlRequest)
         {
             return PostServiceProxy.ExecutePostRequest(xmlRequest);
         }

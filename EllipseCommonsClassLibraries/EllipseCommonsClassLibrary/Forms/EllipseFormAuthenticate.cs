@@ -20,10 +20,24 @@ namespace EllipseCommonsClassLibrary
             InitializeComponent();
             txtUsername.Text = EllipseUser;
             txtPassword.Text = EllipsePswd;
-            txtDistrict.Text = EllipseDsct;
             drpPosition.Text = EllipsePost;
+            txtDistrict.Text = EllipseDsct;
         }
-
+        public FormAuthenticate(string user, string password, string position, string district)
+        {
+            InitializeComponent();
+            txtUsername.Text = EllipseUser = user;
+            txtPassword.Text = EllipsePswd = password;
+            drpPosition.Text = EllipsePost = position;
+            txtDistrict.Text = EllipseDsct = district;
+        }
+        public void SetUserAuthentication(string user, string password, string position, string district)
+        {
+            txtUsername.Text = EllipseUser = user;
+            txtPassword.Text = EllipsePswd = password;
+            drpPosition.Text = EllipsePost = position;
+            txtDistrict.Text = EllipseDsct = district;
+        }
         private void btnAuthenticate_Click(object sender, EventArgs e)
         {
             var authSer = new Authenticator.AuthenticatorService();
@@ -37,10 +51,10 @@ namespace EllipseCommonsClassLibrary
 
             try
             {
-                EllipseDsct = txtDistrict.Text.ToUpper();
-                EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
-                EllipsePswd = txtPassword.Text;
                 EllipseUser = txtUsername.Text.ToUpper();
+                EllipsePswd = txtPassword.Text;
+                EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
+                EllipseDsct = txtDistrict.Text.ToUpper();
 
                 //control de selección de entorno en programación
                 if (SelectedEnvironment == null)

@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace CommonsClassLibrary.Utilities
 {
@@ -112,6 +113,38 @@ namespace CommonsClassLibrary.Utilities
                     Debugger.LogError("MyUtilities.Xml.cs:DeserializeXmlToObject()", ex.Message);
                     return objectType.IsByRef ? null : Activator.CreateInstance(objectType);
                 }
+            }
+            public static string GetValueByXElements(IEnumerable<XElement> elements)
+            {
+                string value = "";
+                foreach (XElement element in elements)
+                {
+                    value = element.Value;
+                    Console.WriteLine(value);
+                }
+                return value;
+            }
+            public static string GetValueByXElements(IEnumerable<XElement> elements, bool isFirst)
+            {
+                string value = "";
+                foreach (XElement element in elements)
+                {
+                    value = element.Value;
+                    if (isFirst)
+                    {
+                        break;
+                    }
+                }
+                return value;
+            }
+
+            public static string GetValueByTagName(string tagName, XDocument xdoc)
+            {
+                string value = "";
+                IEnumerable<XElement> elements = null;
+                elements = xdoc.Root.Descendants(XName.Get(tagName));
+                value = GetValueByXElements(elements);
+                return value;
             }
         }
     }

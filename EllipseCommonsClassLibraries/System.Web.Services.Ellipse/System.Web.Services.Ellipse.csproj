@@ -38,6 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ReleasedLibraries\Oracle.ManagedDataAccess\v4.122.18.3\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\TestAddinEllipse9\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -56,6 +59,9 @@
     <Compile Include="AuthenticationExtension.cs" />
     <Compile Include="ClientConversation.cs" />
     <Compile Include="FileWriter.cs" />
+    <Compile Include="Post\Message.cs" />
+    <Compile Include="Post\PostService.cs" />
+    <Compile Include="Post\ResponseDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +74,7 @@
   <ItemGroup>
     <Content Include="ventyx_logo.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

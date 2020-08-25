@@ -1,1 +1,2 @@
 https://prd-p01-kum.ellipsehosting.com/documentation/external/integration/EWS/Develop_C_Sharp.NET_WebService.html
+http://ec2-54-235-97-194.compute-1.amazonaws.com/documentation/external/integration/index.html

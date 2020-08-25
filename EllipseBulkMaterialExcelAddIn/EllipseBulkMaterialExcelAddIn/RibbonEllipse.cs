@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Web.Services.Ellipse;
@@ -17,10 +18,10 @@ using BMUItemService = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemS
 using EllipseEquipmentClassLibrary;
 using ListService = EllipseEquipmentClassLibrary.EquipmentListService;
 using System.Threading;
-using EllipseCommonsClassLibrary.Settings;
 
 namespace EllipseBulkMaterialExcelAddIn
 {
+    [SuppressMessage("ReSharper", "AccessToStaticMemberViaDerivedType")]
     public partial class RibbonEllipse
     {
         private const string SheetName01 = "BulkMaterialSheet";
@@ -32,17 +33,18 @@ namespace EllipseBulkMaterialExcelAddIn
         private const int ResultColumn01 = 18;
         private const int ResultColumn02 = 20;
         private const int MaxRows = 5000;
-        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private ExcelStyleCells _cells;
         private Application _excelApp;
 
         private List<string> _optionList;
         private const string ValidationSheetName = "ValidationListSheet";
         private Thread _thread;
-        private CommonSettings _settings;
+
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environmentList = Environments.GetEnvironmentList();
@@ -52,22 +54,23 @@ namespace EllipseBulkMaterialExcelAddIn
                 drpItem.Label = item;
                 drpEnvironment.Items.Add(drpItem);
             }
-
-            LoadSettings();
         }
 
         public void LoadSettings()
         {
-            var defaultConfig = new CommonSettings.Options();
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
+
+            var defaultConfig = new Settings.Options();
             defaultConfig.SetOption("AutoSort", "Y");
             defaultConfig.SetOption("OverrideAccountCode", "Maintenance");
             defaultConfig.SetOption("IgnoreItemError", "N");
-            _settings = new CommonSettings(defaultConfig);
-            var config = _settings.Configuration;
-			config.SetDefaultOptions(defaultConfig);
+            
+            var options = settings.GetOptionsSettings(defaultConfig);
 
             //Setting of Configuration Options from Config File (or default)
-            var overrideAccountCode = config.GetOptionValue("OverrideAccountCode");
+            var overrideAccountCode = options.GetOptionValue("OverrideAccountCode");
             if (overrideAccountCode.Equals("Maintenance"))
                 cbAccountElementOverrideMntto.Checked = true;
             else if (overrideAccountCode.Equals("Disable"))
@@ -78,11 +81,11 @@ namespace EllipseBulkMaterialExcelAddIn
                 cbAccountElementOverrideDefault.Checked = true;
             else
                 cbAccountElementOverrideDefault.Checked = true;
-            cbAutoSortItems.Checked = MyUtilities.IsTrue(config.GetOptionValue(defaultConfig.GetOption("AutoSort")));
-            cbIgnoreItemError.Checked = MyUtilities.IsTrue(config.GetOptionValue(defaultConfig.GetOption("IgnoreItemError")));
+            cbAutoSortItems.Checked = MyUtilities.IsTrue(options.GetOptionValue(defaultConfig.GetOption("AutoSort")));
+            cbIgnoreItemError.Checked = MyUtilities.IsTrue(options.GetOptionValue(defaultConfig.GetOption("IgnoreItemError")));
 
-            _settings.UpdateSettings();
             //
+            settings.UpdateOptionsSettings(options);
         }
         private void btnLoad_Click(object sender, RibbonControlEventArgs e)
         {
@@ -494,7 +497,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 }
 
                 BulkMaterial.BulkMaterialUsageSheet currentSheetHeader = null;
-                BulkMaterial.BulkMaterialUsageSheet newSheetHeader = null;
+
                 var itemList = new List<BulkMaterial.BulkMaterialUsageSheetItem>();
                 
                 while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
@@ -503,7 +506,7 @@ namespace EllipseBulkMaterialExcelAddIn
                     {
                         _cells.GetCell(1, currentRow).Select();
 
-                        newSheetHeader = new BulkMaterial.BulkMaterialUsageSheet();
+                        var newSheetHeader = new BulkMaterial.BulkMaterialUsageSheet();
 
                         //llenado de variables del encabezado de la hoja
                         newSheetHeader.BulkMaterialUsageSheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
@@ -1396,8 +1399,8 @@ namespace EllipseBulkMaterialExcelAddIn
         }
         private void cbAccountElementOverrideMntto_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("OverrideAccountCode", "Maintenance");
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.OptionsSettings.SetOption("OverrideAccountCode", "Maintenance");
+            Settings.CurrentSettings.UpdateOptionsSettings();
             cbAccountElementOverrideDisable.Checked = false;
             cbAccountElementOverrideAlways.Checked = false;
             cbAccountElementOverrideDefault.Checked = false;
@@ -1407,8 +1410,8 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void cbAccountElementOverrideDisable_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("OverrideAccountCode", "Disable");
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.OptionsSettings.SetOption("OverrideAccountCode", "Disable");
+            Settings.CurrentSettings.UpdateOptionsSettings();
             cbAccountElementOverrideAlways.Checked = false;
             cbAccountElementOverrideDefault.Checked = false;
             cbAccountElementOverrideMntto.Checked = false;
@@ -1418,8 +1421,8 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void cbAccountElementOverrideDefault_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("OverrideAccountCode", "Default");
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.OptionsSettings.SetOption("OverrideAccountCode", "Default");
+            Settings.CurrentSettings.UpdateOptionsSettings();
             cbAccountElementOverrideDisable.Checked = false;
             cbAccountElementOverrideAlways.Checked = false;
             cbAccountElementOverrideMntto.Checked = false;
@@ -1429,8 +1432,8 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void cbAccountElementOverrideAlways_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("OverrideAccountCode", "Always");
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.OptionsSettings.SetOption("OverrideAccountCode", "Always");
+            Settings.CurrentSettings.UpdateOptionsSettings();
             cbAccountElementOverrideDisable.Checked = false;
             cbAccountElementOverrideDefault.Checked = false;
             cbAccountElementOverrideMntto.Checked = false;
@@ -1440,14 +1443,14 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void cbAutoSortItems_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("AutoSort", MyUtilities.ToString(cbAutoSortItems.Checked));
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.OptionsSettings.SetOption("AutoSort", MyUtilities.ToString(cbAutoSortItems.Checked));
+            Settings.CurrentSettings.UpdateOptionsSettings();
         }
 
         private void cbIgnoreItemError_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("IgnoreItemError", MyUtilities.ToString(cbIgnoreItemError.Checked));
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.OptionsSettings.SetOption("IgnoreItemError", MyUtilities.ToString(cbIgnoreItemError.Checked));
+            Settings.CurrentSettings.UpdateOptionsSettings();
         }
     }
 }

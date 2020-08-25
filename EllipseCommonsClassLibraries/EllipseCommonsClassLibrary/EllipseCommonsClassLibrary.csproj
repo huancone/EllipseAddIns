@@ -49,9 +49,6 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
-      <HintPath>Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
