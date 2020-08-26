@@ -405,7 +405,7 @@ namespace EllipseCommonsClassLibrary
         }
 
         [Obsolete("CheckReplyError(ResponseDto) is deprecated, please use System.Web.Services.Ellipse.Post.ResponseDto GotErrorMessages() or GetStringErrorMessages()")]
-        public bool CheckReplyError(ResponseDto reply)
+        public bool CheckReplyError(System.Web.Services.Ellipse.Post.ResponseDto reply)
         {
             
             if (!reply.GotErrorMessages()) return true;
@@ -418,7 +418,7 @@ namespace EllipseCommonsClassLibrary
         }
 
         [Obsolete("CheckReplyWarning(ResponseDto) is deprecated, please use System.Web.Services.Ellipse.Post.ResponseDto GotWarningMessages() or GetStringWarningMessages()")]
-        public bool CheckReplyWarning(ResponseDto reply)
+        public bool CheckReplyWarning(System.Web.Services.Ellipse.Post.ResponseDto reply)
         {
             
             if (!reply.GotWarningMessages()) return true;

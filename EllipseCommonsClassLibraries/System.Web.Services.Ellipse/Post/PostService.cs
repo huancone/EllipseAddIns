@@ -102,6 +102,78 @@ namespace System.Web.Services.Ellipse.Post
             return responseDto;
         }
 
+        public IRestResponse InitConexionE9()
+        {
+            var responseDto = new ResponseDto();
+            try
+            {
+                var connectionId = GetNewConnectionId();
+                
+                var requestJson = new StringBuilder("");
+                requestJson.AppendLine("{									        ");	
+                requestJson.AppendLine("	\"interaction\": {                          ");
+                requestJson.AppendLine("		\"actions\":[                           ");
+                requestJson.AppendLine("			\"action\":{                        ");
+                requestJson.AppendLine("				\"name\": \"login\",            ");
+                requestJson.AppendLine("				\"data\":{                      ");
+                requestJson.AppendLine("					\"username\": \"" + "RUHASD5" + "\",  ");
+                requestJson.AppendLine("					\"password\": \"" + Password + "\",         ");
+                requestJson.AppendLine("					\"scope\": \"" + District + "\",       ");
+                requestJson.AppendLine("					\"position\": \"" + Position + "\",     ");
+                requestJson.AppendLine("				},                              ");
+                requestJson.AppendLine("				\"id\": \"\"                    ");
+                requestJson.AppendLine("			}                                   ");
+                requestJson.AppendLine("		],                                      ");
+                requestJson.AppendLine("		\"chains\":\"\",                        ");
+                requestJson.AppendLine("		\"application\":\"login\",              ");
+                requestJson.AppendLine("		\"applicationPage\":\"\"                ");
+                requestJson.AppendLine("	}                                           ");
+                requestJson.AppendLine("}                                            ");
+                var requestLogin = requestJson.ToString();
+
+                Client = new RestClient(this.Url);
+                Request = new RestRequest(Method.POST);
+                Request.AddHeader("content-type", "application/json; charset=utf-8");
+                Request.AddParameter("application/json", requestLogin, ParameterType.RequestBody);
+
+                var response = Client.Execute(Request);
+                /*
+                if (response.ResponseStatus.Equals(ResponseStatus.Completed))
+                {
+                    var xdoc = XDocument.Parse(response.Content);
+                    if (xdoc.Root != null)
+                    {
+                        var elements = xdoc.Root.Descendants(XName.Get("errors"));
+                        responseDto.Errors = Message.GetMessagesByXElements(elements);
+                        responseDto.ResponseXML = xdoc;
+                        responseDto.ResponseString = xdoc.ToString();
+                        var connectionIdElements = xdoc.Root.Descendants(XName.Get("connectionId"));
+                        ConnectionId = connectionIdElements.First().Value;
+                    }
+
+                    var cookieSession = new CookieContainer();
+                    foreach (var cookie in response.Cookies)
+                    {
+                        cookieSession.Add(new Cookie(cookie.Name, cookie.Value, cookie.Path, cookie.Domain));
+                    }
+                    Client.CookieContainer = cookieSession;
+                }
+                else
+                {
+                    throw new Exception(response.ErrorMessage);
+                }
+                */
+            }
+            catch (Exception e)
+            {
+                responseDto.Errors = new List<Message>() {
+                    new Message("CatchException", "0", e.StackTrace, e.Message)
+                };
+            }
+            //return responseDto;
+            return null;
+        }
+
         public ResponseDto ExecutePostRequest(string xmlRequest)
         {
             var responseDto = new ResponseDto();
@@ -137,6 +209,15 @@ namespace System.Web.Services.Ellipse.Post
                 };
             }
             return responseDto;
+        }
+
+        public IRestResponse ExecutePostRequestE9(string jsonRequest)
+        {
+            var responseDto = new ResponseDto();
+            Request.AddHeader("content-type", "application/xml");
+            Request.Parameters.RemoveAll(parameter => parameter.Type.Equals(ParameterType.RequestBody));
+            Request.AddParameter("application/json", jsonRequest, ParameterType.RequestBody);
+            return Client.Execute(Request);
         }
         public static string GetNewConnectionId()
         {
