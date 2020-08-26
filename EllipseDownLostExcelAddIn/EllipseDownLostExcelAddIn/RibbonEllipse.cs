@@ -25,7 +25,7 @@ namespace EllipseDownLostExcelAddIn
     [SuppressMessage("ReSharper", "AccessToStaticMemberViaDerivedType")]
     public partial class RibbonEllipse
     {
-        ExcelStyleCells _cells;
+        private ExcelStyleCells _cells;
         private EllipseFunctions _eFunctions;
         private FormAuthenticate _frmAuth;
         Excel.Application _excelApp;

@@ -814,7 +814,7 @@ namespace CommonsClassLibrary.Classes
         /// Adiciona una condición con límite de caracteres a la celda o rango especificada
         /// </summary>
         /// <param name="targetRange">targetRange: Celda o rango para adicionarle la lista de validación</param>
-        /// <param name="operator">XlFormatConditionOperator: Tipo de Operador</param>
+        /// <param name="conditionOperator">XlFormatConditionOperator: Tipo de Operador</param>
         /// <param name="length">int: longitud máxima permitida</param>
         /// <param name="showError">bool: Indica si muestra o no el diálogo de error al ingresar un valor erróneo</param>
         public void SetValidationLength(Range targetRange, XlFormatConditionOperator conditionOperator, int length, bool showError = true)
@@ -1167,6 +1167,37 @@ namespace CommonsClassLibrary.Classes
             return separator.Equals(".");
         }
 
+        public string DecimalSeparator(Application excelApp = null)
+        {
+            if (excelApp == null)
+                excelApp = _excelApp;
+            //si uso los separadores del sistema
+            var separator = excelApp.UseSystemSeparators
+                ? LanguageSettingConstants.DecimalSeparator : excelApp.DecimalSeparator;
+            return separator;
+        }
+
+        public string ListSeparator(Application excelApp = null, bool dynamicChange = true)
+        {
+            if (excelApp == null)
+                excelApp = _excelApp;
+
+            string separator;
+            //si uso los separadores del sistema
+            if (excelApp.UseSystemSeparators)
+            {
+                separator = LanguageSettingConstants.ListSeparator;
+                //si el separador de lista y el separador decimal son iguales
+                if (LanguageSettingConstants.ListSeparator.Equals(LanguageSettingConstants.DecimalSeparator))
+                    separator = LanguageSettingConstants.DecimalSeparator.Equals(",") ? ";" : ",";
+            }
+            else
+            {
+                separator = _excelApp.DecimalSeparator.Equals(",") ? ";" : ",";
+            }
+
+            return separator;
+        }
         public void SetCursorWait(Application excelApp = null)
         {
             if (excelApp == null)
