@@ -34,10 +34,6 @@
     <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ReleasedLibraries\Oracle.ManagedDataAccess\v4.122.18.3\Oracle.ManagedDataAccess.dll</HintPath>
-    </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\TestAddinEllipse9\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
     </Reference>
@@ -68,7 +64,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

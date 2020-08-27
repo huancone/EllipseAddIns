@@ -1,8 +1,9 @@
 //Para ejecutar este código debe tener referenciados los siguientes namespaces
 
 //using Excel = Microsoft.Office.Interop.Excel;
+//using System.Windows.Forms;
 
-private void ExecuteQuery()
+        private void ExecuteQuery()
         {
             try
             {
@@ -11,9 +12,9 @@ private void ExecuteQuery()
                 _cells.SetCursorWait();
 
                 var titleRow = 1;
-                var sqlQuery = @"SELECT WORK_ORDER FROM ELLIPSE.MSF620 WO WHERE WO.RAISED_DATE = '20190124' AND WO.WORK_GROUP = 'MTOLOC'";
+                var sqlQuery = @"SELECT WORK_ORDER FROM ELLIPSE.MSF620 WO WHERE WO.RAISED_DATE = '20200801' AND WO.WORK_GROUP = 'MTOLOC'";
                 var tableName = "table";
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var dataReader = _eFunctions.GetQueryResult(sqlQuery);
 
                 if (dataReader == null)
@@ -22,7 +23,7 @@ private void ExecuteQuery()
                 //Cargo el encabezado de la tabla y doy formato
                 for (var i = 0; i < dataReader.FieldCount; i++)
                     _cells.GetCell(i + 1, titleRow).Value2 = "'" + dataReader.GetName(i);
-
+                
                 _cells.FormatAsTable(_cells.GetRange(1, titleRow, dataReader.FieldCount, titleRow + 1), tableName);
 
                 //cargo los datos 

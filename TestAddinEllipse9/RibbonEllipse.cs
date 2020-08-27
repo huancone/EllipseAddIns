@@ -41,6 +41,13 @@ namespace TestAddinEllipse9
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -50,29 +57,22 @@ namespace TestAddinEllipse9
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
-
-        public void LoadSettings()
-        {
-            var settings = new Settings();
-            _eFunctions = new EllipseFunctions();
-            _frmAuth = new FormAuthenticate();
 
             var defaultConfig = new Settings.Options();
-            defaultConfig.SetOption("FlagEstDuration", "Y");
-            defaultConfig.SetOption("ValidateTaskPlanDates", "Y");
-            defaultConfig.SetOption("IgnoreClosedStatus", "N");
+            //defaultConfig.SetOption("OptionName1", "OptionValue1");
+            //defaultConfig.SetOption("OptionName2", "OptionValue2");
+            //defaultConfig.SetOption("OptionName3", "OptionValue3");
 
             var options = settings.GetOptionsSettings(defaultConfig);
 
             //Setting of Configuration Options from Config File (or default)
-            //var flagEstDur = MyUtilities.IsTrue(options.GetOptionValue("FlagEstDuration"));
-            //var valdTaskPlanDates = MyUtilities.IsTrue(options.GetOptionValue("ValidateTaskPlanDates"));
-            //var ignoreCldStat = MyUtilities.IsTrue(options.GetOptionValue("IgnoreClosedStatus"));
+            //var optionItem1Value = MyUtilities.IsTrue(options.GetOptionValue("OptionName1"));
+            //var optionItem1Value = options.GetOptionValue("OptionName2");
+            //var optionItem1Value = options.GetOptionValue("OptionName3");
 
-            //cbFlagEstDuration.Checked = flagEstDur;
-            //cbValidateTaskPlanDates.Checked = valdTaskPlanDates;
-            //cbIgnoreClosedStatus.Checked = ignoreCldStat;
+            //optionItem1.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
 
             //
             settings.UpdateOptionsSettings(options);

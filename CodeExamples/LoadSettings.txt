@@ -1,0 +1,35 @@
+		private void LoadSettings()
+        {
+            _frmAuth = new FormAuthenticate();
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+
+            _excelApp = Globals.ThisAddIn.Application;
+
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
+            {
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
+            }
+
+            var defaultConfig = new Settings.Options();
+            //defaultConfig.SetOption("OptionName1", "OptionValue1");
+            //defaultConfig.SetOption("OptionName2", "OptionValue2");
+            //defaultConfig.SetOption("OptionName3", "OptionValue3");
+
+            var options = settings.GetOptionsSettings(defaultConfig);
+
+            //Setting of Configuration Options from Config File (or default)
+            //var optionItem1Value = MyUtilities.IsTrue(options.GetOptionValue("OptionName1"));
+            //var optionItem1Value = options.GetOptionValue("OptionName2");
+            //var optionItem1Value = options.GetOptionValue("OptionName3");
+
+            //optionItem1.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.UpdateOptionsSettings(options);
+        }

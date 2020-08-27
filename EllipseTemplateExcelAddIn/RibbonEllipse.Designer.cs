@@ -34,32 +34,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabEllipse = this.Factory.CreateRibbonTab();
-            this.grpTemplate = this.Factory.CreateRibbonGroup();
+            this.tab1 = this.Factory.CreateRibbonTab();
+            this.grpEllipse = this.Factory.CreateRibbonGroup();
             this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormat = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
+            this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnExecute = this.Factory.CreateRibbonButton();
-            this.tabEllipse.SuspendLayout();
-            this.grpTemplate.SuspendLayout();
+            this.btnStop = this.Factory.CreateRibbonButton();
+            this.tab1.SuspendLayout();
+            this.grpEllipse.SuspendLayout();
             this.box1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabEllipse
+            // tab1
             // 
-            this.tabEllipse.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
-            this.tabEllipse.Groups.Add(this.grpTemplate);
-            this.tabEllipse.Label = "ELLIPSE 8";
-            this.tabEllipse.Name = "tabEllipse";
+            this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.tab1.Groups.Add(this.grpEllipse);
+            this.tab1.Label = "TabAddIns";
+            this.tab1.Name = "tab1";
             // 
-            // grpTemplate
+            // grpEllipse
             // 
-            this.grpTemplate.Items.Add(this.box1);
-            this.grpTemplate.Items.Add(this.drpEnvironment);
-            this.grpTemplate.Items.Add(this.btnExecute);
-            this.grpTemplate.Label = "Template";
-            this.grpTemplate.Name = "grpTemplate";
+            this.grpEllipse.Items.Add(this.box1);
+            this.grpEllipse.Items.Add(this.drpEnvironment);
+            this.grpEllipse.Items.Add(this.menuActions);
+            this.grpEllipse.Label = "Template";
+            this.grpEllipse.Name = "grpEllipse";
             // 
             // box1
             // 
@@ -71,32 +73,50 @@
             // 
             this.btnFormat.Label = "&Formatear";
             this.btnFormat.Name = "btnFormat";
+            this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
             // 
             // btnAbout
             // 
             this.btnAbout.Label = "?";
             this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnvironment
             // 
             this.drpEnvironment.Label = "Env.";
             this.drpEnvironment.Name = "drpEnvironment";
             // 
+            // menuActions
+            // 
+            this.menuActions.Items.Add(this.btnExecute);
+            this.menuActions.Items.Add(this.btnStop);
+            this.menuActions.Label = "&Acciones";
+            this.menuActions.Name = "menuActions";
+            // 
             // btnExecute
             // 
             this.btnExecute.Label = "&Ejecutar";
             this.btnExecute.Name = "btnExecute";
+            this.btnExecute.ShowImage = true;
+            this.btnExecute.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnExecute_Click);
+            // 
+            // btnStop
+            // 
+            this.btnStop.Label = "&Detener Procesos";
+            this.btnStop.Name = "btnStop";
+            this.btnStop.ShowImage = true;
+            this.btnStop.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStop_Click);
             // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
             this.RibbonType = "Microsoft.Excel.Workbook";
-            this.Tabs.Add(this.tabEllipse);
+            this.Tabs.Add(this.tab1);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.RibbonEllipse_Load);
-            this.tabEllipse.ResumeLayout(false);
-            this.tabEllipse.PerformLayout();
-            this.grpTemplate.ResumeLayout(false);
-            this.grpTemplate.PerformLayout();
+            this.tab1.ResumeLayout(false);
+            this.tab1.PerformLayout();
+            this.grpEllipse.ResumeLayout(false);
+            this.grpEllipse.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
             this.ResumeLayout(false);
@@ -105,13 +125,15 @@
 
         #endregion
 
-        internal Microsoft.Office.Tools.Ribbon.RibbonTab tabEllipse;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpTemplate;
+        internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpEllipse;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown drpEnvironment;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExecute;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStop;
     }
 
     partial class ThisRibbonCollection

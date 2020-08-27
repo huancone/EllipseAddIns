@@ -1,8 +1,8 @@
-private void ScreenService()
+		private void ScreenService()
         {
             //Proceso del Servicio Screen
             var service = new Screen.ScreenService();
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             service.Url = urlService + "/ScreenService";
 
             //Instanciar el Contexto de Operación
@@ -20,7 +20,7 @@ private void ScreenService()
 
             //validamos el ingreso al programa
             if (reply.mapName != "MSM435A")
-                throw new Exception ("ERROR:" + "No se pudo establecer comunicación con el servicio");
+                throw new Exception("ERROR:" + "No se pudo establecer comunicación con el servicio");
 
             //arreglo para los campos del screen
             var arrayFields = new ArrayScreenNameValue();

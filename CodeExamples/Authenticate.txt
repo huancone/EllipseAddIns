@@ -1,35 +1,39 @@
+//Para ejecutar este código debe haber añadido el servicio de consumo de autenticación
 //Para ejecutar este código debe tener referenciados los siguientes namespaces
-
-//using Authenticator = EllipseProyectoExcelAddIn.AuthenticatorService;
+//using System.Web.Services.Ellipse;
+//using System.Windows.Forms;
+//using Authenticator = EllipseTemplateExcelAddIn.AuthenticatorService;
 
 	private void Authenticate()
-        {
-            //creación del servicio
-            var service = new Authenticator.AuthenticatorService();
-            service.Url = @"http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/AuthenticatorService";
-            //creación del contexto de operación
-            var opContext = new Authenticator.OperationContext
-            {
-                district = "ICOR",
-                position = ""
-            };
-            try
-            {
-                var excelSheet = (Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
+	{
+		//creación del servicio
+		var service = new Authenticator.AuthenticatorService();
+		service.Url = @"http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/AuthenticatorService";
+		//creación del contexto de operación
+		var opContext = new Authenticator.OperationContext
+		{
+			district = "ICOR",
+			position = ""
+		};
+		try
+		{
+			var excelSheet = (Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
 
-                //Encabezado de consumo
-                var EllipseUser = "HHERNAND";
-                var EllipsePswd = "ene2014";
-                var EllipseDsct = "ICOR";
-                var EllipsePost = "COMC0";
+			//Encabezado de consumo
+			var EllipseUser = "";
+			var EllipsePswd = "";
+			var EllipseDsct = "";
+			var EllipsePost = "";
 
-
-                ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDsct, EllipsePost);
-                //Recuerde que el encabezado SOAP es enviado con todas las solicitudes
-                service.authenticate(opContext);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(@"Se ha producido un error al intentar realizar la autenticación. Asegúrese que los datos ingresados sean correctos e intente nuevamente." + "\n\n" + ex.Message);
-            }
-        }
+			//Recuerde que el encabezado SOAP es enviado con todas las solicitudes
+			ClientConversation.authenticate(EllipseUser, EllipsePswd, EllipseDsct, EllipsePost);
+			
+			//Envío de Solicitud
+			service.authenticate(opContext);
+			MessageBox.Show(@"Se ha realizado la autenticación de forma satisfactoria");
+		}
+		catch (Exception ex)
+		{
+			MessageBox.Show(@"Se ha producido un error al intentar realizar la autenticación. Asegúrese que los datos ingresados sean correctos e intente nuevamente." + "\n\n" + ex.Message);
+		}
+	}

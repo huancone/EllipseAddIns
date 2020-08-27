@@ -1,4 +1,4 @@
-	private void GeneralService()
+		private void GeneralService()
         {
             try
             {
@@ -7,9 +7,9 @@
 
                 //Creación del Servicio
                 var service = new WorkOrderService.WorkOrderService();
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 service.Url = urlService + "/WorkOrderService";
-                
+
                 //Instanciar el Contexto de Operación
                 var opContext = new WorkOrderService.OperationContext
                 {
@@ -34,8 +34,8 @@
 
                 //se analiza la respuesta y se hacen las acciones pertinentes
                 _cells.GetCell(1, 1).Value2 = reply.workOrder.prefix + reply.workOrder.no;
-                
-                
+
+
             }
             catch (Exception ex)
             {

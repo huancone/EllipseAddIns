@@ -3,8 +3,9 @@
 //using System.Data;
 //using Excel = Microsoft.Office.Interop.Excel;
 //using Oracle.ManagedDataAccess.Client;
+//using System.Windows.Forms;
 
-private void ExecuteQuery()
+        private void ExecuteQuery()
         {
             OracleConnection sqlOracleConn = null;
             try
@@ -13,7 +14,7 @@ private void ExecuteQuery()
                 var excelSheet = (Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet;
 
                 var titleRow = 1;
-                var sqlQuery = @"SELECT WORK_ORDER FROM ELLIPSE.MSF620 WO WHERE WO.RAISED_DATE = '20190124' AND WO.WORK_GROUP = 'MTOLOC'";
+                var sqlQuery = @"SELECT WORK_ORDER FROM ELLIPSE.MSF620 WO WHERE WO.RAISED_DATE = '20200801' AND WO.WORK_GROUP = 'MTOLOC'";
 
                 var dbName = "EL8PROD";
                 var dbUser = "SIGCON";
@@ -56,7 +57,7 @@ private void ExecuteQuery()
                         var cell = (Excel.Range)excelSheet.Cells[currentRow, i + 1];
                         cell.Value2 = "'" + dataReader[i].ToString().Trim();
                     }
-                        
+
                     currentRow++;
                 }
 
