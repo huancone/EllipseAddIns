@@ -441,8 +441,6 @@ namespace CommonsClassLibrary.Utilities
         ///     Obtiene una lista de tipo string a partir de la llave y valor del listado de keyValuePairList
         /// </summary>
         /// <param name="keyValuePairList">
-        ///     List(KeyValuePair{string, string}): Listado tipo KeyValuePair con los datos de llaves y
-        ///     valores
         /// </param>
         /// <param name="separator">Separador para el Key y el Value (Ej. " - ")</param>
         /// <returns>string: List{key - value}</returns>
@@ -459,6 +457,8 @@ namespace CommonsClassLibrary.Utilities
         ///     List(Dictionary{string, string}): Listado tipo Dictionary con los datos de llaves y
         ///     valores
         /// </param>
+        ///     List(KeyValuePair{string, string}): Listado tipo KeyValuePair con los datos de llaves y
+        ///     valores
         /// <param name="separator">string: separador de llave/descripción (Ej. " - ", "-", "/")</param>
         /// <returns>string: List{key - value}</returns>
         public static List<string> GetCodeList(Dictionary<string, string> dictionaryPair, string separator = " - ")

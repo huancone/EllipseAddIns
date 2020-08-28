@@ -1234,7 +1234,7 @@ namespace EllipseDownLostExcelAddIn
                                 {
 
                                     var dateString = MyUtilities.ToString(shiftArray[j].GetDate());
-                                    var startTimeString = MyUtilities.ToString(shiftArray[j].GetStartDateTime().TimeOfDay, MyUtilities.DateTime.TimeHHMM);
+                                    var startTimeString = MyUtilities.ToString(shiftArray[j].GetStartDateTime().TimeOfDay, "hhmm");
                                     var endTimeString = MyUtilities.ToString(shiftArray[j].GetEndDateTime().TimeOfDay, MyUtilities.DateTime.TimeHHMM);
 
                                     if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
@@ -1291,9 +1291,16 @@ namespace EllipseDownLostExcelAddIn
         }
         private void AddDownLostToTableCollection(LostDownObject lostDownObject, string eventType, ExcelStyleCells cells)
         {
+            var tableName = TableName04;
+            var titleRow = TitleRow01;
             //Escribo el objeto de colecction en la tabla collection
-            var tableRange = cells.GetRange(TableName04);
+            var tableRange = cells.GetRange(tableName);
             var row = tableRange.ListObject.ListColumns[1].Range.Row + tableRange.ListObject.ListRows.Count + 1;
+            
+            //para controlar la escritura en table si está vacía
+            if (string.IsNullOrWhiteSpace(cells.GetCell(01, titleRow + 1).Value2))
+                row = titleRow + 1;
+            //
             cells.GetCell(01, row).Value = "'" + lostDownObject.EquipNo;
             cells.GetCell(02, row).Value = "'" + lostDownObject.CompCode;
             cells.GetCell(03, row).Value = "'" + lostDownObject.CompModCode;
