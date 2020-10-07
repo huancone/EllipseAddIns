@@ -40,6 +40,13 @@ namespace EllipseTemplateExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             LoadSettings();
+			var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
+            {
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
+            }
         }
 
         private void LoadSettings()
