@@ -6,10 +6,11 @@ using System.Linq;
 using System.Web.Services.Ellipse.Post;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary.Classes;
-using CommonsClassLibrary.Connections;
+using SharedClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Connections;
 using Oracle.ManagedDataAccess.Client;
-using MyUtilities = CommonsClassLibrary.Utilities.MyUtilities;
+using MyUtilities = SharedClassLibrary.Utilities.MyUtilities;
+// ReSharper disable AccessToStaticMemberViaDerivedType
 
 namespace EllipseCommonsClassLibrary
 {
@@ -19,8 +20,7 @@ namespace EllipseCommonsClassLibrary
 
         private SqlConnection _sqlConn;
         private SqlCommand _sqlComm;
-        //private OracleConnection _sqlOracleConn;
-        //private OracleCommand _sqlOracleComm;
+
         private string _currentConnectionString;
         private string _currentEnvironment;
         private OracleConnector _oracleConnector;
@@ -219,7 +219,7 @@ namespace EllipseCommonsClassLibrary
         /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
         public SqlDataReader GetSqlQueryResult(string sqlQuery, string customConnectionString = null)
         {
-            CommonsClassLibrary.Debugger.LogQuery(sqlQuery);
+            Debugger.LogQuery(sqlQuery);
             var dbcatalog = "";
             if (_dbItem.DbCatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
                 dbcatalog = "Initial Catalog=" + _dbItem.DbCatalog + "; ";
@@ -245,14 +245,14 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                CommonsClassLibrary.Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 _queryAttempt = 0;
                 throw;
             }
         }
         public DataSet GetDataSetSqlQueryResult(string sqlQuery, string customConnectionString = null)
         {
-            CommonsClassLibrary.Debugger.LogQuery(sqlQuery);
+            Debugger.LogQuery(sqlQuery);
             var dbcatalog = "";
             if (_dbItem.DbCatalog != null && !string.IsNullOrWhiteSpace(dbcatalog))
                 dbcatalog = "Initial Catalog=" + _dbItem.DbCatalog + "; ";
@@ -281,7 +281,7 @@ namespace EllipseCommonsClassLibrary
             }
             catch (Exception ex)
             {
-                CommonsClassLibrary.Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("EllipseFunctions:GetSqlQueryResult(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 _queryAttempt = 0;
                 throw;
             }
@@ -349,7 +349,7 @@ namespace EllipseCommonsClassLibrary
                 }
                 catch (Exception ex)
                 {
-                    CommonsClassLibrary.Debugger.LogError("RibbonEllipse:revertOperation(Screen.OperationContext, Screen.ScreenService)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                    Debugger.LogError("RibbonEllipse:revertOperation(Screen.OperationContext, Screen.ScreenService)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                     prevProgram = actualProgram;
 
                 }
@@ -367,13 +367,13 @@ namespace EllipseCommonsClassLibrary
             //Si no existe un reply es error de ejecución. O si el reply tiene un error de datos
             if (reply == null)
             {
-                CommonsClassLibrary.Debugger.LogError("RibbonEllipse:checkReplyError(Screen.ScreenDTO)", "Se ha producido un error en tiempo de ejecución: null reply error");
+                Debugger.LogError("RibbonEllipse:checkReplyError(Screen.ScreenDTO)", "Se ha producido un error en tiempo de ejecución: null reply error");
                 return true;
             }
             // ReSharper disable once InvertIf
             if (reply.message.Length >= 2 && reply.message.Substring(0, 2) == "X2")
             {
-                CommonsClassLibrary.Debugger.LogError("RibbonEllipse: checkReplyError(Screen.ScreenDTO)", reply.message);
+                Debugger.LogError("RibbonEllipse: checkReplyError(Screen.ScreenDTO)", reply.message);
                 return true;
             }
             return false;
@@ -388,19 +388,19 @@ namespace EllipseCommonsClassLibrary
             //Si no existe un reply es error de ejecución. O si el reply tiene un warning de datos
             if (reply == null)
             {
-                CommonsClassLibrary.Debugger.LogError("RibbonEllipse:checkReplyWarning(Screen.ScreenDTO)", "Se ha producido un error en tiempo de ejecución: null reply error");
+                Debugger.LogError("RibbonEllipse:checkReplyWarning(Screen.ScreenDTO)", "Se ha producido un error en tiempo de ejecución: null reply error");
                 return true;
             }
             if (reply.message != null && reply.message.Length >= 2 && reply.message.Substring(0, 2) == "W2")
             {
-                CommonsClassLibrary.Debugger.LogWarning("Warning", reply.message);
+                Debugger.LogWarning("Warning", reply.message);
 
                 return true;
             }
             if (reply.message == null || reply.functionKeys == null || !reply.functionKeys.StartsWith("XMIT-WARNING"))
                 return false;
 
-            CommonsClassLibrary.Debugger.LogWarning("Warning", reply.functionKeys);
+            Debugger.LogWarning("Warning", reply.functionKeys);
             return true;
         }
 

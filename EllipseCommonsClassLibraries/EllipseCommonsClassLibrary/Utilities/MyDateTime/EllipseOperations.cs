@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using CommonsClassLibrary.Utilities.Shifts;
+using SharedClassLibrary.Utilities.Shifts;
 
 namespace EllipseCommonsClassLibrary.Utilities.MyDateTime
 {

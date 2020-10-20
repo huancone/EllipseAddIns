@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace EllipseCommonsClassLibrary
 {
-    public class AboutBoxExcelAddIn : CommonsClassLibrary.AboutBoxExcelAddIn
+    public class AboutBoxExcelAddIn : SharedClassLibrary.Forms.AboutBoxExcelAddIn
     {
         public AboutBoxExcelAddIn() : base()
         {

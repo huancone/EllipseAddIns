@@ -57,38 +57,97 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\EllipseClasses.cs" />
-    <Compile Include="Classes\StyleConstants.cs" />
-    <Compile Include="Connections\DatabaseItem.cs" />
-    <Compile Include="Connections\EllipseUrlServices.cs" />
-    <Compile Include="Connections\OracleConnector.cs" />
-    <Compile Include="Forms\AboutBoxExcelAddIn.cs">
-      <SubType>Form</SubType>
+    <Compile Include="..\SharedClassLibrary\Classes\ExcelStyleCells.cs">
+      <Link>Classes\ExcelStyleCells.cs</Link>
     </Compile>
-    <Compile Include="Forms\AboutBoxExcelAddIn.Designer.cs">
+    <Compile Include="..\SharedClassLibrary\Classes\ReplyMessage.cs">
+      <Link>Classes\ReplyMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Classes\StyleConstants.cs">
+      <Link>Classes\StyleConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Configuration\AssemblyItem.cs">
+      <Link>Configuration\AssemblyItem.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Configuration\RuntimeConfigSettings.cs">
+      <Link>Configuration\RuntimeConfigSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Configuration\Settings.cs">
+      <Link>Configuration\Settings.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Connections\DatabaseItem.cs">
+      <Link>Connections\DatabaseItem.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Connections\OracleConnector.cs">
+      <Link>Connections\OracleConnector.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Forms\AboutBoxExcelAddIn.cs">
+      <Link>Forms\AboutBoxExcelAddIn.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Forms\AboutBoxExcelAddIn.designer.cs">
+      <Link>Forms\AboutBoxExcelAddIn.designer.cs</Link>
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\SharedClassLibrary\Forms\FormAuthenticate.cs">
+      <Link>Forms\FormAuthenticate.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\DateTime.cs">
+      <Link>Utilities\DateTime.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\Debugger.cs">
+      <Link>Utilities\Debugger.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\Encryption.cs">
+      <Link>Utilities\Encryption.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\FileWriter.cs">
+      <Link>Utilities\FileWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\IConstants.cs">
+      <Link>Utilities\IConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\InputBox.cs">
+      <Link>Utilities\InputBox.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\Math.cs">
+      <Link>Utilities\Math.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\MyKeyValuePair.cs">
+      <Link>Utilities\MyKeyValuePair.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\MyUtilities.cs">
+      <Link>Utilities\MyUtilities.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\Shifts\ShiftCodes.cs">
+      <Link>Utilities\Shifts\ShiftCodes.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\Shifts\ShiftPeriods.cs">
+      <Link>Utilities\Shifts\ShiftPeriods.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\Shifts\Slot.cs">
+      <Link>Utilities\Shifts\Slot.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\Utilities\Xml.cs">
+      <Link>Utilities\Xml.cs</Link>
+    </Compile>
+    <Compile Include="Classes\EllipseClasses.cs" />
+    <Compile Include="Connections\EllipseUrlServices.cs" />
     <Compile Include="Classes\EllipseArrayScreenNameValue.cs" />
-    <Compile Include="Settings\AssemblyItem.cs" />
     <Compile Include="Forms\EllipseAboutBoxExcelAddIn.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings\Settings.cs" />
-    <Compile Include="Settings\Debugger.cs" />
     <Compile Include="Connections\EllipseEnvironments.cs" />
     <Compile Include="Constants\EllipseDistricts.cs" />
     <Compile Include="Classes\EllipseCodeItem.cs" />
     <Compile Include="Classes\EllipseFunctions.cs" />
-    <Compile Include="Classes\ExcelStyleCells.cs" />
     <Compile Include="Forms\EllipseFormAuthenticate.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\EllipseFormAuthenticate.Designer.cs" />
     <Compile Include="Constants\EllipseGroups.cs" />
-    <Compile Include="Settings\EllipseDebugger.cs" />
-    <Compile Include="Settings\EllipseSettings.cs" />
+    <Compile Include="Utilities\EllipseDebugger.cs" />
+    <Compile Include="Configuration\EllipseSettings.cs" />
     <Compile Include="Utilities\EllipseUtilities.cs" />
-    <Compile Include="Utilities\InputBox.cs" />
     <Compile Include="Constants\EllipseManagementArea.cs" />
     <Compile Include="PrimitiveClasses\EllipseJobsMwpDto.cs" />
     <Compile Include="PrimitiveClasses\EllipseTaskMwpDto.cs" />
@@ -104,27 +163,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Constants\EllipseQuarterMasters.cs" />
-    <Compile Include="Classes\ReplyMessage.cs" />
     <Compile Include="Forms\EllipseSettingsBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\EllipseSettingsBox.Designer.cs">
       <DependentUpon>EllipseSettingsBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\IConstants.cs" />
-    <Compile Include="Utilities\Xml.cs" />
-    <Compile Include="Utilities\DateTime.cs" />
-    <Compile Include="Utilities\Encryption.cs" />
     <Compile Include="Utilities\MyDateTime\EllipseFormats.cs" />
     <Compile Include="Utilities\MyDateTime\EllipseOperations.cs" />
-    <Compile Include="Utilities\FileWriter.cs" />
-    <Compile Include="Utilities\MyKeyValuePair.cs" />
-    <Compile Include="Utilities\Math.cs" />
-    <Compile Include="Settings\RuntimeConfigSettings.cs" />
-    <Compile Include="Utilities\Shifts\ShiftCodes.cs" />
-    <Compile Include="Utilities\Shifts\ShiftPeriods.cs" />
-    <Compile Include="Utilities\Shifts\Slot.cs" />
-    <Compile Include="Utilities\MyUtilities.cs" />
     <Compile Include="Web References\AuthenticatorService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -138,8 +184,13 @@
     <Compile Include="Constants\EllipseWoTypeMtType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\AboutBoxExcelAddIn.resx">
+    <EmbeddedResource Include="..\SharedClassLibrary\Forms\AboutBoxExcelAddIn.resx">
+      <Link>Forms\AboutBoxExcelAddIn.resx</Link>
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SharedClassLibrary\Forms\FormAuthenticate.resx">
+      <Link>Forms\FormAuthenticate.resx</Link>
+      <DependentUpon>FormAuthenticate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EllipseFormAuthenticate.resx">
       <DependentUpon>EllipseFormAuthenticate.cs</DependentUpon>

@@ -6,7 +6,7 @@ using EllipseCommonsClassLibrary.Classes;
 
 namespace EllipseCommonsClassLibrary.Utilities
 {
-    public class MyUtilities : CommonsClassLibrary.Utilities.MyUtilities
+    public class MyUtilities : SharedClassLibrary.Utilities.MyUtilities
     {
 
 
@@ -25,26 +25,26 @@ namespace EllipseCommonsClassLibrary.Utilities
         }
     }
 
-    public class Encryption : CommonsClassLibrary.Utilities.Encryption
+    public class Encryption : SharedClassLibrary.Utilities.Encryption
     {
 
     }
 
-    public class FileWriter : CommonsClassLibrary.Utilities.FileWriter
+    public class FileWriter : SharedClassLibrary.Utilities.FileWriter
     {
 
     }
 
-    public class IxConstantInteger : CommonsClassLibrary.Utilities.IxConstantInteger
+    public class IxConstantInteger : SharedClassLibrary.Utilities.IxConstantInteger
     {
 
     }
 
-    public class InputBox : CommonsClassLibrary.Utilities.InputBox
+    public class InputBox : SharedClassLibrary.Utilities.InputBox
     {
     }
 
-    public class MyKeyValuePair<TKey, TVal> : CommonsClassLibrary.Utilities.MyKeyValuePair<TKey, TVal>
+    public class MyKeyValuePair<TKey, TVal> : SharedClassLibrary.Utilities.MyKeyValuePair<TKey, TVal>
     {
         public MyKeyValuePair() : base() { }
 
@@ -53,12 +53,7 @@ namespace EllipseCommonsClassLibrary.Utilities
         }
     }
 
-    public class Math : CommonsClassLibrary.Utilities.Math
-    {
-
-    }
-
-    public class RuntimeConfigSettings : CommonsClassLibrary.RuntimeConfigSettings
+    public class Math : SharedClassLibrary.Utilities.Math
     {
 
     }
