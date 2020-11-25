@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using Microsoft.Office.Interop.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using SharedClassLibrary.Utilities;
@@ -261,6 +262,26 @@ namespace SharedClassLibrary.Classes
             catch (Exception ex)
             {
                 Debugger.LogError("ExcelStyleCells:clearRange(string, string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Borra los datos de un rango y devuelve si la acción se realizó o no
+        /// </summary>
+        /// <param name="range">string: nombre del rango Ej. ("A1:C4") </param>
+        /// <returns>bool: La acción se realizó sin problemas</returns>
+        public bool ClearRange(string range)
+        {
+            try
+            {
+                Range cellsRange = GetRange(range);
+                cellsRange.Clear();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("ExcelStyleCells:clearRange(string)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
                 return false;
             }
         }
@@ -1156,6 +1177,23 @@ namespace SharedClassLibrary.Classes
             }
 
             return columnName;
+        }
+
+        public bool IsNumberFormatDate(int column, int row)
+        {
+            var range = GetCell(column, row);
+            var numberFormat = range.NumberFormat;
+
+            if (numberFormat.Equals(NumberFormatConstants.General))
+                return false;
+            if (numberFormat.Equals(NumberFormatConstants.Text))
+                return false;
+            if (numberFormat.Equals(NumberFormatConstants.Integer))
+                return false;
+            if (numberFormat.Equals(NumberFormatConstants.Number))
+                return false;
+
+            return true;
         }
 
         /// <summary>

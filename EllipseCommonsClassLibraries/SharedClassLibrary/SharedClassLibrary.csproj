@@ -55,7 +55,13 @@
     <Compile Include="Classes\StyleConstants.cs" />
     <Compile Include="Configuration\Options.cs" />
     <Compile Include="Connections\DatabaseItem.cs" />
+    <Compile Include="Connections\IQueryParamCollection.cs" />
+    <Compile Include="Connections\ISimpleObjectModelSql.cs" />
+    <Compile Include="Connections\IDbConnector.cs" />
+    <Compile Include="Connections\SqlQueryParamCollection.cs" />
+    <Compile Include="Connections\SqlConnector.cs" />
     <Compile Include="Connections\OracleConnector.cs" />
+    <Compile Include="Connections\OracleQueryParamCollection.cs" />
     <Compile Include="Forms\AboutBoxExcelAddIn.cs">
       <SubType>Form</SubType>
     </Compile>

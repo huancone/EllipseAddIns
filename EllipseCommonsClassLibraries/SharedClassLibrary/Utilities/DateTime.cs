@@ -12,25 +12,32 @@ namespace SharedClassLibrary.Utilities
         public class DateTime
         {
             public static string DateDefaultFormat = "yyyyMMdd";
-            public static string DateTimeDefaultFormat = "yyyyMMdd hhmmss";
-            public static string TimeDefaultFormat = "hhmmss";
-            public static string DateYYMMDD = "yyMMdd";
-            public static string DateYYDDMM = "yyddMM";
-            public static string DateMMDDYY = "MMddyy";
-            public static string DateDDMMYY = "ddMMyy";
-
-            public static string DateYYYYMMDD = "yyyyMMdd";
-            public static string DateYYYYDDMM = "yyyyddMM";
-            public static string DateMMDDYYYY = "MMddyyyy";
-            public static string DateDDMMYYYY = "ddMMyyyy";
-
-            public static string DateTimeYYYYMMDD_HHMM = "yyyyMMdd hhmm";
-            public static string DateTimeYYYYMMDD_HHMMSS = "yyyyMMdd hhmmss";
-            public static string DateTimeYYYYDDMM_HHMM = "yyyyddMM hhmm";
-            public static string DateTimeYYYYDDMM_HHMMSS = "yyyyddMM hhmmss";
-
-            public static string TimeHHMM = "hhmm";
-            public static string TimeHHMMSS = "hhmmss";
+            public static string DateTimeDefaultFormat = "yyyyMMdd HHmmss";
+            public static string TimeDefaultFormat = "HHmmss";
+            public const string DateYYMMDD = "yyMMdd";
+            public const string DateYYDDMM = "yyddMM";
+            public const string DateMMDDYY = "MMddyy";
+            public const string DateDDMMYY = "ddMMyy";
+                   
+            public const string DateYYYYMMDD = "yyyyMMdd";
+            public const string DateYYYYDDMM = "yyyyddMM";
+            public const string DateMMDDYYYY = "MMddyyyy";
+            public const string DateDDMMYYYY = "ddMMyyyy";
+                   
+            public const string DateTimeYYYYMMDD_HHMM = "yyyyMMdd hhmm";
+            public const string DateTimeYYYYMMDD_HHMMSS = "yyyyMMdd hhmmss";
+            public const string DateTimeYYYYDDMM_HHMM = "yyyyddMM hhmm";
+            public const string DateTimeYYYYDDMM_HHMMSS = "yyyyddMM hhmmss";
+                   
+            public const string DateTimeYYYYMMDD_HH24MM = "yyyyMMdd HHmm";
+            public const string DateTimeYYYYMMDD_HH24MMSS = "yyyyMMdd HHmmss";
+            public const string DateTimeYYYYDDMM_HH24MM = "yyyyddMM HHmm";
+            public const string DateTimeYYYYDDMM_HH24MMSS = "yyyyddMM HHmmss";
+                   
+            public const string TimeHHMM = "hhmm";
+            public const string TimeHHMMSS = "hhmmss";
+            public const string TimeHH24MM = "hhmm";
+            public const string TimeHH24MMSS = "hhmmss";
 
             public static List<Slot> GetSlots(Slot[] shifts, System.DateTime startEvent, System.DateTime endEvent)
             {

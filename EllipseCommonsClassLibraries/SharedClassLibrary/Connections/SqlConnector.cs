@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
+using System.Drawing.Design;
+using System.Linq;
 using System.Threading;
-using Oracle.ManagedDataAccess.Client;
 using SharedClassLibrary.Utilities;
 
-//Shared Class Library - OracleConnector
+//Shared Class Library - SqlConnector
 //Desarrollado por:
 //Héctor J Hernández R <hernandezrhectorj@gmail.com>
 //Hugo A Mendoza B <hugo.mendoza@hambings.com.co>
 
 namespace SharedClassLibrary.Connections
 {
-    public class OracleConnector : IDbConnector
+    public class SqlConnector : IDbConnector
     {
         private string _currentConnectionString;
         private int _queryAttempt;
-        private OracleTransaction _transaction;
+        private SqlTransaction _transaction;
         public int ConnectionTimeOut { get; set; } //default ODP 15
         public string DbCatalog { get; set; } //para algunas bases de datos
         public string DbLink { get; set; }
@@ -26,19 +28,19 @@ namespace SharedClassLibrary.Connections
         public string DbUser { get; set; } //Ej. SIGCON, CONSULBO
         public int MaxQueryAttempts;
 
-        public IDbCommand DbCommand => _oracleComm;
-        public IDbConnection DbConnection => _oracleConn;
+        public IDbCommand DbCommand => _sqlComm;
+        public IDbConnection DbConnection => _sqlConn;
         public IDbTransaction DbTransaction => _transaction;
 
-        private OracleCommand _oracleComm;
-        private OracleConnection _oracleConn;
+        private SqlCommand _sqlComm;
+        private SqlConnection _sqlConn;
         public bool PoolingDataBase { get; set; }
 
-        public OracleConnector()
+        public SqlConnector()
         {
         }
 
-        public OracleConnector(string dbName, string dbUser, string dbPass)
+        public SqlConnector(string dbName, string dbUser, string dbPass)
         {
             DbName = dbName;
             DbUser = dbUser;
@@ -49,7 +51,7 @@ namespace SharedClassLibrary.Connections
             StartConnection();
         }
 
-        public OracleConnector(string connectionString)
+        public SqlConnector(string connectionString)
         {
             _currentConnectionString = connectionString;
             ConnectionTimeOut = 15;
@@ -58,7 +60,7 @@ namespace SharedClassLibrary.Connections
             StartConnection(_currentConnectionString);
         }
 
-        public OracleConnector(DatabaseItem dbItem)
+        public SqlConnector(DatabaseItem dbItem)
         {
             DbName = dbItem.DbName;
             DbUser = dbItem.DbUser;
@@ -103,18 +105,18 @@ namespace SharedClassLibrary.Connections
             if (string.IsNullOrWhiteSpace(_currentConnectionString) || _currentConnectionString != connectionString)
                 _currentConnectionString = connectionString;
 
-            if (_oracleConn != null)
+            if (_sqlConn != null)
             {
                 Rollback();
 
-                _oracleConn.Close();
-                _oracleConn.Dispose();
+                _sqlConn.Close();
+                _sqlConn.Dispose();
             }
 
-            _oracleConn = new OracleConnection(connectionString);
+            _sqlConn = new SqlConnection(connectionString);
 
-            if (_oracleComm == null)
-                _oracleComm = new OracleCommand();
+            if (_sqlComm == null)
+                _sqlComm = new SqlCommand();
         }
 
         public void RestartConnection()
@@ -134,9 +136,9 @@ namespace SharedClassLibrary.Connections
                     //ignored
                 }
 
-            if (_oracleConn.State != ConnectionState.Open)
-                _oracleConn.Open();
-            _transaction = _oracleConn.BeginTransaction();
+            if (_sqlConn.State != ConnectionState.Open)
+                _sqlConn.Open();
+            _transaction = _sqlConn.BeginTransaction();
         }
 
         public void Commit()
@@ -145,8 +147,8 @@ namespace SharedClassLibrary.Connections
                 return;
             _transaction.Commit();
             _transaction = null;
-            if (_oracleComm != null)
-                _oracleComm.Transaction = null;
+            if (_sqlComm != null)
+                _sqlComm.Transaction = null;
         }
 
         public void Rollback()
@@ -155,15 +157,15 @@ namespace SharedClassLibrary.Connections
                 return;
             _transaction.Rollback();
             _transaction = null;
-            if (_oracleComm != null)
-                _oracleComm.Transaction = null;
+            if (_sqlComm != null)
+                _sqlComm.Transaction = null;
         }
 
 
         public void CancelConnection()
         {
-            if (_oracleConn != null && _oracleComm != null)
-                _oracleComm.Cancel();
+            if (_sqlConn != null && _sqlComm != null)
+                _sqlComm.Cancel();
         }
 
         /// <summary>
@@ -173,27 +175,27 @@ namespace SharedClassLibrary.Connections
         public void CloseConnection(bool dispose = false)
         {
             //This will avoid the default autocommit behaviour when connection closes
-            if (_transaction != null && _oracleConn != null)
+            if (_transaction != null && _sqlConn != null)
             {
                 Rollback();
                 _transaction.Dispose();
             }
 
-            if (_oracleConn != null)
+            if (_sqlConn != null)
             {
-                if (_oracleConn.State != ConnectionState.Closed)
-                    _oracleConn.Close();
+                if (_sqlConn.State != ConnectionState.Closed)
+                    _sqlConn.Close();
                 if (dispose)
                 {
-                    _oracleConn.Dispose();
-                    _oracleConn = null;
+                    _sqlConn.Dispose();
+                    _sqlConn = null;
                 }
             }
 
-            if (_oracleComm != null && dispose)
+            if (_sqlComm != null && dispose)
             {
-                _oracleComm.Dispose();
-                _oracleComm = null;
+                _sqlComm.Dispose();
+                _sqlComm = null;
             }
         }
 
@@ -201,14 +203,13 @@ namespace SharedClassLibrary.Connections
 
         public long GetFetchSize()
         {
-            return _oracleComm.FetchSize;
+            throw new NotImplementedException();
         }
         public void SetFetchSize(long size)
         {
-            _oracleComm.FetchSize = size;
+            throw new NotImplementedException();
         }
 
-        
         #region ExecuteQuery - Execute Implementations
         public int ExecuteQuery(IQueryParamCollection queryParamCollection)
         {
@@ -217,33 +218,36 @@ namespace SharedClassLibrary.Connections
 
             try
             {
-                if (_oracleComm == null || _oracleConn == null)
+                if (_sqlComm == null || _sqlConn == null)
                     throw new ArgumentException("Database connection error: Make sure the Database connector is set and the connection is not disposed");
-                if (_oracleConn.State != ConnectionState.Open && _transaction == null)
-                    _oracleConn.Open();
-                _oracleComm.Connection = _oracleConn;
-                _oracleComm.CommandText = queryParamCollection.CommandText;
-                _oracleComm.Parameters.Clear();
-                _oracleComm.BindByName = queryParamCollection.BindByName;
+                if (_sqlConn.State != ConnectionState.Open && _transaction == null)
+                    _sqlConn.Open();
+                _sqlComm.Connection = _sqlConn;
+                _sqlComm.CommandText = queryParamCollection.CommandText;
+                _sqlComm.Parameters.Clear();
 
                 if (queryParamCollection.Parameters != null)
                     foreach (var p in queryParamCollection.Parameters)
-                        _oracleComm.Parameters.Add((OracleParameter)p);
+                        _sqlComm.Parameters.Add((SqlParameter)p);
                 if (_transaction != null)
-                    _oracleComm.Transaction = _transaction;
+                    _sqlComm.Transaction = _transaction;
                 _queryAttempt = 0;
-                return _oracleComm.ExecuteNonQuery();
+                return _sqlComm.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
                 _queryAttempt++;
+
+                //TO DO
+                /*
+                //Timeout error handlers
                 if (ex.Message.Contains("ORA-12516") && _queryAttempt < MaxQueryAttempts)
                 {
                     Thread.Sleep(ConnectionTimeOut);
                     GetDataSetQueryResult(queryParamCollection);
                 }
-
-                Debugger.LogError("OracleConnector:ExecuteQuery(queryParamCollection)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                */
+                Debugger.LogError("SqlConnector:ExecuteQuery(queryParamCollection)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                 _queryAttempt = 0;
                 throw;
@@ -252,19 +256,19 @@ namespace SharedClassLibrary.Connections
 
         public int ExecuteQuery(string sqlQuery)
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery);
             return ExecuteQuery(queryParamCollection);
         }
 
         public int ExecuteQuery(string sqlQuery, List<IDbDataParameter> parameters)
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery, parameters);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters);
             return ExecuteQuery(queryParamCollection);
         }
 
         public int ExecuteQuery(string sqlQuery, List<IDbDataParameter> parameters, char escapeChar)
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery, parameters, escapeChar);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters, escapeChar);
             return ExecuteQuery(queryParamCollection);
         }
         #endregion
@@ -289,20 +293,20 @@ namespace SharedClassLibrary.Connections
         }
         public List<T> GetQueryResult<T>(string sqlQuery) where T : ISimpleObjectModelSql, new()
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery);
 
             return GetQueryResult<T>(queryParamCollection);
         }
 
         public List<T> GetQueryResult<T>(string sqlQuery, List<IDbDataParameter> parameters) where T : ISimpleObjectModelSql, new()
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery, parameters);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters);
 
             return GetQueryResult<T>(queryParamCollection);
         }
         public List<T> GetQueryResult<T>(string sqlQuery, List<IDbDataParameter> parameters, char escapeChar) where T : ISimpleObjectModelSql, new()
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery, parameters, escapeChar);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters, escapeChar);
             return GetQueryResult<T>(queryParamCollection);
         }
         #endregion
@@ -316,7 +320,7 @@ namespace SharedClassLibrary.Connections
         /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
         public DataSet GetDataSetQueryResult(string sqlQuery)
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery);
             return GetDataSetQueryResult(queryParamCollection);
         }
 
@@ -331,23 +335,22 @@ namespace SharedClassLibrary.Connections
             _queryAttempt++;
             try
             {
-                if (_oracleComm == null || _oracleConn == null)
+                if (_sqlComm == null || _sqlConn == null)
                     throw new ArgumentException("Database connection error: Make sure the Database connector is set and the connection is not disposed");
-                if (_oracleConn.State != ConnectionState.Open && _transaction == null)
-                    _oracleConn.Open();
-                _oracleComm.Connection = _oracleConn;
-                _oracleComm.CommandText = queryParamCollection.CommandText;
-                _oracleComm.Parameters.Clear();
-                _oracleComm.BindByName = queryParamCollection.BindByName;
+                if (_sqlConn.State != ConnectionState.Open && _transaction == null)
+                    _sqlConn.Open();
+                _sqlComm.Connection = _sqlConn;
+                _sqlComm.CommandText = queryParamCollection.CommandText;
+                _sqlComm.Parameters.Clear();
 
                 if (queryParamCollection.Parameters != null)
                     foreach (var p in queryParamCollection.Parameters)
-                        _oracleComm.Parameters.Add((OracleParameter)p);
+                        _sqlComm.Parameters.Add((SqlParameter)p);
                 if (_transaction != null)
-                    _oracleComm.Transaction = _transaction;
+                    _sqlComm.Transaction = _transaction;
                 _queryAttempt = 0;
                 var ds = new DataSet();
-                var adapter = new OracleDataAdapter(_oracleComm);
+                var adapter = new SqlDataAdapter(_sqlComm);
                 adapter.Fill(ds);
                 return ds;
             }
@@ -360,7 +363,7 @@ namespace SharedClassLibrary.Connections
                     GetDataSetQueryResult(queryParamCollection);
                 }
 
-                Debugger.LogError("OracleConnector:GetDataSetQueryResult(queryParamCollection)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("SqlConnector:GetDataSetQueryResult(queryParamCollection)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                 _queryAttempt = 0;
                 throw;
@@ -375,7 +378,7 @@ namespace SharedClassLibrary.Connections
         /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
         public DataSet GetDataSetQueryResult(string sqlQuery, List<IDbDataParameter> parameters)
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery, parameters);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters);
             return GetDataSetQueryResult(queryParamCollection);
         }
 
@@ -384,11 +387,11 @@ namespace SharedClassLibrary.Connections
         /// </summary>
         /// <param name="sqlQuery">Query a consultar</param>
         /// <param name="parameters">List of parameters</param>
-        /// <param name="escapeChar">Escape char for parameteres. Oracle Default ':'</param>
+        /// <param name="escapeChar">Escape char for parameteres. Sql Default '@'</param>
         /// <returns>DataSet: Conjunto de resultados de la consulta</returns>
         public DataSet GetDataSetQueryResult(string sqlQuery, List<IDbDataParameter> parameters, char escapeChar)
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery, parameters, escapeChar);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters, escapeChar);
             return GetDataSetQueryResult(queryParamCollection);
         }
         #endregion
@@ -398,10 +401,10 @@ namespace SharedClassLibrary.Connections
         ///     Obtiene el data reader con los resultados de una consulta
         /// </summary>
         /// <param name="sqlQuery">Query a consultar</param>
-        /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
+        /// <returns>SqlDataReader: Conjunto de resultados de la consulta</returns>
         public IDataReader GetQueryResult(string sqlQuery)
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery);
             return GetQueryResult(queryParamCollection);
         }
 
@@ -410,10 +413,10 @@ namespace SharedClassLibrary.Connections
         /// </summary>
         /// <param name="sqlQuery">Query a consultar</param>
         /// <param name="parameters">List of parameters</param>
-        /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
+        /// <returns>SqlDataReader: Conjunto de resultados de la consulta</returns>
         public IDataReader GetQueryResult(string sqlQuery, List<IDbDataParameter> parameters)
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery, parameters);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters);
             return GetQueryResult(queryParamCollection);
         }
 
@@ -422,11 +425,11 @@ namespace SharedClassLibrary.Connections
         /// </summary>
         /// <param name="sqlQuery">Query a consultar</param>
         /// <param name="parameters">List of parameters</param>
-        /// <param name="escapeChar">Escape char for parameteres. Oracle Default ':'</param>
-        /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
+        /// <param name="escapeChar">Escape char for parameteres. Sql Default '@'</param>
+        /// <returns>SqlDataReader: Conjunto de resultados de la consulta</returns>
         public IDataReader GetQueryResult(string sqlQuery, List<IDbDataParameter> parameters, char escapeChar)
         {
-            var queryParamCollection = new OracleQueryParamCollection(sqlQuery, parameters, escapeChar);
+            var queryParamCollection = new SqlQueryParamCollection(sqlQuery, parameters, escapeChar);
             return GetQueryResult(queryParamCollection);
         }
 
@@ -434,7 +437,7 @@ namespace SharedClassLibrary.Connections
         ///     Obtiene el data reader con los resultados de una consulta
         /// </summary>
         /// <param name="queryParamCollection">Objeto de colección de query y parámetros de oracle</param>
-        /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
+        /// <returns>SqlDataReader: Conjunto de resultados de la consulta</returns>
         public IDataReader GetQueryResult(IQueryParamCollection queryParamCollection)
         {
             Debugger.LogQuery(queryParamCollection.GetGeneratedSql());
@@ -442,23 +445,22 @@ namespace SharedClassLibrary.Connections
 
             try
             {
-                if (_oracleComm == null || _oracleConn == null)
+                if (_sqlComm == null || _sqlConn == null)
                     throw new ArgumentException("Database connection error: Make sure the Database connector is set and the connection is not disposed");
-                if (_oracleConn.State != ConnectionState.Open && _transaction == null)
-                    _oracleConn.Open();
-                _oracleComm.Connection = _oracleConn;
-                _oracleComm.CommandText = queryParamCollection.CommandText;
-                _oracleComm.Parameters.Clear();
-                _oracleComm.BindByName = queryParamCollection.BindByName;
+                if (_sqlConn.State != ConnectionState.Open && _transaction == null)
+                    _sqlConn.Open();
+                _sqlComm.Connection = _sqlConn;
+                _sqlComm.CommandText = queryParamCollection.CommandText;
+                _sqlComm.Parameters.Clear();
 
                 if (queryParamCollection.Parameters != null)
                     foreach (var p in queryParamCollection.Parameters)
-                        _oracleComm.Parameters.Add((OracleParameter)p);
+                        _sqlComm.Parameters.Add((SqlParameter)p);
 
                 if (_transaction != null)
-                    _oracleComm.Transaction = _transaction;
+                    _sqlComm.Transaction = _transaction;
                 _queryAttempt = 0;
-                return _oracleComm.ExecuteReader();
+                return _sqlComm.ExecuteReader();
             }
             catch (Exception ex)
             {
@@ -469,7 +471,7 @@ namespace SharedClassLibrary.Connections
                     GetQueryResult(queryParamCollection);
                 }
 
-                Debugger.LogError("OracleConnector:GetQueryResult(QueryParamCollection)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("SqlConnector:GetQueryResult(QueryParamCollection)", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
 
                 _queryAttempt = 0;
                 throw;

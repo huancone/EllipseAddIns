@@ -276,6 +276,26 @@ namespace SharedClassLibrary.Utilities
             
             return ToInteger32Null(value, nullOrEmpty, cultureInfo);
         }
+
+        public static decimal? ToDecimalNull(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
+        {
+            if (nullOrEmpty == null)
+                nullOrEmpty = ConversionConstants.DefaultNormal;
+            if (!ConversionConstants.IsValidDefaultNullableConstant(nullOrEmpty))
+                throw new ArgumentException("Error al intentar convertir un valor a decimal null. Parámetro de conversión a entero nullOrEmpty no válido.");
+
+            if (cultureInfo == null)
+                cultureInfo = CultureInfo.CurrentCulture;
+
+            if (value == null)
+                return null;
+
+            var stringValue = Convert.ToString(value);
+            if (string.IsNullOrWhiteSpace(stringValue))
+                return null;
+
+            return Convert.ToDecimal(value, cultureInfo);
+        }
         public static long ToInteger64(object value, IxConversionConstant nullOrEmpty = null, CultureInfo cultureInfo = null)
         {
             if (nullOrEmpty == null)
@@ -314,7 +334,7 @@ namespace SharedClassLibrary.Utilities
         }
         public static System.DateTime ToDateTime(object value)
         {
-            var format = DateTime.DateDefaultFormat;
+            var format = DateTime.DateTimeDefaultFormat;
             var cultureInfo = CultureInfo.CurrentCulture;
             return ToDateTime(value, format, cultureInfo);
         }
@@ -338,9 +358,36 @@ namespace SharedClassLibrary.Utilities
             }
         }
 
+        public static System.DateTime ToDateTime(double value)
+        {
+            return System.DateTime.FromOADate(value);
+        }
+        public static System.DateTime ToDate(object value)
+        {
+            var format = DateTime.DateDefaultFormat;
+            var cultureInfo = CultureInfo.CurrentCulture;
+            return ToDateTime(value, format, cultureInfo);
+        }
+
+        public static System.DateTime ToDate(object value, string format)
+        {
+            var cultureInfo = CultureInfo.CurrentCulture;
+            return ToDateTime(value, format, cultureInfo);
+        }
+
+        public static System.DateTime ToDate(object value, string format, CultureInfo cultureInfo)
+        {
+            return ToDateTime(value, format, cultureInfo);
+        }
         public static string ToString(bool value)
         {
             return "" + value;
+        }
+
+        public static System.DateTime ToDate(double value)
+        {
+            
+            return ToDateTime(System.Math.Truncate(value));
         }
         public static string ToString(bool value, string type)
         {
@@ -520,12 +567,44 @@ namespace SharedClassLibrary.Utilities
 
             try
             {
-                return a.ToUpper().Equals(b.ToUpper());
+                return a.Equals(b, StringComparison.OrdinalIgnoreCase);
             }
             catch
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Obtiene la cadena de texto eliminando los caracteres especiales (Solo admite alfanuméricos)
+        /// </summary>
+        /// <param name="input">cadena de caracteres a sanitizar</param>
+        /// <param name="allowedChars">caracteres especiales permitidos</param>
+        /// <returns></returns>
+        public static string RemoveSpecialCharacters(string input, char[] allowedChars = null)
+        {
+            var additionalChars = "";
+            if (allowedChars != null)
+                foreach (var c in allowedChars)
+                    additionalChars = additionalChars + c;
+
+            var pattern = "(?:[^a-z0-9" + additionalChars + "]|(?<=['\"])s)";
+
+            Regex r = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+            return r.Replace(input, String.Empty);
+        }
+
+        public static int CompareIntNull(int? x, int? y)
+        {
+            if (x == null && y == null)
+                return 0;
+            if (x == null)
+                return -1;
+            if (y == null)
+                return 1;
+            var intX = (int) x;
+            var intY = (int) y;
+            return intX.CompareTo(intY);
         }
     }
 }

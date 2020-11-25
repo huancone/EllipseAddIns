@@ -126,7 +126,7 @@
   <data name="Debugging_StackTrace" xml:space="preserve">
     <value>StackTrace</value>
   </data>
-  <data name="Erorr_InvalidId" xml:space="preserve">
+  <data name="Error_InvalidId" xml:space="preserve">
     <value>Invalid Id</value>
   </data>
   <data name="Error_ErrorFound" xml:space="preserve">

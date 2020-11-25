@@ -97,15 +97,6 @@ namespace SharedClassLibrary {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Id.
-        /// </summary>
-        public static string Erorr_InvalidId {
-            get {
-                return ResourceManager.GetString("Erorr_InvalidId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error found.
         /// </summary>
         public static string Error_ErrorFound {
@@ -138,6 +129,15 @@ namespace SharedClassLibrary {
         public static string Error_ExcelSheetFormatError {
             get {
                 return ResourceManager.GetString("Error_ExcelSheetFormatError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Id.
+        /// </summary>
+        public static string Error_InvalidId {
+            get {
+                return ResourceManager.GetString("Error_InvalidId", resourceCulture);
             }
         }
         

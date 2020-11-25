@@ -77,7 +77,9 @@ namespace SharedClassLibrary.Classes
         public const string General = "General";
         public const string Text = "@";
         public const string Integer = "0";
+        public const string Number = "0";
         public const string Date = "yyyyMMdd";
+        public const string DateTime = "yyyyMMdd HHmmss";
         public const string Percentage = "###,##%";
     }
 
