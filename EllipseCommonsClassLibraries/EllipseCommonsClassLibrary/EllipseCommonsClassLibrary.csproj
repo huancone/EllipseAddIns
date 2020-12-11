@@ -49,6 +49,10 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.Services.Ellipse, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ReleasedLibraries\System.Web.Services.Ellipse\v2.0.0.0\System.Web.Services.Ellipse.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,77 +61,103 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SharedClassLibrary\Classes\ExcelStyleCells.cs">
-      <Link>Classes\ExcelStyleCells.cs</Link>
-    </Compile>
-    <Compile Include="..\SharedClassLibrary\Classes\ReplyMessage.cs">
-      <Link>Classes\ReplyMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\SharedClassLibrary\Classes\StyleConstants.cs">
-      <Link>Classes\StyleConstants.cs</Link>
-    </Compile>
-    <Compile Include="..\SharedClassLibrary\Configuration\AssemblyItem.cs">
-      <Link>Configuration\AssemblyItem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharedClassLibrary\Configuration\RuntimeConfigSettings.cs">
-      <Link>Configuration\RuntimeConfigSettings.cs</Link>
-    </Compile>
-    <Compile Include="..\SharedClassLibrary\Configuration\Settings.cs">
-      <Link>Configuration\Settings.cs</Link>
-    </Compile>
-    <Compile Include="..\SharedClassLibrary\Connections\DatabaseItem.cs">
-      <Link>Connections\DatabaseItem.cs</Link>
-    </Compile>
-    <Compile Include="..\SharedClassLibrary\Connections\OracleConnector.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary.Connections.Oracle\OracleConnector.cs">
       <Link>Connections\OracleConnector.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Forms\AboutBoxExcelAddIn.cs">
-      <Link>Forms\AboutBoxExcelAddIn.cs</Link>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary.Connections.Oracle\OracleQueryParamCollection.cs">
+      <Link>Connections\OracleQueryParamCollection.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Forms\AboutBoxExcelAddIn.designer.cs">
-      <Link>Forms\AboutBoxExcelAddIn.designer.cs</Link>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary.Connections\DatabaseItem.cs">
+      <Link>Connections\DatabaseItem.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary.Connections\IDbConnector.cs">
+      <Link>Connections\IDbConnector.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary.Connections\IQueryParamCollection.cs">
+      <Link>Connections\IQueryParamCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary.Connections\ISimpleObjectModelSql.cs">
+      <Link>Connections\ISimpleObjectModelSql.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary.Connections\SqlConnector.cs">
+      <Link>Connections\SqlConnector.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary.Connections\SqlQueryParamCollection.cs">
+      <Link>Connections\SqlQueryParamCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary.Vsto.Excel\ExcelStyleCells.cs">
+      <Link>Vsto.Excel\ExcelStyleCells.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary.Vsto.Excel\StyleConstants.cs">
+      <Link>Vsto.Excel\StyleConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Classes\ReplyMessage.cs">
+      <Link>Classes\ReplyMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Configuration\AssemblyItem.cs">
+      <Link>Configuration\AssemblyItem.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Configuration\IOptions.cs">
+      <Link>Configuration\IOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Configuration\Options.cs">
+      <Link>Configuration\Options.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Configuration\RuntimeConfigSettings.cs">
+      <Link>Configuration\RuntimeConfigSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Configuration\Settings.cs">
+      <Link>Configuration\Settings.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Forms\AboutBoxExcelAddIn.cs">
+      <Link>Forms\AboutBoxExcelAddIn.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Forms\AboutBoxExcelAddIn.Designer.cs">
+      <Link>Forms\AboutBoxExcelAddIn.Designer.cs</Link>
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Forms\FormAuthenticate.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Forms\FormAuthenticate.cs">
       <Link>Forms\FormAuthenticate.cs</Link>
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\DateTime.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\DateTime.cs">
       <Link>Utilities\DateTime.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\Debugger.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\Debugger.cs">
       <Link>Utilities\Debugger.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\Encryption.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\Encryption.cs">
       <Link>Utilities\Encryption.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\FileWriter.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\FileWriter.cs">
       <Link>Utilities\FileWriter.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\IConstants.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\IConstants.cs">
       <Link>Utilities\IConstants.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\InputBox.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\InputBox.cs">
       <Link>Utilities\InputBox.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\Math.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\Math.cs">
       <Link>Utilities\Math.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\MyKeyValuePair.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\MyKeyValuePair.cs">
       <Link>Utilities\MyKeyValuePair.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\MyUtilities.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\MyUtilities.cs">
       <Link>Utilities\MyUtilities.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\Shifts\ShiftCodes.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\Shifts\ShiftCodes.cs">
       <Link>Utilities\Shifts\ShiftCodes.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\Shifts\ShiftPeriods.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\Shifts\ShiftPeriods.cs">
       <Link>Utilities\Shifts\ShiftPeriods.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\Shifts\Slot.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\Shifts\Slot.cs">
       <Link>Utilities\Shifts\Slot.cs</Link>
     </Compile>
-    <Compile Include="..\SharedClassLibrary\Utilities\Xml.cs">
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Utilities\Xml.cs">
       <Link>Utilities\Xml.cs</Link>
     </Compile>
     <Compile Include="Classes\EllipseClasses.cs" />
@@ -145,6 +175,7 @@
     </Compile>
     <Compile Include="Forms\EllipseFormAuthenticate.Designer.cs" />
     <Compile Include="Constants\EllipseGroups.cs" />
+    <Compile Include="Resources.Designer.cs" />
     <Compile Include="Utilities\EllipseDebugger.cs" />
     <Compile Include="Configuration\EllipseSettings.cs" />
     <Compile Include="Utilities\EllipseUtilities.cs" />
@@ -184,14 +215,6 @@
     <Compile Include="Constants\EllipseWoTypeMtType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\SharedClassLibrary\Forms\AboutBoxExcelAddIn.resx">
-      <Link>Forms\AboutBoxExcelAddIn.resx</Link>
-      <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\SharedClassLibrary\Forms\FormAuthenticate.resx">
-      <Link>Forms\FormAuthenticate.resx</Link>
-      <DependentUpon>FormAuthenticate.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\EllipseFormAuthenticate.resx">
       <DependentUpon>EllipseFormAuthenticate.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -261,6 +284,8 @@
     <None Include="Web References\ScreenService\ScreenService.wsdl" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources.es-es.resx" />
+    <EmbeddedResource Include="Resources.resx" />
     <EmbeddedResource Include="Resources\cerrejon_logo.png" />
   </ItemGroup>
   <ItemGroup>
@@ -269,12 +294,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\aboutPictureBox.png" />
     <Content Include="ventyx_logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
-      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
-      <Name>System.Web.Services.Ellipse</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

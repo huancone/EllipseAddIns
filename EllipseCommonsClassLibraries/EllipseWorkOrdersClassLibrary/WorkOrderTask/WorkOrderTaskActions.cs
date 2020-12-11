@@ -44,7 +44,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             var list = new List<TaskRequirement>();
 
-            if (woTaskDataReader == null || woTaskDataReader.IsClosed || !woTaskDataReader.HasRows)
+            if (woTaskDataReader == null || woTaskDataReader.IsClosed)
                 return list;
             
             while (woTaskDataReader.Read())
@@ -566,7 +566,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             var list = new List<WorkOrderTask>();
 
-            if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows)
+            if (stdDataReader == null || stdDataReader.IsClosed)
                 return list;
 
             while (stdDataReader.Read())

@@ -9,7 +9,7 @@ using System.Globalization;
 //Héctor J Hernández R <hernandezrhectorj@gmail.com>
 //Hugo A Mendoza B <hugo.mendoza@hambings.com.co>
 
-namespace SharedClassLibrary.Classes
+namespace SharedClassLibrary.Vsto.Excel
 {
     /// <summary>
     /// Estilos Predeterminados del Sistemas

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing.Design;
 using System.Linq;
 using System.Threading;
 using SharedClassLibrary.Utilities;

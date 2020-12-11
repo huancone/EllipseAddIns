@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SharedClassLibrary.Utilities;
+﻿using SharedClassLibrary.Utilities;
 
 //Shared Class Library - ExcelStyleCells
 //Desarrollado por:

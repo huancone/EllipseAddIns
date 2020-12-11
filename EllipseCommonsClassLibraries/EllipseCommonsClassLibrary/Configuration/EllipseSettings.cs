@@ -1,33 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Utilities;
 using System.Reflection;
-using System.Xml.Serialization;
+using System.Windows.Forms;
+using SharedClassLibrary.Configuration;
 using SharedClassLibrary.Connections;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 
 namespace EllipseCommonsClassLibrary
 {
+    public class Options : SharedClassLibrary.Configuration.Options
+    {
+
+    }
     public class Settings : SharedClassLibrary.Configuration.Settings
     {
         public static Settings CurrentSettings;
-
         public Settings()
         {
-            var settingOptions = new Options();
-            Initialize(settingOptions);
-        }
-        public Settings(Options defaultProgramOptions)
-        {
-            Initialize(defaultProgramOptions);
+            Initialize();
         }
 
-        public override void Initialize(Options defaultProgramOptions)
+        public override void Initialize()
         {
             AssemblyProgram = new Settings.AssemblyItem(GetLastAssembly());
             //GeneralFolder
@@ -55,8 +52,28 @@ namespace EllipseCommonsClassLibrary
             //StaticReference Through All the Project
             EllipseCommonsClassLibrary.Debugger.LocalDataPath = LocalDataPath;
             CurrentSettings = this;
-            //Options
-            OptionsSettings = GetOptionsSettings(defaultProgramOptions);
+            //Option Settings
+            OptionsSettings = GetOptionsSettings();
+            if (OptionsSettings == null)
+                OptionsSettings = new EllipseCommonsClassLibrary.Options();
+        }
+
+        private IOptions GetOptionsSettings()
+        {
+            try
+            {
+                if (OptionsSettings != null) return OptionsSettings;
+
+                var path = LocalDataPath;
+                var option = (IOptions)Utilities.MyUtilities.Xml.DeserializeXmlToObject(Path.Combine(LocalDataPath, GeneralConfigFolder, GeneralConfigFileName), typeof(IOptions));
+
+                return option;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Se ha producido un error al intentar cargar la configuración de " + AssemblyProgram.AssemblyTitle + ". Se continuará con la configuración predeterminada. " + ex.Message, "Error a cargar Opciones de Configuración");
+                return OptionsSettings?.DefaultOptions != null ? OptionsSettings.DefaultOptions : null;
+            }
         }
 
         #region -- Configuration Files Generation --

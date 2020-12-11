@@ -50,18 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\ExcelStyleCells.cs" />
     <Compile Include="Classes\ReplyMessage.cs" />
-    <Compile Include="Classes\StyleConstants.cs" />
+    <Compile Include="Configuration\IOptions.cs" />
     <Compile Include="Configuration\Options.cs" />
-    <Compile Include="Connections\DatabaseItem.cs" />
-    <Compile Include="Connections\IQueryParamCollection.cs" />
-    <Compile Include="Connections\ISimpleObjectModelSql.cs" />
-    <Compile Include="Connections\IDbConnector.cs" />
-    <Compile Include="Connections\SqlQueryParamCollection.cs" />
-    <Compile Include="Connections\SqlConnector.cs" />
-    <Compile Include="Connections\OracleConnector.cs" />
-    <Compile Include="Connections\OracleQueryParamCollection.cs" />
     <Compile Include="Forms\AboutBoxExcelAddIn.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,5 +122,6 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

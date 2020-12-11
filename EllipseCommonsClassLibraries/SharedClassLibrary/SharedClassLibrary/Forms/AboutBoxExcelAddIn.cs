@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using SharedClassLibrary.Configuration;
 
-//Shared Class Library - ExcelStyleCells
+//Shared Class Library - AbourBoxExcelAddIn
 //Desarrollado por:
 //Héctor J Hernández R <hernandezrhectorj@gmail.com>
 //Hugo A Mendoza B <hugo.mendoza@hambings.com.co>

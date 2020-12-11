@@ -7,7 +7,7 @@ using Application = Microsoft.Office.Interop.Excel.Application;
 
 namespace EllipseCommonsClassLibrary.Classes
 {
-    public class ExcelStyleCells : SharedClassLibrary.Classes.ExcelStyleCells
+    public class ExcelStyleCells : SharedClassLibrary.Vsto.Excel.ExcelStyleCells
     {
         public ExcelStyleCells(Application excelApp, bool alwaysActiveSheet = true) : base(excelApp, alwaysActiveSheet)
         {
@@ -20,12 +20,12 @@ namespace EllipseCommonsClassLibrary.Classes
         }
     }
 
-    public class StyleConstants : SharedClassLibrary.Classes.StyleConstants
+    public class StyleConstants : SharedClassLibrary.Vsto.Excel.StyleConstants
     {
 
     }
 
-    public class NumberFormatConstants : SharedClassLibrary.Classes.NumberFormatConstants
+    public class NumberFormatConstants : SharedClassLibrary.Vsto.Excel.NumberFormatConstants
     {
 
     }

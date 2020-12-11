@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using Oracle.ManagedDataAccess.Client;
+using SharedClassLibrary.Connections;
 using SharedClassLibrary.Utilities;
 
 //Shared Class Library - OracleConnector
@@ -10,7 +11,7 @@ using SharedClassLibrary.Utilities;
 //Héctor J Hernández R <hernandezrhectorj@gmail.com>
 //Hugo A Mendoza B <hugo.mendoza@hambings.com.co>
 
-namespace SharedClassLibrary.Connections
+namespace SharedClassLibrary.Connections.Oracle
 {
     public class OracleConnector : IDbConnector
     {

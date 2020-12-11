@@ -13,7 +13,7 @@ using SharedClassLibrary.Utilities;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
-namespace SharedClassLibrary.Classes
+namespace SharedClassLibrary.Vsto.Excel
 {
     public class ExcelStyleCells
     {

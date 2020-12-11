@@ -22,7 +22,7 @@ namespace EllipseWorkOrdersClassLibrary
             var stOpContext = StdText.GetCustomOpContext(district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
             newef.SetConnectionPoolingType(false);
 
-            if (drCriticalControl == null || drCriticalControl.IsClosed || !drCriticalControl.HasRows) return list;
+            if (drCriticalControl == null || drCriticalControl.IsClosed) return list;
             while (drCriticalControl.Read())
             {
                 var control = new CriticalControl
@@ -65,7 +65,7 @@ namespace EllipseWorkOrdersClassLibrary
             var stOpContext = StdText.GetCustomOpContext(district, opContext.position, opContext.maxInstances, opContext.returnWarnings);
             newef.SetConnectionPoolingType(false);
 
-            if (drCriticalControl == null || drCriticalControl.IsClosed || !drCriticalControl.HasRows) return control;
+            if (drCriticalControl == null || drCriticalControl.IsClosed) return control;
             while (drCriticalControl.Read())
             {
                 control = new CriticalControl

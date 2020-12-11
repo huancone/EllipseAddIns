@@ -7,7 +7,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using SharedClassLibrary.Utilities;
 
-//Shared Class Library - ExcelStyleCells
+//Shared Class Library - Settings
 //Desarrollado por:
 //Héctor J Hernández R <hernandezrhectorj@gmail.com>
 //Hugo A Mendoza B <hugo.mendoza@hambings.com.co>
@@ -38,17 +38,35 @@ namespace SharedClassLibrary.Configuration
         public string GeneralConfigFileName;
         public string GeneralConfigFolder;
         public System.Configuration.Configuration Config;
-        public Options OptionsSettings;
+        private IOptions _optionsSettings;
+        public IOptions OptionsSettings
+        {
+            get
+            {
+                try
+                {
+                    if (_optionsSettings != null) return _optionsSettings;
+
+                    var path = LocalDataPath;
+                    var option = (IOptions)Utilities.MyUtilities.Xml.DeserializeXmlToObject(Path.Combine(LocalDataPath, GeneralConfigFolder, GeneralConfigFileName), typeof(IOptions));
+                    _optionsSettings = option;
+                    return _optionsSettings;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Se ha producido un error al intentar cargar la configuración de " + AssemblyProgram.AssemblyTitle + ". Se continuará con la configuración predeterminada si esta existe. " + ex.Message, "Error a cargar Opciones de Configuración");
+                    return null;
+                }
+            }
+            set => UpdateOptionsSettings(value);
+        }
 
         public Settings()
         {
-        }
-        public Settings(Options defaultProgramOptions)
-        {
-            Initialize(defaultProgramOptions);
+            Initialize();
         }
 
-        public virtual void Initialize(Options defaultProgramOptions)
+        public virtual void Initialize()
         {
             AssemblyProgram = new Settings.AssemblyItem(GetLastAssembly());
             //GeneralFolder
@@ -75,51 +93,48 @@ namespace SharedClassLibrary.Configuration
 
             //StaticReference Through All the Project
             Debugger.LocalDataPath = LocalDataPath;
-            //Options
-            OptionsSettings = GetOptionsSettings(defaultProgramOptions);
+
+            //Option Settings
+            if(OptionsSettings == null)
+                OptionsSettings = new EllipseCommonsClassLibrary.Options();
         }
 
+        public void SetDefaultOptionsSettings(IOptions defaultProgramOptions)
+        {
+            if(OptionsSettings == null)
+                OptionsSettings = defaultProgramOptions;
+        }
         #region -- SettingOptions Methods --
-        public Options CreateOptionsSettingFile(Options optionsSettings = null)
+        public IOptions CreateOptionsSettingFile(IOptions optionsSettings = null)
         {
             // Serialize the configuration object to a file
             return UpdateOptionsSettings(optionsSettings);
         }
         
-        public Options UpdateOptionsSettings(Options optionsSettings = null)
-        {
-            if (optionsSettings == null)
-                optionsSettings = OptionsSettings;
-
-            SharedClassLibrary.Utilities.FileWriter.CreateDirectory(Path.Combine(LocalDataPath, GeneralConfigFolder));
-
-            if (optionsSettings != null && optionsSettings.OptionsList != null)
-                Utilities.MyUtilities.Xml.SerializeObjectToXml(Path.Combine(LocalDataPath, GeneralConfigFolder, GeneralConfigFileName), optionsSettings);
-            return optionsSettings;
-        }
-        public Options GetOptionsSettings(Options defaultOptionsSettings)
+        public IOptions UpdateOptionsSettings(IOptions optionsSettings = null)
         {
             try
             {
-                var path = LocalDataPath;
-                var option = (Options)Utilities.MyUtilities.Xml.DeserializeXmlToObject(Path.Combine(LocalDataPath, GeneralConfigFolder, GeneralConfigFileName), typeof(Options));
-                option.SetDefaultOptions(defaultOptionsSettings);
-                return option;
-            }
-            catch (DirectoryNotFoundException)
-            {
-                return UpdateOptionsSettings(defaultOptionsSettings);
-            }
-            catch (FileNotFoundException)
-            {
-                return UpdateOptionsSettings(defaultOptionsSettings);
+                if (optionsSettings != null)
+                    _optionsSettings = optionsSettings;
+
+                FileWriter.CreateDirectory(Path.Combine(LocalDataPath, GeneralConfigFolder));
+
+                if (_optionsSettings?.OptionsList != null)
+                    MyUtilities.Xml.SerializeObjectToXml(Path.Combine(LocalDataPath, GeneralConfigFolder, GeneralConfigFileName), _optionsSettings);
+                else
+                    throw new Exception("No hay opciones disponibles");
+
+                return _optionsSettings;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Se ha producido un error al intentar cargar la configuración de " + AssemblyProgram.AssemblyTitle + ". Se continuará con la configuración predeterminada. " + ex.Message, "Error a cargar Opciones de Configuración");
-                return defaultOptionsSettings;
+                Debugger.LogError("UpdateOptionsSettings(IOptions)",
+                    "Error al intentar actualizar las opciones. \n" + ex.Message);
+                throw;
             }
         }
+
         #endregion
 
         #region -- Variable Accessors --

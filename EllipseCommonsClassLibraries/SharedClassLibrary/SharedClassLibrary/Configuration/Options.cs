@@ -4,17 +4,22 @@ using System.Xml.Serialization;
 
 namespace SharedClassLibrary.Configuration
 {
-    /// <summary>
-    /// This Configuration class is basically just a set of 
-    /// properties with a couple of static methods to manage
-    /// the serialization to and deserialization from a
-    /// simple XML file.
-    /// </summary>
+
     [Serializable]
-    public class Options
+    public class Options : IOptions
     {
-        public List<ConfigValuePair<string, string>> OptionsList;
-        private Options _defaultSettingOptions;
+        public List<ConfigValuePair<string, string>> OptionsList { get; set; }
+        private IOptions _defaultOptions;
+        public IOptions DefaultOptions
+        {
+            get => _defaultOptions;
+            set => SetDefaultOptions(value);
+        }
+
+        private void SetDefaultOptions(IOptions defaultOptions)
+        {
+            _defaultOptions = defaultOptions;
+        }
         public void SetOption(string key, string value)
         {
             if (OptionsList == null)
@@ -36,12 +41,12 @@ namespace SharedClassLibrary.Configuration
             OptionsList.Add(new ConfigValuePair<string, string>(key, value));
         }
 
-        public void SetDefaultOptions(Options defaultSettingOptions)
-        {
-            _defaultSettingOptions = defaultSettingOptions;
-        }
+
         public string GetOptionValue(ConfigValuePair<string, string> defaultOptionItem)
         {
+            if (OptionsList == null)
+                OptionsList = new List<ConfigValuePair<string, string>>();
+
             var currentItemValue = GetOptionValue(defaultOptionItem.Key);
             if (!string.IsNullOrWhiteSpace(currentItemValue))
                 return currentItemValue;
@@ -56,9 +61,9 @@ namespace SharedClassLibrary.Configuration
                 if (item.Key.Equals(key))
                     return item.Value;
 
-            if (_defaultSettingOptions != null)
+            if (_defaultOptions != null)
             {
-                var defaultItem = _defaultSettingOptions.GetOption(key);
+                var defaultItem = _defaultOptions.GetOption(key);
                 if (defaultItem.Key != null)
                 {
                     SetOption(defaultItem.Key, defaultItem.Value);
@@ -74,9 +79,9 @@ namespace SharedClassLibrary.Configuration
             foreach (var item in OptionsList)
                 if (item.Key.Equals(key))
                     return item;
-            if (_defaultSettingOptions != null)
+            if (_defaultOptions != null)
             {
-                var defaultItem = _defaultSettingOptions.GetOption(key);
+                var defaultItem = _defaultOptions.GetOption(key);
                 if (defaultItem.Key != null)
                 {
                     SetOption(defaultItem.Key, defaultItem.Value);

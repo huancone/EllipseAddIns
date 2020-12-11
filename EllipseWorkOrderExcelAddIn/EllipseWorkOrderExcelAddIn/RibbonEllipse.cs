@@ -7,8 +7,8 @@ using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Classes;
+using EllipseCommonsClassLibrary.Connections;
 using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
 using EllipseWorkOrdersClassLibrary;
@@ -120,14 +120,15 @@ namespace EllipseWorkOrderExcelAddIn
             _eFunctions = new EllipseFunctions();
             _frmAuth = new FormAuthenticate();
 
-            var defaultConfig = new Settings.Options();
+            //default settings definition
+            var defaultConfig = new Options();
             defaultConfig.SetOption("FlagEstDuration", "Y");
             defaultConfig.SetOption("ValidateTaskPlanDates", "Y");
             defaultConfig.SetOption("IgnoreClosedStatus", "N");
-            
-            var options = settings.GetOptionsSettings(defaultConfig);
+            settings.SetDefaultOptionsSettings(defaultConfig);
 
             //Setting of Configuration Options from Config File (or default)
+            var options = settings.OptionsSettings;
             var flagEstDur = MyUtilities.IsTrue(options.GetOptionValue("FlagEstDuration"));
             var valdTaskPlanDates = MyUtilities.IsTrue(options.GetOptionValue("ValidateTaskPlanDates"));
             var ignoreCldStat = MyUtilities.IsTrue(options.GetOptionValue("IgnoreClosedStatus"));

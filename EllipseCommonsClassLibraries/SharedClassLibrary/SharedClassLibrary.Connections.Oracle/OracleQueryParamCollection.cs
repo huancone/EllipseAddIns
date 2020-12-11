@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Oracle.ManagedDataAccess.Client;
 
-namespace SharedClassLibrary.Connections
+namespace SharedClassLibrary.Connections.Oracle
 {
     public class OracleQueryParamCollection : IQueryParamCollection
     {

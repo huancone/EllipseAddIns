@@ -7,6 +7,7 @@ using System.Web.Services.Ellipse.Post;
 using Screen = EllipseCommonsClassLibrary.ScreenService;
 using EllipseCommonsClassLibrary.Classes;
 using SharedClassLibrary.Connections;
+using SharedClassLibrary.Connections.Oracle;
 using EllipseCommonsClassLibrary.Connections;
 using Oracle.ManagedDataAccess.Client;
 using MyUtilities = SharedClassLibrary.Utilities.MyUtilities;
@@ -173,8 +174,8 @@ namespace EllipseCommonsClassLibrary
         /// </summary>
         /// <param name="sqlQuery">Query a consultar</param>
         /// <param name="customConnectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
-        /// <returns>OracleDataReader: Conjunto de resultados de la consulta</returns>
-        public OracleDataReader GetQueryResult(string sqlQuery, string customConnectionString = null)
+        /// <returns>IDataReader: Conjunto de resultados de la consulta</returns>
+        public IDataReader GetQueryResult(string sqlQuery, string customConnectionString = null)
         {
             if(!string.IsNullOrWhiteSpace(customConnectionString))
                 _oracleConnector.StartConnection(customConnectionString);
@@ -472,7 +473,7 @@ namespace EllipseCommonsClassLibrary
             
             var dReader = GetQueryResult(query);
 
-            var result = !(dReader == null || dReader.IsClosed || !dReader.HasRows || !dReader.Read());
+            var result = !(dReader == null || dReader.IsClosed || !dReader.Read());
             
             return result;
         }
@@ -495,7 +496,7 @@ namespace EllipseCommonsClassLibrary
             
             var drItemCodes = GetQueryResult(query);
 
-            if (drItemCodes == null || drItemCodes.IsClosed || !drItemCodes.HasRows) return listItems;
+            if (drItemCodes == null || drItemCodes.IsClosed) return listItems;
             while (drItemCodes.Read())
             {
                 var item = new EllipseCodeItem(
