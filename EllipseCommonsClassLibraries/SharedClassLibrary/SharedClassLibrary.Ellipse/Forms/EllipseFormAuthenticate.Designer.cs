@@ -1,93 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
-using SharedClassLibrary.Utilities;
-//Shared Class Library - ExcelStyleCells
-//Desarrollado por:
-//Héctor J Hernández R <hernandezrhectorj@gmail.com>
-//Hugo A Mendoza B <hugo.mendoza@hambings.com.co>
 
-namespace SharedClassLibrary.Forms
+namespace SharedClassLibrary.Ellipse.Forms
 {
-    public class FormAuthenticate : Form
+    partial class FormAuthenticate
     {
-        private Label lblUsername;
-        public TextBox txtUsername;
-        private Label lblPassword;
-        public TextBox txtPassword;
-        private Button btnAuthenticate;
-        private Button btnCancel;
-
-        public string User = "";
-        public string Pswd = "";
-
-
-        public FormAuthenticate()
-        {
-            InitializeComponent();
-            txtUsername.Text = User;
-            txtPassword.Text = Pswd;
-        }
-        public FormAuthenticate(string user, string password)
-        {
-            InitializeComponent();
-            txtUsername.Text = User = user;
-            txtPassword.Text = Pswd = password;
-        }
-
-        private void btnAuthenticate_Click(object sender, EventArgs e)
-        {
-            AuthenticateAction();
-        }
-
-        
-        public virtual void ClearForm()
-        {
-            txtUsername.Clear();
-            txtPassword.Clear();
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            CancelAction();;
-        }
-
-        public virtual void AuthenticateAction()
-        {
-            try
-            {
-                User = txtUsername.Text.ToUpper();
-                Pswd = txtPassword.Text;
-
-                DialogResult = DialogResult.OK;
-                txtPassword.Text = "";
-                //clearForm();
-                Close();
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-
-                }
-                catch (Exception exx)
-                {
-                    Debugger.LogError("FormAuthenticate:btnAuthenticate_Click(object, EventArgs):catch(catch)", exx.Message);
-                }
-                finally
-                {
-                    MessageBox.Show(Resources.Autentication_Error + @". " +Resources.Error_ValidateInput + @"." + Environment.NewLine + Environment.NewLine + ex.Message);
-                }
-            }
-        }
-        public virtual void CancelAction()
-        {
-            DialogResult = DialogResult.Cancel;
-            Close();
-        }
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -114,12 +31,17 @@ namespace SharedClassLibrary.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAuthenticate));
             this.lblUsername = new System.Windows.Forms.Label();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.lblPassword = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
+            this.lblDistrict = new System.Windows.Forms.Label();
+            this.txtDistrict = new System.Windows.Forms.TextBox();
+            this.lblPosition = new System.Windows.Forms.Label();
             this.btnAuthenticate = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.drpPosition = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lblUsername
@@ -155,6 +77,31 @@ namespace SharedClassLibrary.Forms
             this.txtPassword.TabIndex = 1;
             this.txtPassword.UseSystemPasswordChar = true;
             // 
+            // lblDistrict
+            // 
+            this.lblDistrict.AutoSize = true;
+            this.lblDistrict.Location = new System.Drawing.Point(13, 65);
+            this.lblDistrict.Name = "lblDistrict";
+            this.lblDistrict.Size = new System.Drawing.Size(39, 13);
+            this.lblDistrict.TabIndex = 0;
+            this.lblDistrict.Text = "District";
+            // 
+            // txtDistrict
+            // 
+            this.txtDistrict.Location = new System.Drawing.Point(81, 65);
+            this.txtDistrict.Name = "txtDistrict";
+            this.txtDistrict.Size = new System.Drawing.Size(100, 20);
+            this.txtDistrict.TabIndex = 2;
+            // 
+            // lblPosition
+            // 
+            this.lblPosition.AutoSize = true;
+            this.lblPosition.Location = new System.Drawing.Point(13, 91);
+            this.lblPosition.Name = "lblPosition";
+            this.lblPosition.Size = new System.Drawing.Size(44, 13);
+            this.lblPosition.TabIndex = 0;
+            this.lblPosition.Text = "Position";
+            // 
             // btnAuthenticate
             // 
             this.btnAuthenticate.Location = new System.Drawing.Point(16, 117);
@@ -175,24 +122,48 @@ namespace SharedClassLibrary.Forms
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // drpPosition
+            // 
+            this.drpPosition.FormattingEnabled = true;
+            this.drpPosition.Location = new System.Drawing.Point(81, 90);
+            this.drpPosition.Name = "drpPosition";
+            this.drpPosition.Size = new System.Drawing.Size(100, 21);
+            this.drpPosition.TabIndex = 3;
+            // 
             // FormAuthenticate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(209, 150);
+            this.Controls.Add(this.drpPosition);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAuthenticate);
+            this.Controls.Add(this.lblPosition);
+            this.Controls.Add(this.txtDistrict);
+            this.Controls.Add(this.lblDistrict);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.lblPassword);
             this.Controls.Add(this.txtUsername);
             this.Controls.Add(this.lblUsername);
             this.Name = "FormAuthenticate";
             this.Text = "Authenticate";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "FormAuthenticate";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
+
+        private Label lblUsername;
+        private TextBox txtUsername;
+        private Label lblPassword;
+        private TextBox txtPassword;
+        private Label lblDistrict;
+        private TextBox txtDistrict;
+        private Label lblPosition;
+        private Button btnAuthenticate;
+        private Button btnCancel;
+        private ComboBox drpPosition;
     }
 }

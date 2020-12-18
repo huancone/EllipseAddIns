@@ -16,7 +16,6 @@ namespace SharedClassLibrary.Configuration
 {
     public class RuntimeConfigSettings
     {
-        //public static string OracleTnsNode = "configuration/oracle.manageddataaccess.client/version/settings/setting";
         public static string OracleTnsNode = "configuration/oracle.manageddataaccess.client/version/settings";
 
         /// <summary>

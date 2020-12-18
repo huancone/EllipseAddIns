@@ -202,9 +202,25 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
-      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
-      <Name>EllipseCommonsClassLibrary</Name>
+    <ProjectReference Include="..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj">
+      <Project>{9eb40433-df17-4032-ac92-f78e52597f5b}</Project>
+      <Name>SharedClassLibrary.Connections.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
+      <Project>{49ee1fc1-808f-4e6b-8809-78486feb5bd3}</Project>
+      <Name>SharedClassLibrary.Connections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Ellipse\SharedClassLibrary.Ellipse.csproj">
+      <Project>{02fd00ac-154b-41a1-9f58-ff4f7bb389a6}</Project>
+      <Name>SharedClassLibrary.Ellipse</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Vsto.Excel\SharedClassLibrary.Vsto.Excel.csproj">
+      <Project>{53352e23-b028-4233-bb21-90dc01c19491}</Project>
+      <Name>SharedClassLibrary.Vsto.Excel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary\SharedClassLibrary.csproj">
+      <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
+      <Name>SharedClassLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
       <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>

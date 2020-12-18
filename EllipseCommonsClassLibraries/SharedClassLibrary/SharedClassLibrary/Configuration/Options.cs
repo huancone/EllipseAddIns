@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace SharedClassLibrary.Configuration
@@ -9,22 +10,11 @@ namespace SharedClassLibrary.Configuration
     public class Options : IOptions
     {
         public List<ConfigValuePair<string, string>> OptionsList { get; set; }
-        private IOptions _defaultOptions;
-        public IOptions DefaultOptions
-        {
-            get => _defaultOptions;
-            set => SetDefaultOptions(value);
-        }
 
-        private void SetDefaultOptions(IOptions defaultOptions)
-        {
-            _defaultOptions = defaultOptions;
-        }
         public void SetOption(string key, string value)
         {
             if (OptionsList == null)
                 OptionsList = new List<ConfigValuePair<string, string>>();
-
 
             //Valido primeramente si existe y lo reemplazo si existe
             foreach (var item in OptionsList)
@@ -57,37 +47,13 @@ namespace SharedClassLibrary.Configuration
 
         public string GetOptionValue(string key)
         {
-            foreach (var item in OptionsList)
-                if (item.Key.Equals(key))
-                    return item.Value;
-
-            if (_defaultOptions != null)
-            {
-                var defaultItem = _defaultOptions.GetOption(key);
-                if (defaultItem.Key != null)
-                {
-                    SetOption(defaultItem.Key, defaultItem.Value);
-                    return defaultItem.Value;
-                }
-            }
-
-            return null;
+            return OptionsList.Where(item => item.Key.Equals(key)).Select(item => item.Value).FirstOrDefault();
         }
 
         public ConfigValuePair<string, string> GetOption(string key)
         {
-            foreach (var item in OptionsList)
-                if (item.Key.Equals(key))
-                    return item;
-            if (_defaultOptions != null)
-            {
-                var defaultItem = _defaultOptions.GetOption(key);
-                if (defaultItem.Key != null)
-                {
-                    SetOption(defaultItem.Key, defaultItem.Value);
-                    return defaultItem;
-                }
-            }
+            foreach (var item in OptionsList.Where(item => item.Key.Equals(key)))
+                return item;
 
             return new ConfigValuePair<string, string>();
         }

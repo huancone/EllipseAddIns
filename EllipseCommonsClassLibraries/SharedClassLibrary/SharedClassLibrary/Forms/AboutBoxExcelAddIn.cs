@@ -17,10 +17,10 @@ namespace SharedClassLibrary.Forms
     public abstract partial class AboutBoxExcelAddIn : Form
     {
         private int _indexSettings;
-        private Settings.AssemblyItem addinAssembly;
+        private AssemblyItem addinAssembly;
         public AboutBoxExcelAddIn()
         {
-            addinAssembly = new Settings.AssemblyItem(Settings.GetLastAssembly());
+            addinAssembly = new AssemblyItem(AssemblyItem.GetLastAssembly());
             InitializeComponent();
             Text = string.Format("About {0}", addinAssembly.AssemblyTitle);
             labelProductName.Text = addinAssembly.AssemblyProduct;
@@ -36,7 +36,7 @@ namespace SharedClassLibrary.Forms
 
         public AboutBoxExcelAddIn(string developerName1, string developerName2)
         {
-            addinAssembly = new Settings.AssemblyItem(Settings.GetLastAssembly());
+            addinAssembly = new AssemblyItem(AssemblyItem.GetLastAssembly());
 
             InitializeComponent();
             Text = string.Format("About {0}", addinAssembly.AssemblyTitle);

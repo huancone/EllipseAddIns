@@ -53,6 +53,10 @@
       <Project>{49ee1fc1-808f-4e6b-8809-78486feb5bd3}</Project>
       <Name>SharedClassLibrary.Connections</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SharedClassLibrary\SharedClassLibrary.csproj">
+      <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
+      <Name>SharedClassLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -43,6 +43,8 @@
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnExecute = this.Factory.CreateRibbonButton();
             this.btnStop = this.Factory.CreateRibbonButton();
+            this.cbCustomSettingOption = this.Factory.CreateRibbonCheckBox();
+            this.btnQuery = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.grpEllipse.SuspendLayout();
             this.box1.SuspendLayout();
@@ -89,6 +91,8 @@
             // menuActions
             // 
             this.menuActions.Items.Add(this.btnExecute);
+            this.menuActions.Items.Add(this.btnQuery);
+            this.menuActions.Items.Add(this.cbCustomSettingOption);
             this.menuActions.Items.Add(this.btnStop);
             this.menuActions.Label = "&Acciones";
             this.menuActions.Name = "menuActions";
@@ -106,6 +110,19 @@
             this.btnStop.Name = "btnStop";
             this.btnStop.ShowImage = true;
             this.btnStop.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStop_Click);
+            // 
+            // cbCustomSettingOption
+            // 
+            this.cbCustomSettingOption.Label = "Custom Setting Option";
+            this.cbCustomSettingOption.Name = "cbCustomSettingOption";
+            this.cbCustomSettingOption.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.cbCustomSettingOption_Click);
+            // 
+            // btnQuery
+            // 
+            this.btnQuery.Label = "Consultar BD";
+            this.btnQuery.Name = "btnQuery";
+            this.btnQuery.ShowImage = true;
+            this.btnQuery.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnQuery_Click);
             // 
             // RibbonEllipse
             // 
@@ -134,6 +151,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuActions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnExecute;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStop;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbCustomSettingOption;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnQuery;
     }
 
     partial class ThisRibbonCollection

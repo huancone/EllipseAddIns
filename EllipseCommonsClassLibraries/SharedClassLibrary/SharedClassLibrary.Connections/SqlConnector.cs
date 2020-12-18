@@ -227,7 +227,7 @@ namespace SharedClassLibrary.Connections
 
                 if (queryParamCollection.Parameters != null)
                     foreach (var p in queryParamCollection.Parameters)
-                        _sqlComm.Parameters.Add((SqlParameter)p);
+                        _sqlComm.Parameters.AddWithValue(p.ParameterName, p.Value);
                 if (_transaction != null)
                     _sqlComm.Transaction = _transaction;
                 _queryAttempt = 0;
@@ -344,7 +344,7 @@ namespace SharedClassLibrary.Connections
 
                 if (queryParamCollection.Parameters != null)
                     foreach (var p in queryParamCollection.Parameters)
-                        _sqlComm.Parameters.Add((SqlParameter)p);
+                        _sqlComm.Parameters.AddWithValue(p.ParameterName, p.Value);
                 if (_transaction != null)
                     _sqlComm.Transaction = _transaction;
                 _queryAttempt = 0;
@@ -454,7 +454,7 @@ namespace SharedClassLibrary.Connections
 
                 if (queryParamCollection.Parameters != null)
                     foreach (var p in queryParamCollection.Parameters)
-                        _sqlComm.Parameters.Add((SqlParameter)p);
+                        _sqlComm.Parameters.AddWithValue(p.ParameterName, p.Value);
 
                 if (_transaction != null)
                     _sqlComm.Transaction = _transaction;

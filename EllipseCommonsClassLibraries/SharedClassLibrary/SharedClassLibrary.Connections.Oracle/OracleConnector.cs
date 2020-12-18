@@ -229,7 +229,7 @@ namespace SharedClassLibrary.Connections.Oracle
 
                 if (queryParamCollection.Parameters != null)
                     foreach (var p in queryParamCollection.Parameters)
-                        _oracleComm.Parameters.Add((OracleParameter)p);
+                        _oracleComm.Parameters.Add(p.ParameterName, p.Value);
                 if (_transaction != null)
                     _oracleComm.Transaction = _transaction;
                 _queryAttempt = 0;
@@ -343,7 +343,7 @@ namespace SharedClassLibrary.Connections.Oracle
 
                 if (queryParamCollection.Parameters != null)
                     foreach (var p in queryParamCollection.Parameters)
-                        _oracleComm.Parameters.Add((OracleParameter)p);
+                        _oracleComm.Parameters.Add(p.ParameterName, p.Value);
                 if (_transaction != null)
                     _oracleComm.Transaction = _transaction;
                 _queryAttempt = 0;
@@ -454,7 +454,7 @@ namespace SharedClassLibrary.Connections.Oracle
 
                 if (queryParamCollection.Parameters != null)
                     foreach (var p in queryParamCollection.Parameters)
-                        _oracleComm.Parameters.Add((OracleParameter)p);
+                        _oracleComm.Parameters.Add(p.ParameterName, p.Value);
 
                 if (_transaction != null)
                     _oracleComm.Transaction = _transaction;
