@@ -100,14 +100,14 @@
     <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Configuration\IOptions.cs">
       <Link>Configuration\IOptions.cs</Link>
     </Compile>
+    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Configuration\ISettings.cs">
+      <Link>Configuration\ISettings.cs</Link>
+    </Compile>
     <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Configuration\Options.cs">
       <Link>Configuration\Options.cs</Link>
     </Compile>
     <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Configuration\RuntimeConfigSettings.cs">
       <Link>Configuration\RuntimeConfigSettings.cs</Link>
-    </Compile>
-    <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Configuration\Settings.cs">
-      <Link>Configuration\Settings.cs</Link>
     </Compile>
     <Compile Include="..\SharedClassLibrary\SharedClassLibrary\Forms\AboutBoxExcelAddIn.cs">
       <Link>Forms\AboutBoxExcelAddIn.cs</Link>

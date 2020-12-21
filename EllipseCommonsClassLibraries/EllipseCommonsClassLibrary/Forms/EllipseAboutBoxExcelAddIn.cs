@@ -7,6 +7,7 @@ using System.Reflection;
 using EllipseCommonsClassLibrary.Properties;
 using System.Windows.Forms;
 using System.Diagnostics;
+using SharedClassLibrary.Configuration;
 
 namespace EllipseCommonsClassLibrary
 {
@@ -28,7 +29,7 @@ namespace EllipseCommonsClassLibrary
         override 
         public void ShowAdditionalOptions()
         {
-            var commonAssembly = new Settings.AssemblyItem(Assembly.GetExecutingAssembly());
+            var commonAssembly = new AssemblyItem(Assembly.GetExecutingAssembly());
             var productLabel = commonAssembly.AssemblyProduct + " v" + commonAssembly.AssemblyVersion;
             new SettingsBox(productLabel).ShowDialog();
         }

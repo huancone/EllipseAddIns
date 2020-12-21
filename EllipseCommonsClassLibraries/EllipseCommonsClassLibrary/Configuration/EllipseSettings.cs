@@ -16,7 +16,7 @@ namespace EllipseCommonsClassLibrary
     {
 
     }
-    public class Settings : SharedClassLibrary.Configuration.Settings
+    public class Settings : SharedClassLibrary.Configuration.ISettings
     {
         public static Settings CurrentSettings;
         public Settings()
@@ -24,17 +24,18 @@ namespace EllipseCommonsClassLibrary
             Initialize();
         }
 
-        public override void Initialize()
+        public void Initialize()
         {
-            AssemblyProgram = new Settings.AssemblyItem(GetLastAssembly());
+            var lastAssembly = SharedClassLibrary.Configuration.AssemblyItem.GetLastAssembly();
+            ProgramTitle = new SharedClassLibrary.Configuration.AssemblyItem(lastAssembly).AssemblyTitle;
             //GeneralFolder
             DefaultLocalDataPath = @"c:\ellipse\";
-            GeneralConfigFolder = @"addins\" + AssemblyProgram.AssemblyTitle;
+            GeneralConfigFolder = @"addins\" + ProgramTitle;
             GeneralConfigFileName = "config.xml";
             DefaultRepositoryFilePath = @"\\lmnoas02\Shared\Sistemas\Mina\Proyecto Ellipse\Ellipse 8\ExcelAddIn_E8 (Loaders)\";
 
             //Windows Environment Variables
-            ProgramEnvironmentHomeVariable = AssemblyProgram.AssemblyTitle + "Home";
+            ProgramEnvironmentHomeVariable = ProgramTitle + "Home";
             HomeEnvironmentVariable = "EllipseAddInsHome";
             ServicesEnvironmentVariable = "EllipseServiceUrlFile";
             SecondaryServicesEnvironmentVariable = "EllipseSecondaryServiceUrlFile";
@@ -54,30 +55,231 @@ namespace EllipseCommonsClassLibrary
             CurrentSettings = this;
             //Option Settings
             OptionsSettings = GetOptionsSettings();
-            if (OptionsSettings == null)
-                OptionsSettings = new EllipseCommonsClassLibrary.Options();
+            if (_optionsSettings == null)
+                _optionsSettings = new EllipseCommonsClassLibrary.Options();
         }
 
+        public string DefaultRepositoryFilePath { get; set; }
+        public string HomeEnvironmentVariable { get; set; }
+        public string ServicesEnvironmentVariable { get; set; }
+        public string SecondaryServicesEnvironmentVariable { get; set; }
+        public string ServicesForcedList { get; set; }
+        public string ServicesConfigXmlFileName { get; set; }
+        public string TnsnamesFileName { get; set; }
+        public string DatabaseXmlFileName { get; set; }
+        public string DefaultServiceFilePath { get; set; }
+        public string SecondaryServiceFilePath { get; set; }
+        public string DefaultTnsnamesFilePath { get; set; }
+        public string DefaultLocalDataPath { get; set; }
+        public string ProgramEnvironmentHomeVariable { get; set; }
+        public string ProgramTitle { get; set; }
+        public string GeneralConfigFileName { get; set; }
+        public string GeneralConfigFolder { get; set; }
+
+        private IOptions _optionsSettings;
+
+        #region -- SettingOptions Methods --
+        public IOptions OptionsSettings
+        {
+            get
+            {
+                try
+                {
+                    if (_optionsSettings != null) return _optionsSettings;
+
+                    var path = LocalDataPath;
+                    var option = (Options)Utilities.MyUtilities.Xml.DeserializeXmlToObject(Path.Combine(LocalDataPath, GeneralConfigFolder, GeneralConfigFileName), typeof(Options));
+                    _optionsSettings = option;
+                    return _optionsSettings;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Se ha producido un error al intentar cargar la configuración de " + ProgramTitle + ". Se continuará con la configuración predeterminada si esta existe. " + ex.Message, "Error a cargar Opciones de Configuración");
+                    return null;
+                }
+            }
+            set => UpdateOptionsSettings(value);
+        }
         private IOptions GetOptionsSettings()
         {
             try
             {
-                if (OptionsSettings != null) return OptionsSettings;
+                if (_optionsSettings != null) return _optionsSettings;
 
                 var path = LocalDataPath;
-                var option = (IOptions)Utilities.MyUtilities.Xml.DeserializeXmlToObject(Path.Combine(LocalDataPath, GeneralConfigFolder, GeneralConfigFileName), typeof(IOptions));
+                var option = (Options)Utilities.MyUtilities.Xml.DeserializeXmlToObject(Path.Combine(LocalDataPath, GeneralConfigFolder, GeneralConfigFileName), typeof(Options));
 
                 return option;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Se ha producido un error al intentar cargar la configuración de " + AssemblyProgram.AssemblyTitle + ". Se continuará con la configuración predeterminada. " + ex.Message, "Error a cargar Opciones de Configuración");
+                MessageBox.Show("Se ha producido un error al intentar cargar la configuración de " + ProgramTitle + ". Se continuará con la configuración predeterminada. " + ex.Message, "Error a cargar Opciones de Configuración");
                 return OptionsSettings?.DefaultOptions != null ? OptionsSettings.DefaultOptions : null;
             }
         }
+        public void SetDefaultOptionsSettings(IOptions defaultProgramOptions)
+        {
+            if (OptionsSettings == null)
+                OptionsSettings = defaultProgramOptions;
+        }
+        public IOptions CreateOptionsSettingFile(IOptions optionsSettings = null)
+        {
+            // Serialize the configuration object to a file
+            return UpdateOptionsSettings(optionsSettings);
+        }
 
+        public void DeleteConfigurationXmlFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteDatabaseFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IOptions UpdateOptionsSettings(IOptions optionsSettings = null)
+        {
+            try
+            {
+                if (optionsSettings != null)
+                    _optionsSettings = optionsSettings;
+
+                FileWriter.CreateDirectory(Path.Combine(LocalDataPath, GeneralConfigFolder));
+
+                if (_optionsSettings?.OptionsList != null)
+                    MyUtilities.Xml.SerializeObjectToXml(Path.Combine(LocalDataPath, GeneralConfigFolder, GeneralConfigFileName), _optionsSettings);
+                else
+                    throw new Exception("No hay opciones disponibles");
+
+                return _optionsSettings;
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("UpdateOptionsSettings(IOptions)",
+                    "Error al intentar actualizar las opciones. \n" + ex.Message);
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region -- Variable Accessors --
+        public bool IsServiceListForced
+        {
+            get
+            {
+                var varForced =
+                    "" + Environment.GetEnvironmentVariable(ServicesForcedList, EnvironmentVariableTarget.User);
+                var varForcedExpanded = Environment.ExpandEnvironmentVariables(varForced);
+                return !string.IsNullOrWhiteSpace(varForcedExpanded) && varForcedExpanded.ToLower().Equals("true");
+            }
+            set
+            {
+                Environment.SetEnvironmentVariable(ServicesForcedList, value.ToString(),
+                    EnvironmentVariableTarget.User);
+            }
+        }
+
+        public string LocalDataPath
+        {
+            get
+            {
+                var varHome = "" + Environment.GetEnvironmentVariable(HomeEnvironmentVariable,
+                                  EnvironmentVariableTarget.User);
+                var varHomeExpanded = Environment.ExpandEnvironmentVariables(varHome);
+                return string.IsNullOrWhiteSpace(varHomeExpanded) ? DefaultLocalDataPath : varHomeExpanded;
+            }
+            set
+            {
+                var currentVar = Environment.GetEnvironmentVariable(HomeEnvironmentVariable, EnvironmentVariableTarget.User);
+                //no existe y es igual a _origen -> no hace nada
+                if (string.IsNullOrWhiteSpace(currentVar) && value.Equals(DefaultLocalDataPath))
+                    return;
+
+                //existe y es igual a environment -> no hace nada
+                if (!string.IsNullOrWhiteSpace(currentVar) && value.Equals(currentVar))
+                    return;
+
+                //no existe y es diferente a _origen -> actualiza
+                if (string.IsNullOrWhiteSpace(currentVar) && !value.Equals(DefaultLocalDataPath))
+                    Environment.SetEnvironmentVariable(HomeEnvironmentVariable, value, EnvironmentVariableTarget.User);
+
+                //existe y es diferente a environment -> actualiza
+                else if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
+                    Environment.SetEnvironmentVariable(HomeEnvironmentVariable, value, EnvironmentVariableTarget.User);
+            }
+        }
+
+        public string BackUpServiceFilePath
+        {
+            get
+            {
+                var varService = "" + Environment.GetEnvironmentVariable(SecondaryServicesEnvironmentVariable,
+                                     EnvironmentVariableTarget.User);
+                var varServiceExpanded = Environment.ExpandEnvironmentVariables(varService);
+                return string.IsNullOrWhiteSpace(varServiceExpanded) ? SecondaryServiceFilePath : varServiceExpanded;
+            }
+            set
+            {
+                var currentVar = Environment.GetEnvironmentVariable(SecondaryServicesEnvironmentVariable,
+                    EnvironmentVariableTarget.User);
+                //no existe y es igual a _origen -> no hace nada
+                if (string.IsNullOrWhiteSpace(currentVar) && value.Equals(SecondaryServiceFilePath))
+                    return;
+                //existe y es igual a environment -> no hace nada
+                if (!string.IsNullOrWhiteSpace(currentVar) && value.Equals(currentVar))
+                    return;
+                //no existe y es diferente a _origen -> actualiza
+                if (string.IsNullOrWhiteSpace(currentVar) && !value.Equals(SecondaryServiceFilePath))
+                    Environment.SetEnvironmentVariable(SecondaryServicesEnvironmentVariable, value, EnvironmentVariableTarget.User);
+                //existe y es diferente a environment -> actualiza
+                else if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
+                    Environment.SetEnvironmentVariable(SecondaryServicesEnvironmentVariable, value, EnvironmentVariableTarget.User);
+            }
+        }
+
+        public string ServiceFilePath
+        {
+            get
+            {
+                var varService = "" + Environment.GetEnvironmentVariable(ServicesEnvironmentVariable,
+                                     EnvironmentVariableTarget.User);
+                var varServiceExpanded = Environment.ExpandEnvironmentVariables(varService);
+                return string.IsNullOrWhiteSpace(varServiceExpanded) ? DefaultServiceFilePath : varServiceExpanded;
+            }
+            set
+            {
+                var currentVar = Environment.GetEnvironmentVariable(ServicesEnvironmentVariable,
+                    EnvironmentVariableTarget.User);
+                //no existe y es igual a _origen -> no hace nada
+                if (string.IsNullOrWhiteSpace(currentVar) && value.Equals(DefaultServiceFilePath))
+                    return;
+                //existe y es igual a environment -> no hace nada
+                if (!string.IsNullOrWhiteSpace(currentVar) && value.Equals(currentVar))
+                    return;
+                //no existe y es diferente a _origen -> actualiza
+                if (string.IsNullOrWhiteSpace(currentVar) && !value.Equals(DefaultServiceFilePath))
+                    Environment.SetEnvironmentVariable(ServicesEnvironmentVariable, value, EnvironmentVariableTarget.User);
+                //existe y es diferente a environment -> actualiza
+                else if (!string.IsNullOrWhiteSpace(currentVar) && !value.Equals(currentVar))
+                    Environment.SetEnvironmentVariable(ServicesEnvironmentVariable, value, EnvironmentVariableTarget.User);
+            }
+        }
+
+        public string TnsnamesFilePath
+        {
+            get { return RuntimeConfigSettings.GetTnsUrlValue(); }
+            set
+            {
+                if (value.Equals(RuntimeConfigSettings.GetTnsUrlValue()))
+                    return;
+                RuntimeConfigSettings.UpdateTnsUrlValue(value);
+            }
+        }
+        #endregion
         #region -- Configuration Files Generation --
-        public void GenerateEllipseConfigurationXmlFile(string targetUrl)
+        public void GenerateConfigurationXmlFile(string targetUrl)
         {
             var xmlFile = "";
 
@@ -129,7 +331,7 @@ namespace EllipseCommonsClassLibrary
             }
         }
 
-        public void GenerateEllipseConfigurationXmlFile(string sourceUrl, string targetUrl)
+        public void GenerateConfigurationXmlFile(string sourceUrl, string targetUrl)
         {
             try
             {
@@ -163,7 +365,17 @@ namespace EllipseCommonsClassLibrary
             }
         }
 
-        public void DeleteEllipseConfigurationXmlFile()
+        public void GenerateDatabaseFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GenerateTnsnamesFile(string targetUrl)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeletConfigurationXmlFile()
         {
             try
             {
@@ -228,7 +440,7 @@ namespace EllipseCommonsClassLibrary
             }
         }
 
-        public void GenerateEllipseTnsnamesFile(string sourceUrl, string targetUrl)
+        public void GenerateTnsnamesFile(string sourceUrl, string targetUrl)
         {
             try
             {
@@ -262,7 +474,7 @@ namespace EllipseCommonsClassLibrary
             }
         }
 
-        public void GenerateEllipseDatabaseFile(string targetUrl = null)
+        public void GenerateDatabaseFile(string targetUrl = null)
         {
             var databaseList = new List<DatabaseItem>();
             databaseList.Add(new DatabaseItem("Productivo", "EL8PROD", "SIGCON", "ventyx", "ELLIPSE", null, null));
@@ -321,7 +533,7 @@ namespace EllipseCommonsClassLibrary
             }
         }
 
-        public void DeleteEllipseDatabaseFile(string targetUrl = null)
+        public void DeleteDatabaseFile(string targetUrl = null)
         {
             try
             {

@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\Projects\Release\SharedClassLibrary\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -55,9 +55,7 @@
     <Compile Include="EllipseCodeItem.cs" />
     <Compile Include="EllipseFunctions.cs" />
     <Compile Include="EllipseSettings.cs" />
-    <Compile Include="Forms\EllipseAboutBoxExcelAddIn.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Forms\EllipseAboutBoxExcelAddIn.cs" />
     <Compile Include="Forms\EllipseFormAuthenticate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,18 +91,6 @@
     <ProjectReference Include="..\..\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
       <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
       <Name>System.Web.Services.Ellipse</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj">
-      <Project>{9eb40433-df17-4032-ac92-f78e52597f5b}</Project>
-      <Name>SharedClassLibrary.Connections.Oracle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
-      <Project>{49ee1fc1-808f-4e6b-8809-78486feb5bd3}</Project>
-      <Name>SharedClassLibrary.Connections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SharedClassLibrary\SharedClassLibrary.csproj">
-      <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
-      <Name>SharedClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

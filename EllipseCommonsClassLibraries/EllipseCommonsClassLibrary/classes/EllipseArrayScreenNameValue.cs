@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 
-namespace SharedClassLibrary.Classes
+namespace SharedClassLibrary.Ellipse
 {
     [SuppressMessage("ReSharper", "LoopCanBeConvertedToQuery")]
     public class ArrayScreenNameValue

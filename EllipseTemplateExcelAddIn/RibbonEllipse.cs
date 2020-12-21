@@ -219,7 +219,7 @@ namespace EllipseTemplateExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 2, false);
                 _cells.GetRange("A3", "A4").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
-
+                
                 _cells.GetCell("C3").Value = "DESDE";
                 _cells.GetCell("D3").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D3").AddComment("YYYYMMDD");

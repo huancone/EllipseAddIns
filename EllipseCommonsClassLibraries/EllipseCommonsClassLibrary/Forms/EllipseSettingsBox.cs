@@ -96,7 +96,7 @@ namespace EllipseCommonsClassLibrary
 
                 }
 
-                Settings.CurrentSettings.GenerateEllipseConfigurationXmlFile(tbServiceFileNetworkUrl.Text);
+                Settings.CurrentSettings.GenerateConfigurationXmlFile(tbServiceFileNetworkUrl.Text);
                 MessageBox.Show(@"Se ha generado el archivo local de configuración de Ellipse de forma predeterminada",
                     @"Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -128,7 +128,7 @@ namespace EllipseCommonsClassLibrary
 
                 }
 
-                Settings.CurrentSettings.GenerateEllipseConfigurationXmlFile(sourceFilePath, configFilePath);
+                Settings.CurrentSettings.GenerateConfigurationXmlFile(sourceFilePath, configFilePath);
                 MessageBox.Show(@"Se ha generado el archivo local de configuración de Ellipse a partir del archivo de red " + sourceFilePath +
                     @" al directorio especificado", @"Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -253,7 +253,7 @@ namespace EllipseCommonsClassLibrary
                         return;
 
                 }
-                Settings.CurrentSettings.GenerateEllipseDatabaseFile(configFilePath);
+                Settings.CurrentSettings.GenerateDatabaseFile(configFilePath);
 
                 MessageBox.Show(@"Se ha generado el archivo local de bases de datos de Ellipse en la ruta " + fileUrl,
                     @"Generate Local Ellipse Database File", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -282,7 +282,7 @@ namespace EllipseCommonsClassLibrary
 
                 }
 
-                Settings.CurrentSettings.DeleteEllipseDatabaseFile(configFilePath);
+                Settings.CurrentSettings.DeleteDatabaseFile(configFilePath);
                 MessageBox.Show(@"Se ha eliminado el archivo local de bases de datos de Ellipse",
                     @"Delete Local Ellipse Database File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

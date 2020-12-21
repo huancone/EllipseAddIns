@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SharedClassLibrary.Vsto.Excel")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("SharedClassLibrary.Vsto.Excel")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Hambings SAS")]
 [assembly: AssemblyProduct("SharedClassLibrary.Vsto.Excel")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("hernandezrhectorj@gmail.com")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

@@ -100,12 +100,44 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="Oracle.ManagedDataAccess">
-      <HintPath>..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\ReleasedLibraries\SharedClassLibrary\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\ReleasedLibraries\SharedClassLibrary\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\ReleasedLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Connections, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\ReleasedLibraries\SharedClassLibrary\SharedClassLibrary.Connections.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Connections.Oracle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\ReleasedLibraries\SharedClassLibrary\SharedClassLibrary.Connections.Oracle.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Ellipse, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\ReleasedLibraries\SharedClassLibrary\SharedClassLibrary.Ellipse.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Ellipse.XmlSerializers">
+      <HintPath>..\EllipseCommonsClassLibraries\ReleasedLibraries\SharedClassLibrary\SharedClassLibrary.Ellipse.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Vsto.Excel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\ReleasedLibraries\SharedClassLibrary\SharedClassLibrary.Vsto.Excel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Services.Ellipse, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\ReleasedLibraries\SharedClassLibrary\System.Web.Services.Ellipse.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -200,32 +232,6 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj">
-      <Project>{9eb40433-df17-4032-ac92-f78e52597f5b}</Project>
-      <Name>SharedClassLibrary.Connections.Oracle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
-      <Project>{49ee1fc1-808f-4e6b-8809-78486feb5bd3}</Project>
-      <Name>SharedClassLibrary.Connections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Ellipse\SharedClassLibrary.Ellipse.csproj">
-      <Project>{02fd00ac-154b-41a1-9f58-ff4f7bb389a6}</Project>
-      <Name>SharedClassLibrary.Ellipse</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Vsto.Excel\SharedClassLibrary.Vsto.Excel.csproj">
-      <Project>{53352e23-b028-4233-bb21-90dc01c19491}</Project>
-      <Name>SharedClassLibrary.Vsto.Excel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary\SharedClassLibrary.csproj">
-      <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
-      <Name>SharedClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
-      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
-      <Name>System.Web.Services.Ellipse</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
