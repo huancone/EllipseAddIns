@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EllipseBulkMaterialExcelAddIn
+namespace BulkMaterialClassLibrary
 {
     public class Profile
     {

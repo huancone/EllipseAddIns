@@ -4,19 +4,22 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using CommonsClassLibrary.Utilities.Shifts;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Utilities.Shifts;
+using SharedClassLibrary;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Utilities;
 using EllipseEquipmentClassLibrary;
 using EllipseStdTextClassLibrary;
 using EllipseWorkOrdersClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 
 
 namespace EllipseDownLostExcelAddIn
@@ -52,6 +55,13 @@ namespace EllipseDownLostExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -61,32 +71,33 @@ namespace EllipseDownLostExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
-        public void LoadSettings()
-        {
-            var settings = new Settings();
-            _eFunctions = new EllipseFunctions();
-            _frmAuth = new FormAuthenticate();
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
 
-            var defaultConfig = new Settings.Options();
-            //defaultConfig.SetOption("Option 1", "Y");
-            //defaultConfig.SetOption("ValidateTaskPlanDates", "Y");
-            //defaultConfig.SetOption("IgnoreClosedStatus", "N");
 
-            var options = settings.GetOptionsSettings(defaultConfig);
 
             //Setting of Configuration Options from Config File (or default)
-            //var flagEstDur = MyUtilities.IsTrue(options.GetOptionValue("FlagEstDuration"));
-            //var valdTaskPlanDates = MyUtilities.IsTrue(options.GetOptionValue("ValidateTaskPlanDates"));
-            //var ignoreCldStat = MyUtilities.IsTrue(options.GetOptionValue("IgnoreClosedStatus"));
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
 
-            //cbFlagEstDuration.Checked = flagEstDur;
-            //cbValidateTaskPlanDates.Checked = valdTaskPlanDates;
-            //cbIgnoreClosedStatus.Checked = ignoreCldStat;
+                MessageBox.Show(ex.Message, Resources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
 
             //
-            settings.UpdateOptionsSettings(options);
+            settings.SaveCustomSettings();
         }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
@@ -370,7 +381,7 @@ namespace EllipseDownLostExcelAddIn
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var dr = _eFunctions.GetQueryResult(Queries.GetDownTimeCodeListQuery(_eFunctions.DbReference, _eFunctions.DbLink));
 
-                if (dr != null && !dr.IsClosed && dr.HasRows)
+                if (dr != null && !dr.IsClosed)
                 {
                     var i = 5;
                     while (dr.Read())
@@ -407,7 +418,7 @@ namespace EllipseDownLostExcelAddIn
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 dr = _eFunctions.GetQueryResult(Queries.GetLostProdCodeListQuery(_eFunctions.DbReference, _eFunctions.DbLink));
 
-                if (dr != null && !dr.IsClosed && dr.HasRows)
+                if (dr != null && !dr.IsClosed)
                 {
                     var i = 5;
                     while (dr.Read())
@@ -642,7 +653,7 @@ namespace EllipseDownLostExcelAddIn
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var dr = _eFunctions.GetQueryResult(Queries.GetDownTimeCodeListQuery(_eFunctions.DbReference, _eFunctions.DbLink));
 
-                if (dr != null && !dr.IsClosed && dr.HasRows)
+                if (dr != null && !dr.IsClosed)
                 {
                     var i = 5;
                     while (dr.Read())
@@ -679,7 +690,7 @@ namespace EllipseDownLostExcelAddIn
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 dr = _eFunctions.GetQueryResult(Queries.GetLostProdCodeListQuery(_eFunctions.DbReference, _eFunctions.DbLink));
 
-                if (dr != null && !dr.IsClosed && dr.HasRows)
+                if (dr != null && !dr.IsClosed)
                 {
                     var i = 5;
                     while (dr.Read())
@@ -1561,7 +1572,7 @@ namespace EllipseDownLostExcelAddIn
                         lost.EquipNo = arrayValues.GetField("EQUIP_NO1I").value;
                         var dr = _eFunctions.GetQueryResult(Queries.GetSingleLostQuery(_eFunctions.DbReference, _eFunctions.DbLink, lost.EquipNo, lost.EventCode, lost.Date, lost.ShiftCode, lost.StartTime, lost.FinishTime));
                         var stdTextId = "";
-                        if (dr != null && dr.HasRows)
+                        if (dr != null && !dr.IsClosed)
                             while (dr.Read())
                                 stdTextId = _cells.GetEmptyIfNull(dr["STD_KEY"].ToString());
                         else
@@ -1757,8 +1768,7 @@ namespace EllipseDownLostExcelAddIn
                 if (k <= 10) continue;
                 k = 1;
                 //envíe a la siguiente pantalla
-				request = new Screen.ScreenSubmitRequestDTO();
-                request.screenKey = "1";
+                request = new Screen.ScreenSubmitRequestDTO {screenKey = "1"};
                 reply = proxySheet.submit(opContext, request);
 				replyFields = new ArrayScreenNameValue(reply.screenFields);
             }
@@ -1826,8 +1836,7 @@ namespace EllipseDownLostExcelAddIn
                 if (k <= 10) continue;
                 k = 1;
                 //envíe a la siguiente pantalla
-				request = new Screen.ScreenSubmitRequestDTO();
-                request.screenKey = "1";
+                request = new Screen.ScreenSubmitRequestDTO {screenKey = "1"};
                 reply = proxySheet.submit(opContext, request);
 				replyFields = new ArrayScreenNameValue(reply.screenFields);
             }

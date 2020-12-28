@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Web.Services.Ellipse;
 using Microsoft.Office.Tools.Ribbon;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Connections;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
+using SharedClassLibrary.Utilities;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using EllipseEqOperStatisticsExcelAddIn.EquipmentOperatingStatisticsService;
 using Microsoft.Office.Tools.Excel;
 using System.Threading;
 using EllipseEqOperStatisticsExcelAddIn.EllipseEqOperStatisticsClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 
 namespace EllipseEqOperStatisticsExcelAddIn
 {
@@ -150,7 +151,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                 _cells.GetCell("D3").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
 
-                var statsList = _eFunctions.GetItemCodes("SS").Select(item => item.code + " - " + item.description).ToList();
+                var statsList = _eFunctions.GetItemCodes("SS").Select(item => item.Code + " - " + item.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell("B4"), statsList, ValidationSheetName, 1, false);//TIPO ESTAD
 
 
@@ -184,7 +185,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
-                var shiftList = _eFunctions.GetItemCodes("SH").Select(item => item.code + " - " + item.description).ToList();
+                var shiftList = _eFunctions.GetItemCodes("SH").Select(item => item.Code + " - " + item.Description).ToList();
 
                 var entryList = new List<string>();
                 entryList.Add("D - Diario/Daily");

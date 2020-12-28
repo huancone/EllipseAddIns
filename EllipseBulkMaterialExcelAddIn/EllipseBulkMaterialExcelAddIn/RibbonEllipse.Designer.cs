@@ -42,7 +42,6 @@
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnLoad = this.Factory.CreateRibbonButton();
-            this.btnLoadSecond = this.Factory.CreateRibbonButton();
             this.btnUnApplyDelete = this.Factory.CreateRibbonButton();
             this.btnValidateStats = this.Factory.CreateRibbonButton();
             this.btnImport = this.Factory.CreateRibbonButton();
@@ -106,7 +105,6 @@
             // menuActions
             // 
             this.menuActions.Items.Add(this.btnLoad);
-            this.menuActions.Items.Add(this.btnLoadSecond);
             this.menuActions.Items.Add(this.btnUnApplyDelete);
             this.menuActions.Items.Add(this.btnValidateStats);
             this.menuActions.Items.Add(this.btnImport);
@@ -122,13 +120,6 @@
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.ShowImage = true;
             this.btnLoad.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoad_Click);
-            // 
-            // btnLoadSecond
-            // 
-            this.btnLoadSecond.Label = "Load Data (No Post)";
-            this.btnLoadSecond.Name = "btnLoadSecond";
-            this.btnLoadSecond.ShowImage = true;
-            this.btnLoadSecond.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnLoadSecond_Click);
             // 
             // btnUnApplyDelete
             // 
@@ -295,7 +286,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbIgnoreItemError;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAutoSortItems;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnLoadSecond;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAccountElementOverrideDisable;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox cbAccountElementOverrideMntto;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAutoasignAccountCode;

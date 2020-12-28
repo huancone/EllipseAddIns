@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Utilities;
 using Microsoft.Office.Interop.Word;
 
 namespace DocumentGeneratorClassLibrary
@@ -43,7 +43,7 @@ namespace DocumentGeneratorClassLibrary
         }
 
 
-        public static void Execute(string urlPath, string fileName, string destPath, string destFileName, List<KeyValuePair<string, string>> variableList, string docType)
+        public static void Execute(string urlPath, string fileName, string destPath, string destFileName, List<KeyValuePair<string, string>> variableList, string docType = "PDF")
         {
             var destPathNormalized = FileWriter.NormalizePath(destPath);
 

@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Connections;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
@@ -18,10 +13,15 @@ using BMUItemService = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemS
 using EllipseEquipmentClassLibrary;
 using ListService = EllipseEquipmentClassLibrary.EquipmentListService;
 using System.Threading;
+using BulkMaterialClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 
 namespace EllipseBulkMaterialExcelAddIn
 {
-    [SuppressMessage("ReSharper", "AccessToStaticMemberViaDerivedType")]
     public partial class RibbonEllipse
     {
         private const string SheetName01 = "BulkMaterialSheet";
@@ -45,15 +45,6 @@ namespace EllipseBulkMaterialExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             LoadSettings();
-            _excelApp = Globals.ThisAddIn.Application;
-
-            var environmentList = Environments.GetEnvironmentList();
-            foreach (var item in environmentList)
-            {
-                var drpItem = Factory.CreateRibbonDropDownItem();
-                drpItem.Label = item;
-                drpEnvironment.Items.Add(drpItem);
-            }
         }
 
         public void LoadSettings()
@@ -61,16 +52,32 @@ namespace EllipseBulkMaterialExcelAddIn
             var settings = new Settings();
             _eFunctions = new EllipseFunctions();
             _frmAuth = new FormAuthenticate();
+            _excelApp = Globals.ThisAddIn.Application;
 
-            var defaultConfig = new Settings.Options();
-            defaultConfig.SetOption("AutoSort", "Y");
-            defaultConfig.SetOption("OverrideAccountCode", "Maintenance");
-            defaultConfig.SetOption("IgnoreItemError", "N");
-            
-            var options = settings.GetOptionsSettings(defaultConfig);
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
+            {
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
+            }
+
+            settings.SetDefaultCustomSettingValue("AutoSort", "Y");
+            settings.SetDefaultCustomSettingValue("OverrideAccountCode", "Maintenance");
+            settings.SetDefaultCustomSettingValue("IgnoreItemError", "N");
 
             //Setting of Configuration Options from Config File (or default)
-            var overrideAccountCode = options.GetOptionValue("OverrideAccountCode");
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            var overrideAccountCode = settings.GetCustomSettingValue("OverrideAccountCode");
             if (overrideAccountCode.Equals("Maintenance"))
                 cbAccountElementOverrideMntto.Checked = true;
             else if (overrideAccountCode.Equals("Disable"))
@@ -81,11 +88,11 @@ namespace EllipseBulkMaterialExcelAddIn
                 cbAccountElementOverrideDefault.Checked = true;
             else
                 cbAccountElementOverrideDefault.Checked = true;
-            cbAutoSortItems.Checked = MyUtilities.IsTrue(options.GetOptionValue(defaultConfig.GetOption("AutoSort")));
-            cbIgnoreItemError.Checked = MyUtilities.IsTrue(options.GetOptionValue(defaultConfig.GetOption("IgnoreItemError")));
+            cbAutoSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AutoSort"));
+            cbIgnoreItemError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreItemError"));
 
             //
-            settings.UpdateOptionsSettings(options);
+            settings.SaveCustomSettings();
         }
         private void btnLoad_Click(object sender, RibbonControlEventArgs e)
         {
@@ -98,7 +105,7 @@ namespace EllipseBulkMaterialExcelAddIn
                     _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                    _thread = new Thread(() => BulkMaterialExecute("POST"));
+                    _thread = new Thread(BulkMaterialExecute);
 
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
@@ -273,13 +280,13 @@ namespace EllipseBulkMaterialExcelAddIn
                 _cells.GetRange("A3", "A4").Style = StyleConstants.Option;
                 _cells.GetRange("B3", "B4").Style = StyleConstants.Select;
 
-                var statusCodeList = _eFunctions.GetItemCodes("ES").Select(item => item.code + " - " + item.description).ToList();
-                var equipClassCodeList = _eFunctions.GetItemCodes("EC").Select(item => item.code + " - " + item.description).ToList();
-                var equipTypeCodeList = _eFunctions.GetItemCodes("ET").Select(item => item.code + " - " + item.description).ToList();
-                var compCodeList = _eFunctions.GetItemCodes("CO").Select(item => item.code + " - " + item.description).ToList();
-                var mnemonicCodeList = _eFunctions.GetItemCodes("AA").Select(item => item.code + " - " + item.description).ToList();
-                var classTypeCodeList = _eFunctions.GetItemCodes("E0").Select(item => item.code + " - " + item.description).ToList();
-                var fuelTypeCodeList = _eFunctions.GetItemCodes("E2").Select(item => item.code + " - " + item.description).ToList();
+                var statusCodeList = _eFunctions.GetItemCodes("ES").Select(item => item.Code + " - " + item.Description).ToList();
+                var equipClassCodeList = _eFunctions.GetItemCodes("EC").Select(item => item.Code + " - " + item.Description).ToList();
+                var equipTypeCodeList = _eFunctions.GetItemCodes("ET").Select(item => item.Code + " - " + item.Description).ToList();
+                var compCodeList = _eFunctions.GetItemCodes("CO").Select(item => item.Code + " - " + item.Description).ToList();
+                var mnemonicCodeList = _eFunctions.GetItemCodes("AA").Select(item => item.Code + " - " + item.Description).ToList();
+                var classTypeCodeList = _eFunctions.GetItemCodes("E0").Select(item => item.Code + " - " + item.Description).ToList();
+                var fuelTypeCodeList = _eFunctions.GetItemCodes("E2").Select(item => item.Code + " - " + item.Description).ToList();
 
                 _cells.GetRange(1, TitleRow02, ResultColumn02, TitleRow02).Style = StyleConstants.TitleInformation;
 
@@ -426,7 +433,7 @@ namespace EllipseBulkMaterialExcelAddIn
         /// <summary>
         ///     Crea las instancias a los servicios BulkMaterialUsageSheetService y BulkMaterialUsageSheetItemService
         /// </summary>
-        private void BulkMaterialExecute(string serviceType = "POST")
+        private void BulkMaterialExecute()
         {
             try
             {
@@ -449,15 +456,14 @@ namespace EllipseBulkMaterialExcelAddIn
                 var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 //
-                var urlServicePost = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
-                _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
+                //var urlServicePost = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
+                //_eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
                 //
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearFormats();
                 _cells.GetRange(1, TitleRow01 + 1, ResultColumn01, MaxRows).ClearComments();
                 _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
 
-                var sheetService = new BMUService.BulkMaterialUsageSheetService();
-                sheetService.Url = urlService + "/BulkMaterialUsageSheet";
+                var sheetService = new BMUService.BulkMaterialUsageSheetService {Url = urlService + "/BulkMaterialUsageSheet"};
 
                 var opContext = new BMUService.OperationContext()
                 {
@@ -496,9 +502,9 @@ namespace EllipseBulkMaterialExcelAddIn
                     tableSheetItems.Sort.Apply();
                 }
 
-                BulkMaterial.BulkMaterialUsageSheet currentSheetHeader = null;
+                BulkMaterialUsageSheet currentSheetHeader = null;
 
-                var itemList = new List<BulkMaterial.BulkMaterialUsageSheetItem>();
+                var itemList = new List<BulkMaterialUsageSheetItem>();
                 
                 while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value)) != null)
                 {
@@ -506,15 +512,16 @@ namespace EllipseBulkMaterialExcelAddIn
                     {
                         _cells.GetCell(1, currentRow).Select();
 
-                        var newSheetHeader = new BulkMaterial.BulkMaterialUsageSheet();
-
                         //llenado de variables del encabezado de la hoja
-                        newSheetHeader.BulkMaterialUsageSheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
-                        newSheetHeader.DistrictCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) ?? "ICOR";
-                        newSheetHeader.WarehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+                        var newSheetHeader = new BulkMaterialUsageSheet
+                        {
+                            BulkMaterialUsageSheetId = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value),
+                            DistrictCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) ?? "ICOR",
+                            WarehouseId = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value),
+                            DefaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value),
+                            DefaultAccountCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value)
+                        };
 
-                        newSheetHeader.DefaultUsageDate = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);//DateTime.ParseExact(_cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value), "yyyyMMdd", CultureInfo.CurrentCulture);
-                        newSheetHeader.DefaultAccountCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value);
 
                         string itemAccountCode = null;
                         var materialTypeId = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull("" + _cells.GetCell(11, currentRow).Value));
@@ -534,12 +541,12 @@ namespace EllipseBulkMaterialExcelAddIn
 
                         if (!isEqualIds || (isNullIds && !newSheetHeader.Equals(currentSheetHeader)))
                         {
-                            CreateBulkMaterialSheet(sheetService, opContext, itemService, opItem, currentSheetHeader, itemList, currentHeaderRow, currentRow - 1, serviceType);
+                            CreateBulkMaterialSheet(sheetService, opContext, itemService, opItem, currentSheetHeader, itemList, currentHeaderRow, currentRow - 1);
                             currentSheetHeader = newSheetHeader;
                             currentHeaderRow = currentRow;
                         }
 
-                        var requestItem = new BulkMaterial.BulkMaterialUsageSheetItem
+                        var requestItem = new BulkMaterialUsageSheetItem
                         {
                             BulkMaterialUsageSheetId = "" + currentSheetHeader.BulkMaterialUsageSheetId,
                             EquipmentReference = equipNo,
@@ -563,7 +570,7 @@ namespace EllipseBulkMaterialExcelAddIn
                             //Para control de estilos en caso de falla
                             currentRow++;
                             //Creo la hoja si es el último registro
-                            CreateBulkMaterialSheet(sheetService, opContext, itemService, opItem, currentSheetHeader, itemList, currentHeaderRow, currentRow - 1, serviceType);
+                            CreateBulkMaterialSheet(sheetService, opContext, itemService, opItem, currentSheetHeader, itemList, currentHeaderRow, currentRow - 1);
                             //Reajuste de control de estilo si no hay fallas
                             currentRow--;
                         }
@@ -624,7 +631,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
         }
 
-        private void CreateBulkMaterialSheet(BMUService.BulkMaterialUsageSheetService sheetService, BMUService.OperationContext opContext, BMUItemService.BulkMaterialUsageSheetItemService itemService, BMUItemService.OperationContext opItem, BulkMaterial.BulkMaterialUsageSheet sheetHeader, List<BulkMaterial.BulkMaterialUsageSheetItem> itemList, int headerRow, int currentRow, string serviceType)
+        private void CreateBulkMaterialSheet(BMUService.BulkMaterialUsageSheetService sheetService, BMUService.OperationContext opContext, BMUItemService.BulkMaterialUsageSheetItemService itemService, BMUItemService.OperationContext opItem, BulkMaterialUsageSheet sheetHeader, List<BulkMaterialUsageSheetItem> itemList, int headerRow, int currentRow)
         {
             DateTime usageDate;
             if (!DateTime.TryParseExact(sheetHeader.DefaultUsageDate, "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, out usageDate))
@@ -637,6 +644,7 @@ namespace EllipseBulkMaterialExcelAddIn
             if(!string.IsNullOrWhiteSpace(sheetHeader.BulkMaterialUsageSheetId) && sheetHeader.BulkMaterialUsageSheetId.Length > 32)
                 throw new Exception("El Id de la hoja no puede tener más de 32 caracteres");
 
+            /*
             if (serviceType == "POST")
             {
                 var replySheet = BulkMaterialActions.CreateHeaderPost(_eFunctions, sheetHeader.ToDto());
@@ -653,22 +661,22 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 newSheetId = replySheet.Message;
             }
-            else
+            */
+
+            var replySheet = BulkMaterialActions.CreateHeader(sheetService, opContext, sheetHeader.ToDto());
+
+            //valido que no haya errores en la creación del encabezado
+            if (replySheet.errors != null && replySheet.errors.Length > 0)
             {
-                var replySheet = BulkMaterialActions.CreateHeader(sheetService, opContext, sheetHeader.ToDto());
+                var errorMessage = "";
+                foreach (var t in replySheet.errors)
+                    errorMessage += " - " + t.messageText;
 
-                //valido que no haya errores en la creación del encabezado
-                if (replySheet.errors != null && replySheet.errors.Length > 0)
-                {
-                    var errorMessage = "";
-                    foreach (var t in replySheet.errors)
-                        errorMessage += " - " + t.messageText;
-
-                    throw new Exception(errorMessage);
-                }
-
-                newSheetId = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
+                throw new Exception(errorMessage);
             }
+
+            newSheetId = replySheet.bulkMaterialUsageSheetDTO.bulkMaterialUsageSheetId;
+            
             sheetHeader.BulkMaterialUsageSheetId = newSheetId;
 
             _cells.GetRange(1, headerRow, 1, currentRow).Value = sheetHeader.BulkMaterialUsageSheetId;
@@ -683,6 +691,7 @@ namespace EllipseBulkMaterialExcelAddIn
                     if (string.IsNullOrWhiteSpace(item.BulkMaterialUsageSheetId))
                         item.BulkMaterialUsageSheetId = sheetHeader.BulkMaterialUsageSheetId;
 
+                    /*
                     if (serviceType == "POST")
                     {
                         var replyItem = BulkMaterialActions.AddItemToHeaderPost(_eFunctions, item.ToDto(), itemList.IndexOf(item));
@@ -696,20 +705,20 @@ namespace EllipseBulkMaterialExcelAddIn
                             throw new Exception(errorMessage);
                         }
                     }
-                    else
+                    */
+                    
+                    var replyItem = BulkMaterialActions.AddItemToHeader(_eFunctions, itemService, opItem, item.ToDto());
+
+                    //valido que no haya errores en la creación del ítem
+                    if (replyItem.errors != null && replyItem.errors.Length > 0)
                     {
-                        var replyItem = BulkMaterialActions.AddItemToHeader(_eFunctions, itemService, opItem, item.ToDto());
+                        var errorMessage = "";
+                        foreach (var t in replyItem.errors)
+                            errorMessage += " - " + t.messageText;
 
-                        //valido que no haya errores en la creación del ítem
-                        if (replyItem.errors != null && replyItem.errors.Length > 0)
-                        {
-                            var errorMessage = "";
-                            foreach (var t in replyItem.errors)
-                                errorMessage += " - " + t.messageText;
-
-                            throw new Exception(errorMessage);
-                        }
+                        throw new Exception(errorMessage);
                     }
+                    
                     _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Value = "OK";
                     _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn01, headerRow + itemList.IndexOf(item)).Select();
@@ -729,10 +738,10 @@ namespace EllipseBulkMaterialExcelAddIn
                 }
             }
 
-            if (serviceType == "POST")
+            /*if (serviceType == "POST")
                 BulkMaterialActions.ApplyHeaderPost(_eFunctions, sheetHeader.ToDto());
-            else
-                BulkMaterialActions.ApplyHeader(sheetService, opContext, sheetHeader.ToDto());
+            else*/
+            BulkMaterialActions.ApplyHeader(sheetService, opContext, sheetHeader.ToDto());
             _cells.GetRange(1, headerRow, ResultColumn01 - 1, currentRow).Style = StyleConstants.Success;
             _cells.GetRange(1, headerRow, 6, currentRow).Select();
 
@@ -870,9 +879,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
                 var drLastStat = _eFunctions.GetQueryResult(sqlQuery);
 
-                if (!drLastStat.Read()) stats.Error = "Error";
-
-                if (!drLastStat.IsClosed && drLastStat.HasRows)
+                if (drLastStat != null && !drLastStat.IsClosed && drLastStat.Read())
                 {
                     stats.MeterValue = Convert.ToDecimal(drLastStat["METER_VALUE"].ToString());
                     stats.EquipNo = drLastStat["EQUIP_NO"].ToString();
@@ -924,7 +931,7 @@ namespace EllipseBulkMaterialExcelAddIn
 
             var list = new List<string>();
 
-            if (drItem == null || drItem.IsClosed || !drItem.HasRows) return list;
+            if (drItem == null || drItem.IsClosed) return list;
 
             while (drItem.Read())
             {
@@ -1343,32 +1350,6 @@ namespace EllipseBulkMaterialExcelAddIn
             if (_cells != null) _cells.SetCursorDefault();
         }
 
-        private void btnLoadSecond_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
-                {
-                    //si ya hay un thread corriendo que no se ha detenido
-                    if (_thread != null && _thread.IsAlive) return;
-                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                    _thread = new Thread(() => BulkMaterialExecute("NOPOST"));
-
-                    _thread.SetApartmentState(ApartmentState.STA);
-                    _thread.Start();
-                }
-                else
-                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
-            }
-            catch (Exception ex)
-            {
-                Debugger.LogError("RibbonEllipse:BulkMaterialExcecute()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
-            }
-        }
-
         private string GetItemAccountCode(EllipseFunctions ef, string defaultAccountCode, string equipNo, string materialTypeId)
         {
             
@@ -1399,8 +1380,8 @@ namespace EllipseBulkMaterialExcelAddIn
         }
         private void cbAccountElementOverrideMntto_Click(object sender, RibbonControlEventArgs e)
         {
-            Settings.CurrentSettings.OptionsSettings.SetOption("OverrideAccountCode", "Maintenance");
-            Settings.CurrentSettings.UpdateOptionsSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("OverrideAccountCode", "Maintenance");
+            Settings.CurrentSettings.SaveCustomSettings();
             cbAccountElementOverrideDisable.Checked = false;
             cbAccountElementOverrideAlways.Checked = false;
             cbAccountElementOverrideDefault.Checked = false;
@@ -1410,8 +1391,8 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void cbAccountElementOverrideDisable_Click(object sender, RibbonControlEventArgs e)
         {
-            Settings.CurrentSettings.OptionsSettings.SetOption("OverrideAccountCode", "Disable");
-            Settings.CurrentSettings.UpdateOptionsSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("OverrideAccountCode", "Disable");
+            Settings.CurrentSettings.SaveCustomSettings();
             cbAccountElementOverrideAlways.Checked = false;
             cbAccountElementOverrideDefault.Checked = false;
             cbAccountElementOverrideMntto.Checked = false;
@@ -1421,8 +1402,8 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void cbAccountElementOverrideDefault_Click(object sender, RibbonControlEventArgs e)
         {
-            Settings.CurrentSettings.OptionsSettings.SetOption("OverrideAccountCode", "Default");
-            Settings.CurrentSettings.UpdateOptionsSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("OverrideAccountCode", "Default");
+            Settings.CurrentSettings.SaveCustomSettings();
             cbAccountElementOverrideDisable.Checked = false;
             cbAccountElementOverrideAlways.Checked = false;
             cbAccountElementOverrideMntto.Checked = false;
@@ -1432,8 +1413,8 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void cbAccountElementOverrideAlways_Click(object sender, RibbonControlEventArgs e)
         {
-            Settings.CurrentSettings.OptionsSettings.SetOption("OverrideAccountCode", "Always");
-            Settings.CurrentSettings.UpdateOptionsSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("OverrideAccountCode", "Always");
+            Settings.CurrentSettings.SaveCustomSettings();
             cbAccountElementOverrideDisable.Checked = false;
             cbAccountElementOverrideDefault.Checked = false;
             cbAccountElementOverrideMntto.Checked = false;
@@ -1443,14 +1424,14 @@ namespace EllipseBulkMaterialExcelAddIn
 
         private void cbAutoSortItems_Click(object sender, RibbonControlEventArgs e)
         {
-            Settings.CurrentSettings.OptionsSettings.SetOption("AutoSort", MyUtilities.ToString(cbAutoSortItems.Checked));
-            Settings.CurrentSettings.UpdateOptionsSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("AutoSort", MyUtilities.ToString(cbAutoSortItems.Checked));
+            Settings.CurrentSettings.SaveCustomSettings();
         }
 
         private void cbIgnoreItemError_Click(object sender, RibbonControlEventArgs e)
         {
-            Settings.CurrentSettings.OptionsSettings.SetOption("IgnoreItemError", MyUtilities.ToString(cbIgnoreItemError.Checked));
-            Settings.CurrentSettings.UpdateOptionsSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("IgnoreItemError", MyUtilities.ToString(cbIgnoreItemError.Checked));
+            Settings.CurrentSettings.SaveCustomSettings();
         }
     }
 }

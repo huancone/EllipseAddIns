@@ -73,7 +73,7 @@ namespace EllipseTemplateExcelAddIn
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(ex.Message, Resources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
             //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");

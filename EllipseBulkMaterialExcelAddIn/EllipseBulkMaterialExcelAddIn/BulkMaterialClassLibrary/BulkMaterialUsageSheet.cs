@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using BMUSheet = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetService;
 
-namespace EllipseBulkMaterialExcelAddIn.BulkMaterial
+namespace BulkMaterialClassLibrary
 {
     public class BulkMaterialUsageSheet
     {

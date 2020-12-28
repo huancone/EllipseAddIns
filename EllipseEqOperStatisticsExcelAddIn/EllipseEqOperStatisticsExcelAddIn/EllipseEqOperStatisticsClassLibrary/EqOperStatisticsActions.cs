@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Utilities;
+﻿using System.Collections.Generic;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseEqOperStatisticsExcelAddIn.EllipseEqOperStatisticsClassLibrary
 {
@@ -26,7 +23,7 @@ namespace EllipseEqOperStatisticsExcelAddIn.EllipseEqOperStatisticsClassLibrary
 
             var drEquipments = eFunctions.GetQueryResult(query);
 
-            if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
+            if (drEquipments == null || drEquipments.IsClosed) return null;
 
             while (drEquipments.Read())
                 return ("" + drEquipments["ITEM_NAME_1"]).Trim() + " " + ("" + drEquipments["ITEM_NAME_2"]).Trim();
@@ -50,14 +47,13 @@ namespace EllipseEqOperStatisticsExcelAddIn.EllipseEqOperStatisticsClassLibrary
 
             var dr = eFunctions.GetQueryResult(sqlQuery);
 
-            if (dr == null || dr.IsClosed || !dr.HasRows) return null;
+            if (dr == null || dr.IsClosed) return null;
 
             dr.Read();
 
             var stat = new StatRegister();
             stat.StatDate = ("" + dr["STAT_DATE"]).Trim();
             stat.MeterValue = ("" + dr["METER_VALUE"]).Trim();
-
             stat.EquipNo = ("" + dr["EQUIP_NO"]).Trim();
             stat.StatDate = ("" + dr["STAT_DATE"]).Trim();
             stat.StatType = ("" + dr["STAT_TYPE"]).Trim();
@@ -83,7 +79,7 @@ namespace EllipseEqOperStatisticsExcelAddIn.EllipseEqOperStatisticsClassLibrary
 
             var dr = eFunctions.GetQueryResult(sqlQuery);
             var list = new List<StatRegister>();
-            if (dr == null || dr.IsClosed || !dr.HasRows) return list;
+            if (dr == null || dr.IsClosed) return list;
 
             while (dr.Read())
             {
