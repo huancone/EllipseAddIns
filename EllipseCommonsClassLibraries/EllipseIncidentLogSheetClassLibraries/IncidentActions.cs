@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using EllipseCommonsClassLibrary;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
-using EllipseCommonsClassLibrary.Classes;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
+using SharedClassLibrary.Ellipse;
 
 namespace EllipseIncidentLogSheetClassLibraries
 {
@@ -87,7 +84,7 @@ namespace EllipseIncidentLogSheetClassLibraries
                     throw new Exception(reply.message);
 
                 i++;
-                if (i > 4 && reply != null && reply.mapName.Equals("MSM627B"))
+                if (i > 4 && reply.mapName.Equals("MSM627B"))
                     i = 1;
             }
 
@@ -123,6 +120,7 @@ namespace EllipseIncidentLogSheetClassLibraries
             request.screenKey = "1";
             reply = service.submit(opContext, request);
 
+
             if (eFunctions.CheckReplyWarning(reply))
                 reply = service.submit(opContext, request);
 
@@ -132,21 +130,24 @@ namespace EllipseIncidentLogSheetClassLibraries
             if (reply != null && reply.mapName != "MSM627B")
                 throw new Exception("Se ha producido un error al ingresar al MSM627B");
 
-            var replyFields = new ArrayScreenNameValue(reply.screenFields);
             var i = 1;
+
+            if (reply == null)
+                throw new Exception("No se ha obtenido una respuesta del servicio");
             var currentReplyItem = GetIncidentItemFromDtoFields(reply.screenFields, i);
 
-            while (reply != null && reply.mapName == "MSM627B" && !currentReplyItem.Equals(item))
+            while (reply.mapName == "MSM627B" && !currentReplyItem.Equals(item))
             {
                 i++;
                 currentReplyItem = GetIncidentItemFromDtoFields(reply.screenFields, i);
                 if (i <= 4) continue;
                 i = 1;
                 //envíe a la siguiente pantalla
-                request = new Screen.ScreenSubmitRequestDTO();
-                request.screenKey = "1";
+                request = new Screen.ScreenSubmitRequestDTO
+                {
+                    screenKey = "1"
+                };
                 reply = service.submit(opContext, request);
-                replyFields = new ArrayScreenNameValue(reply.screenFields);
                 currentReplyItem = GetIncidentItemFromDtoFields(reply.screenFields, i);
             }
 
@@ -157,9 +158,11 @@ namespace EllipseIncidentLogSheetClassLibraries
             //arrayFields.Add("WO_PREFIX2I", item.WorkOrderPrefix);
 
             arrayFields.Add("ACTION2I" + i, "D");
-            request = new Screen.ScreenSubmitRequestDTO();
-            request.screenFields = arrayFields.ToArray();
-            request.screenKey = "1";
+            request = new Screen.ScreenSubmitRequestDTO
+            {
+                screenFields = arrayFields.ToArray(),
+                screenKey = "1"
+            };
             reply = service.submit(opContext, request);
             while (eFunctions.CheckReplyWarning(reply) || reply.functionKeys == "XMIT-Confirm")
             {
@@ -171,11 +174,13 @@ namespace EllipseIncidentLogSheetClassLibraries
                 throw new Exception(reply.message);
 
             //Si hay pantallas con items todavía después de eliminar el registro
-            replyFields = new ArrayScreenNameValue(reply.screenFields);
-            while (reply != null && reply.mapName == "MSM627B" && !string.IsNullOrWhiteSpace(replyFields.GetField("RAISED_TIME2I1").value))
+            var replyFields = new ArrayScreenNameValue(reply.screenFields);
+            while (reply.mapName == "MSM627B" && !string.IsNullOrWhiteSpace(replyFields.GetField("RAISED_TIME2I1").value))
             {
-                request = new Screen.ScreenSubmitRequestDTO();
-                request.screenKey = "1";
+                request = new Screen.ScreenSubmitRequestDTO
+                {
+                    screenKey = "1"
+                };
                 reply = service.submit(opContext, request);
                 replyFields = new ArrayScreenNameValue(reply.screenFields);
 

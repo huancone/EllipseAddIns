@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 using EllipseEquipmentClassLibrary.EquipmentService;
 using EllipseReferenceCodesClassLibrary;
 
@@ -25,10 +25,11 @@ namespace EllipseEquipmentClassLibrary
             var drEquipments =
                 ef.GetQueryResult(
                     Queries.GetEquipReferencesQuery(ef.DbReference, ef.DbLink, districtCode, equipmentRef));
-            // ReSharper disable once InvertIf
-            if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
-                while (drEquipments.Read())
-                    equipmentList.Add(drEquipments["EQUIP_NO"].ToString().Trim());
+
+            if (drEquipments == null || drEquipments.IsClosed) return equipmentList;
+            
+            while (drEquipments.Read())
+                equipmentList.Add(drEquipments["EQUIP_NO"].ToString().Trim());
             return equipmentList;
         }
 
@@ -43,10 +44,12 @@ namespace EllipseEquipmentClassLibrary
             var equipmentList = new List<string>();
 
             var drEquipments = ef.GetQueryResult(Queries.GetEgiEquipmentsQuery(ef.DbReference, ef.DbLink, egi));
-            // ReSharper disable once InvertIf
-            if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
-                while (drEquipments.Read())
-                    equipmentList.Add(drEquipments["EQUIP_NO"].ToString().Trim());
+
+            if (drEquipments == null || drEquipments.IsClosed)
+                return equipmentList;
+            
+            while (drEquipments.Read())
+                equipmentList.Add(drEquipments["EQUIP_NO"].ToString().Trim());
             return equipmentList;
         }
 
@@ -63,10 +66,12 @@ namespace EllipseEquipmentClassLibrary
 
             var drEquipments =
                 ef.GetQueryResult(Queries.GetListEquipmentsQuery(ef.DbReference, ef.DbLink, listType, listId));
-            // ReSharper disable once InvertIf
-            if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
-                while (drEquipments.Read())
-                    equipmentList.Add(drEquipments["EQUIP_NO"].ToString().Trim());
+
+            if (drEquipments == null || drEquipments.IsClosed)
+                return equipmentList;
+            
+            while (drEquipments.Read())
+                equipmentList.Add(drEquipments["EQUIP_NO"].ToString().Trim());
             return equipmentList;
         }
 
@@ -86,10 +91,12 @@ namespace EllipseEquipmentClassLibrary
             var drEquipments =
                 ef.GetQueryResult(
                     Queries.GetProductiveUnitEquipmentsQuery(ef.DbReference, ef.DbLink, district, productiveUnit));
-            // ReSharper disable once InvertIf
-            if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
-                while (drEquipments.Read())
-                    equipmentList.Add(drEquipments["EQUIP_NO"].ToString().Trim());
+
+            if (drEquipments == null || drEquipments.IsClosed)
+                return equipmentList;
+            
+            while (drEquipments.Read())
+                equipmentList.Add(drEquipments["EQUIP_NO"].ToString().Trim());
             return equipmentList;
         }
 
@@ -124,7 +131,9 @@ namespace EllipseEquipmentClassLibrary
             var drEquipments = ef.GetQueryResult(sqlQuery);
             var list = new List<Equipment>();
 
-            if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return list;
+            if (drEquipments == null || drEquipments.IsClosed)
+                return list;
+
             while (drEquipments.Read())
             {
                 var equipment = new Equipment
@@ -219,7 +228,9 @@ namespace EllipseEquipmentClassLibrary
             var sqlQuery = Queries.GetFetchEquipmentDataQuery(ef.DbReference, ef.DbLink, equipmentNo);
             var drEquipments = ef.GetQueryResult(sqlQuery);
 
-            if (drEquipments == null || drEquipments.IsClosed || !drEquipments.HasRows) return null;
+            if (drEquipments == null || drEquipments.IsClosed) 
+                return null;
+
             drEquipments.Read();
             var equipment = new Equipment
             {
@@ -637,7 +648,9 @@ namespace EllipseEquipmentClassLibrary
                 component, position);
             var drLastInstallation = ef.GetQueryResult(sqlQuery);
 
-            if (drLastInstallation == null || drLastInstallation.IsClosed || !drLastInstallation.HasRows) return null;
+            if (drLastInstallation == null || drLastInstallation.IsClosed) 
+                return null;
+
             var installedcomponent = "";
             while (drLastInstallation.Read())
                 installedcomponent = installedcomponent + " " + drLastInstallation["COMPONENTE"].ToString().Trim();
@@ -676,11 +689,11 @@ namespace EllipseEquipmentClassLibrary
 				eqRefCodes.FuelCostCenter = item003001.RefCode;
 				eqRefCodes.ReconstructedComponent = item004001.RefCode;
 				eqRefCodes.XerasModel = item200001.RefCode;
-				newef.CloseConnection(true);
+				newef.CloseConnection();
 			}
 			catch
 			{
-				newef.CloseConnection(true);
+				newef.CloseConnection();
 				throw;
 			}
             return eqRefCodes;
@@ -690,7 +703,7 @@ namespace EllipseEquipmentClassLibrary
             //Corresponde a la misma acción de modificar, excepto que se garantiza que todos los RefCodes sean actualizados con la nueva información
             return ModifyReferenceCodes(eFunctions, urlService, opContext, equipmentNo, equipmentReferenceCodes);
         }
-        private static List<ReferenceCodeItem> GetNotNullRefCodeList(string entityType, string entityValue, Equipment.EquipmentReferenceCodes equipmentReferenceCodes)
+        private static IEnumerable<ReferenceCodeItem> GetNotNullRefCodeList(string entityType, string entityValue, Equipment.EquipmentReferenceCodes equipmentReferenceCodes)
         {
             var refItemList = new List<ReferenceCodeItem>();
 

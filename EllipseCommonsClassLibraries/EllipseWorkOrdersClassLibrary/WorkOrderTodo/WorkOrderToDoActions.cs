@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Utilities;
 using EllipseStdTextClassLibrary;
 using EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
 using EllipseWorkOrdersClassLibrary.MaterialReqmntsService;

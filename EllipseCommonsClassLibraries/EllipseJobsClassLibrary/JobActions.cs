@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Services.Ellipse.Post;
 using System.Xml.Linq;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using CommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Connections.Oracle;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Utilities;
 using EllipseStandardJobsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 using TaskRequirement = EllipseStandardJobsClassLibrary.TaskRequirement;
-using System.Diagnostics;
-using System.Web.Services.Description;
-using Debugger = EllipseCommonsClassLibrary.Debugger;
+using SharedClassLibrary.Ellipse.Connections;
+using Debugger = SharedClassLibrary.Utilities.Debugger;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
@@ -292,7 +290,7 @@ namespace EllipseJobsClassLibrary
             var drResources = ef.GetQueryResult(sqlQuery);
             var list = new List<LabourResources>();
 
-            if (drResources == null || drResources.IsClosed || !drResources.HasRows) return list;
+            if (drResources == null || drResources.IsClosed) return list;
             while (drResources.Read())
             {
                 var res = new LabourResources
@@ -319,7 +317,7 @@ namespace EllipseJobsClassLibrary
                 var drResources = conn.GetQueryResult(sqlQuery);
                 var list = new List<LabourResources>();
 
-                if (drResources == null || drResources.IsClosed || !drResources.HasRows) return list;
+                if (drResources == null || drResources.IsClosed) return list;
                 while (drResources.Read())
                 {
                     var res = new LabourResources
@@ -350,7 +348,7 @@ namespace EllipseJobsClassLibrary
             var drConn = eFunctions.GetQueryResult(sqlQuery);
 
 
-            if (drConn == null || drConn.IsClosed || !drConn.HasRows) return null;
+            if (drConn == null || drConn.IsClosed) return null;
             drConn.Read();
 
             
@@ -392,7 +390,7 @@ namespace EllipseJobsClassLibrary
             var drResources = ef.GetQueryResult(sqlQuery);
             var list = new List<DailyJobs>();
 
-            if (drResources == null || drResources.IsClosed || !drResources.HasRows) return list;
+            if (drResources == null || drResources.IsClosed) return list;
             while (drResources.Read())
             {
                 var res = new DailyJobs()

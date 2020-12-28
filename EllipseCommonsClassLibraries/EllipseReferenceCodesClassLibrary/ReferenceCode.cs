@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using EllipseCommonsClassLibrary;
 using EllipseStdTextClassLibrary;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseReferenceCodesClassLibrary
 {

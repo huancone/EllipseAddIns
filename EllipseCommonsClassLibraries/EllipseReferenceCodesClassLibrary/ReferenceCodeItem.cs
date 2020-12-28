@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Utilities.MyDateTime;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseReferenceCodesClassLibrary
 {
@@ -23,8 +21,8 @@ namespace EllipseReferenceCodesClassLibrary
         public string EntityValue;
         public string RefNo;
         public string SeqNum;
-        public string RefCode;
-        public string FieldType;
+        public string RefCode { get; set; }
+        public string FieldType { get; set; }
         public string ShortName;
         public string ScreenLiteral;
         public bool StdTextFlag;//Flag para indicar si va a cambiarse
@@ -62,18 +60,16 @@ namespace EllipseReferenceCodesClassLibrary
 
     }
 
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public static class ReferenceCodeItems
     {
         public class ReferenceDate : ReferenceCodeItem
         {
             private DateTime _date;
-            private new string RefCode;
-            private new readonly string FieldType;
+
             public ReferenceDate()
             {
                 SetDate(1900, 01, 01);
-                FieldType = "D";
+                base.FieldType = "D";
             }
             public ReferenceCodeItem ToItem()
             {
@@ -89,6 +85,21 @@ namespace EllipseReferenceCodesClassLibrary
                 return item;
             }
 
+            public new string FieldType
+            {
+                get => base.FieldType;
+                set => throw new ArgumentException("Field Type can't be changed for ReferenceDate class");
+            }
+
+            public new string RefCode
+            {
+                get => base.RefCode;
+                set
+                {
+                    _date = MyUtilities.ToDate(value);
+                    UpdateRefCode();
+                }
+            }
             public void SetYear(object year)
             {
                 int intYear;
@@ -178,11 +189,6 @@ namespace EllipseReferenceCodesClassLibrary
                 RefCode = MyUtilities.ToString(_date);
             }
 
-            public string GetRefCode()
-            {
-                return RefCode;
-            }
-
             public DateTime GetDate()
             {
                 return _date;
@@ -193,13 +199,12 @@ namespace EllipseReferenceCodesClassLibrary
         public class ReferenceTime : ReferenceCodeItem//HH:MM
         {
             private TimeSpan _time;
-            private new string RefCode;
-            private new readonly string FieldType;
+
 
             public ReferenceTime()
             {
                 SetTime(00, 00);
-                FieldType = "T";
+                base.FieldType = "T";
             }
             public ReferenceCodeItem ToItem()
             {
@@ -214,7 +219,21 @@ namespace EllipseReferenceCodesClassLibrary
                 };
                 return item;
             }
+            public new string FieldType
+            {
+                get => base.FieldType;
+                set => throw new ArgumentException("Field Type can't be changed for ReferenceTime class");
+            }
 
+            public new string RefCode
+            {
+                get => base.RefCode;
+                set
+                {
+                    _time = TimeSpan.Parse(value);
+                    UpdateRefCode();
+                }
+            }
             public void SetHour(object hour)
             {
                 int intHour;
@@ -308,19 +327,23 @@ namespace EllipseReferenceCodesClassLibrary
 
         public class ReferenceText : ReferenceCodeItem
         {
-            private new string RefCode;
-            private new readonly string FieldType;
-
             public ReferenceText()
             {
                 RefCode = "";
-                FieldType = null;
+                base.FieldType = null;
             }
             public ReferenceText(string value)
             {
-                SetValue(value);
-                FieldType = null;
+                RefCode = value;
+                base.FieldType = null;
             }
+
+            public new string FieldType
+            {
+                get => base.FieldType;
+                set => throw new ArgumentException("Field Type can't be changed for ReferenceText class");
+            }
+
             public ReferenceCodeItem ToItem()
             {
                 var item = new ReferenceCodeItem()
@@ -333,33 +356,15 @@ namespace EllipseReferenceCodesClassLibrary
                     FieldType = FieldType
                 };
                 return item;
-            }
-
-            public void SetValue(string value)
-            {
-                RefCode = value;
-            }
-
-            public string GetValue()
-            {
-                return GetRefCode();
-            }
-
-            public string GetRefCode()
-            {
-                return RefCode;
             }
         }
 
         public class ReferenceBoolean : ReferenceCodeItem
         {
-            private new string RefCode;
-            private new readonly string FieldType;
-
             public ReferenceBoolean()
             {
-                FieldType = null;
-                RefCode = "";
+                base.FieldType = null;
+                RefCode = false;
             }
             public ReferenceCodeItem ToItem()
             {
@@ -369,53 +374,56 @@ namespace EllipseReferenceCodesClassLibrary
                     EntityValue = EntityValue,
                     RefNo = RefNo,
                     SeqNum = SeqNum,
-                    RefCode = RefCode,
+                    RefCode = RefCode.ToString(),
                     FieldType = FieldType
                 };
                 return item;
             }
-
-            public void SetValue(object value)
+            public new string FieldType
             {
-                RefCode = MyUtilities.IsTrue(value) ? "Y" : "N";
+                get => base.FieldType;
+                set => throw new ArgumentException("Field Type can't be changed for ReferenceText class");
             }
 
-            public bool GetValue()
+            public new bool RefCode
             {
-                return MyUtilities.IsTrue(RefCode);
-            }
-
-            public string GetRefCode()
-            {
-                return RefCode;
+                get => MyUtilities.IsTrue(base.RefCode);
+                set => base.RefCode = MyUtilities.IsTrue(value) ? "Y" : "N";
             }
         }
 
         public class ReferenceNumeric : ReferenceCodeItem
         {
-            private new string RefCode;
-            private new readonly string FieldType;
-
             public ReferenceNumeric()
             {
-                RefCode = "";
-                FieldType = "N";
+                base.FieldType = "N";
+                base.RefCode = null;
             }
 
             public ReferenceNumeric(object value)
             {
-                FieldType = "N";
+                base.FieldType = "N";
                 SetValue(value);
             }
+            public new string FieldType
+            {
+                get => base.FieldType;
+                set => throw new ArgumentException("Field Type can't be changed for ReferenceText class");
+            }
 
+            public new int? RefCode
+            {
+                get => MyUtilities.ToInteger32Null(base.RefCode);
+                set => SetValue(value);
+            }
             public void SetValue(object value)
             {
                 if (value == null)
-                    RefCode = null;
+                    base.RefCode = null;
                 else if(Convert.ToString(value).Equals(""))
-                    RefCode = "";
+                    base.RefCode = "";
                 else
-                    RefCode = "" + Convert.ToInt32(value);
+                    base.RefCode = "" + Convert.ToInt32(value);
             }
             public ReferenceCodeItem ToItem()
             {
@@ -425,19 +433,10 @@ namespace EllipseReferenceCodesClassLibrary
                     EntityValue = EntityValue,
                     RefNo = RefNo,
                     SeqNum = SeqNum,
-                    RefCode = RefCode,
+                    RefCode = "" + RefCode,
                     FieldType = FieldType
                 };
                 return item;
-            }
-            public int GetValue()
-            {
-                return Convert.ToInt32(GetRefCode());
-            }
-
-            public string GetRefCode()
-            {
-                return RefCode;
             }
         }
 

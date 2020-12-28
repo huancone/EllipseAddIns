@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EllipseCommonsClassLibrary;
+using SharedClassLibrary.Ellipse;
 
 namespace EllipseRequisitionClassLibrary
 {
@@ -45,7 +45,7 @@ namespace EllipseRequisitionClassLibrary
             public static Dictionary<string, string> GetTransactionTypeList(EllipseFunctions ellipseFunctions)
             {
                 var codeList = ellipseFunctions.GetItemCodes("IT");
-                return codeList.ToDictionary(code => code.code, code => code.description);
+                return codeList.ToDictionary(code => code.Code, code => code.Description);
             }
 
             public static string GetTypeCode(string statusName, EllipseFunctions ellipseFunctions)
@@ -65,7 +65,7 @@ namespace EllipseRequisitionClassLibrary
             public static Dictionary<string, string> GetPrioriyCodesList(EllipseFunctions ellipseFunctions)
             {
                 var codeList = ellipseFunctions.GetItemCodes("PI");
-                return codeList.ToDictionary(code => code.code, code => code.description);
+                return codeList.ToDictionary(code => code.Code, code => code.Description);
             }
 
             public static string GetPriorityCode(string statusName, EllipseFunctions ellipseFunctions)

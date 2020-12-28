@@ -7,11 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsheetDatamodelAdmin", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsheetDatamodelLibrary", "..\EllipseCommonsClassLibraries\LogsheetDatamodelLibrary\LogsheetDatamodelLibrary.csproj", "{44F53C94-00B1-4E60-9A5A-3789F94A35D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary", "..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary\SharedClassLibrary.csproj", "{56E34747-C8E3-4576-B1E6-5255E86E1F58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary", "..\SharedClassLibrary\SharedClassLibrary\SharedClassLibrary.csproj", "{56E34747-C8E3-4576-B1E6-5255E86E1F58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary.Connections", "..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj", "{49EE1FC1-808F-4E6B-8809-78486FEB5BD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary.Connections", "..\SharedClassLibrary\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj", "{49EE1FC1-808F-4E6B-8809-78486FEB5BD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary.Connections.Oracle", "..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj", "{9EB40433-DF17-4032-AC92-F78E52597F5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary.Connections.Oracle", "..\SharedClassLibrary\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj", "{9EB40433-DF17-4032-AC92-F78E52597F5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

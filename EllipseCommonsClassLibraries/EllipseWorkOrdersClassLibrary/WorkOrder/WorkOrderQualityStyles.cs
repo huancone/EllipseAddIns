@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Constants;
-
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Vsto.Excel;
 namespace EllipseWorkOrdersClassLibrary
 {
     [SuppressMessage("ReSharper", "AccessToStaticMemberViaDerivedType")]

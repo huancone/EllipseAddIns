@@ -117,4 +117,460 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="menu1.Label" xml:space="preserve">
+    <value>menu1</value>
+  </data>
+  <data name="&gt;&gt;menu1.Name" xml:space="preserve">
+    <value>menu1</value>
+  </data>
+  <data name="&gt;&gt;menu1.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.MenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="btnFormatSheet.Label" xml:space="preserve">
+    <value>&amp;General Format</value>
+  </data>
+  <data name="&gt;&gt;btnFormatSheet.Name" xml:space="preserve">
+    <value>btnFormatSheet</value>
+  </data>
+  <data name="&gt;&gt;btnFormatSheet.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnFormatSheet.Parent" xml:space="preserve">
+    <value>menuFormat.Items</value>
+  </data>
+  <data name="&gt;&gt;btnFormatSheet.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnFormatMantto.Label" xml:space="preserve">
+    <value>&amp;Maintenance Format</value>
+  </data>
+  <data name="&gt;&gt;btnFormatMantto.Name" xml:space="preserve">
+    <value>btnFormatMantto</value>
+  </data>
+  <data name="&gt;&gt;btnFormatMantto.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnFormatMantto.Parent" xml:space="preserve">
+    <value>menuFormat.Items</value>
+  </data>
+  <data name="&gt;&gt;btnFormatMantto.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnFormatFcVagones.Label" xml:space="preserve">
+    <value>Rail Wagon Register</value>
+  </data>
+  <data name="&gt;&gt;btnFormatFcVagones.Name" xml:space="preserve">
+    <value>btnFormatFcVagones</value>
+  </data>
+  <data name="&gt;&gt;btnFormatFcVagones.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnFormatFcVagones.Parent" xml:space="preserve">
+    <value>menuFormat.Items</value>
+  </data>
+  <data name="&gt;&gt;btnFormatFcVagones.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btnPlanFc.Label" xml:space="preserve">
+    <value>Rail Wagon Requests</value>
+  </data>
+  <data name="&gt;&gt;btnPlanFc.Name" xml:space="preserve">
+    <value>btnPlanFc</value>
+  </data>
+  <data name="&gt;&gt;btnPlanFc.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnPlanFc.Parent" xml:space="preserve">
+    <value>menuFormat.Items</value>
+  </data>
+  <data name="&gt;&gt;btnPlanFc.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="menuFormat.Label" xml:space="preserve">
+    <value>&amp;Format</value>
+  </data>
+  <data name="&gt;&gt;menuFormat.Name" xml:space="preserve">
+    <value>menuFormat</value>
+  </data>
+  <data name="&gt;&gt;menuFormat.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.MenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;menuFormat.Parent" xml:space="preserve">
+    <value>box1</value>
+  </data>
+  <data name="&gt;&gt;menuFormat.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnAbout.Label" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;btnAbout.Name" xml:space="preserve">
+    <value>btnAbout</value>
+  </data>
+  <data name="&gt;&gt;btnAbout.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnAbout.Parent" xml:space="preserve">
+    <value>box1</value>
+  </data>
+  <data name="&gt;&gt;btnAbout.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;box1.Name" xml:space="preserve">
+    <value>box1</value>
+  </data>
+  <data name="&gt;&gt;box1.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.BoxView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;box1.Parent" xml:space="preserve">
+    <value>grpWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;box1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="drpEnvironment.Label" xml:space="preserve">
+    <value>Env.</value>
+  </data>
+  <data name="&gt;&gt;drpEnvironment.Name" xml:space="preserve">
+    <value>drpEnvironment</value>
+  </data>
+  <data name="&gt;&gt;drpEnvironment.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.DropDownView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;drpEnvironment.Parent" xml:space="preserve">
+    <value>grpWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;drpEnvironment.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnReviewWorkRequest.Label" xml:space="preserve">
+    <value>&amp;Search Data</value>
+  </data>
+  <data name="&gt;&gt;btnReviewWorkRequest.Name" xml:space="preserve">
+    <value>btnReviewWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnReviewWorkRequest.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnReviewWorkRequest.Parent" xml:space="preserve">
+    <value>menuWorkRequest.Items</value>
+  </data>
+  <data name="&gt;&gt;btnReviewWorkRequest.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnReReviewWorkRequest.Label" xml:space="preserve">
+    <value>S&amp;earch Current Data</value>
+  </data>
+  <data name="&gt;&gt;btnReReviewWorkRequest.Name" xml:space="preserve">
+    <value>btnReReviewWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnReReviewWorkRequest.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnReReviewWorkRequest.Parent" xml:space="preserve">
+    <value>menuWorkRequest.Items</value>
+  </data>
+  <data name="&gt;&gt;btnReReviewWorkRequest.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnCreateWorkRequest.Label" xml:space="preserve">
+    <value>&amp;Create WorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnCreateWorkRequest.Name" xml:space="preserve">
+    <value>btnCreateWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnCreateWorkRequest.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnCreateWorkRequest.Parent" xml:space="preserve">
+    <value>menuWorkRequest.Items</value>
+  </data>
+  <data name="&gt;&gt;btnCreateWorkRequest.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btnModifyWorkRequest.Label" xml:space="preserve">
+    <value>&amp;Update WorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnModifyWorkRequest.Name" xml:space="preserve">
+    <value>btnModifyWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnModifyWorkRequest.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnModifyWorkRequest.Parent" xml:space="preserve">
+    <value>menuWorkRequest.Items</value>
+  </data>
+  <data name="&gt;&gt;btnModifyWorkRequest.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="btnDeleteWorkRequest.Label" xml:space="preserve">
+    <value>&amp;Delete WorkRequests</value>
+  </data>
+  <data name="&gt;&gt;btnDeleteWorkRequest.Name" xml:space="preserve">
+    <value>btnDeleteWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnDeleteWorkRequest.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnDeleteWorkRequest.Parent" xml:space="preserve">
+    <value>menuWorkRequest.Items</value>
+  </data>
+  <data name="&gt;&gt;btnDeleteWorkRequest.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="menuWorkRequest.Label" xml:space="preserve">
+    <value>&amp;Work Request</value>
+  </data>
+  <data name="&gt;&gt;menuWorkRequest.Name" xml:space="preserve">
+    <value>menuWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;menuWorkRequest.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.MenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;menuWorkRequest.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;menuWorkRequest.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnSetSla.Label" xml:space="preserve">
+    <value>&amp;Set SLA</value>
+  </data>
+  <data name="&gt;&gt;btnSetSla.Name" xml:space="preserve">
+    <value>btnSetSla</value>
+  </data>
+  <data name="&gt;&gt;btnSetSla.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnSetSla.Parent" xml:space="preserve">
+    <value>menuSla.Items</value>
+  </data>
+  <data name="&gt;&gt;btnSetSla.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnResetSla.Label" xml:space="preserve">
+    <value>&amp;Reset SLA</value>
+  </data>
+  <data name="&gt;&gt;btnResetSla.Name" xml:space="preserve">
+    <value>btnResetSla</value>
+  </data>
+  <data name="&gt;&gt;btnResetSla.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnResetSla.Parent" xml:space="preserve">
+    <value>menuSla.Items</value>
+  </data>
+  <data name="&gt;&gt;btnResetSla.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="menuSla.Label" xml:space="preserve">
+    <value>Service &amp;Level Agreement</value>
+  </data>
+  <data name="&gt;&gt;menuSla.Name" xml:space="preserve">
+    <value>menuSla</value>
+  </data>
+  <data name="&gt;&gt;menuSla.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.MenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;menuSla.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;menuSla.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnReOpenWorkRequest.Label" xml:space="preserve">
+    <value>Re&amp;Open WorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnReOpenWorkRequest.Name" xml:space="preserve">
+    <value>btnReOpenWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnReOpenWorkRequest.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnReOpenWorkRequest.Parent" xml:space="preserve">
+    <value>menuCloseWorkRequest.Items</value>
+  </data>
+  <data name="&gt;&gt;btnReOpenWorkRequest.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnCloseWorkRequest.Label" xml:space="preserve">
+    <value>&amp;Close WorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnCloseWorkRequest.Name" xml:space="preserve">
+    <value>btnCloseWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;btnCloseWorkRequest.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnCloseWorkRequest.Parent" xml:space="preserve">
+    <value>menuCloseWorkRequest.Items</value>
+  </data>
+  <data name="&gt;&gt;btnCloseWorkRequest.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="menuCloseWorkRequest.Label" xml:space="preserve">
+    <value>Close WorkRequest</value>
+  </data>
+  <data name="&gt;&gt;menuCloseWorkRequest.Name" xml:space="preserve">
+    <value>menuCloseWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;menuCloseWorkRequest.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.MenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;menuCloseWorkRequest.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;menuCloseWorkRequest.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btnReviewRefCodes.Label" xml:space="preserve">
+    <value>&amp;Search WR RefCodes</value>
+  </data>
+  <data name="&gt;&gt;btnReviewRefCodes.Name" xml:space="preserve">
+    <value>btnReviewRefCodes</value>
+  </data>
+  <data name="&gt;&gt;btnReviewRefCodes.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnReviewRefCodes.Parent" xml:space="preserve">
+    <value>menuReferenceCodes.Items</value>
+  </data>
+  <data name="&gt;&gt;btnReviewRefCodes.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnReReviewRefCodes.Label" xml:space="preserve">
+    <value>Sea&amp;rch Current WR RefCodes</value>
+  </data>
+  <data name="&gt;&gt;btnReReviewRefCodes.Name" xml:space="preserve">
+    <value>btnReReviewRefCodes</value>
+  </data>
+  <data name="&gt;&gt;btnReReviewRefCodes.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnReReviewRefCodes.Parent" xml:space="preserve">
+    <value>menuReferenceCodes.Items</value>
+  </data>
+  <data name="&gt;&gt;btnReReviewRefCodes.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnUpdateRefCodes.Label" xml:space="preserve">
+    <value>&amp;Update WR RefCodes</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateRefCodes.Name" xml:space="preserve">
+    <value>btnUpdateRefCodes</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateRefCodes.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateRefCodes.Parent" xml:space="preserve">
+    <value>menuReferenceCodes.Items</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateRefCodes.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="menuReferenceCodes.Label" xml:space="preserve">
+    <value>&amp;Reference Codes</value>
+  </data>
+  <data name="&gt;&gt;menuReferenceCodes.Name" xml:space="preserve">
+    <value>menuReferenceCodes</value>
+  </data>
+  <data name="&gt;&gt;menuReferenceCodes.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.MenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;menuReferenceCodes.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;menuReferenceCodes.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="btnCleanSheet.Label" xml:space="preserve">
+    <value>C&amp;lean Sheet</value>
+  </data>
+  <data name="&gt;&gt;btnCleanSheet.Name" xml:space="preserve">
+    <value>btnCleanSheet</value>
+  </data>
+  <data name="&gt;&gt;btnCleanSheet.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnCleanSheet.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;btnCleanSheet.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="btnStopThread.Label" xml:space="preserve">
+    <value>&amp;Stop Process</value>
+  </data>
+  <data name="&gt;&gt;btnStopThread.Name" xml:space="preserve">
+    <value>btnStopThread</value>
+  </data>
+  <data name="&gt;&gt;btnStopThread.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnStopThread.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;btnStopThread.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="menuActions.Label" xml:space="preserve">
+    <value>&amp;Actions</value>
+  </data>
+  <data name="&gt;&gt;menuActions.Name" xml:space="preserve">
+    <value>menuActions</value>
+  </data>
+  <data name="&gt;&gt;menuActions.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.MenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;menuActions.Parent" xml:space="preserve">
+    <value>grpWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;menuActions.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="grpWorkRequest.Label" xml:space="preserve">
+    <value>WorkRequest</value>
+  </data>
+  <data name="&gt;&gt;grpWorkRequest.Name" xml:space="preserve">
+    <value>grpWorkRequest</value>
+  </data>
+  <data name="&gt;&gt;grpWorkRequest.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.GroupView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;grpWorkRequest.Parent" xml:space="preserve">
+    <value>tabEllipse</value>
+  </data>
+  <data name="&gt;&gt;grpWorkRequest.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tabEllipse.Label" xml:space="preserve">
+    <value>ELLIPSE 8</value>
+  </data>
+  <data name="&gt;&gt;tabEllipse.Name" xml:space="preserve">
+    <value>tabEllipse</value>
+  </data>
+  <data name="&gt;&gt;tabEllipse.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.TabView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="&gt;&gt;RibbonEllipse.OfficeMenu.Name" xml:space="preserve">
+    <value>RibbonEllipse.OfficeMenu</value>
+  </data>
+  <data name="&gt;&gt;RibbonEllipse.OfficeMenu.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.OfficeMenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;RibbonEllipse.OfficeMenu.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;RibbonEllipse.OfficeMenu.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>RibbonEllipse</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.GenericRibbonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

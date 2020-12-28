@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Services.Ellipse.Post;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Utilities;
 using EllipseReferenceCodesClassLibrary;
 using EllipseStdTextClassLibrary;
 using EllipseStandardJobsClassLibrary.StandardJobService;
@@ -476,7 +476,7 @@ namespace EllipseStandardJobsClassLibrary
 
             var list = new List<StandardJob>();
 
-            if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows)
+            if (stdDataReader == null || stdDataReader.IsClosed)
                 return list;
             
             while (stdDataReader.Read())
@@ -544,7 +544,7 @@ namespace EllipseStandardJobsClassLibrary
             var stdDataReader =
                 ef.GetQueryResult(Queries.GetFetchStandardQuery(ef.DbReference, ef.DbLink, districtCode, workGroup, stdJob));
 
-            if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows || !stdDataReader.Read())
+            if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.Read())
                 return null;
 
             var job = new StandardJob
@@ -605,7 +605,7 @@ namespace EllipseStandardJobsClassLibrary
 
             var list = new List<StandardJobTask>();
 
-            if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows)
+            if (stdDataReader == null || stdDataReader.IsClosed)
                 return list;
 
             while (stdDataReader.Read())
@@ -658,7 +658,7 @@ namespace EllipseStandardJobsClassLibrary
 
             var list = new List<TaskRequirement>();
 
-            if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows)
+            if (stdDataReader == null || stdDataReader.IsClosed)
                 return list;
 
             while (stdDataReader.Read())

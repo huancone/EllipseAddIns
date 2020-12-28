@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using EllipseCommonsClassLibrary.Constants;
+using SharedClassLibrary.Ellipse.Constants;
 
 namespace EllipseJobsClassLibrary
 {
-    public static partial class Queries
+    public static class Queries
     {
         public static string GetEllipseResourcesQuery(string dbReference, string dbLink, string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
@@ -300,8 +299,10 @@ namespace EllipseJobsClassLibrary
         }
         public static string GetJobTaskAdditionalQuery(string dbReference, string dbLink, JobTask task)
         {
-            string headerQuery = "";
+            string headerQuery = null;
 
+            if(string.IsNullOrWhiteSpace(task.WorkOrder) && string.IsNullOrWhiteSpace(task.MaintSchTask))
+                throw new ArgumentException("No work order or maintenance schedule task received", "WorkOrder, MaintSchTask");
             if (!string.IsNullOrWhiteSpace(task.WorkOrder))
             {
                 headerQuery = " WITH ORDERS AS (" +
@@ -472,8 +473,6 @@ namespace EllipseJobsClassLibrary
                         "     SJT.DSTRCT_CODE = SJ.DSTRCT_CODE AND SJT.STD_JOB_NO = SJ.STD_JOB_NO AND SJT.WORK_GROUP = SJ.WORK_GROUP" +
                         " ),";
             }
-            else
-                throw new ArgumentException("No work order or maintenance schedule task received", "WorkOrder, MaintSchTask");
 
             var query = headerQuery +
                         " MSTFULL AS (" +

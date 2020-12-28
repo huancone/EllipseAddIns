@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using EllipseCommonsClassLibrary;
-
+﻿using System.Collections.Generic;
+using SharedClassLibrary.Ellipse;
 using EllipseStdTextClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using System.Text;

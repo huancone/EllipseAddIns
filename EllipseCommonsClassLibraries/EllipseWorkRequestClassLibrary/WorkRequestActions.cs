@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using EllipseWorkRequestClassLibrary.WorkRequestService;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Constants;
 using EllipseReferenceCodesClassLibrary;
 using EllipseStdTextClassLibrary;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseWorkRequestClassLibrary
 {
@@ -22,7 +22,7 @@ namespace EllipseWorkRequestClassLibrary
             var drWorkRequest = ef.GetQueryResult(sqlQuery);
             var list = new List<WorkRequest>();
 
-            if (drWorkRequest == null || drWorkRequest.IsClosed || !drWorkRequest.HasRows) return list;
+            if (drWorkRequest == null || drWorkRequest.IsClosed) return list;
             while (drWorkRequest.Read())
             {
                 var request = new WorkRequest
@@ -93,7 +93,7 @@ namespace EllipseWorkRequestClassLibrary
             var sqlQuery = Queries.GetFetchWorkRequest(ef.DbReference, ef.DbLink, requestId);
             var drWorkRequest = ef.GetQueryResult(sqlQuery);
             var request = new WorkRequest();
-            if (drWorkRequest == null || drWorkRequest.IsClosed || !drWorkRequest.HasRows) return request;
+            if (drWorkRequest == null || drWorkRequest.IsClosed) return request;
             drWorkRequest.Read();
             request = new WorkRequest
             {
@@ -206,11 +206,11 @@ namespace EllipseWorkRequestClassLibrary
                 wrRefCodes.RaisedReprogramada = item009.RefCode; //009_001
                 wrRefCodes.WorkOrderOrigen = item010.RefCode; //010_001
                 wrRefCodes.CambioHora = item011.RefCode; //011_001
-			    newef.CloseConnection(true);
+			    newef.CloseConnection();
 			}
 			catch
 			{
-				newef.CloseConnection(true);
+				newef.CloseConnection();
 				throw;
 			}
             
