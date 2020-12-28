@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using EllipseWorkRequestClassLibrary.WorkRequestService;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
 using EllipseReferenceCodesClassLibrary;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Ellipse;
 
 namespace EllipseWorkRequestClassLibrary
 {

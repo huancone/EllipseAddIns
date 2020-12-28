@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseDocumentReferenceClassLibrary
 {

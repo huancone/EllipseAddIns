@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsheetDatamodelAdmin", "LogsheetDatamodelAdmin.csproj", "{59DCCE9F-0116-4784-BB5F-048E492FCABC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsheetDatamodelLibrary", "..\EllipseCommonsClassLibraries\LogsheetDatamodelLibrary\LogsheetDatamodelLibrary.csproj", "{44F53C94-00B1-4E60-9A5A-3789F94A35D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary", "..\SharedClassLibrary\SharedClassLibrary\SharedClassLibrary.csproj", "{56E34747-C8E3-4576-B1E6-5255E86E1F58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary.Connections", "..\SharedClassLibrary\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj", "{49EE1FC1-808F-4E6B-8809-78486FEB5BD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary.Connections.Oracle", "..\SharedClassLibrary\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj", "{9EB40433-DF17-4032-AC92-F78E52597F5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59DCCE9F-0116-4784-BB5F-048E492FCABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59DCCE9F-0116-4784-BB5F-048E492FCABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59DCCE9F-0116-4784-BB5F-048E492FCABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59DCCE9F-0116-4784-BB5F-048E492FCABC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44F53C94-00B1-4E60-9A5A-3789F94A35D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F53C94-00B1-4E60-9A5A-3789F94A35D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44F53C94-00B1-4E60-9A5A-3789F94A35D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44F53C94-00B1-4E60-9A5A-3789F94A35D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56E34747-C8E3-4576-B1E6-5255E86E1F58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56E34747-C8E3-4576-B1E6-5255E86E1F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56E34747-C8E3-4576-B1E6-5255E86E1F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56E34747-C8E3-4576-B1E6-5255E86E1F58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49EE1FC1-808F-4E6B-8809-78486FEB5BD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49EE1FC1-808F-4E6B-8809-78486FEB5BD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49EE1FC1-808F-4E6B-8809-78486FEB5BD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49EE1FC1-808F-4E6B-8809-78486FEB5BD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EB40433-DF17-4032-AC92-F78E52597F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EB40433-DF17-4032-AC92-F78E52597F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EB40433-DF17-4032-AC92-F78E52597F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EB40433-DF17-4032-AC92-F78E52597F5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E1EB22A-EF59-4C8D-8ABC-13A78C8407E5}
+	EndGlobalSection
+EndGlobal

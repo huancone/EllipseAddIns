@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{44F53C94-00B1-4E60-9A5A-3789F94A35D4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LogsheetDatamodelLibrary</RootNamespace>
+    <AssemblyName>LogsheetDatamodelLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\DataType.cs" />
+    <Compile Include="Configuration\AuthenticationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Models\Datamodel.cs" />
+    <Compile Include="Models\Datasheet.cs" />
+    <Compile Include="Models\Measure.cs" />
+    <Compile Include="Models\MeasureType.cs" />
+    <Compile Include="Models\ModelAttribute.cs" />
+    <Compile Include="Configuration\Login.cs" />
+    <Compile Include="Configuration\LsdmConfig.cs" />
+    <Compile Include="Configuration\Settings.cs" />
+    <Compile Include="Controllers\ModelAttributeController.cs" />
+    <Compile Include="Controllers\DatamodelController.cs" />
+    <Compile Include="Controllers\DatasheetController.cs" />
+    <Compile Include="Controllers\MeasureController.cs" />
+    <Compile Include="Controllers\MeasureTypeController.cs" />
+    <Compile Include="Controllers\ValidationItemController.cs" />
+    <Compile Include="Controllers\ValidationSourceController.cs" />
+    <Compile Include="Controllers\ValueObjectController.cs" />
+    <Compile Include="LsdmResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LsdmResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\DatasheetSqlAccess.cs" />
+    <Compile Include="DataAccess\ValueObjectSqlAccess.cs" />
+    <Compile Include="DataAccess\ValidationItemSqlAccess.cs" />
+    <Compile Include="DataAccess\ValidationSourceSqlAccess.cs" />
+    <Compile Include="DataAccess\ModelAttributeSqlAccess.cs" />
+    <Compile Include="DataAccess\DatamodelSqlAccess.cs" />
+    <Compile Include="DataAccess\MeasureSqlAccess.cs" />
+    <Compile Include="DataAccess\MeasureTypeSqlAccess.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\ValidationItem.cs" />
+    <Compile Include="Models\ValidationSource.cs" />
+    <Compile Include="Models\ValueObject.cs" />
+    <Compile Include="Configuration\DataSource.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LsdmResource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LsdmResource.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SharedClassLibrary\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj">
+      <Project>{9eb40433-df17-4032-ac92-f78e52597f5b}</Project>
+      <Name>SharedClassLibrary.Connections.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SharedClassLibrary\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
+      <Project>{49ee1fc1-808f-4e6b-8809-78486feb5bd3}</Project>
+      <Name>SharedClassLibrary.Connections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SharedClassLibrary\SharedClassLibrary\SharedClassLibrary.csproj">
+      <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
+      <Name>SharedClassLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

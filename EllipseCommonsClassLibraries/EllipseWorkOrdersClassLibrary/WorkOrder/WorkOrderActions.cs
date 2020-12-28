@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Utilities;
 using EllipseReferenceCodesClassLibrary;
 using EllipseStdTextClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
@@ -41,7 +40,7 @@ namespace EllipseWorkOrdersClassLibrary
             var drWorkOrder = ef.GetQueryResult(sqlQuery);
             var list = new List<WorkOrder>();
 
-            if (drWorkOrder == null || drWorkOrder.IsClosed || !drWorkOrder.HasRows) return list;
+            if (drWorkOrder == null || drWorkOrder.IsClosed) return list;
             while (drWorkOrder.Read())
             {
                 var order = new WorkOrder
@@ -145,7 +144,7 @@ namespace EllipseWorkOrdersClassLibrary
             var list = new List<string>();
             var drWorkOrder = ef.GetQueryResult(sqlQuery);
 
-            if (drWorkOrder == null || drWorkOrder.IsClosed || !drWorkOrder.HasRows) return list;
+            if (drWorkOrder == null || drWorkOrder.IsClosed) return list;
 
             while (drWorkOrder.Read())
             {
@@ -183,7 +182,7 @@ namespace EllipseWorkOrdersClassLibrary
             var sqlQuery = Queries.GetFetchWoQuery(ef.DbReference, ef.DbLink, district, workOrder);
             var drWorkOrder = ef.GetQueryResult(sqlQuery);
 
-            if (drWorkOrder == null || drWorkOrder.IsClosed || !drWorkOrder.HasRows || !drWorkOrder.Read()) return null;
+            if (drWorkOrder == null || drWorkOrder.IsClosed || !drWorkOrder.Read()) return null;
 
             var order = new WorkOrder
             {

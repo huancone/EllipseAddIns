@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-using EllipseCommonsClassLibrary.PrimitiveClasses;
-using EllipseCommonsClassLibrary.Utilities;
+﻿using System.Xml.Serialization;
+using SharedClassLibrary.Ellipse.PrimitiveClasses;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseMaintSchedTaskClassLibrary
 {
@@ -392,7 +388,7 @@ namespace EllipseMaintSchedTaskClassLibrary
 
             EstMatCost = mstiMwpDto.estMatCostSpecified ? MyUtilities.ToString(mstiMwpDto.estMatCost) : null;
 
-            EstOtherCost = mstiMwpDto.estOtherCostSpecified ? MyUtilities.ToString(mstiMwpDto.estOtherCost) : null; ;
+            EstOtherCost = mstiMwpDto.estOtherCostSpecified ? MyUtilities.ToString(mstiMwpDto.estOtherCost) : null;
 
             EstimateDescription = mstiMwpDto.estimateDescription;
 

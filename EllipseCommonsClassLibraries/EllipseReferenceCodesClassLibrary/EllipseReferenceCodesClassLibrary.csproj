@@ -34,9 +34,17 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+    <Reference Include="SharedClassLibrary, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
+      <HintPath>..\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Connections, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedClassLibrary\SharedClassLibrary.Connections.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Ellipse, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharedClassLibrary\SharedClassLibrary.Ellipse.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -138,10 +146,6 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
-      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
-      <Name>EllipseCommonsClassLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
       <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
       <Name>EllipseStdTextClassLibrary</Name>

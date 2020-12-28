@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using EllipseCommonsClassLibrary;
-using EllipseEquipmentClassLibrary.EquipmentService;
-using EllipseEquipmentClassLibrary.EquipTraceService;
-
-namespace EllipseEquipmentClassLibrary
+﻿namespace EllipseEquipmentClassLibrary
 {
     public class Equipment
     {

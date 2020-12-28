@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using EllipseCommonsClassLibrary;
 using EllipseStdTextClassLibrary;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseReferenceCodesClassLibrary
 {
@@ -17,7 +17,7 @@ namespace EllipseReferenceCodesClassLibrary
             var drReference = ef.GetQueryResult(sqlQuery);
             var entityList = new List<ReferenceCodeEntity>();
 
-            if (drReference == null || drReference.IsClosed || !drReference.HasRows) return entityList;
+            if (drReference == null || drReference.IsClosed) return entityList;
             while (drReference.Read())
             {
                 var request = new ReferenceCodeEntity
@@ -43,7 +43,7 @@ namespace EllipseReferenceCodesClassLibrary
             var drReference = ef.GetQueryResult(sqlQuery);
             var itemList = new List<ReferenceCodeItem>();
 
-            if (drReference == null || drReference.IsClosed || !drReference.HasRows) return itemList;
+            if (drReference == null || drReference.IsClosed) return itemList;
             while (drReference.Read())
             {
                 var item = new ReferenceCodeItem
@@ -71,7 +71,7 @@ namespace EllipseReferenceCodesClassLibrary
             var sqlQuery = Queries.FetchReferenceCodeItems(ef.DbReference, ef.DbLink, entityType, entityValue, refNo, seqNum);
             var drReference = ef.GetQueryResult(sqlQuery);
 
-            if (drReference == null || drReference.IsClosed || !drReference.HasRows) return new ReferenceCodeItem();
+            if (drReference == null || drReference.IsClosed) return new ReferenceCodeItem();
             drReference.Read();
             var item = new ReferenceCodeItem
             {

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Classes;
 using EllipseStdTextClassLibrary;
 using EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
 using EllipseWorkOrdersClassLibrary.MaterialReqmntsService;
@@ -13,7 +12,7 @@ using EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 
 namespace EllipseWorkOrdersClassLibrary
 {
-    public static partial class WorkOrderTaskActions
+    public static class WorkOrderTaskActions
     {
         public static string Close = "Close";
         public static string ReOpen = "ReOpen";
@@ -35,7 +34,7 @@ namespace EllipseWorkOrdersClassLibrary
 
         public static List<TaskRequirement> FetchRequirements(EllipseFunctions ef, string districtCode, string workOrder, string reqType, string taskNo)
         {
-            string sqlQuery = "";
+            string sqlQuery;
             if (string.IsNullOrWhiteSpace(taskNo))
                 sqlQuery = Queries.GetFetchWoRequirementsQuery(ef.DbReference, ef.DbLink, districtCode, workOrder, reqType, string.IsNullOrWhiteSpace(taskNo) ? null : taskNo.PadLeft(3, '0'));
             else
@@ -44,7 +43,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             var list = new List<TaskRequirement>();
 
-            if (woTaskDataReader == null || woTaskDataReader.IsClosed || !woTaskDataReader.HasRows)
+            if (woTaskDataReader == null || woTaskDataReader.IsClosed)
                 return list;
             
             while (woTaskDataReader.Read())
@@ -566,7 +565,7 @@ namespace EllipseWorkOrdersClassLibrary
 
             var list = new List<WorkOrderTask>();
 
-            if (stdDataReader == null || stdDataReader.IsClosed || !stdDataReader.HasRows)
+            if (stdDataReader == null || stdDataReader.IsClosed)
                 return list;
 
             while (stdDataReader.Read())

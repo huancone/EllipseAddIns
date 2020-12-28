@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{02FD00AC-154B-41A1-9F58-FF4F7BB389A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SharedClassLibrary.Ellipse</RootNamespace>
+    <AssemblyName>SharedClassLibrary.Ellipse</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\Projects\Release\SharedClassLibrary\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Connections\EllipseEnvironments.cs" />
+    <Compile Include="Connections\EllipseUrlServices.cs" />
+    <Compile Include="Constants\EllipseDistricts.cs" />
+    <Compile Include="Constants\EllipseGroups.cs" />
+    <Compile Include="Constants\EllipseManagementArea.cs" />
+    <Compile Include="Constants\EllipseQuarterMasters.cs" />
+    <Compile Include="Constants\EllipseWoTypeMtType.cs" />
+    <Compile Include="EllipseArrayScreenNameValue.cs" />
+    <Compile Include="EllipseCodeItem.cs" />
+    <Compile Include="EllipseFunctions.cs" />
+    <Compile Include="EllipseResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EllipseResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="EllipseSettings.cs" />
+    <Compile Include="Forms\EllipseAboutBoxExcelAddIn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EllipseFormAuthenticate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EllipseFormAuthenticate.Designer.cs">
+      <DependentUpon>EllipseFormAuthenticate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EllipseSettingsBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EllipseSettingsBox.Designer.cs">
+      <DependentUpon>EllipseSettingsBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrimitiveClasses\EllipseJobsMwpDto.cs" />
+    <Compile Include="PrimitiveClasses\EllipseTaskMwpDto.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\AuthenticatorService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\ScreenService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
+      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
+      <Name>System.Web.Services.Ellipse</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj">
+      <Project>{9eb40433-df17-4032-ac92-f78e52597f5b}</Project>
+      <Name>SharedClassLibrary.Connections.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
+      <Project>{49ee1fc1-808f-4e6b-8809-78486feb5bd3}</Project>
+      <Name>SharedClassLibrary.Connections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedClassLibrary\SharedClassLibrary.csproj">
+      <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
+      <Name>SharedClassLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/AuthenticatorService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AuthenticatorService\</RelPath>
+      <UpdateFromURL>http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/AuthenticatorService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SharedClassLibrary_Ellipse_AuthenticatorService_AuthenticatorService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/ScreenService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ScreenService\</RelPath>
+      <UpdateFromURL>http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/ScreenService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SharedClassLibrary_Ellipse_ScreenService_ScreenService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AuthenticatorService\AuthenticatorService.wsdl" />
+    <None Include="Web References\AuthenticatorService\NameValuePair.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AuthenticatorService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ScreenService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\ScreenService\ScreenDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ScreenService\ScreenService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EllipseResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EllipseResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EllipseResources.es-es.resx" />
+    <EmbeddedResource Include="Resources\aboutPictureBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\EllipseFormAuthenticate.resx">
+      <DependentUpon>EllipseFormAuthenticate.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EllipseSettingsBox.resx">
+      <DependentUpon>EllipseSettingsBox.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\cerrejon_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\tnsnames.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

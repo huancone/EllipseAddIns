@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseWorkOrderExcelAddIn", "EllipseWorkOrderExcelAddIn\EllipseWorkOrderExcelAddIn.csproj", "{73E42E35-21F0-4904-B14B-8B6EB5EAF7BE}"
 EndProject

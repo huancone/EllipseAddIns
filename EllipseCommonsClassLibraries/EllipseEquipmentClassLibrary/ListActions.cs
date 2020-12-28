@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 using EllipseEquipmentClassLibrary.EquipmentListService;
 
 namespace EllipseEquipmentClassLibrary
@@ -13,7 +13,9 @@ namespace EllipseEquipmentClassLibrary
             var drItem = ef.GetQueryResult(sqlQuery);
             var list = new List<EquipListItem>();
 
-            if (drItem == null || drItem.IsClosed || !drItem.HasRows) return list;
+            if (drItem == null || drItem.IsClosed) 
+                return list;
+
             while (drItem.Read())
             {
                 var item = new EquipListItem()

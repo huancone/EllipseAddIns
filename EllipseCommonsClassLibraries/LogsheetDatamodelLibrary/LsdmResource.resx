@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Attribute.AllowNull" xml:space="preserve">
+    <value>Allow Null</value>
+  </data>
+  <data name="Attribute.DataType" xml:space="preserve">
+    <value>Data Type</value>
+  </data>
+  <data name="Attribute.DefaultValue" xml:space="preserve">
+    <value>Default Value</value>
+  </data>
+  <data name="Attribute.Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Attribute.Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Attribute.MaxLength" xml:space="preserve">
+    <value>Max Length</value>
+  </data>
+  <data name="Attribute.MaxPrecision" xml:space="preserve">
+    <value>Max Precision</value>
+  </data>
+  <data name="Attribute.MaxScale" xml:space="preserve">
+    <value>Max Scale</value>
+  </data>
+  <data name="Attribute.MeasureId" xml:space="preserve">
+    <value>Measure Id</value>
+  </data>
+  <data name="Attribute.ModelId" xml:space="preserve">
+    <value>Model Id</value>
+  </data>
+  <data name="Attribute.SheetIndex" xml:space="preserve">
+    <value>Sheed Index</value>
+  </data>
+  <data name="Attribute.Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Attribute.ValidItemId" xml:space="preserve">
+    <value>Validation Id</value>
+  </data>
+  <data name="AttributesCamelcase" xml:space="preserve">
+    <value>Attributes</value>
+  </data>
+  <data name="AttributesLowercase" xml:space="preserve">
+    <value>attributes</value>
+  </data>
+  <data name="AttributesUppercase" xml:space="preserve">
+    <value>ATTRIBUTES</value>
+  </data>
+  <data name="Datasheet.CreationDate" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="Datasheet.CreationUser" xml:space="preserve">
+    <value>Creation User</value>
+  </data>
+  <data name="Datasheet.Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Datasheet.Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Datasheet.LastModDate" xml:space="preserve">
+    <value>Last Mod Date</value>
+  </data>
+  <data name="Datasheet.LastModUser" xml:space="preserve">
+    <value>Last Mod User</value>
+  </data>
+  <data name="Datasheet.ModelId" xml:space="preserve">
+    <value>Model Id</value>
+  </data>
+  <data name="Datasheet.SequenceId" xml:space="preserve">
+    <value>Sequence Id</value>
+  </data>
+  <data name="Datasheet.Shift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="DatasheetCamelcase" xml:space="preserve">
+    <value>Datasheet</value>
+  </data>
+  <data name="DatasheetLowercase" xml:space="preserve">
+    <value>datasheet</value>
+  </data>
+  <data name="DatasheetUppercase" xml:space="preserve">
+    <value>DATASHEET</value>
+  </data>
+  <data name="Error_Attribute_DatetimeValidation_LengthNotRequired" xml:space="preserve">
+    <value>Length value not required</value>
+  </data>
+  <data name="Error_Attribute_DatetimeValidation_PrecisionNotRequired" xml:space="preserve">
+    <value>Precision value not required</value>
+  </data>
+  <data name="Error_Attribute_DatetimeValidation_ScaleNotRequired" xml:space="preserve">
+    <value>Scale values not required</value>
+  </data>
+  <data name="Error_Attribute_NumericValidation_LenghtNotRequired" xml:space="preserve">
+    <value>Length value not required. Use Precision (digits quantity) and Scale (decimal quantity of total digits) for Numeric types</value>
+  </data>
+  <data name="Error_Attribute_NumericValidation_ScaleGreaterThanPrecision" xml:space="preserve">
+    <value>Scale value can't be greater than Precision</value>
+  </data>
+  <data name="Error_Attribute_TextValidation_DefaultValueWarning" xml:space="preserve">
+    <value>Text default value is limited in length</value>
+  </data>
+  <data name="Error_Attribute_TextValidation_LengthNotRequired" xml:space="preserve">
+    <value>Length value not required</value>
+  </data>
+  <data name="Error_Attribute_VarcharValidation_LengthExceeded" xml:space="preserve">
+    <value>The value exceeds the length restriction</value>
+  </data>
+  <data name="Error_Attribute_VarcharValidation_PrecisionNotRequired" xml:space="preserve">
+    <value>Precision value not required. Use Length for characters quantity</value>
+  </data>
+  <data name="Error_Attribute_VarcharValidation_ScaleNotRequired" xml:space="preserve">
+    <value>Scale values not required</value>
+  </data>
+  <data name="Error_Datasheet_IdRequired" xml:space="preserve">
+    <value>Id required for datasheet</value>
+  </data>
+  <data name="Error_DataType_Invalid" xml:space="preserve">
+    <value>Invalid datatype</value>
+  </data>
+  <data name="Error_Model_IdRequired" xml:space="preserve">
+    <value>Id required for model</value>
+  </data>
+  <data name="Error_ValueObject_NullValue" xml:space="preserve">
+    <value>Value can't be null</value>
+  </data>
+  <data name="Error_ValueObject_NumericValidation_NullValue" xml:space="preserve">
+    <value>Numeric value can't be null</value>
+  </data>
+  <data name="Error_ValueObject_NumericValidation_Precision" xml:space="preserve">
+    <value>The value exceeds the precision restriction</value>
+  </data>
+  <data name="Error_ValueObject_NumericValidation_Scale" xml:space="preserve">
+    <value>The value exceeds the scale restriction</value>
+  </data>
+  <data name="Error_ValueObject_Varchar_L" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Exception.TransactionRollbacked" xml:space="preserve">
+    <value>One or more updates couldn't be done. The transaction is rollbacked</value>
+  </data>
+  <data name="LogsheetDatamodelerCamelcase" xml:space="preserve">
+    <value>Logsheet Data Modeler</value>
+  </data>
+  <data name="LogsheetDatamodelerUppercase" xml:space="preserve">
+    <value>LOGSHEET DATA MODELER</value>
+  </data>
+  <data name="Measure.Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Measure.Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Measure.Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Measure.Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Measure.Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Measure.TypeId" xml:space="preserve">
+    <value>TypeId</value>
+  </data>
+  <data name="Measure.Units" xml:space="preserve">
+    <value>Units</value>
+  </data>
+  <data name="MeasureCamelcase" xml:space="preserve">
+    <value>Measure</value>
+  </data>
+  <data name="MeasureLowercase" xml:space="preserve">
+    <value>measure</value>
+  </data>
+  <data name="MeasureType.Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="MeasureType.Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="MeasureTypeCamelcase" xml:space="preserve">
+    <value>Measure Type</value>
+  </data>
+  <data name="MeasureTypeLowercase" xml:space="preserve">
+    <value>measure type</value>
+  </data>
+  <data name="MeasureTypeUppercase" xml:space="preserve">
+    <value>MEASURE TYPE</value>
+  </data>
+  <data name="MeasureUppercase" xml:space="preserve">
+    <value>MEASURE</value>
+  </data>
+  <data name="Model.CreationDate" xml:space="preserve">
+    <value>Creation Date</value>
+  </data>
+  <data name="Model.CreationUser" xml:space="preserve">
+    <value>Creation User</value>
+  </data>
+  <data name="Model.Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Model.Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="Model.LastModDate" xml:space="preserve">
+    <value>LastMod Date</value>
+  </data>
+  <data name="Model.LastModUser" xml:space="preserve">
+    <value>LastMod User</value>
+  </data>
+  <data name="Model.Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ModelCamelcase" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="ModelLowercase" xml:space="preserve">
+    <value>model</value>
+  </data>
+  <data name="ModelUppercase" xml:space="preserve">
+    <value>MODEL</value>
+  </data>
+  <data name="Results_Failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="Results_NoRecordsAffected" xml:space="preserve">
+    <value>No records were affected</value>
+  </data>
+  <data name="Results_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Results_Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Search.Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Search.FinishDate" xml:space="preserve">
+    <value>Finish Date</value>
+  </data>
+  <data name="Search.Keyword" xml:space="preserve">
+    <value>Keyword</value>
+  </data>
+  <data name="Search.StartDate" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="ValidationItem.Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ValidationItem.DistincFilter" xml:space="preserve">
+    <value>Distinct Filter</value>
+  </data>
+  <data name="ValidationItem.Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="ValidationItem.Sortable" xml:space="preserve">
+    <value>Sortable</value>
+  </data>
+  <data name="ValidationItem.SourceColumn" xml:space="preserve">
+    <value>Source Column</value>
+  </data>
+  <data name="ValidationItem.SourceName" xml:space="preserve">
+    <value>Source Name</value>
+  </data>
+  <data name="ValidationItem.SourceTable" xml:space="preserve">
+    <value>Source Table</value>
+  </data>
+  <data name="ValidationItemCamelcase" xml:space="preserve">
+    <value>Validation Items</value>
+  </data>
+  <data name="ValidationItemLowercase" xml:space="preserve">
+    <value>validation items</value>
+  </data>
+  <data name="ValidationItemUppercase" xml:space="preserve">
+    <value>VALIDATION ITEMS</value>
+  </data>
+  <data name="ValidationSource.DbLink" xml:space="preserve">
+    <value>Db Link</value>
+  </data>
+  <data name="ValidationSource.DbName" xml:space="preserve">
+    <value>Db Name</value>
+  </data>
+  <data name="ValidationSource.DbPassword" xml:space="preserve">
+    <value>Db Password</value>
+  </data>
+  <data name="ValidationSource.DbReference" xml:space="preserve">
+    <value>Db Reference</value>
+  </data>
+  <data name="ValidationSource.DbUser" xml:space="preserve">
+    <value>Db User</value>
+  </data>
+  <data name="ValidationSource.EncodedPasswordType" xml:space="preserve">
+    <value>Encode Type</value>
+  </data>
+  <data name="ValidationSource.Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ValidationSourcesCamelcase" xml:space="preserve">
+    <value>Validation Sources</value>
+  </data>
+  <data name="ValidationSourcesLowercase" xml:space="preserve">
+    <value>validation sources</value>
+  </data>
+  <data name="ValidationSourcesUppercase" xml:space="preserve">
+    <value>VALIDATION SOURCES</value>
+  </data>
+</root>

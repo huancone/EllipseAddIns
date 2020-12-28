@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseStdTextClassLibrary
 {
@@ -69,12 +68,11 @@ namespace EllipseStdTextClassLibrary
         {
             try
             {
-                // ReSharper disable once UseObjectOrCollectionInitializer
                 // ejecuta las acciones del servicio
-                var proxySt = new StdTextCustomService.StdTextCustomService();
-
-                // se cargan los parámetros de la orden
-                proxySt.Url = urlService + "/StdTextCustom";
+                var proxySt = new StdTextCustomService.StdTextCustomService
+                {
+                    Url = urlService + "/StdTextCustom"
+                };
 
                 // se envía la acción
                 var replySt = proxySt.getExtendedText(opContext, stdTextId);

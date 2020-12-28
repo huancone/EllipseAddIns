@@ -24,11 +24,12 @@ using EllipseStdTextClassLibrary;
 namespace EllipseStandardJobsExcelAddIn
 {
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
+    [SuppressMessage("ReSharper", "AccessToStaticMemberViaDerivedType")]
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
-        private EllipseFunctions _eFunctions = new EllipseFunctions();
-        private FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private Excel.Application _excelApp;
         private const string SheetName01 = "StandardJobs";
         private const string SheetName02 = "SJTasks";
@@ -63,7 +64,7 @@ namespace EllipseStandardJobsExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
-            _excelApp = Globals.ThisAddIn.Application;
+            LoadSettings();
 
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
@@ -73,7 +74,40 @@ namespace EllipseStandardJobsExcelAddIn
                 drpEnvironment.Items.Add(item);
             }
         }
+        private void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
+            _excelApp = Globals.ThisAddIn.Application;
 
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
+            {
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
+            }
+
+            var defaultConfig = new Settings.Options();
+            //defaultConfig.SetOption("OptionName1", "OptionValue1");
+            //defaultConfig.SetOption("OptionName2", "OptionValue2");
+            //defaultConfig.SetOption("OptionName3", "OptionValue3");
+
+            var options = settings.GetOptionsSettings(defaultConfig);
+
+            //Setting of Configuration Options from Config File (or default)
+            //var optionItem1Value = MyUtilities.IsTrue(options.GetOptionValue("OptionName1"));
+            //var optionItem1Value = options.GetOptionValue("OptionName2");
+            //var optionItem1Value = options.GetOptionValue("OptionName3");
+
+            //optionItem1.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.UpdateOptionsSettings(options);
+        }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -959,7 +993,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRange(TableName01);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var stOpContext = StdText.GetStdTextOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var districtCode = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value2);
@@ -1060,7 +1094,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var stOpContext = StdText.GetStdTextOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var i = TitleRow01 + 1;
@@ -1166,7 +1200,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRange(TableName02);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var stOpContext = StdText.GetCustomOpContext(_frmAuth.EllipseDsct, _frmAuth.EllipsePost, 100, true);
 
             var stdCells = new ExcelStyleCells(_excelApp, SheetName01);
@@ -1397,9 +1431,9 @@ namespace EllipseStandardJobsExcelAddIn
                     stdJob.JobCode9 = MyUtilities.IsTrue(_cells.GetCell(37, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(37, i).Value) : null;
                     stdJob.JobCode10 = MyUtilities.IsTrue(_cells.GetCell(38, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
                     stdJob.ExtText = MyUtilities.IsTrue(_cells.GetCell(39, validationRow).Value) ? _cells.GetEmptyIfNull(_cells.GetCell(38, i).Value) : null;
-                    StandardJobActions.CreateStandardJob(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob);
+                    StandardJobActions.CreateStandardJob(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob);
                     if (!string.IsNullOrWhiteSpace(stdJob.ExtText))
-                        StandardJobActions.SetStandardJobText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
+                        StandardJobActions.SetStandardJobText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
 
                     _cells.GetCell(ResultColumn01, i).Value = "CREADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1500,8 +1534,8 @@ namespace EllipseStandardJobsExcelAddIn
                     //stdJob.otherUpdateFlag = "true";
                     //
 
-                    StandardJobActions.ModifyStandardJob(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob, true);
-                    StandardJobActions.SetStandardJobText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
+                    StandardJobActions.ModifyStandardJob(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob, true);
+                    StandardJobActions.SetStandardJobText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdJob);
 
                     _cells.GetCell(ResultColumn01, i).Value = "ACTUALIZADO";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1578,7 +1612,7 @@ namespace EllipseStandardJobsExcelAddIn
                     };
 
 
-                    StandardJobActions.ModifyStandardJob(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob, true);
+                    StandardJobActions.ModifyStandardJob(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob, true);
 
                     _cells.GetCell(ResultColumnQualRev, i).Value = "ACTUALIZADA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1632,7 +1666,7 @@ namespace EllipseStandardJobsExcelAddIn
                         StandardJobNo = _cells.GetEmptyIfNull(_cells.GetCell(3, i).Value),
                     };
 
-                    var resultStatus = StandardJobActions.UpdateStandardJobStatus(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob, _standardStatus);
+                    var resultStatus = StandardJobActions.UpdateStandardJobStatus(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, stdJob, _standardStatus);
 
                     _cells.GetCell(ResultColumn01, i).Value = "ESTADO " + resultStatus;
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1663,7 +1697,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.ClearTableRangeColumn(TableName02, ResultColumn02);
             var i = TitleRow02 + 1;
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
             _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlService);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
@@ -1710,12 +1744,12 @@ namespace EllipseStandardJobsExcelAddIn
                     if (action.Equals("M"))
                     {
                         StandardJobActions.ModifyStandardJobTaskPost(_eFunctions, stdTask);
-                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                        StandardJobActions.SetStandardJobTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else if (action.Equals("C"))
                     {
                         StandardJobActions.CreateStandardJobTaskPost(_eFunctions, stdTask);
-                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                        StandardJobActions.SetStandardJobTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else if (action.Equals("D"))
                     {
@@ -1768,7 +1802,7 @@ namespace EllipseStandardJobsExcelAddIn
             };
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -1809,16 +1843,16 @@ namespace EllipseStandardJobsExcelAddIn
                     if (action.Equals("M"))
                     {
                         StandardJobActions.ModifyStandardJobTask(urlService, opSheet, stdTask, true);
-                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                        StandardJobActions.SetStandardJobTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else if (action.Equals("C"))
                     {
                         StandardJobActions.CreateStandardJobTask(urlService, opSheet, stdTask, true);
-                        StandardJobActions.SetStandardJobTaskText(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
+                        StandardJobActions.SetStandardJobTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, stdTask);
                     }
                     else if (action.Equals("D"))
                     {
-                        StandardJobActions.DeleteStandardJobTask(_eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label), opSheet, stdTask);
+                        StandardJobActions.DeleteStandardJobTask(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet, stdTask);
                     }
                     else
                         continue;
@@ -1949,7 +1983,7 @@ namespace EllipseStandardJobsExcelAddIn
 
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             while (!string.IsNullOrEmpty("" + _cells.GetCell(3, i).Value) && !string.IsNullOrEmpty("" + _cells.GetCell(4, i).Value))
             {
                 try
@@ -2208,7 +2242,7 @@ namespace EllipseStandardJobsExcelAddIn
         private void ReviewRefCodesList()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -2328,7 +2362,7 @@ namespace EllipseStandardJobsExcelAddIn
         public void UpdateReferenceCodes()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -2477,7 +2511,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.SetCursorWait();
             _cells.ClearTableRange(TableName06);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new StandardJobService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -2566,7 +2600,7 @@ namespace EllipseStandardJobsExcelAddIn
             _cells.SetCursorWait();
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opSheet = new StandardJobService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,

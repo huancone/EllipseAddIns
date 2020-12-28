@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary;
+﻿using SharedClassLibrary.Utilities;
 
 namespace EllipseJobsClassLibrary
 {
 
 
-    public class Jobs : EllipseCommonsClassLibrary.PrimitiveClasses.JobsMwpDto
+    public class Jobs : SharedClassLibrary.Ellipse.PrimitiveClasses.JobsMwpDto
     {
 
         public Jobs(JobsMWPService.JobsMWPDTO jobDto)

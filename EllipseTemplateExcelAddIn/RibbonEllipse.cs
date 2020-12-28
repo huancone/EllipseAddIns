@@ -1,22 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Constants;
+using SharedClassLibrary.Vsto.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
 using System.Windows.Forms;
 using System.Web.Services.Ellipse;
+using SharedClassLibrary.Connections;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
+using Settings = SharedClassLibrary.Ellipse.Settings;
+
 
 namespace EllipseTemplateExcelAddIn
 {
-    [SuppressMessage("ReSharper", "AccessToStaticMemberViaDerivedType")]
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
@@ -57,24 +59,32 @@ namespace EllipseTemplateExcelAddIn
                 drpEnvironment.Items.Add(item);
             }
 
-            var defaultConfig = new Settings.Options();
-            //defaultConfig.SetOption("OptionName1", "OptionValue1");
-            //defaultConfig.SetOption("OptionName2", "OptionValue2");
-            //defaultConfig.SetOption("OptionName3", "OptionValue3");
+            settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
 
-            var options = settings.GetOptionsSettings(defaultConfig);
+
 
             //Setting of Configuration Options from Config File (or default)
-            //var optionItem1Value = MyUtilities.IsTrue(options.GetOptionValue("OptionName1"));
-            //var optionItem1Value = options.GetOptionValue("OptionName2");
-            //var optionItem1Value = options.GetOptionValue("OptionName3");
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
 
-            //optionItem1.Checked = optionItem1Value;
+                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            cbCustomSettingOption.Checked = optionItem1Value;
             //optionItem2.Text = optionItem2Value;
             //optionItem3 = optionItem3Value;
 
             //
-            settings.UpdateOptionsSettings(options);
+            settings.SaveCustomSettings();
         }
 
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
@@ -131,7 +141,28 @@ namespace EllipseTemplateExcelAddIn
                 MessageBox.Show(@"Se ha producido un error: " + ex.Message);
             }
         }
+        private void btnQuery_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+                    _thread = new Thread(() => QueryMethod());
 
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(@"La hoja de Excel no tiene el formato requerido");
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:ExecutionMethod()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
         private void FormatMethod()
         {
             try
@@ -188,7 +219,7 @@ namespace EllipseTemplateExcelAddIn
                 _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 2, false);
                 _cells.GetRange("A3", "A4").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
-
+                
                 _cells.GetCell("C3").Value = "DESDE";
                 _cells.GetCell("D3").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D3").AddComment("YYYYMMDD");
@@ -247,11 +278,13 @@ namespace EllipseTemplateExcelAddIn
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = Districts.DefaultDistrict;
-                _cells.SetValidationList(_cells.GetCell("B3"), ValidationSheetName, 1);
+                _cells.SetValidationList(_cells.GetCell("B3"), districtList, ValidationSheetName, 1);
                 _cells.GetCell("A4").Value = "GRUPO";
-                _cells.SetValidationList(_cells.GetCell("B4"), ValidationSheetName, 2, false);
+                _cells.SetValidationList(_cells.GetCell("B4"), workGroupList, ValidationSheetName, 2, false);
                 _cells.GetRange("A3", "A4").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("B3", "B4").Style = _cells.GetStyle(StyleConstants.Select);
+
+
 
                 _cells.GetCell("C3").Value = "DESDE";
                 _cells.GetCell("D3").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
@@ -293,6 +326,7 @@ namespace EllipseTemplateExcelAddIn
 
         private void ExecutionMethod()
         {
+            MessageBox.Show("Se ha conectado con el servicio de autenticación de forma satisfactoria");
             //if (_cells == null)
             //    _cells = new ExcelStyleCells(_excelApp);
             //_cells.SetCursorWait();
@@ -308,7 +342,7 @@ namespace EllipseTemplateExcelAddIn
             //var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             //var service = new NameService.NameService();
             //service.Url = urlService + "/NameService";
-            
+
             ////Instanciar el Contexto de Operación
             //var opContext = new NameService.OperationContext
             //{
@@ -333,9 +367,6 @@ namespace EllipseTemplateExcelAddIn
             //        var column1 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value);
             //        var column2 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, i).Value);
             //        var column3 = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, i).Value);
-
-
-            //        ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             //        //Se cargan los parámetros de  la solicitud
             //        var request = new NameServiceCreateRequestDTO();
@@ -368,5 +399,65 @@ namespace EllipseTemplateExcelAddIn
             //_excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             //if (_cells != null) _cells.SetCursorDefault();
         }
+        private void QueryMethod()
+        {
+            if (_cells == null)
+                _cells = new ExcelStyleCells(_excelApp);
+            _cells.SetCursorWait();
+
+            var tableName = TableName01;
+            var titleRow = TitleRow01;
+            var resultColumn = ResultColumn01;
+
+            _cells.ClearTableRangeColumn(tableName, resultColumn);
+
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
+            //Se carga el qery y los parámetros de  la consulta
+            var query = "SELECT :param1 AS NombreApp, :param2 AS Valor, :param3 AS Fecha FROM DUAL";
+            var qpc = new SqlQueryParamCollection(query);
+            qpc.Parameters.Add(new SqlParameter("param1", "Template"));
+            qpc.Parameters.Add(new SqlParameter("param2", 123456));
+            qpc.Parameters.Add(new SqlParameter("param3", DateTime.Today));
+            
+            //se envía la acción
+            var dataReader = _eFunctions.GetQueryResult(qpc);
+
+            var i = titleRow + 1;
+            //se analiza la respuesta y se hacen las acciones pertinentes
+            while (dataReader.Read())
+            {
+                try
+                {
+                    _cells.GetCell(1, i).Value = dataReader["NombreApp"];
+                    _cells.GetCell(2, i).Value = dataReader["Valor"];
+                    _cells.GetCell(3, i).Value = dataReader["Fecha"];
+
+                    //
+                    _cells.GetCell(resultColumn, i).Value = "CONSULTA";
+                    _cells.GetCell(resultColumn, i).Style = StyleConstants.Success;
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(resultColumn, i).Style = StyleConstants.Error;
+                    _cells.GetCell(resultColumn, i).Value = "ERROR: " + ex.Message;
+                    Debugger.LogError("RibbonEllipse.cs:QueryMethod()", ex.Message);
+                }
+                finally
+                {
+                    _cells.GetCell(resultColumn, i).Select();
+                    i++;
+                }
+            }
+            _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+            if (_cells != null) _cells.SetCursorDefault();
+        }
+        private void cbCustomSettingOption_Click(object sender, RibbonControlEventArgs e)
+        {
+            Settings.CurrentSettings.SetCustomSettingValue("OptionName1", cbCustomSettingOption.Checked.ToString());
+            Settings.CurrentSettings.SaveCustomSettings();
+        }
+
+
     }
 }

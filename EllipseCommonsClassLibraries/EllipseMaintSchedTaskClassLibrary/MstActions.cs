@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 using EllipseMaintSchedTaskClassLibrary.MaintSchedTskService;
 using System.Web.Services.Ellipse.Post;
 using System.Xml;
-using EllipseCommonsClassLibrary.ScreenService;
+using SharedClassLibrary.Ellipse.ScreenService;
 using EllipseMaintSchedTaskClassLibrary.MstService;
 using OperationContext = EllipseMaintSchedTaskClassLibrary.MaintSchedTskService.OperationContext;
 
@@ -23,7 +23,7 @@ namespace EllipseMaintSchedTaskClassLibrary
 
             var list = new List<MaintenanceScheduleTask>();
 
-            if (mstDataReader == null || mstDataReader.IsClosed || !mstDataReader.HasRows)
+            if (mstDataReader == null || mstDataReader.IsClosed)
                 return list;
             while (mstDataReader.Read())
             {
@@ -81,7 +81,7 @@ namespace EllipseMaintSchedTaskClassLibrary
             var sqlQuery = Queries.GetFetchMstListQuery(ef.DbReference, ef.DbLink, districtCode, workGroup, equipmentNo, compCode, compModCode, taskNo);
             var mstDataReader = ef.GetQueryResult(sqlQuery);
 
-            if (mstDataReader == null || mstDataReader.IsClosed || !mstDataReader.HasRows || !mstDataReader.Read())
+            if (mstDataReader == null || mstDataReader.IsClosed || !mstDataReader.Read())
                 return null;
 
 
