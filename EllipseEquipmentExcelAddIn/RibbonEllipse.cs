@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Microsoft.Office.Tools.Ribbon;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Constants;
-using Excel = Microsoft.Office.Interop.Excel;
-using System.Windows.Forms;
 using System.Web.Services.Ellipse;
+using System.Windows.Forms;
+using Microsoft.Office.Tools.Ribbon;
+using Excel = Microsoft.Office.Interop.Excel;
+using SharedClassLibrary.Vsto.Excel;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
 using EllipseEquipmentClassLibrary;
 using EquipmentService = EllipseEquipmentClassLibrary.EquipmentService;
 using ListService = EllipseEquipmentClassLibrary.EquipmentListService;
 using EquipTraceService = EllipseEquipmentClassLibrary.EquipTraceService;
 using System.Threading;
+
 
 namespace EllipseEquipmentExcelAddIn
 {
@@ -286,7 +287,7 @@ namespace EllipseEquipmentExcelAddIn
                 var districtList = Districts.GetDistrictList();
                 var searchCriteriaList = SearchFieldCriteria.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();
                 var workGroupList = Groups.GetWorkGroupList().Select(g => g.Name).ToList();
-                var eqStatusList = EquipmentActions.GetEquipmentStatusCodeList(_eFunctions).Select(g => g.code + " - " + g.description).ToList();
+                var eqStatusList = EquipmentActions.GetEquipmentStatusCodeList(_eFunctions).Select(g => g.Code + " - " + g.Description).ToList();
 
                 _cells.GetCell("A3").Value = "DISTRITO";
                 _cells.GetCell("B3").Value = Districts.DefaultDistrict;
@@ -424,67 +425,67 @@ namespace EllipseEquipmentExcelAddIn
 
                 //asigno la validación de celda
                 _cells.SetValidationList(_cells.GetCell(2, TitleRow01 + 1), ValidationSheetName, 4, false);
-                var validList = _eFunctions.GetItemCodes("EC").Select(sc => sc.code + " - " + sc.description).ToList();
+                var validList = _eFunctions.GetItemCodes("EC").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(5, TitleRow01 + 1), validList, ValidationSheetName, 5, false);
-                validList = _eFunctions.GetItemCodes("ET").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("ET").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(6, TitleRow01 + 1), validList, ValidationSheetName, 6, false);
-                validList = _eFunctions.GetItemCodes("EL").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("EL").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(9, TitleRow01 + 1), validList, ValidationSheetName, 7, false);
-                validList = _eFunctions.GetItemCodes("SS").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("SS").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(18, TitleRow01 + 1), validList, ValidationSheetName, 8, false);
-                validList = _eFunctions.GetItemCodes("CO").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("CO").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(34, TitleRow01 + 1), validList, ValidationSheetName, 9, false);
-                validList = _eFunctions.GetItemCodes("AA").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("AA").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(35, TitleRow01 + 1), validList, ValidationSheetName, 10, false);
-                validList = _eFunctions.GetItemCodes("EQCR").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("EQCR").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(42, TitleRow01 + 1), validList, ValidationSheetName, 11, false);
-                validList = _eFunctions.GetItemCodes("EQCN").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("EQCN").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(45, TitleRow01 + 1), validList, ValidationSheetName, 12, false);
                 //validación de celda - classification codes
-                validList = _eFunctions.GetItemCodes("E0").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E0").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(53, TitleRow01 + 1), validList, ValidationSheetName, 13, false);
-                validList = _eFunctions.GetItemCodes("E1").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E1").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(54, TitleRow01 + 1), validList, ValidationSheetName, 14, false);
-                validList = _eFunctions.GetItemCodes("E2").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E2").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(55, TitleRow01 + 1), validList, ValidationSheetName, 15, false);
-                validList = _eFunctions.GetItemCodes("E3").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E3").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(56, TitleRow01 + 1), validList, ValidationSheetName, 16, false);
-                validList = _eFunctions.GetItemCodes("E4").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E4").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(57, TitleRow01 + 1), validList, ValidationSheetName, 17, false);
-                validList = _eFunctions.GetItemCodes("E5").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E5").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(58, TitleRow01 + 1), validList, ValidationSheetName, 18, false);
-                validList = _eFunctions.GetItemCodes("E6").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E6").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(59, TitleRow01 + 1), validList, ValidationSheetName, 19, false);
-                validList = _eFunctions.GetItemCodes("E7").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E7").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(60, TitleRow01 + 1), validList, ValidationSheetName, 20, false);
-                validList = _eFunctions.GetItemCodes("E8").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E8").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(61, TitleRow01 + 1), validList, ValidationSheetName, 21, false);
-                validList = _eFunctions.GetItemCodes("E9").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E9").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(62, TitleRow01 + 1), validList, ValidationSheetName, 22, false);
-                validList = _eFunctions.GetItemCodes("E10").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E10").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(63, TitleRow01 + 1), validList, ValidationSheetName, 23, false);
-                validList = _eFunctions.GetItemCodes("E11").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E11").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(64, TitleRow01 + 1), validList, ValidationSheetName, 24, false);
-                validList = _eFunctions.GetItemCodes("E12").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E12").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(65, TitleRow01 + 1), validList, ValidationSheetName, 25, false);
-                validList = _eFunctions.GetItemCodes("E13").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E13").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(66, TitleRow01 + 1), validList, ValidationSheetName, 26, false);
-                validList = _eFunctions.GetItemCodes("E14").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E14").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(67, TitleRow01 + 1), validList, ValidationSheetName, 27, false);
-                validList = _eFunctions.GetItemCodes("E15").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E15").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(68, TitleRow01 + 1), validList, ValidationSheetName, 28, false);
-                validList = _eFunctions.GetItemCodes("E16").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E16").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(69, TitleRow01 + 1), validList, ValidationSheetName, 29, false);
-                validList = _eFunctions.GetItemCodes("E17").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E17").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(70, TitleRow01 + 1), validList, ValidationSheetName, 30, false);
-                validList = _eFunctions.GetItemCodes("E18").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E18").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(71, TitleRow01 + 1), validList, ValidationSheetName, 31, false);
-                validList = _eFunctions.GetItemCodes("E19").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("E19").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(72, TitleRow01 + 1), validList, ValidationSheetName, 32, false);
                 //
                 validList = new List<string> { "A - Allowed", "W - Not Allowed (Warning)", "E - Not Allowed (Error)" };
                 _cells.SetValidationList(_cells.GetCell(26, TitleRow01 + 1), validList, ValidationSheetName, 33, false);
-                validList = _eFunctions.GetItemCodes("TC").Select(sc => sc.code + " - " + sc.description).ToList();
+                validList = _eFunctions.GetItemCodes("TC").Select(sc => sc.Code + " - " + sc.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(27, TitleRow01 + 1), validList, ValidationSheetName, 34, false);
 
 
@@ -629,7 +630,7 @@ namespace EllipseEquipmentExcelAddIn
             _cells.ClearTableRange(TableName01);
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new EquipmentService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -783,7 +784,7 @@ namespace EllipseEquipmentExcelAddIn
             _cells.SetCursorWait();
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = new EquipmentService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -940,7 +941,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                     var equipment = new Equipment
                     {
                         EquipmentNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
@@ -1118,7 +1119,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                     var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
@@ -1297,7 +1298,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                     var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
@@ -1358,7 +1359,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                     var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
@@ -1411,7 +1412,7 @@ namespace EllipseEquipmentExcelAddIn
             //{
             //    try
             //    {
-            //var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            //var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             //var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
 
@@ -1465,7 +1466,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                     var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
                     var equipment = new Equipment
@@ -1524,7 +1525,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                     var traceItem = new TracingItem();
 
@@ -1554,6 +1555,8 @@ namespace EllipseEquipmentExcelAddIn
                     else
                         throw new Exception("No se ha seleccionado una acción a realizar");
 
+                    if (result != null)
+                        throw new Exception("No se recibió respuesta de la acción");
                     _cells.GetCell(ResultColumn02, i).Value = "SE HA REALIZADO LA ACCION";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
                     _cells.GetCell(ResultColumn02, i).Style = StyleConstants.Success;
@@ -1600,7 +1603,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                     var traceItem = new TracingItem();
 
@@ -1963,7 +1966,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                     var equiplist = new EquipListItem()
                     {
                         EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),
@@ -2032,7 +2035,7 @@ namespace EllipseEquipmentExcelAddIn
             {
                 try
                 {
-                    var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                     var equiplist = new EquipListItem()
                     {
                         EquipNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, i).Value),

@@ -4,14 +4,12 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Vsto.Excel;
+using SharedClassLibrary.Utilities;
 using System.Collections;
 using DocumentGeneratorClassLibrary;
-using EllipseCommonsClassLibrary.Settings;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
@@ -23,7 +21,6 @@ namespace ContratosGeneradorDocumentos
         private ExcelStyleCells _cells;
         private Application _excelApp;
         private Thread _thread;
-        private CommonSettings _settings;
 
         //Hojas
         private const string ValidationSheetName = "Validacion";

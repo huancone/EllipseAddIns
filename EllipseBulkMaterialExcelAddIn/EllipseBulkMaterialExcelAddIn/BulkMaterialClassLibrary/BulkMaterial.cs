@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using LINQtoCSV;
 
-namespace EllipseBulkMaterialExcelAddIn
+namespace BulkMaterialClassLibrary
 {
     public class BulkMaterialItem
     {

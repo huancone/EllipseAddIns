@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using BonoDeTopeados.Properties;
 using LINQtoCSV;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
-using Debugger = EllipseCommonsClassLibrary.Debugger;
+using SharedClassLibrary.Connections.Oracle;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Utilities;
+using Debugger = SharedClassLibrary.Utilities.Debugger;
 
 
 namespace BonoDeTopeados
@@ -213,7 +206,7 @@ namespace BonoDeTopeados
 
             var sqlQuery = Queries.GetEmployeeTurnType(cedula, anho);
             var dReader = ef.GetQueryResult(sqlQuery);
-            if (dReader == null || dReader.IsClosed || !dReader.HasRows)
+            if (dReader == null || dReader.IsClosed)
             {
                 ef.CloseConnection();
                 return null;

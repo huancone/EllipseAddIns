@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
-using System.Xml;
 using BMUService = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetService;
 using BMUItemService = EllipseBulkMaterialExcelAddIn.BulkMaterialUsageSheetItemService;
-using EllipseCommonsClassLibrary;
-using System.Web.Services.Ellipse.Post;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Utilities;
 
-namespace EllipseBulkMaterialExcelAddIn
+namespace BulkMaterialClassLibrary
 {
     public static class BulkMaterialActions
     {
@@ -28,9 +24,10 @@ namespace EllipseBulkMaterialExcelAddIn
             return reply;
         }
 
-        public static EllipseCommonsClassLibrary.Classes.ReplyMessage ApplyHeaderPost(EllipseFunctions eFunctions, BMUService.BulkMaterialUsageSheetDTO requestSheet)
+        /*
+        public static ReplyMessage ApplyHeaderPost(EllipseFunctions eFunctions, BMUService.BulkMaterialUsageSheetDTO requestSheet)
         {
-            var reply = new EllipseCommonsClassLibrary.Classes.ReplyMessage();
+            var reply = new ReplyMessage();
 
             eFunctions.InitiatePostConnection();
             var requestXml = "";
@@ -96,7 +93,7 @@ namespace EllipseBulkMaterialExcelAddIn
             }
             return reply;
         }
-
+        */
         public static BMUService.BulkMaterialUsageSheetServiceResult UnApplyHeader(BMUService.BulkMaterialUsageSheetService bmService, BMUService.OperationContext opContext, BMUService.BulkMaterialUsageSheetDTO requestSheet, bool ignoreErrors = false)
         {
             var reply = bmService.unapply(opContext, requestSheet);
@@ -146,9 +143,10 @@ namespace EllipseBulkMaterialExcelAddIn
             return reply;
         }
 
-        public static EllipseCommonsClassLibrary.Classes.ReplyMessage CreateHeaderPost(EllipseFunctions eFunctions, BMUService.BulkMaterialUsageSheetDTO requestSheet)
+        /*
+        public static ReplyMessage CreateHeaderPost(EllipseFunctions eFunctions, BMUService.BulkMaterialUsageSheetDTO requestSheet)
         {
-            var reply = new EllipseCommonsClassLibrary.Classes.ReplyMessage();
+            var reply = new ReplyMessage();
 
             eFunctions.InitiatePostConnection();
             var requestXml = "";
@@ -242,7 +240,7 @@ namespace EllipseBulkMaterialExcelAddIn
             }
             return reply;
         }
-
+        */
         public static BMUItemService.BulkMaterialUsageSheetItemServiceResult AddItemToHeader(EllipseFunctions eFunctions, BMUItemService.BulkMaterialUsageSheetItemService bmItemService, BMUItemService.OperationContext opContext, BMUItemService.BulkMaterialUsageSheetItemDTO requestItem)
         {
             var profile = GetItemFuelCapacity(eFunctions, requestItem.equipmentReference, requestItem.bulkMaterialTypeId);
@@ -267,9 +265,10 @@ namespace EllipseBulkMaterialExcelAddIn
             return reply;
         }
 
-        public static EllipseCommonsClassLibrary.Classes.ReplyMessage AddItemToHeaderPost(EllipseFunctions eFunctions, BMUItemService.BulkMaterialUsageSheetItemDTO requestItem, int itemIndex)
+        /*
+        public static ReplyMessage AddItemToHeaderPost(EllipseFunctions eFunctions, BMUItemService.BulkMaterialUsageSheetItemDTO requestItem, int itemIndex)
         {
-            var reply = new EllipseCommonsClassLibrary.Classes.ReplyMessage();
+            var reply = new ReplyMessage();
             var profile = GetItemFuelCapacity(eFunctions, requestItem.equipmentReference, requestItem.bulkMaterialTypeId);
 
             if (!string.IsNullOrWhiteSpace(profile.Error))
@@ -367,7 +366,7 @@ namespace EllipseBulkMaterialExcelAddIn
             }
             return reply;
         }
-
+        */
         public static Profile GetItemFuelCapacity(EllipseFunctions eFunctions, string equipNo, string fuelType)
         {
             var profile = new Profile();
@@ -378,10 +377,7 @@ namespace EllipseBulkMaterialExcelAddIn
             var sqlQuery = Queries.GetFuelCapacity(equipNo, eFunctions.DbReference, eFunctions.DbLink);
             var drEquipCapacity = eFunctions.GetQueryResult(sqlQuery);
 
-            if (!drEquipCapacity.Read())
-                profile.Error = "No se ha encontrado un perfil válido para el equipo proporcionado";
-
-            if (!drEquipCapacity.IsClosed && drEquipCapacity.HasRows)
+            if (drEquipCapacity != null && !drEquipCapacity.IsClosed && drEquipCapacity.Read())
             {
                 profile.Equipo = drEquipCapacity["EQUIP_NO"].ToString();
                 profile.Egi = drEquipCapacity["EQUIP_GRP_ID"].ToString();
@@ -389,11 +385,9 @@ namespace EllipseBulkMaterialExcelAddIn
                 profile.Capacity = Convert.ToDecimal(drEquipCapacity["FUEL_CAPACITY"].ToString());
                 return profile;
             }
-            else
-            {
-                profile.Error = "No existe un perfil estadístico de operación para el equipo";
-                return profile;
-            }
+
+            profile.Error = "No existe un perfil estadístico de operación para el equipo";
+            return profile;
         }
 
         public class EquipmentBulkItem
@@ -419,7 +413,7 @@ namespace EllipseBulkMaterialExcelAddIn
                 if(drQuery == null)
                     throw new Exception("Se ha producido un error de conexión al intentar obtener la información del equipo para la categoría y centro de costo");
 
-                if (drQuery != null && !drQuery.IsClosed && drQuery.HasRows && drQuery.Read())
+                if (drQuery != null && !drQuery.IsClosed && drQuery.Read())
                 {
                     item.EquipClass = drQuery["EQUIP_CLASS"].ToString();
                     item.EquipClassCode19 =  drQuery["EQUIP_CLASSIFX19"].ToString();

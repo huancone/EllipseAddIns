@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Tools.Ribbon;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary;
+using SharedClassLibrary.Classes;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using System.Threading;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 
 namespace EllipseAplsExcelAddIn
 {

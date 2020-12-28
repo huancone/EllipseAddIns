@@ -119,6 +119,12 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="SharedClassLibrary">
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Vsto.Excel">
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Vsto.Excel.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -220,10 +226,6 @@
     <ProjectReference Include="..\EllipseCommonsClassLibraries\DocumentGeneratorClassLibrary\DocumentGeneratorClassLibrary.csproj">
       <Project>{b1c4404b-9854-4b6d-9145-da7933bbccf0}</Project>
       <Name>DocumentGeneratorClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
-      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
-      <Name>EllipseCommonsClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
