@@ -1725,7 +1725,7 @@ namespace EllipseAddinGanttEQ
             for (Int32 w = 0; w < DatosWo.Length; w++)
             {
                 string sqlQuery = Consulta(1, 2, DatosWo[w]);
-                data.DataTable table = getdata(sqlQuery, 1);
+                data.DataTable table = getdata(sqlQuery);
                 if (w == 0)
                 {
                     foreach (data.DataColumn Col in table.Columns)
@@ -2186,7 +2186,7 @@ namespace EllipseAddinGanttEQ
             for (Int32 w = 0; w < DatosWo.Length; w++)
             {
                 string sqlQuery = Consulta(1, 3, DatosWo[w]);
-                data.DataTable table = getdata(sqlQuery, 1);
+                data.DataTable table = getdata(sqlQuery);
                 if (w == 0)
                 {
                     foreach (data.DataColumn Col in table.Columns)
@@ -2462,7 +2462,7 @@ namespace EllipseAddinGanttEQ
                           FECHA112 >= TO_CHAR(ADD_MONTHS(SYSDATE,-1),'YYYYMMDD')
                         ORDER BY
                           1 " + ORDEN);
-                table = getdata(Sql);
+                table = getdata(Sql,1);
             }
             else if (Tipo == 3)
             {
@@ -2475,7 +2475,7 @@ namespace EllipseAddinGanttEQ
                           TT.TABLE_TYPE = 'TT'
                         ORDER BY
                           1 " + ORDEN);
-                table = getdata(Sql,1);
+                table = getdata(Sql);
             }
             int i = 0;
             string[,] data = new string[table.Rows.Count, table.Columns.Count];
