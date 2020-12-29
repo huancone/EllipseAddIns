@@ -34,6 +34,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RibbonEllipse));
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpDownLost = this.Factory.CreateRibbonGroup();
             this.box1 = this.Factory.CreateRibbonBox();
@@ -60,7 +61,7 @@
             // 
             this.tabEllipse.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tabEllipse.Groups.Add(this.grpDownLost);
-            this.tabEllipse.Label = "ELLIPSE 8";
+            resources.ApplyResources(this.tabEllipse, "tabEllipse");
             this.tabEllipse.Name = "tabEllipse";
             // 
             // grpDownLost
@@ -68,7 +69,7 @@
             this.grpDownLost.Items.Add(this.box1);
             this.grpDownLost.Items.Add(this.drpEnvironment);
             this.grpDownLost.Items.Add(this.menuActions);
-            this.grpDownLost.Label = "Down & Lost";
+            resources.ApplyResources(this.grpDownLost, "grpDownLost");
             this.grpDownLost.Name = "grpDownLost";
             // 
             // box1
@@ -81,32 +82,32 @@
             // 
             this.menuFormat.Items.Add(this.btnFormatSheet);
             this.menuFormat.Items.Add(this.btnFormatDownPbv);
-            this.menuFormat.Label = "Formatos";
+            resources.ApplyResources(this.menuFormat, "menuFormat");
             this.menuFormat.Name = "menuFormat";
             // 
             // btnFormatSheet
             // 
-            this.btnFormatSheet.Label = "Formato General";
+            resources.ApplyResources(this.btnFormatSheet, "btnFormatSheet");
             this.btnFormatSheet.Name = "btnFormatSheet";
             this.btnFormatSheet.ShowImage = true;
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
             // 
             // btnFormatDownPbv
             // 
-            this.btnFormatDownPbv.Label = "Formato PBV";
+            resources.ApplyResources(this.btnFormatDownPbv, "btnFormatDownPbv");
             this.btnFormatDownPbv.Name = "btnFormatDownPbv";
             this.btnFormatDownPbv.ShowImage = true;
             this.btnFormatDownPbv.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatDownPbv_Click);
             // 
             // btnAbout
             // 
-            this.btnAbout.Label = "?";
+            resources.ApplyResources(this.btnAbout, "btnAbout");
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnvironment
             // 
-            this.drpEnvironment.Label = "Env.";
+            resources.ApplyResources(this.drpEnvironment, "drpEnvironment");
             this.drpEnvironment.Name = "drpEnvironment";
             // 
             // menuActions
@@ -119,61 +120,61 @@
             this.menuActions.Items.Add(this.btnDeleteDL);
             this.menuActions.Items.Add(this.btnClearTable);
             this.menuActions.Items.Add(this.btnStopThread);
-            this.menuActions.Label = "Acciones";
+            resources.ApplyResources(this.menuActions, "menuActions");
             this.menuActions.Name = "menuActions";
             // 
             // btnReviewDL
             // 
-            this.btnReviewDL.Label = "Consultar D/L";
+            resources.ApplyResources(this.btnReviewDL, "btnReviewDL");
             this.btnReviewDL.Name = "btnReviewDL";
             this.btnReviewDL.ShowImage = true;
             this.btnReviewDL.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReview_Click);
             // 
             // btnReviewDLPbv
             // 
-            this.btnReviewDLPbv.Label = "Consultar D/L PBV";
+            resources.ApplyResources(this.btnReviewDLPbv, "btnReviewDLPbv");
             this.btnReviewDLPbv.Name = "btnReviewDLPbv";
             this.btnReviewDLPbv.ShowImage = true;
             this.btnReviewDLPbv.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnReviewDLPbv_Click);
             // 
             // btnCreateDL
             // 
-            this.btnCreateDL.Label = "Crear D/L";
+            resources.ApplyResources(this.btnCreateDL, "btnCreateDL");
             this.btnCreateDL.Name = "btnCreateDL";
             this.btnCreateDL.ShowImage = true;
             this.btnCreateDL.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreateDL_Click);
             // 
             // btnCreatIgnoreDuplicate
             // 
-            this.btnCreatIgnoreDuplicate.Label = "Crear D/L - Ignorar Duplicados";
+            resources.ApplyResources(this.btnCreatIgnoreDuplicate, "btnCreatIgnoreDuplicate");
             this.btnCreatIgnoreDuplicate.Name = "btnCreatIgnoreDuplicate";
             this.btnCreatIgnoreDuplicate.ShowImage = true;
             this.btnCreatIgnoreDuplicate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreatIgnoreDuplicate_Click);
             // 
             // btnGenerateCollection
             // 
-            this.btnGenerateCollection.Label = "&Generar Solo Colección";
+            resources.ApplyResources(this.btnGenerateCollection, "btnGenerateCollection");
             this.btnGenerateCollection.Name = "btnGenerateCollection";
             this.btnGenerateCollection.ShowImage = true;
             this.btnGenerateCollection.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGenerateCollection_Click);
             // 
             // btnDeleteDL
             // 
-            this.btnDeleteDL.Label = "Eliminar D/L";
+            resources.ApplyResources(this.btnDeleteDL, "btnDeleteDL");
             this.btnDeleteDL.Name = "btnDeleteDL";
             this.btnDeleteDL.ShowImage = true;
             this.btnDeleteDL.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnDeleteDL_Click);
             // 
             // btnClearTable
             // 
-            this.btnClearTable.Label = "Limpiar Tabla D/L";
+            resources.ApplyResources(this.btnClearTable, "btnClearTable");
             this.btnClearTable.Name = "btnClearTable";
             this.btnClearTable.ShowImage = true;
             this.btnClearTable.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnClearTable_Click);
             // 
             // btnStopThread
             // 
-            this.btnStopThread.Label = "&Detener Proceso";
+            resources.ApplyResources(this.btnStopThread, "btnStopThread");
             this.btnStopThread.Name = "btnStopThread";
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);

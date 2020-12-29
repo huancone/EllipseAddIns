@@ -181,19 +181,19 @@ namespace SharedClassLibrary.Ellipse.Connections
                     {
                         if (!item.Name.Equals(environment)) continue;
 
-                        var dbPassword = item.Attributes["dbpassword"] != null ? item.Attributes["dbpassword"].Value : null;
-                        var dbEncodedPassword = item.Attributes["dbencodedpassword"] != null ? item.Attributes["dbencodedpassword"].Value : null;
+                        var dbPassword = item.Attributes["dbpassword"]?.Value;
+                        var dbEncodedPassword = item.Attributes["dbencodedpassword"]?.Value;
 
                         dbItem.Name = item.Name;
-                        dbItem.DbName = item.Attributes["dbname"] != null ? item.Attributes["dbname"].Value : null;
-                        dbItem.DbUser = item.Attributes["dbuser"] != null ? item.Attributes["dbuser"].Value : null;
+                        dbItem.DbName = item.Attributes["dbname"]?.Value;
+                        dbItem.DbUser = item.Attributes["dbuser"]?.Value;
                         if (string.IsNullOrWhiteSpace(dbPassword) && !string.IsNullOrWhiteSpace(dbEncodedPassword))
                             dbItem.DbEncodedPassword = dbEncodedPassword;
                         else
                             dbItem.DbPassword = dbPassword;
-                        dbItem.DbReference = item.Attributes["dbreference"] != null ? item.Attributes["dbreference"].Value : null;
-                        dbItem.DbLink = item.Attributes["dblink"] != null ? item.Attributes["dblink"].Value : null;
-                        dbItem.DbCatalog = item.Attributes["dbcatalog"] != null ? item.Attributes["dbcatalog"].Value : null;
+                        dbItem.DbReference = item.Attributes["dbreference"]?.Value;
+                        dbItem.DbLink = item.Attributes["dblink"]?.Value;
+                        dbItem.DbCatalog = item.Attributes["dbcatalog"]?.Value;
                         return dbItem;
                     }
                 }
@@ -204,7 +204,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                         dbItem.Name = EllipseProductivo;
                         dbItem.DbName = "EL8PROD";
                         dbItem.DbUser = "SIGCON";
-                        dbItem.DbPassword = "ventyx";
+                        dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
@@ -213,7 +213,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                         dbItem.Name = EllipseDesarrollo;
                         dbItem.DbName = "EL8DESA";
                         dbItem.DbUser = "SIGCON";
-                        dbItem.DbPassword = "ventyx";
+                        dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
@@ -222,7 +222,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                         dbItem.Name = EllipseContingencia;
                         dbItem.DbName = "EL8PROD";
                         dbItem.DbUser = "SIGCON";
-                        dbItem.DbPassword = "ventyx";
+                        dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
@@ -231,7 +231,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                         dbItem.Name = EllipseTest;
                         dbItem.DbName = "EL8TEST";
                         dbItem.DbUser = "SIGCON";
-                        dbItem.DbPassword = "ventyx";
+                        dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
@@ -240,7 +240,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                         dbItem.Name = SigcorProductivo;
                         dbItem.DbName = "SIGCOPRD";
                         dbItem.DbUser = "CONSULBO";
-                        dbItem.DbPassword = "consulbo";
+                        dbItem.DbEncodedPassword = @"rrm0HFcFN947tZwu5yAyaCvrALk9emYLn3SaNh2huucpBc6X6SoapF7jc1S1lnVzknUF6Z3DGrNABiwg2PSUnn5ERDzNlL34+EBG6jrSNv1P3NJxas5vy0C2fULYmy/G";
                         dbItem.DbLink = "@DBLELLIPSE8";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
@@ -249,7 +249,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                         dbItem.Name = SigmanProductivo;
                         dbItem.DbName = "SIGCOPRD";
                         dbItem.DbUser = "SIGMAN";
-                        dbItem.DbPassword = "sig0679";
+                        dbItem.DbEncodedPassword = @"2yqN2BVsTTW8mrK21olA5KEAEwRqMXds/CpySMMtN0uA5ZPsWWWZjsJcXTbCQxklGQLZCq6jYJOzmo4UNbEs503XWwI1KiX7+7WDgZ2Beems8lIsIBb++yKVlplNidFB";
                         dbItem.DbLink = "@DBLELLIPSE8";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
@@ -258,7 +258,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                         dbItem.Name = SigmanTest;
                         dbItem.DbName = "SIGCOPRD";
                         dbItem.DbUser = "SIGMAN";
-                        dbItem.DbPassword = "sig0679";
+                        dbItem.DbEncodedPassword = @"2yqN2BVsTTW8mrK21olA5KEAEwRqMXds/CpySMMtN0uA5ZPsWWWZjsJcXTbCQxklGQLZCq6jYJOzmo4UNbEs503XWwI1KiX7+7WDgZ2Beems8lIsIBb++yKVlplNidFB";
                         dbItem.DbLink = "@DBLELLIPSE8";
                         dbItem.DbReference = DefaultDbReferenceName;
                     }
@@ -267,7 +267,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                         dbItem.Name = EllipseSigmanProductivo;
                         dbItem.DbName = "EL8PROD";
                         dbItem.DbUser = "CONSULBO";
-                        dbItem.DbPassword = "ventyx15";
+                        dbItem.DbEncodedPassword = @"5RgHgvloJ2S1Eaflx9oonNdkHnXiEhR71mv+hYO2mnkYSt1eH3rSUN3eWahzVMvrdRzH4p1+r6zi0KtVaST8OLlzlqJMQlMXpTSE/Zj4f0XHLa7zOpHTBzi+XE3N9y6f";
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                         dbItem.SecondaryDbLink = "@DBLSIGMAN";
@@ -278,7 +278,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                         dbItem.Name = EllipseSigmanTest;
                         dbItem.DbName = "EL8TEST";
                         dbItem.DbUser = "CONSULBO";
-                        dbItem.DbPassword = "ventyx";
+                        dbItem.DbEncodedPassword = @"cfnShslzZGN3WzBraEZOVjB/dvCylB2l8eQgEwyq0Q6oCEPZVcymeZh9qkAJnybgOkl71K8/C+iBW/duS8ED7Lj9CNMgMG7qzQr78uDG5RVRhkQ3pe4/tdjpDGzSijhd";
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                         dbItem.SecondaryDbLink = "@DBLSIGMAN"; //o @DBLSIG
@@ -290,7 +290,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                         dbItem.Name = ScadaRdb;
                         dbItem.DbName = "PBVFWL01";
                         dbItem.DbUser = "SCADARDBADMINGUI";
-                        dbItem.DbPassword = "momia2011";
+                        dbItem.DbEncodedPassword = @"z21xgEuA/HsQ8TKMHtQKGKcgTEV0/LaryE/KdhKfLnsGhzqRX7Paa1VwBUDFyJZ5qrYYUQMxTPH2zaHCmrvQmzKKggO9cWDYGbBu7Gs5tHjVurJIiGTBXoK3Lk+UZ+dQ";
                         dbItem.DbLink = "";
                         dbItem.DbReference = DefaultDbReferenceName;
                         dbItem.DbCatalog = "SCADARDB.DBO";

@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Windows.Forms;
-//using System.Web.Services.Ellipse.Post;
 using Screen = SharedClassLibrary.Ellipse.ScreenService;
 using SharedClassLibrary.Connections;
 using SharedClassLibrary.Connections.Oracle;
-using SharedClassLibrary;
 using SharedClassLibrary.Ellipse.Connections;
 using SharedClassLibrary.Utilities;
 
@@ -29,14 +26,9 @@ namespace SharedClassLibrary.Ellipse
         //public PostService PostServiceProxy;
         private int _queryAttempt;
 
-        public string DbLink
-        {
-            get { return _dbItem.DbLink; }
-        }
-        public string DbReference
-        {
-            get { return _dbItem.DbReference; }
-        }
+        public string DbLink => _dbItem.DbLink;
+        public string DbReference => _dbItem.DbReference;
+
         /// <summary>
         /// Constructor de la clase. Inicia la clase con el nombre de ambientes disponibles (Ej. Productivo, Test, etc) y sus respectivas direcciones web de conexión a los web services
         /// </summary>
@@ -66,8 +58,7 @@ namespace SharedClassLibrary.Ellipse
                 _dbItem.DbReference = null;
             }
 
-            if(_oracleConnector != null)
-                _oracleConnector.CloseConnection(true);
+            _oracleConnector?.CloseConnection(true);
             SetCurrentEnvironment(null);
         }
         /// <summary>
@@ -172,7 +163,7 @@ namespace SharedClassLibrary.Ellipse
         /// <summary>
         /// Obtiene el data reader con los resultados de una consulta
         /// </summary>
-        /// <param name="OracleQueryParamCollection">Objeto de colección de query y parámetros de consulta</param>
+        /// <param name="queryParamCollection">Objeto de colección de query y parámetros de consulta</param>
         /// <param name="customConnectionString">string: anula la configuración predeterminada por la especificada en la cadena de conexión (Ej. "Data Source=DBNAME; User ID=USERID; Passwork=PASSWORD")</param>
         /// <returns>IDataReader: Conjunto de resultados de la consulta</returns>
         public IDataReader GetQueryResult(IQueryParamCollection queryParamCollection, string customConnectionString = null)
@@ -431,33 +422,7 @@ namespace SharedClassLibrary.Ellipse
             Debugger.LogWarning("Warning", reply.functionKeys);
             return true;
         }
-
-        [Obsolete("CheckReplyError(ResponseDto) is deprecated, please use System.Web.Services.Ellipse.Post.ResponseDto GotErrorMessages() or GetStringErrorMessages()")]
-        public bool CheckReplyError(System.Web.Services.Ellipse.Post.ResponseDto reply)
-        {
-            
-            if (!reply.GotErrorMessages()) return true;
-            var errorMessage = "";
-            foreach (var msg in reply.Errors)
-                errorMessage += msg.Field + " " + msg.Text;
-            if (!errorMessage.Equals(""))
-                throw new Exception(errorMessage);
-            return false;
-        }
-
-        [Obsolete("CheckReplyWarning(ResponseDto) is deprecated, please use System.Web.Services.Ellipse.Post.ResponseDto GotWarningMessages() or GetStringWarningMessages()")]
-        public bool CheckReplyWarning(System.Web.Services.Ellipse.Post.ResponseDto reply)
-        {
-            
-            if (!reply.GotWarningMessages()) return true;
-            var warningMessage = "";
-            foreach (var msg in reply.Warnings)
-                warningMessage += msg.Field + " " + msg.Text;
-            if (!warningMessage.Equals(""))
-                throw new Exception(warningMessage);
-            return false;
-        }
-
+        
         /// <summary>
         /// Verifica si un usuario tiene acceso a una aplicación especificada de Ellipse
         /// </summary>
@@ -523,7 +488,7 @@ namespace SharedClassLibrary.Ellipse
 
             var query = "SELECT * FROM " + _dbItem.DbReference + ".MSF010" + _dbItem.DbLink + " WHERE TABLE_TYPE = '" + tableType + "'" +
                         paramActiveOnly + " " + additionalQueryParameters;
-            query = SharedClassLibrary.Utilities.MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
             var drItemCodes = GetQueryResult(query);
 
@@ -550,7 +515,7 @@ namespace SharedClassLibrary.Ellipse
 
             var query = "SELECT * FROM " + _dbItem.DbReference + ".MSF010" + _dbItem.DbLink + " WHERE TABLE_TYPE = '" + tableType + "'" +
                         paramActiveOnly + " " + additionalQueryParameters;
-            query = SharedClassLibrary.Utilities.MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
 
             var drItemCodes = GetQueryResult(query);
 
@@ -570,7 +535,7 @@ namespace SharedClassLibrary.Ellipse
 
             var query = "SELECT * FROM " + _dbItem.DbReference + ".MSF010" + _dbItem.DbLink + " WHERE TABLE_TYPE = '" + tableType + "'" +
                         paramActiveOnly + " " + additionalQueryParameters;
-            query = SharedClassLibrary.Utilities.MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
+            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
             
             var drItemCodes = GetQueryResult(query);
 

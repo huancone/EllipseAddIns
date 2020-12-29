@@ -73,7 +73,6 @@
     <Compile Include="Utilities\Debugger.cs" />
     <Compile Include="Configuration\RuntimeConfigSettings.cs" />
     <Compile Include="Utilities\DateTime.cs" />
-    <Compile Include="Utilities\Encryption.cs" />
     <Compile Include="Utilities\FileWriter.cs" />
     <Compile Include="Utilities\IConstants.cs" />
     <Compile Include="Utilities\InputBox.cs" />
@@ -116,6 +115,5 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

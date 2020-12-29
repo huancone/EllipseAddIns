@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace EllipseDownLostExcelAddIn
+﻿namespace EllipseDownLostExcelAddIn
 {
     /// <summary>
     /// Una clase para almacenar los valores bases de un registro DOWN/LOST
