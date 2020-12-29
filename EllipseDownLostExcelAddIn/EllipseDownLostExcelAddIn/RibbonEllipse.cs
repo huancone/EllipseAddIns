@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using SharedClassLibrary.Utilities.Shifts;
 using SharedClassLibrary;
-using SharedClassLibrary.Classes;
 using SharedClassLibrary.Ellipse.Constants;
 using SharedClassLibrary.Utilities;
 using EllipseEquipmentClassLibrary;
@@ -24,8 +22,6 @@ using Screen = SharedClassLibrary.Ellipse.ScreenService;
 
 namespace EllipseDownLostExcelAddIn
 {
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
-    [SuppressMessage("ReSharper", "AccessToStaticMemberViaDerivedType")]
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
@@ -102,6 +98,8 @@ namespace EllipseDownLostExcelAddIn
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
+            if (!_cells.IsDecimalDotSeparator())
+                MessageBox.Show(Resources.Warning_DecimalSeparatorWarning, Resources.Warning_WarningUppercase);
         }
 
         private void btnReview_Click(object sender, RibbonControlEventArgs e)
@@ -117,12 +115,12 @@ namespace EllipseDownLostExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                Debugger.LogError("RibbonEllipse:ReviewDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
             }
 
         }
@@ -139,12 +137,12 @@ namespace EllipseDownLostExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
             }
         }
         private void btnCreateDL_Click(object sender, RibbonControlEventArgs e)
@@ -155,18 +153,22 @@ namespace EllipseDownLostExcelAddIn
                 {
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
                     _ignoreDuplicate = false;
                     _thread = new Thread(CreateDownLost);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
             }
         }
         private void btnCreatIgnoreDuplicate_Click(object sender, RibbonControlEventArgs e)
@@ -177,18 +179,21 @@ namespace EllipseDownLostExcelAddIn
                 {
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _ignoreDuplicate = true;
                     _thread = new Thread(CreateDownLost);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
             }
         }
         private void btnDeleteDL_Click(object sender, RibbonControlEventArgs e)
@@ -197,22 +202,27 @@ namespace EllipseDownLostExcelAddIn
             {
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
                 {
+
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
-                    var dr = MessageBox.Show(@"Esta acción eliminará los registros Down/Lost existentes. ¿Está seguro que desea continuar?", @"ELIMINAR DOWN Y LOST", MessageBoxButtons.YesNo);
+                    var dr = MessageBox.Show(DlResources.Delete_Warning, DlResources.Delete_Title, MessageBoxButtons.YesNo);
                     if (dr != DialogResult.Yes)
                         return;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+
                     _thread = new Thread(DeleteDownLost);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(@"La hoja de Excel seleccionada no tiene el formato válido para realizar la acción");
+                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:DeleteDownLost()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                Debugger.LogError("RibbonEllipse:DeleteDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -228,7 +238,25 @@ namespace EllipseDownLostExcelAddIn
 
         private void btnGenerateCollection_Click(object sender, RibbonControlEventArgs e)
         {
-            GenerateCollectionList();
+            try
+            {
+                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
+                {
+                    //si ya hay un thread corriendo que no se ha detenido
+                    if (_thread != null && _thread.IsAlive) return;
+
+                    _thread = new Thread(GenerateCollectionList);
+                    _thread.SetApartmentState(ApartmentState.STA);
+                    _thread.Start();
+                }
+                else
+                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse:GenerateCollectionList()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+            }
         }
 
 
@@ -495,8 +523,8 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja" + "\n\n" + ex.Message);
+                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_SheetHeaderError} . {ex.Message}");
             }
         }
         private void FormatSheetPbv()
@@ -773,8 +801,8 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+                Debugger.LogError("RibbonEllipse:formatSheet()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_SheetHeaderError} . {ex.Message}");
             }
         }
 
@@ -797,7 +825,7 @@ namespace EllipseDownLostExcelAddIn
                 var reader = _eFunctions.GetSqlQueryResult(sqlQuery);
                 var currentRow = TitleRow01 + 1;
 
-                if (reader == null || reader.IsClosed || !reader.HasRows)
+                if (reader == null || reader.IsClosed)
                     return;
                 while (reader.Read())
                 {
@@ -833,14 +861,13 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar obtener datos de la opción seleccionado");
+                Debugger.LogError("RibbonEllipse:ReviewDownLostPbv()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_ErrorFound}. {ex.Message}");
             }
             finally
             {
 				_eFunctions.CloseConnection();
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
         }
 
@@ -891,7 +918,7 @@ namespace EllipseDownLostExcelAddIn
                             startDate, endDate);
                         var ddr = _eFunctions.GetQueryResult(sqlDownQuery);
 
-                        if (ddr != null && !ddr.IsClosed && ddr.HasRows)
+                        if (ddr != null && !ddr.IsClosed)
                         {
                             while (ddr.Read())
                             {
@@ -921,10 +948,9 @@ namespace EllipseDownLostExcelAddIn
                     {
                         var lostSqlQuery = Queries.GetEquipmentLostQuery(_eFunctions.DbReference,
                             _eFunctions.DbLink, equip, startDate, endDate);
-                        var ddr =
-                            _eFunctions.GetQueryResult(lostSqlQuery);
+                        var ddr = _eFunctions.GetQueryResult(lostSqlQuery);
 
-                        if (ddr != null && !ddr.IsClosed && ddr.HasRows)
+                        if (ddr != null && !ddr.IsClosed)
                         {
                             while (ddr.Read())
                             {
@@ -952,9 +978,8 @@ namespace EllipseDownLostExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewDownLost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar obtener datos de la opción seleccionado");
+                Debugger.LogError("RibbonEllipse:ReviewDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_ErrorFound}. {ex.Message}");
             }
             finally
             {
@@ -970,184 +995,163 @@ namespace EllipseDownLostExcelAddIn
         {
             try
             {
-                //si no se está en la hoja correspondiente
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName01 &
-                    _excelApp.ActiveWorkbook.ActiveSheet.Name != SheetNameP01)
-                    throw new InvalidOperationException("La hoja seleccionada no coincide con el modelo requerido");
-
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                var cells = new ExcelStyleCells(_excelApp, false);
+
+                var cellCollection = new ExcelStyleCells(_excelApp, SheetName04);
+
+                var i = TitleRow01 + 1;
+
+                var resultColumn01 = (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01) ? ResultColumnP01 : ResultColumn01;
+
+                while ("" + cells.GetCell(1, i).Value != "")
                 {
-                    if (_cells == null)
-                        _cells = new ExcelStyleCells(_excelApp);
-                    var cells = new ExcelStyleCells(_excelApp, false);
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-
-                    var cellCollection = new ExcelStyleCells(_excelApp, SheetName04);
-
-                    var i = TitleRow01 + 1;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-
-                    var resultColumn01 = (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
-                        ? ResultColumnP01
-                        : ResultColumn01;
-
-                    while ("" + cells.GetCell(1, i).Value != "")
+                    try
                     {
-                        try
+                        //ScreenService Opción en reemplazo de los servicios
+                        var opSheet = new Screen.OperationContext
                         {
-                            //ScreenService Opción en reemplazo de los servicios
-                            var opSheet = new Screen.OperationContext
+                            district = _frmAuth.EllipseDsct,
+                            position = _frmAuth.EllipsePost,
+                            maxInstances = 100,
+                            maxInstancesSpecified = true,
+                            returnWarnings = Debugger.DebugWarnings,
+                            returnWarningsSpecified = true
+                        };
+
+                        var proxySheet = new Screen.ScreenService();
+                        ////ScreenService
+
+                        ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                        var equipNo = cells.GetEmptyIfNull(cells.GetCell(1, i).Value);
+                        var compCode = cells.GetEmptyIfNull(cells.GetCell(2, i).Value);
+                        var compModCode = cells.GetEmptyIfNull(cells.GetCell(3, i).Value);
+                        var startDate = cells.GetEmptyIfNull(cells.GetCell(4, i).Value);
+                        var startTime = cells.GetEmptyIfNull(cells.GetCell(5, i).Value);
+                        var finishDate = cells.GetEmptyIfNull(cells.GetCell(6, i).Value);
+                        var finishTime = cells.GetEmptyIfNull(cells.GetCell(7, i).Value);
+                        var elapsed = cells.GetEmptyIfNull(cells.GetCell(8, i).Value);
+                        var collection = cells.GetEmptyIfNull(cells.GetCell(9, i).Value); //collection
+                        var shiftCode = cells.GetEmptyIfNull(cells.GetCell(10, i).Value);
+                        var eventType = cells.GetEmptyIfNull(cells.GetCell(11, i).Value);
+                        var eventCode = cells.GetEmptyIfNull(cells.GetCell(12, i).Value);
+                        var eventDescription = cells.GetEmptyIfNull(cells.GetCell(13, i).Value); //solo para consulta
+                        var woComment = cells.GetEmptyIfNull(cells.GetCell(14, i).Value);
+
+                        if ((eventType.ToUpper().Equals("DOWN") || eventType.ToUpper().Equals("D")) && !string.IsNullOrWhiteSpace(woComment))
+                            woComment = MyUtilities.GetCodeKey(woComment);
+
+                        string woEvent = null;
+                        string symptomId = null;
+                        string assetTypeId = null;
+                        string statusChangeid = null;
+
+                        if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
+                        {
+                            woEvent = cells.GetEmptyIfNull(cells.GetCell(15, i).Value);
+                            symptomId = cells.GetEmptyIfNull(cells.GetCell(16, i).Value);
+                            assetTypeId = cells.GetEmptyIfNull(cells.GetCell(17, i).Value);
+                            statusChangeid = cells.GetEmptyIfNull(cells.GetCell(18, i).Value);
+                        }
+
+                        startTime = string.IsNullOrWhiteSpace(startTime) ? startTime : startTime.PadLeft(4, '0');
+                        finishTime = string.IsNullOrWhiteSpace(finishTime) ? finishTime : finishTime.PadLeft(4, '0');
+
+                        LostDownObject[] ldObject;
+                        if (collection == ShiftCodes.HourToHourCode ||
+                            //hora a hora (Ej. 00-01, 01-02, ..., 22-23, 23-24
+                            collection == ShiftCodes.DailyZeroCode || //diaria de 00-24
+                            collection == ShiftCodes.DailyMorningCode || //diaria de 06-06
+                            collection == ShiftCodes.DayNightCode) //dia 06-18 y noche de 18-06
+                        {
+                            //si es generado por colecction
+                            var startEvent = new DateTime(
+                                Convert.ToInt32(startDate.Substring(0, 4)),
+                                Convert.ToInt32(startDate.Substring(4, 2)),
+                                Convert.ToInt32(startDate.Substring(6, 2)),
+                                Convert.ToInt32(Convert.ToInt32(startTime).ToString("0000").Substring(0, 2)),
+                                Convert.ToInt32(Convert.ToInt32(startTime).ToString("0000").Substring(2, 2)),
+                                00);
+                            var endEvent = new DateTime(
+                                Convert.ToInt32(finishDate.Substring(0, 4)),
+                                Convert.ToInt32(finishDate.Substring(4, 2)),
+                                Convert.ToInt32(finishDate.Substring(6, 2)),
+                                Convert.ToInt32(Convert.ToInt32(finishTime).ToString("0000").Substring(0, 2)),
+                                Convert.ToInt32(Convert.ToInt32(finishTime).ToString("0000").Substring(2, 2)),
+                                00);
+                            var shiftArray =
+                                MyUtilities.DateTime.GetSlots(GetTurnShifts(collection), startEvent, endEvent).ToArray();
+                            
+
+                            ldObject = new LostDownObject[shiftArray.Length];
+
+                            for (var j = 0; j < shiftArray.Length; j++)
                             {
-                                district = _frmAuth.EllipseDsct,
-                                position = _frmAuth.EllipsePost,
-                                maxInstances = 100,
-                                maxInstancesSpecified = true,
-                                returnWarnings = Debugger.DebugWarnings,
-                                returnWarningsSpecified = true
-                            };
+                                var dateString = MyUtilities.ToString(shiftArray[j].GetDate());
+                                var startTimeString = MyUtilities.ToString(shiftArray[j].GetStartDateTime().TimeOfDay, MyUtilities.DateTime.TimeHHMM);
+                                var endTimeString = MyUtilities.ToString(shiftArray[j].GetEndDateTime().TimeOfDay, MyUtilities.DateTime.TimeHHMM);
 
-                            var proxySheet = new Screen.ScreenService();
-                            ////ScreenService
-
-                            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
-                            var equipNo = cells.GetEmptyIfNull(cells.GetCell(1, i).Value);
-                            var compCode = cells.GetEmptyIfNull(cells.GetCell(2, i).Value);
-                            var compModCode = cells.GetEmptyIfNull(cells.GetCell(3, i).Value);
-                            var startDate = cells.GetEmptyIfNull(cells.GetCell(4, i).Value);
-                            var startTime = cells.GetEmptyIfNull(cells.GetCell(5, i).Value);
-                            var finishDate = cells.GetEmptyIfNull(cells.GetCell(6, i).Value);
-                            var finishTime = cells.GetEmptyIfNull(cells.GetCell(7, i).Value);
-                            var elapsed = cells.GetEmptyIfNull(cells.GetCell(8, i).Value);
-                            var collection = cells.GetEmptyIfNull(cells.GetCell(9, i).Value); //collection
-                            var shiftCode = cells.GetEmptyIfNull(cells.GetCell(10, i).Value);
-                            var eventType = cells.GetEmptyIfNull(cells.GetCell(11, i).Value);
-                            var eventCode = cells.GetEmptyIfNull(cells.GetCell(12, i).Value);
-                            var eventDescription = cells.GetEmptyIfNull(cells.GetCell(13, i).Value); //solo para consulta
-                            var woComment = cells.GetEmptyIfNull(cells.GetCell(14, i).Value);
-
-                            if ((eventType.ToUpper().Equals("DOWN") || eventType.ToUpper().Equals("D")) && !string.IsNullOrWhiteSpace(woComment))
-                                woComment = MyUtilities.GetCodeKey(woComment);
-
-                            string woEvent = null;
-                            string symptomId = null;
-                            string assetTypeId = null;
-                            string statusChangeid = null;
-
-                            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
-                            {
-                                woEvent = cells.GetEmptyIfNull(cells.GetCell(15, i).Value);
-                                symptomId = cells.GetEmptyIfNull(cells.GetCell(16, i).Value);
-                                assetTypeId = cells.GetEmptyIfNull(cells.GetCell(17, i).Value);
-                                statusChangeid = cells.GetEmptyIfNull(cells.GetCell(18, i).Value);
-                            }
-
-                            startTime = string.IsNullOrWhiteSpace(startTime) ? startTime : startTime.PadLeft(4, '0');
-                            finishTime = string.IsNullOrWhiteSpace(finishTime) ? finishTime : finishTime.PadLeft(4, '0');
-
-                            LostDownObject[] ldObject;
-                            if (collection == ShiftCodes.HourToHourCode ||
-                                //hora a hora (Ej. 00-01, 01-02, ..., 22-23, 23-24
-                                collection == ShiftCodes.DailyZeroCode || //diaria de 00-24
-                                collection == ShiftCodes.DailyMorningCode || //diaria de 06-06
-                                collection == ShiftCodes.DayNightCode) //dia 06-18 y noche de 18-06
-                            {
-                                //si es generado por colecction
-                                var startEvent = new DateTime(
-                                    Convert.ToInt32(startDate.Substring(0, 4)),
-                                    Convert.ToInt32(startDate.Substring(4, 2)),
-                                    Convert.ToInt32(startDate.Substring(6, 2)),
-                                    Convert.ToInt32(Convert.ToInt32(startTime).ToString("0000").Substring(0, 2)),
-                                    Convert.ToInt32(Convert.ToInt32(startTime).ToString("0000").Substring(2, 2)),
-                                    00);
-                                var endEvent = new DateTime(
-                                    Convert.ToInt32(finishDate.Substring(0, 4)),
-                                    Convert.ToInt32(finishDate.Substring(4, 2)),
-                                    Convert.ToInt32(finishDate.Substring(6, 2)),
-                                    Convert.ToInt32(Convert.ToInt32(finishTime).ToString("0000").Substring(0, 2)),
-                                    Convert.ToInt32(Convert.ToInt32(finishTime).ToString("0000").Substring(2, 2)),
-                                    00);
-                                var shiftArray =
-                                    MyUtilities.DateTime.GetSlots(GetTurnShifts(collection), startEvent, endEvent).ToArray();
-                                
-
-                                ldObject = new LostDownObject[shiftArray.Length];
-
-                                for (var j = 0; j < shiftArray.Length; j++)
-                                {
-                                    var dateString = MyUtilities.ToString(shiftArray[j].GetDate());
-                                    var startTimeString = MyUtilities.ToString(shiftArray[j].GetStartDateTime().TimeOfDay, MyUtilities.DateTime.TimeHHMM);
-                                    var endTimeString = MyUtilities.ToString(shiftArray[j].GetEndDateTime().TimeOfDay, MyUtilities.DateTime.TimeHHMM);
-
-                                    if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
-                                        ldObject[j] = new LostDownObject(equipNo, compCode, compModCode, dateString,
-                                            startTimeString, endTimeString,
-                                            null, shiftArray[j].ShiftCode, eventCode, eventDescription, woComment,
-                                            woEvent, symptomId, assetTypeId, statusChangeid);
-                                    else
-                                        ldObject[j] = new LostDownObject(equipNo, compCode, compModCode, dateString,
-                                            startTimeString, endTimeString,
-                                            null, shiftArray[j].ShiftCode, eventCode, eventDescription, woComment);
-
-                                    AddDownLostToTableCollection(ldObject[j], eventType.ToUpper(), cellCollection);
-
-                                }
-
-                            }
-                            else
-                            {
-                                ldObject = new LostDownObject[1];
                                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
-                                    ldObject[0] = new LostDownObject(equipNo, compCode, compModCode, startDate,
-                                        startTime, finishTime, elapsed, shiftCode, eventCode, eventDescription,
-                                        woComment, woEvent, symptomId, assetTypeId, statusChangeid);
+                                    ldObject[j] = new LostDownObject(equipNo, compCode, compModCode, dateString,
+                                        startTimeString, endTimeString,
+                                        null, shiftArray[j].ShiftCode, eventCode, eventDescription, woComment,
+                                        woEvent, symptomId, assetTypeId, statusChangeid);
                                 else
-                                    ldObject[0] = new LostDownObject(equipNo, compCode, compModCode, startDate,
-                                        startTime, finishTime, elapsed, shiftCode, eventCode, eventDescription,
-                                        woComment);
-                            }
-                            if ((eventType.ToUpper().Equals("DOWN") || eventType.ToUpper().Equals("D")) &&
-                                ldObject != null)
-                                CreateDownRegister(opSheet, proxySheet, ldObject, _ignoreDuplicate);
-                            else if ((eventType.ToUpper().Equals("LOST") || eventType.ToUpper().Equals("L")) &&
-                                     ldObject != null)
-                                CreateLostRegister(opSheet, proxySheet, ldObject, _ignoreDuplicate);
+                                    ldObject[j] = new LostDownObject(equipNo, compCode, compModCode, dateString,
+                                        startTimeString, endTimeString,
+                                        null, shiftArray[j].ShiftCode, eventCode, eventDescription, woComment);
 
-                            cells.GetCell(resultColumn01, i).Value = "SUCCESS";
-                            cells.GetCell(resultColumn01, i).Style = StyleConstants.Success;
-                            cells.GetCell(resultColumn01, i).Select();
+                                AddDownLostToTableCollection(ldObject[j], eventType.ToUpper(), cellCollection);
+
+                            }
+
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            cells.GetCell(resultColumn01, i).Value = "ERROR: " + ex.Message;
-                            cells.GetCell(resultColumn01, i).Style = StyleConstants.Error;
-                            cells.GetCell(resultColumn01, i).Select();
-                            Debugger.LogError("RibbonEllipse:CreateDownLost()",
-                                "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace);
+                            ldObject = new LostDownObject[1];
+                            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
+                                ldObject[0] = new LostDownObject(equipNo, compCode, compModCode, startDate,
+                                    startTime, finishTime, elapsed, shiftCode, eventCode, eventDescription,
+                                    woComment, woEvent, symptomId, assetTypeId, statusChangeid);
+                            else
+                                ldObject[0] = new LostDownObject(equipNo, compCode, compModCode, startDate,
+                                    startTime, finishTime, elapsed, shiftCode, eventCode, eventDescription,
+                                    woComment);
                         }
-                        finally
-                        {
-                            i++;
-                        }
+                        if ((eventType.ToUpper().Equals("DOWN") || eventType.ToUpper().Equals("D")) &&
+                            ldObject != null)
+                            CreateDownRegister(opSheet, proxySheet, ldObject, _ignoreDuplicate);
+                        else if ((eventType.ToUpper().Equals("LOST") || eventType.ToUpper().Equals("L")) &&
+                                 ldObject != null)
+                            CreateLostRegister(opSheet, proxySheet, ldObject, _ignoreDuplicate);
+
+                        cells.GetCell(resultColumn01, i).Value = "SUCCESS";
+                        cells.GetCell(resultColumn01, i).Style = StyleConstants.Success;
+                        cells.GetCell(resultColumn01, i).Select();
                     }
-                }
-                else
-                {
-                    MessageBox.Show(@"Seleccione un ambiente válido", @"Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    catch (Exception ex)
+                    {
+                        cells.GetCell(resultColumn01, i).Value = "ERROR: " + ex.Message;
+                        cells.GetCell(resultColumn01, i).Style = StyleConstants.Error;
+                        cells.GetCell(resultColumn01, i).Select();
+                        Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                    }
+                    finally
+                    {
+                        i++;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                Debugger.LogError("RibbonEllipse:CreateDownLost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
             }
             finally
             {
@@ -1159,145 +1163,123 @@ namespace EllipseDownLostExcelAddIn
         {
             try
             {
-                //si no se está en la hoja correspondiente
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName01 &
-                    _excelApp.ActiveWorkbook.ActiveSheet.Name != SheetNameP01)
-                    throw new InvalidOperationException("La hoja seleccionada no coincide con el modelo requerido");
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
+                var cells = new ExcelStyleCells(_excelApp, false);
+                var cellCollection = new ExcelStyleCells(_excelApp, SheetName04);
+                var resultColumn01 = (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01) ? ResultColumnP01 : ResultColumn01;
+                var i = TitleRow01 + 1;
+
+                while ("" + cells.GetCell(1, i).Value != "")
                 {
-                    if (_cells == null)
-                        _cells = new ExcelStyleCells(_excelApp);
-                    var cells = new ExcelStyleCells(_excelApp, false);
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-
-                    var cellCollection = new ExcelStyleCells(_excelApp, SheetName04);
-                    var resultColumn01 = (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
-                        ? ResultColumnP01
-                        : ResultColumn01;
-                    var i = TitleRow01 + 1;
-
-                    while ("" + cells.GetCell(1, i).Value != "")
+                    try
                     {
-                        try
+
+                        var equipNo = cells.GetEmptyIfNull(cells.GetCell(1, i).Value);
+                        var compCode = cells.GetEmptyIfNull(cells.GetCell(2, i).Value);
+                        var compModCode = cells.GetEmptyIfNull(cells.GetCell(3, i).Value);
+                        var startDate = cells.GetEmptyIfNull(cells.GetCell(4, i).Value);
+                        var startTime = cells.GetEmptyIfNull(cells.GetCell(5, i).Value);
+                        var finishDate = cells.GetEmptyIfNull(cells.GetCell(6, i).Value);
+                        var finishTime = cells.GetEmptyIfNull(cells.GetCell(7, i).Value);
+                        //var elapsed = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
+                        var collection = cells.GetEmptyIfNull(cells.GetCell(9, i).Value); //collection
+                        //var shiftCode = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value);
+                        var eventType = cells.GetEmptyIfNull(cells.GetCell(11, i).Value);
+                        var eventCode = cells.GetEmptyIfNull(cells.GetCell(12, i).Value);
+                        var eventDescription = cells.GetEmptyIfNull(cells.GetCell(13, i).Value);
+                        //solo para consulta
+                        var woComment = cells.GetEmptyIfNull(cells.GetCell(14, i).Value);
+
+                        string woEvent = null;
+                        string symptomId = null;
+                        string assetTypeId = null;
+                        string statusChangeid = null;
+
+                        if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
                         {
+                            woEvent = cells.GetEmptyIfNull(cells.GetCell(15, i).Value);
+                            symptomId = cells.GetEmptyIfNull(cells.GetCell(16, i).Value);
+                            assetTypeId = cells.GetEmptyIfNull(cells.GetCell(17, i).Value);
+                            statusChangeid = cells.GetEmptyIfNull(cells.GetCell(18, i).Value);
+                        }
 
-                            var equipNo = cells.GetEmptyIfNull(cells.GetCell(1, i).Value);
-                            var compCode = cells.GetEmptyIfNull(cells.GetCell(2, i).Value);
-                            var compModCode = cells.GetEmptyIfNull(cells.GetCell(3, i).Value);
-                            var startDate = cells.GetEmptyIfNull(cells.GetCell(4, i).Value);
-                            var startTime = cells.GetEmptyIfNull(cells.GetCell(5, i).Value);
-                            var finishDate = cells.GetEmptyIfNull(cells.GetCell(6, i).Value);
-                            var finishTime = cells.GetEmptyIfNull(cells.GetCell(7, i).Value);
-                            //var elapsed = _cells.GetEmptyIfNull(_cells.GetCell(8, i).Value);
-                            var collection = cells.GetEmptyIfNull(cells.GetCell(9, i).Value); //collection
-                            //var shiftCode = _cells.GetEmptyIfNull(_cells.GetCell(10, i).Value);
-                            var eventType = cells.GetEmptyIfNull(cells.GetCell(11, i).Value);
-                            var eventCode = cells.GetEmptyIfNull(cells.GetCell(12, i).Value);
-                            var eventDescription = cells.GetEmptyIfNull(cells.GetCell(13, i).Value);
-                            //solo para consulta
-                            var woComment = cells.GetEmptyIfNull(cells.GetCell(14, i).Value);
 
-                            string woEvent = null;
-                            string symptomId = null;
-                            string assetTypeId = null;
-                            string statusChangeid = null;
+                        if (collection == ShiftCodes.HourToHourCode ||
+                            //hora a hora (Ej. 00-01, 01-02, ..., 22-23, 23-24
+                            collection == ShiftCodes.DailyZeroCode || //diaria de 00-24
+                            collection == ShiftCodes.DailyMorningCode || //diaria de 06-06
+                            collection == ShiftCodes.DayNightCode) //dia 06-18 y noche de 18-06
+                        {
+                            //si es generado por colecction
+                            var startEvent = new DateTime(
+                                Convert.ToInt32(startDate.Substring(0, 4)),
+                                Convert.ToInt32(startDate.Substring(4, 2)),
+                                Convert.ToInt32(startDate.Substring(6, 2)),
+                                Convert.ToInt32(Convert.ToInt32(startTime).ToString("0000").Substring(0, 2)),
+                                Convert.ToInt32(Convert.ToInt32(startTime).ToString("0000").Substring(2, 2)),
+                                00);
+                            var endEvent = new DateTime(
+                                Convert.ToInt32(finishDate.Substring(0, 4)),
+                                Convert.ToInt32(finishDate.Substring(4, 2)),
+                                Convert.ToInt32(finishDate.Substring(6, 2)),
+                                Convert.ToInt32(Convert.ToInt32(finishTime).ToString("0000").Substring(0, 2)),
+                                Convert.ToInt32(Convert.ToInt32(finishTime).ToString("0000").Substring(2, 2)),
+                                00);
+                            var shiftArray = MyUtilities.DateTime.GetSlots(GetTurnShifts(collection), startEvent, endEvent).ToArray();
 
-                            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
+                            var ldObject = new LostDownObject[shiftArray.Length];
+
+                            for (var j = 0; j < shiftArray.Length; j++)
                             {
-                                woEvent = cells.GetEmptyIfNull(cells.GetCell(15, i).Value);
-                                symptomId = cells.GetEmptyIfNull(cells.GetCell(16, i).Value);
-                                assetTypeId = cells.GetEmptyIfNull(cells.GetCell(17, i).Value);
-                                statusChangeid = cells.GetEmptyIfNull(cells.GetCell(18, i).Value);
-                            }
 
+                                var dateString = MyUtilities.ToString(shiftArray[j].GetDate());
+                                var startTimeString = MyUtilities.ToString(shiftArray[j].GetStartDateTime().TimeOfDay, "hhmm");
+                                var endTimeString = MyUtilities.ToString(shiftArray[j].GetEndDateTime().TimeOfDay, MyUtilities.DateTime.TimeHHMM);
 
-                            if (collection == ShiftCodes.HourToHourCode ||
-                                //hora a hora (Ej. 00-01, 01-02, ..., 22-23, 23-24
-                                collection == ShiftCodes.DailyZeroCode || //diaria de 00-24
-                                collection == ShiftCodes.DailyMorningCode || //diaria de 06-06
-                                collection == ShiftCodes.DayNightCode) //dia 06-18 y noche de 18-06
-                            {
-                                //si es generado por colecction
-                                var startEvent = new DateTime(
-                                    Convert.ToInt32(startDate.Substring(0, 4)),
-                                    Convert.ToInt32(startDate.Substring(4, 2)),
-                                    Convert.ToInt32(startDate.Substring(6, 2)),
-                                    Convert.ToInt32(Convert.ToInt32(startTime).ToString("0000").Substring(0, 2)),
-                                    Convert.ToInt32(Convert.ToInt32(startTime).ToString("0000").Substring(2, 2)),
-                                    00);
-                                var endEvent = new DateTime(
-                                    Convert.ToInt32(finishDate.Substring(0, 4)),
-                                    Convert.ToInt32(finishDate.Substring(4, 2)),
-                                    Convert.ToInt32(finishDate.Substring(6, 2)),
-                                    Convert.ToInt32(Convert.ToInt32(finishTime).ToString("0000").Substring(0, 2)),
-                                    Convert.ToInt32(Convert.ToInt32(finishTime).ToString("0000").Substring(2, 2)),
-                                    00);
-                                var shiftArray = MyUtilities.DateTime.GetSlots(GetTurnShifts(collection), startEvent, endEvent).ToArray();
+                                if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
+                                    ldObject[j] = new LostDownObject(equipNo, compCode, compModCode, dateString,
+                                        startTimeString, endTimeString,
+                                        null, shiftArray[j].ShiftCode, eventCode, eventDescription, woComment,
+                                        woEvent, symptomId, assetTypeId, statusChangeid);
+                                else
+                                    ldObject[j] = new LostDownObject(equipNo, compCode, compModCode, dateString,
+                                        startTimeString, endTimeString,
+                                        null, shiftArray[j].ShiftCode, eventCode, eventDescription, woComment);
 
-                                var ldObject = new LostDownObject[shiftArray.Length];
-
-                                for (var j = 0; j < shiftArray.Length; j++)
-                                {
-
-                                    var dateString = MyUtilities.ToString(shiftArray[j].GetDate());
-                                    var startTimeString = MyUtilities.ToString(shiftArray[j].GetStartDateTime().TimeOfDay, "hhmm");
-                                    var endTimeString = MyUtilities.ToString(shiftArray[j].GetEndDateTime().TimeOfDay, MyUtilities.DateTime.TimeHHMM);
-
-                                    if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
-                                        ldObject[j] = new LostDownObject(equipNo, compCode, compModCode, dateString,
-                                            startTimeString, endTimeString,
-                                            null, shiftArray[j].ShiftCode, eventCode, eventDescription, woComment,
-                                            woEvent, symptomId, assetTypeId, statusChangeid);
-                                    else
-                                        ldObject[j] = new LostDownObject(equipNo, compCode, compModCode, dateString,
-                                            startTimeString, endTimeString,
-                                            null, shiftArray[j].ShiftCode, eventCode, eventDescription, woComment);
-
-                                    AddDownLostToTableCollection(ldObject[j], eventType.ToUpper(), cellCollection);
-
-                                }
+                                AddDownLostToTableCollection(ldObject[j], eventType.ToUpper(), cellCollection);
 
                             }
 
-                            cells.GetCell(resultColumn01, i).Value = "COLECCIÓN";
-                            cells.GetCell(resultColumn01, i).Style = StyleConstants.Success;
-                            cells.GetCell(resultColumn01, i).Select();
                         }
-                        catch (Exception ex)
-                        {
-                            cells.GetCell(resultColumn01, i).Value = "ERROR: " + ex.Message;
-                            cells.GetCell(resultColumn01, i).Style = StyleConstants.Error;
-                            cells.GetCell(resultColumn01, i).Select();
-                            Debugger.LogError("RibbonEllipse:CreateDownLost()",
-                                "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace);
-                        }
-                        finally
-                        {
-                            i++;
-                        }
+
+                        cells.GetCell(resultColumn01, i).Value = DlResources.Field_CollectionUppercase;
+                        cells.GetCell(resultColumn01, i).Style = StyleConstants.Success;
+                        cells.GetCell(resultColumn01, i).Select();
                     }
-                }
-                else
-                {
-                    MessageBox.Show(@"Seleccione un ambiente válido", @"Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    catch (Exception ex)
+                    {
+                        cells.GetCell(resultColumn01, i).Value = Resources.Error_ErrorUppercase + ":" + ex.Message;
+                        cells.GetCell(resultColumn01, i).Style = StyleConstants.Error;
+                        cells.GetCell(resultColumn01, i).Select();
+                        Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                    }
+                    finally
+                    {
+                        i++;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                Debugger.LogError("RibbonEllipse:CreateDownLost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
             }
             finally
             {
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
         }
         private void AddDownLostToTableCollection(LostDownObject lostDownObject, string eventType, ExcelStyleCells cells)
@@ -1419,7 +1401,7 @@ namespace EllipseDownLostExcelAddIn
 
                             //DETAILS
                             if (string.IsNullOrWhiteSpace(_woDownOriginator))
-                                _woDownOriginator = InputBox.GetValue("Work Order", "Ingrese Originator Id:", "USERNAME");
+                                _woDownOriginator = InputBox.GetValue(DlResources.Field_WorkOrderCamelcase, DlResources.Input_InputOriginatorId, DlResources.Field_UsernameUppercase);
                             wo.originatorId = _woDownOriginator;
                             wo.origPriority = "P3";
                             //PLANNING
@@ -1475,7 +1457,7 @@ namespace EllipseDownLostExcelAddIn
 
                     }
                     else if (reply != null) throw new Exception(reply.message);
-                    else throw new Exception(@"No se ha podido obtener respuesta del servidor");
+                    else throw new Exception(DlResources.Error_NoServerResponse);
                 }
                 catch (Exception ex)
                 {
@@ -1576,7 +1558,7 @@ namespace EllipseDownLostExcelAddIn
                             while (dr.Read())
                                 stdTextId = _cells.GetEmptyIfNull(dr["STD_KEY"].ToString());
                         else
-                            throw new Exception(@"No se ha encontrado registro Lost para creación de comentario");
+                            throw new Exception(DlResources.Error_NoLostForComment);
                         dr.Close();
 
                         var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
@@ -1586,11 +1568,10 @@ namespace EllipseDownLostExcelAddIn
                         var textResult = StdText.SetText(urlService, StdText.GetCustomOpContext(district, _frmAuth.EllipsePost, 100, false), stdTextId, lost.WoComment);
 
                         if (!textResult)
-                            throw new KeyNotFoundException(
-                                "No se ha podido crear el comentario de uno de los registro Lost seleccionados");
+                            throw new KeyNotFoundException(DlResources.Error_LostCommentCreationFailed);
                     }
                     else if (reply != null) throw new Exception(reply.message);
-                    else throw new Exception(@"No se ha podido obtener respuesta del servidor");
+                    else throw new Exception(DlResources.Error_NoServerResponse);
                 }
                 catch (Exception ex)
                 {
@@ -1607,123 +1588,104 @@ namespace EllipseDownLostExcelAddIn
         {
             try
             {
-                //si no se está en la hoja correspondiente
-                if (_excelApp.ActiveWorkbook.ActiveSheet.Name != SheetName01)
-                    throw new InvalidOperationException("La hoja seleccionada no coincide con el modelo requerido");
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
-                _cells.SetCursorWait();
 
                 _cells.SetCursorWait();
-                if (drpEnvironment.SelectedItem.Label != null && !drpEnvironment.SelectedItem.Label.Equals(""))
+                if (_cells == null)
+                    _cells = new ExcelStyleCells(_excelApp);
+                var cells = new ExcelStyleCells(_excelApp, false);
+
+                var i = TitleRow01 + 1;
+                
+                var resultColumn01 = (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01) ? ResultColumnP01 : ResultColumn01;
+
+                while ("" + cells.GetCell(1, i).Value != "")
                 {
-                    if (_cells == null)
-                        _cells = new ExcelStyleCells(_excelApp);
-                    var cells = new ExcelStyleCells(_excelApp, false);
-                    _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
-
-                    var i = TitleRow01 + 1;
-                    if (_frmAuth.ShowDialog() != DialogResult.OK) return;
-                    var resultColumn01 = (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetNameP01)
-                        ? ResultColumnP01
-                        : ResultColumn01;
-
-                    while ("" + cells.GetCell(1, i).Value != "")
+                    try
                     {
-                        try
+
+                        //ScreenService Opción en reemplazo de los servicios
+                        var opSheet = new Screen.OperationContext
                         {
+                            district = _frmAuth.EllipseDsct,
+                            position = _frmAuth.EllipsePost,
+                            maxInstances = 100,
+                            maxInstancesSpecified = true,
+                            returnWarnings = Debugger.DebugWarnings,
+                            returnWarningsSpecified = true
+                        };
 
-                            //ScreenService Opción en reemplazo de los servicios
-                            var opSheet = new Screen.OperationContext
-                            {
-                                district = _frmAuth.EllipseDsct,
-                                position = _frmAuth.EllipsePost,
-                                maxInstances = 100,
-                                maxInstancesSpecified = true,
-                                returnWarnings = Debugger.DebugWarnings,
-                                returnWarningsSpecified = true
-                            };
+                        var proxySheet = new Screen.ScreenService();
+                        ////ScreenService
+                        ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-                            var proxySheet = new Screen.ScreenService();
-                            ////ScreenService
-                            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
-                            var equipNo = cells.GetEmptyIfNull(cells.GetCell(1, i).Value);
-                            var compCode = cells.GetEmptyIfNull(cells.GetCell(2, i).Value);
-                            var compModCode = cells.GetEmptyIfNull(cells.GetCell(3, i).Value);
-                            var startDate = cells.GetEmptyIfNull(cells.GetCell(4, i).Value);
-                            var startTime = cells.GetEmptyIfNull(cells.GetCell(5, i).Value);
-                            //string finishDate = Cells.GetEmptyIfNull(Cells.GetCell(6, i).Value); //collection
-                            var finishTime = cells.GetEmptyIfNull(cells.GetCell(7, i).Value);
-                            var elapsed = cells.GetEmptyIfNull(cells.GetCell(8, i).Value);
-                            //string collection = Cells.GetEmptyIfNull(Cells.GetCell(9, i).Value);//collection
-                            var shiftCode = cells.GetEmptyIfNull(cells.GetCell(10, i).Value);
-                            var eventType = cells.GetEmptyIfNull(cells.GetCell(11, i).Value);
-                            var eventCode = cells.GetEmptyIfNull(cells.GetCell(12, i).Value);
-                            var eventDescription = cells.GetEmptyIfNull(cells.GetCell(13, i).Value); //solo consulta
-                            var woComment = cells.GetEmptyIfNull(cells.GetCell(14, i).Value);
-                            var woEvent = cells.GetEmptyIfNull(cells.GetCell(15, i).Value);
-                            var symptomId = cells.GetEmptyIfNull(cells.GetCell(16, i).Value);
-                            var assetTypeId = cells.GetEmptyIfNull(cells.GetCell(17, i).Value);
-                            var statusChangeid = cells.GetEmptyIfNull(cells.GetCell(18, i).Value);
+                        var equipNo = cells.GetEmptyIfNull(cells.GetCell(1, i).Value);
+                        var compCode = cells.GetEmptyIfNull(cells.GetCell(2, i).Value);
+                        var compModCode = cells.GetEmptyIfNull(cells.GetCell(3, i).Value);
+                        var startDate = cells.GetEmptyIfNull(cells.GetCell(4, i).Value);
+                        var startTime = cells.GetEmptyIfNull(cells.GetCell(5, i).Value);
+                        //string finishDate = Cells.GetEmptyIfNull(Cells.GetCell(6, i).Value); //collection
+                        var finishTime = cells.GetEmptyIfNull(cells.GetCell(7, i).Value);
+                        var elapsed = cells.GetEmptyIfNull(cells.GetCell(8, i).Value);
+                        //string collection = Cells.GetEmptyIfNull(Cells.GetCell(9, i).Value);//collection
+                        var shiftCode = cells.GetEmptyIfNull(cells.GetCell(10, i).Value);
+                        var eventType = cells.GetEmptyIfNull(cells.GetCell(11, i).Value);
+                        var eventCode = cells.GetEmptyIfNull(cells.GetCell(12, i).Value);
+                        var eventDescription = cells.GetEmptyIfNull(cells.GetCell(13, i).Value); //solo consulta
+                        var woComment = cells.GetEmptyIfNull(cells.GetCell(14, i).Value);
+                        var woEvent = cells.GetEmptyIfNull(cells.GetCell(15, i).Value);
+                        var symptomId = cells.GetEmptyIfNull(cells.GetCell(16, i).Value);
+                        var assetTypeId = cells.GetEmptyIfNull(cells.GetCell(17, i).Value);
+                        var statusChangeid = cells.GetEmptyIfNull(cells.GetCell(18, i).Value);
 
 
-                            var ldObject = new LostDownObject(equipNo, compCode, compModCode, startDate, startTime,
-                                finishTime, elapsed, shiftCode, eventCode, eventDescription, woComment, woEvent,
-                                symptomId, assetTypeId, statusChangeid);
-                            var resultado = false;
-                            if ((eventType.ToUpper().Equals("DOWN") || eventType.ToUpper().Equals("D")) &&
-                                ldObject != null)
-                                resultado = DeleteDownRegister(opSheet, proxySheet, ldObject);
-                            //resultado = DeleteDownRegister(opDown, ldObject); //obsoleto
-                            else if ((eventType.ToUpper().Equals("LOST") || eventType.ToUpper().Equals("L")) &&
-                                     ldObject != null)
-                                resultado = DeleteLostRegister(opSheet, proxySheet, ldObject);
-                            //resultado = DeleteDownRegister(opLost, ldObject); //obsoleto
+                        var ldObject = new LostDownObject(equipNo, compCode, compModCode, startDate, startTime,
+                            finishTime, elapsed, shiftCode, eventCode, eventDescription, woComment, woEvent,
+                            symptomId, assetTypeId, statusChangeid);
+                        var resultado = false;
+                        if ((eventType.ToUpper().Equals("DOWN") || eventType.ToUpper().Equals("D")) &&
+                            ldObject != null)
+                            resultado = DeleteDownRegister(opSheet, proxySheet, ldObject);
+                        //resultado = DeleteDownRegister(opDown, ldObject); //obsoleto
+                        else if ((eventType.ToUpper().Equals("LOST") || eventType.ToUpper().Equals("L")) &&
+                                 ldObject != null)
+                            resultado = DeleteLostRegister(opSheet, proxySheet, ldObject);
+                        //resultado = DeleteDownRegister(opLost, ldObject); //obsoleto
 
-                            if (resultado)
-                            {
-                                cells.GetCell(resultColumn01, i).Value = "ELIMINADO";
-                                cells.GetCell(resultColumn01, i).Style = StyleConstants.Success;
-                                cells.GetCell(resultColumn01, i).Select();
-                            }
-                            else
-                            {
-                                cells.GetCell(resultColumn01, i).Value = "NO SE HA REALIZADO NINGUNA ACCIÓN";
-                                cells.GetCell(resultColumn01, i).Style = StyleConstants.Warning;
-                                cells.GetCell(resultColumn01, i).Select();
-                            }
+                        if (resultado)
+                        {
+                            cells.GetCell(resultColumn01, i).Value = Resources.Results_Deleted;
+                            cells.GetCell(resultColumn01, i).Style = StyleConstants.Success;
+                            cells.GetCell(resultColumn01, i).Select();
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            cells.GetCell(resultColumn01, i).Value = "ERROR: " + ex.Message;
-                            cells.GetCell(resultColumn01, i).Style = StyleConstants.Error;
-                            Debugger.LogError("RibbonEllipse:DeleteDownLost()",
-                                "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" +
-                                ex.StackTrace);
-                        }
-                        finally
-                        {
-                            i++;
+                            cells.GetCell(resultColumn01, i).Value = DlResources.Result_NoActionExecuted;
+                            cells.GetCell(resultColumn01, i).Style = StyleConstants.Warning;
+                            cells.GetCell(resultColumn01, i).Select();
                         }
                     }
-                }
-                else
-                {
-                    MessageBox.Show(@"Seleccione un ambiente válido", @"Error", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    catch (Exception ex)
+                    {
+                        cells.GetCell(resultColumn01, i).Value = Resources.Error_ErrorUppercase + ": " + ex.Message;
+                        cells.GetCell(resultColumn01, i).Style = StyleConstants.Error;
+                        Debugger.LogError("RibbonEllipse:DeleteDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                    }
+                    finally
+                    {
+                        i++;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                Debugger.LogError("RibbonEllipse:CreateDownLost()",
-                    "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+                Debugger.LogError("RibbonEllipse:CreateDownLost()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
             }
             finally
             {
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
         }
         /// <summary>
@@ -1774,7 +1736,7 @@ namespace EllipseDownLostExcelAddIn
             }
 
             if (reply.mapName != "MSM420A")
-                throw new ArgumentException("No se ha encontrado el registro");
+                throw new ArgumentException(Resources.Error_ItemNotFound);
 
             arrayFields = new ArrayScreenNameValue();
             arrayFields.Add("ACTION1I" + k, "D");
@@ -1793,7 +1755,7 @@ namespace EllipseDownLostExcelAddIn
             }
             if (!_eFunctions.CheckReplyError(reply) && !_eFunctions.CheckReplyWarning(reply)) return true;
             if (reply != null) throw new ArgumentException(reply.message);
-            throw new Exception(@"No se ha podido obtener respuesta del servidor");
+            throw new Exception(DlResources.Error_NoServerResponse);
         }
         /// <summary>
         /// Elimina un registro Lost dado
@@ -1842,7 +1804,7 @@ namespace EllipseDownLostExcelAddIn
             }
 
             if (reply.mapName != "MSM470A")
-                throw new ArgumentException("No se ha encontrado el registro");
+                throw new ArgumentException(Resources.Error_ItemNotFound);
 
             arrayFields = new ArrayScreenNameValue();
             arrayFields.Add("ACTION1I" + k, "D");
@@ -1862,7 +1824,7 @@ namespace EllipseDownLostExcelAddIn
 
             if (!_eFunctions.CheckReplyError(reply) && !_eFunctions.CheckReplyWarning(reply)) return true;
             if (reply != null) throw new ArgumentException(reply.message);
-            throw new Exception(@"No se ha podido obtener respuesta del servidor");
+            throw new Exception(DlResources.Error_NoServerResponse);
         }
 
         /// <summary>
@@ -1891,11 +1853,11 @@ namespace EllipseDownLostExcelAddIn
             {
                 if (_thread == null || !_thread.IsAlive) return;
                 _thread.Abort();
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {
-                MessageBox.Show(@"Se ha detenido el proceso. " + ex.Message);
+                MessageBox.Show($@"{Resources.Error_ThreadStopped} . {ex.Message}");
             }
         }
 

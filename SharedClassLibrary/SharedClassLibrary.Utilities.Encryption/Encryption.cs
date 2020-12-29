@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SharedClassLibrary.Utilities
+namespace SharedClassLibrary.Utilities.Encryption
 {
     public class Encryption
     {
@@ -14,11 +14,20 @@ namespace SharedClassLibrary.Utilities
 
         // This constant determines the number of iterations for the password bytes generation function.
         private const int DerivationIterations = 1000;
-        public static string EncryptPassPhrase = "hambingsdevel";
+        private static string _encryptPassPhrase = "#4m31n&$d3v3l";
+        private static string _appendPassPhrase = "y#v#";
 
-
-        public static string Encrypt(string plainText, string passPhrase)
+        public static void SetPassPhrase(string passPhrase)
         {
+            _encryptPassPhrase = passPhrase;
+        }
+
+        public static string Encrypt(string plainText, string passPhrase = null)
+        {
+            if (passPhrase == null)
+                passPhrase = _encryptPassPhrase;
+            passPhrase += _appendPassPhrase;
+
             // Salt and IV is randomly generated each time, but is preprended to encrypted cipher text
             // so that the same Salt and IV values can be used when decrypting.  
             var saltStringBytes = Generate256BitsOfRandomEntropy();
@@ -54,8 +63,12 @@ namespace SharedClassLibrary.Utilities
             }
         }
 
-        public static string Decrypt(string cipherText, string passPhrase)
+        public static string Decrypt(string cipherText, string passPhrase = null)
         {
+            if (passPhrase == null)
+                passPhrase = _encryptPassPhrase;
+            passPhrase += _appendPassPhrase;
+
             // Get the complete stream of bytes that represent:
             // [32 bytes of Salt] + [32 bytes of IV] + [n bytes of CipherText]
             var cipherTextBytesWithSaltAndIv = Convert.FromBase64String(cipherText);

@@ -1,9 +1,8 @@
-﻿using SharedClassLibrary.Utilities;
-
-//Shared Class Library - ExcelStyleCells
+﻿//Shared Class Library - Connections
 //Desarrollado por:
 //Héctor J Hernández R <hernandezrhectorj@gmail.com>
 //Hugo A Mendoza B <hugo.mendoza@hambings.com.co>
+using SharedClassLibrary.Utilities.Encryption;
 
 namespace SharedClassLibrary.Connections
 {
@@ -47,28 +46,23 @@ namespace SharedClassLibrary.Connections
 
         public string DbPassword
         {
-            get
-            {
-                return string.IsNullOrWhiteSpace(_dbPassword)
-                    ? Utilities.Encryption.Decrypt(DbEncodedPassword, Utilities.Encryption.EncryptPassPhrase)
-                    : _dbPassword;
-            }
+            get =>
+                string.IsNullOrWhiteSpace(_dbPassword) ? Encryption.Decrypt(DbEncodedPassword) : _dbPassword;
             set
             {
                 _dbPassword = value;
                 if(_dbPassword != null)
-                    _dbEncodedPassword = Utilities.Encryption.Encrypt(value, Utilities.Encryption.EncryptPassPhrase);
+                    _dbEncodedPassword = Encryption.Encrypt(value);
             }
         }
 
         public string DbEncodedPassword
         {
-            get { return _dbEncodedPassword; }
+            get => _dbEncodedPassword;
             set
             {
                 _dbEncodedPassword = value;
-                if (_dbEncodedPassword != null)
-                    _dbPassword = Encryption.Decrypt(value, Utilities.Encryption.EncryptPassPhrase);
+                _dbPassword = null;
             }
         }
         private void SetDataBaseItem(string name, string dbName, string dbUser, string dbPassword, string dbReference,

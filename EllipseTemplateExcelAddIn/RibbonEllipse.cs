@@ -137,8 +137,8 @@ namespace EllipseTemplateExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ExecutionMethod()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                Debugger.LogError("RibbonEllipse:ExecutionMethod()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
             }
         }
         private void btnQuery_Click(object sender, RibbonControlEventArgs e)
@@ -159,8 +159,8 @@ namespace EllipseTemplateExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ExecutionMethod()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+                Debugger.LogError("RibbonEllipse:ExecutionMethod()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
             }
         }
         private void FormatMethod()
@@ -314,8 +314,8 @@ namespace EllipseTemplateExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:FormatMehod()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja. " + ex.Message);
+                Debugger.LogError("RibbonEllipse:FormatMehod()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{Resources.Error_SheetHeaderError} . {ex.Message}");
             }
             finally
             {

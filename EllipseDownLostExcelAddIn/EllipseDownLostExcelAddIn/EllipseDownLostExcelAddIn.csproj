@@ -166,13 +166,16 @@
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary">
+    <Reference Include="SharedClassLibrary, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary.Connections">
+    <Reference Include="SharedClassLibrary.Connections, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary.Ellipse">
+    <Reference Include="SharedClassLibrary.Ellipse, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Ellipse.dll</HintPath>
     </Reference>
     <Reference Include="SharedClassLibrary.Vsto.Excel">
@@ -213,6 +216,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="DlResources.Designer.cs" />
     <Compile Include="LostDownObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -224,16 +228,11 @@
     <Compile Include="RibbonEllipse.Designer.cs">
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="DlResources.es-ES.resx" />
+    <EmbeddedResource Include="DlResources.resx" />
+    <EmbeddedResource Include="RibbonEllipse.es-ES.resx">
+      <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="RibbonEllipse.resx">
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>

@@ -117,4 +117,271 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="btnFormatSheet.Label" xml:space="preserve">
+    <value>&amp;General Format</value>
+  </data>
+  <data name="&gt;&gt;btnFormatSheet.Name" xml:space="preserve">
+    <value>btnFormatSheet</value>
+  </data>
+  <data name="&gt;&gt;btnFormatSheet.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnFormatSheet.Parent" xml:space="preserve">
+    <value>menuFormat.Items</value>
+  </data>
+  <data name="&gt;&gt;btnFormatSheet.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnFormatDownPbv.Label" xml:space="preserve">
+    <value>&amp;PBV Format</value>
+  </data>
+  <data name="&gt;&gt;btnFormatDownPbv.Name" xml:space="preserve">
+    <value>btnFormatDownPbv</value>
+  </data>
+  <data name="&gt;&gt;btnFormatDownPbv.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnFormatDownPbv.Parent" xml:space="preserve">
+    <value>menuFormat.Items</value>
+  </data>
+  <data name="&gt;&gt;btnFormatDownPbv.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="menuFormat.Label" xml:space="preserve">
+    <value>&amp;Format</value>
+  </data>
+  <data name="&gt;&gt;menuFormat.Name" xml:space="preserve">
+    <value>menuFormat</value>
+  </data>
+  <data name="&gt;&gt;menuFormat.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.MenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;menuFormat.Parent" xml:space="preserve">
+    <value>box1</value>
+  </data>
+  <data name="&gt;&gt;menuFormat.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnAbout.Label" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="&gt;&gt;btnAbout.Name" xml:space="preserve">
+    <value>btnAbout</value>
+  </data>
+  <data name="&gt;&gt;btnAbout.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnAbout.Parent" xml:space="preserve">
+    <value>box1</value>
+  </data>
+  <data name="&gt;&gt;btnAbout.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;box1.Name" xml:space="preserve">
+    <value>box1</value>
+  </data>
+  <data name="&gt;&gt;box1.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.BoxView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;box1.Parent" xml:space="preserve">
+    <value>grpDownLost</value>
+  </data>
+  <data name="&gt;&gt;box1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="drpEnvironment.Label" xml:space="preserve">
+    <value>Env.</value>
+  </data>
+  <data name="&gt;&gt;drpEnvironment.Name" xml:space="preserve">
+    <value>drpEnvironment</value>
+  </data>
+  <data name="&gt;&gt;drpEnvironment.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.DropDownView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;drpEnvironment.Parent" xml:space="preserve">
+    <value>grpDownLost</value>
+  </data>
+  <data name="&gt;&gt;drpEnvironment.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnReviewDL.Label" xml:space="preserve">
+    <value>&amp;Review D/L</value>
+  </data>
+  <data name="&gt;&gt;btnReviewDL.Name" xml:space="preserve">
+    <value>btnReviewDL</value>
+  </data>
+  <data name="&gt;&gt;btnReviewDL.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnReviewDL.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;btnReviewDL.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnReviewDLPbv.Label" xml:space="preserve">
+    <value>Review D/L &amp;PBV</value>
+  </data>
+  <data name="&gt;&gt;btnReviewDLPbv.Name" xml:space="preserve">
+    <value>btnReviewDLPbv</value>
+  </data>
+  <data name="&gt;&gt;btnReviewDLPbv.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnReviewDLPbv.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;btnReviewDLPbv.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnCreateDL.Label" xml:space="preserve">
+    <value>&amp;Create D/L</value>
+  </data>
+  <data name="&gt;&gt;btnCreateDL.Name" xml:space="preserve">
+    <value>btnCreateDL</value>
+  </data>
+  <data name="&gt;&gt;btnCreateDL.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnCreateDL.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;btnCreateDL.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btnCreatIgnoreDuplicate.Label" xml:space="preserve">
+    <value>&amp;Create D/L - Ignore Duplicates</value>
+  </data>
+  <data name="&gt;&gt;btnCreatIgnoreDuplicate.Name" xml:space="preserve">
+    <value>btnCreatIgnoreDuplicate</value>
+  </data>
+  <data name="&gt;&gt;btnCreatIgnoreDuplicate.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnCreatIgnoreDuplicate.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;btnCreatIgnoreDuplicate.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="btnGenerateCollection.Label" xml:space="preserve">
+    <value>&amp;Generate Collection Only</value>
+  </data>
+  <data name="&gt;&gt;btnGenerateCollection.Name" xml:space="preserve">
+    <value>btnGenerateCollection</value>
+  </data>
+  <data name="&gt;&gt;btnGenerateCollection.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnGenerateCollection.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;btnGenerateCollection.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="btnDeleteDL.Label" xml:space="preserve">
+    <value>&amp;Delete D/L</value>
+  </data>
+  <data name="&gt;&gt;btnDeleteDL.Name" xml:space="preserve">
+    <value>btnDeleteDL</value>
+  </data>
+  <data name="&gt;&gt;btnDeleteDL.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnDeleteDL.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;btnDeleteDL.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="btnClearTable.Label" xml:space="preserve">
+    <value>C&amp;lean Table D/L</value>
+  </data>
+  <data name="&gt;&gt;btnClearTable.Name" xml:space="preserve">
+    <value>btnClearTable</value>
+  </data>
+  <data name="&gt;&gt;btnClearTable.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnClearTable.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;btnClearTable.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="btnStopThread.Label" xml:space="preserve">
+    <value>&amp;Stop Process</value>
+  </data>
+  <data name="&gt;&gt;btnStopThread.Name" xml:space="preserve">
+    <value>btnStopThread</value>
+  </data>
+  <data name="&gt;&gt;btnStopThread.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.ButtonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;btnStopThread.Parent" xml:space="preserve">
+    <value>menuActions.Items</value>
+  </data>
+  <data name="&gt;&gt;btnStopThread.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="menuActions.Label" xml:space="preserve">
+    <value>&amp;Actions</value>
+  </data>
+  <data name="&gt;&gt;menuActions.Name" xml:space="preserve">
+    <value>menuActions</value>
+  </data>
+  <data name="&gt;&gt;menuActions.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.MenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;menuActions.Parent" xml:space="preserve">
+    <value>grpDownLost</value>
+  </data>
+  <data name="&gt;&gt;menuActions.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="grpDownLost.Label" xml:space="preserve">
+    <value>Down &amp; Lost</value>
+  </data>
+  <data name="&gt;&gt;grpDownLost.Name" xml:space="preserve">
+    <value>grpDownLost</value>
+  </data>
+  <data name="&gt;&gt;grpDownLost.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.GroupView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;grpDownLost.Parent" xml:space="preserve">
+    <value>tabEllipse</value>
+  </data>
+  <data name="&gt;&gt;grpDownLost.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tabEllipse.Label" xml:space="preserve">
+    <value>ELLIPSE 8</value>
+  </data>
+  <data name="&gt;&gt;tabEllipse.Name" xml:space="preserve">
+    <value>tabEllipse</value>
+  </data>
+  <data name="&gt;&gt;tabEllipse.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.TabView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="&gt;&gt;RibbonEllipse.OfficeMenu.Name" xml:space="preserve">
+    <value>RibbonEllipse.OfficeMenu</value>
+  </data>
+  <data name="&gt;&gt;RibbonEllipse.OfficeMenu.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.OfficeMenuView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="&gt;&gt;RibbonEllipse.OfficeMenu.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;RibbonEllipse.OfficeMenu.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>RibbonEllipse</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>Microsoft.VisualStudio.Tools.Office.Ribbon.View.GenericRibbonView, Microsoft.VisualStudio.Tools.Office.Designer, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

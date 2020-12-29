@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary.Ellipse"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web.Services.Ellipse", "..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj", "{1C5ABABA-126F-424B-932B-A110F3665344}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassLibrary.Utilities.Encryption", "SharedClassLibrary.Utilities.Encryption\SharedClassLibrary.Utilities.Encryption.csproj", "{30D97FD5-E4D4-4C3B-8AAF-CBF8B8F1F58A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedClassUtility", "SharedClassUtility\SharedClassUtility.csproj", "{BDE68048-B4C4-4872-9D86-F76B33632D9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{1C5ABABA-126F-424B-932B-A110F3665344}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30D97FD5-E4D4-4C3B-8AAF-CBF8B8F1F58A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30D97FD5-E4D4-4C3B-8AAF-CBF8B8F1F58A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30D97FD5-E4D4-4C3B-8AAF-CBF8B8F1F58A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30D97FD5-E4D4-4C3B-8AAF-CBF8B8F1F58A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDE68048-B4C4-4872-9D86-F76B33632D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDE68048-B4C4-4872-9D86-F76B33632D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDE68048-B4C4-4872-9D86-F76B33632D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDE68048-B4C4-4872-9D86-F76B33632D9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
