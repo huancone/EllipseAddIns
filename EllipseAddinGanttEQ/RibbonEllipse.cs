@@ -317,6 +317,10 @@ namespace EllipseAddinGanttEQ
 
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
         {
+
+
+
+
             _excelApp.Visible = true;
             _excelApp.ScreenUpdating = false;
             _excelApp.DisplayAlerts = true;
