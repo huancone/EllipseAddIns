@@ -317,16 +317,12 @@ namespace EllipseAddinGanttEQ
 
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
         {
-
-
-
-
             _excelApp.Visible = true;
             _excelApp.ScreenUpdating = false;
             _excelApp.DisplayAlerts = true;
             //búsquedas especiales de tabla
             //_cells.SetCursorWait();
-            _AuthG.StartPosition = FormStartPosition.CenterScreen;
+            //_AuthG.StartPosition = FormStartPosition.CenterScreen;
              if (_AuthG.ShowDialog() == DialogResult.OK)
              {
                  if (_AuthG.Permiso == "2")
