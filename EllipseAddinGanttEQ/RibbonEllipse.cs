@@ -322,7 +322,7 @@ namespace EllipseAddinGanttEQ
             _excelApp.DisplayAlerts = true;
             //búsquedas especiales de tabla
             //_cells.SetCursorWait();
-            //_AuthG.StartPosition = FormStartPosition.CenterScreen;
+            _AuthG.StartPosition = FormStartPosition.CenterScreen;
              if (_AuthG.ShowDialog() == DialogResult.OK)
              {
                  if (_AuthG.Permiso == "2")
