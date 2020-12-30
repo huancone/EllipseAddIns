@@ -1,10 +1,15 @@
-﻿using System;
+﻿
+
+
+
+using System;
 //using System.Data; //NUEVA
 //using System.Data.SqlClient; //NUEVA
 using System.Data;
 using data = System.Data;
 //using System.Data.SqlClient;
 //using Oracle.ManagedDataAccess.Client;
+using System.Data.OracleClient;
 using System.Drawing;
 using System.Threading;
 using System.Collections.Generic;
@@ -95,6 +100,9 @@ namespace EllipseAddinGanttEQ
         // ReSharper disable once InconsistentNaming
         public string DbLink; //Ej. @DBLMIMS
 
+        OracleConnection Conexion;
+
+
 
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
@@ -109,7 +117,7 @@ namespace EllipseAddinGanttEQ
             enviroments.Add("Test");
             enviroments.Add("Desarrollo");
             enviroments.Add("Contingencia");
-            enviroments.Add("EL9CONV");
+            enviroments.Add("EL9TEST");
             //var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -162,11 +170,11 @@ namespace EllipseAddinGanttEQ
                 Pw = VarEncript.Encryption.Decrypt("Td/V9ZKxqcRFLUfFZD15bv4qZwZIHI0IhNQjdK3EoZQL+8ZJb0vhv5x/XhxtfrN6TxiMJud/+TWSgU6GOTq5YiKRDVJMlSV+f8dswzHxZJ7xjfL8fjyYpd0rFQRMCK41");
                 DbLink = "";
             }
-            else if (enviroments == "ELIPSE9")
+            else if (enviroments == "EL9TEST")
             {
-                DataBase = VarEncript.Encryption.Decrypt("72uht3C+esLur0upx+S7rtV7WDdI0EyCQ3PgEr2MpEwg0eTcx7eu+YBsfo9bJpufOec+t3wRnFtoWovkdJH5n/dgacls7/g6ueRKhbz39vNjeUrcGx6yrLi2LmuONcV5");
-                User = VarEncript.Encryption.Decrypt("x4yNNf5qsgLpNdA1xUaBM1GaKhwrINqfzNsmDA7rZmZWVx8308y12p1zvsIuEzx+yszVVnhqhQ1cFWL+lBB8yYb53Yx1kBkvdWcXspKfG8buz4RuwCjtXcXkvGOQwdzw");
-                Pw = VarEncript.Encryption.Decrypt("Td/V9ZKxqcRFLUfFZD15bv4qZwZIHI0IhNQjdK3EoZQL+8ZJb0vhv5x/XhxtfrN6TxiMJud/+TWSgU6GOTq5YiKRDVJMlSV+f8dswzHxZJ7xjfL8fjyYpd0rFQRMCK41");
+                DataBase = VarEncript.Encryption.Decrypt("Cp0F25MueiFD/D+YyHbQTsRzEwF17UDTCVJgIYxsPeVsx/OYOAt+D3XheCeeo4bQAeWaFPwlTu+aHV5b/k2/VMVxRqilZd4o1uyFnzQPhhvbjQmPSqqEt4CIAnWEo9sK");
+                User = VarEncript.Encryption.Decrypt("p9M5h3knGEbvXqCtwljSTTMeymUMVDXGs1K215lYDLM6zmOe9KCeZw6dIkK2Pv+QYh2cG1iyE7ydQanSYAegh7iqU7RJTGxwv55Eic4VGdcqEIGtdqTuA6bhpNMWQ2b4");
+                Pw = VarEncript.Encryption.Decrypt("QfGhOi0/Ub+iepNKjtMpykKmHOyIDM+UTrJa9yhsXihPynUYJO44/6X7+hrgT4cKbeEFUUxIBGJI0Rs0NggyKe9mte1EXfItITbaJVS0dVUwFo2C1ppDCGK2kc5EXskd");
                 DbLink = "";
             }
             else if (enviroments == "SIGMAN")
@@ -183,6 +191,26 @@ namespace EllipseAddinGanttEQ
             return true;
         }
 
+        public bool VerificarConexion(string dbname, string dbuser, string dbpass, string dblink, string dbreference = "", string dbcatalog = null)
+        {
+            //int ConnectionTimeOut = 15;
+            //bool PoolingDataBase = true;
+            Conexion = new OracleConnection();
+            var connectionString = "Data Source=" + dbname + ";User ID=" + dbuser + ";Password=" + dbpass;
+            Conexion.ConnectionString = connectionString;
+            Conexion.Open();
+            //OracleConnection Cmd = Conexion.CreateCommand();
+            return true;
+        }
+        public IDataReader GetQueryResult(string sqlQuery, string customConnectionString = null)
+        {
+            OracleCommand Cmd = Conexion.CreateCommand();
+            Cmd.CommandText = sqlQuery;
+            OracleDataReader Datos = Cmd.ExecuteReader();
+            return Datos;       
+        }
+
+
         public data.DataTable getdata(string SQL, Int32 SW = 0)
         {
             if(SW == 0)
@@ -194,11 +222,12 @@ namespace EllipseAddinGanttEQ
                 ConexionDataBase("Productivox");
             }
             //ConexionDataBase(drpEnviroment.SelectedItem.Label);
-            _eFunctions.SetDBSettings(DataBase, User, Pw, DbLink);
+            VerificarConexion(DataBase, User, Pw, DbLink);
             //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var dat = _eFunctions.GetQueryResult(SQL);
+            var dat = GetQueryResult(SQL);
             data.DataTable DATA = new data.DataTable();
             DATA.Load(dat);
+            Conexion.Close();
             return DATA;
         }
 
