@@ -91,6 +91,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -104,6 +105,14 @@
     <None Include="SharedClassUtility_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj">
+      <Project>{9EB40433-DF17-4032-AC92-F78E52597F5B}</Project>
+      <Name>SharedClassLibrary.Connections.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
+      <Project>{49EE1FC1-808F-4E6B-8809-78486FEB5BD3}</Project>
+      <Name>SharedClassLibrary.Connections</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharedClassLibrary.Utilities.Encryption\SharedClassLibrary.Utilities.Encryption.csproj">
       <Project>{30d97fd5-e4d4-4c3b-8aaf-cbf8b8f1f58a}</Project>
       <Name>SharedClassLibrary.Utilities.Encryption</Name>
@@ -115,6 +124,15 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ASX_Paste_grey_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ASX_Copy_grey_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CleanData_disabled_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
