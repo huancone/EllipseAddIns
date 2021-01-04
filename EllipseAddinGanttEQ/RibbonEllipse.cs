@@ -113,7 +113,7 @@ namespace EllipseAddinGanttEQ
             enviroments.Add("Test");
             enviroments.Add("Desarrollo");
             enviroments.Add("Contingencia");
-            enviroments.Add("ELL9TEST");
+            enviroments.Add("EL9CONV");
             //var enviroments = Environments.GetEnviromentList();
             foreach (var env in enviroments)
             {
@@ -166,7 +166,7 @@ namespace EllipseAddinGanttEQ
                 Pw = VarEncript.Encryption.Decrypt("Td/V9ZKxqcRFLUfFZD15bv4qZwZIHI0IhNQjdK3EoZQL+8ZJb0vhv5x/XhxtfrN6TxiMJud/+TWSgU6GOTq5YiKRDVJMlSV+f8dswzHxZJ7xjfL8fjyYpd0rFQRMCK41");
                 DbLink = "";
             }
-            else if (enviroments == "ELL9TEST")
+            else if (enviroments == "EL9CONV")
             {
                 DataBase = VarEncript.Encryption.Decrypt("wCxxnrgxkVOTvIjT7zGOrrnDMwfV5bUHRia1bbl4uaBst2/ndU2Rx/U9QZxazU40TmchLcacJPNXsdUcp/ba8qmO5klx9Fi40kr6gmxJ2/ScoVHzn5W/clZexU62cCYh");
                 User = VarEncript.Encryption.Decrypt("p9M5h3knGEbvXqCtwljSTTMeymUMVDXGs1K215lYDLM6zmOe9KCeZw6dIkK2Pv+QYh2cG1iyE7ydQanSYAegh7iqU7RJTGxwv55Eic4VGdcqEIGtdqTuA6bhpNMWQ2b4");
