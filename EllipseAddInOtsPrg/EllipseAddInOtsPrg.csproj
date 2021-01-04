@@ -158,8 +158,9 @@
     <Reference Include="EllipseWorkOrdersClassLibrary">
       <HintPath>..\Conexion Clases Hambin\EllipseWorkOrdersClassLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="FormAutetication">
-      <HintPath>..\Clases Dll\FormAutetication.dll</HintPath>
+    <Reference Include="FormAutetication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\gvargas4\Desktop\Nuevos AddIn\Clases Dll\FormAutetication.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -176,6 +177,12 @@
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\Conexion Clases Hambin\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary">
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Utilities.Encryption">
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Utilities.Encryption.dll</HintPath>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -285,7 +292,7 @@
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
         <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\15.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x " AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
         <Host Name="Excel" GeneratedCodeNamespace="EllipseAddInOtsPrg" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
-          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" PublishedHash="E2D1970215ECC86BAE45D8B28F7A10F9234FDE12" />
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="E2D1970215ECC86BAE45D8B28F7A10F9234FDE12" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>

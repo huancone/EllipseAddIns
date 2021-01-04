@@ -32,6 +32,7 @@ using System.Web.Services;
 using Screen = EllipseCommonsClassLibrary.ScreenService; //si es screen service
 using System.IO;
 using System.Runtime.InteropServices;
+using VarEncript = SharedClassLibrary.Utilities.Encryption;
 
 namespace EllipseAddInOtsPrg
 {
@@ -758,7 +759,7 @@ namespace EllipseAddInOtsPrg
                           TT.TABLE_TYPE = 'TT'
                         ORDER BY
                           1 " + ORDEN);
-                table = getdata(Sql, "EL8PROD", "SIGCON", "ventyx", "");
+                table = getdata(Sql, "54uYIi2N+rjk+uTlaspHWP2OjjE3SPTT3frFZk+NV5vxGT04vVZyxLGeZyiiWk01uzrCQEo3OgZFg2YPMVksCaVAPS8w6T4zT0ZQZ6DDdbgtdRbST3obu0g8Y0KX1oSI", "zmkMKxigvBzWvgW6j2/Mrj49SchBcuaP1Hah7cW+5Sx0OYUdaJ0QNuzIMAwCFaVsPPruPt9tT9mcFsGx4JotWlKjZySpjLUN8YPmW0uhkWjSB57XVA2bOSuWAEf2jRF+", "6EoC7MZbMxosgzMyRQj2+7tDUxwofJn/gb2Vz+JbR4uSrw5wWLNy47zpLZ8SuRaxJE5qpK2mRIODKUgkrpCZ7Y6c8ucDbITmpgh62KJ/PwQ2ozIBh7VhGp6XK8CX5cRo", "");
             }
             int i = 0;
             string[,] data = new string[table.Rows.Count, table.Columns.Count];
@@ -778,10 +779,9 @@ namespace EllipseAddInOtsPrg
             return listRange;
         }
 
-        public data.DataTable getdata(string SQL, string DataBase = "SIGCOPRD", string User = "consulbo", string Pw = "consulbo", string DbLink = "@DBLELLIPSE8")
+        public data.DataTable getdata(string SQL, string DataBase = "CrOkubls0sZ8lj8iUOR+QY18P9jBSp7MV17Q1hMCt0zpW2WGmMHYV5XXc8j/FdQQNSMJhAHs3GXzbxU0zB+CNt5K1PIiJBvP7RlVJqPn+vHh1mLdhaACGMniPn234d2s", string User = "x4yNNf5qsgLpNdA1xUaBM1GaKhwrINqfzNsmDA7rZmZWVx8308y12p1zvsIuEzx+yszVVnhqhQ1cFWL+lBB8yYb53Yx1kBkvdWcXspKfG8buz4RuwCjtXcXkvGOQwdzw", string Pw = "M8/fjRkEAGaWFKtzyECz8mlJluF8xZevecMTrJ8tf0uboneZPAzICqYYB1WWx23w6sF5AXHDY3MtMZNJVGJ1ALO2D76lFq0M9fLmnU8Q8aOYcANWnlQCQzpX/EqnO8Ow", string DbLink = "@DBLELLIPSE8")
         {
-
-            _eFunctions.SetDBSettings(DataBase, User, Pw, DbLink);
+            _eFunctions.SetDBSettings(VarEncript.Encryption.Decrypt(DataBase), VarEncript.Encryption.Decrypt(User), VarEncript.Encryption.Decrypt(Pw), DbLink);
             var dat = _eFunctions.GetQueryResult(SQL);
             data.DataTable DATA = new data.DataTable();
             DATA.Load(dat);
@@ -1524,7 +1524,7 @@ namespace EllipseAddInOtsPrg
             for (Int32 w = 0; w < DatosWo.Length; w++)
             {
                 string sqlQuery = Consulta(1, 2, DatosWo[w]);
-                data.DataTable table = getdata(sqlQuery, "EL8PROD", "consulbo", "ventyx15", "");
+                data.DataTable table = getdata(sqlQuery, "brw6hTk7tyzbWMnkgOAGm7T5ISbOxIDZzSuf/5nvKn94VsLindO9npazUR8CDo7/5YX0KUYHtN+VxayBURC3BPWpjIhFlX+hVWYxVGV3FBoO5gv6XYTiHcXupsZ5bm5S", "x4yNNf5qsgLpNdA1xUaBM1GaKhwrINqfzNsmDA7rZmZWVx8308y12p1zvsIuEzx+yszVVnhqhQ1cFWL+lBB8yYb53Yx1kBkvdWcXspKfG8buz4RuwCjtXcXkvGOQwdzw", "Td/V9ZKxqcRFLUfFZD15bv4qZwZIHI0IhNQjdK3EoZQL+8ZJb0vhv5x/XhxtfrN6TxiMJud/+TWSgU6GOTq5YiKRDVJMlSV+f8dswzHxZJ7xjfL8fjyYpd0rFQRMCK41", "");
                 if (w == 0)
                 {
                     foreach (data.DataColumn Col in table.Columns)
