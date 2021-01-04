@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
+    <ribbon>
+        <tabs>
+            <tab idMso="TabAddIns" label="Ellipse 9">
+                <group id="grpProyecto" label="Info PM">
+                    <button id="btnFormatear" onAction="btnFormatear_Click" label="Formatear" />
+                    <dropDown id="drpEnviroment" label="Env." showImage="false" />
+                    <menu id="menuAcciones" label="Acciones" showImage="false">
+                        <button id="btnConsultar" onAction="btnConsultar_Click" label="Consultar PM" />
+                        <button id="btnLimpiar" onAction="btnLimpiar_Click" label="Limpiar" />
+                        <button id="Stop" onAction="Stop_Click" label="Detener" />
+                        <button id="btnProy" onAction="btnProy_Click" label="Generar Proy" />
+                    </menu>
+                    <button id="btnAbout" onAction="btnAbout_Click" label="?" showImage="false" />
+                </group>
+            </tab>
+        </tabs>
+    </ribbon>
+</customUI>
