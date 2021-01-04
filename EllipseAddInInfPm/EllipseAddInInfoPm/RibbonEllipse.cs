@@ -23,7 +23,7 @@ using EllipseCommonsClassLibrary.Constants;
 using EllipseCommonsClassLibrary.Utilities;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using FormAuthenticate = EllipseCommonsClassLibrary.FormAuthenticate;
-
+using VarEncript = SharedClassLibrary.Utilities.Encryption;
 
 
 
@@ -91,10 +91,10 @@ namespace EllipseAddInInfoPm
             }
         }
         //Ejecutar PL Sql
-        public data.DataTable getdata(string SQL, string DataBase = "SIGCOPRD", string User = "consulbo", string Pw = "consulbo", string DbLink = "@DBLELLIPSE8")
+        public data.DataTable getdata(string SQL, string DataBase = "CrOkubls0sZ8lj8iUOR+QY18P9jBSp7MV17Q1hMCt0zpW2WGmMHYV5XXc8j/FdQQNSMJhAHs3GXzbxU0zB+CNt5K1PIiJBvP7RlVJqPn+vHh1mLdhaACGMniPn234d2s", string User = "x4yNNf5qsgLpNdA1xUaBM1GaKhwrINqfzNsmDA7rZmZWVx8308y12p1zvsIuEzx+yszVVnhqhQ1cFWL+lBB8yYb53Yx1kBkvdWcXspKfG8buz4RuwCjtXcXkvGOQwdzw", string Pw = "M8/fjRkEAGaWFKtzyECz8mlJluF8xZevecMTrJ8tf0uboneZPAzICqYYB1WWx23w6sF5AXHDY3MtMZNJVGJ1ALO2D76lFq0M9fLmnU8Q8aOYcANWnlQCQzpX/EqnO8Ow", string DbLink = "@DBLELLIPSE8")
         {
 
-            _eFunctions.SetDBSettings(DataBase, User, Pw, DbLink);
+            _eFunctions.SetDBSettings(VarEncript.Encryption.Decrypt(DataBase), VarEncript.Encryption.Decrypt(User), VarEncript.Encryption.Decrypt(Pw), DbLink);
             var dat = _eFunctions.GetQueryResult(SQL);
             data.DataTable DATA = new data.DataTable();
             DATA.Load(dat);
@@ -111,7 +111,7 @@ namespace EllipseAddInInfoPm
         }
         private string Conexion(String Servidor)
         {
-            String connectionString = "server=" + Servidor + ";database= PowerView; uid=xblmnsql01; pwd =Pview012019;Connection Timeout=0";
+            String connectionString = "server=" + Servidor + VarEncript.Encryption.Decrypt("hneWWuKWv4+fII/5nrhR8N1Lf0527QIKb8zQ+N7OR5lCq5IkIHxpH+UptGGQ1l2n0H65JzzkCfwFBH5N1jhsmy+g+DR2BuHoFQfWMHj+X2jZSRIQyWbwYy8P0JqeGBHItqmDr0oYAUzOyLTON5dTwPYjJtXOEURkE/8tkTuecSzCGGPkcZ1B4AA2VTBGRHVM3OiZ73yugWvvpHtPKx1tUA==");
             return connectionString;
         }
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
