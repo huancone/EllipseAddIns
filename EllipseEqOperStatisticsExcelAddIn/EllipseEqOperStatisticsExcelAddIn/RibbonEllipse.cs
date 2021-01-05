@@ -23,8 +23,8 @@ namespace EllipseEqOperStatisticsExcelAddIn
     public partial class RibbonEllipse
     {
         ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
+        EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         Excel.Application _excelApp;
 
         private const string SheetName01 = "OperationStatistics";

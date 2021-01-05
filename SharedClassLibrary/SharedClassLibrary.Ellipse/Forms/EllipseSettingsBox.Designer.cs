@@ -38,6 +38,8 @@
             this.tbLocalDataPath = new System.Windows.Forms.TextBox();
             this.lblLocalDataPath = new System.Windows.Forms.Label();
             this.gbGlobalSettings = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cbCultureOptions = new System.Windows.Forms.ComboBox();
             this.btnOpenLocalPath = new System.Windows.Forms.Button();
             this.btnRestoreLocalPath = new System.Windows.Forms.Button();
             this.gbEllipseSettings = new System.Windows.Forms.GroupBox();
@@ -61,8 +63,6 @@
             this.ttSettings = new System.Windows.Forms.ToolTip(this.components);
             this.gbServiceDatabaseRelation = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.cbCultureOptions = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.gbDebugging.SuspendLayout();
             this.gbGlobalSettings.SuspendLayout();
             this.gbEllipseSettings.SuspendLayout();
@@ -165,6 +165,23 @@
             this.gbGlobalSettings.TabIndex = 38;
             this.gbGlobalSettings.TabStop = false;
             this.gbGlobalSettings.Text = "Configuración Global:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(87, 64);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(85, 13);
+            this.label5.TabIndex = 43;
+            this.label5.Text = "Regionalización:";
+            // 
+            // cbCultureOptions
+            // 
+            this.cbCultureOptions.FormattingEnabled = true;
+            this.cbCultureOptions.Location = new System.Drawing.Point(178, 60);
+            this.cbCultureOptions.Name = "cbCultureOptions";
+            this.cbCultureOptions.Size = new System.Drawing.Size(129, 21);
+            this.cbCultureOptions.TabIndex = 42;
             // 
             // btnOpenLocalPath
             // 
@@ -392,23 +409,6 @@
             this.label6.Size = new System.Drawing.Size(216, 13);
             this.label6.TabIndex = 21;
             this.label6.Text = "Generar Xml de Servidores/Bases de Datos:";
-            // 
-            // cbCultureOptions
-            // 
-            this.cbCultureOptions.FormattingEnabled = true;
-            this.cbCultureOptions.Location = new System.Drawing.Point(178, 60);
-            this.cbCultureOptions.Name = "cbCultureOptions";
-            this.cbCultureOptions.Size = new System.Drawing.Size(129, 21);
-            this.cbCultureOptions.TabIndex = 42;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(87, 64);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 13);
-            this.label5.TabIndex = 43;
-            this.label5.Text = "Regionalización:";
             // 
             // SettingsBox
             // 

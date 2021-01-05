@@ -73,8 +73,14 @@ namespace SharedClassUtility
             this.lblDbName = new System.Windows.Forms.Label();
             this.gbQuery = new System.Windows.Forms.GroupBox();
             this.btnExecuteQuery = new System.Windows.Forms.Button();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.tbDbQuery = new System.Windows.Forms.TextBox();
             this.btnTestDbConnection = new System.Windows.Forms.Button();
+            this.tabEllipseSettings = new System.Windows.Forms.TabPage();
+            this.btnEllipseAbout = new System.Windows.Forms.Button();
+            this.btnEllipseSettings = new System.Windows.Forms.Button();
+            this.btnStartEllipseSettings = new System.Windows.Forms.Button();
+            this.lblEnvironment = new System.Windows.Forms.Label();
+            this.drpEnvironment = new System.Windows.Forms.ComboBox();
             this.tabcGeneral.SuspendLayout();
             this.tabHome.SuspendLayout();
             this.tabEncryption.SuspendLayout();
@@ -84,6 +90,7 @@ namespace SharedClassUtility
             this.tabConnectionItem.SuspendLayout();
             this.gbDatabaseConnection.SuspendLayout();
             this.gbQuery.SuspendLayout();
+            this.tabEllipseSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabcGeneral
@@ -91,6 +98,7 @@ namespace SharedClassUtility
             this.tabcGeneral.Controls.Add(this.tabHome);
             this.tabcGeneral.Controls.Add(this.tabEncryption);
             this.tabcGeneral.Controls.Add(this.tabDbConnection);
+            this.tabcGeneral.Controls.Add(this.tabEllipseSettings);
             this.tabcGeneral.Location = new System.Drawing.Point(12, 12);
             this.tabcGeneral.Name = "tabcGeneral";
             this.tabcGeneral.SelectedIndex = 0;
@@ -516,7 +524,7 @@ namespace SharedClassUtility
             // gbQuery
             // 
             this.gbQuery.Controls.Add(this.btnExecuteQuery);
-            this.gbQuery.Controls.Add(this.textBox6);
+            this.gbQuery.Controls.Add(this.tbDbQuery);
             this.gbQuery.Location = new System.Drawing.Point(6, 223);
             this.gbQuery.Name = "gbQuery";
             this.gbQuery.Size = new System.Drawing.Size(391, 133);
@@ -534,14 +542,14 @@ namespace SharedClassUtility
             this.btnExecuteQuery.UseVisualStyleBackColor = true;
             this.btnExecuteQuery.Click += new System.EventHandler(this.btnExecuteQuery_Click);
             // 
-            // textBox6
+            // tbDbQuery
             // 
-            this.textBox6.Location = new System.Drawing.Point(6, 19);
-            this.textBox6.Multiline = true;
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(379, 60);
-            this.textBox6.TabIndex = 10;
-            this.textBox6.WordWrap = false;
+            this.tbDbQuery.Location = new System.Drawing.Point(6, 19);
+            this.tbDbQuery.Multiline = true;
+            this.tbDbQuery.Name = "tbDbQuery";
+            this.tbDbQuery.Size = new System.Drawing.Size(379, 60);
+            this.tbDbQuery.TabIndex = 10;
+            this.tbDbQuery.WordWrap = false;
             // 
             // btnTestDbConnection
             // 
@@ -552,6 +560,67 @@ namespace SharedClassUtility
             this.btnTestDbConnection.Text = "&Test Connection";
             this.btnTestDbConnection.UseVisualStyleBackColor = true;
             this.btnTestDbConnection.Click += new System.EventHandler(this.btnTestDbConnection_Click_1);
+            // 
+            // tabEllipseSettings
+            // 
+            this.tabEllipseSettings.Controls.Add(this.drpEnvironment);
+            this.tabEllipseSettings.Controls.Add(this.lblEnvironment);
+            this.tabEllipseSettings.Controls.Add(this.btnStartEllipseSettings);
+            this.tabEllipseSettings.Controls.Add(this.btnEllipseSettings);
+            this.tabEllipseSettings.Controls.Add(this.btnEllipseAbout);
+            this.tabEllipseSettings.Location = new System.Drawing.Point(4, 22);
+            this.tabEllipseSettings.Name = "tabEllipseSettings";
+            this.tabEllipseSettings.Size = new System.Drawing.Size(432, 400);
+            this.tabEllipseSettings.TabIndex = 3;
+            this.tabEllipseSettings.Text = "Ellipse Settings";
+            this.tabEllipseSettings.UseVisualStyleBackColor = true;
+            // 
+            // btnEllipseAbout
+            // 
+            this.btnEllipseAbout.Location = new System.Drawing.Point(3, 72);
+            this.btnEllipseAbout.Name = "btnEllipseAbout";
+            this.btnEllipseAbout.Size = new System.Drawing.Size(75, 23);
+            this.btnEllipseAbout.TabIndex = 0;
+            this.btnEllipseAbout.Text = "&About";
+            this.btnEllipseAbout.UseVisualStyleBackColor = true;
+            this.btnEllipseAbout.Click += new System.EventHandler(this.btnEllipseAbout_Click);
+            // 
+            // btnEllipseSettings
+            // 
+            this.btnEllipseSettings.Location = new System.Drawing.Point(84, 72);
+            this.btnEllipseSettings.Name = "btnEllipseSettings";
+            this.btnEllipseSettings.Size = new System.Drawing.Size(75, 23);
+            this.btnEllipseSettings.TabIndex = 1;
+            this.btnEllipseSettings.Text = "&Settings";
+            this.btnEllipseSettings.UseVisualStyleBackColor = true;
+            this.btnEllipseSettings.Click += new System.EventHandler(this.btnEllipseSettings_Click);
+            // 
+            // btnStartEllipseSettings
+            // 
+            this.btnStartEllipseSettings.Location = new System.Drawing.Point(3, 3);
+            this.btnStartEllipseSettings.Name = "btnStartEllipseSettings";
+            this.btnStartEllipseSettings.Size = new System.Drawing.Size(156, 23);
+            this.btnStartEllipseSettings.TabIndex = 3;
+            this.btnStartEllipseSettings.Text = "Start &Ellipse Settings";
+            this.btnStartEllipseSettings.UseVisualStyleBackColor = true;
+            this.btnStartEllipseSettings.Click += new System.EventHandler(this.btnStartEllipseSettings_Click);
+            // 
+            // lblEnvironment
+            // 
+            this.lblEnvironment.AutoSize = true;
+            this.lblEnvironment.Location = new System.Drawing.Point(3, 29);
+            this.lblEnvironment.Name = "lblEnvironment";
+            this.lblEnvironment.Size = new System.Drawing.Size(69, 13);
+            this.lblEnvironment.TabIndex = 5;
+            this.lblEnvironment.Text = "Environment:";
+            // 
+            // drpEnvironment
+            // 
+            this.drpEnvironment.FormattingEnabled = true;
+            this.drpEnvironment.Location = new System.Drawing.Point(6, 46);
+            this.drpEnvironment.Name = "drpEnvironment";
+            this.drpEnvironment.Size = new System.Drawing.Size(153, 21);
+            this.drpEnvironment.TabIndex = 6;
             // 
             // MainForm
             // 
@@ -576,6 +645,8 @@ namespace SharedClassUtility
             this.gbDatabaseConnection.PerformLayout();
             this.gbQuery.ResumeLayout(false);
             this.gbQuery.PerformLayout();
+            this.tabEllipseSettings.ResumeLayout(false);
+            this.tabEllipseSettings.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -602,7 +673,7 @@ namespace SharedClassUtility
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblDevelopBy;
         private System.Windows.Forms.TabPage tabDbConnection;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox tbDbQuery;
         private System.Windows.Forms.GroupBox gbQuery;
         private System.Windows.Forms.Button btnExecuteQuery;
         private System.Windows.Forms.Label lblDbType;
@@ -628,6 +699,12 @@ namespace SharedClassUtility
         private System.Windows.Forms.Label lblOraFilePath;
         private System.Windows.Forms.Label lblOraSource;
         private System.Windows.Forms.ComboBox cbOraSource;
+        private System.Windows.Forms.TabPage tabEllipseSettings;
+        private System.Windows.Forms.Button btnEllipseSettings;
+        private System.Windows.Forms.Button btnEllipseAbout;
+        private System.Windows.Forms.Button btnStartEllipseSettings;
+        private System.Windows.Forms.Label lblEnvironment;
+        private System.Windows.Forms.ComboBox drpEnvironment;
     }
 }
 

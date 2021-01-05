@@ -4,18 +4,27 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using erl.Oracle.TnsNames;
+using SharedClassLibrary;
+using SharedClassLibrary.Configuration;
 using SharedClassLibrary.Connections;
 using SharedClassLibrary.Connections.Oracle;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
 using SharedClassLibrary.Utilities.Encryption;
+using SharedClassLibrary.Ellipse.Forms;
 
 namespace SharedClassUtility
 {
     public partial class MainForm : Form
     {
         private TnsNameInfo[] _tnsNames;
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
+
         public MainForm()
         {
             InitializeComponent();
@@ -175,11 +184,81 @@ namespace SharedClassUtility
         {
             try
             {
+                var connectionString = "";
+                if (tabcDbConnectionMode.SelectedTab == tabConnectionString)
+                    connectionString = tbConnectionString.Text;
+
+                var dbName = tbDbName.Text;
+                var dbUser = tbDbUser.Text;
+                var dbPassword = tbDbPassword.Text;
+                var dbCipherPassword = tbDbCipheredPassword.Text;
+                var dbType = cbDatabaseType.Text;
+
+                var dbItem = new DatabaseItem();
+
+                dbItem.DbName = dbName;
+                dbItem.DbUser = dbUser;
+                if (!string.IsNullOrWhiteSpace(dbPassword))
+                    dbItem.DbPassword = dbPassword;
+                if (!string.IsNullOrWhiteSpace(dbCipherPassword))
+                    dbItem.DbEncodedPassword = dbCipherPassword;
+
+                var testQuery = tbDbQuery.Text;
+                IDbConnector connector;
+
+
+                if (dbType.Equals("ORACLE", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (_tnsNames != null)
+                    {
+                        foreach (var tns in _tnsNames)
+                        {
+                            if (!dbItem.DbName.Equals(tns.TnsName)) continue;
+                            dbItem.DbName = tns.DataSource;
+                            break;
+                        }
+                    }
+
+                    connector = string.IsNullOrWhiteSpace(connectionString) ? new OracleConnector(dbItem) : new OracleConnector(connectionString);
+                }
+                else if (dbType.Equals("SQLSERVER", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    connector = string.IsNullOrWhiteSpace(connectionString) ? new SqlConnector(dbItem) : new SqlConnector(connectionString);
+                }
+                else
+                {
+                    throw new Exception("INVALID DATABASE TYPE");
+                }
+
+
+
+                connector.StartConnection();
+                var result = connector.GetQueryResult(testQuery);
+
+                var outputText = "";
+
+                if (result == null)
+                    return;
                 
+                //Cargo el encabezado de la tabla y doy formato
+                for (var i = 0; i < result.FieldCount; i++)
+                    outputText+= "\n" + result.GetName(i) + ";";
+
+                //cargo los datos 
+                if (result.IsClosed) return;
+
+                while (result.Read())
+                {
+                    for (var i = 0; i < result.FieldCount; i++)
+                        outputText += "\n" + result[i].ToString().Trim() + ";";
+                }
+
+                MessageBox.Show(outputText, "Executed Query");
+                connector.CloseConnection();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Connection Error: " + ex.Message);
             }
         }
 
@@ -279,6 +358,60 @@ namespace SharedClassUtility
         private void tbOraFilePath_Leave(object sender, EventArgs e)
         {
             OracleFilePathChanged();
+        }
+
+        private void btnEllipseAbout_Click(object sender, EventArgs e)
+        {
+            new SharedClassLibrary.Ellipse.Forms.AboutBoxExcelAddIn().ShowDialog();
+        }
+
+        private void btnEllipseSettings_Click(object sender, EventArgs e)
+        {
+            new SharedClassLibrary.Ellipse.Forms.AboutBoxExcelAddIn().ShowAdditionalOptions();
+        }
+
+        private void btnStartEllipseSettings_Click(object sender, EventArgs e)
+        {
+            LoadEllipseSettings();
+        }
+
+        public void LoadEllipseSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
+
+            var environments = Environments.GetEnvironmentList();
+            drpEnvironment.Items.Clear();
+            foreach (var env in environments)
+                drpEnvironment.Items.Add(env);
+
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, Resources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
         }
     }
 }

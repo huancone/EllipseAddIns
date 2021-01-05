@@ -8,6 +8,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
 using System.Windows.Forms;
 using System.Web.Services.Ellipse;
+using SharedClassLibrary;
 using SharedClassLibrary.Connections;
 using SharedClassLibrary.Ellipse;
 using SharedClassLibrary.Ellipse.Connections;

@@ -44,10 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataSourceEnum.cs" />
+    <Compile Include="ConfigSettings.cs" />
     <Compile Include="OracleConnector.cs" />
     <Compile Include="OracleQueryParamCollection.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TnsNames\Antlr4.Runtime\AntlrFileStream.cs" />
     <Compile Include="TnsNames\Antlr4.Runtime\AntlrInputStream.cs" />

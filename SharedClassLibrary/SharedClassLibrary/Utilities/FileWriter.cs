@@ -162,6 +162,24 @@ namespace SharedClassLibrary.Utilities
             }
         }
 
+
+        public static void CopyFileToDirectory(string sourcePath, string targetPath,
+            bool overwrite = true)
+        {
+            try
+            {
+                var sourceFile = NormalizePath(sourcePath);
+                var destFile = NormalizePath(targetPath);
+
+                File.Copy(sourceFile, destFile, overwrite);
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("FileWriter:CopyFileToDirectory", ex.Message);
+                throw;
+            }
+        }
+
         public static void MoveFileToDirectory(string sourceFileName, string sourcePath, string targetFileName,
             string targetPath)
         {

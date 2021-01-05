@@ -32,10 +32,10 @@ namespace SharedClassLibrary.Ellipse.Connections
         public const string ScadaRdb = "SCADARDB";
         public const string CustomDatabase = "Personalizada";
         
-        private const string EllProd = "ellprod";
-        private const string EllCont = "ellcont";
-        private const string EllDesa = "elldesa";
-        private const string EllTest = "elltest";
+        internal const string EllProd = "ellprod";
+        internal const string EllCont = "ellcont";
+        internal const string EllDesa = "elldesa";
+        internal const string EllTest = "elltest";
 
         public const string DefaultDbReferenceName = "ELLIPSE";
 
