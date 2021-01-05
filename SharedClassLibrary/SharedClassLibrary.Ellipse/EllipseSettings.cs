@@ -485,19 +485,19 @@ namespace SharedClassLibrary.Ellipse
         {
 
             var databaseList = new List<DatabaseItem>();
-            databaseList.Add(Environments.GetDatabaseItem(Environments.EllipseProductivo));
-            databaseList.Add(Environments.GetDatabaseItem(Environments.EllipseContingencia));
-            databaseList.Add(Environments.GetDatabaseItem(Environments.EllipseDesarrollo));
-            databaseList.Add(Environments.GetDatabaseItem(Environments.EllipseTest));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllipseProductivo));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllipseContingencia));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllipseDesarrollo));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllipseTest));
             
-            databaseList.Add(Environments.GetDatabaseItem(Environments.EllProd));
-            databaseList.Add(Environments.GetDatabaseItem(Environments.EllCont));
-            databaseList.Add(Environments.GetDatabaseItem(Environments.EllTest));
-            databaseList.Add(Environments.GetDatabaseItem(Environments.EllDesa));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllProd));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllCont));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllTest));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllDesa));
 
-            databaseList.Add(Environments.GetDatabaseItem(Environments.ScadaRdb));
-            databaseList.Add(Environments.GetDatabaseItem(Environments.SigcorProductivo));
-            databaseList.Add(Environments.GetDatabaseItem(Environments.SigmanProductivo));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.ScadaRdb));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.SigcorProductivo));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.SigmanProductivo));
 
 
             var xmlFile = "";

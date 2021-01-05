@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,6 +17,7 @@ using SharedClassLibrary.Ellipse;
 using SharedClassLibrary.Ellipse.Connections;
 using SharedClassLibrary.Utilities.Encryption;
 using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
 
 namespace SharedClassUtility
 {
@@ -299,23 +301,25 @@ namespace SharedClassUtility
             tbDbName.Text = cbOraServers.SelectedItem.ToString();
         }
 
-        private void tbOraFilePath_TextChanged(object sender, EventArgs e)
-        {
-            OracleFilePathChanged();
-        }
-
         private void OracleFilePathChanged()
         {
-
-            if (cbOraSource.SelectedItem == null)
-                return;
-            if (!cbOraSource.SelectedItem.Equals(TnsNames.GetSourceName(TnsNamesSource.CustomPath))) return;
-            cbOraServers.Items.Clear();
-            if (!string.IsNullOrWhiteSpace(tbOraFilePath.Text))
-                _tnsNames = TnsNames.OpenTnsNameInfo(tbOraFilePath.Text);
-            if (_tnsNames == null) return;
-            foreach (var tns in _tnsNames)
-                cbOraServers.Items.Add(tns.TnsName);
+            try
+            {
+                if (cbOraSource.SelectedItem == null)
+                    return;
+                if (!cbOraSource.SelectedItem.Equals(TnsNames.GetSourceName(TnsNamesSource.CustomPath))) return;
+                cbOraServers.Items.Clear();
+                
+                if (!string.IsNullOrWhiteSpace(tbOraFilePath.Text))
+                    _tnsNames = TnsNames.OpenTnsNameInfo(tbOraFilePath.Text);
+                if (_tnsNames == null) return;
+                foreach (var tns in _tnsNames)
+                    cbOraServers.Items.Add(tns.TnsName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ORA FILE PATH ERROR");
+            }
         }
         private void cbDatabaseType_SelectedIndexChanged(object sender, EventArgs e)
         {

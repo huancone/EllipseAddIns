@@ -76,11 +76,11 @@ namespace SharedClassUtility
             this.tbDbQuery = new System.Windows.Forms.TextBox();
             this.btnTestDbConnection = new System.Windows.Forms.Button();
             this.tabEllipseSettings = new System.Windows.Forms.TabPage();
-            this.btnEllipseAbout = new System.Windows.Forms.Button();
-            this.btnEllipseSettings = new System.Windows.Forms.Button();
-            this.btnStartEllipseSettings = new System.Windows.Forms.Button();
-            this.lblEnvironment = new System.Windows.Forms.Label();
             this.drpEnvironment = new System.Windows.Forms.ComboBox();
+            this.lblEnvironment = new System.Windows.Forms.Label();
+            this.btnStartEllipseSettings = new System.Windows.Forms.Button();
+            this.btnEllipseSettings = new System.Windows.Forms.Button();
+            this.btnEllipseAbout = new System.Windows.Forms.Button();
             this.tabcGeneral.SuspendLayout();
             this.tabHome.SuspendLayout();
             this.tabEncryption.SuspendLayout();
@@ -575,25 +575,22 @@ namespace SharedClassUtility
             this.tabEllipseSettings.Text = "Ellipse Settings";
             this.tabEllipseSettings.UseVisualStyleBackColor = true;
             // 
-            // btnEllipseAbout
+            // drpEnvironment
             // 
-            this.btnEllipseAbout.Location = new System.Drawing.Point(3, 72);
-            this.btnEllipseAbout.Name = "btnEllipseAbout";
-            this.btnEllipseAbout.Size = new System.Drawing.Size(75, 23);
-            this.btnEllipseAbout.TabIndex = 0;
-            this.btnEllipseAbout.Text = "&About";
-            this.btnEllipseAbout.UseVisualStyleBackColor = true;
-            this.btnEllipseAbout.Click += new System.EventHandler(this.btnEllipseAbout_Click);
+            this.drpEnvironment.FormattingEnabled = true;
+            this.drpEnvironment.Location = new System.Drawing.Point(6, 46);
+            this.drpEnvironment.Name = "drpEnvironment";
+            this.drpEnvironment.Size = new System.Drawing.Size(153, 21);
+            this.drpEnvironment.TabIndex = 6;
             // 
-            // btnEllipseSettings
+            // lblEnvironment
             // 
-            this.btnEllipseSettings.Location = new System.Drawing.Point(84, 72);
-            this.btnEllipseSettings.Name = "btnEllipseSettings";
-            this.btnEllipseSettings.Size = new System.Drawing.Size(75, 23);
-            this.btnEllipseSettings.TabIndex = 1;
-            this.btnEllipseSettings.Text = "&Settings";
-            this.btnEllipseSettings.UseVisualStyleBackColor = true;
-            this.btnEllipseSettings.Click += new System.EventHandler(this.btnEllipseSettings_Click);
+            this.lblEnvironment.AutoSize = true;
+            this.lblEnvironment.Location = new System.Drawing.Point(3, 29);
+            this.lblEnvironment.Name = "lblEnvironment";
+            this.lblEnvironment.Size = new System.Drawing.Size(69, 13);
+            this.lblEnvironment.TabIndex = 5;
+            this.lblEnvironment.Text = "Environment:";
             // 
             // btnStartEllipseSettings
             // 
@@ -605,22 +602,25 @@ namespace SharedClassUtility
             this.btnStartEllipseSettings.UseVisualStyleBackColor = true;
             this.btnStartEllipseSettings.Click += new System.EventHandler(this.btnStartEllipseSettings_Click);
             // 
-            // lblEnvironment
+            // btnEllipseSettings
             // 
-            this.lblEnvironment.AutoSize = true;
-            this.lblEnvironment.Location = new System.Drawing.Point(3, 29);
-            this.lblEnvironment.Name = "lblEnvironment";
-            this.lblEnvironment.Size = new System.Drawing.Size(69, 13);
-            this.lblEnvironment.TabIndex = 5;
-            this.lblEnvironment.Text = "Environment:";
+            this.btnEllipseSettings.Location = new System.Drawing.Point(84, 72);
+            this.btnEllipseSettings.Name = "btnEllipseSettings";
+            this.btnEllipseSettings.Size = new System.Drawing.Size(75, 23);
+            this.btnEllipseSettings.TabIndex = 1;
+            this.btnEllipseSettings.Text = "&Settings";
+            this.btnEllipseSettings.UseVisualStyleBackColor = true;
+            this.btnEllipseSettings.Click += new System.EventHandler(this.btnEllipseSettings_Click);
             // 
-            // drpEnvironment
+            // btnEllipseAbout
             // 
-            this.drpEnvironment.FormattingEnabled = true;
-            this.drpEnvironment.Location = new System.Drawing.Point(6, 46);
-            this.drpEnvironment.Name = "drpEnvironment";
-            this.drpEnvironment.Size = new System.Drawing.Size(153, 21);
-            this.drpEnvironment.TabIndex = 6;
+            this.btnEllipseAbout.Location = new System.Drawing.Point(3, 72);
+            this.btnEllipseAbout.Name = "btnEllipseAbout";
+            this.btnEllipseAbout.Size = new System.Drawing.Size(75, 23);
+            this.btnEllipseAbout.TabIndex = 0;
+            this.btnEllipseAbout.Text = "&About";
+            this.btnEllipseAbout.UseVisualStyleBackColor = true;
+            this.btnEllipseAbout.Click += new System.EventHandler(this.btnEllipseAbout_Click);
             // 
             // MainForm
             // 

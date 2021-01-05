@@ -82,6 +82,7 @@ namespace erl.Oracle.TnsNames
 
         public static TnsNameInfo[] OpenTnsNameInfo(string filePath)
         {
+            //FileWriter.NormalizePath(
             var tnsNameInfoList = new List<TnsNameInfo>();
             var tnsNameFile = OpenTnsNamesFile(filePath);
             if (tnsNameFile != null) tnsNameInfoList.AddRange(tnsNameFile.TnsNames);

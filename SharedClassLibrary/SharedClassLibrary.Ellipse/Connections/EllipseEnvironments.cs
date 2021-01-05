@@ -161,6 +161,108 @@ namespace SharedClassLibrary.Ellipse.Connections
             return environmentList;
         }
 
+        internal static DatabaseItem GetCodedDatabaseItem(string environment)
+        {
+            var dbItem = new DatabaseItem();
+
+            if (environment.Equals(EllipseProductivo) || environment.Equals(EllProd))
+            {
+                dbItem.Name = environment;
+                dbItem.DbName = "EL8PROD";
+                dbItem.DbUser = "SIGCON";
+                dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
+                dbItem.DbLink = "";
+                dbItem.DbReference = DefaultDbReferenceName;
+            }
+            else if (environment.Equals(EllipseDesarrollo) || environment.Equals(EllDesa))
+            {
+                dbItem.Name = environment;
+                dbItem.DbName = "EL8DESA";
+                dbItem.DbUser = "SIGCON";
+                dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
+                dbItem.DbLink = "";
+                dbItem.DbReference = DefaultDbReferenceName;
+            }
+            else if (environment.Equals(EllipseContingencia) || environment.Equals(EllCont))
+            {
+                dbItem.Name = environment;
+                dbItem.DbName = "EL8PROD";
+                dbItem.DbUser = "SIGCON";
+                dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
+                dbItem.DbLink = "";
+                dbItem.DbReference = DefaultDbReferenceName;
+            }
+            else if (environment.Equals(EllipseTest) || environment.Equals(EllTest))
+            {
+                dbItem.Name = environment;
+                dbItem.DbName = "EL8TEST";
+                dbItem.DbUser = "SIGCON";
+                dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
+                dbItem.DbLink = "";
+                dbItem.DbReference = DefaultDbReferenceName;
+            }
+            else if (environment == SigcorProductivo)
+            {
+                dbItem.Name = environment;
+                dbItem.DbName = "SIGCOPRD";
+                dbItem.DbUser = "CONSULBO";
+                dbItem.DbEncodedPassword = @"rrm0HFcFN947tZwu5yAyaCvrALk9emYLn3SaNh2huucpBc6X6SoapF7jc1S1lnVzknUF6Z3DGrNABiwg2PSUnn5ERDzNlL34+EBG6jrSNv1P3NJxas5vy0C2fULYmy/G";
+                dbItem.DbLink = "@DBLELLIPSE8";
+                dbItem.DbReference = DefaultDbReferenceName;
+            }
+            else if (environment == SigmanProductivo)
+            {
+                dbItem.Name = environment;
+                dbItem.DbName = "SIGCOPRD";
+                dbItem.DbUser = "SIGMAN";
+                dbItem.DbEncodedPassword = @"2yqN2BVsTTW8mrK21olA5KEAEwRqMXds/CpySMMtN0uA5ZPsWWWZjsJcXTbCQxklGQLZCq6jYJOzmo4UNbEs503XWwI1KiX7+7WDgZ2Beems8lIsIBb++yKVlplNidFB";
+                dbItem.DbLink = "@DBLELLIPSE8";
+                dbItem.DbReference = DefaultDbReferenceName;
+            }
+            else if (environment == SigmanTest)
+            {
+                dbItem.Name = environment;
+                dbItem.DbName = "SIGCOPRD";
+                dbItem.DbUser = "SIGMAN";
+                dbItem.DbEncodedPassword = @"2yqN2BVsTTW8mrK21olA5KEAEwRqMXds/CpySMMtN0uA5ZPsWWWZjsJcXTbCQxklGQLZCq6jYJOzmo4UNbEs503XWwI1KiX7+7WDgZ2Beems8lIsIBb++yKVlplNidFB";
+                dbItem.DbLink = "@DBLELLIPSE8";
+                dbItem.DbReference = DefaultDbReferenceName;
+            }
+            else if (environment == EllipseSigmanProductivo)
+            {
+                dbItem.Name = environment;
+                dbItem.DbName = "EL8PROD";
+                dbItem.DbUser = "CONSULBO";
+                dbItem.DbEncodedPassword = @"5RgHgvloJ2S1Eaflx9oonNdkHnXiEhR71mv+hYO2mnkYSt1eH3rSUN3eWahzVMvrdRzH4p1+r6zi0KtVaST8OLlzlqJMQlMXpTSE/Zj4f0XHLa7zOpHTBzi+XE3N9y6f";
+                dbItem.DbLink = "";
+                dbItem.DbReference = DefaultDbReferenceName;
+                dbItem.SecondaryDbLink = "@DBLSIGMAN";
+                dbItem.SecondaryDbReference = DefaultDbReferenceName;
+            }
+            else if (environment == EllipseSigmanTest)
+            {
+                dbItem.Name = environment;
+                dbItem.DbName = "EL8TEST";
+                dbItem.DbUser = "CONSULBO";
+                dbItem.DbEncodedPassword = @"cfnShslzZGN3WzBraEZOVjB/dvCylB2l8eQgEwyq0Q6oCEPZVcymeZh9qkAJnybgOkl71K8/C+iBW/duS8ED7Lj9CNMgMG7qzQr78uDG5RVRhkQ3pe4/tdjpDGzSijhd";
+                dbItem.DbLink = "";
+                dbItem.DbReference = DefaultDbReferenceName;
+                dbItem.SecondaryDbLink = "@DBLSIGMAN"; //o @DBLSIG
+                dbItem.SecondaryDbReference = DefaultDbReferenceName;
+
+            }
+            else if (environment == ScadaRdb)
+            {
+                dbItem.Name = environment;
+                dbItem.DbName = "PBVFWL01";
+                dbItem.DbUser = "SCADARDBADMINGUI";
+                dbItem.DbEncodedPassword = @"z21xgEuA/HsQ8TKMHtQKGKcgTEV0/LaryE/KdhKfLnsGhzqRX7Paa1VwBUDFyJZ5qrYYUQMxTPH2zaHCmrvQmzKKggO9cWDYGbBu7Gs5tHjVurJIiGTBXoK3Lk+UZ+dQ";
+                dbItem.DbLink = "";
+                dbItem.DbReference = DefaultDbReferenceName;
+                dbItem.DbCatalog = "SCADARDB.DBO";
+            }
+            return dbItem;
+        }
         public static DatabaseItem GetDatabaseItem(string environment)
         {
             var dbItem = new DatabaseItem();
@@ -172,7 +274,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                     var xmlDoc = new XmlDocument();
                     var urlPath = Path.Combine(Settings.CurrentSettings.LocalDataPath, Settings.CurrentSettings.DatabaseXmlFileName);
                     
-                    xmlDoc.Load(urlPath);
+                    xmlDoc.Load(FileWriter.NormalizePath(urlPath));
 
                     const string fullNode = "//ellipse/connections";
                     var nodeItemList = xmlDoc.SelectSingleNode(fullNode).ChildNodes;
@@ -199,103 +301,7 @@ namespace SharedClassLibrary.Ellipse.Connections
                 }
                 else
                 {
-                    if (environment.Equals(EllipseProductivo) || environment.Equals(EllProd))
-                    {
-                        dbItem.Name = EllipseProductivo;
-                        dbItem.DbName = "EL8PROD";
-                        dbItem.DbUser = "SIGCON";
-                        dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
-                        dbItem.DbLink = "";
-                        dbItem.DbReference = DefaultDbReferenceName;
-                    }
-                    else if (environment.Equals(EllipseDesarrollo) || environment.Equals(EllDesa))
-                    {
-                        dbItem.Name = EllipseDesarrollo;
-                        dbItem.DbName = "EL8DESA";
-                        dbItem.DbUser = "SIGCON";
-                        dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
-                        dbItem.DbLink = "";
-                        dbItem.DbReference = DefaultDbReferenceName;
-                    }
-                    else if (environment.Equals(EllipseContingencia) || environment.Equals(EllCont))
-                    {
-                        dbItem.Name = EllipseContingencia;
-                        dbItem.DbName = "EL8PROD";
-                        dbItem.DbUser = "SIGCON";
-                        dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
-                        dbItem.DbLink = "";
-                        dbItem.DbReference = DefaultDbReferenceName;
-                    }
-                    else if (environment.Equals(EllipseTest) || environment.Equals(EllTest))
-                    {
-                        dbItem.Name = EllipseTest;
-                        dbItem.DbName = "EL8TEST";
-                        dbItem.DbUser = "SIGCON";
-                        dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
-                        dbItem.DbLink = "";
-                        dbItem.DbReference = DefaultDbReferenceName;
-                    }
-                    else if (environment == SigcorProductivo)
-                    {
-                        dbItem.Name = SigcorProductivo;
-                        dbItem.DbName = "SIGCOPRD";
-                        dbItem.DbUser = "CONSULBO";
-                        dbItem.DbEncodedPassword = @"rrm0HFcFN947tZwu5yAyaCvrALk9emYLn3SaNh2huucpBc6X6SoapF7jc1S1lnVzknUF6Z3DGrNABiwg2PSUnn5ERDzNlL34+EBG6jrSNv1P3NJxas5vy0C2fULYmy/G";
-                        dbItem.DbLink = "@DBLELLIPSE8";
-                        dbItem.DbReference = DefaultDbReferenceName;
-                    }
-                    else if (environment == SigmanProductivo)
-                    {
-                        dbItem.Name = SigmanProductivo;
-                        dbItem.DbName = "SIGCOPRD";
-                        dbItem.DbUser = "SIGMAN";
-                        dbItem.DbEncodedPassword = @"2yqN2BVsTTW8mrK21olA5KEAEwRqMXds/CpySMMtN0uA5ZPsWWWZjsJcXTbCQxklGQLZCq6jYJOzmo4UNbEs503XWwI1KiX7+7WDgZ2Beems8lIsIBb++yKVlplNidFB";
-                        dbItem.DbLink = "@DBLELLIPSE8";
-                        dbItem.DbReference = DefaultDbReferenceName;
-                    }
-                    else if (environment == SigmanTest)
-                    {
-                        dbItem.Name = SigmanTest;
-                        dbItem.DbName = "SIGCOPRD";
-                        dbItem.DbUser = "SIGMAN";
-                        dbItem.DbEncodedPassword = @"2yqN2BVsTTW8mrK21olA5KEAEwRqMXds/CpySMMtN0uA5ZPsWWWZjsJcXTbCQxklGQLZCq6jYJOzmo4UNbEs503XWwI1KiX7+7WDgZ2Beems8lIsIBb++yKVlplNidFB";
-                        dbItem.DbLink = "@DBLELLIPSE8";
-                        dbItem.DbReference = DefaultDbReferenceName;
-                    }
-                    else if (environment == EllipseSigmanProductivo)
-                    {
-                        dbItem.Name = EllipseSigmanProductivo;
-                        dbItem.DbName = "EL8PROD";
-                        dbItem.DbUser = "CONSULBO";
-                        dbItem.DbEncodedPassword = @"5RgHgvloJ2S1Eaflx9oonNdkHnXiEhR71mv+hYO2mnkYSt1eH3rSUN3eWahzVMvrdRzH4p1+r6zi0KtVaST8OLlzlqJMQlMXpTSE/Zj4f0XHLa7zOpHTBzi+XE3N9y6f";
-                        dbItem.DbLink = "";
-                        dbItem.DbReference = DefaultDbReferenceName;
-                        dbItem.SecondaryDbLink = "@DBLSIGMAN";
-                        dbItem.SecondaryDbReference = DefaultDbReferenceName;
-                    }
-                    else if (environment == EllipseSigmanTest)
-                    {
-                        dbItem.Name = EllipseSigmanTest;
-                        dbItem.DbName = "EL8TEST";
-                        dbItem.DbUser = "CONSULBO";
-                        dbItem.DbEncodedPassword = @"cfnShslzZGN3WzBraEZOVjB/dvCylB2l8eQgEwyq0Q6oCEPZVcymeZh9qkAJnybgOkl71K8/C+iBW/duS8ED7Lj9CNMgMG7qzQr78uDG5RVRhkQ3pe4/tdjpDGzSijhd";
-                        dbItem.DbLink = "";
-                        dbItem.DbReference = DefaultDbReferenceName;
-                        dbItem.SecondaryDbLink = "@DBLSIGMAN"; //o @DBLSIG
-                        dbItem.SecondaryDbReference = DefaultDbReferenceName;
-
-                    }
-                    else if (environment == ScadaRdb)
-                    {
-                        dbItem.Name = ScadaRdb;
-                        dbItem.DbName = "PBVFWL01";
-                        dbItem.DbUser = "SCADARDBADMINGUI";
-                        dbItem.DbEncodedPassword = @"z21xgEuA/HsQ8TKMHtQKGKcgTEV0/LaryE/KdhKfLnsGhzqRX7Paa1VwBUDFyJZ5qrYYUQMxTPH2zaHCmrvQmzKKggO9cWDYGbBu7Gs5tHjVurJIiGTBXoK3Lk+UZ+dQ";
-                        dbItem.DbLink = "";
-                        dbItem.DbReference = DefaultDbReferenceName;
-                        dbItem.DbCatalog = "SCADARDB.DBO";
-                    }
-                    return dbItem;
+                    return GetCodedDatabaseItem(environment);
                 }
                 return dbItem;
             }
