@@ -75,8 +75,13 @@ namespace SharedClassLibrary.Connections.Oracle
 
         public void StartConnection()
         {
-            var connectionString = "Data Source=" + DbName + ";User ID=" + DbUser + ";Password=" + DbPassword + "; Connection Timeout=" + ConnectionTimeOut + "; Pooling=" + PoolingDataBase.ToString().ToLower();
-            StartConnection(connectionString);
+            if (!string.IsNullOrWhiteSpace(_currentConnectionString))
+                StartConnection(_currentConnectionString);
+            else
+            {
+                var connectionString = "Data Source=" + DbName + ";User ID=" + DbUser + ";Password=" + DbPassword + "; Connection Timeout=" + ConnectionTimeOut + "; Pooling=" + PoolingDataBase.ToString().ToLower();
+                StartConnection(connectionString);
+            }
         }
 
         public void StartConnection(string dbName, string dbUser, string dbPass)

@@ -18,8 +18,8 @@ namespace SharedClassLibrary.Ellipse.Forms
         {
             var assembly = Assembly.GetExecutingAssembly();
             
-            var resourceFile = assembly.GetName().Name + ".Resources.aboutPictureBox.png";
-            var image = Image.FromStream(assembly.GetManifestResourceStream(resourceFile));
+            //var resourceFile = assembly.GetName().Name + ".Resources.aboutPictureBox.png";
+            var image = Ellipse.EllipseResources.aboutPictureBox;//Image.FromStream(assembly.GetManifestResourceStream(resourceFile));
 
             UpdatePictureBox(image);
         }
@@ -45,8 +45,9 @@ namespace SharedClassLibrary.Ellipse.Forms
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    @"No se puede abrir la ruta especificada. Asegúrese que la ruta es correcta e intente de nuevo." +
-                    ex.Message, @"Abrir directorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    $@"No se puede abrir la ruta especificada. Asegúrese que la ruta es correcta e intente de nuevo. 
+                          {SharedClassLibrary.Ellipse.Settings.CurrentSettings.DefaultRepositoryFilePath}. {ex.Message}", 
+                    @"Abrir directorio", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

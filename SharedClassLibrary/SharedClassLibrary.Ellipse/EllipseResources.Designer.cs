@@ -61,11 +61,41 @@ namespace SharedClassLibrary.Ellipse {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap aboutPictureBox {
+            get {
+                object obj = ResourceManager.GetObject("aboutPictureBox", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cerrejon_logo {
+            get {
+                object obj = ResourceManager.GetObject("cerrejon_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default.
         /// </summary>
         internal static string DefaultCulture {
             get {
                 return ResourceManager.GetString("DefaultCulture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] tnsnames {
+            get {
+                object obj = ResourceManager.GetObject("tnsnames", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

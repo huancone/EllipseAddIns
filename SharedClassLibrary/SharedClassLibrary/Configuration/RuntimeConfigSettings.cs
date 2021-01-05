@@ -16,7 +16,7 @@ namespace SharedClassLibrary.Configuration
 {
     public class RuntimeConfigSettings
     {
-        public static string OracleTnsNode = "configuration/oracle.manageddataaccess.client/version/settings";
+        
 
         /// <summary>
         ///     Adiciona un item especificado a la estructura raíz
@@ -115,23 +115,6 @@ namespace SharedClassLibrary.Configuration
             return stringWriter.ToString();
         }
 
-        /// <summary>
-        ///     Actualiza la URL del archivo de TNS de Oracle
-        /// </summary>
-        /// <param name="newUrl"></param>
-        public static void UpdateTnsUrlValue(string newUrl)
-        {
-            const string tnsItenName = "setting";
-            var key = new KeyValuePair<string, string>("value", newUrl);
-            EditNodeItemKeyValue(OracleTnsNode, tnsItenName, key);
-        }
 
-        public static string GetTnsUrlValue()
-        {
-            var rootNode = OracleTnsNode;
-            const string node = "setting";
-            const string keyName = "value";
-            return GetNodeItemKeyValue(rootNode, node, keyName);
-        }
     }
 }

@@ -11,6 +11,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>D:\Projects\Release\SharedClassLibrary\SharedClassUtility\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -22,8 +23,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.0</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationVersion>1.0.1.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -62,6 +62,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -91,6 +94,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -104,9 +108,25 @@
     <None Include="SharedClassUtility_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharedClassLibrary.Connections.Oracle\SharedClassLibrary.Connections.Oracle.csproj">
+      <Project>{9EB40433-DF17-4032-AC92-F78E52597F5B}</Project>
+      <Name>SharedClassLibrary.Connections.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
+      <Project>{49EE1FC1-808F-4E6B-8809-78486FEB5BD3}</Project>
+      <Name>SharedClassLibrary.Connections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedClassLibrary.Ellipse\SharedClassLibrary.Ellipse.csproj">
+      <Project>{02fd00ac-154b-41a1-9f58-ff4f7bb389a6}</Project>
+      <Name>SharedClassLibrary.Ellipse</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharedClassLibrary.Utilities.Encryption\SharedClassLibrary.Utilities.Encryption.csproj">
       <Project>{30d97fd5-e4d4-4c3b-8aaf-cbf8b8f1f58a}</Project>
       <Name>SharedClassLibrary.Utilities.Encryption</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedClassLibrary\SharedClassLibrary.csproj">
+      <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
+      <Name>SharedClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +135,15 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ASX_Paste_grey_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ASX_Copy_grey_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CleanData_disabled_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

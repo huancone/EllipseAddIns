@@ -50,7 +50,7 @@ namespace SharedClassLibrary.Ellipse.Forms
             Debugger.DebugQueries = cbDebugQueries.Checked;
             Settings.CurrentSettings.ServiceFilePath = tbServiceFileNetworkUrl.Text;
             Debugger.DebugErrors = cbDebugErrors.Checked;
-            RuntimeConfigSettings.UpdateTnsUrlValue(tbTnsNameUrl.Text);
+            SharedClassLibrary.Connections.Oracle.ConfigSettings.UpdateTnsUrlValue(tbTnsNameUrl.Text);
             Debugger.LocalDataPath = tbLocalDataPath.Text;
 
             if (!Settings.CurrentSettings.IsServiceListForced.Equals(cbForceServerList.Checked))
@@ -65,6 +65,11 @@ namespace SharedClassLibrary.Ellipse.Forms
         }
 
         private void btnRestoreServiceFile_Click(object sender, EventArgs e)
+        {
+            RestoreServiceFile();
+        }
+
+        public void RestoreServiceFile()
         {
             try
             {
@@ -87,8 +92,12 @@ namespace SharedClassLibrary.Ellipse.Forms
                     MessageBoxIcon.Error);
             }
         }
-
         private void btnGenerateServiceFileFromDefault_Click(object sender, EventArgs e)
+        {
+            GenerateServiceFileFromDefault();
+        }
+
+        public void GenerateServiceFileFromDefault()
         {
             try
             {
@@ -121,6 +130,11 @@ namespace SharedClassLibrary.Ellipse.Forms
         }
         private void btnGenerateServiceFileFromUrl_Click(object sender, EventArgs e)
         {
+            GenerateServiceFileFromUrl();
+        }
+
+        public void GenerateServiceFileFromUrl()
+        {
             try
             {
                 var configFilePath = FileWriter.NormalizePath(tbServiceFileNetworkUrl.Text, true);
@@ -143,7 +157,7 @@ namespace SharedClassLibrary.Ellipse.Forms
 
                 Settings.CurrentSettings.GenerateConfigurationXmlFile(sourceFilePath, configFilePath);
                 MessageBox.Show(@"Se ha generado el archivo local de configuración de Ellipse a partir del archivo de red " + sourceFilePath +
-                    @" al directorio especificado", @"Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                @" al directorio especificado", @"Generate Local Ellipse Settings File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -152,6 +166,11 @@ namespace SharedClassLibrary.Ellipse.Forms
             }
         }
         private void btnRestoreLocalPath_Click(object sender, EventArgs e)
+        {
+            RestoreLocalDataPath();
+        }
+
+        public void RestoreLocalDataPath()
         {
             var dialogResult = MessageBox.Show("Se restaurará el directorio especificado al directorio predeterminado. ¿Está seguro que desea continuar?", "Restore Local Path", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
@@ -204,6 +223,11 @@ namespace SharedClassLibrary.Ellipse.Forms
         
         private void btnGenerateTnsnamesFile_Click(object sender, EventArgs e)
         {
+            GenerateTnsnamesFile();
+        }
+
+        public void GenerateTnsnamesFile()
+        {
             try
             {
                 var configFilePath = FileWriter.NormalizePath(tbTnsNameUrl.Text, true);
@@ -218,8 +242,8 @@ namespace SharedClassLibrary.Ellipse.Forms
 
                 }
 
-                RuntimeConfigSettings.UpdateTnsUrlValue(tbTnsNameUrl.Text);
-                Settings.CurrentSettings.GenerateEllipseTnsnamesFile(configFilePath);
+                SharedClassLibrary.Connections.Oracle.ConfigSettings.UpdateTnsUrlValue(tbTnsNameUrl.Text);
+                Settings.CurrentSettings.GenerateTnsnamesFile(configFilePath);
                 MessageBox.Show("Se ha generado el archivo local de TNSNAMES en la siguiente ruta: \n" + fileUrl,
                     @"Generate Local Ellipse Tnsnames File", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -229,8 +253,12 @@ namespace SharedClassLibrary.Ellipse.Forms
                     MessageBoxIcon.Error);
             }
         }
-
         private void btnRestoreTnsnamesUrl_Click(object sender, EventArgs e)
+        {
+            RestoreTnsnames();
+        }
+
+        public void RestoreTnsnames()
         {
             try
             {
@@ -238,7 +266,7 @@ namespace SharedClassLibrary.Ellipse.Forms
                 if (dialogResult == DialogResult.No)
                     return;
 
-                RuntimeConfigSettings.UpdateTnsUrlValue(Settings.CurrentSettings.DefaultTnsnamesFilePath);
+                SharedClassLibrary.Connections.Oracle.ConfigSettings.UpdateTnsUrlValue(Settings.CurrentSettings.DefaultTnsnamesFilePath);
                 tbTnsNameUrl.Text = Settings.CurrentSettings.DefaultTnsnamesFilePath;
                 MessageBox.Show(
                     @"Se ha restaurado la ruta del archivo de TNSNAMES a su ubicación predeterminada. En caso de que este archivo no exista comuníquese con el administrador de sistemas",
@@ -250,11 +278,16 @@ namespace SharedClassLibrary.Ellipse.Forms
                     MessageBoxIcon.Error);
             }
         }
-
         private void btnGenerateCustomDb_Click(object sender, EventArgs e)
+        {
+            GenerateCustomDb();
+        }
+
+        public void GenerateCustomDb()
         {
             try
             {
+
                 var configFilePath = FileWriter.NormalizePath(tbLocalDataPath.Text, true);
                 var configFileName = Settings.CurrentSettings.DatabaseXmlFileName;
                 var fileUrl = Path.Combine(configFilePath, configFileName);
@@ -276,10 +309,13 @@ namespace SharedClassLibrary.Ellipse.Forms
                 MessageBox.Show("Se ha producido un error al intentar generar el archivo de base de datos. " + ex.Message, @"Generate Local Ellipse Database File", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
-            
+        }
+        private void btnDeleteCustomDb_Click(object sender, EventArgs e)
+        {
+            DeleteCustomDb();
         }
 
-        private void btnDeleteCustomDb_Click(object sender, EventArgs e)
+        public void DeleteCustomDb()
         {
             try
             {

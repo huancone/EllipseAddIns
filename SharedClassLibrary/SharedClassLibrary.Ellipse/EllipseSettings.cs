@@ -271,12 +271,24 @@ namespace SharedClassLibrary.Ellipse
 
         public string TnsnamesFilePath
         {
-            get { return RuntimeConfigSettings.GetTnsUrlValue(); }
+            get
+            {
+                try
+                {
+                    return SharedClassLibrary.Connections.Oracle.ConfigSettings.GetTnsUrlValue();
+                }
+                catch
+                {
+                    if (!string.IsNullOrWhiteSpace(DefaultTnsnamesFilePath))
+                        return DefaultTnsnamesFilePath;
+                    throw;
+                }
+            }
             set
             {
-                if (value.Equals(RuntimeConfigSettings.GetTnsUrlValue()))
+                if (value.Equals(SharedClassLibrary.Connections.Oracle.ConfigSettings.GetTnsUrlValue()))
                     return;
-                RuntimeConfigSettings.UpdateTnsUrlValue(value);
+                SharedClassLibrary.Connections.Oracle.ConfigSettings.UpdateTnsUrlValue(value);
             }
         }
         #endregion
@@ -369,13 +381,9 @@ namespace SharedClassLibrary.Ellipse
 
         public void GenerateDatabaseFile()
         {
-            throw new NotImplementedException();
+            GenerateDatabaseFile(null);
         }
 
-        public void GenerateTnsnamesFile(string targetUrl)
-        {
-            throw new NotImplementedException();
-        }
 
         public void DeleteConfigurationXmlFile()
         {
@@ -402,41 +410,39 @@ namespace SharedClassLibrary.Ellipse
             }
         }
 
-        public void GenerateEllipseTnsnamesFile(string targetUrl)
+        public void GenerateTnsnamesFile(string targetUrl)
         {
             try
             {
                 //iniciamos las variables de directorio y archivos
-                var configFilePath = FileWriter.NormalizePath(targetUrl, true);
+                var targetFilePath = FileWriter.NormalizePath(targetUrl, true);
                 var defaultFilePath = FileWriter.NormalizePath(CurrentSettings.DefaultTnsnamesFilePath, true);
                 var configFileName = CurrentSettings.TnsnamesFileName;
-
+                var targetFullFilePath = FileWriter.NormalizePath($@"{defaultFilePath}\{configFileName}", true);
                 //comprobamos que la ruta no corresponda a la ruta predeterminada
-                if (configFilePath.Equals(defaultFilePath))
+                if (targetFilePath.Equals(defaultFilePath) && FileWriter.CheckFileExist(targetFullFilePath))
                     throw new Exception("No se puede reemplazar el archivo " + configFileName + " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
 
                 //creamos una copia de seguridad si el archivo existe
-                if (FileWriter.CheckFileExist(Path.Combine(configFilePath, configFileName)))
+                if (FileWriter.CheckFileExist(targetFullFilePath))
                 {
                     var backupFileName = configFileName + "_" + System.DateTime.Today.Year + System.DateTime.Today.Month + System.DateTime.Today.Day + ".BAK";
-                    if (!FileWriter.CheckFileExist(Path.Combine(configFilePath, backupFileName)))
-                        FileWriter.MoveFileToDirectory(configFileName, configFilePath, backupFileName, configFilePath);
+                    if (!FileWriter.CheckFileExist(Path.Combine(targetFilePath, backupFileName)))
+                        FileWriter.MoveFileToDirectory(configFileName, targetFilePath, backupFileName, targetFilePath);
                 }
 
                 //realizamos la acción
                 var assembly = Assembly.GetExecutingAssembly();
-                var resourceName = "EllipseCommonsClassLibrary.Resources.tnsnames.txt";
-                using (var stream = assembly.GetManifestResourceStream(resourceName))
-                using (var reader = new StreamReader(stream))
+                var byteArrayFile = EllipseResources.tnsnames;
+
+                using (var fs = new FileStream(targetFullFilePath, FileMode.Create, FileAccess.Write))
                 {
-                    var tnsFileText = reader.ReadToEnd();
-                    FileWriter.CreateDirectory(configFilePath);
-                    FileWriter.WriteTextToFile(tnsFileText, configFileName, configFilePath);
+                    fs.Write(byteArrayFile, 0, byteArrayFile.Length);
                 }
             }
             catch (Exception ex)
             {
-                Debugger.LogError("GenerateEllipseTnsnamesFile(string)",
+                Debugger.LogError("GenerateTnsnamesFile(string)",
                     "No se puede crear el archivo de configuración\n" + ex.Message);
                 throw;
             }
@@ -446,69 +452,67 @@ namespace SharedClassLibrary.Ellipse
         {
             try
             {
-                //iniciamos las variables de directorio y archivo
-                var configFilePath = FileWriter.NormalizePath(targetUrl, true);
-                var defaultFilePath = FileWriter.NormalizePath(CurrentSettings.DefaultTnsnamesFilePath, true);
+                //iniciamos las variables de directorio y archivos
+                var targetFilePath = FileWriter.NormalizePath(targetUrl, true);
                 var sourceFilePath = FileWriter.NormalizePath(sourceUrl, true);
                 var configFileName = CurrentSettings.TnsnamesFileName;
+                var defaultFilePath = FileWriter.NormalizePath(CurrentSettings.DefaultTnsnamesFilePath + @"\" + configFileName, true);
 
                 //comprobamos que la ruta no corresponda a la ruta predeterminada
-                if (configFilePath.Equals(defaultFilePath))
+                if (targetFilePath.Equals(defaultFilePath) && FileWriter.CheckFileExist(defaultFilePath))
                     throw new Exception("No se puede reemplazar el archivo " + configFileName + " del sistema. Si desea modificarlo, comuníquese con el administrador del sistema");
 
                 //creamos una copia de seguridad si el archivo existe
-                if (FileWriter.CheckFileExist(Path.Combine(configFilePath, configFileName)))
+                if (FileWriter.CheckFileExist(Path.Combine(targetFilePath, configFileName)))
                 {
                     var backupFileName = configFileName + "_" + System.DateTime.Today.Year + System.DateTime.Today.Month + System.DateTime.Today.Day + ".BAK";
-                    if (!FileWriter.CheckFileExist(Path.Combine(configFilePath, backupFileName)))
-                        FileWriter.MoveFileToDirectory(configFileName, configFilePath,backupFileName, configFilePath);
+                    if (!FileWriter.CheckFileExist(Path.Combine(targetFilePath, backupFileName)))
+                        FileWriter.MoveFileToDirectory(configFileName, targetFilePath, backupFileName, targetFilePath);
                 }
 
                 //realizamos la acción
-                FileWriter.CreateDirectory(configFilePath);
-                FileWriter.CopyFileToDirectory(configFileName, sourceFilePath, configFilePath);
+                FileWriter.CreateDirectory(targetFilePath);
+                FileWriter.CopyFileToDirectory(sourceFilePath, targetFilePath);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("GenerateEllipseTnsnamesFile(string, string)",
+                Debugger.LogError("GenerateTnsnamesFile(string)",
                     "No se puede crear el archivo de configuración\n" + ex.Message);
                 throw;
             }
         }
-
-
-
-
         public void GenerateDatabaseFile(string targetUrl = null)
         {
+
             var databaseList = new List<DatabaseItem>();
-            databaseList.Add(new DatabaseItem("Productivo", "EL8PROD", "SIGCON", "ventyx", "ELLIPSE", null, null));
-            databaseList.Add(new DatabaseItem("Contingencia", "EL8PROD", "SIGCON", "ventyx", "ELLIPSE", null, null));
-            databaseList.Add(new DatabaseItem("Desarrollo", "EL8DESA", "SIGCON", "ventyx", "ELLIPSE", null, null));
-            databaseList.Add(new DatabaseItem("Test", "EL8TEST", "SIGCON", "ventyx", "ELLIPSE", null, null));
-            databaseList.Add(new DatabaseItem("ellprod", "EL8PROD", "SIGCON", "ventyx", "ELLIPSE", null, null));
-            databaseList.Add(new DatabaseItem("ellcont", "EL8PROD", "SIGCON", "ventyx", "ELLIPSE", null, null));
-            databaseList.Add(new DatabaseItem("elldesa", "EL8DESA", "SIGCON", "ventyx", "ELLIPSE", null, null));
-            databaseList.Add(new DatabaseItem("elltest", "EL8TEST", "SIGCON", "ventyx", "ELLIPSE", null, null));
-            databaseList.Add(new DatabaseItem("SCADARDB", "PBVFWL01", "SCADARDBADMINGUI", "momia2011", "SCADARDB.DBO",
-                null, "SCADARDB"));
-            databaseList.Add(new DatabaseItem("SIGCOR", "SIGCOPRD", "CONSULBO", "consulbo", "@DBLELLIPSE8", "ELLIPSE", null));
-            databaseList.Add(
-                new DatabaseItem("SIGCOPRD", "SIGCOPRD", "CONSULBO", "consulbo", "@DBLELLIPSE8", "ELLIPSE", null));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllipseProductivo));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllipseContingencia));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllipseDesarrollo));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllipseTest));
+            
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllProd));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllCont));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllTest));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.EllDesa));
+
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.ScadaRdb));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.SigcorProductivo));
+            databaseList.Add(Environments.GetCodedDatabaseItem(Environments.SigmanProductivo));
+
 
             var xmlFile = "";
 
             xmlFile += @"<?xml version=""1.0"" encoding=""UTF-8""?>";
-            xmlFile += @"<ellipse>";
-            xmlFile += @"  <connections>";
+            xmlFile += "\n" + @"<ellipse>";
+            xmlFile += "\n" + @"  <connections>";
             foreach (var item in databaseList)
-                xmlFile += @"    <" + item.Name + " dbname='" + item.DbName + "' dbuser='" + item.DbUser +
+                xmlFile += "\n" + @"    <" + item.Name + " dbname='" + item.DbName + "' dbuser='" + item.DbUser +
                            "' dbpassword='' dbencodedpassword='" + item.DbEncodedPassword + "' dbreference='" +
                            item.DbReference + "' dblink='" + item.DbLink + "' " +
                            (string.IsNullOrWhiteSpace(item.DbCatalog) ? null : "dbcatalog='" + item.DbCatalog + "'") +
                            "/>";
-            xmlFile += @"  </connections>";
-            xmlFile += @"</ellipse>";
+            xmlFile += "\n" + @"  </connections>";
+            xmlFile += "\n" + @"</ellipse>";
 
             try
             {
