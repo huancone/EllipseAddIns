@@ -8,20 +8,5 @@
     <Setting Name="EllipseAddinGanttEQ_RefCodesService_RefCodesService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/RefCodesService</Value>
     </Setting>
-    <Setting Name="EllipseAddinGanttEQ_WorkOderTaskService_WorkOrderTaskService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService</Value>
-    </Setting>
-    <Setting Name="EllipseAddinGanttEQ_WorkOrderService_WorkOrderService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderService</Value>
-    </Setting>
-    <Setting Name="EllipseAddinGanttEQ_ResourceReqmntsService_ResourceReqmntsService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ResourceReqmntsService</Value>
-    </Setting>
-    <Setting Name="EllipseAddinGanttEQ_MaterialReqmntsService_MaterialReqmntsService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MaterialReqmntsService</Value>
-    </Setting>
-    <Setting Name="EllipseAddinGanttEQ_EquipmentReqmntsService_EquipmentReqmntsService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentReqmntsService</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

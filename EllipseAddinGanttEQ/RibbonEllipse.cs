@@ -1120,7 +1120,7 @@ namespace EllipseAddinGanttEQ
                 {
                     if (tipo == 1)
                     {
-                        PLAN_STR_DATE = "" + _cells.GetCell(FinColTablaOneSheet + 1 , filas).Value;
+                        PLAN_STR_DATE = "" + _cells.GetCell(FinColTablaOneSheet + 1, filas).Value;
                         PLAN_STR_TIME = "" + _cells.GetCell(FinColTablaOneSheet + 2, filas).Value;
                         PLAN_FIN_DATE = "";
                         PLAN_FIN_TIME = "";
@@ -1141,7 +1141,7 @@ namespace EllipseAddinGanttEQ
                     UBIC = "" + _cells.GetCell(Ubic, filas).Value;
                     COL = "" + _cells.GetCell(Cod, filas).Value;
                     SEC = "" + _cells.GetCell(Sec, filas).Value;
-                    
+
                     var distrito = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct) ? _frmAuth.EllipseDsct : "ICOR";
                     var userName = _frmAuth.EllipseUser.ToUpper();
 
@@ -1963,7 +1963,7 @@ namespace EllipseAddinGanttEQ
                             }
                             catch (Exception ex)
                             {
-                                if(_cells.GetCell(StartColTable + 3, i).Value == "   ")
+                                if (_cells.GetCell(StartColTable + 3, i).Value == "   ")
                                 {
                                     _cells.GetCell(StartColTable, i).Style = StyleConstants.Error;
                                     _cells.GetCell(StartColTable + 15, i).Style = StyleConstants.Error;
@@ -2095,7 +2095,7 @@ namespace EllipseAddinGanttEQ
             var FinRow = 0;
             //string[][] ContArray = null;
             string[] Encabezados = new string[] { "DSTRCT_CODE", "WORK_ORDER", "FECHA_DUR", "CODIGO_DUR", "INICIO_DUR", "DIN_DUR", "HORAS_DUR" };
-            foreach(string Col in Encabezados)
+            foreach (string Col in Encabezados)
             {
                 _cells.GetCell(StrCol, StartRowTable).Value = Col.ToString();
                 StrCol++;
@@ -2165,7 +2165,7 @@ namespace EllipseAddinGanttEQ
             FormatTable(FormatTableLocal, _excelApp.ActiveWorkbook.ActiveSheet.Name, 1, 1);
             CentrarRango(FormatTableLocal);
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-             if (_cells != null)
+            if (_cells != null)
             {
                 StrCol = StartColTable + 4;
                 StrRow = StartRowTable + 1;
@@ -2174,7 +2174,7 @@ namespace EllipseAddinGanttEQ
             }
 
             _cells.SetCursorDefault();
-             _excelApp.ScreenUpdating = true;
+            _excelApp.ScreenUpdating = true;
         }
 
         private void GetValesOT()

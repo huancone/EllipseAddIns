@@ -42,55 +42,5 @@ namespace EllipseAddinGanttEQ.Properties {
                 return ((string)(this["EllipseAddinGanttEQ_RefCodesService_RefCodesService"]));
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService")]
-        public string EllipseAddinGanttEQ_WorkOderTaskService_WorkOrderTaskService {
-            get {
-                return ((string)(this["EllipseAddinGanttEQ_WorkOderTaskService_WorkOrderTaskService"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderService")]
-        public string EllipseAddinGanttEQ_WorkOrderService_WorkOrderService {
-            get {
-                return ((string)(this["EllipseAddinGanttEQ_WorkOrderService_WorkOrderService"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ResourceReqmntsService")]
-        public string EllipseAddinGanttEQ_ResourceReqmntsService_ResourceReqmntsService {
-            get {
-                return ((string)(this["EllipseAddinGanttEQ_ResourceReqmntsService_ResourceReqmntsService"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MaterialReqmntsService")]
-        public string EllipseAddinGanttEQ_MaterialReqmntsService_MaterialReqmntsService {
-            get {
-                return ((string)(this["EllipseAddinGanttEQ_MaterialReqmntsService_MaterialReqmntsService"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentReqmntsService")]
-        public string EllipseAddinGanttEQ_EquipmentReqmntsService_EquipmentReqmntsService {
-            get {
-                return ((string)(this["EllipseAddinGanttEQ_EquipmentReqmntsService_EquipmentReqmntsService"]));
-            }
-        }
     }
 }
