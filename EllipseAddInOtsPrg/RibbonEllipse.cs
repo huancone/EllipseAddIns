@@ -246,7 +246,7 @@ namespace EllipseAddInOtsPrg
                 {
                     ESTADO = "C";
                 }
-
+                //Condicion para Tareas o encabezados de Ots
                 if (_cells.GetCell(StartColInputMenu + 6, StartRowInputMenu + 1).Value == "TASK")
                 {
                     sqlQuery = Consulta(1, 1, FechaFinal, HR_ADD, ESTADO);
@@ -391,7 +391,7 @@ namespace EllipseAddInOtsPrg
                 try
                 {
                     _excelApp.Cursor = Excel.XlMousePointer.xlWait;
-                    Formatear("GANTT DE PARADA - ELLIPSE 9", SheetName01, true);
+                    Formatear("REPORTE OTS PROGRAMADAS PARADA - ELLIPSE 9", SheetName01, true);
                     Formatear("CARGAR LABOR - ELLIPSE 9", SheetName02);
                 }
                 catch (Exception ex)
@@ -622,6 +622,7 @@ namespace EllipseAddInOtsPrg
             listRange3.Add("Uncompleted");
             listRange3.Add("Closed");
             listRange3.Add("All");
+            //listRange3.Add("Sin PlanStrDate");
             FormatCamposMenu(_cells.GetCell(StartColInputMenu + 8, StartRowInputMenu), true, "WO STATUS");
             FormatBordes(_cells.GetCell(StartColInputMenu + 8, StartRowInputMenu));
             FormatCamposMenu(_cells.GetCell(StartColInputMenu + 8, StartRowInputMenu + 1), false, "Uncompleted", "BUSCAR POR ESTADO DE LAS WORK_ORDER");
@@ -791,6 +792,8 @@ namespace EllipseAddInOtsPrg
         public string Consulta(Int32 Tipe, Int32 Hoja, string FechaFinal = "", Int32 HR_ADD = 6, string ESTADO = "A','O")
         {
             string sqlQuery = "";
+            string CONPSTR = "";
+            string Complemento = "";
             if (Hoja == 1)
             {
                 if (Tipe == 1)
@@ -963,26 +966,15 @@ namespace EllipseAddInOtsPrg
                                         AND EQ.DSTRCT_CODE = 'ICOR'
                                         --AND COLOR.REF_CODE_C IS NOT NULL
 
-                                        AND TR.TASK_STATUS_M IN('" + ESTADO + @"')--AND--OT.PLAN_STR_DATE > TO_CHAR(SYSDATE - 15, 'YYYYMMDD')--ADD_MONTHS(TO_CHAR(SYSDATE, 'DD/MM/YYYY'), -1)
-
-                                        AND TR.PLAN_STR_DATE BETWEEN TO_CHAR(TO_DATE('" + FechaFinal + @"', 'YYYYMMDD') + " + HR_ADD + @", 'YYYYMMDD') AND '" + _cells.GetCell(StartColInputMenu + 1, StartRowInputMenu + 1).Value + @"'
-
-                                        AND TRIM(OT.EQUIP_NO) >= '" + _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Value + @"'
+                                        AND TR.TASK_STATUS_M IN('" + ESTADO + @"')";
+                    if (FechaFinal != null)
+                    {
+                        CONPSTR = " AND TR.PLAN_STR_DATE BETWEEN TO_CHAR(TO_DATE('" + FechaFinal + @"', 'YYYYMMDD') + " + HR_ADD + @", 'YYYYMMDD') AND '" + _cells.GetCell(StartColInputMenu + 1, StartRowInputMenu + 1).Value + @"'";
+                        //sqlQuery = sqlQuery + CONPSTR;
+                    }
+                        Complemento = " AND TRIM(OT.EQUIP_NO) >= '" + _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Value + @"'
 
                                         AND TRIM(OT.EQUIP_NO) <= '" + _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu + 1).Value + @"'
-                                        /*AND
-                                        (
-                                            LOCATION_TO.REF_CODE IS NULL
-
-                                          OR
-
-                                            LOCATION_TO.REF_CODE = 'TL                                      '
-                                        )*/
-                                          --AND EQ.EQUIP_GRP_ID = 'EH5000'
-                                        --ORDER BY
-                                          --OT.EQUIP_NO,
-                                          --TO_NUMBER(TRIM(COLOR.REF_CODE_C)),
-                                          --SECUENCIA.REF_CODE_SEC
                                       )
                                       SELECT
                                         PRIMERA.FLOTA,
@@ -1008,7 +1000,7 @@ namespace EllipseAddInOtsPrg
                                         PRIMERA.REF_CODE UBIC,
                                         PRIMERA.REF_CODE_C AS COD,
                                         PRIMERA.REF_CODE_SEC SEC,
-                                        TRUNC((((TO_DATE(PRIMERA.F_HR_PFIN_MAX, 'YYYYMMDD HH24MISS')) - (TO_DATE(PRIMERA.F_HR_PSTART_MIN, 'YYYYMMDD HH24MISS'))) * 24), 1) AS PARADA_EQUIPO
+                                        CASE WHEN PRIMERA.F_HR_PSTART_MIN <> '              '  THEN TRUNC((((TO_DATE(PRIMERA.F_HR_PFIN_MAX, 'YYYYMMDD HH24MISS')) - (TO_DATE(PRIMERA.F_HR_PSTART_MIN, 'YYYYMMDD HH24MISS'))) * 24), 1) END AS PARADA_EQUIPO
 
                                         FROM
 
@@ -1017,6 +1009,7 @@ namespace EllipseAddInOtsPrg
                                     ORDER BY
 
                                         DATOS.EQUIP_NO,DATOS.PLAN_STR_DATE||DATOS.PLAN_STR_TIME ASC, TRIM(DATOS.SEC) ASC";
+                    sqlQuery = sqlQuery + CONPSTR + Complemento;
                     //TRIM(DATOS.COD),WORK_ORDER,TASK,DATOS.PLAN_STR_DATE || DATOS.PLAN_STR_TIME ASC, TRIM(DATOS.SEC) ASC
                 }
                 else if (Tipe == 2)
@@ -1138,9 +1131,13 @@ namespace EllipseAddInOtsPrg
 										  AND COT.DSTRCT_CODE='ICOR'
 										  AND EQ.DSTRCT_CODE='ICOR'
 										  --AND COLOR.REF_CODE_C IS NOT NULL
-										  AND OT.WO_STATUS_M IN  ('" + ESTADO + @"') --AND --OT.PLAN_STR_DATE > TO_CHAR(SYSDATE-15,'YYYYMMDD')--ADD_MONTHS(TO_CHAR(SYSDATE,'DD/MM/YYYY'),-1)
-										  AND OT.PLAN_STR_DATE BETWEEN TO_CHAR(TO_DATE('" + FechaFinal + @"', 'YYYYMMDD') + " + HR_ADD + @", 'YYYYMMDD') AND '" + _cells.GetCell(StartColInputMenu + 1, StartRowInputMenu + 1).Value + @"'
-										  AND TRIM(OT.EQUIP_NO) >= '" + _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Value + @"'
+										  AND OT.WO_STATUS_M IN  ('" + ESTADO + @"') ";
+                    if (FechaFinal != null)
+                    {
+                        CONPSTR = "AND OT.PLAN_STR_DATE BETWEEN TO_CHAR(TO_DATE('" + FechaFinal + @"', 'YYYYMMDD') + " + HR_ADD + @", 'YYYYMMDD') AND '" + _cells.GetCell(StartColInputMenu + 1, StartRowInputMenu + 1).Value + @"'";
+                        //sqlQuery = sqlQuery + CONPSTR;
+                    }
+                    Complemento = "AND TRIM(OT.EQUIP_NO) >= '" + _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu).Value + @"'
                                           AND TRIM(OT.EQUIP_NO) <= '" + _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu + 1).Value + @"'
 										  /*AND 
 										  (
@@ -1174,12 +1171,13 @@ namespace EllipseAddInOtsPrg
 										PRIMERA.REF_CODE AS UBIC,
 										PRIMERA.REF_CODE_C AS COD,
 										PRIMERA.REF_CODE_SEC AS SEC,
-										TRUNC( ( ( ( TO_DATE(PRIMERA.F_HR_PFIN_MAX,'YYYYMMDD HH24MISS') )-( TO_DATE(PRIMERA.F_HR_PSTART_MIN,'YYYYMMDD HH24MISS') ) )*24) ,1) AS PARADA_EQUIPO
+										CASE WHEN PRIMERA.F_HR_PSTART_MIN <> '              '  THEN TRUNC( ( ( ( TO_DATE(PRIMERA.F_HR_PFIN_MAX,'YYYYMMDD HH24MISS') )-( TO_DATE(PRIMERA.F_HR_PSTART_MIN,'YYYYMMDD HH24MISS') ) )*24) ,1) END AS PARADA_EQUIPO
 										FROM
 										  PRIMERA
 									) DATOS
 									ORDER BY
 										DATOS.EQUIP_NO,DATOS.PLAN_STR_DATE||DATOS.PLAN_STR_TIME ASC, TRIM(DATOS.SEC) ASC ";
+                    sqlQuery = sqlQuery + CONPSTR + Complemento;
                 }
                 else if (Tipe == 3)
                 {

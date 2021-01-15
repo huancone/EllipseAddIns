@@ -228,6 +228,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\WorkOrderTaskService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FormularioAutenticacionType.resx">
       <DependentUpon>FormularioAutenticacionType.cs</DependentUpon>
     </EmbeddedResource>
@@ -281,6 +286,128 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Web References\WorkOrderTaskService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskService.wsdl" />
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceAutoAllocationReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceAutoAllocationReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCalcDurReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCalcDurReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCancelReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCancelReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCompleteReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCompleteReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateResourceEstimatesReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateResourceEstimatesReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeferReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeferReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteResourceEstimatesReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteResourceEstimatesReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceMatchReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceMatchReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyResourceEstimatesReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyResourceEstimatesReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServicePrintDailyShiftSchedReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServicePrintDailyShiftSchedReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReadReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReadReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRecordWorkProgressReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRecordWorkProgressReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReopenReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReopenReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveAssignedTasksReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveContrCostsReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveResourceEstimatesReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveWTUStatusHistoryReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceScheduleReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceScheduleReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -289,6 +416,17 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WorkOrderTaskService\</RelPath>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseAddinGanttEQ_WorkOrderTaskService_WorkOrderTaskService</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/AuthenticatorService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\AuthenticatorService\</RelPath>

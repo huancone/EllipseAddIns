@@ -20,6 +20,8 @@ using EllipseCommonsClassLibrary.Connections;
 using Excel = Microsoft.Office.Interop.Excel;
 using EllipseWorkOrdersClassLibrary;
 using Authenticator = EllipseAddinGanttEQ.AuthenticatorService;
+
+using WorkOrderTaskService9 = EllipseAddinGanttEQ.WorkOrderTaskService;
 //using Authenticator = EllipseCommonsClassLibrary.AuthenticatorService;
 using WorkOrderTaskService = EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
@@ -114,7 +116,7 @@ namespace EllipseAddinGanttEQ
             enviroments.Add("Desarrollo");
             enviroments.Add("Contingencia");
             enviroments.Add("EL9CONV");
-            //var enviroments = Environments.GetEnviromentList();
+            /*var enviroments = Environments.GetEnviromentList();*/
             foreach (var env in enviroments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
@@ -1145,76 +1147,139 @@ namespace EllipseAddinGanttEQ
                     var distrito = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct) ? _frmAuth.EllipseDsct : "ICOR";
                     var userName = _frmAuth.EllipseUser.ToUpper();
 
-
-                    WorkOrderTaskService.WorkOrderTaskService proxySheet_t = new WorkOrderTaskService.WorkOrderTaskService();
-
-
-                    WorkOrderTaskService.WorkOrderTaskServiceModifyRequestDTO requestParamsSheet_t = new WorkOrderTaskService.WorkOrderTaskServiceModifyRequestDTO();
-                    WorkOrderTaskService.WorkOrderTaskServiceModifyReplyDTO replySheet_t = new WorkOrderTaskService.WorkOrderTaskServiceModifyReplyDTO();
-
-                    var workOrderA_t = new WorkOrderTaskService.WorkOrderDTO();
-
-                    workOrderA_t.no = WORK_ORDER.Substring(2, 6);
-                    workOrderA_t.prefix = WORK_ORDER.Substring(0, 2);
-
-                    proxySheet_t.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/WorkOrderTaskService";
-
-                    var opSheet_t = new WorkOrderTaskService.OperationContext
+                    if (drpEnviroment.SelectedItem.Label != "EL9CONV")
                     {
-                        district = _frmAuth.EllipseDsct,
-                        position = _frmAuth.EllipsePost,
-                        maxInstances = 100,
-                        maxInstancesSpecified = true,
-                        returnWarnings = Debugger.DebugWarnings,
-                        returnWarningsSpecified = true,
-                    };
+                        
+                        WorkOrderTaskService.WorkOrderTaskService proxySheet_t = new WorkOrderTaskService.WorkOrderTaskService();    
+                        WorkOrderTaskService.WorkOrderTaskServiceModifyRequestDTO requestParamsSheet_t = new WorkOrderTaskService.WorkOrderTaskServiceModifyRequestDTO();
+                        WorkOrderTaskService.WorkOrderTaskServiceModifyReplyDTO replySheet_t = new WorkOrderTaskService.WorkOrderTaskServiceModifyReplyDTO();
 
-                    ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+                        var workOrderA_t = new WorkOrderTaskService.WorkOrderDTO();
 
-                    requestParamsSheet_t.districtCode = distrito;
-                    requestParamsSheet_t.planStrDate = PLAN_STR_DATE;
-                    requestParamsSheet_t.planStrTime = PLAN_STR_TIME;
-                    requestParamsSheet_t.planFinDate = PLAN_FIN_DATE;
-                    requestParamsSheet_t.planFinTime = PLAN_FIN_TIME;
-                    requestParamsSheet_t.workOrder = workOrderA_t;
-                    requestParamsSheet_t.WOTaskNo = WO_TASK_NO;
-                    requestParamsSheet_t.WOTaskDesc = WO_DESC;
-                    requestParamsSheet_t.priority = TASK_PRIORITY;
+                        workOrderA_t.no = WORK_ORDER.Substring(2, 6);
+                        workOrderA_t.prefix = WORK_ORDER.Substring(0, 2);
 
-                    var woTask = new WorkOrderTask
-                    {
-                        DistrictCode = distrito,
-                        WorkOrder = WORK_ORDER,
-                        WoTaskNo = WO_TASK_NO,
-                        EstimatedDurationsHrs = TSK_DUR_HOURS
-                    };
+                        proxySheet_t.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/WorkOrderTaskService";
 
-                    woTask.SetWorkOrderDto(woTask.WorkOrder);
+                        var opSheet_t = new WorkOrderTaskService.OperationContext
+                        {
+                            district = _frmAuth.EllipseDsct,
+                            position = _frmAuth.EllipsePost,
+                            maxInstances = 100,
+                            maxInstancesSpecified = true,
+                            returnWarnings = Debugger.DebugWarnings,
+                            returnWarningsSpecified = true,
+                        };
+
+                        ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                        requestParamsSheet_t.districtCode = distrito;
+                        requestParamsSheet_t.planStrDate = PLAN_STR_DATE;
+                        requestParamsSheet_t.planStrTime = PLAN_STR_TIME;
+                        requestParamsSheet_t.planFinDate = PLAN_FIN_DATE;
+                        requestParamsSheet_t.planFinTime = PLAN_FIN_TIME;
+                        requestParamsSheet_t.workOrder = workOrderA_t;
+                        requestParamsSheet_t.WOTaskNo = WO_TASK_NO;
+                        requestParamsSheet_t.WOTaskDesc = WO_DESC;
+                        requestParamsSheet_t.priority = TASK_PRIORITY;
+
+                        var woTask = new WorkOrderTask
+                        {
+                            DistrictCode = distrito,
+                            WorkOrder = WORK_ORDER,
+                            WoTaskNo = WO_TASK_NO,
+                            EstimatedDurationsHrs = TSK_DUR_HOURS
+                        };
+
+                        woTask.SetWorkOrderDto(woTask.WorkOrder);
 
 
 
-                    ReplyMessage replyMsg = null;
+                        ReplyMessage replyMsg = null;
 
 
 
-                    string messageResult = replyMsg == null ? "OK" : replyMsg.Message;
+                        string messageResult = replyMsg == null ? "OK" : replyMsg.Message;
 
-                    _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
-                    _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
 
-                    replySheet_t = proxySheet_t.modify(opSheet_t, requestParamsSheet_t);
-                    var reply = WorkOrderTaskActions.ModifyWorkOrderTask(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet_t, woTask);
-                    WorkOrderTaskActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        replySheet_t = proxySheet_t.modify(opSheet_t, requestParamsSheet_t);
+                        //var reply = WorkOrderTaskActions.ModifyWorkOrderTask(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet_t, woTask);
+                        //WorkOrderTaskActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
 
-                    if (_cells.GetCell(WoTask, filas).Value == "001" || _cells.GetCell(WoTask, filas).Value == "")
-                    {
-                        ActualizarRefCodes(filas, distrito, UBIC, COL, SEC, WORK_ORDER);
+                        if (_cells.GetCell(WoTask, filas).Value == "001" || _cells.GetCell(WoTask, filas).Value == "")
+                        {
+                            ActualizarRefCodes(filas, distrito, UBIC, COL, SEC, WORK_ORDER);
+                        }
+
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
+                        //_cells.GetCell("GD" + filas).Style = _cells.GetStyle(StyleConstants.ItalicSmall);
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
+                        //_cells.GetCell("GD").Borders.Weight = "2";
                     }
+                    else
+                    {
+                        WorkOrderTaskService9.WorkOrderTaskService proxySheet_t = new WorkOrderTaskService9.WorkOrderTaskService();
+                        WorkOrderTaskService9.WorkOrderTaskServiceModifyRequestDTO requestParamsSheet_t = new WorkOrderTaskService9.WorkOrderTaskServiceModifyRequestDTO();
+                        WorkOrderTaskService9.WorkOrderTaskServiceModifyReplyDTO replySheet_t = new WorkOrderTaskService9.WorkOrderTaskServiceModifyReplyDTO();
 
-                    _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
-                    //_cells.GetCell("GD" + filas).Style = _cells.GetStyle(StyleConstants.ItalicSmall);
-                    _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
-                    //_cells.GetCell("GD").Borders.Weight = "2";
+                        var workOrderA_t = new WorkOrderTaskService9.WorkOrderDTO();
+
+                        workOrderA_t.no = WORK_ORDER.Substring(2, 6);
+                        workOrderA_t.prefix = WORK_ORDER.Substring(0, 2);
+
+                        proxySheet_t.Url = "http://ews-eamprd.lmnerp01.cerrejon.com/ews/services" + "/WorkOrderTaskService";
+
+                        WorkOrderTaskService9.OperationContext opSheet_t = new WorkOrderTaskService9.OperationContext
+                        {
+                            district = _frmAuth.EllipseDsct,
+                            position = _frmAuth.EllipsePost,
+                            maxInstances = 100,
+                            maxInstancesSpecified = true,
+                            returnWarnings = Debugger.DebugWarnings,
+                            returnWarningsSpecified = true,
+                        };
+
+                        ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                        requestParamsSheet_t.districtCode = distrito;
+                        requestParamsSheet_t.planStrDate = PLAN_STR_DATE;
+                        requestParamsSheet_t.planStrTime = PLAN_STR_TIME;
+                        requestParamsSheet_t.planFinDate = PLAN_FIN_DATE;
+                        requestParamsSheet_t.planFinTime = PLAN_FIN_TIME;
+                        requestParamsSheet_t.workOrder = workOrderA_t;
+                        requestParamsSheet_t.WOTaskNo = WO_TASK_NO;
+                        requestParamsSheet_t.WOTaskDesc = WO_DESC;
+                        requestParamsSheet_t.priority = TASK_PRIORITY;
+
+  
+
+
+                        ReplyMessage replyMsg = null;
+
+
+
+                        string messageResult = replyMsg == null ? "OK" : replyMsg.Message;
+
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
+
+                        replySheet_t = proxySheet_t.modify(opSheet_t, requestParamsSheet_t);
+                        //var reply = WorkOrderTaskActions.ModifyWorkOrderTask(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet_t, woTask);
+                        //WorkOrderTaskActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+
+                        /*if (_cells.GetCell(WoTask, filas).Value == "001" || _cells.GetCell(WoTask, filas).Value == "")
+                        {
+                            ActualizarRefCodes(filas, distrito, UBIC, COL, SEC, WORK_ORDER);
+                        }
+                        */
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
+                        //_cells.GetCell("GD" + filas).Style = _cells.GetStyle(StyleConstants.ItalicSmall);
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
+                        //_cells.GetCell("GD").Borders.Weight = "2";
+
+                    }
 
                 }
                 catch (Exception ex)
@@ -1409,14 +1474,17 @@ namespace EllipseAddinGanttEQ
                     MessageBox.Show(@"Debe existir ordenes en la pestaña del Gantt para poder realizar esta Acción.");
                     return;
                 }
-                _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-                var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                //var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+
+                _eFunctions.SetDBSettings("Contingencia");
+                var urlService = _eFunctions.GetServicesUrl("Contingencia");
 
                 _cells.GetCell(StartColTable + FinColTablaOneSheet, StartRowTable - 1).Select();
                 CalcularFechaHr();
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnviroment = "Contingencia";//drpEnviroment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 // if(true)
                 {
