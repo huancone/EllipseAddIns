@@ -87,19 +87,6 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkRequestService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\WorkRequestService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkRequestService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseWorkRequestClassLibrary_WorkRequestService_WorkRequestService</CachedSettingsPropName>
-    </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -247,6 +234,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ventyx_logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkRequestService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WorkRequestService\</RelPath>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkRequestService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseWorkRequestClassLibrary_WorkRequestService_WorkRequestService</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

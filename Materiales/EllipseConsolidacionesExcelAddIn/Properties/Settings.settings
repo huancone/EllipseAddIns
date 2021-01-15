@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="EllipseConsolidacionesExcelAddIn_CatalogueService_CatalogueService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/CatalogueService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/CatalogueService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

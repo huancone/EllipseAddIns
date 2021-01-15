@@ -2,15 +2,18 @@
 using System.Globalization;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
 using EllipseMSO261ProntoPagoExcelAddIn.Properties;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using screen = EllipseCommonsClassLibrary.ScreenService;
+using Math = System.Math;
+using screen = SharedClassLibrary.Ellipse.ScreenService;
 
 
 namespace EllipseMSO261ProntoPagoExcelAddIn
@@ -19,19 +22,25 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
     {
         private const int TittleRow = 8;
         private const int ResultColumn = 16;
-        public static EllipseFunctions EFunctions = new EllipseFunctions();
+        private static EllipseFunctions _eFunctions;
         private ExcelStyleCells _cells;
         private Application _excelApp;
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
-        private string _sheetName01 = "Pronto Pagos";
+        private FormAuthenticate _frmAuth;
+        private const string SheetName01 = "MSO261 - Pronto Pago";
+
         ListObject _excelSheetItems;
-        public InvoiceParameters Parameters;
-        public SupplierInvoiceInfo SupplierInfo;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new SharedClassLibrary.Ellipse.Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
-            
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -39,8 +48,41 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //Example of Default Custom Options
+            //settings.SetDefaultCustomSettingValue("AutoSort", "Y");
+            //settings.SetDefaultCustomSettingValue("OverrideAccountCode", "Maintenance");
+            //settings.SetDefaultCustomSettingValue("IgnoreItemError", "N");
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            //Example of Getting Custom Options from Save File
+            //var overrideAccountCode = settings.GetCustomSettingValue("OverrideAccountCode");
+            //if (overrideAccountCode.Equals("Maintenance"))
+            //    cbAccountElementOverrideMntto.Checked = true;
+            //else if (overrideAccountCode.Equals("Disable"))
+            //    cbAccountElementOverrideDisable.Checked = true;
+            //else if (overrideAccountCode.Equals("Alwats"))
+            //    cbAccountElementOverrideAlways.Checked = true;
+            //else if (overrideAccountCode.Equals("Default"))
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //else
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //cbAutoSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AutoSort"));
+            //cbIgnoreItemError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreItemError"));
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -54,9 +96,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             var excelBook = _excelApp.Workbooks.Add();
             Worksheet excelSheet = excelBook.ActiveSheet;
 
-
-            _sheetName01 = "MSO261 - Pronto Pago";
-            excelSheet.Name = _sheetName01;
+            excelSheet.Name = SheetName01;
 
             #region Instructions
 
@@ -121,7 +161,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
 
-            if (excelSheet.Name != _sheetName01) return;
+            if (excelSheet.Name != SheetName01) return;
 
             _cells.GetRange(2, 4, 2, 7).ClearContents();
 
@@ -152,9 +192,6 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             {
                 try
                 {
-                    Parameters = new InvoiceParameters();
-                    Parameters = p;
-
                     _cells.GetCell(2, 4).Value = p.Percentage;
                     _cells.GetCell(2, 5).Value = p.Days;
                     _cells.GetCell(2, 6).Value = p.Branchcode;
@@ -174,9 +211,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
 
-            MessageBox.Show(Resources.RibbonEllipse_ImportFile_Parametros_Cargados);
-
-
+            MessageBox.Show(PpResources.RibbonEllipse_ImportFile_Parametros_Cargados);
         }
 
 
@@ -189,9 +224,10 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
         {
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
-            SupplierInfo = new SupplierInvoiceInfo();
 
-            if (excelSheet.Name != _sheetName01) return;
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+
+            if (excelSheet.Name != SheetName01) return;
 
             if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
 
@@ -200,40 +236,38 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
 
             var currentRow = TittleRow + 1;
 
-            var supplier = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value));
-            var factura = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
-
-            while (supplier != null & factura != null)
+            while ((_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value)) != null || (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value)) != null)
             {
                 try
                 {
-                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnvironment.SelectedItem.Label);
+                    var supplier = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value));
+                    var factura = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
+                    var supplierInfo = SupplierInvoiceInfo.GetSupplierInvoiceInfo(supplier, factura, _eFunctions);
+
+                    if(supplierInfo == null)
+                        throw new Exception("Supplier Invoice Not Found");
                     _cells.GetCell(12, currentRow).Select();
 //                    _cells.GetCell(1, currentRow).Value = supplierInfo.Supplier;
 //                    _cells.GetCell(2, currentRow).Value = supplierInfo.Factura;
-                    _cells.GetCell(3, currentRow).Value = SupplierInfo.Fechapagosolicitada;
-                    _cells.GetCell(4, currentRow).Value = SupplierInfo.Fechapagooriginal;
-                    _cells.GetCell(5, currentRow).Value = SupplierInfo.PmtStatus;
-                    _cells.GetCell(6, currentRow).Value = SupplierInfo.Proveedor;
-                    _cells.GetCell(7, currentRow).Value = SupplierInfo.CodigoBancoOriginal;
-                    _cells.GetCell(8, currentRow).Value = SupplierInfo.St;
-                    _cells.GetCell(9, currentRow).Value = SupplierInfo.Vrtotalfactura;
-                    _cells.GetCell(10, currentRow).Value = SupplierInfo.VrBasedeDescuento;
-                    _cells.GetCell(11, currentRow).Value = SupplierInfo.Diferencia;
-                    _cells.GetCell(12, currentRow).Value = SupplierInfo.Descuentocalculado;
-                    _cells.GetCell(ResultColumn, currentRow).Value = SupplierInfo.Error;
-
+                    _cells.GetCell(3, currentRow).Value = supplierInfo.Fechapagosolicitada;
+                    _cells.GetCell(4, currentRow).Value = supplierInfo.Fechapagooriginal;
+                    _cells.GetCell(5, currentRow).Value = supplierInfo.PmtStatus;
+                    _cells.GetCell(6, currentRow).Value = supplierInfo.Proveedor;
+                    _cells.GetCell(7, currentRow).Value = supplierInfo.CodigoBancoOriginal;
+                    _cells.GetCell(8, currentRow).Value = supplierInfo.St;
+                    _cells.GetCell(9, currentRow).Value = supplierInfo.Vrtotalfactura;
+                    _cells.GetCell(10, currentRow).Value = supplierInfo.VrBasedeDescuento;
+                    _cells.GetCell(11, currentRow).Value = supplierInfo.Diferencia;
+                    _cells.GetCell(12, currentRow).Value = supplierInfo.Descuentocalculado;
+                    _cells.GetCell(ResultColumn, currentRow).Value = "CONSULTADO";
                 }
                 catch (Exception ex)
                 {
-                    if (SupplierInfo != null) SupplierInfo.Error = ex.Message;
+                    _cells.GetCell(ResultColumn, currentRow).Value = ex.Message;
                 }
                 finally
                 {
                     currentRow++;
-                    supplier = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value));
-                    factura = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
-                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnvironment.SelectedItem.Label);
                 }
             }
 
@@ -245,7 +279,8 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
 
-            MessageBox.Show(Resources.RibbonEllipse_GetInvoice_Facturas_Consultadas__Favor_Verificar);
+            _eFunctions.CloseConnection();
+            MessageBox.Show(PpResources.RibbonEllipse_GetInvoice_Facturas_Consultadas__Favor_Verificar);
         }
 
 
@@ -258,54 +293,57 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
         {
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
-            SupplierInfo = new SupplierInvoiceInfo();
+            var supplierInfo = new SupplierInvoiceInfo();
 
-            if (excelSheet.Name != _sheetName01) return;
+            if (excelSheet.Name != SheetName01) return;
 
             if (drpEnvironment.SelectedItem.Label == null || drpEnvironment.SelectedItem.Label.Equals("")) return;
 
-            Parameters.Percentage = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 4).Value));
-            Parameters.Days = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 5).Value));
-            Parameters.Branchcode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 6).Value);
-            Parameters.Bankaccount = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 7).Value);
+            var invoiceParameters = new InvoiceParameters
+            {
+                Percentage = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 4).Value)), 
+                Days = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 5).Value)), 
+                Branchcode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 6).Value), 
+                Bankaccount = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 7).Value)
+            };
 
             _cells.GetRange(11, TittleRow + 1, 12, _excelSheetItems.ListRows.Count + TittleRow).ClearContents();
 
             var currentRow = TittleRow + 1;
 
-            while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value) != null & _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value) != null & _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value) != null & Math.Abs(Parameters.Percentage) > 0 & Math.Abs(Parameters.Days) > 0)
+            while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value) != null & _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value) != null & _cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value) != null & Math.Abs(invoiceParameters.Percentage) > 0 & Math.Abs(invoiceParameters.Days) > 0)
             {
 
-                SupplierInfo.Supplier = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
-                SupplierInfo.Factura = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value);
-                SupplierInfo.Fechapagosolicitada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value);
-                SupplierInfo.Fechapagooriginal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value);
-                SupplierInfo.PmtStatus = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value);
-                SupplierInfo.Proveedor = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value);
-                SupplierInfo.CodigoBancoOriginal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, currentRow).Value);
-                SupplierInfo.St = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
-                SupplierInfo.Vrtotalfactura = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value));
-                SupplierInfo.VrBasedeDescuento = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, currentRow).Value));
-                SupplierInfo.Diferencia = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, currentRow).Value));
-                SupplierInfo.Descuentocalculado = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, currentRow).Value));
-                SupplierInfo.Vrdescuentoaplicado = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value));
-                SupplierInfo.Fechadepagomodificada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value);
-                SupplierInfo.BancodePagoModificado = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value);
+                supplierInfo.Supplier = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
+                supplierInfo.Factura = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value);
+                supplierInfo.Fechapagosolicitada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value);
+                supplierInfo.Fechapagooriginal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value);
+                supplierInfo.PmtStatus = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value);
+                supplierInfo.Proveedor = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value);
+                supplierInfo.CodigoBancoOriginal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, currentRow).Value);
+                supplierInfo.St = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
+                supplierInfo.Vrtotalfactura = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value));
+                supplierInfo.VrBasedeDescuento = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, currentRow).Value));
+                supplierInfo.Diferencia = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, currentRow).Value));
+                supplierInfo.Descuentocalculado = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, currentRow).Value));
+                supplierInfo.Vrdescuentoaplicado = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value));
+                supplierInfo.Fechadepagomodificada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value);
+                supplierInfo.BancodePagoModificado = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value);
 
                 try
                 {
-                    var fechapagooriginal = DateTime.ParseExact(SupplierInfo.Fechapagooriginal, "yyyyMMdd", CultureInfo.InvariantCulture);
-                    var fechapagosolicitada = DateTime.ParseExact(SupplierInfo.Fechapagosolicitada, "yyyyMMdd", CultureInfo.InvariantCulture);
-                    SupplierInfo.Diferencia = (fechapagooriginal - fechapagosolicitada).TotalDays;
+                    var fechapagooriginal = DateTime.ParseExact(supplierInfo.Fechapagooriginal, "yyyyMMdd", CultureInfo.InvariantCulture);
+                    var fechapagosolicitada = DateTime.ParseExact(supplierInfo.Fechapagosolicitada, "yyyyMMdd", CultureInfo.InvariantCulture);
+                    supplierInfo.Diferencia = (fechapagooriginal - fechapagosolicitada).TotalDays;
 
-                    SupplierInfo.Descuentocalculado = (SupplierInfo.Vrtotalfactura - SupplierInfo.VrBasedeDescuento) < 0.000 ? Math.Round(SupplierInfo.Diferencia * SupplierInfo.Vrtotalfactura * Parameters.Percentage / Parameters.Days) : Math.Round(SupplierInfo.Diferencia * SupplierInfo.VrBasedeDescuento * Parameters.Percentage / Parameters.Days);
-                    _cells.GetCell(11, currentRow).Value = SupplierInfo.Diferencia;
-                    _cells.GetCell(12, currentRow).Value = SupplierInfo.Descuentocalculado;
+                    supplierInfo.Descuentocalculado = (supplierInfo.Vrtotalfactura - supplierInfo.VrBasedeDescuento) < 0.000 ? Math.Round(supplierInfo.Diferencia * supplierInfo.Vrtotalfactura * invoiceParameters.Percentage / invoiceParameters.Days) : Math.Round(supplierInfo.Diferencia * supplierInfo.VrBasedeDescuento * invoiceParameters.Percentage / invoiceParameters.Days);
+                    _cells.GetCell(11, currentRow).Value = supplierInfo.Diferencia;
+                    _cells.GetCell(12, currentRow).Value = supplierInfo.Descuentocalculado;
                     _cells.GetRange(11, currentRow, 12, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
                 }
                 catch (Exception ex)
                 {
-                    SupplierInfo.Error = ex.Message;
+                    supplierInfo.Error = ex.Message;
                 }
                 finally
                 {
@@ -321,14 +359,14 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
 
-            MessageBox.Show(Resources.RibbonEllipse_CalculateDiscount_Descuentos_Calculados);
+            MessageBox.Show(PpResources.RibbonEllipse_CalculateDiscount_Descuentos_Calculados);
             
 
         }
 
         private void btnModifyInvoice_Click(object sender, RibbonControlEventArgs e)
         {
-            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == _sheetName01)
+            if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                 _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -336,7 +374,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
                     ModifyInvoice();
             }
             else
-                MessageBox.Show(Resources.RibbonEllipse_btnLoad_Click_Invalid_Format);
+                MessageBox.Show(PpResources.RibbonEllipse_btnLoad_Click_Invalid_Format);
 
         }
 
@@ -344,7 +382,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            SupplierInfo = new SupplierInvoiceInfo();
+            var supplierInfo = new SupplierInvoiceInfo();
 
             var currentRow = TittleRow + 1;
 
@@ -354,7 +392,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             _cells.GetRange(ResultColumn, TittleRow + 1, ResultColumn, _excelSheetItems.ListRows.Count + TittleRow).ClearContents();
             _cells.GetRange(ResultColumn, TittleRow + 1, ResultColumn, _excelSheetItems.ListRows.Count + TittleRow).Style = _cells.GetStyle(StyleConstants.Normal);
 
-            proxySheet.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var opSheet = new screen.OperationContext
             {
@@ -366,89 +404,92 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
             };
             _cells.GetCell(1, currentRow).Select();
 
+            var invoiceParameters = new InvoiceParameters
+            {
+                Percentage = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 4).Value)),
+                Days = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 5).Value)),
+                Branchcode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 6).Value),
+                Bankaccount = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, 7).Value)
+            };
+
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
             {
                 try
                 {
                     _cells.GetCell(1, currentRow).Select();
-                    SupplierInfo.Supplier = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
-                    SupplierInfo.Factura = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value);
-                    SupplierInfo.Fechapagosolicitada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value);
-                    SupplierInfo.Fechapagooriginal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value);
-                    SupplierInfo.PmtStatus = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value);
-                    SupplierInfo.Proveedor = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value);
-                    SupplierInfo.CodigoBancoOriginal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, currentRow).Value);
-                    SupplierInfo.St = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
-                    SupplierInfo.Vrtotalfactura = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value));
-                    SupplierInfo.VrBasedeDescuento = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, currentRow).Value));
-                    SupplierInfo.Diferencia = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, currentRow).Value));
-                    SupplierInfo.Descuentocalculado = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, currentRow).Value));
-                    SupplierInfo.Vrdescuentoaplicado = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value));
-                    SupplierInfo.Fechadepagomodificada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value);
-                    SupplierInfo.BancodePagoModificado = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value);
+                    supplierInfo.Supplier = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
+                    supplierInfo.Factura = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value);
+                    supplierInfo.Fechapagosolicitada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value);
+                    supplierInfo.Fechapagooriginal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(4, currentRow).Value);
+                    supplierInfo.PmtStatus = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(5, currentRow).Value);
+                    supplierInfo.Proveedor = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(6, currentRow).Value);
+                    supplierInfo.CodigoBancoOriginal = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(7, currentRow).Value);
+                    supplierInfo.St = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(8, currentRow).Value));
+                    supplierInfo.Vrtotalfactura = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(9, currentRow).Value));
+                    supplierInfo.VrBasedeDescuento = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(10, currentRow).Value));
+                    supplierInfo.Diferencia = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(11, currentRow).Value));
+                    supplierInfo.Descuentocalculado = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(12, currentRow).Value));
+                    supplierInfo.Vrdescuentoaplicado = Convert.ToDouble(_cells.GetNullIfTrimmedEmpty(_cells.GetCell(13, currentRow).Value));
+                    supplierInfo.Fechadepagomodificada = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(14, currentRow).Value);
+                    supplierInfo.BancodePagoModificado = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(15, currentRow).Value);
 
-                    EFunctions.RevertOperation(opSheet, proxySheet);
+                    _eFunctions.RevertOperation(opSheet, proxySheet);
 
                     var replySheet = proxySheet.executeScreen(opSheet, "MSO261");
 
-                    if (EFunctions.CheckReplyError(replySheet))
-                    {
-                        _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumn, currentRow).Value = replySheet.message;
-                    }
-                    else
-                    {
-                        if (replySheet.mapName != "MSM261A") return;
-                        var arrayFields = new ArrayScreenNameValue();
-                        arrayFields.Add("OPTION1I", "1");
-                        arrayFields.Add("DSTRCT_CODE1I", "ICOR");
-                        arrayFields.Add("SUPPLIER_NO1I", SupplierInfo.Supplier);
-                        arrayFields.Add("INV_NO1I", SupplierInfo.Factura);
-                        requestSheet.screenFields = arrayFields.ToArray();
+                    if (_eFunctions.CheckReplyError(replySheet))
+                        throw new Exception(replySheet.message);
+                    
+                    if (replySheet.mapName != "MSM261A") return;
+                    var arrayFields = new ArrayScreenNameValue();
+                    arrayFields.Add("OPTION1I", "1");
+                    arrayFields.Add("DSTRCT_CODE1I", "ICOR");
+                    arrayFields.Add("SUPPLIER_NO1I", supplierInfo.Supplier);
+                    arrayFields.Add("INV_NO1I", supplierInfo.Factura);
+                    requestSheet.screenFields = arrayFields.ToArray();
 
-                        requestSheet.screenKey = "1";
+                    requestSheet.screenKey = "1";
+                    replySheet = proxySheet.submit(opSheet, requestSheet);
+
+                    while (_eFunctions.CheckReplyWarning(replySheet) || replySheet.functionKeys.Contains("XMIT-Confirm"))
                         replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                        while (EFunctions.CheckReplyWarning(replySheet) || replySheet.functionKeys.Contains("XMIT-Confirm"))
-                            replySheet = proxySheet.submit(opSheet, requestSheet);
+                    if (_eFunctions.CheckReplyError(replySheet))
+                        throw new Exception(replySheet.message);
 
-                        if (EFunctions.CheckReplyError(replySheet))
-                        {
-                            _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
-                            _cells.GetCell(ResultColumn, currentRow).Value = replySheet.message;
-                        }
-                        else if (replySheet.mapName == "MSM261B")
-                        {
-                            arrayFields = new ArrayScreenNameValue();
+                    if (!replySheet.mapName.Equals("MSM261B", StringComparison.InvariantCultureIgnoreCase))
+                        throw new Exception("NO SE PUDO ACCEDER AL PROGRAMA MSM261B");
 
-                            arrayFields.Add("BRANCH_CODE2I", Parameters.Branchcode);
-                            arrayFields.Add("BANK_ACCT_NO2I", Parameters.Bankaccount);
-                            arrayFields.Add("SD_AMOUNT2I", SupplierInfo.Descuentocalculado.ToString(CultureInfo.InvariantCulture));
-                            arrayFields.Add("SD_DATE2I", SupplierInfo.Fechapagosolicitada);
-                            requestSheet.screenFields = arrayFields.ToArray();
+                    arrayFields = new ArrayScreenNameValue();
 
-                            requestSheet.screenKey = "1";
-                            replySheet = proxySheet.submit(opSheet, requestSheet);
+                    arrayFields.Add("BRANCH_CODE2I", invoiceParameters.Branchcode);
+                    arrayFields.Add("BANK_ACCT_NO2I", invoiceParameters.Bankaccount);
+                    arrayFields.Add("SD_AMOUNT2I", supplierInfo.Descuentocalculado.ToString(CultureInfo.InvariantCulture));
+                    arrayFields.Add("SD_DATE2I", supplierInfo.Fechapagosolicitada);
+                    requestSheet.screenFields = arrayFields.ToArray();
 
-                            while (EFunctions.CheckReplyWarning(replySheet) || replySheet.functionKeys.Contains("XMIT-Confirm"))
-                                replySheet = proxySheet.submit(opSheet, requestSheet);
+                    requestSheet.screenKey = "1";
+                    replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                            if (EFunctions.CheckReplyError(replySheet) & !replySheet.message.Contains("X2:3730 - MODIFICATIONS MADE TO INVOICE"))
-                            {
-                                _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
-                                _cells.GetCell(ResultColumn, currentRow).Value = replySheet.message;
-                            }
-                            else
-                            {
-                                _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Success;
-                                _cells.GetCell(ResultColumn, currentRow).Value = "Success";
+                    while (_eFunctions.CheckReplyWarning(replySheet) || replySheet.functionKeys.Contains("XMIT-Confirm"))
+                        replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                                _cells.GetCell(13, currentRow).Value = SupplierInfo.Vrdescuentoaplicado = SupplierInfo.Descuentocalculado;
-                                _cells.GetCell(14, currentRow).Value = SupplierInfo.Fechadepagomodificada = SupplierInfo.Fechapagosolicitada;
-                                _cells.GetCell(15, currentRow).Value = SupplierInfo.BancodePagoModificado = Parameters.Branchcode + " - " + Parameters.Bankaccount;
-                            }
-                        }
-                    }
+                    if (_eFunctions.CheckReplyError(replySheet))
+                        throw new Exception(replySheet.message);
+
+                    if (!replySheet.message.Contains("X2:3730 - MODIFICATIONS MADE TO INVOICE"))
+                        throw new Exception(replySheet.message);
+
+                    _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn, currentRow).Value = "Success";
+
+                    _cells.GetCell(13, currentRow).Value = supplierInfo.Vrdescuentoaplicado = supplierInfo.Descuentocalculado;
+                    _cells.GetCell(14, currentRow).Value = supplierInfo.Fechadepagomodificada = supplierInfo.Fechapagosolicitada;
+                    _cells.GetCell(15, currentRow).Value = supplierInfo.BancodePagoModificado = invoiceParameters.Branchcode + " - " + invoiceParameters.Bankaccount;
+
+                    _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn, currentRow).Value = "MODIFICADO";
+
                 }
                 catch (Exception ex)
                 {
@@ -461,7 +502,7 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
                 }
             }
 
-            MessageBox.Show(Resources.RibbonEllipse_ModifyInvoice_Facturas_Modificadas);
+            MessageBox.Show(PpResources.RibbonEllipse_ModifyInvoice_Facturas_Modificadas);
         }
 
 
@@ -474,9 +515,9 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
         {
             var excelBook = _excelApp.ActiveWorkbook;
             Worksheet excelSheet = excelBook.ActiveSheet;
-            SupplierInfo = new SupplierInvoiceInfo();
-
-            if (excelSheet.Name != _sheetName01) return;
+            
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            if (excelSheet.Name != SheetName01) return;
 
             if (drpEnvironment.Label == null || drpEnvironment.Label.Equals("")) return;
 
@@ -484,159 +525,35 @@ namespace EllipseMSO261ProntoPagoExcelAddIn
 
             var currentRow = TittleRow + 1;
 
-            var supplier = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value));
-            var factura = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
-
-            while (supplier != null & factura != null)
+            while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null || _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) != null)
             {
                 try
                 {
-                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnvironment.SelectedItem.Label);
+                    var supplier = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value));
+                    var factura = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
+                    var supplierInfo = SupplierInvoiceInfo.GetSupplierInvoiceInfo(supplier, factura, _eFunctions);
+
+                    if (supplierInfo == null)
+                        throw new Exception("Supplier Invoice Not Found");
                     _cells.GetCell(14, currentRow).Select();
-
-                    _cells.GetCell(13, currentRow).Value = SupplierInfo.Vrdescuentoaplicado;
-                    _cells.GetCell(14, currentRow).Value = SupplierInfo.Fechadepagomodificada;
-                    _cells.GetCell(15, currentRow).Value = SupplierInfo.BancodePagoModificado;
-
+                    _cells.GetCell(13, currentRow).Value = supplierInfo.Vrdescuentoaplicado;
+                    _cells.GetCell(14, currentRow).Value = supplierInfo.Fechadepagomodificada;
+                    _cells.GetCell(15, currentRow).Value = supplierInfo.BancodePagoModificado;
+                    _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Success;
+                    _cells.GetCell(ResultColumn, currentRow).Value = "VERIFICADO";
                 }
                 catch (Exception ex)
                 {
-                    if (SupplierInfo != null) SupplierInfo.Error = ex.Message;
+                    _cells.GetCell(ResultColumn, currentRow).Style = StyleConstants.Error;
+                    _cells.GetCell(ResultColumn, currentRow).Value = ex.Message;
                 }
                 finally
                 {
                     currentRow++;
-                    supplier = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value));
-                    factura = (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
-                    SupplierInfo = new SupplierInvoiceInfo(supplier, factura, drpEnvironment.SelectedItem.Label);
                 }
             }
-            MessageBox.Show(Resources.RibbonEllipse_VerifyInvoice_Datos_de_Facturas_Consuladas__Favor_Verificar);
-        }
-
-        public class SupplierInvoiceInfo
-        {
-
-            public SupplierInvoiceInfo()
-            {
-
-            }
-
-            public SupplierInvoiceInfo(string supplier, string factura, string environment)
-            {
-                var sqlQuery = Queries.GetSupplierInvoiceInfo("ICOR", supplier, factura, EFunctions.dbReference, EFunctions.dbLink);
-                EFunctions.SetDBSettings(environment);
-
-                var drSupplierInvoiceInfo = EFunctions.GetQueryResult(sqlQuery);
-
-                if (!drSupplierInvoiceInfo.Read())
-                {
-                    Error = "No existen datos";
-                }
-                else
-                {
-                    Supplier = drSupplierInvoiceInfo["SUPPLIER_NO"].ToString();
-                    Factura = drSupplierInvoiceInfo["EXT_INV_NO"].ToString();
-                    Fechapagosolicitada = null;
-                    Fechapagooriginal = drSupplierInvoiceInfo["DUE_DATE"].ToString();
-                    PmtStatus = drSupplierInvoiceInfo["PMT_STATUS"].ToString();
-                    Proveedor = drSupplierInvoiceInfo["NOM_SUPPLIER"].ToString();
-                    CodigoBancoOriginal = drSupplierInvoiceInfo["ORIG_BANK"].ToString();
-                    St = Convert.ToDouble(drSupplierInvoiceInfo["NO_OF_DAYS_PAY"].ToString());
-                    Vrtotalfactura = Convert.ToDouble(drSupplierInvoiceInfo["VLR_FACTURA"].ToString());
-                    VrBasedeDescuento = Convert.ToDouble(drSupplierInvoiceInfo["VRBASE"].ToString());
-                    Diferencia = Convert.ToDouble(drSupplierInvoiceInfo["DIREFENCIA"].ToString());
-                    Descuentocalculado = Convert.ToDouble(drSupplierInvoiceInfo["VR_OTROS_DESCTS"].ToString());
-                    Vrdescuentoaplicado = Convert.ToDouble(drSupplierInvoiceInfo["VR_OTROS_DESCTS"].ToString());
-                    Fechadepagomodificada = drSupplierInvoiceInfo["FEC_MOD_PAGO"].ToString();
-                    BancodePagoModificado = drSupplierInvoiceInfo["ORIG_BANK"].ToString();
-                    Error = "Success";
-                }
-            }
-
-            public string Supplier { get; set; }
-            public string Factura { get; set; }
-            public string Fechapagosolicitada { get; set; }
-            public string Fechapagooriginal { get; set; }
-            public string PmtStatus { get; set; }
-            public string Proveedor { get; set; }
-            public string CodigoBancoOriginal { get; set; }
-            public double St { get; set; }
-            public double Vrtotalfactura { get; set; }
-            public double VrBasedeDescuento { get; set; }
-            public double Diferencia { get; set; }
-            public double Descuentocalculado { get; set; }
-            public double Vrdescuentoaplicado { get; set; }
-            public string Fechadepagomodificada { get; set; }
-            public string BancodePagoModificado { get; set; }
-            public string Error { get; set; }
-        }
-
-        public class InvoiceParameters
-        {
-            [CsvColumn(FieldIndex = 1)]
-            public double X { get; set; }
-
-            [CsvColumn(FieldIndex = 2)]
-            public double Y { get; set; }
-
-            [CsvColumn(FieldIndex = 3)]
-            public double Z { get; set; }
-
-            [CsvColumn(FieldIndex = 4)]
-            public string Sitio { get; set; }
-
-            [CsvColumn(FieldIndex = 4)]
-            public string Tajo { get; set; }
-
-
-            [CsvColumn(FieldIndex = 4)]
-            public string TipoSitio { get; set; }
-
-            [CsvColumn(FieldIndex = 4)]
-            public string SiNombretio { get; set; }
-
-        }
-
-        public static class Queries
-        {
-            public static string GetSupplierInvoiceInfo(string districtCode, string supplierNo, string invoiceNo, string dbReference, string dbLink)
-            {
-                var sqlQuery = "SELECT " +
-                               "  INV.SUPPLIER_NO, " +
-                               "  INV.EXT_INV_NO, " +
-                               "  INV.SD_DATE FEC_MOD_PAGO, " +
-                               "  INV.DUE_DATE, " +
-                               "  INV.PMT_STATUS, " +
-                               "  SUP.SUPPLIER_NAME NOM_SUPPLIER, " +
-                               "  TRIM ( INV.BRANCH_CODE ) || '-' || TRIM ( INV.BANK_ACCT_NO ) ORIG_BANK, " +
-                               "  SBI.NO_OF_DAYS_PAY, " +
-                               "  DECODE ( INV.CURRENCY_TYPE, 'USD ', DECODE ( INV.LOC_INV_AMD, '0', INV.LOC_INV_ORIG, INV.LOC_INV_AMD ), DECODE ( INV.FOR_INV_AMD, '0', INV.FOR_INV_ORIG, INV.FOR_INV_AMD ) ) VLR_FACTURA, " +
-                               "  DECODE ( SUBSTR ( INVOICE_LINE_ITEM.INV_ITEM_DESC, 1, 4 ), 'CNT:', INVOICE_LINE_ITEM.FOR_VAL_INVD, DECODE ( INV.CURRENCY_TYPE, 'USD ', DECODE ( INV.LOC_INV_AMD, '0', INV.LOC_INV_ORIG, INV.LOC_INV_AMD ), DECODE ( INV.FOR_INV_AMD, '0', INV.FOR_INV_ORIG, INV.FOR_INV_AMD ) ) - DECODE ( INV.CURRENCY_TYPE, 'PES ', NVL ( 0, INV.ATAX_AMT_FOR ), 0 ) ) VRBASE, " +
-                               "  SBI.NO_OF_DAYS_PAY - ( TO_DATE ( DECODE ( TRIM ( INV.SD_DATE ), NULL, INV.INV_RCPT_DATE, INV.SD_DATE ), 'YYYYMMDD' ) - TO_DATE ( INV.INV_RCPT_DATE, 'YYYYMMDD' ) ) DIREFENCIA, " +
-                               "  INV.SD_AMOUNT VR_OTROS_DESCTS " +
-                               "FROM " +
-                               "  ELLIPSE.MSF260 INV " +
-                               "LEFT JOIN ELLIPSE.MSF203 SBI " +
-                               "ON " +
-                               "  INV.DSTRCT_CODE = SBI.DSTRCT_CODE " +
-                               "AND INV.SUPPLIER_NO = SBI.SUPPLIER_NO " +
-                               "LEFT JOIN ELLIPSE.MSF200 SUP " +
-                               "ON " +
-                               "  SBI.SUPPLIER_NO = SUP.SUPPLIER_NO " +
-                               "INNER JOIN ELLIPSE.MSF26A INVOICE_LINE_ITEM " +
-                               "ON " +
-                               "  INVOICE_LINE_ITEM.SUPPLIER_NO = INV.SUPPLIER_NO " +
-                               "AND INVOICE_LINE_ITEM.INV_NO = INV.INV_NO " +
-                               "AND INVOICE_LINE_ITEM.DSTRCT_CODE = INV.DSTRCT_CODE " +
-                               "AND INVOICE_LINE_ITEM.INV_ITEM_NO = '001' " +
-                                "WHERE " +
-                                "   INV.DSTRCT_CODE = '" + districtCode + "' " +
-                                "AND INV.SUPPLIER_NO = '" + supplierNo + "' " +
-                                "AND INV.INV_NO = '" + invoiceNo + "' ";
-
-                return sqlQuery;
-            }
+            _eFunctions.CloseConnection();
+            MessageBox.Show(PpResources.RibbonEllipse_VerifyInvoice_Datos_de_Facturas_Consuladas__Favor_Verificar);
         }
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)

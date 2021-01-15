@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="EquipmentServiceDeleteOptionReplyDTO" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>EllipseEquipmentClassLibrary.EquipmentService.EquipmentServiceDeleteOptionReplyDTO, Web References.EquipmentService.Reference.cs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>EllipseEquipmentClassLibrary.EquipmentService.EquipmentServiceDeleteOptionReplyDTO, Web References.EquipmentService.Reference.cs.dll, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

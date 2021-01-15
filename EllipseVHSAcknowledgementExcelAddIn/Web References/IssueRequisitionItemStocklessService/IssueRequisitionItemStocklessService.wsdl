@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:ns2="http://instances.m3140.types.ellipse.mincom.com" xmlns:tns="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:ns3="http://service.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:ns2="http://instances.m3140.types.ellipse.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:tns="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns3="http://service.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
       <xsd:complexType name="OperationContext">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
           <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
           <xsd:element minOccurs="0" name="position" type="xsd:string" />
           <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
           <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
         </xsd:sequence>
@@ -23,143 +26,144 @@
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.m3140.types.ellipse.mincom.com">
       <xsd:import namespace="http://service.ellipse.mincom.com" />
-      <xsd:complexType name="ArrayOfImmediateReturnStocklessDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateReturnStocklessDTO" nillable="true" type="ns2:ImmediateReturnStocklessDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:simpleType name="projectNumberx2">
+      <xsd:simpleType name="requisitionNumber">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="8" />
           <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="projectNumberx1">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="8" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="authorisedBy">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="10" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="costingDistrictCodex1">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="percentageAllocatedx1">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="100.00" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="percentageAllocatedx2">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="100.00" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="equipmentReferencex1">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="30" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="warehouseId">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="costingDistrictCodex2">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="equipmentReferencex2">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="30" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="requestedByPositionId">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="10" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="processedDate">
-        <xsd:restriction base="xsd:date" />
-      </xsd:simpleType>
-      <xsd:simpleType name="workOrderx1">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="8" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="workOrderx2">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="8" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="requestedBySupplyCustomerAccountId">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="10" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="transactionType">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="2" />
-          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="districtCode">
         <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
           <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="requisitionNumber">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="6" />
-          <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="requestedByEmployee">
         <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
           <xsd:maxLength value="10" />
-          <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="costCodex2">
+      <xsd:simpleType name="authorisedBy">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="24" />
           <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="costCodex1">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="24" />
-          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="isIssue">
         <xsd:restriction base="xsd:boolean" />
       </xsd:simpleType>
+      <xsd:simpleType name="requestedBySupplyCustomerAccountId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="authorisedByPositionId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="requestedByPositionId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="costingDistrictCodex2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="transactionType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="processedDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="projectNumberx2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="costingDistrictCodex1">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentReferencex2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="percentageAllocatedx2">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="100.00" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderx2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentReferencex1">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="percentageAllocatedx1">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="100.00" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="warehouseId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderx1">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="projectNumberx1">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="costCodex2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="24" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="processedBy">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="10" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="costCodex1">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="24" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:complexType name="ImmediateReturnStocklessDTO">
@@ -172,6 +176,7 @@
           <xsd:extension base="ns3:ServiceDTO">
             <xsd:sequence>
               <xsd:element minOccurs="0" name="authorisedBy" type="ns2:authorisedBy" />
+              <xsd:element minOccurs="0" name="authorisedByPositionId" type="ns2:authorisedByPositionId" />
               <xsd:element minOccurs="0" name="costCodex1" type="ns2:costCodex1" />
               <xsd:element minOccurs="0" name="costCodex2" type="ns2:costCodex2" />
               <xsd:element minOccurs="0" name="costingDistrictCodex1" type="ns2:costingDistrictCodex1" />
@@ -204,62 +209,62 @@
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="HoldingDetailsDTO" nillable="true" type="ns2:HoldingDetailsDTO" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:simpleType name="inventoryCategory">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="2" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="conditionCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="2" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="stockOwnershipIndicator">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="stockCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="9" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="batchLotNumber">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="10" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="binCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="12" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="equipmentReference">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="30" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
       <xsd:simpleType name="useByDate">
         <xsd:restriction base="xsd:date" />
       </xsd:simpleType>
-      <xsd:simpleType name="serialNumber">
+      <xsd:simpleType name="stockOwnershipIndicator">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="30" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="quantity">
         <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
           <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="serialNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="batchLotNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="inventoryCategory">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="binCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="conditionCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:complexType name="HoldingDetailsDTO">
@@ -280,11 +285,6 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="ArrayOfImmediateReturnStocklessServiceResult">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateReturnStocklessServiceResult" nillable="true" type="ns2:ImmediateReturnStocklessServiceResult" />
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="ImmediateReturnStocklessServiceResult">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns3:ServiceResult">
@@ -294,571 +294,594 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:simpleType name="noPrintInd">
+      <xsd:complexType name="ArrayOfImmediateReadDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateReadDTO" nillable="true" type="ns2:ImmediateReadDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="hasInterdistrictAccess">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="authorityType">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
           <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="supplierName">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="32" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="partIssueAcceptable">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="customsValue">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="9999999999999.99" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="acknowledgeType">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="directPurchaseOrderNumber">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="6" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="totalQuantityRequired">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="-999999999" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="transaction900Key">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="25" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="repairRequestFlag">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="issueRequisitionItem">
-        <xsd:restriction base="xsd:string">
           <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="statisticsUpdatedInd">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
+      <xsd:complexType name="ImmediateReadDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="authorityType" type="ns2:authorityType" />
+              <xsd:element minOccurs="0" name="costCodex1" type="ns2:costCodex1" />
+              <xsd:element minOccurs="0" name="costCodex2" type="ns2:costCodex2" />
+              <xsd:element minOccurs="0" name="costingDistrictCodex1" type="ns2:costingDistrictCodex1" />
+              <xsd:element minOccurs="0" name="costingDistrictCodex2" type="ns2:costingDistrictCodex2" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
+              <xsd:element minOccurs="0" name="hasInterdistrictAccess" type="ns2:hasInterdistrictAccess" />
+              <xsd:element minOccurs="0" name="isIssue" type="ns2:isIssue" />
+              <xsd:element minOccurs="0" name="requestedByEmployee" type="ns2:requestedByEmployee" />
+              <xsd:element minOccurs="0" name="requestedBySupplyCustomerAccountId" type="ns2:requestedBySupplyCustomerAccountId" />
+              <xsd:element minOccurs="0" name="warehouseId" type="ns2:warehouseId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfImmediateReadServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateReadServiceResult" nillable="true" type="ns2:ImmediateReadServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ImmediateReadServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="immediateReadDTO" type="ns2:ImmediateReadDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ImmediateSearchParam">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:AbstractSearchParam">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
+              <xsd:element minOccurs="0" name="isIssue" type="ns2:isIssue" />
+              <xsd:element minOccurs="0" name="requestedByEmployee" type="ns2:requestedByEmployee" />
+              <xsd:element minOccurs="0" name="requestedBySupplyCustomerAccountId" type="ns2:requestedBySupplyCustomerAccountId" />
+              <xsd:element minOccurs="0" name="warehouseId" type="ns2:warehouseId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfHoldingDetailsServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="HoldingDetailsServiceResult" nillable="true" type="ns2:HoldingDetailsServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="HoldingDetailsServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="holdingDetailsDTO" type="ns2:HoldingDetailsDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
       <xsd:simpleType name="classKey734">
         <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
           <xsd:maxLength value="15" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="applicationPartsListingType">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="idtDeployedSystemIssueReqStatus">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="quantityReactivated">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="originalStockCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="9" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="quantityReceivedInDistrict">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="quantityIssued">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="description">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="160" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="farDistrict">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="directPurchaseOrderItemNumber">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="3" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="valueReceivedInDistrict">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="-9999999999999.99" />
-          <xsd:maxInclusive value="9999999999999.99" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="quantityReceivedConsignment">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="bincode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="12" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="issueDistrictCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="waybillCurrentLocation">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="12" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="entitlementPeriod">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="inventoryValueSecondaryCurrency">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="9999999999999.99" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="quantityAcknowledged">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="stockcode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="9" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="directOrderQuantity">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="componentModificationCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="2" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="freightValue">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="9999999999999.99" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="itemPrice">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="6" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="100000000000" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="issuedBy">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="10" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="goodsHoldingDistrictCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="quantityReceived">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="orderStatus">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="issuedDate">
-        <xsd:restriction base="xsd:date" />
-      </xsd:simpleType>
-      <xsd:simpleType name="assetValue">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="9999999999999.99" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="classType734">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="2" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="directOrderQuantityReceived">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityReturned">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="-999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="activityCounter">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityOutstanding">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="-999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="loanReturnReq">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="waybillItemNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="requiredByDate">
         <xsd:restriction base="xsd:date" />
       </xsd:simpleType>
-      <xsd:simpleType name="isNewWaybill">
-        <xsd:restriction base="xsd:boolean" />
-      </xsd:simpleType>
-      <xsd:simpleType name="item141StatusDescription">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="40" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="applicationPartsListingItemNumber">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="3" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="componentCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="waybillNumberOfUnits">
+      <xsd:simpleType name="inventoryValue">
         <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="9999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="waybillNo">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="8" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="intransitInd">
-        <xsd:restriction base="xsd:boolean" />
-      </xsd:simpleType>
-      <xsd:simpleType name="valueIssuedToDistrict">
-        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="-10000000000000000000" />
           <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="-9999999999999.99" />
-          <xsd:maxInclusive value="9999999999999.99" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="loanReturnReq">
+      <xsd:simpleType name="assetValue">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="idtDeployedSystemIssueReqStatus">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="6" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="customsValueSecondaryCurrency">
         <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="0" />
           <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="9999999999999.99" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="quantityIssuedInExcess">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="sequenceNumber">
+      <xsd:simpleType name="entitlementPeriod">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="6" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="quantityOutstanding">
+      <xsd:simpleType name="freightValueSecondaryCurrency">
         <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
+          <xsd:maxInclusive value="10000000000000000000" />
           <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="custodianId">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="32" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="applicationPartsListingSequenceNumber">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="directOrderQuantityReceived">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="unitOfIssue">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="quantityReturned">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="999999999" />
+          <xsd:fractionDigits value="2" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="quantityRequired">
         <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
           <xsd:maxInclusive value="999999999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="purchaseOrderNumber">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="6" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="surveyItem">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="6" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="activeCrossReferenceInd">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="storesSalePrice">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="4" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="99999999999.9999" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="leadTimeCompleteSwitch">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="quantityIssuedOnConsignment">
-        <xsd:restriction base="xsd:decimal">
+          <xsd:minInclusive value="-999999999" />
           <xsd:fractionDigits value="0" />
-          <xsd:minInclusive value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="totalQuantityRequired">
+        <xsd:restriction base="xsd:decimal">
           <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="-999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="valueIssuedToDistrict">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="-10000000000000000000" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="directOrderQuantity">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="partIssueAcceptable">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="completeInd">
         <xsd:restriction base="xsd:boolean" />
       </xsd:simpleType>
-      <xsd:simpleType name="purchaseOrderItemNumber">
+      <xsd:simpleType name="item141Status">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="3" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="priorityCode">
+      <xsd:simpleType name="authorisedStatus">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="goodsHoldingWarehouseId">
+      <xsd:simpleType name="custodianId">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="applicationPartsListingSequenceNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityAcknowledged">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="unitOfIssue">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityReceived">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="-999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockcode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="inabilityDate">
         <xsd:restriction base="xsd:date" />
       </xsd:simpleType>
-      <xsd:simpleType name="issueRequisitionNumber">
+      <xsd:simpleType name="sequenceNumber">
         <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
           <xsd:maxLength value="6" />
-          <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="equipmentGroupIdentifier">
+      <xsd:simpleType name="componentCode">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="12" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="waybillItemNo">
+      <xsd:simpleType name="activeCrossReferenceInd">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="3" />
           <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="goodsHoldingBinCode">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="12" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="deliveryInstructionsB">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="60" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="deliveryInstructionsA">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="60" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="reversedPeriodStartDate">
-        <xsd:restriction base="xsd:date" />
-      </xsd:simpleType>
-      <xsd:simpleType name="extendedDeliveryInstructions">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="0" />
-          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="holdingWarehouseId">
         <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
           <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="activityCounter">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="3" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="inabilityReason">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="freightValueSecondaryCurrency">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="9999999999999.99" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="deliveryLocation">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="inventoryValue">
-        <xsd:restriction base="xsd:decimal">
-          <xsd:fractionDigits value="2" />
-          <xsd:minInclusive value="0" />
-          <xsd:maxInclusive value="9999999999999.99" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="isImmediateIssueReturn">
+      <xsd:simpleType name="intransitInd">
         <xsd:restriction base="xsd:boolean" />
       </xsd:simpleType>
-      <xsd:simpleType name="authorisedStatus">
+      <xsd:simpleType name="inventoryValueSecondaryCurrency">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="-10000000000000000000" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityIssuedOnConsignment">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="-999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="applicationPartsListingType">
         <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
           <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:simpleType name="holdingBinCode">
+      <xsd:simpleType name="directPurchaseOrderItemNumber">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="12" />
           <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="supplierNumber">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="6" />
-          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="lastAcquittedDate">
         <xsd:restriction base="xsd:date" />
       </xsd:simpleType>
-      <xsd:simpleType name="item141Status">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="1" />
-          <xsd:minLength value="0" />
+      <xsd:simpleType name="quantityIssued">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="-999999999" />
+          <xsd:fractionDigits value="0" />
         </xsd:restriction>
       </xsd:simpleType>
-      <xsd:complexType name="IssueRequisitionItemStocklessAcknowledgeDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns2:IssueRequisitionItemStocklessDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="acknowledgeType" type="ns2:acknowledgeType" />
-              <xsd:element minOccurs="0" name="goodsHoldingBinCode" type="ns2:goodsHoldingBinCode" />
-              <xsd:element minOccurs="0" name="goodsHoldingDistrictCode" type="ns2:goodsHoldingDistrictCode" />
-              <xsd:element minOccurs="0" name="goodsHoldingWarehouseId" type="ns2:goodsHoldingWarehouseId" />
-              <xsd:element minOccurs="0" name="waybillCurrentLocation" type="ns2:waybillCurrentLocation" />
-              <xsd:element minOccurs="0" name="waybillNumberOfUnits" type="ns2:waybillNumberOfUnits" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
+      <xsd:simpleType name="isNewWaybill">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="issuedDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="surveyItem">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="farDistrict">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="directPurchaseOrderNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="issuedBy">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="supplierNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="valueReceivedInDistrict">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="-10000000000000000000" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="description">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="160" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="freightValue">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="orderStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="statisticsUpdatedInd">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="repairRequestFlag">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="componentModificationCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="holdingBinCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="leadTimeCompleteSwitch">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="inabilityReason">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="noPrintInd">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="originalStockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="supplierName">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="issueDistrictCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="deliveryLocation">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="customsValue">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityReceivedConsignment">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="-999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="transaction900Key">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="28" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="issueRequisitionItem">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityIssuedInExcess">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="-999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="deliveryInstructionsA">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="60" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="purchaseOrderItemNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="deliveryInstructionsB">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="60" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="item141StatusDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="reversedPeriodStartDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="applicationPartsListingItemNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="issueRequisitionNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="purchaseOrderNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityReceivedInDistrict">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="-999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="bincode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemPrice">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="100000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="priorityCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentGroupIdentifier">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="extendedDeliveryInstructions">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="quantityReactivated">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="-999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isImmediateIssueReturn">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="storesSalePrice">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="100000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="waybillNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:complexType name="IssueRequisitionItemStocklessDTO">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:IssueRequisitionItemDTO">
@@ -967,32 +990,32 @@
       </xsd:complexType>
       <xsd:simpleType name="requisitionType">
         <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
           <xsd:maxLength value="2" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="requestedBySupplyCustomer">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="10" />
-          <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="requisitionRequestedBy">
         <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
           <xsd:maxLength value="10" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="requisitionPriority">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="requisitionDeliveryLocation">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="requestedBySupplyCustomer">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="requisitionPriority">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:complexType name="IssueRequisitionInformationDTO">
@@ -1009,11 +1032,11 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="IssueRequisitionItemStocklessAcknowledgeServiceResult">
+      <xsd:complexType name="IssueRequisitionItemStocklessServiceResult">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns3:ServiceResult">
             <xsd:sequence>
-              <xsd:element minOccurs="0" name="issueRequisitionItemStocklessAcknowledgeDTO" type="ns2:IssueRequisitionItemStocklessAcknowledgeDTO" />
+              <xsd:element minOccurs="0" name="issueRequisitionItemStocklessDTO" type="ns2:IssueRequisitionItemStocklessDTO" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -1028,69 +1051,62 @@
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="IssueRequisitionItemStocklessServiceResult" nillable="true" type="ns2:IssueRequisitionItemStocklessServiceResult" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="IssueRequisitionItemStocklessServiceResult">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceResult">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="issueRequisitionItemStocklessDTO" type="ns2:IssueRequisitionItemStocklessDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
+      <xsd:complexType name="ArrayOfImmediateReturnStocklessDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateReturnStocklessDTO" nillable="true" type="ns2:ImmediateReturnStocklessDTO" />
+        </xsd:sequence>
       </xsd:complexType>
-      <xsd:simpleType name="hasInterdistrictAccess">
-        <xsd:restriction base="xsd:boolean" />
+      <xsd:complexType name="ArrayOfImmediateReturnStocklessServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateReturnStocklessServiceResult" nillable="true" type="ns2:ImmediateReturnStocklessServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfImmediateIssueStocklessDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateIssueStocklessDTO" nillable="true" type="ns2:ImmediateIssueStocklessDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="goodsHoldingDistrictCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
       </xsd:simpleType>
-      <xsd:complexType name="ImmediateReadDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="costCodex1" type="ns2:costCodex1" />
-              <xsd:element minOccurs="0" name="costCodex2" type="ns2:costCodex2" />
-              <xsd:element minOccurs="0" name="costingDistrictCodex1" type="ns2:costingDistrictCodex1" />
-              <xsd:element minOccurs="0" name="costingDistrictCodex2" type="ns2:costingDistrictCodex2" />
-              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
-              <xsd:element minOccurs="0" name="hasInterdistrictAccess" type="ns2:hasInterdistrictAccess" />
-              <xsd:element minOccurs="0" name="isIssue" type="ns2:isIssue" />
-              <xsd:element minOccurs="0" name="requestedByEmployee" type="ns2:requestedByEmployee" />
-              <xsd:element minOccurs="0" name="requestedBySupplyCustomerAccountId" type="ns2:requestedBySupplyCustomerAccountId" />
-              <xsd:element minOccurs="0" name="warehouseId" type="ns2:warehouseId" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ImmediateReadServiceResult">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceResult">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="immediateReadDTO" type="ns2:ImmediateReadDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfIssueRequisitionItemStocklessAcknowledgeDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="IssueRequisitionItemStocklessAcknowledgeDTO" nillable="true" type="ns2:IssueRequisitionItemStocklessAcknowledgeDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfIssueRequisitionItemStocklessAcknowledgeServiceResult">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="IssueRequisitionItemStocklessAcknowledgeServiceResult" nillable="true" type="ns2:IssueRequisitionItemStocklessAcknowledgeServiceResult" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfImmediateReadDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateReadDTO" nillable="true" type="ns2:ImmediateReadDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfImmediateReadServiceResult">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateReadServiceResult" nillable="true" type="ns2:ImmediateReadServiceResult" />
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:simpleType name="waybillNumber">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="8" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="goodsHoldingBinCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="goodsHoldingWarehouseId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="acknowledgeType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="waybillCurrentLocation">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="waybillNumberOfUnits">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="9999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:complexType name="ImmediateIssueStocklessDTO">
@@ -1108,6 +1124,11 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
+      <xsd:complexType name="ArrayOfImmediateIssueStocklessServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateIssueStocklessServiceResult" nillable="true" type="ns2:ImmediateIssueStocklessServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ImmediateIssueStocklessServiceResult">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns3:ServiceResult">
@@ -1117,15 +1138,54 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="ImmediateSearchParam">
+      <xsd:simpleType name="issueRequisitionItemTo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="defaultQuantityAcknowledged">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="issueRequisitionItemFrom">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="IssueRequisitionItemStocklessSearchParam">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns3:AbstractSearchParam">
             <xsd:sequence>
+              <xsd:element minOccurs="0" name="defaultQuantityAcknowledged" type="ns2:defaultQuantityAcknowledged" />
               <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
-              <xsd:element minOccurs="0" name="isIssue" type="ns2:isIssue" />
-              <xsd:element minOccurs="0" name="requestedByEmployee" type="ns2:requestedByEmployee" />
-              <xsd:element minOccurs="0" name="requestedBySupplyCustomerAccountId" type="ns2:requestedBySupplyCustomerAccountId" />
-              <xsd:element minOccurs="0" name="warehouseId" type="ns2:warehouseId" />
+              <xsd:element minOccurs="0" name="issueRequisitionItemFrom" type="ns2:issueRequisitionItemFrom" />
+              <xsd:element minOccurs="0" name="issueRequisitionItemTo" type="ns2:issueRequisitionItemTo" />
+              <xsd:element minOccurs="0" name="issueRequisitionNumber" type="ns2:issueRequisitionNumber" />
+              <xsd:element minOccurs="0" name="supplierNumber" type="ns2:supplierNumber" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="IssueRequisitionItemStocklessAcknowledgeDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:IssueRequisitionItemStocklessDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="acknowledgeType" type="ns2:acknowledgeType" />
+              <xsd:element minOccurs="0" name="goodsHoldingBinCode" type="ns2:goodsHoldingBinCode" />
+              <xsd:element minOccurs="0" name="goodsHoldingDistrictCode" type="ns2:goodsHoldingDistrictCode" />
+              <xsd:element minOccurs="0" name="goodsHoldingWarehouseId" type="ns2:goodsHoldingWarehouseId" />
+              <xsd:element minOccurs="0" name="waybillCurrentLocation" type="ns2:waybillCurrentLocation" />
+              <xsd:element minOccurs="0" name="waybillNumberOfUnits" type="ns2:waybillNumberOfUnits" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="IssueRequisitionItemStocklessAcknowledgeServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="issueRequisitionItemStocklessAcknowledgeDTO" type="ns2:IssueRequisitionItemStocklessAcknowledgeDTO" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -1144,57 +1204,14 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="ArrayOfHoldingDetailsServiceResult">
+      <xsd:complexType name="ArrayOfIssueRequisitionItemStocklessAcknowledgeDTO">
         <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="HoldingDetailsServiceResult" nillable="true" type="ns2:HoldingDetailsServiceResult" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="IssueRequisitionItemStocklessAcknowledgeDTO" nillable="true" type="ns2:IssueRequisitionItemStocklessAcknowledgeDTO" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="HoldingDetailsServiceResult">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceResult">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="holdingDetailsDTO" type="ns2:HoldingDetailsDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:simpleType name="defaultQuantityAcknowledged">
-        <xsd:restriction base="xsd:boolean" />
-      </xsd:simpleType>
-      <xsd:simpleType name="issueRequisitionItemFrom">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType name="issueRequisitionItemTo">
-        <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="4" />
-          <xsd:minLength value="0" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:complexType name="IssueRequisitionItemStocklessSearchParam">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:AbstractSearchParam">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="defaultQuantityAcknowledged" type="ns2:defaultQuantityAcknowledged" />
-              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
-              <xsd:element minOccurs="0" name="issueRequisitionItemFrom" type="ns2:issueRequisitionItemFrom" />
-              <xsd:element minOccurs="0" name="issueRequisitionItemTo" type="ns2:issueRequisitionItemTo" />
-              <xsd:element minOccurs="0" name="issueRequisitionNumber" type="ns2:issueRequisitionNumber" />
-              <xsd:element minOccurs="0" name="supplierNumber" type="ns2:supplierNumber" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfImmediateIssueStocklessDTO">
+      <xsd:complexType name="ArrayOfIssueRequisitionItemStocklessAcknowledgeServiceResult">
         <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateIssueStocklessDTO" nillable="true" type="ns2:ImmediateIssueStocklessDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfImmediateIssueStocklessServiceResult">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ImmediateIssueStocklessServiceResult" nillable="true" type="ns2:ImmediateIssueStocklessServiceResult" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="IssueRequisitionItemStocklessAcknowledgeServiceResult" nillable="true" type="ns2:IssueRequisitionItemStocklessAcknowledgeServiceResult" />
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>
@@ -1225,14 +1242,17 @@
       </xsd:complexType>
       <xsd:complexType name="AbstractSearchParam" abstract="true">
         <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO" />
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="serviceRequiredAttributes" type="ns3:ServiceRequiredAttributes" />
+            </xsd:sequence>
+          </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-    </xsd:schema>
-    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
-      <xsd:complexType name="Base" abstract="true" />
+      <xsd:complexType name="ServiceRequiredAttributes" />
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:import namespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com" />
       <xsd:complexType name="ArrayOfAttribute">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns5:Attribute" />
@@ -1240,7 +1260,10 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
+          <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
           <xsd:element minOccurs="0" name="value" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
@@ -1248,111 +1271,18 @@
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com">
       <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
       <xsd:import namespace="http://instances.m3140.types.ellipse.mincom.com" />
-      <xsd:element name="multipleImmediateReturn">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfImmediateReturnStocklessDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="multipleImmediateReturnResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfImmediateReturnStocklessServiceResult" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="acknowledge">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:IssueRequisitionItemStocklessAcknowledgeDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="acknowledgeResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:IssueRequisitionItemStocklessAcknowledgeServiceResult" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="multipleClose">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfIssueRequisitionItemStocklessDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="multipleCloseResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfIssueRequisitionItemStocklessServiceResult" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="immediateRead">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:ImmediateReadDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="immediateReadResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ImmediateReadServiceResult" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="multipleAcknowledge">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfIssueRequisitionItemStocklessAcknowledgeDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="multipleAcknowledgeResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfIssueRequisitionItemStocklessAcknowledgeServiceResult" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="multipleImmediateRead">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfImmediateReadDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="multipleImmediateReadResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfImmediateReadServiceResult" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="immediateIssue">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:ImmediateIssueStocklessDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="immediateIssueResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ImmediateIssueStocklessServiceResult" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:element name="immediateReturn">
         <xsd:complexType>
           <xsd:sequence>
@@ -1368,34 +1298,18 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="immediateSearch">
+      <xsd:element name="multipleImmediateRead">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns2:ImmediateSearchParam" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns2:ImmediateDTO" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfImmediateReadDTO" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="immediateSearchResponse">
+      <xsd:element name="multipleImmediateReadResponse">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfImmediateServiceResult" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="close">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:IssueRequisitionItemStocklessDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="closeResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:IssueRequisitionItemStocklessServiceResult" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfImmediateReadServiceResult" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -1415,7 +1329,22 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="multipleRead">
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:IssueRequisitionItemStocklessDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:IssueRequisitionItemStocklessServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleClose">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
@@ -1423,10 +1352,70 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="multipleReadResponse">
+      <xsd:element name="multipleCloseResponse">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfIssueRequisitionItemStocklessServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleImmediateReturn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfImmediateReturnStocklessDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleImmediateReturnResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfImmediateReturnStocklessServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleImmediateIssue">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfImmediateIssueStocklessDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleImmediateIssueResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfImmediateIssueStocklessServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="immediateRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:ImmediateReadDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="immediateReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ImmediateReadServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="immediateIssue">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:ImmediateIssueStocklessDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="immediateIssueResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ImmediateIssueStocklessServiceResult" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -1446,7 +1435,68 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="read">
+      <xsd:element name="acknowledge">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:IssueRequisitionItemStocklessAcknowledgeDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="acknowledgeResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:IssueRequisitionItemStocklessAcknowledgeServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="immediateSearch">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns2:ImmediateSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns2:ImmediateDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="immediateSearchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfImmediateServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleAcknowledge">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfIssueRequisitionItemStocklessAcknowledgeDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleAcknowledgeResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfIssueRequisitionItemStocklessAcknowledgeServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfIssueRequisitionItemStocklessDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfIssueRequisitionItemStocklessServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="close">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
@@ -1454,44 +1504,43 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="readResponse">
+      <xsd:element name="closeResponse">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:IssueRequisitionItemStocklessServiceResult" />
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="multipleImmediateIssue">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
-            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfImmediateIssueStocklessDTO" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="multipleImmediateIssueResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfImmediateIssueStocklessServiceResult" />
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
+      <xsd:complexType name="Base" abstract="true" />
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
-      <xsd:complexType name="ArrayOfMessage">
+      <xsd:complexType name="ArrayOfError">
         <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
         </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Error">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
       </xsd:complexType>
       <xsd:complexType name="Message">
         <xsd:sequence>
           <xsd:element minOccurs="0" name="fieldId" type="xsd:string" />
           <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="localisable" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="messageId" type="xsd:string" />
           <xsd:element minOccurs="0" name="messageInstance" type="xsd:string" />
           <xsd:element minOccurs="0" name="messageText" type="xsd:string" />
           <xsd:element minOccurs="0" name="parentInstance" type="xsd:string" />
           <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMessage">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ArrayOfWarning">
@@ -1504,50 +1553,73 @@
           <xsd:extension base="ns6:Message" />
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="ArrayOfError">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="Error">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns6:Message" />
-        </xsd:complexContent>
-      </xsd:complexType>
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="readResponse">
-    <wsdl:part name="parameters" element="tns:readResponse" />
-  </wsdl:message>
-  <wsdl:message name="immediateSearchRequest">
-    <wsdl:part name="parameters" element="tns:immediateSearch" />
-  </wsdl:message>
-  <wsdl:message name="closeResponse">
-    <wsdl:part name="parameters" element="tns:closeResponse" />
-  </wsdl:message>
-  <wsdl:message name="multipleImmediateReturnRequest">
-    <wsdl:part name="parameters" element="tns:multipleImmediateReturn" />
-  </wsdl:message>
   <wsdl:message name="immediateSearchResponse">
     <wsdl:part name="parameters" element="tns:immediateSearchResponse" />
   </wsdl:message>
-  <wsdl:message name="immediateSearchHoldingsRequest">
-    <wsdl:part name="parameters" element="tns:immediateSearchHoldings" />
+  <wsdl:message name="multipleCloseRequest">
+    <wsdl:part name="parameters" element="tns:multipleClose" />
   </wsdl:message>
-  <wsdl:message name="multipleAcknowledgeRequest">
-    <wsdl:part name="parameters" element="tns:multipleAcknowledge" />
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="immediateReturnRequest">
+    <wsdl:part name="parameters" element="tns:immediateReturn" />
   </wsdl:message>
   <wsdl:message name="immediateReturnResponse">
     <wsdl:part name="parameters" element="tns:immediateReturnResponse" />
   </wsdl:message>
-  <wsdl:message name="immediateSearchHoldingsResponse">
-    <wsdl:part name="parameters" element="tns:immediateSearchHoldingsResponse" />
+  <wsdl:message name="multipleCloseResponse">
+    <wsdl:part name="parameters" element="tns:multipleCloseResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleImmediateReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleImmediateRead" />
+  </wsdl:message>
+  <wsdl:message name="immediateIssueResponse">
+    <wsdl:part name="parameters" element="tns:immediateIssueResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchResponse">
+    <wsdl:part name="parameters" element="tns:searchResponse" />
+  </wsdl:message>
+  <wsdl:message name="immediateReadResponse">
+    <wsdl:part name="parameters" element="tns:immediateReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="closeResponse">
+    <wsdl:part name="parameters" element="tns:closeResponse" />
+  </wsdl:message>
+  <wsdl:message name="immediateSearchRequest">
+    <wsdl:part name="parameters" element="tns:immediateSearch" />
+  </wsdl:message>
+  <wsdl:message name="multipleImmediateIssueResponse">
+    <wsdl:part name="parameters" element="tns:multipleImmediateIssueResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleImmediateReturnRequest">
+    <wsdl:part name="parameters" element="tns:multipleImmediateReturn" />
   </wsdl:message>
   <wsdl:message name="immediateIssueRequest">
     <wsdl:part name="parameters" element="tns:immediateIssue" />
   </wsdl:message>
-  <wsdl:message name="multipleCloseRequest">
-    <wsdl:part name="parameters" element="tns:multipleClose" />
+  <wsdl:message name="acknowledgeResponse">
+    <wsdl:part name="parameters" element="tns:acknowledgeResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleAcknowledgeResponse">
+    <wsdl:part name="parameters" element="tns:multipleAcknowledgeResponse" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchRequest">
+    <wsdl:part name="parameters" element="tns:search" />
+  </wsdl:message>
+  <wsdl:message name="immediateSearchHoldingsRequest">
+    <wsdl:part name="parameters" element="tns:immediateSearchHoldings" />
+  </wsdl:message>
+  <wsdl:message name="immediateReadRequest">
+    <wsdl:part name="parameters" element="tns:immediateRead" />
   </wsdl:message>
   <wsdl:message name="multipleReadResponse">
     <wsdl:part name="parameters" element="tns:multipleReadResponse" />
@@ -1555,163 +1627,94 @@
   <wsdl:message name="multipleImmediateIssueRequest">
     <wsdl:part name="parameters" element="tns:multipleImmediateIssue" />
   </wsdl:message>
-  <wsdl:message name="immediateReturnRequest">
-    <wsdl:part name="parameters" element="tns:immediateReturn" />
-  </wsdl:message>
-  <wsdl:message name="readRequest">
-    <wsdl:part name="parameters" element="tns:read" />
-  </wsdl:message>
-  <wsdl:message name="closeRequest">
-    <wsdl:part name="parameters" element="tns:close" />
-  </wsdl:message>
-  <wsdl:message name="acknowledgeRequest">
-    <wsdl:part name="parameters" element="tns:acknowledge" />
-  </wsdl:message>
-  <wsdl:message name="multipleImmediateReadRequest">
-    <wsdl:part name="parameters" element="tns:multipleImmediateRead" />
-  </wsdl:message>
-  <wsdl:message name="multipleImmediateIssueResponse">
-    <wsdl:part name="parameters" element="tns:multipleImmediateIssueResponse" />
-  </wsdl:message>
-  <wsdl:message name="acknowledgeResponse">
-    <wsdl:part name="parameters" element="tns:acknowledgeResponse" />
-  </wsdl:message>
-  <wsdl:message name="multipleImmediateReadResponse">
-    <wsdl:part name="parameters" element="tns:multipleImmediateReadResponse" />
+  <wsdl:message name="immediateSearchHoldingsResponse">
+    <wsdl:part name="parameters" element="tns:immediateSearchHoldingsResponse" />
   </wsdl:message>
   <wsdl:message name="multipleImmediateReturnResponse">
     <wsdl:part name="parameters" element="tns:multipleImmediateReturnResponse" />
   </wsdl:message>
-  <wsdl:message name="multipleAcknowledgeResponse">
-    <wsdl:part name="parameters" element="tns:multipleAcknowledgeResponse" />
+  <wsdl:message name="acknowledgeRequest">
+    <wsdl:part name="parameters" element="tns:acknowledge" />
   </wsdl:message>
-  <wsdl:message name="immediateReadResponse">
-    <wsdl:part name="parameters" element="tns:immediateReadResponse" />
+  <wsdl:message name="multipleAcknowledgeRequest">
+    <wsdl:part name="parameters" element="tns:multipleAcknowledge" />
   </wsdl:message>
-  <wsdl:message name="immediateIssueResponse">
-    <wsdl:part name="parameters" element="tns:immediateIssueResponse" />
+  <wsdl:message name="multipleImmediateReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleImmediateReadResponse" />
   </wsdl:message>
-  <wsdl:message name="immediateReadRequest">
-    <wsdl:part name="parameters" element="tns:immediateRead" />
-  </wsdl:message>
-  <wsdl:message name="searchRequest">
-    <wsdl:part name="parameters" element="tns:search" />
-  </wsdl:message>
-  <wsdl:message name="multipleCloseResponse">
-    <wsdl:part name="parameters" element="tns:multipleCloseResponse" />
-  </wsdl:message>
-  <wsdl:message name="searchResponse">
-    <wsdl:part name="parameters" element="tns:searchResponse" />
-  </wsdl:message>
-  <wsdl:message name="multipleReadRequest">
-    <wsdl:part name="parameters" element="tns:multipleRead" />
+  <wsdl:message name="closeRequest">
+    <wsdl:part name="parameters" element="tns:close" />
   </wsdl:message>
   <wsdl:portType name="IssueRequisitionItemStockless">
-    <wsdl:operation name="multipleImmediateReturn">
-      <wsdl:input name="multipleImmediateReturnRequest" message="tns:multipleImmediateReturnRequest" />
-      <wsdl:output name="multipleImmediateReturnResponse" message="tns:multipleImmediateReturnResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="acknowledge">
-      <wsdl:input name="acknowledgeRequest" message="tns:acknowledgeRequest" />
-      <wsdl:output name="acknowledgeResponse" message="tns:acknowledgeResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="multipleClose">
-      <wsdl:input name="multipleCloseRequest" message="tns:multipleCloseRequest" />
-      <wsdl:output name="multipleCloseResponse" message="tns:multipleCloseResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="immediateRead">
-      <wsdl:input name="immediateReadRequest" message="tns:immediateReadRequest" />
-      <wsdl:output name="immediateReadResponse" message="tns:immediateReadResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="multipleAcknowledge">
-      <wsdl:input name="multipleAcknowledgeRequest" message="tns:multipleAcknowledgeRequest" />
-      <wsdl:output name="multipleAcknowledgeResponse" message="tns:multipleAcknowledgeResponse" />
+    <wsdl:operation name="immediateReturn">
+      <wsdl:input name="immediateReturnRequest" message="tns:immediateReturnRequest" />
+      <wsdl:output name="immediateReturnResponse" message="tns:immediateReturnResponse" />
     </wsdl:operation>
     <wsdl:operation name="multipleImmediateRead">
       <wsdl:input name="multipleImmediateReadRequest" message="tns:multipleImmediateReadRequest" />
       <wsdl:output name="multipleImmediateReadResponse" message="tns:multipleImmediateReadResponse" />
     </wsdl:operation>
-    <wsdl:operation name="immediateIssue">
-      <wsdl:input name="immediateIssueRequest" message="tns:immediateIssueRequest" />
-      <wsdl:output name="immediateIssueResponse" message="tns:immediateIssueResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="immediateReturn">
-      <wsdl:input name="immediateReturnRequest" message="tns:immediateReturnRequest" />
-      <wsdl:output name="immediateReturnResponse" message="tns:immediateReturnResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="immediateSearch">
-      <wsdl:input name="immediateSearchRequest" message="tns:immediateSearchRequest" />
-      <wsdl:output name="immediateSearchResponse" message="tns:immediateSearchResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="close">
-      <wsdl:input name="closeRequest" message="tns:closeRequest" />
-      <wsdl:output name="closeResponse" message="tns:closeResponse" />
-    </wsdl:operation>
     <wsdl:operation name="immediateSearchHoldings">
       <wsdl:input name="immediateSearchHoldingsRequest" message="tns:immediateSearchHoldingsRequest" />
       <wsdl:output name="immediateSearchHoldingsResponse" message="tns:immediateSearchHoldingsResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="multipleRead">
-      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
-      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
-    </wsdl:operation>
-    <wsdl:operation name="search">
-      <wsdl:input name="searchRequest" message="tns:searchRequest" />
-      <wsdl:output name="searchResponse" message="tns:searchResponse" />
     </wsdl:operation>
     <wsdl:operation name="read">
       <wsdl:input name="readRequest" message="tns:readRequest" />
       <wsdl:output name="readResponse" message="tns:readResponse" />
     </wsdl:operation>
+    <wsdl:operation name="multipleClose">
+      <wsdl:input name="multipleCloseRequest" message="tns:multipleCloseRequest" />
+      <wsdl:output name="multipleCloseResponse" message="tns:multipleCloseResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleImmediateReturn">
+      <wsdl:input name="multipleImmediateReturnRequest" message="tns:multipleImmediateReturnRequest" />
+      <wsdl:output name="multipleImmediateReturnResponse" message="tns:multipleImmediateReturnResponse" />
+    </wsdl:operation>
     <wsdl:operation name="multipleImmediateIssue">
       <wsdl:input name="multipleImmediateIssueRequest" message="tns:multipleImmediateIssueRequest" />
       <wsdl:output name="multipleImmediateIssueResponse" message="tns:multipleImmediateIssueResponse" />
     </wsdl:operation>
+    <wsdl:operation name="immediateRead">
+      <wsdl:input name="immediateReadRequest" message="tns:immediateReadRequest" />
+      <wsdl:output name="immediateReadResponse" message="tns:immediateReadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="immediateIssue">
+      <wsdl:input name="immediateIssueRequest" message="tns:immediateIssueRequest" />
+      <wsdl:output name="immediateIssueResponse" message="tns:immediateIssueResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdl:input name="searchRequest" message="tns:searchRequest" />
+      <wsdl:output name="searchResponse" message="tns:searchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="acknowledge">
+      <wsdl:input name="acknowledgeRequest" message="tns:acknowledgeRequest" />
+      <wsdl:output name="acknowledgeResponse" message="tns:acknowledgeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="immediateSearch">
+      <wsdl:input name="immediateSearchRequest" message="tns:immediateSearchRequest" />
+      <wsdl:output name="immediateSearchResponse" message="tns:immediateSearchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleAcknowledge">
+      <wsdl:input name="multipleAcknowledgeRequest" message="tns:multipleAcknowledgeRequest" />
+      <wsdl:output name="multipleAcknowledgeResponse" message="tns:multipleAcknowledgeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="close">
+      <wsdl:input name="closeRequest" message="tns:closeRequest" />
+      <wsdl:output name="closeResponse" message="tns:closeResponse" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="IssueRequisitionItemStocklessServiceHttpBinding" type="tns:IssueRequisitionItemStockless">
     <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="multipleImmediateReturn">
+    <wsdl:operation name="immediateReturn">
       <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="multipleImmediateReturnRequest">
+      <wsdl:input name="immediateReturnRequest">
         <wsdlsoap:body use="literal" />
       </wsdl:input>
-      <wsdl:output name="multipleImmediateReturnResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="acknowledge">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="acknowledgeRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="acknowledgeResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="multipleClose">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="multipleCloseRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="multipleCloseResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="immediateRead">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="immediateReadRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="immediateReadResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="multipleAcknowledge">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="multipleAcknowledgeRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="multipleAcknowledgeResponse">
+      <wsdl:output name="immediateReturnResponse">
         <wsdlsoap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -1724,66 +1727,12 @@
         <wsdlsoap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="immediateIssue">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="immediateIssueRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="immediateIssueResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="immediateReturn">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="immediateReturnRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="immediateReturnResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="immediateSearch">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="immediateSearchRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="immediateSearchResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="close">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="closeRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="closeResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="immediateSearchHoldings">
       <wsdlsoap:operation soapAction="" />
       <wsdl:input name="immediateSearchHoldingsRequest">
         <wsdlsoap:body use="literal" />
       </wsdl:input>
       <wsdl:output name="immediateSearchHoldingsResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="multipleRead">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="multipleReadRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="multipleReadResponse">
-        <wsdlsoap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="search">
-      <wsdlsoap:operation soapAction="" />
-      <wsdl:input name="searchRequest">
-        <wsdlsoap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output name="searchResponse">
         <wsdlsoap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -1796,6 +1745,24 @@
         <wsdlsoap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="multipleClose">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCloseRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCloseResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleImmediateReturn">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleImmediateReturnRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleImmediateReturnResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="multipleImmediateIssue">
       <wsdlsoap:operation soapAction="" />
       <wsdl:input name="multipleImmediateIssueRequest">
@@ -1805,10 +1772,82 @@
         <wsdlsoap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="immediateRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="immediateReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="immediateReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="immediateIssue">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="immediateIssueRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="immediateIssueResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="acknowledge">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="acknowledgeRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="acknowledgeResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="immediateSearch">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="immediateSearchRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="immediateSearchResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleAcknowledge">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleAcknowledgeRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleAcknowledgeResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="close">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="closeRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="closeResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="IssueRequisitionItemStocklessService">
     <wsdl:port name="IssueRequisitionItemStocklessServiceHttpPort" binding="tns:IssueRequisitionItemStocklessServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/IssueRequisitionItemStocklessService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/IssueRequisitionItemStocklessService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

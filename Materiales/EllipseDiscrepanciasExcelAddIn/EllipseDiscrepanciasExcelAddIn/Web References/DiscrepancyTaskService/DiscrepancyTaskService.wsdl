@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://instances.m3140.types.ellipse.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:tns="http://discrepancytask.m3140.service.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns3="http://service.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://discrepancytask.m3140.service.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.m3140.types.ellipse.mincom.com">
+      <xsd:import namespace="http://service.ellipse.mincom.com" />
+      <xsd:simpleType name="assignedDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="reason">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="creationUser">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="districtCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="creationTime">
+        <xsd:restriction base="xsd:time" />
+      </xsd:simpleType>
+      <xsd:simpleType name="resolutionCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="documentType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="documentNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="cataloguePackedDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="160" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="holdingTaskType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assignedTo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="underCountFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="discrepancyType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="custodianId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assignedTime">
+        <xsd:restriction base="xsd:time" />
+      </xsd:simpleType>
+      <xsd:simpleType name="documentItem">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="supplyCustomerAccountId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="closureComment">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="250" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="employeeId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="creationDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="stockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="allowAdjust">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="discrepantQty">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="sourceTaskId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="documentDistrictCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="closureCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemPrice">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="100000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="priorityCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="taskId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="DiscrepancyTaskDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:HoldingsTaskDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="allowAdjust" type="ns2:allowAdjust" />
+              <xsd:element minOccurs="0" name="cataloguePackedDescription" type="ns2:cataloguePackedDescription" />
+              <xsd:element minOccurs="0" name="discrepancyType" type="ns2:discrepancyType" />
+              <xsd:element minOccurs="0" name="discrepantQty" type="ns2:discrepantQty" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
+              <xsd:element minOccurs="0" name="documentDistrictCode" type="ns2:documentDistrictCode" />
+              <xsd:element minOccurs="0" name="documentItem" type="ns2:documentItem" />
+              <xsd:element minOccurs="0" name="documentNumber" type="ns2:documentNumber" />
+              <xsd:element minOccurs="0" name="documentType" type="ns2:documentType" />
+              <xsd:element minOccurs="0" name="employeeId" type="ns2:employeeId" />
+              <xsd:element minOccurs="0" name="itemPrice" type="ns2:itemPrice" />
+              <xsd:element minOccurs="0" name="reason" type="ns2:reason" />
+              <xsd:element minOccurs="0" name="resolutionCode" type="ns2:resolutionCode" />
+              <xsd:element minOccurs="0" name="supplyCustomerAccountId" type="ns2:supplyCustomerAccountId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="HoldingsTaskDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="assignedDate" type="ns2:assignedDate" />
+              <xsd:element minOccurs="0" name="assignedTime" type="ns2:assignedTime" />
+              <xsd:element minOccurs="0" name="assignedTo" type="ns2:assignedTo" />
+              <xsd:element minOccurs="0" name="closureCode" type="ns2:closureCode" />
+              <xsd:element minOccurs="0" name="closureComment" type="ns2:closureComment" />
+              <xsd:element minOccurs="0" name="creationDate" type="ns2:creationDate" />
+              <xsd:element minOccurs="0" name="creationTime" type="ns2:creationTime" />
+              <xsd:element minOccurs="0" name="creationUser" type="ns2:creationUser" />
+              <xsd:element minOccurs="0" name="custodianId" type="ns2:custodianId" />
+              <xsd:element minOccurs="0" name="holdingTaskType" type="ns2:holdingTaskType" />
+              <xsd:element minOccurs="0" name="priorityCode" type="ns2:priorityCode" />
+              <xsd:element minOccurs="0" name="sourceTaskId" type="ns2:sourceTaskId" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns2:stockCode" />
+              <xsd:element minOccurs="0" name="taskId" type="ns2:taskId" />
+              <xsd:element minOccurs="0" name="underCountFlag" type="ns2:underCountFlag" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="DiscrepancyTaskServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="discrepancyTaskDTO" type="ns2:DiscrepancyTaskDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfDiscrepancyTaskDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="DiscrepancyTaskDTO" nillable="true" type="ns2:DiscrepancyTaskDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfDiscrepancyTaskServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="DiscrepancyTaskServiceResult" nillable="true" type="ns2:DiscrepancyTaskServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="warehouseId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="comment">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="250" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="ObserveDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="comment" type="ns2:comment" />
+              <xsd:element minOccurs="0" name="custodianId" type="ns2:custodianId" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
+              <xsd:element minOccurs="0" name="employeeId" type="ns2:employeeId" />
+              <xsd:element minOccurs="0" name="reason" type="ns2:reason" />
+              <xsd:element minOccurs="0" name="sourceTaskId" type="ns2:sourceTaskId" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns2:stockCode" />
+              <xsd:element minOccurs="0" name="supplyCustomerAccountId" type="ns2:supplyCustomerAccountId" />
+              <xsd:element minOccurs="0" name="warehouseId" type="ns2:warehouseId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ObserveServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="observeDTO" type="ns2:ObserveDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfObserveDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ObserveDTO" nillable="true" type="ns2:ObserveDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfObserveServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ObserveServiceResult" nillable="true" type="ns2:ObserveServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="waybillItemNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="waybillNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="scaTransferItemNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="foreignMilitarySalesRequisitionNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="15" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="purchaseOrderItemNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="warehouseRequisitionItemNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="scaTransferNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="warehouseRequisitionNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="purchaseOrderNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="warehouseRequisitionDistrictCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="DiscrepancyTaskSearchParam">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:AbstractSearchParam">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="assignedTo" type="ns2:assignedTo" />
+              <xsd:element minOccurs="0" name="discrepancyType" type="ns2:discrepancyType" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns2:districtCode" />
+              <xsd:element minOccurs="0" name="employeeId" type="ns2:employeeId" />
+              <xsd:element minOccurs="0" name="foreignMilitarySalesRequisitionNumber" type="ns2:foreignMilitarySalesRequisitionNumber" />
+              <xsd:element minOccurs="0" name="purchaseOrderItemNumber" type="ns2:purchaseOrderItemNumber" />
+              <xsd:element minOccurs="0" name="purchaseOrderNumber" type="ns2:purchaseOrderNumber" />
+              <xsd:element minOccurs="0" name="scaTransferItemNumber" type="ns2:scaTransferItemNumber" />
+              <xsd:element minOccurs="0" name="scaTransferNumber" type="ns2:scaTransferNumber" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns2:stockCode" />
+              <xsd:element minOccurs="0" name="supplyCustomerAccountId" type="ns2:supplyCustomerAccountId" />
+              <xsd:element minOccurs="0" name="taskId" type="ns2:taskId" />
+              <xsd:element minOccurs="0" name="warehouseId" type="ns2:warehouseId" />
+              <xsd:element minOccurs="0" name="warehouseRequisitionDistrictCode" type="ns2:warehouseRequisitionDistrictCode" />
+              <xsd:element minOccurs="0" name="warehouseRequisitionItemNumber" type="ns2:warehouseRequisitionItemNumber" />
+              <xsd:element minOccurs="0" name="warehouseRequisitionNumber" type="ns2:warehouseRequisitionNumber" />
+              <xsd:element minOccurs="0" name="waybillItemNumber" type="ns2:waybillItemNumber" />
+              <xsd:element minOccurs="0" name="waybillNumber" type="ns2:waybillNumber" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.ellipse.mincom.com">
+      <xsd:import namespace="http://errors.ellipse.mincom.com" />
+      <xsd:import namespace="http://instances.base.types.ellipse.mincom.com" />
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="ServiceDTO" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Base">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="customAttributes" type="ns5:ArrayOfAttribute" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:BaseServiceResult" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="BaseServiceResult" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errors" type="ns6:ArrayOfError" />
+          <xsd:element minOccurs="0" name="informationalMessages" type="ns6:ArrayOfMessage" />
+          <xsd:element minOccurs="0" name="warnings" type="ns6:ArrayOfWarning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractSearchParam" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="serviceRequiredAttributes" type="ns3:ServiceRequiredAttributes" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceRequiredAttributes" />
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:import namespace="http://discrepancytask.m3140.service.ellipse.mincom.com" />
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns5:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
+          <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://discrepancytask.m3140.service.ellipse.mincom.com">
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://instances.m3140.types.ellipse.mincom.com" />
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:DiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:DiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readBySourceTaskId">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:DiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readBySourceTaskIdResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:DiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="resolve">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:DiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="resolveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:DiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadBySourceTaskId">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfDiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadBySourceTaskIdResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfDiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleResolve">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfDiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleResolveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfDiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadBySourceTaskIdNoError">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfDiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadBySourceTaskIdNoErrorResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfDiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="update">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:DiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:DiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="observe">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:ObserveDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="observeResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ObserveServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleObserve">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfObserveDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleObserveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfObserveServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readBySourceTaskIdNoError">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns2:DiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readBySourceTaskIdNoErrorResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:DiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="search">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns2:DiscrepancyTaskSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns2:DiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfDiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfDiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfDiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns2:ArrayOfDiscrepancyTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns2:ArrayOfDiscrepancyTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
+      <xsd:complexType name="Base" abstract="true" />
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfMessage">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Message">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fieldId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="localisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="messageId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageText" type="xsd:string" />
+          <xsd:element minOccurs="0" name="parentInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarning">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Warning" nillable="true" type="ns6:Warning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Warning">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfError">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Error">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="updateRequest">
+    <wsdl:part name="parameters" element="tns:update" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateResponse">
+    <wsdl:part name="parameters" element="tns:multipleUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadBySourceTaskIdRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadBySourceTaskId" />
+  </wsdl:message>
+  <wsdl:message name="observeRequest">
+    <wsdl:part name="parameters" element="tns:observe" />
+  </wsdl:message>
+  <wsdl:message name="readBySourceTaskIdNoErrorRequest">
+    <wsdl:part name="parameters" element="tns:readBySourceTaskIdNoError" />
+  </wsdl:message>
+  <wsdl:message name="resolveResponse">
+    <wsdl:part name="parameters" element="tns:resolveResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateRequest">
+    <wsdl:part name="parameters" element="tns:multipleUpdate" />
+  </wsdl:message>
+  <wsdl:message name="searchResponse">
+    <wsdl:part name="parameters" element="tns:searchResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateResponse">
+    <wsdl:part name="parameters" element="tns:updateResponse" />
+  </wsdl:message>
+  <wsdl:message name="observeResponse">
+    <wsdl:part name="parameters" element="tns:observeResponse" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchRequest">
+    <wsdl:part name="parameters" element="tns:search" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadBySourceTaskIdResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadBySourceTaskIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadBySourceTaskIdNoErrorResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadBySourceTaskIdNoErrorResponse" />
+  </wsdl:message>
+  <wsdl:message name="readBySourceTaskIdRequest">
+    <wsdl:part name="parameters" element="tns:readBySourceTaskId" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleResolveResponse">
+    <wsdl:part name="parameters" element="tns:multipleResolveResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadBySourceTaskIdNoErrorRequest">
+    <wsdl:part name="parameters" element="tns:multipleReadBySourceTaskIdNoError" />
+  </wsdl:message>
+  <wsdl:message name="readBySourceTaskIdResponse">
+    <wsdl:part name="parameters" element="tns:readBySourceTaskIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="resolveRequest">
+    <wsdl:part name="parameters" element="tns:resolve" />
+  </wsdl:message>
+  <wsdl:message name="multipleObserveRequest">
+    <wsdl:part name="parameters" element="tns:multipleObserve" />
+  </wsdl:message>
+  <wsdl:message name="multipleObserveResponse">
+    <wsdl:part name="parameters" element="tns:multipleObserveResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleResolveRequest">
+    <wsdl:part name="parameters" element="tns:multipleResolve" />
+  </wsdl:message>
+  <wsdl:message name="readBySourceTaskIdNoErrorResponse">
+    <wsdl:part name="parameters" element="tns:readBySourceTaskIdNoErrorResponse" />
+  </wsdl:message>
+  <wsdl:portType name="DiscrepancyTask">
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="readBySourceTaskId">
+      <wsdl:input name="readBySourceTaskIdRequest" message="tns:readBySourceTaskIdRequest" />
+      <wsdl:output name="readBySourceTaskIdResponse" message="tns:readBySourceTaskIdResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="resolve">
+      <wsdl:input name="resolveRequest" message="tns:resolveRequest" />
+      <wsdl:output name="resolveResponse" message="tns:resolveResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadBySourceTaskId">
+      <wsdl:input name="multipleReadBySourceTaskIdRequest" message="tns:multipleReadBySourceTaskIdRequest" />
+      <wsdl:output name="multipleReadBySourceTaskIdResponse" message="tns:multipleReadBySourceTaskIdResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleResolve">
+      <wsdl:input name="multipleResolveRequest" message="tns:multipleResolveRequest" />
+      <wsdl:output name="multipleResolveResponse" message="tns:multipleResolveResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadBySourceTaskIdNoError">
+      <wsdl:input name="multipleReadBySourceTaskIdNoErrorRequest" message="tns:multipleReadBySourceTaskIdNoErrorRequest" />
+      <wsdl:output name="multipleReadBySourceTaskIdNoErrorResponse" message="tns:multipleReadBySourceTaskIdNoErrorResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="update">
+      <wsdl:input name="updateRequest" message="tns:updateRequest" />
+      <wsdl:output name="updateResponse" message="tns:updateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="observe">
+      <wsdl:input name="observeRequest" message="tns:observeRequest" />
+      <wsdl:output name="observeResponse" message="tns:observeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleObserve">
+      <wsdl:input name="multipleObserveRequest" message="tns:multipleObserveRequest" />
+      <wsdl:output name="multipleObserveResponse" message="tns:multipleObserveResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="readBySourceTaskIdNoError">
+      <wsdl:input name="readBySourceTaskIdNoErrorRequest" message="tns:readBySourceTaskIdNoErrorRequest" />
+      <wsdl:output name="readBySourceTaskIdNoErrorResponse" message="tns:readBySourceTaskIdNoErrorResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdl:input name="searchRequest" message="tns:searchRequest" />
+      <wsdl:output name="searchResponse" message="tns:searchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdl:input name="multipleUpdateRequest" message="tns:multipleUpdateRequest" />
+      <wsdl:output name="multipleUpdateResponse" message="tns:multipleUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DiscrepancyTaskServiceHttpBinding" type="tns:DiscrepancyTask">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="readBySourceTaskId">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readBySourceTaskIdRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readBySourceTaskIdResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="resolve">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="resolveRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="resolveResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadBySourceTaskId">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadBySourceTaskIdRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadBySourceTaskIdResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleResolve">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleResolveRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleResolveResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReadBySourceTaskIdNoError">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadBySourceTaskIdNoErrorRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadBySourceTaskIdNoErrorResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="update">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="updateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="observe">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="observeRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="observeResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleObserve">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleObserveRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleObserveResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="readBySourceTaskIdNoError">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readBySourceTaskIdNoErrorRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readBySourceTaskIdNoErrorResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DiscrepancyTaskService">
+    <wsdl:port name="DiscrepancyTaskServiceHttpPort" binding="tns:DiscrepancyTaskServiceHttpBinding">
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/DiscrepancyTaskService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

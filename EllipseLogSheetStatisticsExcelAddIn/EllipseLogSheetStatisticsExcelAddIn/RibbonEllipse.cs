@@ -4,15 +4,16 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using Microsoft.Office.Tools.Ribbon;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
+using SharedClassLibrary;
+using SharedClassLibrary.Utilities;
 using System.Web.Services.Ellipse;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary.Utilities.RuntimeConfigSettings;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 
 
 namespace EllipseLogSheetStatisticsExcelAddIn
@@ -21,8 +22,8 @@ namespace EllipseLogSheetStatisticsExcelAddIn
     public partial class RibbonEllipse
     {
         ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private Thread _thread;
 
         Excel.Application _excelApp;
@@ -31,6 +32,14 @@ namespace EllipseLogSheetStatisticsExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -40,6 +49,33 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
+
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
         }
         private void btnFormatLogSheet_Click(object sender, RibbonControlEventArgs e)
         {
@@ -162,6 +198,16 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+                var opContext = new Screen.OperationContext()
+                {
+                    district = _frmAuth.EllipseDsct,
+                    position = _frmAuth.EllipsePost,
+                    maxInstances = 100,
+                    returnWarnings = Debugger.DebugWarnings
+                };
+
                 var modelCode = "" + _cells.GetCell("B4").Value;
                 var globalStartIndex = 7;
                 var globalEndIndex = globalStartIndex;
@@ -171,136 +217,125 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 //Preparación de los datos para envío
 
                 //cargo los encabezados de fila y los equipos aceptados para el modelo
-                var modelEquipments = GetModelEquipments(modelCode);
+                var modelEquipments = GetModelEquipments(_eFunctions, modelCode);
                 //vienen ordenados en el vector según el número de secuencia respectivo
                 var modelHeaders = GetModelHeaders();
 
-                if (modelEquipments != null && modelHeaders != null && modelHeaders.Any())
-                {
+                if (modelEquipments == null || (modelHeaders == null || modelHeaders.Count == 0))
+                    throw new Exception(@"No se pudo obtener información del modelo");
+
                     _cells.GetRange(1, globalStartIndex, 3, globalEndIndex).Style = StyleConstants.Normal;
-                    _cells.GetRange(modelHeaders.Count() + 1, globalStartIndex, modelHeaders.Count() + 1, globalEndIndex)
-                        .Style = StyleConstants.Normal;
-                    //ordeno los valores de la hoja para turno
-                    var unorderRange = _cells.GetRange(1, globalStartIndex, modelHeaders.Count(), globalEndIndex);
-                    unorderRange.Sort(unorderRange.Columns[1, Type.Missing], Excel.XlSortOrder.xlAscending,
-                        unorderRange[2, Type.Missing], Type.Missing);
+                _cells.GetRange(modelHeaders.Count() + 1, globalStartIndex, modelHeaders.Count() + 1, globalEndIndex)
+                    .Style = StyleConstants.Normal;
+                //ordeno los valores de la hoja para turno
+                var unorderRange = _cells.GetRange(1, globalStartIndex, modelHeaders.Count(), globalEndIndex);
+                unorderRange.Sort(unorderRange.Columns[1, Type.Missing], Excel.XlSortOrder.xlAscending,
+                    unorderRange[2, Type.Missing], Type.Missing);
 
 
-                    var logStartIndex = globalStartIndex;
-                    //para propósitos de resaltar en la hoja errores y warnings en bloques
+                var logStartIndex = globalStartIndex;
+                //para propósitos de resaltar en la hoja errores y warnings en bloques
 
-                    var previousDate = "" + _cells.GetCell(1, globalStartIndex).Value;
-                    var previousShift = "" + _cells.GetCell(2, globalStartIndex).Value;
+                var previousDate = "" + _cells.GetCell(1, globalStartIndex).Value;
+                var previousShift = "" + _cells.GetCell(2, globalStartIndex).Value;
 
 
-                    var matrixValues = new List<string[]>();
-                    //almacenará los valores de forma como estén en la hoja de excel, excluyendo los que no pertenezcan al modelo
-                    var finalValues = new List<string[]>();
-                    //almacenará los valores de forma ordenada que será la que se enviará finalmente
+                var matrixValues = new List<string[]>();
+                //almacenará los valores de forma como estén en la hoja de excel, excluyendo los que no pertenezcan al modelo
+                var finalValues = new List<string[]>();
+                //almacenará los valores de forma ordenada que será la que se enviará finalmente
 
-                    for (var i = globalStartIndex; i <= globalEndIndex + 1; i++)
+                for (var i = globalStartIndex; i <= globalEndIndex + 1; i++)
+                {
+                    //si es fecha-turno diferente envíe lo que tiene
+                    if (!Convert.ToString("" + _cells.GetCell(1, i).Value).Equals(previousDate) ||
+                        !Convert.ToString("" + _cells.GetCell(2, i).Value).Equals(previousShift))
                     {
-                        //si es fecha-turno diferente envíe lo que tiene
-                        if (!Convert.ToString("" + _cells.GetCell(1, i).Value).Equals(previousDate) ||
-                            !Convert.ToString("" + _cells.GetCell(2, i).Value).Equals(previousShift))
+                        //
+                        foreach (var mEq in modelEquipments)
                         {
-                            //
-                            foreach (var mEq in modelEquipments)
+                            var inList = false; //garantizará que exista al menos uno en ceros
+                            foreach (var mVal in matrixValues)
                             {
-                                var inList = false; //garantizará que exista al menos uno en ceros
-                                foreach (var mVal in matrixValues)
-                                {
-                                    if (mVal[3] == mEq)
-                                    {
-                                        inList = true;
-                                        finalValues.Add(mVal);
-                                    }
-                                }
-                                if (!inList)
-                                {
-                                    var rowValues = new string[modelHeaders.Count()];
-                                    rowValues[0] = "S"; //ACTION
-                                    rowValues[1] = previousDate;
-                                    rowValues[2] = previousShift;
-                                    rowValues[3] = mEq;
-                                    for (var j = 4; j < rowValues.Length; j++)
-                                        rowValues[j] = "";
-                                    finalValues.Add(rowValues);
-                                }
+                                if (mVal[3] != mEq) continue;
+                                inList = true;
+                                finalValues.Add(mVal);
                             }
 
-                            //marcar con I el registro anterior al duplicado para indicar al screen que debe hacer la acción
-                            for (var k = 0; k < finalValues.Count() - 1; k++)
-                                if (finalValues.ElementAt(k)[3].Equals(finalValues.ElementAt(k + 1)[3]))
-                                    finalValues.ElementAt(k)[0] = "I";
-
-                            var opSheet = new Screen.OperationContext()
-                            {
-                                district = _frmAuth.EllipseDsct,
-                                position = _frmAuth.EllipsePost,
-                                maxInstances = 100,
-                                returnWarnings = Debugger.DebugWarnings
-                            };
-                            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
-                            var logEndIndex = i - 1;
-                            var logResult = CreateLogSheet(opSheet, modelCode, previousDate, previousShift, finalValues);
-
-                            if (logResult.StartsWith("SUCCESS"))
-                            {
-                                _cells.GetRange(1, logStartIndex, 1, logEndIndex).Style = StyleConstants.Success;
-                                _cells.GetRange(1, logStartIndex, 1, logEndIndex).BorderAround2();
-                            }
-                            else if (logResult.StartsWith("ERROR"))
-                            {
-                                _cells.GetRange(1, logStartIndex, 1, logEndIndex).Style = StyleConstants.Error;
-                                _cells.GetRange(1, logStartIndex, 1, logEndIndex).BorderAround2();
-                            }
-                            else
-                            {
-                                _cells.GetRange(1, logStartIndex, 1, logEndIndex).Style = StyleConstants.Warning;
-                                _cells.GetRange(1, logStartIndex, 1, logEndIndex).BorderAround2();
-                            }
-                            _cells.GetCell(modelHeaders.Count() + 1, i - 1).Value = logResult;
-                            //reinicie los objetos del screen
-                            matrixValues = new List<string[]>();
-                            //almacenará los valores de forma como estén en la hoja de excel, excluyendo los que no pertenezcan al modelo
-                            finalValues = new List<string[]>();
-                            //almacenará los valores de forma ordenada que será la que se enviará finalmente
-                            logStartIndex = i;
+                            if (inList) continue;
+                            var rowValues = new string[modelHeaders.Count()];
+                            rowValues[0] = "S"; //ACTION
+                            rowValues[1] = previousDate;
+                            rowValues[2] = previousShift;
+                            rowValues[3] = mEq;
+                            for (var j = 4; j < rowValues.Length; j++)
+                                rowValues[j] = "";
+                            finalValues.Add(rowValues);
                         }
 
-                        previousDate = "" + _cells.GetCell(1, i).Value;
-                        previousShift = "" + _cells.GetCell(2, i).Value;
-                        //si sigue en la misma fecha-turno siga
-                        //valido que el registro de la fila exista en el modelo
-                        if (modelEquipments.Contains(("" + _cells.GetCell(3, i).Value).Trim()))
-                        //si existe se añade a la lista a ser agregado
-                        {
-                            var rowValues = new string[modelHeaders.Count() + 1];
-                            rowValues[0] = ""; //para ACTION
-                            rowValues[1] = "" + _cells.GetCell(1, i).Value; //DATE
-                            rowValues[2] = "" + _cells.GetCell(2, i).Value; //SHIFT
+                        //marcar con I el registro anterior al duplicado para indicar al screen que debe hacer la acción
+                        for (var k = 0; k < finalValues.Count() - 1; k++)
+                            if (finalValues.ElementAt(k)[3].Equals(finalValues.ElementAt(k + 1)[3]))
+                                finalValues.ElementAt(k)[0] = "I";
 
-                            for (var j = 3; j < rowValues.Length; j++)
-                                rowValues[j] = "" + _cells.GetCell(j, i).Value;
-                            //lo adiciono a la lista de registros aceptados (no ordenada)
-                            matrixValues.Add(rowValues);
+
+
+
+                        var logEndIndex = i - 1;
+                        var logResult = CreateLogSheet(opContext, modelCode, previousDate, previousShift, finalValues);
+
+                        if (logResult.StartsWith("SUCCESS"))
+                        {
+                            _cells.GetRange(1, logStartIndex, 1, logEndIndex).Style = StyleConstants.Success;
+                            _cells.GetRange(1, logStartIndex, 1, logEndIndex).BorderAround2();
+                        }
+                        else if (logResult.StartsWith("ERROR"))
+                        {
+                            _cells.GetRange(1, logStartIndex, 1, logEndIndex).Style = StyleConstants.Error;
+                            _cells.GetRange(1, logStartIndex, 1, logEndIndex).BorderAround2();
                         }
                         else
-                            //si no existe se resalta el error y se continúa el proceso ignorando el registro (no será cargado)
-                            _cells.GetCell(3, i).Style = StyleConstants.Error;
+                        {
+                            _cells.GetRange(1, logStartIndex, 1, logEndIndex).Style = StyleConstants.Warning;
+                            _cells.GetRange(1, logStartIndex, 1, logEndIndex).BorderAround2();
+                        }
 
+                        _cells.GetCell(modelHeaders.Count() + 1, i - 1).Value = logResult;
+                        //reinicie los objetos del screen
+                        matrixValues = new List<string[]>();
+                        //almacenará los valores de forma como estén en la hoja de excel, excluyendo los que no pertenezcan al modelo
+                        finalValues = new List<string[]>();
+                        //almacenará los valores de forma ordenada que será la que se enviará finalmente
+                        logStartIndex = i;
                     }
 
-                    //
-                    _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-                    _excelApp.ActiveWorkbook.ActiveSheet.Cells.Rows.AutoFit();
-                } //---if no existen modelos/encabezados del equipo
-                else
-                {
-                    MessageBox.Show(@"No se pudo obtener información del modelo");
+                    previousDate = "" + _cells.GetCell(1, i).Value;
+                    previousShift = "" + _cells.GetCell(2, i).Value;
+                    //si sigue en la misma fecha-turno siga
+                    //valido que el registro de la fila exista en el modelo
+                    if (modelEquipments.Contains(("" + _cells.GetCell(3, i).Value).Trim()))
+                        //si existe se añade a la lista a ser agregado
+                    {
+                        var rowValues = new string[modelHeaders.Count() + 1];
+                        rowValues[0] = ""; //para ACTION
+                        rowValues[1] = "" + _cells.GetCell(1, i).Value; //DATE
+                        rowValues[2] = "" + _cells.GetCell(2, i).Value; //SHIFT
+
+                        for (var j = 3; j < rowValues.Length; j++)
+                            rowValues[j] = "" + _cells.GetCell(j, i).Value;
+                        //lo adiciono a la lista de registros aceptados (no ordenada)
+                        matrixValues.Add(rowValues);
+                    }
+                    else
+                        //si no existe se resalta el error y se continúa el proceso ignorando el registro (no será cargado)
+                        _cells.GetCell(3, i).Style = StyleConstants.Error;
+
                 }
+
+                //
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
+                _excelApp.ActiveWorkbook.ActiveSheet.Cells.Rows.AutoFit();
+
             }
             catch (Exception ex)
             {
@@ -310,7 +345,8 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             }
             finally
             {
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
+                _eFunctions.CloseConnection();
             }
         }
         public string CreateLogSheet(Screen.OperationContext opSheet, string modelCode, string modelDate, string modelShift, List<string[]> sheetData)
@@ -321,7 +357,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             var arrayFields = new ArrayScreenNameValue();
 
             //Selección de ambiente
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             //Aseguro que no esté en alguna pantalla antigua
             _eFunctions.RevertOperation(opSheet, proxySheet);
             //ejecutamos el programa
@@ -439,9 +475,9 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                 var modelCode = "" + _cells.GetCell("B4").Value;
                 //encabezados
-                var sqlQuery1 = Queries.GetDefaultHeaderData(modelCode, _eFunctions.dbReference, _eFunctions.dbLink);
+                var sqlQuery1 = Queries.GetDefaultHeaderData(modelCode, _eFunctions.DbReference, _eFunctions.DbLink);
                 //equipos
-                var sqlQuery2 = Queries.GetQueryDefaultModelData(modelCode, _eFunctions.dbReference, _eFunctions.dbLink);
+                var sqlQuery2 = Queries.GetQueryDefaultModelData(modelCode, _eFunctions.DbReference, _eFunctions.DbLink);
                 //Igual que el query de getModelEquipment
 
                 if (Debugger.DebugQueries)
@@ -454,133 +490,132 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 var headerValues = new List<ModelHeaderNameValue>();
 
 
-                if (drHeaders != null && !drHeaders.IsClosed && drHeaders.HasRows)
+                if (drHeaders == null || drHeaders.IsClosed)
+                    throw new Exception("No se han encontrado datos para el modelo especificado");
+
+                _cells.GetCell(1, 6).Value = "DATE";
+                _cells.GetCell(1, 6).AddComment("YYYYMMDD");
+                _cells.GetCell(1, 6).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(2, 6).Value = "SHIFT";
+                _cells.GetCell(2, 6).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(3, 6).Value = "EQUIP_REF";
+                _cells.GetCell(3, 6).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(4, 6).Value = "OPERATOR";
+                _cells.GetCell(4, 6).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                _cells.GetCell(5, 6).Value = "ACCOUNT_CODE"; //siempre bloqueado en los existentes
+                _cells.GetCell(5, 6).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                _cells.GetCell(6, 6).Value = "W/O"; //siempre bloqueado en los existentes
+                _cells.GetCell(6, 6).Style = _cells.GetStyle(StyleConstants.TitleOptional);
+                var i = 7;
+                while (drHeaders.Read())
                 {
-                    _cells.GetCell(1, 6).Value = "DATE";
-                    _cells.GetCell(1, 6).AddComment("YYYYMMDD");
-                    _cells.GetCell(1, 6).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                    _cells.GetCell(2, 6).Value = "SHIFT";
-                    _cells.GetCell(2, 6).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                    _cells.GetCell(3, 6).Value = "EQUIP_REF";
-                    _cells.GetCell(3, 6).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                    _cells.GetCell(4, 6).Value = "OPERATOR";
-                    _cells.GetCell(4, 6).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                    _cells.GetCell(5, 6).Value = "ACCOUNT_CODE"; //siempre bloqueado en los existentes
-                    _cells.GetCell(5, 6).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                    _cells.GetCell(6, 6).Value = "W/O"; //siempre bloqueado en los existentes
-                    _cells.GetCell(6, 6).Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                    var i = 7;
-                    while (drHeaders.Read())
+                    var hv = new ModelHeaderNameValue
                     {
-                        var hv = new ModelHeaderNameValue
-                        {
-                            Name = ("" + drHeaders["HEADER_NAME"]).Trim(),
-                            Type = ("" + drHeaders["VALUE_TYPE"]).Trim(),
-                            Index = int.Parse("" + drHeaders["INDICE"])
-                        };
+                        Name = ("" + drHeaders["HEADER_NAME"]).Trim(),
+                        Type = ("" + drHeaders["VALUE_TYPE"]).Trim(),
+                        Index = int.Parse("" + drHeaders["INDICE"])
+                    };
 
-                        if (hv.Name.Equals("")) continue;
+                    if (hv.Name.Equals("")) continue;
 
-                        _cells.GetCell(i, 6).Value = hv.Name;
-                        _cells.GetCell(i, 6).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                        i++;
-                        headerValues.Add(hv);
-                    }
-
-                    var drEquipments = _eFunctions.GetQueryResult(sqlQuery2);
-
-                    if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
-                    {
-                        var j = 7;
-                        var arrayHeader = headerValues.ToArray();
-
-                        while (drEquipments.Read())
-                        {
-
-                            var rv = new ModelRowValue
-                            {
-                                Code = ("" + drEquipments["ENTRY_GRP"]),
-                                EquipReference = ("" + drEquipments["EQ_REFERENCE"]),
-                                Operator =
-                                {
-                                    Flag = ("" + drEquipments["OPERATOR_FLG"]).Equals("O") ||
-                                           ("" + drEquipments["OPERATOR_FLG"]).Equals("M"),
-                                    Value = ("" + drEquipments["OPERATOR_ID"])
-                                },
-                                Account =
-                                {
-                                    Flag = ("" + drEquipments["ACCOUNT_FLG"]).Equals("O") ||
-                                           ("" + drEquipments["ACCOUNT_FLG"]).Equals("M"),
-                                    Value = ("" + drEquipments["ACCOUNT_CODE"])
-                                },
-                                WorkOrder =
-                                {
-                                    Flag = ("" + drEquipments["WORK_ORDER_FLG"]).Equals("O") ||
-                                           ("" + drEquipments["WORK_ORDER_FLG"]).Equals("M"),
-                                    Value = ("" + drEquipments["WORK_ORDER"])
-                                },
-                                Source =
-                                {
-                                    Flag = ("" + drEquipments["SOURCE_LOC_FLG"]).Equals("O") ||
-                                           ("" + drEquipments["SOURCE_LOC_FLG"]).Equals("M"),
-                                    Value = ("" + drEquipments["SOURCE_LOC"])
-                                },
-                                Destination =
-                                {
-                                    Flag = ("" + drEquipments["DEST_LOC_FLG"]).Equals("O") ||
-                                           ("" + drEquipments["DEST_LOC_FLG"]).Equals("M"),
-                                    Value = ("" + drEquipments["DEST_LOC"])
-                                },
-                                Material =
-                                {
-                                    Flag = ("" + drEquipments["MATERIAL_FLG"]).Equals("O") ||
-                                           ("" + drEquipments["MATERIAL_FLG"]).Equals("M"),
-                                    Value = ("" + drEquipments["MATERIAL_CODE"])
-                                }
-                            };
-                            //Flags de esta sección O: Optional, M: Mandatory, N: Not Required
-                            //Flags de esta sección I: Input, O: Output, B: Both
-                            for (var k = 0; k < 10; k++)
-                            {
-                                rv.Inputs[k].Flag = ("" + drEquipments["STAT_IO_FLG_" + (k + 1)]).Equals("I") ||
-                                                    ("" + drEquipments["STAT_IO_FLG_" + (k + 1)]).Equals("B");
-                                rv.Inputs[k].Value = ("" + drEquipments["STAT_VALUE_" + (k + 1)]);
-                            }
-
-                            //Escribo los valores obtenidos según el valor predeterminado
-                            _cells.GetCell(3, j).Value = "'" + rv.Code.Trim();
-                            if (rv.EquipReference != "")
-                                _cells.GetCell(3, j).AddComment(rv.EquipReference);
-                            //operator
-                            _cells.GetCell(4, j).Value = (rv.Operator.Value.Equals("") ? "" : "'" + rv.Operator.Value);
-                            _cells.GetCell(4, j).Style = (rv.Operator.Flag ? "Normal" : StyleConstants.Disabled);
-                            //account
-                            _cells.GetCell(5, j).Value = (rv.Account.Value.Equals("") ? "" : "'" + rv.Account.Value);
-                            _cells.GetCell(5, j).Style = (rv.Account.Flag ? "Normal" : StyleConstants.Disabled);
-                            //wo
-                            _cells.GetCell(6, j).Value = (rv.WorkOrder.Value.Equals("") ? "" : "'" + rv.WorkOrder.Value);
-                            _cells.GetCell(6, j).Style = (rv.WorkOrder.Flag ? "Normal" : StyleConstants.Disabled);
-
-                            //asigna el valor por defecto según corresponda
-                            for (var k = 0; k < arrayHeader.Length; k++)
-                            {
-                                if (arrayHeader[k].Type.Equals("SS")) //source
-                                    _cells.GetCell(7 + k, j).Value = rv.Source.Value;
-                                else if (arrayHeader[k].Type.Equals("SD")) //destination
-                                    _cells.GetCell(7 + k, j).Value = rv.Destination.Value;
-                                else if (arrayHeader[k].Type.Equals("ML")) //material
-                                    _cells.GetCell(7 + k, j).Value = rv.Material.Value;
-                                else
-                                    _cells.GetCell(7 + k, j).Value = 0;
-
-                                _cells.GetCell(7 + k, j).Style = (rv.Inputs[k].Flag ? "Normal" : StyleConstants.Disabled);
-                            }
-                            j++;
-                        }
-                    }
+                    _cells.GetCell(i, 6).Value = hv.Name;
+                    _cells.GetCell(i, 6).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+                    i++;
+                    headerValues.Add(hv);
                 }
-                else
-                    MessageBox.Show(@"No se han encontrado datos para el modelo especificado");
+
+                var drEquipments = _eFunctions.GetQueryResult(sqlQuery2);
+
+                if (drEquipments == null || drEquipments.IsClosed)
+                    return;
+
+                var j = 7;
+                var arrayHeader = headerValues.ToArray();
+
+                while (drEquipments.Read())
+                {
+
+                    var rv = new ModelRowValue
+                    {
+                        Code = ("" + drEquipments["ENTRY_GRP"]),
+                        EquipReference = ("" + drEquipments["EQ_REFERENCE"]),
+                        Operator =
+                        {
+                            Flag = ("" + drEquipments["OPERATOR_FLG"]).Equals("O") ||
+                                   ("" + drEquipments["OPERATOR_FLG"]).Equals("M"),
+                            Value = ("" + drEquipments["OPERATOR_ID"])
+                        },
+                        Account =
+                        {
+                            Flag = ("" + drEquipments["ACCOUNT_FLG"]).Equals("O") ||
+                                   ("" + drEquipments["ACCOUNT_FLG"]).Equals("M"),
+                            Value = ("" + drEquipments["ACCOUNT_CODE"])
+                        },
+                        WorkOrder =
+                        {
+                            Flag = ("" + drEquipments["WORK_ORDER_FLG"]).Equals("O") ||
+                                   ("" + drEquipments["WORK_ORDER_FLG"]).Equals("M"),
+                            Value = ("" + drEquipments["WORK_ORDER"])
+                        },
+                        Source =
+                        {
+                            Flag = ("" + drEquipments["SOURCE_LOC_FLG"]).Equals("O") ||
+                                   ("" + drEquipments["SOURCE_LOC_FLG"]).Equals("M"),
+                            Value = ("" + drEquipments["SOURCE_LOC"])
+                        },
+                        Destination =
+                        {
+                            Flag = ("" + drEquipments["DEST_LOC_FLG"]).Equals("O") ||
+                                   ("" + drEquipments["DEST_LOC_FLG"]).Equals("M"),
+                            Value = ("" + drEquipments["DEST_LOC"])
+                        },
+                        Material =
+                        {
+                            Flag = ("" + drEquipments["MATERIAL_FLG"]).Equals("O") ||
+                                   ("" + drEquipments["MATERIAL_FLG"]).Equals("M"),
+                            Value = ("" + drEquipments["MATERIAL_CODE"])
+                        }
+                    };
+                    //Flags de esta sección O: Optional, M: Mandatory, N: Not Required
+                    //Flags de esta sección I: Input, O: Output, B: Both
+                    for (var k = 0; k < 10; k++)
+                    {
+                        rv.Inputs[k].Flag = ("" + drEquipments["STAT_IO_FLG_" + (k + 1)]).Equals("I") ||
+                                            ("" + drEquipments["STAT_IO_FLG_" + (k + 1)]).Equals("B");
+                        rv.Inputs[k].Value = ("" + drEquipments["STAT_VALUE_" + (k + 1)]);
+                    }
+
+                    //Escribo los valores obtenidos según el valor predeterminado
+                    _cells.GetCell(3, j).Value = "'" + rv.Code.Trim();
+                    if (rv.EquipReference != "")
+                        _cells.GetCell(3, j).AddComment(rv.EquipReference);
+                    //operator
+                    _cells.GetCell(4, j).Value = (rv.Operator.Value.Equals("") ? "" : "'" + rv.Operator.Value);
+                    _cells.GetCell(4, j).Style = (rv.Operator.Flag ? "Normal" : StyleConstants.Disabled);
+                    //account
+                    _cells.GetCell(5, j).Value = (rv.Account.Value.Equals("") ? "" : "'" + rv.Account.Value);
+                    _cells.GetCell(5, j).Style = (rv.Account.Flag ? "Normal" : StyleConstants.Disabled);
+                    //wo
+                    _cells.GetCell(6, j).Value = (rv.WorkOrder.Value.Equals("") ? "" : "'" + rv.WorkOrder.Value);
+                    _cells.GetCell(6, j).Style = (rv.WorkOrder.Flag ? "Normal" : StyleConstants.Disabled);
+
+                    //asigna el valor por defecto según corresponda
+                    for (var k = 0; k < arrayHeader.Length; k++)
+                    {
+                        if (arrayHeader[k].Type.Equals("SS")) //source
+                            _cells.GetCell(7 + k, j).Value = rv.Source.Value;
+                        else if (arrayHeader[k].Type.Equals("SD")) //destination
+                            _cells.GetCell(7 + k, j).Value = rv.Destination.Value;
+                        else if (arrayHeader[k].Type.Equals("ML")) //material
+                            _cells.GetCell(7 + k, j).Value = rv.Material.Value;
+                        else
+                            _cells.GetCell(7 + k, j).Value = 0;
+
+                        _cells.GetCell(7 + k, j).Style = (rv.Inputs[k].Flag ? "Normal" : StyleConstants.Disabled);
+                    }
+                    j++;
+                }
+
                 _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
             }
             catch (Exception ex)
@@ -591,7 +626,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             finally
             {
 				_eFunctions.CloseConnection();
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
         }
         public List<string> GetModelHeaders()
@@ -599,7 +634,7 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             try
             {
                 var headerList = new List<string>();
-                var headerRow = 6;
+                const int headerRow = 6;
                 var i = 1;
                 while ("" + _cells.GetCell(i, headerRow).Value != "")
                 {
@@ -614,27 +649,25 @@ namespace EllipseLogSheetStatisticsExcelAddIn
                 return null;
             }
         }
-        public List<string> GetModelEquipments(string modelCode)
+        public List<string> GetModelEquipments(EllipseFunctions ef, string modelCode)
         {
-			var conn = new OracleConnector(Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label));
-            try
+			try
             {
                 List<string> equipmentList = null;
                 //Igual que el query sqlQuery2 de setSheetModelData
-                var sqlQuery = Queries.GetQueryDefaultModelData(modelCode, _eFunctions.dbReference, _eFunctions.dbLink);
+                var sqlQuery = Queries.GetQueryDefaultModelData(modelCode, _eFunctions.DbReference, _eFunctions.DbLink);
 
                 if (Debugger.DebugQueries)
                     _cells.GetCell("M1").Value = sqlQuery;
 
-                var drEquipments = conn.GetQueryResult(sqlQuery);
+                var drEquipments = ef.GetQueryResult(sqlQuery);
 
-                if (drEquipments != null && !drEquipments.IsClosed && drEquipments.HasRows)
+                if (drEquipments != null && !drEquipments.IsClosed)
                 {
                     equipmentList = new List<string>();
                     while (drEquipments.Read())
                         equipmentList.Add("" + drEquipments["ENTRY_GRP"].ToString().Trim());
                 }
-                conn.CloseConnection(true);
 
                 return equipmentList;
             }
@@ -651,266 +684,6 @@ namespace EllipseLogSheetStatisticsExcelAddIn
             new AboutBoxExcelAddIn().ShowDialog();
         }
 
-        private void button1_Click(object sender, RibbonControlEventArgs e)
-        {
-            if (_cells == null)
-                    _cells = new ExcelStyleCells(_excelApp);
 
-           
-        }
-    }
-    public class ModelHeaderNameValue
-    {
-        public string Name;
-        public string Type;
-        public int Index;
-
-        public ModelHeaderNameValue()
-        {
-            Name = "";
-            Type = "";
-            Index = 0;
-        }
-    }
-    public class ModelRowValue
-    {
-        public string Code;
-        public string EquipReference;
-        public ObjectFlagValue Operator;
-        public ObjectFlagValue Account;
-        public ObjectFlagValue WorkOrder;
-        public ObjectFlagValue Source;
-        public ObjectFlagValue Destination;
-        public ObjectFlagValue Material;
-
-        public ObjectFlagValue[] Inputs;
-
-        public ModelRowValue()
-        {
-            Code = "";
-            Operator = new ObjectFlagValue();
-            Account = new ObjectFlagValue();
-            WorkOrder = new ObjectFlagValue();
-            Source = new ObjectFlagValue();
-            Destination = new ObjectFlagValue();
-            Material = new ObjectFlagValue();
-            Inputs = new ObjectFlagValue[10];
-            for (var i = 0; i < 10; i++)
-                Inputs[i] = new ObjectFlagValue();
-        }
-
-
-    }
-    public class ObjectFlagValue
-    {
-        public bool Flag;
-        public string Value;
-
-        public ObjectFlagValue()
-        {
-            Flag = false;
-            Value = "";
-        }
-    }
-    public static class Queries
-    {
-        public static string GetQueryDefaultModelData(string modelCode, string dbReference, string dbLink)
-        {
-            var query = "" +
-                    " WITH" +
-                    "     EGI AS" +
-                    "     (" +
-                    "     SELECT" +
-                    "         LSG.MODEL_CODE," +
-                    "         LSG.MODEL_SEQ_NO," +
-                    "         LSG.ENTRY_GRP" +
-                    "     FROM" +
-                    "         " + dbReference + ".MSF460" + dbLink + " LSG" +
-                    "     WHERE" +
-                    "         LSG.MODEL_CODE      = '" + modelCode + "'" +
-                    "     AND LSG.REC_460_TYPE   = 'L'" +
-                    "     AND LSG.ENTRY_460_TYPE = 'G'" +
-                    "     )" +
-                    "     ," +
-                    "     LSER AS" +
-                    "     (" +
-                    "     SELECT" +
-                    "         LSE.MODEL_CODE," +
-                    "         '' AS EGI," +
-                    "         LSE.MODEL_SEQ_NO," +
-                    "         TRIM(LSE.ENTRY_GRP) ENTRY_GRP" +
-                    "     FROM" +
-                    "         " + dbReference + ".MSF460" + dbLink + " LSE" +
-                    "     WHERE" +
-                    "         LSE.MODEL_CODE      = '" + modelCode + "'" +
-                    "     AND LSE.REC_460_TYPE   = 'L'" +
-                    "     AND LSE.ENTRY_460_TYPE = 'E'" +
-                    "     ORDER BY" +
-                    "         MODEL_SEQ_NO ASC" +
-                    "     )" +
-                    "     ," +
-                    "     LSGR AS" +
-                    "     (" +
-                    "     SELECT" +
-                    "         EGI.MODEL_CODE," +
-                    "         TRIM(EGI.ENTRY_GRP) AS EGI," +
-                    "         EGI.MODEL_SEQ_NO," +
-                    "         TRIM(EQS.EQUIP_NO) ENTRY_GRP" +
-                    "     FROM" +
-                    "         " + dbReference + ".MSF600" + dbLink + " EQS" +
-                    "     JOIN EGI" +
-                    "     ON" +
-                    "         TRIM(EQS.EQUIP_GRP_ID) = TRIM(EGI.ENTRY_GRP)" +
-                    "     )" +
-                    "     ," +
-                    "     MODEL_EQUIP AS" +
-                    "     (" +
-                    "     SELECT" +
-                    "         LE.MODEL_CODE, LE.EGI, LE.MODEL_SEQ_NO, LE.ENTRY_GRP," +
-                    "         DEFV.OPERATOR_FLG, DEFV.OPERATOR_ID," +
-                    "         DEFV.ACCOUNT_FLG, DEFV.ACCOUNT_CODE," +
-                    "         DEFV.WORK_ORDER_FLG, DEFV.WORK_ORDER," +
-                    "         DEFV.SOURCE_LOC_FLG, DEFV.SOURCE_LOC," +
-                    "         DEFV.DEST_LOC_FLG, DEFV.DEST_LOC," +
-                    "         DEFV.MATERIAL_FLG, DEFV.MATERIAL_CODE," +
-                    "         DEFV.STAT_VALUE_1, DEFV.STAT_IO_FLG_1," +
-                    "         DEFV.STAT_VALUE_2, DEFV.STAT_IO_FLG_2," +
-                    "         DEFV.STAT_VALUE_3, DEFV.STAT_IO_FLG_3," +
-                    "         DEFV.STAT_VALUE_4, DEFV.STAT_IO_FLG_4," +
-                    "         DEFV.STAT_VALUE_5, DEFV.STAT_IO_FLG_5," +
-                    "         DEFV.STAT_VALUE_6, DEFV.STAT_IO_FLG_6," +
-                    "         DEFV.STAT_VALUE_7, DEFV.STAT_IO_FLG_7," +
-                    "         DEFV.STAT_VALUE_8, DEFV.STAT_IO_FLG_8," +
-                    "         DEFV.STAT_VALUE_9, DEFV.STAT_IO_FLG_9," +
-                    "         DEFV.STAT_VALUE_10, DEFV.STAT_IO_FLG_10" +
-                    "     FROM" +
-                    "         LSER LE" +
-                    "     JOIN " + dbReference + ".MSF615" + dbLink + " DEFV" +
-                    "     ON" +
-                    "         LE.ENTRY_GRP = TRIM(DEFV.EQUIP_NO)" +
-                    "     WHERE" +
-                    "         DEFV.EGI_REC_TYPE = 'E'" +
-                    "     UNION" +
-                    "     SELECT" +
-                    "         LE.MODEL_CODE, LE.EGI, LE.MODEL_SEQ_NO, LE.ENTRY_GRP," +
-                    "         DEFV.OPERATOR_FLG, DEFV.OPERATOR_ID," +
-                    "         DEFV.ACCOUNT_FLG, DEFV.ACCOUNT_CODE," +
-                    "         DEFV.WORK_ORDER_FLG, DEFV.WORK_ORDER," +
-                    "         DEFV.SOURCE_LOC_FLG, DEFV.SOURCE_LOC," +
-                    "         DEFV.DEST_LOC_FLG, DEFV.DEST_LOC," +
-                    "         DEFV.MATERIAL_FLG, DEFV.MATERIAL_CODE," +
-                    "         DEFV.STAT_VALUE_1, DEFV.STAT_IO_FLG_1," +
-                    "         DEFV.STAT_VALUE_2, DEFV.STAT_IO_FLG_2," +
-                    "         DEFV.STAT_VALUE_3, DEFV.STAT_IO_FLG_3," +
-                    "         DEFV.STAT_VALUE_4, DEFV.STAT_IO_FLG_4," +
-                    "         DEFV.STAT_VALUE_5, DEFV.STAT_IO_FLG_5," +
-                    "         DEFV.STAT_VALUE_6, DEFV.STAT_IO_FLG_6," +
-                    "         DEFV.STAT_VALUE_7, DEFV.STAT_IO_FLG_7," +
-                    "         DEFV.STAT_VALUE_8, DEFV.STAT_IO_FLG_8," +
-                    "         DEFV.STAT_VALUE_9, DEFV.STAT_IO_FLG_9," +
-                    "         DEFV.STAT_VALUE_10, DEFV.STAT_IO_FLG_10" +
-                    "     FROM" +
-                    "         LSGR LE" +
-                    "     JOIN " + dbReference + ".MSF615" + dbLink + " DEFV" +
-                    "     ON" +
-                    "         TRIM(LE.EGI) = TRIM(DEFV.EQUIP_NO)" +
-                    "     WHERE" +
-                    "         DEFV.EGI_REC_TYPE = 'G'" +
-                    "     UNION" +
-                    "     SELECT" +
-                    "         LE.MODEL_CODE, LE.EGI, LE.MODEL_SEQ_NO, LE.ENTRY_GRP," +
-                    "         DEFV.OPERATOR_FLG, DEFV.OPERATOR_ID," +
-                    "         DEFV.ACCOUNT_FLG, DEFV.ACCOUNT_CODE," +
-                    "         DEFV.WORK_ORDER_FLG, DEFV.WORK_ORDER," +
-                    "         DEFV.SOURCE_LOC_FLG, DEFV.SOURCE_LOC," +
-                    "         DEFV.DEST_LOC_FLG, DEFV.DEST_LOC," +
-                    "         DEFV.MATERIAL_FLG, DEFV.MATERIAL_CODE," +
-                    "         DEFV.STAT_VALUE_1, DEFV.STAT_IO_FLG_1," +
-                    "         DEFV.STAT_VALUE_2, DEFV.STAT_IO_FLG_2," +
-                    "         DEFV.STAT_VALUE_3, DEFV.STAT_IO_FLG_3," +
-                    "         DEFV.STAT_VALUE_4, DEFV.STAT_IO_FLG_4," +
-                    "         DEFV.STAT_VALUE_5, DEFV.STAT_IO_FLG_5," +
-                    "         DEFV.STAT_VALUE_6, DEFV.STAT_IO_FLG_6," +
-                    "         DEFV.STAT_VALUE_7, DEFV.STAT_IO_FLG_7," +
-                    "         DEFV.STAT_VALUE_8, DEFV.STAT_IO_FLG_8," +
-                    "         DEFV.STAT_VALUE_9, DEFV.STAT_IO_FLG_9," +
-                    "         DEFV.STAT_VALUE_10, DEFV.STAT_IO_FLG_10" +
-                    "       FROM" +
-                    "         LSGR LE" +
-                    "         LEFT JOIN " + dbReference + ".MSF615" + dbLink + " DEFV" +
-                    "         ON" +
-                    "         TRIM(LE.EGI) = TRIM(DEFV.EQUIP_NO)" +
-                    "       WHERE DEFV.EQUIP_NO IS NULL" +
-                    "     )      " +
-                    "     SELECT" +
-                    "       ME.*, TRIM(EQ.PLANT_NO) EQ_REFERENCE" +
-                    "     FROM" +
-                    "       MODEL_EQUIP ME LEFT JOIN " + dbReference + ".MSF600" + dbLink + " EQ ON TRIM(ME.ENTRY_GRP) = TRIM(EQ.EQUIP_NO)" +
-                    "     ORDER BY" +
-                    "       ME.MODEL_CODE," +
-                    "       ME.MODEL_SEQ_NO," +
-                    "       ME.ENTRY_GRP";
-
-            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-
-            return query;
-        }
-        public static string GetDefaultHeaderData(string modelCode, string dbReference, string dbLink)
-        {
-            var query = "" +
-                    " WITH MODEL_COL AS" +
-                    "   (SELECT MD.MODEL_CODE," +
-                    "     MD.COLUMN_HEAD_1," +
-                    "     MD.PROD_DT_TY_1," +
-                    "     MD.COLUMN_HEAD_2," +
-                    "     MD.PROD_DT_TY_2," +
-                    "     MD.COLUMN_HEAD_3," +
-                    "     MD.PROD_DT_TY_3," +
-                    "     MD.COLUMN_HEAD_4," +
-                    "     MD.PROD_DT_TY_4," +
-                    "     MD.COLUMN_HEAD_5," +
-                    "     MD.PROD_DT_TY_5," +
-                    "     MD.COLUMN_HEAD_6," +
-                    "     MD.PROD_DT_TY_6," +
-                    "     MD.COLUMN_HEAD_7," +
-                    "     MD.PROD_DT_TY_7," +
-                    "     MD.COLUMN_HEAD_8," +
-                    "     MD.PROD_DT_TY_8," +
-                    "     MD.COLUMN_HEAD_9," +
-                    "     MD.PROD_DT_TY_9," +
-                    "     MD.COLUMN_HEAD_10," +
-                    "     MD.PROD_DT_TY_10" +
-                    "   FROM " + dbReference + ".MSF430" + dbLink + " MD" +
-                    "   WHERE MD.MODEL_CODE = '" + modelCode + "'" +
-                    "   ) ," +
-                    "   COLUMN_NAME AS" +
-                    "   (SELECT ROWNUM AS INDICE," +
-                    "     MODEL_CODE," +
-                    "     COLUMNAS," +
-                    "     HEADER_NAME" +
-                    "   FROM MODEL_COL UNPIVOT (HEADER_NAME FOR COLUMNAS IN ( COLUMN_HEAD_1, COLUMN_HEAD_2, COLUMN_HEAD_3, COLUMN_HEAD_4, COLUMN_HEAD_5, COLUMN_HEAD_6, COLUMN_HEAD_7, COLUMN_HEAD_8, COLUMN_HEAD_9, COLUMN_HEAD_10) )" +
-                    "   )," +
-                    "   COLUMN_TYPE AS" +
-                    "   (SELECT ROWNUM AS INDICE," +
-                    "     MODEL_CODE," +
-                    "     COLUMNAS," +
-                    "     VALUE_TYPE" +
-                    "   FROM MODEL_COL UNPIVOT ( VALUE_TYPE FOR COLUMNAS IN (PROD_DT_TY_1, PROD_DT_TY_2, PROD_DT_TY_3, PROD_DT_TY_4, PROD_DT_TY_5, PROD_DT_TY_6, PROD_DT_TY_7, PROD_DT_TY_8, PROD_DT_TY_9, PROD_DT_TY_10) )" +
-                    "   )," +
-                    "   HEADER_DEFAULT_VALUES AS" +
-                    "   (SELECT CN.MODEL_CODE," +
-                    "     CN.INDICE," +
-                    "     CN.HEADER_NAME," +
-                    "     CT.VALUE_TYPE" +
-                    "   FROM COLUMN_NAME CN" +
-                    "   JOIN COLUMN_TYPE CT" +
-                    "   ON CN.INDICE = CT.INDICE" +
-                    "   )" +
-                    " SELECT * FROM HEADER_DEFAULT_VALUES HDV";
-
-            query = MyUtilities.ReplaceQueryStringRegexWhiteSpaces(query, "WHERE AND", "WHERE ");
-
-            return query;
-        }
     }
 }

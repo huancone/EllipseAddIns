@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseLogSheetStatisticsExcelAddIn", "EllipseLogSheetStatisticsExcelAddIn\EllipseLogSheetStatisticsExcelAddIn.csproj", "{BBC2DCEC-F1AB-4B26-990D-7DD8D4D249EA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseCommonsClassLibrary", "..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj", "{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web.Services.Ellipse", "..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj", "{1C5ABABA-126F-424B-932B-A110F3665344}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,28 +24,11 @@ Global
 		{BBC2DCEC-F1AB-4B26-990D-7DD8D4D249EA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BBC2DCEC-F1AB-4B26-990D-7DD8D4D249EA}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{BBC2DCEC-F1AB-4B26-990D-7DD8D4D249EA}.SingleImage|Any CPU.Build.0 = Release|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.SingleImage|Any CPU.Build.0 = Release|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54ADE297-AEB8-4FF9-8D16-885F729EB7E8}
 	EndGlobalSection
 EndGlobal

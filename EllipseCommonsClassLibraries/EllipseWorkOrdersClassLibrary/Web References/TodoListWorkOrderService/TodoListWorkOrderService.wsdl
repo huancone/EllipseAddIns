@@ -966,10 +966,15 @@
       </xsd:element>
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
-      <xsd:complexType name="ArrayOfMessage">
+      <xsd:complexType name="ArrayOfError">
         <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
         </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Error">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
       </xsd:complexType>
       <xsd:complexType name="Message">
         <xsd:sequence>
@@ -983,22 +988,17 @@
           <xsd:element minOccurs="0" name="user" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="ArrayOfMessage">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ArrayOfWarning">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="Warning" nillable="true" type="ns6:Warning" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="Warning">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns6:Message" />
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfError">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="Error">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns6:Message" />
         </xsd:complexContent>
@@ -1525,7 +1525,7 @@
   </wsdl:binding>
   <wsdl:service name="TodoListWorkOrderService">
     <wsdl:port name="TodoListWorkOrderServiceHttpPort" binding="tns:TodoListWorkOrderServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/TodoListWorkOrderService" />
+      <wsdlsoap:address location="http://ellipse-el8prod.lmnerp02.cerrejon.com/ews/services/TodoListWorkOrderService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

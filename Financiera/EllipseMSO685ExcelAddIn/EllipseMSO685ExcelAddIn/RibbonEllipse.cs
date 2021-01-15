@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Ellipse;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 
 namespace EllipseMSO685ExcelAddIn
 {
@@ -16,9 +17,9 @@ namespace EllipseMSO685ExcelAddIn
     {
 
         private const int TittleRow = 5;
-        private static int _resultColumn = 13;
-        public static EllipseFunctions EFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private const int ResultColumn = 13;
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private ExcelStyleCells _cells;
         private Application _excelApp;
         private ListObject _excelSheetItems;
@@ -26,6 +27,14 @@ namespace EllipseMSO685ExcelAddIn
         
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -35,8 +44,41 @@ namespace EllipseMSO685ExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //Example of Default Custom Options
+            //settings.SetDefaultCustomSettingValue("AutoSort", "Y");
+            //settings.SetDefaultCustomSettingValue("OverrideAccountCode", "Maintenance");
+            //settings.SetDefaultCustomSettingValue("IgnoreItemError", "N");
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            //Example of Getting Custom Options from Save File
+            //var overrideAccountCode = settings.GetCustomSettingValue("OverrideAccountCode");
+            //if (overrideAccountCode.Equals("Maintenance"))
+            //    cbAccountElementOverrideMntto.Checked = true;
+            //else if (overrideAccountCode.Equals("Disable"))
+            //    cbAccountElementOverrideDisable.Checked = true;
+            //else if (overrideAccountCode.Equals("Alwats"))
+            //    cbAccountElementOverrideAlways.Checked = true;
+            //else if (overrideAccountCode.Equals("Default"))
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //else
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //cbAutoSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AutoSort"));
+            //cbIgnoreItemError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreItemError"));
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatSubAssetsDep_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSubAssetsDep();
@@ -51,10 +93,11 @@ namespace EllipseMSO685ExcelAddIn
             Worksheet excelSheet = excelBook.ActiveSheet;
             _sheetName01 = "MSO685 Opcion 3";
             excelSheet.Name = _sheetName01;
-            _resultColumn = 19;
+            var resultColumn = ResultColumn;
+            resultColumn = 19;
 
             _excelSheetItems = excelSheet.ListObjects.AddEx(XlListObjectSourceType.xlSrcRange,
-                _cells.GetRange(1, TittleRow, _resultColumn, TittleRow + 1), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
+                _cells.GetRange(1, TittleRow, resultColumn, TittleRow + 1), XlListObjectHasHeaders: XlYesNoGuess.xlYes);
 
             _cells.GetCell(1, 1).Value = "CERREJÓN";
             _cells.GetCell(1, 1).Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -63,7 +106,7 @@ namespace EllipseMSO685ExcelAddIn
             _cells.GetCell("B1").Style = _cells.GetStyle(StyleConstants.HeaderSize17);
             _cells.MergeCells(2, 1, 7, 2);
 
-            _cells.GetRange(1, TittleRow + 1, _resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
+            _cells.GetRange(1, TittleRow + 1, resultColumn, _excelSheetItems.ListRows.Count + TittleRow).NumberFormat =
                 "@";
 
             _cells.GetCell(1, TittleRow).Value = "Asset Reference *";
@@ -84,9 +127,9 @@ namespace EllipseMSO685ExcelAddIn
             _cells.GetCell(16, TittleRow).Value = "Est Retirement Value - Local";
             _cells.GetCell(17, TittleRow).Value = "Foreign Currency Cost";
             _cells.GetCell(18, TittleRow).Value = "Foreign Currency Type";
-            _cells.GetCell(_resultColumn, TittleRow).Value = "Message";
+            _cells.GetCell(resultColumn, TittleRow).Value = "Message";
 
-            _cells.GetRange(1, TittleRow, _resultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+            _cells.GetRange(1, TittleRow, resultColumn, TittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
 
             excelSheet.Cells.Columns.AutoFit();
             excelSheet.Cells.Rows.AutoFit();
@@ -107,10 +150,10 @@ namespace EllipseMSO685ExcelAddIn
         private void Accion3()
         {
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var proxySheet = new screen.ScreenService();
-            var requestSheet = new screen.ScreenSubmitRequestDTO();
-            proxySheet.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
-            var opSheet = new screen.OperationContext
+            var service = new Screen.ScreenService();
+            var requestSheet = new Screen.ScreenSubmitRequestDTO();
+            service.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            var opSheet = new Screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
                 position = _frmAuth.EllipsePost,
@@ -118,18 +161,20 @@ namespace EllipseMSO685ExcelAddIn
                 maxInstancesSpecified = true,
                 returnWarnings = Debugger.DebugWarnings
             };
+
+            var resultColumn = ResultColumn;
             var currentRow = TittleRow + 1;
             while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
             {
                 try
                 {
                     _cells.GetCell(1, currentRow).Select();
-                    EFunctions.RevertOperation(opSheet, proxySheet);
-                    var replySheet = proxySheet.executeScreen(opSheet, "MSO685");
-                    if (EFunctions.CheckReplyError(replySheet))
+                    _eFunctions.RevertOperation(opSheet, service);
+                    var replySheet = service.executeScreen(opSheet, "MSO685");
+                    if (_eFunctions.CheckReplyError(replySheet))
                     {
-                        _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
-                        _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
+                        _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(resultColumn, currentRow).Value = replySheet.message;
                     }
                     else
                     {
@@ -145,17 +190,17 @@ namespace EllipseMSO685ExcelAddIn
                             _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value));
                         requestSheet.screenFields = arrayFields.ToArray();
                         requestSheet.screenKey = "1";
-                        replySheet = proxySheet.submit(opSheet, requestSheet);
+                        replySheet = service.submit(opSheet, requestSheet);
 
-                        while (EFunctions.CheckReplyWarning(replySheet))
-                            replySheet = proxySheet.submit(opSheet, requestSheet);
+                        while (_eFunctions.CheckReplyWarning(replySheet))
+                            replySheet = service.submit(opSheet, requestSheet);
 
                         if (replySheet.message.Contains("Confirm"))
-                            replySheet = proxySheet.submit(opSheet, requestSheet);
-                        if (EFunctions.CheckReplyError(replySheet))
+                            replySheet = service.submit(opSheet, requestSheet);
+                        if (_eFunctions.CheckReplyError(replySheet))
                         {
-                            _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
-                            _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
+                            _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
+                            _cells.GetCell(resultColumn, currentRow).Value = replySheet.message;
                         }
                         else
                         {
@@ -194,29 +239,29 @@ namespace EllipseMSO685ExcelAddIn
 
                             requestSheet.screenFields = arrayFields.ToArray();
                             requestSheet.screenKey = "1";
-                            replySheet = proxySheet.submit(opSheet, requestSheet);
-                            while (EFunctions.CheckReplyWarning(replySheet))
-                                replySheet = proxySheet.submit(opSheet, requestSheet);
+                            replySheet = service.submit(opSheet, requestSheet);
+                            while (_eFunctions.CheckReplyWarning(replySheet))
+                                replySheet = service.submit(opSheet, requestSheet);
 
                             if (replySheet.message.Contains("Confirm"))
-                                replySheet = proxySheet.submit(opSheet, requestSheet);
-                            if (EFunctions.CheckReplyError(replySheet))
+                                replySheet = service.submit(opSheet, requestSheet);
+                            if (_eFunctions.CheckReplyError(replySheet))
                             {
-                                _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
-                                _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
+                                _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
+                                _cells.GetCell(resultColumn, currentRow).Value = replySheet.message;
                             }
                             else
                             {
-                                _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Success;
-                                _cells.GetCell(_resultColumn, currentRow).Value = "Procesado";
+                                _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Success;
+                                _cells.GetCell(resultColumn, currentRow).Value = "Procesado";
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(_resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                    _cells.GetCell(_resultColumn, currentRow).Value = ex.Message;
+                    _cells.GetCell(resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                    _cells.GetCell(resultColumn, currentRow).Value = ex.Message;
                 }
                 finally
                 {

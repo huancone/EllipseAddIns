@@ -1,30 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary;
+using SharedClassLibrary.Vsto.Excel;
+using SharedClassLibrary.Utilities;
 using Microsoft.Office.Tools.Ribbon;
 using Excel = Microsoft.Office.Interop.Excel; 
 using EllipseStdTextClassLibrary;
 using EllipseReferenceCodesClassLibrary;
 using EllipseDocumentReferenceClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
 
 namespace EllipseStdTextExcelAddIn
 {
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     public partial class RibbonEllipse
     {
 
         private ExcelStyleCells _cells;
-        private EllipseFunctions _eFunctions = new EllipseFunctions();
-        private FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private Excel.Application _excelApp;
         private const string SheetName01 = "StdText";
         private const string SheetName02 = "ReferenceCodes";
@@ -45,8 +42,15 @@ namespace EllipseStdTextExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
-           
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -54,8 +58,34 @@ namespace EllipseStdTextExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -379,11 +409,11 @@ namespace EllipseStdTextExcelAddIn
                 _cells.GetCell(ResultColumn03, TitleRow03).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn03, TitleRow03).Style = StyleConstants.TitleResult;
 
-                var refTypeCodes = _eFunctions.GetItemCodes("DOLT").Select(item => item.code + " - " + item.description).ToList();
-                var docTypeCodes = _eFunctions.GetItemCodes("DO").Select(item => item.code + " - " + item.description).ToList();
-                var versionTypeCodes = _eFunctions.GetItemCodes("VT").Select(item => item.code + " - " + item.description).ToList();
-                var versionStatusCodes = _eFunctions.GetItemCodes("DOVS").Select(item => item.code + " - " + item.description).ToList();
-                var elecTypeCodes = _eFunctions.GetItemCodes("DOET").Select(item => item.code + " - " + item.description).ToList();
+                var refTypeCodes = _eFunctions.GetItemCodesString("DOLT");
+                var docTypeCodes = _eFunctions.GetItemCodesString("DO");
+                var versionTypeCodes = _eFunctions.GetItemCodesString("VT");
+                var versionStatusCodes = _eFunctions.GetItemCodesString("DOVS");
+                var elecTypeCodes = _eFunctions.GetItemCodesString("DOET");
 
                 _cells.SetValidationList(_cells.GetCell(1, TitleRow03 + 1), refTypeCodes, ValidationSheetName, 1, false);
                 _cells.SetValidationList(_cells.GetCell(7, TitleRow03 + 1), docTypeCodes, ValidationSheetName, 2, false);
@@ -402,7 +432,7 @@ namespace EllipseStdTextExcelAddIn
             {
                 Debugger.LogError("RibbonEllipse:formatSheet()",
                     "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja." + "\n\n" + ex.Message);
+                MessageBox.Show($@"{SharedResources.Error_SheetHeaderError} {ex.Message}");
             }
         }
 
@@ -415,7 +445,7 @@ namespace EllipseStdTextExcelAddIn
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
             var districtCode = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var position = _frmAuth.EllipsePost;
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(3, i).Value))
@@ -452,7 +482,7 @@ namespace EllipseStdTextExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void SetStdText(bool setHeader, bool setText)
@@ -465,7 +495,7 @@ namespace EllipseStdTextExcelAddIn
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
             var i = TitleRow01 + 1;
             var districtCode = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var position = _frmAuth.EllipsePost;
             var stdTextOpc = StdText.GetStdTextOpContext(districtCode, position, 100, Debugger.DebugWarnings);
             var stdTextCustomOpc = StdText.GetCustomOpContext(districtCode, position, 100, Debugger.DebugWarnings);
@@ -517,14 +547,14 @@ namespace EllipseStdTextExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void ReviewRefCodesList()
         {
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -588,14 +618,14 @@ namespace EllipseStdTextExcelAddIn
             }
             _eFunctions.SetConnectionPoolingType(true);
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void UpdateRefCodesList()
         {
 
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -657,7 +687,7 @@ namespace EllipseStdTextExcelAddIn
             }
             _eFunctions.SetConnectionPoolingType(true);
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void btnCleanTable_Click(object sender, RibbonControlEventArgs e)
@@ -731,7 +761,7 @@ namespace EllipseStdTextExcelAddIn
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(() => CreateDocumentReference());
+                    _thread = new Thread(CreateDocumentReference);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -756,7 +786,7 @@ namespace EllipseStdTextExcelAddIn
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(() => LinkDocumentReference());
+                    _thread = new Thread(LinkDocumentReference);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -781,7 +811,7 @@ namespace EllipseStdTextExcelAddIn
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(() => UpdateDocumentReference());
+                    _thread = new Thread(UpdateDocumentReference);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -806,7 +836,7 @@ namespace EllipseStdTextExcelAddIn
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     //si si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
-                    _thread = new Thread(() => DeleteDocumentReference());
+                    _thread = new Thread(DeleteDocumentReference);
                     _thread.SetApartmentState(ApartmentState.STA);
                     _thread.Start();
                 }
@@ -823,7 +853,7 @@ namespace EllipseStdTextExcelAddIn
         private void CreateDocumentReference()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -930,13 +960,13 @@ namespace EllipseStdTextExcelAddIn
                 }
             }
 
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void LinkDocumentReference()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1028,13 +1058,13 @@ namespace EllipseStdTextExcelAddIn
                 }
             }
 
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void UpdateDocumentReference()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1125,13 +1155,13 @@ namespace EllipseStdTextExcelAddIn
                 }
             }
 
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void DeleteDocumentReference()
         {
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1222,7 +1252,7 @@ namespace EllipseStdTextExcelAddIn
                 }
             }
 
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
@@ -1231,7 +1261,7 @@ namespace EllipseStdTextExcelAddIn
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {

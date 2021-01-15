@@ -5,19 +5,20 @@ using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Utilities;
-using EllipseCommonsClassLibrary.Settings;
+using SharedClassLibrary.Utilities;
 using EllipseJobsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using OperationContext = EllipseWorkOrdersClassLibrary.ResourceReqmntsService.OperationContext;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 using SearchFieldCriteriaType = EllipseJobsClassLibrary.SearchFieldCriteriaType;
 
 //si es screen service
@@ -32,11 +33,10 @@ namespace EllipsePlannerExcelAddIn
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
-        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
+        private EllipseFunctions _eFunctions;
         private Application _excelApp;
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private FormAuthenticate _frmAuth;
         private Thread _thread;
-        private CommonSettings _settings;
 
         //Hojas
         private const string ValidationSheetName = "Validacion";
@@ -64,7 +64,17 @@ namespace EllipsePlannerExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            
+            LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -72,27 +82,30 @@ namespace EllipsePlannerExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-            LoadSettings();
-        }
 
-        private void LoadSettings()
-        {
-            var defaultConfig = new CommonSettings.Options();
-            defaultConfig.SetOption("DeviationStats", "Y");
-            defaultConfig.SetOption("SplitByResource", "Y");
-            defaultConfig.SetOption("IncludeMsts", "Y");
-            defaultConfig.SetOption("OverlappingDateSearch", "N");
+            settings.SetDefaultCustomSettingValue("DeviationStats", "Y");
+            settings.SetDefaultCustomSettingValue("SplitByResource", "Y");
+            settings.SetDefaultCustomSettingValue("IncludeMsts", "Y");
+            settings.SetDefaultCustomSettingValue("OverlappingDateSearch", "N");
 
-            _settings = new CommonSettings(defaultConfig);
-            var config = _settings.Configuration;
-            config.SetDefaultOptions(defaultConfig);
             //Setting of Configuration Options from Config File (or default)
-            cbDeviationStats.Checked = MyUtilities.IsTrue(config.GetOptionValue("DeviationStats"));
-            cbSplitTaskByResource.Checked = MyUtilities.IsTrue(config.GetOptionValue("SplitByResource"));
-            cbIncludeMsts.Checked = MyUtilities.IsTrue(config.GetOptionValue("IncludeMsts"));
-            cbOverlappingDateSearch.Checked = MyUtilities.IsTrue(config.GetOptionValue("OverlappingDateSearch"));
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
 
-            _settings.UpdateSettings();
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            //Setting of Configuration Options from Config File (or default)
+            cbDeviationStats.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("DeviationStats"));
+            cbSplitTaskByResource.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("SplitByResource"));
+            cbIncludeMsts.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IncludeMsts"));
+            cbOverlappingDateSearch.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("OverlappingDateSearch"));
+
+            settings.SaveCustomSettings();
             //
         }
 
@@ -341,7 +354,7 @@ private void FormatSheet()
                 _cells.GetCell(ActionColumn, titleRow).AddComment("C: Crear Requerimiento \nM: Modificar Requerimiento \nD: Eliminar Requerimiento \nClose Task: Cerrar Tarea");
 
 
-                var completeCodeList = _eFunctions.GetItemCodes("SC").Select(item => item.code + " - " + item.description).ToList();
+                var completeCodeList = _eFunctions.GetItemCodes("SC").Select(item => item.Code + " - " + item.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell(18, titleRow + 1), completeCodeList, ValidationSheetName, 10, false);
 
                 _cells.GetRange(1, titleRow, resultColumn - 1, titleRow).Style = StyleConstants.TitleInformation;
@@ -512,7 +525,6 @@ private void FormatSheet()
                 #region Hoja 1 - Tareas
                 _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
                 var taskSearchParam = new TaskSearchParam();
-                var urlServicePost = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label, ServiceType.PostService);
                 var searchCriteriaList = SearchFieldCriteriaType.GetSearchFieldCriteriaTypes();
                 var district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
                 var searchCriteriaKey1Text = _cells.GetEmptyIfNull(_cells.GetCell("A4").Value);
@@ -525,11 +537,22 @@ private void FormatSheet()
                 taskSearchParam.AdditionalInformation = cbDeviationStats.Checked;
                 taskSearchParam.IncludeMst = cbIncludeMsts.Checked;
                 taskSearchParam.OverlappingDates = cbOverlappingDateSearch.Checked;
-                _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlServicePost);
+
+
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                var taskOperationContext = new EllipseJobsClassLibrary.WorkOrderTaskMWPService.OperationContext()
+                {
+                    district = _frmAuth.EllipseDsct,
+                    position = _frmAuth.EllipsePost,
+                    maxInstances = 100,
+                    maxInstancesSpecified = true,
+                    returnWarnings = Debugger.DebugWarnings,
+                    returnWarningsSpecified = true
+                };
 
                 //consumo de servicio de msewts
-                List<JobTask> ellipseJobTasks = JobActions.FetchJobsTasksPost(_eFunctions, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate, taskSearchParam);
+                List<JobTask> ellipseJobTasks = JobActions.FetchJobsTasks(_eFunctions, urlService, taskOperationContext, district, dateInclude, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate, taskSearchParam);
 
                 //consulta sobre tabla de Ellipse mso720
                 List<LabourResources> ellipseResources = JobActions.GetEllipseResources(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, startDate, endDate);
@@ -1039,26 +1062,27 @@ private void FormatSheet()
 
         private void cbDeviationStats_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("DeviationStats", MyUtilities.ToString(cbDeviationStats.Checked));
-            _settings.UpdateSettings();
+
+            Settings.CurrentSettings.SetCustomSettingValue("DeviationStats", MyUtilities.ToString(cbDeviationStats.Checked));
+            Settings.CurrentSettings.SaveCustomSettings();
         }
 
         private void cbSplitTaskByResource_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("SplitByResource", MyUtilities.ToString(cbSplitTaskByResource.Checked));
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("SplitByResource", MyUtilities.ToString(cbSplitTaskByResource.Checked));
+            Settings.CurrentSettings.SaveCustomSettings();
         }
 
         private void cbOverlappingDateSearch_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("OverlappingDateSearch", MyUtilities.ToString(cbSplitTaskByResource.Checked));
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("OverlappingDateSearch", MyUtilities.ToString(cbSplitTaskByResource.Checked));
+            Settings.CurrentSettings.SaveCustomSettings();
         }
 
         private void cbIncludeMsts_Click(object sender, RibbonControlEventArgs e)
         {
-            _settings.Configuration.SetOption("IncludeMsts", MyUtilities.ToString(cbSplitTaskByResource.Checked));
-            _settings.UpdateSettings();
+            Settings.CurrentSettings.SetCustomSettingValue("IncludeMsts", MyUtilities.ToString(cbSplitTaskByResource.Checked));
+            Settings.CurrentSettings.SaveCustomSettings();
         }
     }
 }

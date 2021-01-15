@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web.Services.Ellipse.Post;
 using SharedClassLibrary.Ellipse;
 using SharedClassLibrary.Ellipse.Constants;
 using SharedClassLibrary.Utilities;
@@ -776,6 +775,7 @@ namespace EllipseStandardJobsClassLibrary
             proxyStdTask.create(opContext, requestStdTask);
         }
 
+        /*
         public static void ModifyStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask)
         {
             ef.InitiatePostConnection();
@@ -839,7 +839,9 @@ namespace EllipseStandardJobsClassLibrary
             if (!errorMessage.Equals(""))
                 throw new Exception(errorMessage);
         }
+        */
 
+        /*
         public static void CreateStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask)
         {
 
@@ -906,7 +908,7 @@ namespace EllipseStandardJobsClassLibrary
             if (!errorMessage.Equals(""))
                 throw new Exception(errorMessage);
         }
-
+        */
         public static void DeleteStandardJobTask(string urlService, StandardJobTaskService.OperationContext opContext, StandardJobTask stdTask)
         {
             var proxyStdTask = new StandardJobTaskService.StandardJobTaskService();//ejecuta las acciones del servicio
@@ -919,6 +921,7 @@ namespace EllipseStandardJobsClassLibrary
             proxyStdTask.delete(opContext, requestStdTask);
         }
 
+        /*
         public static void DeleteStandardJobTaskPost(EllipseFunctions ef, StandardJobTask stdTask)
         {
             ef.InitiatePostConnection();
@@ -960,7 +963,7 @@ namespace EllipseStandardJobsClassLibrary
                 throw new Exception(errorMessage);
 
         }
-
+        */
         public static void SetStandardJobTaskText(string urlService, string districtCode, string position, bool returnWarnings, StandardJobTask stdTask)
         {
             if (!string.IsNullOrWhiteSpace(stdTask.SjTaskNo))
@@ -1704,7 +1707,6 @@ namespace EllipseStandardJobsClassLibrary
         {
             var proxyRetrieveEquipment = new StandardJobService.StandardJobService() { Url = urlService + "/StandardJobService" };
 
-            var standardJobEquipments = new List<StandardJobEquipments>();
             var requestParametersList = new List<StandardJobServiceAddEquipmentRequestDTO>();
             var equipmentRelationList = new List<EquipmentRelationDTO>();
 

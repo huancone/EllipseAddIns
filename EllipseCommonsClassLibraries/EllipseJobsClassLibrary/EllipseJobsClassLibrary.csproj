@@ -95,6 +95,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\WorkOrderTaskMWPService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -117,25 +122,32 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Web References\WorkOrderTaskMWPService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\WorkOrderTaskMWPService\TasksMWPSearchParamServiceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskMWPService\TasksMWPServiceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskMWPService\WorkOrderTaskAssignServiceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskMWPService\WorkOrderTaskMWPPrintJobCardServiceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderTaskMWPService\WorkOrderTaskMWPService.wsdl" />
+    <None Include="Web References\WorkOrderTaskMWPService\WorkOrderTaskMWPServiceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/JobsMWPService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\JobsMWPService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/JobsMWPService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseJobsClassLibrary_JobsMWPService_JobsMWPService</CachedSettingsPropName>
-    </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ventyx_logo.ico" />
@@ -149,10 +161,30 @@
       <Project>{b08f098e-e4de-4431-8cf1-0e3156b96a00}</Project>
       <Name>EllipseWorkOrdersClassLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
-      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
-      <Name>System.Web.Services.Ellipse</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/JobsMWPService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\JobsMWPService\</RelPath>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/JobsMWPService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseJobsClassLibrary_JobsMWPService_JobsMWPService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskMWPService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WorkOrderTaskMWPService\</RelPath>
+      <UpdateFromURL>http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskMWPService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseJobsClassLibrary_WorkOrderTaskMWPService_WorkOrderTaskMWPService</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("System.Web.Services.Ellipse")]
-[assembly: AssemblyDescription("Ellipse SOAP Library for  EWS and POST connection")]
+[assembly: AssemblyDescription("Ellipse SOAP Library for  EWS connection")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hambings SAS")]
 [assembly: AssemblyProduct("System.Web.Services.Ellipse")]
-[assembly: AssemblyCopyright("Copyright ©  2018-2020")]
+[assembly: AssemblyCopyright("Copyright ©  2018-2021")]
 [assembly: AssemblyTrademark("hernandezrhectorj@gmail.com")]
 [assembly: AssemblyCulture("")]
 

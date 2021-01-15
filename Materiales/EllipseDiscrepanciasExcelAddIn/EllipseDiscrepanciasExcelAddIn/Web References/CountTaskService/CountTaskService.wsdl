@@ -1,0 +1,1800 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://service.ellipse.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:tns="http://counttask.m3140.service.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns3="http://instances.m3140.types.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://counttask.m3140.service.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.m3140.types.ellipse.mincom.com">
+      <xsd:import namespace="http://service.ellipse.mincom.com" />
+      <xsd:simpleType name="districtCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="warehouseId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="binCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stocktakeNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="supplyCustomerAccountId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="employeeId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="custodianId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assignTo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="countSheetNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="countTaskStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stocktakeType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="CountTaskSearchParam">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractSearchParam">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="assignTo" type="ns3:assignTo" />
+              <xsd:element minOccurs="0" name="binCode" type="ns3:binCode" />
+              <xsd:element minOccurs="0" name="countSheetNumber" type="ns3:countSheetNumber" />
+              <xsd:element minOccurs="0" name="countTaskStatus" type="ns3:countTaskStatus" />
+              <xsd:element minOccurs="0" name="custodianId" type="ns3:custodianId" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns3:districtCode" />
+              <xsd:element minOccurs="0" name="employeeId" type="ns3:employeeId" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns3:stockCode" />
+              <xsd:element minOccurs="0" name="stocktakeNumber" type="ns3:stocktakeNumber" />
+              <xsd:element minOccurs="0" name="stocktakeType" type="ns3:stocktakeType" />
+              <xsd:element minOccurs="0" name="supplyCustomerAccountId" type="ns3:supplyCustomerAccountId" />
+              <xsd:element minOccurs="0" name="warehouseId" type="ns3:warehouseId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="assignedDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="reconcileDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="adjApprDetail">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="adjApprTime">
+        <xsd:restriction base="xsd:time" />
+      </xsd:simpleType>
+      <xsd:simpleType name="holdingTaskType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isCountQtyEnabled">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="stockOnhand">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="otherBinsExist">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="adjApprStat">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="invPrice3Dec">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="99999999999.999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="valueOfConsignedStock">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="printerCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="18" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="consignedSOH">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="surplusAdjustmentQty">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="valueVariance">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="-10000000000000000000" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="adjApprDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="assignedTime">
+        <xsd:restriction base="xsd:time" />
+      </xsd:simpleType>
+      <xsd:simpleType name="discrepancyReason">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="discrepancyComment">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="250" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="valueOfOwnedStock">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="primaryBin">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="closureComment">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="250" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="creationDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="programmeGroup">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="batchLot">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="valueOfDeficientAdjustments">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="qtyVariance">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="9999999999" />
+          <xsd:minInclusive value="-9999999999" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="sourceTaskId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ownedSOH">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="creationUser">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="creationTime">
+        <xsd:restriction base="xsd:time" />
+      </xsd:simpleType>
+      <xsd:simpleType name="tracked">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="medium">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="assignedTo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stocktakeGroup">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="numberOfCounts">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockAtBin">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="underCountFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="shelfLife">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="stockcdeerrsw">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="programme">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="valueOfSurplusAdjustments">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="inventoryCostPrice">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="100000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="countErrorStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="countQty">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="discrepancyActionRequired">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="discrepancyProcessed">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="closureCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="itemPrice">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="100000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="priorityCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="deficientAdjustmentQty">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999999999" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="taskId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="32" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="CountTaskDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:HoldingsTaskDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="adjApprDate" type="ns3:adjApprDate" />
+              <xsd:element minOccurs="0" name="adjApprDetail" type="ns3:adjApprDetail" />
+              <xsd:element minOccurs="0" name="adjApprStat" type="ns3:adjApprStat" />
+              <xsd:element minOccurs="0" name="adjApprTime" type="ns3:adjApprTime" />
+              <xsd:element minOccurs="0" name="batchLot" type="ns3:batchLot" />
+              <xsd:element minOccurs="0" name="binCode" type="ns3:binCode" />
+              <xsd:element minOccurs="0" name="consignedSOH" type="ns3:consignedSOH" />
+              <xsd:element minOccurs="0" name="countErrorStatus" type="ns3:countErrorStatus" />
+              <xsd:element minOccurs="0" name="countQty" type="ns3:countQty" />
+              <xsd:element minOccurs="0" name="countSheetNumber" type="ns3:countSheetNumber" />
+              <xsd:element minOccurs="0" name="countTaskStatus" type="ns3:countTaskStatus" />
+              <xsd:element minOccurs="0" name="deficientAdjustmentQty" type="ns3:deficientAdjustmentQty" />
+              <xsd:element minOccurs="0" name="discrepancyActionRequired" type="ns3:discrepancyActionRequired" />
+              <xsd:element minOccurs="0" name="discrepancyComment" type="ns3:discrepancyComment" />
+              <xsd:element minOccurs="0" name="discrepancyProcessed" type="ns3:discrepancyProcessed" />
+              <xsd:element minOccurs="0" name="discrepancyReason" type="ns3:discrepancyReason" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns3:districtCode" />
+              <xsd:element minOccurs="0" name="employeeId" type="ns3:employeeId" />
+              <xsd:element minOccurs="0" name="invPrice3Dec" type="ns3:invPrice3Dec" />
+              <xsd:element minOccurs="0" name="inventoryCostPrice" type="ns3:inventoryCostPrice" />
+              <xsd:element minOccurs="0" name="isCountQtyEnabled" type="ns3:isCountQtyEnabled" />
+              <xsd:element minOccurs="0" name="itemPrice" type="ns3:itemPrice" />
+              <xsd:element minOccurs="0" name="medium" type="ns3:medium" />
+              <xsd:element minOccurs="0" name="numberOfCounts" type="ns3:numberOfCounts" />
+              <xsd:element minOccurs="0" name="otherBinsExist" type="ns3:otherBinsExist" />
+              <xsd:element minOccurs="0" name="ownedSOH" type="ns3:ownedSOH" />
+              <xsd:element minOccurs="0" name="primaryBin" type="ns3:primaryBin" />
+              <xsd:element minOccurs="0" name="printerCode" type="ns3:printerCode" />
+              <xsd:element minOccurs="0" name="programme" type="ns3:programme" />
+              <xsd:element minOccurs="0" name="programmeGroup" type="ns3:programmeGroup" />
+              <xsd:element minOccurs="0" name="qtyVariance" type="ns3:qtyVariance" />
+              <xsd:element minOccurs="0" name="reconcileDate" type="ns3:reconcileDate" />
+              <xsd:element minOccurs="0" name="shelfLife" type="ns3:shelfLife" />
+              <xsd:element minOccurs="0" name="stockAtBin" type="ns3:stockAtBin" />
+              <xsd:element minOccurs="0" name="stockOnhand" type="ns3:stockOnhand" />
+              <xsd:element minOccurs="0" name="stockcdeerrsw" type="ns3:stockcdeerrsw" />
+              <xsd:element minOccurs="0" name="stocktakeGroup" type="ns3:stocktakeGroup" />
+              <xsd:element minOccurs="0" name="stocktakeNumber" type="ns3:stocktakeNumber" />
+              <xsd:element minOccurs="0" name="stocktakeType" type="ns3:stocktakeType" />
+              <xsd:element minOccurs="0" name="supplyCustomerAccountId" type="ns3:supplyCustomerAccountId" />
+              <xsd:element minOccurs="0" name="surplusAdjustmentQty" type="ns3:surplusAdjustmentQty" />
+              <xsd:element minOccurs="0" name="tracked" type="ns3:tracked" />
+              <xsd:element minOccurs="0" name="valueOfConsignedStock" type="ns3:valueOfConsignedStock" />
+              <xsd:element minOccurs="0" name="valueOfDeficientAdjustments" type="ns3:valueOfDeficientAdjustments" />
+              <xsd:element minOccurs="0" name="valueOfOwnedStock" type="ns3:valueOfOwnedStock" />
+              <xsd:element minOccurs="0" name="valueOfSurplusAdjustments" type="ns3:valueOfSurplusAdjustments" />
+              <xsd:element minOccurs="0" name="valueVariance" type="ns3:valueVariance" />
+              <xsd:element minOccurs="0" name="warehouseId" type="ns3:warehouseId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="HoldingsTaskDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="assignedDate" type="ns3:assignedDate" />
+              <xsd:element minOccurs="0" name="assignedTime" type="ns3:assignedTime" />
+              <xsd:element minOccurs="0" name="assignedTo" type="ns3:assignedTo" />
+              <xsd:element minOccurs="0" name="closureCode" type="ns3:closureCode" />
+              <xsd:element minOccurs="0" name="closureComment" type="ns3:closureComment" />
+              <xsd:element minOccurs="0" name="creationDate" type="ns3:creationDate" />
+              <xsd:element minOccurs="0" name="creationTime" type="ns3:creationTime" />
+              <xsd:element minOccurs="0" name="creationUser" type="ns3:creationUser" />
+              <xsd:element minOccurs="0" name="custodianId" type="ns3:custodianId" />
+              <xsd:element minOccurs="0" name="holdingTaskType" type="ns3:holdingTaskType" />
+              <xsd:element minOccurs="0" name="priorityCode" type="ns3:priorityCode" />
+              <xsd:element minOccurs="0" name="sourceTaskId" type="ns3:sourceTaskId" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns3:stockCode" />
+              <xsd:element minOccurs="0" name="taskId" type="ns3:taskId" />
+              <xsd:element minOccurs="0" name="underCountFlag" type="ns3:underCountFlag" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCountTaskServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CountTaskServiceResult" nillable="true" type="ns3:CountTaskServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CountTaskServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="countTaskDTO" type="ns3:CountTaskDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStockUnderCountDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StockUnderCountDTO" nillable="true" type="ns3:StockUnderCountDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="stockUnderCountFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:complexType name="StockUnderCountDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="custodianId" type="ns3:custodianId" />
+              <xsd:element minOccurs="0" name="stockCode" type="ns3:stockCode" />
+              <xsd:element minOccurs="0" name="stockUnderCountFlag" type="ns3:stockUnderCountFlag" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfStockUnderCountServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="StockUnderCountServiceResult" nillable="true" type="ns3:StockUnderCountServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StockUnderCountServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="stockUnderCountDTO" type="ns3:StockUnderCountDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCountTaskDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CountTaskDTO" nillable="true" type="ns3:CountTaskDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="unitOfIssue">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="catalogueDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="160" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="countSheetType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="partNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="CountTaskExtendedDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:CountTaskDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="catalogueDescription" type="ns3:catalogueDescription" />
+              <xsd:element minOccurs="0" name="countSheetType" type="ns3:countSheetType" />
+              <xsd:element minOccurs="0" name="partNumber" type="ns3:partNumber" />
+              <xsd:element minOccurs="0" name="unitOfIssue" type="ns3:unitOfIssue" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfCountTaskExtendedServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CountTaskExtendedServiceResult" nillable="true" type="ns3:CountTaskExtendedServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CountTaskExtendedServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="countTaskExtendedDTO" type="ns3:CountTaskExtendedDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.ellipse.mincom.com">
+      <xsd:import namespace="http://errors.ellipse.mincom.com" />
+      <xsd:import namespace="http://instances.base.types.ellipse.mincom.com" />
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="AbstractSearchParam" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="serviceRequiredAttributes" type="ns2:ServiceRequiredAttributes" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceRequiredAttributes" />
+      <xsd:complexType name="ServiceDTO" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Base">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="customAttributes" type="ns5:ArrayOfAttribute" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:BaseServiceResult" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="BaseServiceResult" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errors" type="ns6:ArrayOfError" />
+          <xsd:element minOccurs="0" name="informationalMessages" type="ns6:ArrayOfMessage" />
+          <xsd:element minOccurs="0" name="warnings" type="ns6:ArrayOfWarning" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:import namespace="http://counttask.m3140.service.ellipse.mincom.com" />
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns5:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
+          <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://counttask.m3140.service.ellipse.mincom.com">
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://instances.m3140.types.ellipse.mincom.com" />
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="searchForCounted">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns3:CountTaskSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchForCountedResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleGetStockUnderCountFlag">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfStockUnderCountDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleGetStockUnderCountFlagResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfStockUnderCountServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="setAllConfirmed">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="setAllConfirmedResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDelete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDeleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="notCounted">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="notCountedResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="update">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleFinalise">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleFinaliseResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleSetAllConfirmed">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleSetAllConfirmedResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchForUncountedInWarehouse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns3:CountTaskSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:CountTaskExtendedDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchForUncountedInWarehouseResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskExtendedServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="search">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns3:CountTaskSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multiplePrint">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multiplePrintResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="raiseDiscrepancy">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="raiseDiscrepancyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRaiseDiscrepancy">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRaiseDiscrepancyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="create">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleNotCounted">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleNotCountedResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="finalise">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="finaliseResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleAssign">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleAssignResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="reconcile">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="reconcileResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="print">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="printResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="transfer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="transferResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReconcile">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReconcileResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleTransfer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleTransferResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getStockUnderCountFlag">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:StockUnderCountDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getStockUnderCountFlagResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:StockUnderCountServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="recount">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="recountResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchForUncounted">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns3:CountTaskSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchForUncountedResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="assign">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:CountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="assignResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:CountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRecount">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfCountTaskDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRecountResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfCountTaskServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
+      <xsd:complexType name="Base" abstract="true" />
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfMessage">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Message">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fieldId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="localisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="messageId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageText" type="xsd:string" />
+          <xsd:element minOccurs="0" name="parentInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarning">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Warning" nillable="true" type="ns6:Warning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Warning">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfError">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Error">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="createRequest">
+    <wsdl:part name="parameters" element="tns:create" />
+  </wsdl:message>
+  <wsdl:message name="multipleNotCountedResponse">
+    <wsdl:part name="parameters" element="tns:multipleNotCountedResponse" />
+  </wsdl:message>
+  <wsdl:message name="multiplePrintResponse">
+    <wsdl:part name="parameters" element="tns:multiplePrintResponse" />
+  </wsdl:message>
+  <wsdl:message name="notCountedRequest">
+    <wsdl:part name="parameters" element="tns:notCounted" />
+  </wsdl:message>
+  <wsdl:message name="multipleRecountResponse">
+    <wsdl:part name="parameters" element="tns:multipleRecountResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="parameters" element="tns:deleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="assignResponse">
+    <wsdl:part name="parameters" element="tns:assignResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleRecountRequest">
+    <wsdl:part name="parameters" element="tns:multipleRecount" />
+  </wsdl:message>
+  <wsdl:message name="printResponse">
+    <wsdl:part name="parameters" element="tns:printResponse" />
+  </wsdl:message>
+  <wsdl:message name="transferRequest">
+    <wsdl:part name="parameters" element="tns:transfer" />
+  </wsdl:message>
+  <wsdl:message name="reconcileRequest">
+    <wsdl:part name="parameters" element="tns:reconcile" />
+  </wsdl:message>
+  <wsdl:message name="searchForUncountedInWarehouseResponse">
+    <wsdl:part name="parameters" element="tns:searchForUncountedInWarehouseResponse" />
+  </wsdl:message>
+  <wsdl:message name="notCountedResponse">
+    <wsdl:part name="parameters" element="tns:notCountedResponse" />
+  </wsdl:message>
+  <wsdl:message name="raiseDiscrepancyRequest">
+    <wsdl:part name="parameters" element="tns:raiseDiscrepancy" />
+  </wsdl:message>
+  <wsdl:message name="transferResponse">
+    <wsdl:part name="parameters" element="tns:transferResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleSetAllConfirmedRequest">
+    <wsdl:part name="parameters" element="tns:multipleSetAllConfirmed" />
+  </wsdl:message>
+  <wsdl:message name="multipleReconcileResponse">
+    <wsdl:part name="parameters" element="tns:multipleReconcileResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleAssignResponse">
+    <wsdl:part name="parameters" element="tns:multipleAssignResponse" />
+  </wsdl:message>
+  <wsdl:message name="getStockUnderCountFlagResponse">
+    <wsdl:part name="parameters" element="tns:getStockUnderCountFlagResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteRequest">
+    <wsdl:part name="parameters" element="tns:multipleDelete" />
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse" />
+  </wsdl:message>
+  <wsdl:message name="recountRequest">
+    <wsdl:part name="parameters" element="tns:recount" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="parameters" element="tns:delete" />
+  </wsdl:message>
+  <wsdl:message name="getStockUnderCountFlagRequest">
+    <wsdl:part name="parameters" element="tns:getStockUnderCountFlag" />
+  </wsdl:message>
+  <wsdl:message name="multipleFinaliseResponse">
+    <wsdl:part name="parameters" element="tns:multipleFinaliseResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleTransferRequest">
+    <wsdl:part name="parameters" element="tns:multipleTransfer" />
+  </wsdl:message>
+  <wsdl:message name="finaliseResponse">
+    <wsdl:part name="parameters" element="tns:finaliseResponse" />
+  </wsdl:message>
+  <wsdl:message name="printRequest">
+    <wsdl:part name="parameters" element="tns:print" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleGetStockUnderCountFlagResponse">
+    <wsdl:part name="parameters" element="tns:multipleGetStockUnderCountFlagResponse" />
+  </wsdl:message>
+  <wsdl:message name="multiplePrintRequest">
+    <wsdl:part name="parameters" element="tns:multiplePrint" />
+  </wsdl:message>
+  <wsdl:message name="searchRequest">
+    <wsdl:part name="parameters" element="tns:search" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="raiseDiscrepancyResponse">
+    <wsdl:part name="parameters" element="tns:raiseDiscrepancyResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleRaiseDiscrepancyResponse">
+    <wsdl:part name="parameters" element="tns:multipleRaiseDiscrepancyResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleNotCountedRequest">
+    <wsdl:part name="parameters" element="tns:multipleNotCounted" />
+  </wsdl:message>
+  <wsdl:message name="multipleGetStockUnderCountFlagRequest">
+    <wsdl:part name="parameters" element="tns:multipleGetStockUnderCountFlag" />
+  </wsdl:message>
+  <wsdl:message name="recountResponse">
+    <wsdl:part name="parameters" element="tns:recountResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleFinaliseRequest">
+    <wsdl:part name="parameters" element="tns:multipleFinalise" />
+  </wsdl:message>
+  <wsdl:message name="searchForUncountedInWarehouseRequest">
+    <wsdl:part name="parameters" element="tns:searchForUncountedInWarehouse" />
+  </wsdl:message>
+  <wsdl:message name="searchForCountedRequest">
+    <wsdl:part name="parameters" element="tns:searchForCounted" />
+  </wsdl:message>
+  <wsdl:message name="setAllConfirmedResponse">
+    <wsdl:part name="parameters" element="tns:setAllConfirmedResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleAssignRequest">
+    <wsdl:part name="parameters" element="tns:multipleAssign" />
+  </wsdl:message>
+  <wsdl:message name="searchForUncountedResponse">
+    <wsdl:part name="parameters" element="tns:searchForUncountedResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchForCountedResponse">
+    <wsdl:part name="parameters" element="tns:searchForCountedResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleTransferResponse">
+    <wsdl:part name="parameters" element="tns:multipleTransferResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReconcileRequest">
+    <wsdl:part name="parameters" element="tns:multipleReconcile" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="reconcileResponse">
+    <wsdl:part name="parameters" element="tns:reconcileResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateRequest">
+    <wsdl:part name="parameters" element="tns:update" />
+  </wsdl:message>
+  <wsdl:message name="setAllConfirmedRequest">
+    <wsdl:part name="parameters" element="tns:setAllConfirmed" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateResponse">
+    <wsdl:part name="parameters" element="tns:multipleUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchForUncountedRequest">
+    <wsdl:part name="parameters" element="tns:searchForUncounted" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreate" />
+  </wsdl:message>
+  <wsdl:message name="searchResponse">
+    <wsdl:part name="parameters" element="tns:searchResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateRequest">
+    <wsdl:part name="parameters" element="tns:multipleUpdate" />
+  </wsdl:message>
+  <wsdl:message name="finaliseRequest">
+    <wsdl:part name="parameters" element="tns:finalise" />
+  </wsdl:message>
+  <wsdl:message name="updateResponse">
+    <wsdl:part name="parameters" element="tns:updateResponse" />
+  </wsdl:message>
+  <wsdl:message name="assignRequest">
+    <wsdl:part name="parameters" element="tns:assign" />
+  </wsdl:message>
+  <wsdl:message name="multipleRaiseDiscrepancyRequest">
+    <wsdl:part name="parameters" element="tns:multipleRaiseDiscrepancy" />
+  </wsdl:message>
+  <wsdl:message name="multipleSetAllConfirmedResponse">
+    <wsdl:part name="parameters" element="tns:multipleSetAllConfirmedResponse" />
+  </wsdl:message>
+  <wsdl:portType name="CountTask">
+    <wsdl:operation name="searchForCounted">
+      <wsdl:input name="searchForCountedRequest" message="tns:searchForCountedRequest" />
+      <wsdl:output name="searchForCountedResponse" message="tns:searchForCountedResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleGetStockUnderCountFlag">
+      <wsdl:input name="multipleGetStockUnderCountFlagRequest" message="tns:multipleGetStockUnderCountFlagRequest" />
+      <wsdl:output name="multipleGetStockUnderCountFlagResponse" message="tns:multipleGetStockUnderCountFlagResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="setAllConfirmed">
+      <wsdl:input name="setAllConfirmedRequest" message="tns:setAllConfirmedRequest" />
+      <wsdl:output name="setAllConfirmedResponse" message="tns:setAllConfirmedResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdl:input name="multipleDeleteRequest" message="tns:multipleDeleteRequest" />
+      <wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="notCounted">
+      <wsdl:input name="notCountedRequest" message="tns:notCountedRequest" />
+      <wsdl:output name="notCountedResponse" message="tns:notCountedResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="update">
+      <wsdl:input name="updateRequest" message="tns:updateRequest" />
+      <wsdl:output name="updateResponse" message="tns:updateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input name="deleteRequest" message="tns:deleteRequest" />
+      <wsdl:output name="deleteResponse" message="tns:deleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleFinalise">
+      <wsdl:input name="multipleFinaliseRequest" message="tns:multipleFinaliseRequest" />
+      <wsdl:output name="multipleFinaliseResponse" message="tns:multipleFinaliseResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleSetAllConfirmed">
+      <wsdl:input name="multipleSetAllConfirmedRequest" message="tns:multipleSetAllConfirmedRequest" />
+      <wsdl:output name="multipleSetAllConfirmedResponse" message="tns:multipleSetAllConfirmedResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="searchForUncountedInWarehouse">
+      <wsdl:input name="searchForUncountedInWarehouseRequest" message="tns:searchForUncountedInWarehouseRequest" />
+      <wsdl:output name="searchForUncountedInWarehouseResponse" message="tns:searchForUncountedInWarehouseResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdl:input name="searchRequest" message="tns:searchRequest" />
+      <wsdl:output name="searchResponse" message="tns:searchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multiplePrint">
+      <wsdl:input name="multiplePrintRequest" message="tns:multiplePrintRequest" />
+      <wsdl:output name="multiplePrintResponse" message="tns:multiplePrintResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdl:input name="multipleUpdateRequest" message="tns:multipleUpdateRequest" />
+      <wsdl:output name="multipleUpdateResponse" message="tns:multipleUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="raiseDiscrepancy">
+      <wsdl:input name="raiseDiscrepancyRequest" message="tns:raiseDiscrepancyRequest" />
+      <wsdl:output name="raiseDiscrepancyResponse" message="tns:raiseDiscrepancyResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRaiseDiscrepancy">
+      <wsdl:input name="multipleRaiseDiscrepancyRequest" message="tns:multipleRaiseDiscrepancyRequest" />
+      <wsdl:output name="multipleRaiseDiscrepancyResponse" message="tns:multipleRaiseDiscrepancyResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input name="createRequest" message="tns:createRequest" />
+      <wsdl:output name="createResponse" message="tns:createResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleNotCounted">
+      <wsdl:input name="multipleNotCountedRequest" message="tns:multipleNotCountedRequest" />
+      <wsdl:output name="multipleNotCountedResponse" message="tns:multipleNotCountedResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="finalise">
+      <wsdl:input name="finaliseRequest" message="tns:finaliseRequest" />
+      <wsdl:output name="finaliseResponse" message="tns:finaliseResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleAssign">
+      <wsdl:input name="multipleAssignRequest" message="tns:multipleAssignRequest" />
+      <wsdl:output name="multipleAssignResponse" message="tns:multipleAssignResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="reconcile">
+      <wsdl:input name="reconcileRequest" message="tns:reconcileRequest" />
+      <wsdl:output name="reconcileResponse" message="tns:reconcileResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="print">
+      <wsdl:input name="printRequest" message="tns:printRequest" />
+      <wsdl:output name="printResponse" message="tns:printResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="transfer">
+      <wsdl:input name="transferRequest" message="tns:transferRequest" />
+      <wsdl:output name="transferResponse" message="tns:transferResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleReconcile">
+      <wsdl:input name="multipleReconcileRequest" message="tns:multipleReconcileRequest" />
+      <wsdl:output name="multipleReconcileResponse" message="tns:multipleReconcileResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleTransfer">
+      <wsdl:input name="multipleTransferRequest" message="tns:multipleTransferRequest" />
+      <wsdl:output name="multipleTransferResponse" message="tns:multipleTransferResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getStockUnderCountFlag">
+      <wsdl:input name="getStockUnderCountFlagRequest" message="tns:getStockUnderCountFlagRequest" />
+      <wsdl:output name="getStockUnderCountFlagResponse" message="tns:getStockUnderCountFlagResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="recount">
+      <wsdl:input name="recountRequest" message="tns:recountRequest" />
+      <wsdl:output name="recountResponse" message="tns:recountResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="searchForUncounted">
+      <wsdl:input name="searchForUncountedRequest" message="tns:searchForUncountedRequest" />
+      <wsdl:output name="searchForUncountedResponse" message="tns:searchForUncountedResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
+      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="assign">
+      <wsdl:input name="assignRequest" message="tns:assignRequest" />
+      <wsdl:output name="assignResponse" message="tns:assignResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRecount">
+      <wsdl:input name="multipleRecountRequest" message="tns:multipleRecountRequest" />
+      <wsdl:output name="multipleRecountResponse" message="tns:multipleRecountResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CountTaskServiceHttpBinding" type="tns:CountTask">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="searchForCounted">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchForCountedRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchForCountedResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleGetStockUnderCountFlag">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleGetStockUnderCountFlagRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleGetStockUnderCountFlagResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setAllConfirmed">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="setAllConfirmedRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="setAllConfirmedResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notCounted">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="notCountedRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="notCountedResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="update">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="updateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleFinalise">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleFinaliseRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleFinaliseResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleSetAllConfirmed">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleSetAllConfirmedRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleSetAllConfirmedResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchForUncountedInWarehouse">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchForUncountedInWarehouseRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchForUncountedInWarehouseResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multiplePrint">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multiplePrintRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multiplePrintResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="raiseDiscrepancy">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="raiseDiscrepancyRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="raiseDiscrepancyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRaiseDiscrepancy">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleRaiseDiscrepancyRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleRaiseDiscrepancyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleNotCounted">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleNotCountedRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleNotCountedResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="finalise">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="finaliseRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="finaliseResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleAssign">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleAssignRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleAssignResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reconcile">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="reconcileRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="reconcileResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="print">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="printRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="printResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="transfer">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="transferRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="transferResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleReconcile">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReconcileRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReconcileResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleTransfer">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleTransferRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleTransferResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStockUnderCountFlag">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getStockUnderCountFlagRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getStockUnderCountFlagResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="recount">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="recountRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="recountResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchForUncounted">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchForUncountedRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchForUncountedResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="assign">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="assignRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="assignResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRecount">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleRecountRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleRecountResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CountTaskService">
+    <wsdl:port name="CountTaskServiceHttpPort" binding="tns:CountTaskServiceHttpBinding">
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/CountTaskService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

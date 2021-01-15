@@ -8,33 +8,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.CodeDom.Compiler;
-using System.Configuration;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-
 namespace EllipseMSO265ExcelAddIn.Properties {
     
     
-    [CompilerGenerated()]
-    [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
-    internal sealed partial class Settings : ApplicationSettingsBase {
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
-        private static Settings defaultInstance = ((Settings)(Synchronized(new Settings())));
+        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
         public static Settings Default {
             get {
                 return defaultInstance;
-            }
-        }
-        
-        [ApplicationScopedSetting()]
-        [DebuggerNonUserCode()]
-        [SpecialSetting(SpecialSetting.WebServiceUrl)]
-        [DefaultSettingValue("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/ScreenService")]
-        public string EllipseMSO265ExcelAddIn_ScreenService_ScreenService {
-            get {
-                return ((string)(this["EllipseMSO265ExcelAddIn_ScreenService_ScreenService"]));
             }
         }
     }

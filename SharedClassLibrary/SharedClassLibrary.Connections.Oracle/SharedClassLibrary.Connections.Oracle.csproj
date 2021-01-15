@@ -262,6 +262,15 @@
     <Compile Include="TnsNames\UnknownDatabaseAddress.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TnsNames\ANTLR\Generated\TnsNamesLexer.tokens" />
+    <None Include="TnsNames\ANTLR\Generated\TnsNamesParser.tokens" />
+    <None Include="TnsNames\ANTLR\TnsNamesLexer.g4" />
+    <None Include="TnsNames\ANTLR\TnsNamesParser.g4" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
       <Project>{49ee1fc1-808f-4e6b-8809-78486feb5bd3}</Project>
       <Name>SharedClassLibrary.Connections</Name>
@@ -271,15 +280,5 @@
       <Name>SharedClassLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="TnsNames\ANTLR\Generated\TnsNamesLexer.tokens" />
-    <None Include="TnsNames\ANTLR\Generated\TnsNamesParser.tokens" />
-    <None Include="TnsNames\ANTLR\TnsNamesLexer.g4" />
-    <None Include="TnsNames\ANTLR\TnsNamesParser.g4" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

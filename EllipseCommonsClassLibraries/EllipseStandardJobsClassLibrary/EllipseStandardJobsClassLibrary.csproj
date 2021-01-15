@@ -106,10 +106,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/EquipmentReqmntsService%3fWSDL">
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentReqmntsService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\EquipmentReqmntsService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/EquipmentReqmntsService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentReqmntsService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -117,10 +117,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseStandardJobsClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/MaterialReqmntsService%3fWSDL">
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MaterialReqmntsService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\MaterialReqmntsService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/MaterialReqmntsService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MaterialReqmntsService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -128,10 +128,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseStandardJobsClassLibrary_MaterialReqmntsService_MaterialReqmntsService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/ResourceReqmntsService%3fWSDL">
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ResourceReqmntsService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\ResourceReqmntsService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/ResourceReqmntsService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ResourceReqmntsService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -139,10 +139,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseStandardJobsClassLibrary_ResourceReqmntsService_ResourceReqmntsService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/StandardJobService%3fWSDL">
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StandardJobService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\StandardJobService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/StandardJobService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StandardJobService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -150,10 +150,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseStandardJobsClassLibrary_StandardJobService_StandardJobService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/StandardJobTaskService%3fWSDL">
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StandardJobTaskService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\StandardJobTaskService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/StandardJobTaskService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StandardJobTaskService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -454,10 +454,6 @@
     <ProjectReference Include="..\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj">
       <Project>{093ec04e-6e92-4e59-848b-5b79277ffe9b}</Project>
       <Name>EllipseReferenceCodesClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
-      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
-      <Name>System.Web.Services.Ellipse</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

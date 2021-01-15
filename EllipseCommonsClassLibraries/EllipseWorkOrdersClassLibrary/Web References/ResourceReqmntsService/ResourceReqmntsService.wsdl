@@ -1789,11 +1789,6 @@
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
-      <xsd:complexType name="AbstractReplyCollectionDTO" abstract="true">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="AbstractReplyDTO" abstract="true">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractDTO">
@@ -1822,6 +1817,11 @@
           <xsd:element minOccurs="0" name="message" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="AbstractReplyCollectionDTO" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ArrayOfErrorMessageDTO">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="ErrorMessageDTO" nillable="true" type="ns2:ErrorMessageDTO" />
@@ -1842,6 +1842,7 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
           <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
           <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
@@ -1858,10 +1859,22 @@
       </xsd:complexType>
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
+      <xsd:simpleType name="WorkOrderDTO.no">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WorkOrderDTO.prefix">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:complexType name="WorkOrderDTO">
         <xsd:sequence>
-          <xsd:element minOccurs="0" name="prefix" type="xsd:string" />
-          <xsd:element minOccurs="0" name="no" type="xsd:string" />
+          <xsd:element minOccurs="0" name="prefix" type="ns5:WorkOrderDTO.prefix" />
+          <xsd:element minOccurs="0" name="no" type="ns5:WorkOrderDTO.no" />
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>
@@ -2382,7 +2395,7 @@
   </wsdl:binding>
   <wsdl:service name="ResourceReqmntsService">
     <wsdl:port name="ResourceReqmntsServiceHttpPort" binding="tns:ResourceReqmntsServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/ResourceReqmntsService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ResourceReqmntsService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -48,6 +48,7 @@
             this.btnInactivateBussiness = this.Factory.CreateRibbonButton();
             this.btnInactivareAddress = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
+            this.btnSuspender = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpMSO200.SuspendLayout();
             this.box1.SuspendLayout();
@@ -65,7 +66,7 @@
             this.grpMSO200.Items.Add(this.box1);
             this.grpMSO200.Items.Add(this.drpEnvironment);
             this.grpMSO200.Items.Add(this.menuActions);
-            this.grpMSO200.Label = "MSO200";
+            this.grpMSO200.Label = "MSO200 ";
             this.grpMSO200.Name = "grpMSO200";
             // 
             // box1
@@ -113,6 +114,7 @@
             this.menuActions.Items.Add(this.btnInactivateBussiness);
             this.menuActions.Items.Add(this.btnInactivareAddress);
             this.menuActions.Items.Add(this.btnStopThread);
+            this.menuActions.Items.Add(this.btnSuspender);
             this.menuActions.Label = "Acciones";
             this.menuActions.Name = "menuActions";
             // 
@@ -151,6 +153,13 @@
             this.btnStopThread.ShowImage = true;
             this.btnStopThread.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnStopThread_Click);
             // 
+            // btnSuspender
+            // 
+            this.btnSuspender.Label = "Suspender Supplier";
+            this.btnSuspender.Name = "btnSuspender";
+            this.btnSuspender.ShowImage = true;
+            this.btnSuspender.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSuspender_Click);
+            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -184,6 +193,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnInactivateBussiness;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnInactivareAddress;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnStopThread;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSuspender;
     }
 
     partial class ThisRibbonCollection

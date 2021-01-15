@@ -45,7 +45,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedClassLibrary\SharedClassLibrary.Ellipse.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary.Vsto.Excel">
+    <Reference Include="SharedClassLibrary.Vsto.Excel, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedClassLibrary\SharedClassLibrary.Vsto.Excel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -54,10 +55,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute, Version=1.0.5.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,8 +71,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="WorkOrderTask\Queries.cs" />
-    <Compile Include="WorkOrderTask\RequirementType.cs" />
     <Compile Include="Web References\EquipmentReqmntsService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -106,6 +101,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="WorkOrderTask\Queries.cs" />
+    <Compile Include="WorkOrderTask\RequirementType.cs" />
     <Compile Include="WorkOrderTask\TsakRequirement.cs" />
     <Compile Include="WorkOrder\Queries.cs" />
     <Compile Include="WorkOrder\WorkOrder.cs" />
@@ -123,74 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/TodoListWorkOrderService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\TodoListWorkOrderService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/TodoListWorkOrderService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_TodoListWorkOrderService_TodoListWorkOrderService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/EquipmentReqmntsService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\EquipmentReqmntsService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/EquipmentReqmntsService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/MaterialReqmntsService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\MaterialReqmntsService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/MaterialReqmntsService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_MaterialReqmntsService_MaterialReqmntsService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/ResourceReqmntsService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\ResourceReqmntsService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/ResourceReqmntsService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_ResourceReqmntsService_ResourceReqmntsService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkOrderService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\WorkOrderService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkOrderService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_WorkOrderService_WorkOrderService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkOrderTaskService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\WorkOrderTaskService\</RelPath>
-      <UpdateFromURL>http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkOrderTaskService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_WorkOrderTaskService_WorkOrderTaskService</CachedSettingsPropName>
-    </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -420,6 +349,12 @@
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\WorkOrderService\WorkOrderServiceCancelReplyDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderService\WorkOrderServiceChangeAccountReplyCollectionDTO.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WorkOrderService\WorkOrderServiceChangeAccountReplyDTO.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\WorkOrderService\WorkOrderServiceCompleteReplyCollectionDTO.datasource">
@@ -713,10 +648,74 @@
       <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
       <Name>EllipseStdTextClassLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
-      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
-      <Name>System.Web.Services.Ellipse</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentReqmntsService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\EquipmentReqmntsService\</RelPath>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentReqmntsService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MaterialReqmntsService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\MaterialReqmntsService\</RelPath>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MaterialReqmntsService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_MaterialReqmntsService_MaterialReqmntsService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ResourceReqmntsService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ResourceReqmntsService\</RelPath>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ResourceReqmntsService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_ResourceReqmntsService_ResourceReqmntsService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WorkOrderService\</RelPath>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_WorkOrderService_WorkOrderService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WorkOrderTaskService\</RelPath>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_WorkOrderTaskService_WorkOrderTaskService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://ellipse-el8prod.lmnerp02.cerrejon.com/ews/services/TodoListWorkOrderService%3fWSDL">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\TodoListWorkOrderService\</RelPath>
+      <UpdateFromURL>http://ellipse-el8prod.lmnerp02.cerrejon.com/ews/services/TodoListWorkOrderService%3fWSDL</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>EllipseWorkOrdersClassLibrary_TodoListWorkOrderService_TodoListWorkOrderService</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

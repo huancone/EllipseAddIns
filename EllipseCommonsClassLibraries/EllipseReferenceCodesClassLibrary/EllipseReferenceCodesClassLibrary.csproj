@@ -30,8 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SharedClassLibrary, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -133,10 +132,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/RefCodesService%3fWSDL">
+    <ProjectReference Include="..\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
+      <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
+      <Name>EllipseStdTextClassLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\UpdateLog.txt" />
+    <Content Include="ventyx_logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/RefCodesService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\RefCodesService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/RefCodesService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/RefCodesService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -144,12 +153,6 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseReferenceCodesClassLibrary_RefCodesService_RefCodesService</CachedSettingsPropName>
     </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj">
-      <Project>{55f2204e-933a-4b98-87a4-5ba928275192}</Project>
-      <Name>EllipseStdTextClassLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

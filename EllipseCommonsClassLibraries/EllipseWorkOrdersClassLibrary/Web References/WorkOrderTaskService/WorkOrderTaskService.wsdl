@@ -69,18 +69,6 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="anyType2anyTypeMap">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
-                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
-              </xsd:sequence>
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="WorkOrderTaskServiceCancelRequiredAttributesDTO">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
@@ -101,6 +89,18 @@
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
       </xsd:complexType>
       <xsd:element name="cancel">
         <xsd:complexType>
@@ -1504,6 +1504,7 @@
               <xsd:element minOccurs="0" name="versionNo7" type="tns:versionNo7" />
               <xsd:element minOccurs="0" name="versionNo8" type="tns:versionNo8" />
               <xsd:element minOccurs="0" name="versionNo9" type="tns:versionNo9" />
+              <xsd:element minOccurs="0" name="workActualClassif" type="tns:workActualClassif" />
               <xsd:element minOccurs="0" name="workCentre" type="tns:workCentre" />
               <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
               <xsd:element minOccurs="0" name="workOrder" type="ns3:WorkOrderDTO" />
@@ -1652,6 +1653,7 @@
               <xsd:element minOccurs="0" name="returnWTUserStatDate" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnWTUserStatTime" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnWTUserStatUser" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnWorkActualClassif" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnWorkCentre" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnWorkCentreDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnWorkGroup" type="xsd:boolean" />
@@ -2224,6 +2226,7 @@
               <xsd:element minOccurs="0" name="unitsComplete" type="tns:unitsComplete" />
               <xsd:element minOccurs="0" name="unitsPerDay" type="tns:unitsPerDay" />
               <xsd:element minOccurs="0" name="unitsRequired" type="tns:unitsRequired" />
+              <xsd:element minOccurs="0" name="workActualClassif" type="tns:workActualClassif" />
               <xsd:element minOccurs="0" name="workCentre" type="tns:workCentre" />
               <xsd:element minOccurs="0" name="workCentreDescription" type="tns:workCentreDescription" />
               <xsd:element minOccurs="0" name="workGroup" type="tns:workGroup" />
@@ -5094,12 +5097,12 @@
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ellipse.enterpriseservice.mincom.com">
       <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
       <xsd:complexType name="AbstractDTO" abstract="true">
         <xsd:sequence>
           <xsd:element minOccurs="0" name="customAttributes" type="ns4:ArrayOfAttribute" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
       <xsd:complexType name="AbstractReplyDTO" abstract="true">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractDTO">
@@ -5144,6 +5147,326 @@
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
+      <xsd:simpleType name="WorkOrderDTO.no">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WorkOrderDTO.prefix">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="WorkOrderDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="prefix" type="ns3:WorkOrderDTO.prefix" />
+          <xsd:element minOccurs="0" name="no" type="ns3:WorkOrderDTO.no" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfTaskResourcesDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TaskResourcesDTO" nillable="true" type="ns3:TaskResourcesDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="TaskResourcesDTO.resourceSpread">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="TaskResourcesDTO.estimatedResourceHrs">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,9}\.\d{2}" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="TaskResourcesDTO.actualResourceHrs">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,9}\.\d{2}" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="TaskResourcesDTO.crewSize">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,2}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="TaskResourcesDTO.resourceTypeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="TaskResourcesDTO.resourceClass">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="TaskResourcesDTO.resourceClassDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="TaskResourcesDTO.resourceType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="TaskResourcesDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="resourceClass" type="ns3:TaskResourcesDTO.resourceClass" />
+          <xsd:element minOccurs="0" name="resourceClassDescription" type="ns3:TaskResourcesDTO.resourceClassDescription" />
+          <xsd:element minOccurs="0" name="resourceType" type="ns3:TaskResourcesDTO.resourceType" />
+          <xsd:element minOccurs="0" name="resourceTypeDescription" type="ns3:TaskResourcesDTO.resourceTypeDescription" />
+          <xsd:element minOccurs="0" name="crewSize" type="ns3:TaskResourcesDTO.crewSize" />
+          <xsd:element minOccurs="0" name="resourceSpread" type="ns3:TaskResourcesDTO.resourceSpread" />
+          <xsd:element minOccurs="0" name="actualResourceHrs" type="ns3:TaskResourcesDTO.actualResourceHrs" />
+          <xsd:element minOccurs="0" name="estimatedResourceHrs" type="ns3:TaskResourcesDTO.estimatedResourceHrs" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="APLNumberWorkOrderDTO.aPLType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLNumberWorkOrderDTO.aPLSeqNumber">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLNumberWorkOrderDTO.componentCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLNumberWorkOrderDTO.equipmentGroupId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLNumberWorkOrderDTO.compModCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="APLNumberWorkOrderDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="equipmentGroupId" type="ns3:APLNumberWorkOrderDTO.equipmentGroupId" />
+          <xsd:element minOccurs="0" name="aPLType" type="ns3:APLNumberWorkOrderDTO.aPLType" />
+          <xsd:element minOccurs="0" name="componentCode" type="ns3:APLNumberWorkOrderDTO.componentCode" />
+          <xsd:element minOccurs="0" name="compModCode" type="ns3:APLNumberWorkOrderDTO.compModCode" />
+          <xsd:element minOccurs="0" name="aPLSeqNumber" type="ns3:APLNumberWorkOrderDTO.aPLSeqNumber" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWTUserStatHistDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WTUserStatHistDTO" nillable="true" type="ns3:WTUserStatHistDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="WTUserStatHistDTO.wTUSHCreatedTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WTUserStatHistDTO.wTUSHStatusDesc">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="20" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WTUserStatHistDTO.wTUSHDurationM">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,2}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WTUserStatHistDTO.wTUSHCreatedDate">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WTUserStatHistDTO.wTUSHStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WTUserStatHistDTO.wTUSHDurationDescription">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,4}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WTUserStatHistDTO.wTUSHCreatedBy">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WTUserStatHistDTO.wTUSHDurationH">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,2}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="WTUserStatHistDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="wTUSHStatus" type="ns3:WTUserStatHistDTO.wTUSHStatus" />
+          <xsd:element minOccurs="0" name="wTUSHStatusDesc" type="ns3:WTUserStatHistDTO.wTUSHStatusDesc" />
+          <xsd:element minOccurs="0" name="wTUSHCreatedBy" type="ns3:WTUserStatHistDTO.wTUSHCreatedBy" />
+          <xsd:element minOccurs="0" name="wTUSHDurationDescription" type="ns3:WTUserStatHistDTO.wTUSHDurationDescription" />
+          <xsd:element minOccurs="0" name="wTUSHDurationH" type="ns3:WTUserStatHistDTO.wTUSHDurationH" />
+          <xsd:element minOccurs="0" name="wTUSHDurationM" type="ns3:WTUserStatHistDTO.wTUSHDurationM" />
+          <xsd:element minOccurs="0" name="wTUSHCreatedDate" type="ns3:WTUserStatHistDTO.wTUSHCreatedDate" />
+          <xsd:element minOccurs="0" name="wTUSHCreatedTime" type="ns3:WTUserStatHistDTO.wTUSHCreatedTime" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfMatchedCanDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MatchedCanDTO" nillable="true" type="ns3:MatchedCanDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="MatchedCanDTO.travelTime">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,7}\.\d{2}" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="MatchedCanDTO.distance">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,19}\.\d{2}" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="MatchedCanDTO.matchCanType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="MatchedCanDTO.canWorkGroup">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="7" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="MatchedCanDTO.canIndividual">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="MatchedCanDTO.planFinDate">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="MatchedCanDTO.location">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="MatchedCanDTO.canCrew">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="MatchedCanDTO.equipmentType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="MatchedCanDTO.resourceType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="MatchedCanDTO.planFinTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="MatchedCanDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="location" type="ns3:MatchedCanDTO.location" />
+          <xsd:element minOccurs="0" name="distance" type="ns3:MatchedCanDTO.distance" />
+          <xsd:element minOccurs="0" name="matchCanType" type="ns3:MatchedCanDTO.matchCanType" />
+          <xsd:element minOccurs="0" name="canWorkGroup" type="ns3:MatchedCanDTO.canWorkGroup" />
+          <xsd:element minOccurs="0" name="canCrew" type="ns3:MatchedCanDTO.canCrew" />
+          <xsd:element minOccurs="0" name="canIndividual" type="ns3:MatchedCanDTO.canIndividual" />
+          <xsd:element minOccurs="0" name="resourceType" type="ns3:MatchedCanDTO.resourceType" />
+          <xsd:element minOccurs="0" name="equipmentType" type="ns3:MatchedCanDTO.equipmentType" />
+          <xsd:element minOccurs="0" name="travelTime" type="ns3:MatchedCanDTO.travelTime" />
+          <xsd:element minOccurs="0" name="planFinDate" type="ns3:MatchedCanDTO.planFinDate" />
+          <xsd:element minOccurs="0" name="planFinTime" type="ns3:MatchedCanDTO.planFinTime" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfContractorCostsDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ContractorCostsDTO" nillable="true" type="ns3:ContractorCostsDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="ContractorCostsDTO.contractorNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ContractorCostsDTO.contractorVersionNo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,3}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ContractorCostsDTO.contractorEstimateCost">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,19}\.\d{2}" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ContractorCostsDTO.contractorNoDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ContractorCostsDTO.contractorItemNo">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:pattern value="\d{0,6}" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="ContractorCostsDTO.contractorEstimateNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="ContractorCostsDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="contractorNo" type="ns3:ContractorCostsDTO.contractorNo" />
+          <xsd:element minOccurs="0" name="contractorNoDescription" type="ns3:ContractorCostsDTO.contractorNoDescription" />
+          <xsd:element minOccurs="0" name="contractorEstimateCost" type="ns3:ContractorCostsDTO.contractorEstimateCost" />
+          <xsd:element minOccurs="0" name="contractorEstimateNo" type="ns3:ContractorCostsDTO.contractorEstimateNo" />
+          <xsd:element minOccurs="0" name="contractorItemNo" type="ns3:ContractorCostsDTO.contractorItemNo" />
+          <xsd:element minOccurs="0" name="contractorVersionNo" type="ns3:ContractorCostsDTO.contractorVersionNo" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
       <xsd:import namespace="http://workordertask.ellipse.enterpriseservice.mincom.com" />
       <xsd:complexType name="ArrayOfAttribute">
@@ -5153,96 +5476,11 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
           <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
           <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
           <xsd:element minOccurs="0" name="value" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
-    </xsd:schema>
-    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
-      <xsd:complexType name="WorkOrderDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="prefix" type="xsd:string" />
-          <xsd:element minOccurs="0" name="no" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfTaskResourcesDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="TaskResourcesDTO" nillable="true" type="ns3:TaskResourcesDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="TaskResourcesDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="resourceClass" type="xsd:string" />
-          <xsd:element minOccurs="0" name="resourceClassDescription" type="xsd:string" />
-          <xsd:element minOccurs="0" name="resourceType" type="xsd:string" />
-          <xsd:element minOccurs="0" name="resourceTypeDescription" type="xsd:string" />
-          <xsd:element minOccurs="0" name="crewSize" type="xsd:decimal" />
-          <xsd:element minOccurs="0" name="resourceSpread" type="xsd:string" />
-          <xsd:element minOccurs="0" name="actualResourceHrs" type="xsd:decimal" />
-          <xsd:element minOccurs="0" name="estimatedResourceHrs" type="xsd:decimal" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="APLNumberWorkOrderDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="equipmentGroupId" type="xsd:string" />
-          <xsd:element minOccurs="0" name="aPLType" type="xsd:string" />
-          <xsd:element minOccurs="0" name="componentCode" type="xsd:string" />
-          <xsd:element minOccurs="0" name="compModCode" type="xsd:string" />
-          <xsd:element minOccurs="0" name="aPLSeqNumber" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfWTUserStatHistDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="WTUserStatHistDTO" nillable="true" type="ns3:WTUserStatHistDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="WTUserStatHistDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="wTUSHStatus" type="xsd:string" />
-          <xsd:element minOccurs="0" name="wTUSHStatusDesc" type="xsd:string" />
-          <xsd:element minOccurs="0" name="wTUSHCreatedBy" type="xsd:string" />
-          <xsd:element minOccurs="0" name="wTUSHDurationDescription" type="xsd:decimal" />
-          <xsd:element minOccurs="0" name="wTUSHDurationH" type="xsd:decimal" />
-          <xsd:element minOccurs="0" name="wTUSHDurationM" type="xsd:decimal" />
-          <xsd:element minOccurs="0" name="wTUSHCreatedDate" type="xsd:string" />
-          <xsd:element minOccurs="0" name="wTUSHCreatedTime" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfMatchedCanDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="MatchedCanDTO" nillable="true" type="ns3:MatchedCanDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="MatchedCanDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="location" type="xsd:string" />
-          <xsd:element minOccurs="0" name="distance" type="xsd:decimal" />
-          <xsd:element minOccurs="0" name="matchCanType" type="xsd:string" />
-          <xsd:element minOccurs="0" name="canWorkGroup" type="xsd:string" />
-          <xsd:element minOccurs="0" name="canCrew" type="xsd:string" />
-          <xsd:element minOccurs="0" name="canIndividual" type="xsd:string" />
-          <xsd:element minOccurs="0" name="resourceType" type="xsd:string" />
-          <xsd:element minOccurs="0" name="equipmentType" type="xsd:string" />
-          <xsd:element minOccurs="0" name="travelTime" type="xsd:decimal" />
-          <xsd:element minOccurs="0" name="planFinDate" type="xsd:string" />
-          <xsd:element minOccurs="0" name="planFinTime" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfContractorCostsDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ContractorCostsDTO" nillable="true" type="ns3:ContractorCostsDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ContractorCostsDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="contractorNo" type="xsd:string" />
-          <xsd:element minOccurs="0" name="contractorNoDescription" type="xsd:string" />
-          <xsd:element minOccurs="0" name="contractorEstimateCost" type="xsd:decimal" />
-          <xsd:element minOccurs="0" name="contractorEstimateNo" type="xsd:string" />
-          <xsd:element minOccurs="0" name="contractorItemNo" type="xsd:decimal" />
-          <xsd:element minOccurs="0" name="contractorVersionNo" type="xsd:decimal" />
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>
@@ -6185,7 +6423,7 @@
   </wsdl:binding>
   <wsdl:service name="WorkOrderTaskService">
     <wsdl:port name="WorkOrderTaskServiceHttpPort" binding="tns:WorkOrderTaskServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkOrderTaskService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

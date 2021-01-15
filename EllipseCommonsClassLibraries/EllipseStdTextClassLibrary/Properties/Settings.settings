@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="EllipseStdTextClassLibrary_StdTextService_StdTextService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/StdTextService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StdTextService</Value>
     </Setting>
     <Setting Name="EllipseStdTextClassLibrary_StdTextCustomService_StdTextCustomService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/StdTextCustomService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StdTextCustomService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

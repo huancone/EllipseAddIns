@@ -116,18 +116,6 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="anyType2anyTypeMap">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
-                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
-              </xsd:sequence>
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="EquipTraceServiceDefitRequiredAttributesDTO">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
@@ -150,6 +138,18 @@
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
       </xsd:complexType>
       <xsd:element name="defit">
         <xsd:complexType>
@@ -3047,12 +3047,12 @@
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ellipse.enterpriseservice.mincom.com">
       <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
       <xsd:complexType name="AbstractDTO" abstract="true">
         <xsd:sequence>
           <xsd:element minOccurs="0" name="customAttributes" type="ns3:ArrayOfAttribute" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
       <xsd:complexType name="AbstractReplyDTO" abstract="true">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractDTO">
@@ -3106,6 +3106,7 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
           <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
           <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
@@ -4144,7 +4145,7 @@
   </wsdl:binding>
   <wsdl:service name="EquipTraceService">
     <wsdl:port name="EquipTraceServiceHttpPort" binding="tns:EquipTraceServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipTraceService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipTraceService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

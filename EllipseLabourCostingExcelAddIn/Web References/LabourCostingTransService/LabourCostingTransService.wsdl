@@ -1,0 +1,1666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:ns2="http://service.ellipse.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:tns="http://labourcostingtrans.m3850.service.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns3="http://instances.m3850.types.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://labourcostingtrans.m3850.service.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
+      <xsd:complexType name="OperationContext">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="RunAs">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="position" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.m3850.types.ellipse.mincom.com">
+      <xsd:import namespace="http://service.ellipse.mincom.com" />
+      <xsd:simpleType name="workOrder">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="costingEntityDistrictCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="transactionDate1">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="project">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="LabourCostingTransHeaderDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="costingEntityDistrictCode" type="ns3:costingEntityDistrictCode" />
+              <xsd:element minOccurs="0" name="project" type="ns3:project" />
+              <xsd:element minOccurs="0" name="transactionDate1" type="ns3:transactionDate1" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:workOrder" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="LabourCostingTransHeaderServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="equipmentDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="subledgerAccount">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="overtimeInd">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="employee">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="labourCostingValue">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="10000000000000000000" />
+          <xsd:minInclusive value="-10000000000000000000" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="completedCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="defaultLabourClass">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastModTime">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="defaultCostingType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="earnCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="defaultProject">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="maintenanceType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastModUser">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="accountCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="24" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="batchNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="defaultEarnCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="employeeHomeCostCentre">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="24" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="earnCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="labourCostingHours">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="99999.99" />
+          <xsd:minInclusive value="-99999.99" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="labourClassDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="lastModDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="position">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="costItemType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderTypeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workRequestId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx19">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx17">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="topLevelProjectDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="districtCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx18">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx1">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="formattedName">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="description">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="60" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx3">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx4">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx5">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="labourClassEarn">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx6">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx7">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx8">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx9">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="postingStatus">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="labourClass">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="labourCostingRate">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="100000000000000000" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="dayOfWeek">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="sequenceNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="interDistrictCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="maintenanceTypeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx20">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="defaultAccountCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="24" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="unitsComplete">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="9999999.99" />
+          <xsd:minInclusive value="-9999999.99" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="accountCodeDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="topLevelProject">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="percentComplete">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:maxInclusive value="999.99" />
+          <xsd:minInclusive value="0" />
+          <xsd:fractionDigits value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="transactionDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentLocationDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="50" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="completedCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="defaultWorkOrder">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="originalWorkOrder">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="subledgerType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="equipmentLocation">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderTask">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workRequestDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="originalInterDistrictCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx11">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="projectDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="defaultSubledgerType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx12">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="defaultEquipmentReference">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workOrderTaskDescription">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx10">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx15">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="defaultEquipmentNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx16">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx13">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="errorCodesx14">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="resourceType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="5" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="LabourCostingTransDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="accountCode" type="ns3:accountCode" />
+              <xsd:element minOccurs="0" name="accountCodeDescription" type="ns3:accountCodeDescription" />
+              <xsd:element minOccurs="0" name="batchNo" type="ns3:batchNo" />
+              <xsd:element minOccurs="0" name="completedCode" type="ns3:completedCode" />
+              <xsd:element minOccurs="0" name="completedCodeDescription" type="ns3:completedCodeDescription" />
+              <xsd:element minOccurs="0" name="costItemType" type="ns3:costItemType" />
+              <xsd:element minOccurs="0" name="dayOfWeek" type="ns3:dayOfWeek" />
+              <xsd:element minOccurs="0" name="defaultAccountCode" type="ns3:defaultAccountCode" />
+              <xsd:element minOccurs="0" name="defaultCostingType" type="ns3:defaultCostingType" />
+              <xsd:element minOccurs="0" name="defaultEarnCode" type="ns3:defaultEarnCode" />
+              <xsd:element minOccurs="0" name="defaultEquipmentNo" type="ns3:defaultEquipmentNo" />
+              <xsd:element minOccurs="0" name="defaultEquipmentReference" type="ns3:defaultEquipmentReference" />
+              <xsd:element minOccurs="0" name="defaultLabourClass" type="ns3:defaultLabourClass" />
+              <xsd:element minOccurs="0" name="defaultProject" type="ns3:defaultProject" />
+              <xsd:element minOccurs="0" name="defaultSubledgerType" type="ns3:defaultSubledgerType" />
+              <xsd:element minOccurs="0" name="defaultWorkOrder" type="ns3:defaultWorkOrder" />
+              <xsd:element minOccurs="0" name="description" type="ns3:description" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns3:districtCode" />
+              <xsd:element minOccurs="0" name="earnCode" type="ns3:earnCode" />
+              <xsd:element minOccurs="0" name="earnCodeDescription" type="ns3:earnCodeDescription" />
+              <xsd:element minOccurs="0" name="employee" type="ns3:employee" />
+              <xsd:element minOccurs="0" name="employeeHomeCostCentre" type="ns3:employeeHomeCostCentre" />
+              <xsd:element minOccurs="0" name="equipmentDescription" type="ns3:equipmentDescription" />
+              <xsd:element minOccurs="0" name="equipmentLocation" type="ns3:equipmentLocation" />
+              <xsd:element minOccurs="0" name="equipmentLocationDescription" type="ns3:equipmentLocationDescription" />
+              <xsd:element minOccurs="0" name="equipmentNo" type="ns3:equipmentNo" />
+              <xsd:element minOccurs="0" name="equipmentReference" type="ns3:equipmentReference" />
+              <xsd:element minOccurs="0" name="errorCodesx1" type="ns3:errorCodesx1" />
+              <xsd:element minOccurs="0" name="errorCodesx10" type="ns3:errorCodesx10" />
+              <xsd:element minOccurs="0" name="errorCodesx11" type="ns3:errorCodesx11" />
+              <xsd:element minOccurs="0" name="errorCodesx12" type="ns3:errorCodesx12" />
+              <xsd:element minOccurs="0" name="errorCodesx13" type="ns3:errorCodesx13" />
+              <xsd:element minOccurs="0" name="errorCodesx14" type="ns3:errorCodesx14" />
+              <xsd:element minOccurs="0" name="errorCodesx15" type="ns3:errorCodesx15" />
+              <xsd:element minOccurs="0" name="errorCodesx16" type="ns3:errorCodesx16" />
+              <xsd:element minOccurs="0" name="errorCodesx17" type="ns3:errorCodesx17" />
+              <xsd:element minOccurs="0" name="errorCodesx18" type="ns3:errorCodesx18" />
+              <xsd:element minOccurs="0" name="errorCodesx19" type="ns3:errorCodesx19" />
+              <xsd:element minOccurs="0" name="errorCodesx2" type="ns3:errorCodesx2" />
+              <xsd:element minOccurs="0" name="errorCodesx20" type="ns3:errorCodesx20" />
+              <xsd:element minOccurs="0" name="errorCodesx3" type="ns3:errorCodesx3" />
+              <xsd:element minOccurs="0" name="errorCodesx4" type="ns3:errorCodesx4" />
+              <xsd:element minOccurs="0" name="errorCodesx5" type="ns3:errorCodesx5" />
+              <xsd:element minOccurs="0" name="errorCodesx6" type="ns3:errorCodesx6" />
+              <xsd:element minOccurs="0" name="errorCodesx7" type="ns3:errorCodesx7" />
+              <xsd:element minOccurs="0" name="errorCodesx8" type="ns3:errorCodesx8" />
+              <xsd:element minOccurs="0" name="errorCodesx9" type="ns3:errorCodesx9" />
+              <xsd:element minOccurs="0" name="formattedName" type="ns3:formattedName" />
+              <xsd:element minOccurs="0" name="interDistrictCode" type="ns3:interDistrictCode" />
+              <xsd:element minOccurs="0" name="labourClass" type="ns3:labourClass" />
+              <xsd:element minOccurs="0" name="labourClassDescription" type="ns3:labourClassDescription" />
+              <xsd:element minOccurs="0" name="labourClassEarn" type="ns3:labourClassEarn" />
+              <xsd:element minOccurs="0" name="labourCostingHours" type="ns3:labourCostingHours" />
+              <xsd:element minOccurs="0" name="labourCostingRate" type="ns3:labourCostingRate" />
+              <xsd:element minOccurs="0" name="labourCostingValue" type="ns3:labourCostingValue" />
+              <xsd:element minOccurs="0" name="lastModDate" type="ns3:lastModDate" />
+              <xsd:element minOccurs="0" name="lastModTime" type="ns3:lastModTime" />
+              <xsd:element minOccurs="0" name="lastModUser" type="ns3:lastModUser" />
+              <xsd:element minOccurs="0" name="maintenanceType" type="ns3:maintenanceType" />
+              <xsd:element minOccurs="0" name="maintenanceTypeDescription" type="ns3:maintenanceTypeDescription" />
+              <xsd:element minOccurs="0" name="originalInterDistrictCode" type="ns3:originalInterDistrictCode" />
+              <xsd:element minOccurs="0" name="originalWorkOrder" type="ns3:originalWorkOrder" />
+              <xsd:element minOccurs="0" name="overtimeInd" type="ns3:overtimeInd" />
+              <xsd:element minOccurs="0" name="percentComplete" type="ns3:percentComplete" />
+              <xsd:element minOccurs="0" name="position" type="ns3:position" />
+              <xsd:element minOccurs="0" name="postingStatus" type="ns3:postingStatus" />
+              <xsd:element minOccurs="0" name="project" type="ns3:project" />
+              <xsd:element minOccurs="0" name="projectDescription" type="ns3:projectDescription" />
+              <xsd:element minOccurs="0" name="resourceType" type="ns3:resourceType" />
+              <xsd:element minOccurs="0" name="sequenceNo" type="ns3:sequenceNo" />
+              <xsd:element minOccurs="0" name="subledgerAccount" type="ns3:subledgerAccount" />
+              <xsd:element minOccurs="0" name="subledgerType" type="ns3:subledgerType" />
+              <xsd:element minOccurs="0" name="topLevelProject" type="ns3:topLevelProject" />
+              <xsd:element minOccurs="0" name="topLevelProjectDescription" type="ns3:topLevelProjectDescription" />
+              <xsd:element minOccurs="0" name="transactionDate" type="ns3:transactionDate" />
+              <xsd:element minOccurs="0" name="unitsComplete" type="ns3:unitsComplete" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:workOrder" />
+              <xsd:element minOccurs="0" name="workOrderDescription" type="ns3:workOrderDescription" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="ns3:workOrderTask" />
+              <xsd:element minOccurs="0" name="workOrderTaskDescription" type="ns3:workOrderTaskDescription" />
+              <xsd:element minOccurs="0" name="workOrderType" type="ns3:workOrderType" />
+              <xsd:element minOccurs="0" name="workOrderTypeDescription" type="ns3:workOrderTypeDescription" />
+              <xsd:element minOccurs="0" name="workRequestDescription" type="ns3:workRequestDescription" />
+              <xsd:element minOccurs="0" name="workRequestId" type="ns3:workRequestId" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="LabourCostingTransServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceResult">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="labourCostingTransDTO" type="ns3:LabourCostingTransDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfLabourCostingTransHeaderDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="LabourCostingTransHeaderDTO" nillable="true" type="ns3:LabourCostingTransHeaderDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfLabourCostingTransHeaderServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="LabourCostingTransHeaderServiceResult" nillable="true" type="ns3:LabourCostingTransHeaderServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfLabourCostingTransDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="LabourCostingTransDTO" nillable="true" type="ns3:LabourCostingTransDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfLabourCostingTransServiceResult">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="LabourCostingTransServiceResult" nillable="true" type="ns3:LabourCostingTransServiceResult" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="workGroup">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="7" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="returnLast10DaysInd">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="crew">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="returnWeekInd">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="searchFromDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="searchToDate">
+        <xsd:restriction base="xsd:date" />
+      </xsd:simpleType>
+      <xsd:simpleType name="returnLast30DaysInd">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:complexType name="LabourCostingTransSearchParam">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractSearchParam">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="costingEntityDistrictCode" type="ns3:costingEntityDistrictCode" />
+              <xsd:element minOccurs="0" name="crew" type="ns3:crew" />
+              <xsd:element minOccurs="0" name="districtCode" type="ns3:districtCode" />
+              <xsd:element minOccurs="0" name="employee" type="ns3:employee" />
+              <xsd:element minOccurs="0" name="project" type="ns3:project" />
+              <xsd:element minOccurs="0" name="returnLast10DaysInd" type="ns3:returnLast10DaysInd" />
+              <xsd:element minOccurs="0" name="returnLast30DaysInd" type="ns3:returnLast30DaysInd" />
+              <xsd:element minOccurs="0" name="returnWeekInd" type="ns3:returnWeekInd" />
+              <xsd:element minOccurs="0" name="searchFromDate" type="ns3:searchFromDate" />
+              <xsd:element minOccurs="0" name="searchToDate" type="ns3:searchToDate" />
+              <xsd:element minOccurs="0" name="transactionDate" type="ns3:transactionDate" />
+              <xsd:element minOccurs="0" name="workGroup" type="ns3:workGroup" />
+              <xsd:element minOccurs="0" name="workOrder" type="ns3:workOrder" />
+              <xsd:element minOccurs="0" name="workOrderTask" type="ns3:workOrderTask" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.ellipse.mincom.com">
+      <xsd:import namespace="http://errors.ellipse.mincom.com" />
+      <xsd:import namespace="http://instances.base.types.ellipse.mincom.com" />
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="ServiceDTO" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Base">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="customAttributes" type="ns5:ArrayOfAttribute" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceResult">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:BaseServiceResult" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="BaseServiceResult" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="errors" type="ns6:ArrayOfError" />
+          <xsd:element minOccurs="0" name="informationalMessages" type="ns6:ArrayOfMessage" />
+          <xsd:element minOccurs="0" name="warnings" type="ns6:ArrayOfWarning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="AbstractSearchParam" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="serviceRequiredAttributes" type="ns2:ServiceRequiredAttributes" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ServiceRequiredAttributes" />
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
+      <xsd:complexType name="Base" abstract="true" />
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:import namespace="http://labourcostingtrans.m3850.service.ellipse.mincom.com" />
+      <xsd:complexType name="ArrayOfAttribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns5:Attribute" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Attribute">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
+          <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
+          <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
+          <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://labourcostingtrans.m3850.service.ellipse.mincom.com">
+      <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
+      <xsd:import namespace="http://instances.m3850.types.ellipse.mincom.com" />
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="headerUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransHeaderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="headerUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransHeaderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createOrUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createOrUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="read">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="readResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleHeaderUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransHeaderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleHeaderUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransHeaderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDelete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDeleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleHeaderRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransHeaderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleHeaderReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransHeaderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchMultiEmps">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns3:LabourCostingTransSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchMultiEmpsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDeleteNoError">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleDeleteNoErrorResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="update">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="updateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleConfirm">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleConfirmResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delete">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="confirm">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="confirmResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleValidateDay">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleValidateDayResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="search">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="searchParams" nillable="true" type="ns3:LabourCostingTransSearchParam" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="restart" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUnconfirm">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUnconfirmResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteNoError">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deleteNoErrorResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="create">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="createResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="validateDay">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="validateDayResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="headerRead">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransHeaderDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="headerReadResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransHeaderServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreateOrUpdate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="inputDtos" nillable="true" type="ns3:ArrayOfLabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="multipleCreateOrUpdateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:ArrayOfLabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="unconfirm">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="context" nillable="true" type="ns1:OperationContext" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="serviceDTO" nillable="true" type="ns3:LabourCostingTransDTO" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="unconfirmResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="ns3:LabourCostingTransServiceResult" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfMessage">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Message">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fieldId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="localisable" type="xsd:boolean" />
+          <xsd:element minOccurs="0" name="messageId" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="messageText" type="xsd:string" />
+          <xsd:element minOccurs="0" name="parentInstance" type="xsd:string" />
+          <xsd:element minOccurs="0" name="user" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfError">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Error">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarning">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Warning" nillable="true" type="ns6:Warning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Warning">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="searchMultiEmpsResponse">
+    <wsdl:part name="parameters" element="tns:searchMultiEmpsResponse" />
+  </wsdl:message>
+  <wsdl:message name="confirmRequest">
+    <wsdl:part name="parameters" element="tns:confirm" />
+  </wsdl:message>
+  <wsdl:message name="deleteNoErrorRequest">
+    <wsdl:part name="parameters" element="tns:deleteNoError" />
+  </wsdl:message>
+  <wsdl:message name="readRequest">
+    <wsdl:part name="parameters" element="tns:read" />
+  </wsdl:message>
+  <wsdl:message name="updateRequest">
+    <wsdl:part name="parameters" element="tns:update" />
+  </wsdl:message>
+  <wsdl:message name="headerUpdateResponse">
+    <wsdl:part name="parameters" element="tns:headerUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="confirmResponse">
+    <wsdl:part name="parameters" element="tns:confirmResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteRequest">
+    <wsdl:part name="parameters" element="tns:multipleDelete" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateResponse">
+    <wsdl:part name="parameters" element="tns:multipleUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleRead" />
+  </wsdl:message>
+  <wsdl:message name="multipleValidateDayRequest">
+    <wsdl:part name="parameters" element="tns:multipleValidateDay" />
+  </wsdl:message>
+  <wsdl:message name="createResponse">
+    <wsdl:part name="parameters" element="tns:createResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchResponse">
+    <wsdl:part name="parameters" element="tns:searchResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleHeaderReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleHeaderReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="unconfirmResponse">
+    <wsdl:part name="parameters" element="tns:unconfirmResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchMultiEmpsRequest">
+    <wsdl:part name="parameters" element="tns:searchMultiEmps" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreate" />
+  </wsdl:message>
+  <wsdl:message name="multipleUnconfirmRequest">
+    <wsdl:part name="parameters" element="tns:multipleUnconfirm" />
+  </wsdl:message>
+  <wsdl:message name="multipleHeaderUpdateResponse">
+    <wsdl:part name="parameters" element="tns:multipleHeaderUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUpdateRequest">
+    <wsdl:part name="parameters" element="tns:multipleUpdate" />
+  </wsdl:message>
+  <wsdl:message name="unconfirmRequest">
+    <wsdl:part name="parameters" element="tns:unconfirm" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteNoErrorRequest">
+    <wsdl:part name="parameters" element="tns:multipleDeleteNoError" />
+  </wsdl:message>
+  <wsdl:message name="updateResponse">
+    <wsdl:part name="parameters" element="tns:updateResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteRequest">
+    <wsdl:part name="parameters" element="tns:delete" />
+  </wsdl:message>
+  <wsdl:message name="createOrUpdateRequest">
+    <wsdl:part name="parameters" element="tns:createOrUpdate" />
+  </wsdl:message>
+  <wsdl:message name="multipleConfirmRequest">
+    <wsdl:part name="parameters" element="tns:multipleConfirm" />
+  </wsdl:message>
+  <wsdl:message name="headerReadResponse">
+    <wsdl:part name="parameters" element="tns:headerReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="createOrUpdateResponse">
+    <wsdl:part name="parameters" element="tns:createOrUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="validateDayResponse">
+    <wsdl:part name="parameters" element="tns:validateDayResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteNoErrorResponse">
+    <wsdl:part name="parameters" element="tns:deleteNoErrorResponse" />
+  </wsdl:message>
+  <wsdl:message name="createRequest">
+    <wsdl:part name="parameters" element="tns:create" />
+  </wsdl:message>
+  <wsdl:message name="multipleReadResponse">
+    <wsdl:part name="parameters" element="tns:multipleReadResponse" />
+  </wsdl:message>
+  <wsdl:message name="validateDayRequest">
+    <wsdl:part name="parameters" element="tns:validateDay" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateResponse" />
+  </wsdl:message>
+  <wsdl:message name="readResponse">
+    <wsdl:part name="parameters" element="tns:readResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchRequest">
+    <wsdl:part name="parameters" element="tns:search" />
+  </wsdl:message>
+  <wsdl:message name="multipleHeaderReadRequest">
+    <wsdl:part name="parameters" element="tns:multipleHeaderRead" />
+  </wsdl:message>
+  <wsdl:message name="multipleValidateDayResponse">
+    <wsdl:part name="parameters" element="tns:multipleValidateDayResponse" />
+  </wsdl:message>
+  <wsdl:message name="headerUpdateRequest">
+    <wsdl:part name="parameters" element="tns:headerUpdate" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteNoErrorResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteNoErrorResponse" />
+  </wsdl:message>
+  <wsdl:message name="headerReadRequest">
+    <wsdl:part name="parameters" element="tns:headerRead" />
+  </wsdl:message>
+  <wsdl:message name="multipleDeleteResponse">
+    <wsdl:part name="parameters" element="tns:multipleDeleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleConfirmResponse">
+    <wsdl:part name="parameters" element="tns:multipleConfirmResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteResponse">
+    <wsdl:part name="parameters" element="tns:deleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateOrUpdateRequest">
+    <wsdl:part name="parameters" element="tns:multipleCreateOrUpdate" />
+  </wsdl:message>
+  <wsdl:message name="multipleCreateOrUpdateResponse">
+    <wsdl:part name="parameters" element="tns:multipleCreateOrUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleUnconfirmResponse">
+    <wsdl:part name="parameters" element="tns:multipleUnconfirmResponse" />
+  </wsdl:message>
+  <wsdl:message name="multipleHeaderUpdateRequest">
+    <wsdl:part name="parameters" element="tns:multipleHeaderUpdate" />
+  </wsdl:message>
+  <wsdl:portType name="LabourCostingTrans">
+    <wsdl:operation name="headerUpdate">
+      <wsdl:input name="headerUpdateRequest" message="tns:headerUpdateRequest" />
+      <wsdl:output name="headerUpdateResponse" message="tns:headerUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="createOrUpdate">
+      <wsdl:input name="createOrUpdateRequest" message="tns:createOrUpdateRequest" />
+      <wsdl:output name="createOrUpdateResponse" message="tns:createOrUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdl:input name="readRequest" message="tns:readRequest" />
+      <wsdl:output name="readResponse" message="tns:readResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleHeaderUpdate">
+      <wsdl:input name="multipleHeaderUpdateRequest" message="tns:multipleHeaderUpdateRequest" />
+      <wsdl:output name="multipleHeaderUpdateResponse" message="tns:multipleHeaderUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdl:input name="multipleDeleteRequest" message="tns:multipleDeleteRequest" />
+      <wsdl:output name="multipleDeleteResponse" message="tns:multipleDeleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleHeaderRead">
+      <wsdl:input name="multipleHeaderReadRequest" message="tns:multipleHeaderReadRequest" />
+      <wsdl:output name="multipleHeaderReadResponse" message="tns:multipleHeaderReadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="searchMultiEmps">
+      <wsdl:input name="searchMultiEmpsRequest" message="tns:searchMultiEmpsRequest" />
+      <wsdl:output name="searchMultiEmpsResponse" message="tns:searchMultiEmpsResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleDeleteNoError">
+      <wsdl:input name="multipleDeleteNoErrorRequest" message="tns:multipleDeleteNoErrorRequest" />
+      <wsdl:output name="multipleDeleteNoErrorResponse" message="tns:multipleDeleteNoErrorResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="update">
+      <wsdl:input name="updateRequest" message="tns:updateRequest" />
+      <wsdl:output name="updateResponse" message="tns:updateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleConfirm">
+      <wsdl:input name="multipleConfirmRequest" message="tns:multipleConfirmRequest" />
+      <wsdl:output name="multipleConfirmResponse" message="tns:multipleConfirmResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdl:input name="deleteRequest" message="tns:deleteRequest" />
+      <wsdl:output name="deleteResponse" message="tns:deleteResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="confirm">
+      <wsdl:input name="confirmRequest" message="tns:confirmRequest" />
+      <wsdl:output name="confirmResponse" message="tns:confirmResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleValidateDay">
+      <wsdl:input name="multipleValidateDayRequest" message="tns:multipleValidateDayRequest" />
+      <wsdl:output name="multipleValidateDayResponse" message="tns:multipleValidateDayResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdl:input name="searchRequest" message="tns:searchRequest" />
+      <wsdl:output name="searchResponse" message="tns:searchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleUnconfirm">
+      <wsdl:input name="multipleUnconfirmRequest" message="tns:multipleUnconfirmRequest" />
+      <wsdl:output name="multipleUnconfirmResponse" message="tns:multipleUnconfirmResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdl:input name="multipleUpdateRequest" message="tns:multipleUpdateRequest" />
+      <wsdl:output name="multipleUpdateResponse" message="tns:multipleUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteNoError">
+      <wsdl:input name="deleteNoErrorRequest" message="tns:deleteNoErrorRequest" />
+      <wsdl:output name="deleteNoErrorResponse" message="tns:deleteNoErrorResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdl:input name="createRequest" message="tns:createRequest" />
+      <wsdl:output name="createResponse" message="tns:createResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="validateDay">
+      <wsdl:input name="validateDayRequest" message="tns:validateDayRequest" />
+      <wsdl:output name="validateDayResponse" message="tns:validateDayResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdl:input name="multipleReadRequest" message="tns:multipleReadRequest" />
+      <wsdl:output name="multipleReadResponse" message="tns:multipleReadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="headerRead">
+      <wsdl:input name="headerReadRequest" message="tns:headerReadRequest" />
+      <wsdl:output name="headerReadResponse" message="tns:headerReadResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdl:input name="multipleCreateRequest" message="tns:multipleCreateRequest" />
+      <wsdl:output name="multipleCreateResponse" message="tns:multipleCreateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreateOrUpdate">
+      <wsdl:input name="multipleCreateOrUpdateRequest" message="tns:multipleCreateOrUpdateRequest" />
+      <wsdl:output name="multipleCreateOrUpdateResponse" message="tns:multipleCreateOrUpdateResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="unconfirm">
+      <wsdl:input name="unconfirmRequest" message="tns:unconfirmRequest" />
+      <wsdl:output name="unconfirmResponse" message="tns:unconfirmResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LabourCostingTransServiceHttpBinding" type="tns:LabourCostingTrans">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="headerUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="headerUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="headerUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createOrUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createOrUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createOrUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="read">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="readRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="readResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleHeaderUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleHeaderUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleHeaderUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleDelete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleHeaderRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleHeaderReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleHeaderReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchMultiEmps">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchMultiEmpsRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchMultiEmpsResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleDeleteNoError">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleDeleteNoErrorRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleDeleteNoErrorResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="update">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="updateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="updateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleConfirm">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleConfirmRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleConfirmResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delete">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirm">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="confirmRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="confirmResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleValidateDay">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleValidateDayRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleValidateDayResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="search">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleUnconfirm">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUnconfirmRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleUnconfirmResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteNoError">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="deleteNoErrorRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="deleteNoErrorResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="create">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="createRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="createResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validateDay">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="validateDayRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="validateDayResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="headerRead">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="headerReadRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="headerReadResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="multipleCreateOrUpdate">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="multipleCreateOrUpdateRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="multipleCreateOrUpdateResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="unconfirm">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="unconfirmRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="unconfirmResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LabourCostingTransService">
+    <wsdl:port name="LabourCostingTransServiceHttpPort" binding="tns:LabourCostingTransServiceHttpBinding">
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/LabourCostingTransService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

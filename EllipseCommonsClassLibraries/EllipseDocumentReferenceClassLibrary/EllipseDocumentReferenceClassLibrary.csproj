@@ -91,10 +91,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/DocumentReferenceService%3fWSDL">
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/DocumentReferenceService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\DocumentReferenceService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/DocumentReferenceService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/DocumentReferenceService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

@@ -36,7 +36,9 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpProntoPago = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormat = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.menuActions = this.Factory.CreateRibbonMenu();
             this.btnGetInvoice = this.Factory.CreateRibbonButton();
@@ -44,11 +46,10 @@
             this.btnCalculateDiscount = this.Factory.CreateRibbonButton();
             this.btnModifyInvoice = this.Factory.CreateRibbonButton();
             this.btnVerifyInvoice = this.Factory.CreateRibbonButton();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpProntoPago.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -65,11 +66,23 @@
             this.grpProntoPago.Label = "Pronto Pago";
             this.grpProntoPago.Name = "grpProntoPago";
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormat);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
             // btnFormat
             // 
             this.btnFormat.Label = "Formato";
             this.btnFormat.Name = "btnFormat";
             this.btnFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormat_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnvironment
             // 
@@ -121,18 +134,6 @@
             this.btnVerifyInvoice.ShowImage = true;
             this.btnVerifyInvoice.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnVerifyInvoice_Click);
             // 
-            // box1
-            // 
-            this.box1.Items.Add(this.btnFormat);
-            this.box1.Items.Add(this.btnAbout);
-            this.box1.Name = "box1";
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
-            // 
             // RibbonEllipse
             // 
             this.Name = "RibbonEllipse";
@@ -145,6 +146,7 @@
             this.grpProntoPago.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 

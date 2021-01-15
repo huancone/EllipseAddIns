@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Web.Services.Ellipse.Post;
-using System.Xml.Linq;
+using EllipseJobsClassLibrary.WorkOrderTaskMWPService;
 using SharedClassLibrary.Connections.Oracle;
 using SharedClassLibrary.Classes;
 using SharedClassLibrary.Ellipse;
@@ -11,7 +11,6 @@ using SharedClassLibrary.Utilities;
 using EllipseStandardJobsClassLibrary;
 using EllipseWorkOrdersClassLibrary;
 using Screen = SharedClassLibrary.Ellipse.ScreenService;
-using TaskRequirement = EllipseStandardJobsClassLibrary.TaskRequirement;
 using SharedClassLibrary.Ellipse.Connections;
 using Debugger = SharedClassLibrary.Utilities.Debugger;
 
@@ -74,6 +73,213 @@ namespace EllipseJobsClassLibrary
             }
             return jobList;
         }
+        public static List<JobTask> FetchJobsTasks(EllipseFunctions ef, string urlService, WorkOrderTaskMWPService.OperationContext opContext, string district, string dateInclude, int searchCriteriaKey1, string searchCriteriaValue1, string startDate, string endDate, TaskSearchParam searchParam)
+        {
+            var groupList = new List<string>();
+
+            if (searchCriteriaKey1 == SearchFieldCriteriaType.WorkGroup.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                groupList.Add(searchCriteriaValue1);
+            else if (searchCriteriaKey1 == SearchFieldCriteriaType.Area.Key && !string.IsNullOrWhiteSpace(searchCriteriaValue1))
+                groupList = Groups.GetWorkGroupList().Where(g => g.Area == searchCriteriaValue1).Select(g => g.Name).ToList();
+            else
+                groupList = Groups.GetWorkGroupList().Where(g => g.Details == searchCriteriaValue1).Select(g => g.Name).ToList();
+
+            switch (dateInclude)
+            {
+                case "Backlog":
+                    dateInclude = "BI";
+                    break;
+                case "Unscheduled":
+                    dateInclude = "UI";
+                    break;
+                case "Backlog and Unscheduled":
+                    dateInclude = "BU";
+                    break;
+                case "Backlog Only":
+                    dateInclude = "BO";
+                    break;
+                case "Unscheduled Only":
+                    dateInclude = "UO";
+                    break;
+                case "Backlog and Unscheduled Only":
+                    dateInclude = "UB";
+                    break;
+            }
+
+            var taskService = new WorkOrderTaskMWPService.WorkOrderTaskMWPService();
+            taskService.Url = urlService;
+           
+
+            var taskSearchParams = new TasksMWPSearchParam();
+            taskSearchParams.taskSearchType = "T";
+            taskSearchParams.isTaskSearch = true;
+            taskSearchParams.isTaskSearchSpecified = true;;
+            taskSearchParams.workOrderSearchMethod = "EM";
+            taskSearchParams.taskDatePreset = "N";
+            taskSearchParams.taskDateIncrement = "1";
+            taskSearchParams.taskDateIncrementUnit = "D";
+            taskSearchParams.startDate = MyUtilities.ToDate(startDate);
+            taskSearchParams.finishDate = MyUtilities.ToDate(endDate);
+            taskSearchParams.allDistrictsForTasks = false;
+            taskSearchParams.allDistrictsForTasksSpecified = true;
+            taskSearchParams.dstrctCode = district;
+            taskSearchParams.workGroupsForTasks = groupList.ToArray();
+            taskSearchParams.status = "N";
+            taskSearchParams.unassigned = false;
+            taskSearchParams.unassignedSpecified = true;
+            taskSearchParams.overlappingDateSearch = searchParam.OverlappingDates;
+            taskSearchParams.overlappingDateSearchSpecified = true;
+            taskSearchParams.status = "N";
+            taskSearchParams.datePreset = "T";
+            taskSearchParams.dateIncrement = "1";
+            taskSearchParams.dateIncrementUnit = "D";
+            taskSearchParams.dateIncludes = dateInclude;
+            taskSearchParams.matchOnChildren = false;
+            taskSearchParams.matchOnChildrenSpecified = true;
+            taskSearchParams.includeProjectHierarchy = false;
+            taskSearchParams.includeProjectHierarchySpecified = true;
+            taskSearchParams.includeMSTis = searchParam.IncludeMst;
+            taskSearchParams.includeMSTisSpecified = true;
+            taskSearchParams.displayMSTiTaskDetails = false;
+            taskSearchParams.displayMSTiTaskDetailsSpecified = true;
+            taskSearchParams.includeEquipmentHierarchy = false;
+            taskSearchParams.includeEquipmentHierarchySpecified = true;
+            taskSearchParams.includeSubLists = false;
+            taskSearchParams.includeSubListsSpecified = true;
+            taskSearchParams.woStatusMSearch = "U";
+            taskSearchParams.excludeWorkOrderType = false;
+            taskSearchParams.excludeWorkOrderTypeSpecified = true;
+            taskSearchParams.excludeMaintenanceType = false;
+            taskSearchParams.excludeMaintenanceTypeSpecified = true;
+            taskSearchParams.attachedToOutage = false;
+            taskSearchParams.attachedToOutageSpecified = true;
+            taskSearchParams.includePreferedEGI = false;
+            taskSearchParams.includePreferedEGISpecified = true;
+            taskSearchParams.crewTotalsOnly = false;
+            taskSearchParams.crewTotalsOnlySpecified = true;
+
+
+            var restartTask = new TasksMWPDTO(); 
+            var reply = taskService.tasksSearch(opContext, taskSearchParams, null);
+            
+            if (reply == null)
+                throw new Exception("TaskSearch Error. Couldn't receive reply from service.");
+            var errorMessages = "";
+
+            var jobTasks = new List<JobTask>();
+            foreach (var item in reply)
+            {
+                if (item.errors != null)
+                    foreach (var err in item.errors)
+                        errorMessages += err.messageId + ": " + err.messageText + "\n";
+                var task = new JobTask();
+                task.AssignPerson = item.tasksMWPDTO.assignPerson;
+                task.DstrctAcctCode = item.tasksMWPDTO.dstrctAcctCode;
+                task.DstrctCode = item.tasksMWPDTO.dstrctCode;
+                task.EquipNo = item.tasksMWPDTO.equipNo;
+                task.CompCode = item.tasksMWPDTO.compCode;
+                task.CompModCode = item.tasksMWPDTO.compModCode;
+                task.ItemName1 = item.tasksMWPDTO.itemName1;
+                task.ItemName2 = item.tasksMWPDTO.itemName2;
+                task.JobId = item.tasksMWPDTO.jobId;
+                task.JobParentId = item.tasksMWPDTO.jobParentId;
+                task.JobType = item.tasksMWPDTO.jobType;
+                task.MaintSchTask = item.tasksMWPDTO.maintSchTask;
+                task.MaintType = item.tasksMWPDTO.maintType;
+                task.MstReference = item.tasksMWPDTO.mstReference;
+                task.OrigPriority = item.tasksMWPDTO.origPriority;
+                task.OriginalPlannedStartDate = MyUtilities.ToString(item.tasksMWPDTO.originalPlannedStartDate);
+                task.PlanPriority = item.tasksMWPDTO.planPriority;
+                task.PlanStrDate = MyUtilities.ToString(item.tasksMWPDTO.planStrDate);
+                task.PlanStrTime = item.tasksMWPDTO.planStrTime;
+                task.PlanFinDate = MyUtilities.ToString(item.tasksMWPDTO.planFinDate);
+                task.PlanFinTime = item.tasksMWPDTO.planFinTime;
+                task.EstimatedDurationsHrs = item.tasksMWPDTO.estDurHrs.ToString(CultureInfo.InvariantCulture);
+                task.RaisedDate = MyUtilities.ToString(item.tasksMWPDTO.raisedDate);
+                task.Reference = item.tasksMWPDTO.reference;
+                task.StdJobNo = item.tasksMWPDTO.stdJobNo;
+                task.StdJobTask = item.tasksMWPDTO.WOTaskNo;
+                task.WoStatusM = item.tasksMWPDTO.woStatusM;
+                task.WoStatusU = item.tasksMWPDTO.woStatusU;
+                task.WoType = item.tasksMWPDTO.woType;
+                task.WorkGroup = item.tasksMWPDTO.workGroup;
+                task.WorkOrder = item.tasksMWPDTO.workOrder;
+                task.WoDesc = item.tasksMWPDTO.woDesc;
+                task.WoTaskNo = item.tasksMWPDTO.WOTaskNo;
+                task.WoTaskDesc = item.tasksMWPDTO.taskDescription;
+                
+                jobTasks.Add(task);
+            }
+            if(!string.IsNullOrWhiteSpace(errorMessages))
+                throw new Exception(errorMessages);
+
+            jobTasks = jobTasks.GroupBy(r => r.Reference).Select(f => f.First()).ToList();
+
+            foreach (var task in jobTasks)
+            {
+                task.LabourResourcesList = new List<LabourResources>();
+                //si es una orden de trabajo.
+                if (task.WorkOrder != null)
+                {
+                    var reqList = WorkOrderTaskActions.FetchRequirements(ef, task.DstrctCode, task.WorkOrder, RequirementType.Labour.Key, task.WoTaskNo);
+
+                    foreach (var req in reqList)
+                    {
+                        var requirement = new LabourResources
+                        {
+                            WorkGroup = req.WorkGroup,
+                            ResourceCode = req.ReqCode,
+                            Date = task.PlanStrDate,
+                            EstimatedLabourHours = MyUtilities.ToDouble(req.UnitsQty, MyUtilities.ConversionConstants.DefaultNullAndEmpty),
+                            RealLabourHours = MyUtilities.ToDouble(req.RealQty, MyUtilities.ConversionConstants.DefaultNullAndEmpty)
+                        };
+                        task.LabourResourcesList.Add(requirement);
+                    }
+                }
+                else if (task.StdJobNo != null)
+                {
+                    //obtengo la lista de tareas de la orden de trabajo
+                    var reqList = StandardJobActions.FetchTaskRequirements(ef, task.DstrctCode, task.WorkGroup, task.StdJobNo);
+
+                    foreach (var req in reqList)
+                    {
+                        task.StdJobTask = req.SJTaskNo;
+                        var requirement = new LabourResources
+                        {
+                            WorkGroup = req.WorkGroup,
+                            ResourceCode = req.ReqCode,
+                            Date = task.PlanStrDate,
+                            EstimatedLabourHours = !string.IsNullOrEmpty(req.HrsReq) ? Convert.ToDouble(req.HrsReq) : 0,
+                            RealLabourHours = 0
+                        };
+                        if (req.ReqType == "LAB")
+                            task.LabourResourcesList.Add(requirement);
+                    }
+                }
+            }
+
+            if (!searchParam.AdditionalInformation)
+                return jobTasks;
+
+        
+            foreach (var task in jobTasks)
+            {
+                try
+                {
+                    var taskAdd = GetJobTaskAdditional(ef, task);
+                    task.Additional = taskAdd;
+                }
+                catch (Exception ex)
+                {
+                    Debugger.LogError("JobActions.cs:GetJobTaskAdditional()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                    //ignored;
+                }
+            }
+            
+            return jobTasks;
+        }
+
+        /*
         public static List<JobTask> FetchJobsTasksPost(EllipseFunctions ef, string district, string dateInclude, int searchCriteriaKey1, string searchCriteriaValue1, string startDate, string endDate, TaskSearchParam searchParam)
         {
 
@@ -283,7 +489,7 @@ namespace EllipseJobsClassLibrary
             }
             return jobTasks;
         }
-
+        */
         public static List<LabourResources> GetEllipseResources(EllipseFunctions ef, string district, int primakeryKey, string primaryValue, string startDate, string endDate)
         {
             var sqlQuery = Queries.GetEllipseResourcesQuery(ef.DbReference, ef.DbLink, district, primakeryKey, primaryValue, startDate, endDate);

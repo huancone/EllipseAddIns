@@ -1,32 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using screen = EllipseCommonsClassLibrary.ScreenService;
-// ReSharper disable UseIndexedProperty
+using screen = SharedClassLibrary.Ellipse.ScreenService;
 
 namespace EllipseMSO200ExcelAddIn
 {
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
+    
     public partial class RibbonEllipse
     {
 
         private Thread _thread;
         private const int TittleRow = 5;
         private static int _resultColumn = 13;
-        private EllipseFunctions _eFunctions = new EllipseFunctions();
-        private FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private ExcelStyleCells _cells;
         private Application _excelApp;
         private ListObject _excelSheetItems;
@@ -35,6 +34,14 @@ namespace EllipseMSO200ExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -44,8 +51,41 @@ namespace EllipseMSO200ExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //Example of Default Custom Options
+            //settings.SetDefaultCustomSettingValue("AutoSort", "Y");
+            //settings.SetDefaultCustomSettingValue("OverrideAccountCode", "Maintenance");
+            //settings.SetDefaultCustomSettingValue("IgnoreItemError", "N");
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            //Example of Getting Custom Options from Save File
+            //var overrideAccountCode = settings.GetCustomSettingValue("OverrideAccountCode");
+            //if (overrideAccountCode.Equals("Maintenance"))
+            //    cbAccountElementOverrideMntto.Checked = true;
+            //else if (overrideAccountCode.Equals("Disable"))
+            //    cbAccountElementOverrideDisable.Checked = true;
+            //else if (overrideAccountCode.Equals("Alwats"))
+            //    cbAccountElementOverrideAlways.Checked = true;
+            //else if (overrideAccountCode.Equals("Default"))
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //else
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //cbAutoSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AutoSort"));
+            //cbIgnoreItemError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreItemError"));
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnInactivateSupplier_Click(object sender, RibbonControlEventArgs e)
         {
             FormatInactivateSupplierAddress();
@@ -233,7 +273,7 @@ namespace EllipseMSO200ExcelAddIn
                     _cells.GetCell(12, currentRow).Value = "47703371338";
 
 
-                    var sqlQuery = Queries.GetSupplierInvoiceInfo("ICOR", employee.Cedula, _eFunctions.dbReference, _eFunctions.dbLink);
+                    var sqlQuery = Queries.GetSupplierInvoiceInfo("ICOR", employee.Cedula, _eFunctions.DbReference, _eFunctions.DbLink);
                     _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
                     var drSupplierInfo = _eFunctions.GetQueryResult(sqlQuery);
@@ -345,7 +385,7 @@ namespace EllipseMSO200ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -432,7 +472,7 @@ namespace EllipseMSO200ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -512,6 +552,97 @@ namespace EllipseMSO200ExcelAddIn
             }
         }
 
+        private void LoadSuspenderSupplier()
+        {
+            //
+
+            _excelApp.ActiveWorkbook.Sheets.get_Item(1).Activate();
+            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
+            var proxySheet = new screen.ScreenService();
+            var requestSheet = new screen.ScreenSubmitRequestDTO();
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            var opSheet = new screen.OperationContext
+            {
+                district = _frmAuth.EllipseDsct,
+                position = _frmAuth.EllipsePost,
+                maxInstances = 100,
+                maxInstancesSpecified = true,
+                returnWarnings = Debugger.DebugWarnings
+            };
+            var currentRow = TittleRow + 1;
+            while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) != null)
+            {
+                try
+                {
+                    _cells.GetCell(1, currentRow).Select();
+                    _eFunctions.RevertOperation(opSheet, proxySheet);
+                    var replySheet = proxySheet.executeScreen(opSheet, "MSO200");
+                    if (_eFunctions.CheckReplyError(replySheet))
+                    {
+                        _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
+                    }
+                    else
+                    {
+                        if (replySheet.mapName != "MSM200A") return;
+                        var arrayFields = new ArrayScreenNameValue();
+                        arrayFields.Add("OPTION1I", "B");
+                        arrayFields.Add("SUPPLIER_NO1I", _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value));
+                        requestSheet.screenFields = arrayFields.ToArray();
+                        requestSheet.screenKey = "1";
+                        replySheet = proxySheet.submit(opSheet, requestSheet);
+
+                        while (_eFunctions.CheckReplyWarning(replySheet))
+                            replySheet = proxySheet.submit(opSheet, requestSheet);
+
+                        if (replySheet.message.Contains("Confirm"))
+                            replySheet = proxySheet.submit(opSheet, requestSheet);
+
+                        if (_eFunctions.CheckReplyError(replySheet))
+                        {
+                            _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
+                            _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
+                        }
+                        else
+                        {
+                            arrayFields = new ArrayScreenNameValue();
+                            arrayFields.Add("DELETE_CONF2I", "Y");
+                            requestSheet.screenFields = arrayFields.ToArray();
+                            requestSheet.screenKey = "1";
+                            replySheet = proxySheet.submit(opSheet, requestSheet);
+                            while (_eFunctions.CheckReplyWarning(replySheet))
+                                replySheet = proxySheet.submit(opSheet, requestSheet);
+
+                            if (replySheet.message.Contains("Confirm"))
+                                replySheet = proxySheet.submit(opSheet, requestSheet);
+                            if (_eFunctions.CheckReplyError(replySheet))
+                            {
+                                _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Error;
+                                _cells.GetCell(_resultColumn, currentRow).Value = replySheet.message;
+                            }
+                            else
+                            {
+                                _cells.GetCell(_resultColumn, currentRow).Style = StyleConstants.Success;
+                                _cells.GetCell(_resultColumn, currentRow).Value = "Suspendido";
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _cells.GetCell(_resultColumn, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                    _cells.GetCell(_resultColumn, currentRow).Value = ex.Message;
+                }
+                finally
+                {
+                    currentRow++;
+                }
+            }
+
+            //
+
+        }
+
         private void LoadCambioCuentas()
         {
 
@@ -519,7 +650,7 @@ namespace EllipseMSO200ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct, _frmAuth.EllipsePost);
             var proxySheet = new screen.ScreenService();
             var requestSheet = new screen.ScreenSubmitRequestDTO();
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             var opSheet = new screen.OperationContext
             {
                 district = _frmAuth.EllipseDsct,
@@ -682,51 +813,11 @@ namespace EllipseMSO200ExcelAddIn
             }
         }
 
-        public class Bancos
-        {
-            [CsvColumn(FieldIndex = 1)]
-            public string CodigoNomina { get; set; }
+        
 
-            [CsvColumn(FieldIndex = 2)]
-            public string CodigoMims { get; set; }
+        
 
-            [CsvColumn(FieldIndex = 3)]
-            public string NombreInstitucion { get; set; }
-        }
 
-        private class EmployeeInfo
-        {
-            public string Supplier { get; set; }
-            public string Nombre { get; set; }
-            public string CodigoBanco { get; set; }
-            public string NombreBanco { get; set; }
-            public string TipoCuenta { get; set; }
-            public string NumeroCuenta { get; set; }
-            public string Cedula { get; set; }
-            public string BankAccount { get; set; }
-            public string BankAccountName { get; set; }
-            public string DefaultBankBranch { get; set; }
-            public string DefaultBankAccount { get; set; }
-            public string DefaultBankAccountName { get; set; }
-        }
-
-        private static class Queries
-        {
-            public static string GetSupplierInvoiceInfo(string districtCode, string cedula, string dbReference, string dbLink)
-            {
-                var sqlQuery = "SELECT " +
-                               "  TRIM(BI.BANK_ACCT_NO) BANK_ACCT_NO, " +
-                               "  TRIM(BI.TAX_FILE_NO) TAX_FILE_NO, " +
-                               "  TRIM(BI.SUPPLIER_NO) SUPPLIER_NO, " +
-                               "  COUNT(BI.SUPPLIER_NO) OVER(PARTITION BY BI.TAX_FILE_NO) CANTIDAD_REGISTROS " +
-                               "FROM " +
-                               "  "+ dbReference + ".MSF203"+ dbLink + " BI " +
-                               "WHERE " +
-                               "  BI.TAX_FILE_NO = '" + cedula + "' " +
-                               "  AND BI.DSTRCT_CODE = '" + districtCode + "' ";
-                return sqlQuery;
-            }
-        }
 
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
@@ -750,5 +841,25 @@ namespace EllipseMSO200ExcelAddIn
             }
         }
 
+        private void btnSuspender_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                //si ya hay un thread corriendo que no se ha detenido
+                if (_thread != null && _thread.IsAlive) return;
+                _frmAuth.StartPosition = FormStartPosition.CenterScreen;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                if (_frmAuth.ShowDialog() != DialogResult.OK) return;
+                _thread = new Thread(LoadSuspenderSupplier);
+                _thread.SetApartmentState(ApartmentState.STA);
+                _thread.Start();
+
+            }
+            catch (Exception ex)
+            {
+                Debugger.LogError("RibbonEllipse.cs:btnLoadData()", "\n\rMessage: " + ex.Message + "\n\rSource: " + ex.Source + "\n\rStackTrace: " + ex.StackTrace);
+                MessageBox.Show(@"Se ha producido un error: " + ex.Message);
+            }
+        }
     }
 }

@@ -84,7 +84,7 @@ namespace EllipseWorkRequestExcelAddIn
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.Message, Resources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
             //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
@@ -143,12 +143,12 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewWorkRequest()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ReviewWorkRequest()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -187,12 +187,12 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReReviewWorkRequest()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ReReviewWorkRequest()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -217,7 +217,7 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread = new Thread(CreateWorkRequestPfcList);
                 else
                 {
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
                     return;
                 }
                 _thread.SetApartmentState(ApartmentState.STA);
@@ -225,8 +225,8 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:CreateWorkRequest()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:CreateWorkRequest()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -349,12 +349,12 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ModifyWorkRequest()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ModifyWorkRequest()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -387,12 +387,12 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:CloseWorkRequest()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:CloseWorkRequest()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -425,12 +425,12 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:DeleteWorkRequest()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:DeleteWorkRequest()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -478,12 +478,12 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:DeleteWorkRequest()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:DeleteWorkRequest()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -516,12 +516,12 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:SetSlaList()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:SetSlaList()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -554,12 +554,12 @@ namespace EllipseWorkRequestExcelAddIn
                     _thread.Start();
                 }
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:SetSlaList()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:SetSlaList()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -582,12 +582,12 @@ namespace EllipseWorkRequestExcelAddIn
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(WrResources.SheetNameM01))
                     MessageBox.Show(WrResources.Error_MaintenanceActionSheetError);
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReviewReferenceCodesList()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ReviewReferenceCodesList()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -610,12 +610,12 @@ namespace EllipseWorkRequestExcelAddIn
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(WrResources.SheetNameM01))
                     MessageBox.Show(WrResources.Error_MaintenanceActionSheetError);
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:ReReviewReferenceCodesList()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:ReReviewReferenceCodesList()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -638,12 +638,12 @@ namespace EllipseWorkRequestExcelAddIn
                 else if (_excelApp.ActiveWorkbook.ActiveSheet.Name.Equals(WrResources.SheetNameM01))
                     MessageBox.Show(WrResources.Error_MaintenanceActionSheetError);
                 else
-                    MessageBox.Show(Resources.Error_ExcelSheetFormatError);
+                    MessageBox.Show(SharedResources.Error_ExcelSheetFormatError);
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:UpdateReferenceCodesList()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:UpdateReferenceCodesList()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
         }
 
@@ -724,7 +724,7 @@ namespace EllipseWorkRequestExcelAddIn
                             _cells.GetCell(2, i).Style = StyleConstants.Success;
 
                             _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Warning;
-                            _cells.GetCell(ResultColumn03, i).Value = Resources.Results_Updated + errorList;
+                            _cells.GetCell(ResultColumn03, i).Value = SharedResources.Results_Updated + errorList;
                         }
                         else
                         {
@@ -732,14 +732,14 @@ namespace EllipseWorkRequestExcelAddIn
                             _cells.GetCell(2, i).Style = StyleConstants.Success;
 
                             _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Success;
-                            _cells.GetCell(ResultColumn03, i).Value = Resources.Results_Updated;
+                            _cells.GetCell(ResultColumn03, i).Value = SharedResources.Results_Updated;
                         }
                     }
                     catch (Exception ex)
                     {
                         _cells.GetCell(2, i).Style = StyleConstants.Error;
                         _cells.GetCell(ResultColumn03, i).Style = StyleConstants.Error;
-                        _cells.GetCell(ResultColumn03, i).Value = Resources.Error_ErrorUppercase + ": " + ex.Message;
+                        _cells.GetCell(ResultColumn03, i).Value = SharedResources.Error_ErrorUppercase + ": " + ex.Message;
                         Debugger.LogError("RibbonEllipse.cs:ModifyWorkRequestMnttoList()", ex.Message);
                     }
                     finally
@@ -752,8 +752,8 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:UpdateReferenceCodesList()", "\n\r" + Resources.Debugging_Message + ":" + ex.Message + "\n\r" + Resources.Debugging_Source + ":" + ex.Source + "\n\r" + Resources.Debugging_StackTrace + ":" + ex.StackTrace);
-                MessageBox.Show($@"{Resources.Error_ErrorFound} . {ex.Message}");
+                Debugger.LogError("RibbonEllipse:UpdateReferenceCodesList()", "\n\r" + SharedResources.Debugging_Message + ":" + ex.Message + "\n\r" + SharedResources.Debugging_Source + ":" + ex.Source + "\n\r" + SharedResources.Debugging_StackTrace + ":" + ex.StackTrace);
+                MessageBox.Show($@"{SharedResources.Error_ErrorFound} . {ex.Message}");
             }
             finally
             {
@@ -781,7 +781,7 @@ namespace EllipseWorkRequestExcelAddIn
             }
             catch (ThreadAbortException ex)
             {
-                MessageBox.Show($@"{Resources.Error_ThreadStopped} . {ex.Message}");
+                MessageBox.Show($@"{SharedResources.Error_ThreadStopped} . {ex.Message}");
             }
         }
 
@@ -810,15 +810,15 @@ namespace EllipseWorkRequestExcelAddIn
                 _cells.GetCell("C1").Style = _cells.GetStyle(StyleConstants.HeaderDefault);
                 _cells.MergeCells("C1", "J2");
 
-                _cells.GetCell("K1").Value = Resources.Validation_MandatoryUppercase;
+                _cells.GetCell("K1").Value = SharedResources.Validation_MandatoryUppercase;
                 _cells.GetCell("K1").Style = _cells.GetStyle(StyleConstants.TitleRequired);
-                _cells.GetCell("K2").Value = Resources.Validation_OptionalUppercase;
+                _cells.GetCell("K2").Value = SharedResources.Validation_OptionalUppercase;
                 _cells.GetCell("K2").Style = _cells.GetStyle(StyleConstants.TitleOptional);
-                _cells.GetCell("K3").Value = Resources.Validation_InformationUppercase;
+                _cells.GetCell("K3").Value = SharedResources.Validation_InformationUppercase;
                 _cells.GetCell("K3").Style = _cells.GetStyle(StyleConstants.TitleInformation);
-                _cells.GetCell("K4").Value = Resources.Validation_ActionToDoUppercase;
+                _cells.GetCell("K4").Value = SharedResources.Validation_ActionToDoUppercase;
                 _cells.GetCell("K4").Style = _cells.GetStyle(StyleConstants.TitleAction);
-                _cells.GetCell("K5").Value = Resources.Validation_AdditionalRequiredUppercase;
+                _cells.GetCell("K5").Value = SharedResources.Validation_AdditionalRequiredUppercase;
                 _cells.GetCell("K5").Style = _cells.GetStyle(StyleConstants.TitleAdditional);
 
                 var searchCriteriaList = WorkRequestActions.SearchFieldCriteriaType.GetSearchFieldCriteriaTypes().Select(g => g.Value).ToList();

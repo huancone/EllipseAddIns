@@ -1,32 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
+using SharedClassLibrary.Classes;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Utilities;
 using EllipseWorkOrdersClassLibrary;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using FormAuthenticate = EllipseCommonsClassLibrary.FormAuthenticate;
+using SharedClassLibrary.Ellipse.Forms;
 using EllipseStdTextClassLibrary;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse.Connections;
 using WorkOrderTaskService = EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
 using ResourceReqmntsService = EllipseWorkOrdersClassLibrary.ResourceReqmntsService;
 using MaterialReqmntsService = EllipseWorkOrdersClassLibrary.MaterialReqmntsService;
 using EquipmentReqmntsService = EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
-// ReSharper disable UseIndexedProperty
-// ReSharper disable UseNullPropagation
 
 namespace EllipseWorkOrderExcelAddIn
 {
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
@@ -105,7 +102,14 @@ namespace EllipseWorkOrderExcelAddIn
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
             LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -113,32 +117,33 @@ namespace EllipseWorkOrderExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
-        public void LoadSettings()
-        {
-            var settings = new Settings();
-            _eFunctions = new EllipseFunctions();
-            _frmAuth = new FormAuthenticate();
 
-            //default settings definition
-            var defaultConfig = new Options();
-            defaultConfig.SetOption("FlagEstDuration", "Y");
-            defaultConfig.SetOption("ValidateTaskPlanDates", "Y");
-            defaultConfig.SetOption("IgnoreClosedStatus", "N");
-            settings.SetDefaultOptionsSettings(defaultConfig);
+            settings.SetDefaultCustomSettingValue("FlagEstDuration", "Y");
+            settings.SetDefaultCustomSettingValue("ValidateTaskPlanDates", "Y");
+            settings.SetDefaultCustomSettingValue("IgnoreClosedStatus", "N");
+
+
 
             //Setting of Configuration Options from Config File (or default)
-            var options = settings.OptionsSettings;
-            var flagEstDur = MyUtilities.IsTrue(options.GetOptionValue("FlagEstDuration"));
-            var valdTaskPlanDates = MyUtilities.IsTrue(options.GetOptionValue("ValidateTaskPlanDates"));
-            var ignoreCldStat = MyUtilities.IsTrue(options.GetOptionValue("IgnoreClosedStatus"));
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            var flagEstDur = MyUtilities.IsTrue(settings.GetCustomSettingValue("FlagEstDuration"));
+            var valdTaskPlanDates = MyUtilities.IsTrue(settings.GetCustomSettingValue("ValidateTaskPlanDates"));
+            var ignoreCldStat = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreClosedStatus"));
 
             cbFlagEstDuration.Checked = flagEstDur;
             cbValidateTaskPlanDates.Checked = valdTaskPlanDates;
             cbIgnoreClosedStatus.Checked = ignoreCldStat;
-
             //
-            settings.UpdateOptionsSettings(options);
+            settings.SaveCustomSettings();
         }
         
  #region -- buttonActions -- 
@@ -972,7 +977,10 @@ namespace EllipseWorkOrderExcelAddIn
                 var priorityCodes = MyUtilities.GetCodeList(WoTypeMtType.GetPriorityCodeList());
                 var woTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetWoTypeList());
                 var mtTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetMtTypeList());
-                var usTypeCodes = MyUtilities.GetCodeList(WorkOrderActions.GetUserStatusCodeList(_eFunctions).ToList());
+                
+                var usTypeCodes = new List<string>();
+                foreach(var item in WorkOrderActions.GetUserStatusCodeList(_eFunctions))
+                    usTypeCodes.Add(item.Code + " - " + item.Description);
 
                 _cells.GetCell(8, titleRow).Value = "WO_TYPE";
                 _cells.GetCell(8, titleRow).Style = StyleConstants.TitleRequired;
@@ -1185,7 +1193,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetRange(27, titleRow - 1, 30, titleRow - 1).Style = StyleConstants.Option;
                 _cells.GetRange(27, titleRow - 1, 30, titleRow - 1).Merge();
 
-                var completeCodeList = _eFunctions.GetItemCodes("SC").Select(item => item.code + " - " + item.description).ToList();
+                var completeCodeList = _eFunctions.GetItemCodesString("SC");
                 _cells.SetValidationList(_cells.GetCell(27, titleRow + 1), completeCodeList, ValidationSheetName, 10, false);
                 _cells.GetCell(27, titleRow).Value = "CÓD. DE CIERRE";
                 _cells.GetCell(27, titleRow).Style = StyleConstants.TitleOptional;
@@ -1411,7 +1419,7 @@ namespace EllipseWorkOrderExcelAddIn
                 _cells.GetCell(3, titleRow).Value = "DURATION_DATE";
                 _cells.GetCell(3, titleRow).AddComment("yyyyMMdd");
                 _cells.GetCell(4, titleRow).Value = "DURATION_CODE";
-                var durationCodeList = _eFunctions.GetItemCodes("JI").Select(item => item.code + " - " + item.description).ToList();
+                var durationCodeList = _eFunctions.GetItemCodesString("JI");
                 _cells.SetValidationList(_cells.GetCell(4, titleRow + 1), durationCodeList, ValidationSheetName, 11, false);
                 _cells.GetCell(5, titleRow).Value = "START_HOUR";
                 _cells.GetCell(5, titleRow).AddComment("hhmmss");
@@ -1646,8 +1654,10 @@ namespace EllipseWorkOrderExcelAddIn
                 var priorityCodes = MyUtilities.GetCodeList(WoTypeMtType.GetPriorityCodeList());
                 var woTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetWoTypeList());
                 var mtTypeCodes = MyUtilities.GetCodeList(WoTypeMtType.GetMtTypeList());
-                var usTypeCodes = MyUtilities.GetCodeList(WorkOrderActions.GetUserStatusCodeList(_eFunctions).ToList());
-                var contactMethod = MyUtilities.GetCodeList(_eFunctions.GetItemCodes("MTCO"));
+                var usTypeCodes = new List<string>();
+                foreach (var item in WorkOrderActions.GetUserStatusCodeList(_eFunctions))
+                    usTypeCodes.Add(item.Code + " - " + item.Description);
+                var contactMethod = _eFunctions.GetItemCodesString("MTCO");
 
 
                 _cells.GetCell(8, TitleRowD01).Value = "WO_TYPE";
@@ -2796,7 +2806,7 @@ namespace EllipseWorkOrderExcelAddIn
             var searchCriteriaKey2 = searchCriteriaList.FirstOrDefault(v => v.Value.Equals(searchCriteriaKey2Text)).Key;
             var dateCriteriaKey = dateCriteriaList.FirstOrDefault(v => v.Value.Equals(dateCriteriaKeyText)).Key;
 
-            var completeCodeList = _eFunctions.GetDictionaryItemCodes("SC");
+            var completeCodeList = _eFunctions.GetItemCodesDictionary("SC");
 
             var listwo = WorkOrderActions.FetchWorkOrder(_eFunctions, district, searchCriteriaKey1, searchCriteriaValue1, searchCriteriaKey2, searchCriteriaValue2, dateCriteriaKey, startDate, endDate, statusKey);
             var i = TitleRowQ01 + 1;
@@ -2891,7 +2901,7 @@ namespace EllipseWorkOrderExcelAddIn
             _cells.SetCursorWait();
 
             _cells.ClearTableRangeColumn(TableName01, ResultColumn01);
-            var completeCodeList = _eFunctions.GetDictionaryItemCodes("SC");
+            var completeCodeList = _eFunctions.GetItemCodesDictionary("SC");
             var i = TitleRowQ01 + 1;
 
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
@@ -5426,6 +5436,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
+                if (MessageBox.Show("Esta opción está obsoleta para Ellipse 9 y estará disponible solamente hasta finalizado el proceso de migración. ¿Está seguro que desea continuar?", "Acción Obsoleta", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) != DialogResult.OK) return;
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName08)
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
@@ -5455,6 +5466,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
+                if (MessageBox.Show("Esta opción está obsoleta para Ellipse 9 y estará disponible solamente hasta finalizado el proceso de migración. ¿Está seguro que desea continuar?", "Acción Obsoleta", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) != DialogResult.OK) return;
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName02 || _excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName08)
                 {
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
@@ -5506,6 +5518,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
+                if (MessageBox.Show("Esta opción está obsoleta para Ellipse 9 y estará disponible solamente hasta finalizado el proceso de migración. ¿Está seguro que desea continuar?", "Acción Obsoleta", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) != DialogResult.OK) return;
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName08)
                 {
                     //si ya hay un thread corriendo que no se ha detenido
@@ -5532,6 +5545,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
+                if (MessageBox.Show("Esta opción está obsoleta para Ellipse 9 y estará disponible solamente hasta finalizado el proceso de migración. ¿Está seguro que desea continuar?", "Acción Obsoleta", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) != DialogResult.OK) return;
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName08)
                 {
                     //si ya hay un thread corriendo que no se ha detenido
@@ -5558,6 +5572,7 @@ namespace EllipseWorkOrderExcelAddIn
         {
             try
             {
+                if (MessageBox.Show("Esta opción está obsoleta para Ellipse 9 y estará disponible solamente hasta finalizado el proceso de migración. ¿Está seguro que desea continuar?", "Acción Obsoleta", MessageBoxButtons.OKCancel, MessageBoxIcon.Information) != DialogResult.OK) return;
                 if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName08)
                 {
                     //si ya hay un thread corriendo que no se ha detenido

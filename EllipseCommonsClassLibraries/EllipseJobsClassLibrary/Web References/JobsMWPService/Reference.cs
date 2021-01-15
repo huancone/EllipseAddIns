@@ -23,49 +23,52 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="JobsMWPServiceHttpBinding", Namespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com")]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(BaseServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Base))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Attribute[]))]
     public partial class JobsMWPService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
-        private System.Threading.SendOrPostCallback updateOperationCompleted;
+        private System.Threading.SendOrPostCallback readOperationCompleted;
         
         private System.Threading.SendOrPostCallback multipleDeleteOperationCompleted;
         
-        private System.Threading.SendOrPostCallback multipleCreateOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleLinkJobsOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleUpdateOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback bulkUpdateOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback linkJobsOperationCompleted;
-        
         private System.Threading.SendOrPostCallback equipmentOperationCompleted;
         
-        private System.Threading.SendOrPostCallback unlinkOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleBulkUpdateOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback createOperationCompleted;
+        private System.Threading.SendOrPostCallback updateOperationCompleted;
         
         private System.Threading.SendOrPostCallback jobsSearchOperationCompleted;
         
-        private System.Threading.SendOrPostCallback multipleEquipmentOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleUnlinkOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback searchOperationCompleted;
+        private System.Threading.SendOrPostCallback multipleBulkUpdateOperationCompleted;
         
         private System.Threading.SendOrPostCallback deleteOperationCompleted;
         
-        private System.Threading.SendOrPostCallback readOperationCompleted;
+        private System.Threading.SendOrPostCallback multipleEquipmentOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback searchOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback unlinkOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleUpdateOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleUnlinkOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback bulkUpdateOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback createOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback linkJobsOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback retrieveViaRefCodesOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleLinkJobsOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleCreateOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -106,88 +109,91 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
-        public event updateCompletedEventHandler updateCompleted;
+        public event readCompletedEventHandler readCompleted;
         
         /// <remarks/>
         public event multipleDeleteCompletedEventHandler multipleDeleteCompleted;
         
         /// <remarks/>
-        public event multipleCreateCompletedEventHandler multipleCreateCompleted;
-        
-        /// <remarks/>
-        public event multipleLinkJobsCompletedEventHandler multipleLinkJobsCompleted;
-        
-        /// <remarks/>
-        public event multipleUpdateCompletedEventHandler multipleUpdateCompleted;
-        
-        /// <remarks/>
-        public event bulkUpdateCompletedEventHandler bulkUpdateCompleted;
-        
-        /// <remarks/>
-        public event linkJobsCompletedEventHandler linkJobsCompleted;
-        
-        /// <remarks/>
         public event equipmentCompletedEventHandler equipmentCompleted;
         
         /// <remarks/>
-        public event unlinkCompletedEventHandler unlinkCompleted;
-        
-        /// <remarks/>
-        public event multipleBulkUpdateCompletedEventHandler multipleBulkUpdateCompleted;
-        
-        /// <remarks/>
-        public event createCompletedEventHandler createCompleted;
+        public event updateCompletedEventHandler updateCompleted;
         
         /// <remarks/>
         public event jobsSearchCompletedEventHandler jobsSearchCompleted;
         
         /// <remarks/>
-        public event multipleEquipmentCompletedEventHandler multipleEquipmentCompleted;
-        
-        /// <remarks/>
-        public event multipleUnlinkCompletedEventHandler multipleUnlinkCompleted;
-        
-        /// <remarks/>
-        public event multipleReadCompletedEventHandler multipleReadCompleted;
-        
-        /// <remarks/>
-        public event searchCompletedEventHandler searchCompleted;
+        public event multipleBulkUpdateCompletedEventHandler multipleBulkUpdateCompleted;
         
         /// <remarks/>
         public event deleteCompletedEventHandler deleteCompleted;
         
         /// <remarks/>
-        public event readCompletedEventHandler readCompleted;
+        public event multipleEquipmentCompletedEventHandler multipleEquipmentCompleted;
+        
+        /// <remarks/>
+        public event searchCompletedEventHandler searchCompleted;
+        
+        /// <remarks/>
+        public event unlinkCompletedEventHandler unlinkCompleted;
+        
+        /// <remarks/>
+        public event multipleUpdateCompletedEventHandler multipleUpdateCompleted;
+        
+        /// <remarks/>
+        public event multipleUnlinkCompletedEventHandler multipleUnlinkCompleted;
+        
+        /// <remarks/>
+        public event bulkUpdateCompletedEventHandler bulkUpdateCompleted;
+        
+        /// <remarks/>
+        public event createCompletedEventHandler createCompleted;
+        
+        /// <remarks/>
+        public event linkJobsCompletedEventHandler linkJobsCompleted;
+        
+        /// <remarks/>
+        public event retrieveViaRefCodesCompletedEventHandler retrieveViaRefCodesCompleted;
+        
+        /// <remarks/>
+        public event multipleReadCompletedEventHandler multipleReadCompleted;
+        
+        /// <remarks/>
+        public event multipleLinkJobsCompletedEventHandler multipleLinkJobsCompleted;
+        
+        /// <remarks/>
+        public event multipleCreateCompletedEventHandler multipleCreateCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public JobsMWPServiceResult update([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO serviceDTO) {
-            object[] results = this.Invoke("update", new object[] {
+        public JobsMWPServiceResult read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO serviceDTO) {
+            object[] results = this.Invoke("read", new object[] {
                         context,
                         serviceDTO});
             return ((JobsMWPServiceResult)(results[0]));
         }
         
         /// <remarks/>
-        public void updateAsync(OperationContext context, JobsMWPDTO serviceDTO) {
-            this.updateAsync(context, serviceDTO, null);
+        public void readAsync(OperationContext context, JobsMWPDTO serviceDTO) {
+            this.readAsync(context, serviceDTO, null);
         }
         
         /// <remarks/>
-        public void updateAsync(OperationContext context, JobsMWPDTO serviceDTO, object userState) {
-            if ((this.updateOperationCompleted == null)) {
-                this.updateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnupdateOperationCompleted);
+        public void readAsync(OperationContext context, JobsMWPDTO serviceDTO, object userState) {
+            if ((this.readOperationCompleted == null)) {
+                this.readOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreadOperationCompleted);
             }
-            this.InvokeAsync("update", new object[] {
+            this.InvokeAsync("read", new object[] {
                         context,
-                        serviceDTO}, this.updateOperationCompleted, userState);
+                        serviceDTO}, this.readOperationCompleted, userState);
         }
         
-        private void OnupdateOperationCompleted(object arg) {
-            if ((this.updateCompleted != null)) {
+        private void OnreadOperationCompleted(object arg) {
+            if ((this.readCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.updateCompleted(this, new updateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -226,174 +232,6 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-        public JobsMWPServiceResult[] multipleCreate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsMWPDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleCreate", new object[] {
-                        context,
-                        inputDtos});
-            return ((JobsMWPServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleCreateAsync(OperationContext context, JobsMWPDTO[] inputDtos) {
-            this.multipleCreateAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleCreateAsync(OperationContext context, JobsMWPDTO[] inputDtos, object userState) {
-            if ((this.multipleCreateOperationCompleted == null)) {
-                this.multipleCreateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateOperationCompleted);
-            }
-            this.InvokeAsync("multipleCreate", new object[] {
-                        context,
-                        inputDtos}, this.multipleCreateOperationCompleted, userState);
-        }
-        
-        private void OnmultipleCreateOperationCompleted(object arg) {
-            if ((this.multipleCreateCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleCreateCompleted(this, new multipleCreateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-        public JobsCreateLinkMWPServiceResult[] multipleLinkJobs([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsCreateLinkMWPDTO[] in1, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsCreateLinkMWPDTO in2) {
-            object[] results = this.Invoke("multipleLinkJobs", new object[] {
-                        context,
-                        in1,
-                        in2});
-            return ((JobsCreateLinkMWPServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleLinkJobsAsync(OperationContext context, JobsCreateLinkMWPDTO[] in1, JobsCreateLinkMWPDTO in2) {
-            this.multipleLinkJobsAsync(context, in1, in2, null);
-        }
-        
-        /// <remarks/>
-        public void multipleLinkJobsAsync(OperationContext context, JobsCreateLinkMWPDTO[] in1, JobsCreateLinkMWPDTO in2, object userState) {
-            if ((this.multipleLinkJobsOperationCompleted == null)) {
-                this.multipleLinkJobsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleLinkJobsOperationCompleted);
-            }
-            this.InvokeAsync("multipleLinkJobs", new object[] {
-                        context,
-                        in1,
-                        in2}, this.multipleLinkJobsOperationCompleted, userState);
-        }
-        
-        private void OnmultipleLinkJobsOperationCompleted(object arg) {
-            if ((this.multipleLinkJobsCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleLinkJobsCompleted(this, new multipleLinkJobsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-        public JobsMWPServiceResult[] multipleUpdate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsMWPDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleUpdate", new object[] {
-                        context,
-                        inputDtos});
-            return ((JobsMWPServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleUpdateAsync(OperationContext context, JobsMWPDTO[] inputDtos) {
-            this.multipleUpdateAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleUpdateAsync(OperationContext context, JobsMWPDTO[] inputDtos, object userState) {
-            if ((this.multipleUpdateOperationCompleted == null)) {
-                this.multipleUpdateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleUpdateOperationCompleted);
-            }
-            this.InvokeAsync("multipleUpdate", new object[] {
-                        context,
-                        inputDtos}, this.multipleUpdateOperationCompleted, userState);
-        }
-        
-        private void OnmultipleUpdateOperationCompleted(object arg) {
-            if ((this.multipleUpdateCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleUpdateCompleted(this, new multipleUpdateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public JobsMWPServiceResult bulkUpdate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsBulkUpdateMWPDTO serviceDTO) {
-            object[] results = this.Invoke("bulkUpdate", new object[] {
-                        context,
-                        serviceDTO});
-            return ((JobsMWPServiceResult)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void bulkUpdateAsync(OperationContext context, JobsBulkUpdateMWPDTO serviceDTO) {
-            this.bulkUpdateAsync(context, serviceDTO, null);
-        }
-        
-        /// <remarks/>
-        public void bulkUpdateAsync(OperationContext context, JobsBulkUpdateMWPDTO serviceDTO, object userState) {
-            if ((this.bulkUpdateOperationCompleted == null)) {
-                this.bulkUpdateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnbulkUpdateOperationCompleted);
-            }
-            this.InvokeAsync("bulkUpdate", new object[] {
-                        context,
-                        serviceDTO}, this.bulkUpdateOperationCompleted, userState);
-        }
-        
-        private void OnbulkUpdateOperationCompleted(object arg) {
-            if ((this.bulkUpdateCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.bulkUpdateCompleted(this, new bulkUpdateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-        public JobsCreateLinkMWPServiceResult[] linkJobs([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsCreateLinkMWPDTO in1, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsCreateLinkMWPDTO in2) {
-            object[] results = this.Invoke("linkJobs", new object[] {
-                        context,
-                        in1,
-                        in2});
-            return ((JobsCreateLinkMWPServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void linkJobsAsync(OperationContext context, JobsCreateLinkMWPDTO in1, JobsCreateLinkMWPDTO in2) {
-            this.linkJobsAsync(context, in1, in2, null);
-        }
-        
-        /// <remarks/>
-        public void linkJobsAsync(OperationContext context, JobsCreateLinkMWPDTO in1, JobsCreateLinkMWPDTO in2, object userState) {
-            if ((this.linkJobsOperationCompleted == null)) {
-                this.linkJobsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnlinkJobsOperationCompleted);
-            }
-            this.InvokeAsync("linkJobs", new object[] {
-                        context,
-                        in1,
-                        in2}, this.linkJobsOperationCompleted, userState);
-        }
-        
-        private void OnlinkJobsOperationCompleted(object arg) {
-            if ((this.linkJobsCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.linkJobsCompleted(this, new linkJobsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
         public EquipmentServiceResult equipment([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] EquipmentDTO serviceDTO) {
             object[] results = this.Invoke("equipment", new object[] {
@@ -427,97 +265,32 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public JobsMWPServiceResult unlink([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO serviceDTO) {
-            object[] results = this.Invoke("unlink", new object[] {
+        public JobsMWPServiceResult update([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO serviceDTO) {
+            object[] results = this.Invoke("update", new object[] {
                         context,
                         serviceDTO});
             return ((JobsMWPServiceResult)(results[0]));
         }
         
         /// <remarks/>
-        public void unlinkAsync(OperationContext context, JobsMWPDTO serviceDTO) {
-            this.unlinkAsync(context, serviceDTO, null);
+        public void updateAsync(OperationContext context, JobsMWPDTO serviceDTO) {
+            this.updateAsync(context, serviceDTO, null);
         }
         
         /// <remarks/>
-        public void unlinkAsync(OperationContext context, JobsMWPDTO serviceDTO, object userState) {
-            if ((this.unlinkOperationCompleted == null)) {
-                this.unlinkOperationCompleted = new System.Threading.SendOrPostCallback(this.OnunlinkOperationCompleted);
+        public void updateAsync(OperationContext context, JobsMWPDTO serviceDTO, object userState) {
+            if ((this.updateOperationCompleted == null)) {
+                this.updateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnupdateOperationCompleted);
             }
-            this.InvokeAsync("unlink", new object[] {
+            this.InvokeAsync("update", new object[] {
                         context,
-                        serviceDTO}, this.unlinkOperationCompleted, userState);
+                        serviceDTO}, this.updateOperationCompleted, userState);
         }
         
-        private void OnunlinkOperationCompleted(object arg) {
-            if ((this.unlinkCompleted != null)) {
+        private void OnupdateOperationCompleted(object arg) {
+            if ((this.updateCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.unlinkCompleted(this, new unlinkCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-        public JobsMWPServiceResult[] multipleBulkUpdate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsBulkUpdateMWPDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleBulkUpdate", new object[] {
-                        context,
-                        inputDtos});
-            return ((JobsMWPServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleBulkUpdateAsync(OperationContext context, JobsBulkUpdateMWPDTO[] inputDtos) {
-            this.multipleBulkUpdateAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleBulkUpdateAsync(OperationContext context, JobsBulkUpdateMWPDTO[] inputDtos, object userState) {
-            if ((this.multipleBulkUpdateOperationCompleted == null)) {
-                this.multipleBulkUpdateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleBulkUpdateOperationCompleted);
-            }
-            this.InvokeAsync("multipleBulkUpdate", new object[] {
-                        context,
-                        inputDtos}, this.multipleBulkUpdateOperationCompleted, userState);
-        }
-        
-        private void OnmultipleBulkUpdateOperationCompleted(object arg) {
-            if ((this.multipleBulkUpdateCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleBulkUpdateCompleted(this, new multipleBulkUpdateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public JobsMWPServiceResult create([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO serviceDTO) {
-            object[] results = this.Invoke("create", new object[] {
-                        context,
-                        serviceDTO});
-            return ((JobsMWPServiceResult)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void createAsync(OperationContext context, JobsMWPDTO serviceDTO) {
-            this.createAsync(context, serviceDTO, null);
-        }
-        
-        /// <remarks/>
-        public void createAsync(OperationContext context, JobsMWPDTO serviceDTO, object userState) {
-            if ((this.createOperationCompleted == null)) {
-                this.createOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateOperationCompleted);
-            }
-            this.InvokeAsync("create", new object[] {
-                        context,
-                        serviceDTO}, this.createOperationCompleted, userState);
-        }
-        
-        private void OncreateOperationCompleted(object arg) {
-            if ((this.createCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.createCompleted(this, new createCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.updateCompleted(this, new updateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -560,6 +333,71 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
         [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+        public JobsMWPServiceResult[] multipleBulkUpdate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsBulkUpdateMWPDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleBulkUpdate", new object[] {
+                        context,
+                        inputDtos});
+            return ((JobsMWPServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleBulkUpdateAsync(OperationContext context, JobsBulkUpdateMWPDTO[] inputDtos) {
+            this.multipleBulkUpdateAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleBulkUpdateAsync(OperationContext context, JobsBulkUpdateMWPDTO[] inputDtos, object userState) {
+            if ((this.multipleBulkUpdateOperationCompleted == null)) {
+                this.multipleBulkUpdateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleBulkUpdateOperationCompleted);
+            }
+            this.InvokeAsync("multipleBulkUpdate", new object[] {
+                        context,
+                        inputDtos}, this.multipleBulkUpdateOperationCompleted, userState);
+        }
+        
+        private void OnmultipleBulkUpdateOperationCompleted(object arg) {
+            if ((this.multipleBulkUpdateCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleBulkUpdateCompleted(this, new multipleBulkUpdateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public JobsMWPServiceResult delete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO serviceDTO) {
+            object[] results = this.Invoke("delete", new object[] {
+                        context,
+                        serviceDTO});
+            return ((JobsMWPServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void deleteAsync(OperationContext context, JobsMWPDTO serviceDTO) {
+            this.deleteAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void deleteAsync(OperationContext context, JobsMWPDTO serviceDTO, object userState) {
+            if ((this.deleteOperationCompleted == null)) {
+                this.deleteOperationCompleted = new System.Threading.SendOrPostCallback(this.OndeleteOperationCompleted);
+            }
+            this.InvokeAsync("delete", new object[] {
+                        context,
+                        serviceDTO}, this.deleteOperationCompleted, userState);
+        }
+        
+        private void OndeleteOperationCompleted(object arg) {
+            if ((this.deleteCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.deleteCompleted(this, new deleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
         public EquipmentServiceResult[] multipleEquipment([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] EquipmentDTO[] inputDtos) {
             object[] results = this.Invoke("multipleEquipment", new object[] {
                         context,
@@ -586,72 +424,6 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             if ((this.multipleEquipmentCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.multipleEquipmentCompleted(this, new multipleEquipmentCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-        public JobsMWPServiceResult[] multipleUnlink([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsMWPDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleUnlink", new object[] {
-                        context,
-                        inputDtos});
-            return ((JobsMWPServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleUnlinkAsync(OperationContext context, JobsMWPDTO[] inputDtos) {
-            this.multipleUnlinkAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleUnlinkAsync(OperationContext context, JobsMWPDTO[] inputDtos, object userState) {
-            if ((this.multipleUnlinkOperationCompleted == null)) {
-                this.multipleUnlinkOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleUnlinkOperationCompleted);
-            }
-            this.InvokeAsync("multipleUnlink", new object[] {
-                        context,
-                        inputDtos}, this.multipleUnlinkOperationCompleted, userState);
-        }
-        
-        private void OnmultipleUnlinkOperationCompleted(object arg) {
-            if ((this.multipleUnlinkCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleUnlinkCompleted(this, new multipleUnlinkCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-        public JobsMWPServiceResult[] multipleRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsMWPDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleRead", new object[] {
-                        context,
-                        inputDtos});
-            return ((JobsMWPServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleReadAsync(OperationContext context, JobsMWPDTO[] inputDtos) {
-            this.multipleReadAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleReadAsync(OperationContext context, JobsMWPDTO[] inputDtos, object userState) {
-            if ((this.multipleReadOperationCompleted == null)) {
-                this.multipleReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadOperationCompleted);
-            }
-            this.InvokeAsync("multipleRead", new object[] {
-                        context,
-                        inputDtos}, this.multipleReadOperationCompleted, userState);
-        }
-        
-        private void OnmultipleReadOperationCompleted(object arg) {
-            if ((this.multipleReadCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleReadCompleted(this, new multipleReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -693,64 +465,333 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public JobsMWPServiceResult delete([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO serviceDTO) {
-            object[] results = this.Invoke("delete", new object[] {
+        public JobsMWPServiceResult unlink([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO serviceDTO) {
+            object[] results = this.Invoke("unlink", new object[] {
                         context,
                         serviceDTO});
             return ((JobsMWPServiceResult)(results[0]));
         }
         
         /// <remarks/>
-        public void deleteAsync(OperationContext context, JobsMWPDTO serviceDTO) {
-            this.deleteAsync(context, serviceDTO, null);
+        public void unlinkAsync(OperationContext context, JobsMWPDTO serviceDTO) {
+            this.unlinkAsync(context, serviceDTO, null);
         }
         
         /// <remarks/>
-        public void deleteAsync(OperationContext context, JobsMWPDTO serviceDTO, object userState) {
-            if ((this.deleteOperationCompleted == null)) {
-                this.deleteOperationCompleted = new System.Threading.SendOrPostCallback(this.OndeleteOperationCompleted);
+        public void unlinkAsync(OperationContext context, JobsMWPDTO serviceDTO, object userState) {
+            if ((this.unlinkOperationCompleted == null)) {
+                this.unlinkOperationCompleted = new System.Threading.SendOrPostCallback(this.OnunlinkOperationCompleted);
             }
-            this.InvokeAsync("delete", new object[] {
+            this.InvokeAsync("unlink", new object[] {
                         context,
-                        serviceDTO}, this.deleteOperationCompleted, userState);
+                        serviceDTO}, this.unlinkOperationCompleted, userState);
         }
         
-        private void OndeleteOperationCompleted(object arg) {
-            if ((this.deleteCompleted != null)) {
+        private void OnunlinkOperationCompleted(object arg) {
+            if ((this.unlinkCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.deleteCompleted(this, new deleteCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.unlinkCompleted(this, new unlinkCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+        public JobsMWPServiceResult[] multipleUpdate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsMWPDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleUpdate", new object[] {
+                        context,
+                        inputDtos});
+            return ((JobsMWPServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleUpdateAsync(OperationContext context, JobsMWPDTO[] inputDtos) {
+            this.multipleUpdateAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleUpdateAsync(OperationContext context, JobsMWPDTO[] inputDtos, object userState) {
+            if ((this.multipleUpdateOperationCompleted == null)) {
+                this.multipleUpdateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleUpdateOperationCompleted);
+            }
+            this.InvokeAsync("multipleUpdate", new object[] {
+                        context,
+                        inputDtos}, this.multipleUpdateOperationCompleted, userState);
+        }
+        
+        private void OnmultipleUpdateOperationCompleted(object arg) {
+            if ((this.multipleUpdateCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleUpdateCompleted(this, new multipleUpdateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+        public JobsMWPServiceResult[] multipleUnlink([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsMWPDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleUnlink", new object[] {
+                        context,
+                        inputDtos});
+            return ((JobsMWPServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleUnlinkAsync(OperationContext context, JobsMWPDTO[] inputDtos) {
+            this.multipleUnlinkAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleUnlinkAsync(OperationContext context, JobsMWPDTO[] inputDtos, object userState) {
+            if ((this.multipleUnlinkOperationCompleted == null)) {
+                this.multipleUnlinkOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleUnlinkOperationCompleted);
+            }
+            this.InvokeAsync("multipleUnlink", new object[] {
+                        context,
+                        inputDtos}, this.multipleUnlinkOperationCompleted, userState);
+        }
+        
+        private void OnmultipleUnlinkOperationCompleted(object arg) {
+            if ((this.multipleUnlinkCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleUnlinkCompleted(this, new multipleUnlinkCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public JobsMWPServiceResult read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO serviceDTO) {
-            object[] results = this.Invoke("read", new object[] {
+        public JobsMWPServiceResult bulkUpdate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsBulkUpdateMWPDTO serviceDTO) {
+            object[] results = this.Invoke("bulkUpdate", new object[] {
                         context,
                         serviceDTO});
             return ((JobsMWPServiceResult)(results[0]));
         }
         
         /// <remarks/>
-        public void readAsync(OperationContext context, JobsMWPDTO serviceDTO) {
-            this.readAsync(context, serviceDTO, null);
+        public void bulkUpdateAsync(OperationContext context, JobsBulkUpdateMWPDTO serviceDTO) {
+            this.bulkUpdateAsync(context, serviceDTO, null);
         }
         
         /// <remarks/>
-        public void readAsync(OperationContext context, JobsMWPDTO serviceDTO, object userState) {
-            if ((this.readOperationCompleted == null)) {
-                this.readOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreadOperationCompleted);
+        public void bulkUpdateAsync(OperationContext context, JobsBulkUpdateMWPDTO serviceDTO, object userState) {
+            if ((this.bulkUpdateOperationCompleted == null)) {
+                this.bulkUpdateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnbulkUpdateOperationCompleted);
             }
-            this.InvokeAsync("read", new object[] {
+            this.InvokeAsync("bulkUpdate", new object[] {
                         context,
-                        serviceDTO}, this.readOperationCompleted, userState);
+                        serviceDTO}, this.bulkUpdateOperationCompleted, userState);
         }
         
-        private void OnreadOperationCompleted(object arg) {
-            if ((this.readCompleted != null)) {
+        private void OnbulkUpdateOperationCompleted(object arg) {
+            if ((this.bulkUpdateCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.bulkUpdateCompleted(this, new bulkUpdateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public JobsMWPServiceResult create([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO serviceDTO) {
+            object[] results = this.Invoke("create", new object[] {
+                        context,
+                        serviceDTO});
+            return ((JobsMWPServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void createAsync(OperationContext context, JobsMWPDTO serviceDTO) {
+            this.createAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void createAsync(OperationContext context, JobsMWPDTO serviceDTO, object userState) {
+            if ((this.createOperationCompleted == null)) {
+                this.createOperationCompleted = new System.Threading.SendOrPostCallback(this.OncreateOperationCompleted);
+            }
+            this.InvokeAsync("create", new object[] {
+                        context,
+                        serviceDTO}, this.createOperationCompleted, userState);
+        }
+        
+        private void OncreateOperationCompleted(object arg) {
+            if ((this.createCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.createCompleted(this, new createCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+        public JobsCreateLinkMWPServiceResult[] linkJobs([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsCreateLinkMWPDTO in1, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsCreateLinkMWPDTO in2) {
+            object[] results = this.Invoke("linkJobs", new object[] {
+                        context,
+                        in1,
+                        in2});
+            return ((JobsCreateLinkMWPServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void linkJobsAsync(OperationContext context, JobsCreateLinkMWPDTO in1, JobsCreateLinkMWPDTO in2) {
+            this.linkJobsAsync(context, in1, in2, null);
+        }
+        
+        /// <remarks/>
+        public void linkJobsAsync(OperationContext context, JobsCreateLinkMWPDTO in1, JobsCreateLinkMWPDTO in2, object userState) {
+            if ((this.linkJobsOperationCompleted == null)) {
+                this.linkJobsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnlinkJobsOperationCompleted);
+            }
+            this.InvokeAsync("linkJobs", new object[] {
+                        context,
+                        in1,
+                        in2}, this.linkJobsOperationCompleted, userState);
+        }
+        
+        private void OnlinkJobsOperationCompleted(object arg) {
+            if ((this.linkJobsCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.linkJobsCompleted(this, new linkJobsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+        public JobsMWPServiceResult[] retrieveViaRefCodes([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsRetrieveViaRefCodesSearchParam searchParams, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsMWPDTO restart) {
+            object[] results = this.Invoke("retrieveViaRefCodes", new object[] {
+                        context,
+                        searchParams,
+                        restart});
+            return ((JobsMWPServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void retrieveViaRefCodesAsync(OperationContext context, JobsRetrieveViaRefCodesSearchParam searchParams, JobsMWPDTO restart) {
+            this.retrieveViaRefCodesAsync(context, searchParams, restart, null);
+        }
+        
+        /// <remarks/>
+        public void retrieveViaRefCodesAsync(OperationContext context, JobsRetrieveViaRefCodesSearchParam searchParams, JobsMWPDTO restart, object userState) {
+            if ((this.retrieveViaRefCodesOperationCompleted == null)) {
+                this.retrieveViaRefCodesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnretrieveViaRefCodesOperationCompleted);
+            }
+            this.InvokeAsync("retrieveViaRefCodes", new object[] {
+                        context,
+                        searchParams,
+                        restart}, this.retrieveViaRefCodesOperationCompleted, userState);
+        }
+        
+        private void OnretrieveViaRefCodesOperationCompleted(object arg) {
+            if ((this.retrieveViaRefCodesCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.retrieveViaRefCodesCompleted(this, new retrieveViaRefCodesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+        public JobsMWPServiceResult[] multipleRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsMWPDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleRead", new object[] {
+                        context,
+                        inputDtos});
+            return ((JobsMWPServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleReadAsync(OperationContext context, JobsMWPDTO[] inputDtos) {
+            this.multipleReadAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleReadAsync(OperationContext context, JobsMWPDTO[] inputDtos, object userState) {
+            if ((this.multipleReadOperationCompleted == null)) {
+                this.multipleReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadOperationCompleted);
+            }
+            this.InvokeAsync("multipleRead", new object[] {
+                        context,
+                        inputDtos}, this.multipleReadOperationCompleted, userState);
+        }
+        
+        private void OnmultipleReadOperationCompleted(object arg) {
+            if ((this.multipleReadCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleReadCompleted(this, new multipleReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+        public JobsCreateLinkMWPServiceResult[] multipleLinkJobs([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsCreateLinkMWPDTO[] in1, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] JobsCreateLinkMWPDTO in2) {
+            object[] results = this.Invoke("multipleLinkJobs", new object[] {
+                        context,
+                        in1,
+                        in2});
+            return ((JobsCreateLinkMWPServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleLinkJobsAsync(OperationContext context, JobsCreateLinkMWPDTO[] in1, JobsCreateLinkMWPDTO in2) {
+            this.multipleLinkJobsAsync(context, in1, in2, null);
+        }
+        
+        /// <remarks/>
+        public void multipleLinkJobsAsync(OperationContext context, JobsCreateLinkMWPDTO[] in1, JobsCreateLinkMWPDTO in2, object userState) {
+            if ((this.multipleLinkJobsOperationCompleted == null)) {
+                this.multipleLinkJobsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleLinkJobsOperationCompleted);
+            }
+            this.InvokeAsync("multipleLinkJobs", new object[] {
+                        context,
+                        in1,
+                        in2}, this.multipleLinkJobsOperationCompleted, userState);
+        }
+        
+        private void OnmultipleLinkJobsOperationCompleted(object arg) {
+            if ((this.multipleLinkJobsCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleLinkJobsCompleted(this, new multipleLinkJobsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", ResponseNamespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+        public JobsMWPServiceResult[] multipleCreate([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")] JobsMWPDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleCreate", new object[] {
+                        context,
+                        inputDtos});
+            return ((JobsMWPServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleCreateAsync(OperationContext context, JobsMWPDTO[] inputDtos) {
+            this.multipleCreateAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleCreateAsync(OperationContext context, JobsMWPDTO[] inputDtos, object userState) {
+            if ((this.multipleCreateOperationCompleted == null)) {
+                this.multipleCreateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCreateOperationCompleted);
+            }
+            this.InvokeAsync("multipleCreate", new object[] {
+                        context,
+                        inputDtos}, this.multipleCreateOperationCompleted, userState);
+        }
+        
+        private void OnmultipleCreateOperationCompleted(object arg) {
+            if ((this.multipleCreateCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleCreateCompleted(this, new multipleCreateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -774,14 +815,20 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://connectivity.service.ews.mincom.com")]
     public partial class OperationContext {
         
+        private string applicationClientIdField;
+        
         private string districtField;
+        
+        private bool eventDisableField;
+        
+        private bool eventDisableFieldSpecified;
         
         private int maxInstancesField;
         
@@ -795,11 +842,23 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         private RunAs runAsField;
         
+        private string tenantIdField;
+        
         private bool traceField;
         
         private bool traceFieldSpecified;
         
         private string transactionField;
+        
+        /// <remarks/>
+        public string applicationClientId {
+            get {
+                return this.applicationClientIdField;
+            }
+            set {
+                this.applicationClientIdField = value;
+            }
+        }
         
         /// <remarks/>
         public string district {
@@ -808,6 +867,27 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.districtField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool eventDisable {
+            get {
+                return this.eventDisableField;
+            }
+            set {
+                this.eventDisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool eventDisableSpecified {
+            get {
+                return this.eventDisableFieldSpecified;
+            }
+            set {
+                this.eventDisableFieldSpecified = value;
             }
         }
         
@@ -874,6 +954,16 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
+        public string tenantId {
+            get {
+                return this.tenantIdField;
+            }
+            set {
+                this.tenantIdField = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool trace {
             get {
                 return this.traceField;
@@ -906,7 +996,7 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -951,9 +1041,18 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
+    public partial class ServiceRequiredAttributes {
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Warning))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Error))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -965,6 +1064,10 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         private int fieldIndexField;
         
         private bool fieldIndexFieldSpecified;
+        
+        private bool localisableField;
+        
+        private bool localisableFieldSpecified;
         
         private string messageIdField;
         
@@ -1004,6 +1107,27 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.fieldIndexFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool localisable {
+            get {
+                return this.localisableField;
+            }
+            set {
+                this.localisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool localisableSpecified {
+            get {
+                return this.localisableFieldSpecified;
+            }
+            set {
+                this.localisableFieldSpecified = value;
             }
         }
         
@@ -1059,7 +1183,7 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1068,7 +1192,7 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1078,10 +1202,10 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EquipmentServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsCreateLinkMWPServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EquipmentServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsMWPServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1129,10 +1253,10 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EquipmentServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsCreateLinkMWPServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EquipmentServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsMWPServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1141,77 +1265,5495 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class EquipmentServiceResult : ServiceResult {
+    public partial class JobsCreateLinkMWPServiceResult : ServiceResult {
         
-        private EquipmentDTO equipmentDTOField;
+        private JobsCreateLinkMWPDTO jobsCreateLinkMWPDTOField;
         
         /// <remarks/>
-        public EquipmentDTO equipmentDTO {
+        public JobsCreateLinkMWPDTO jobsCreateLinkMWPDTO {
             get {
-                return this.equipmentDTOField;
+                return this.jobsCreateLinkMWPDTOField;
             }
             set {
-                this.equipmentDTOField = value;
+                this.jobsCreateLinkMWPDTOField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class EquipmentDTO : ServiceDTO {
+    public partial class JobsCreateLinkMWPDTO : ServiceDTO {
         
-        private string equipRefField;
+        private bool autoSetLinkField;
         
-        private string equipmentNoField;
+        private bool autoSetLinkFieldSpecified;
+        
+        private JobsMWPDTO jobToLinkField;
+        
+        private string leadOrLagField;
+        
+        private string linkJobTypeField;
+        
+        private string linkToParentDstrctCodeField;
+        
+        private string linkToParentWorkOrderField;
+        
+        private string linkTypeField;
+        
+        private decimal offsetField;
+        
+        private bool offsetFieldSpecified;
+        
+        private string scaleField;
         
         /// <remarks/>
-        public string equipRef {
+        public bool autoSetLink {
             get {
-                return this.equipRefField;
+                return this.autoSetLinkField;
             }
             set {
-                this.equipRefField = value;
+                this.autoSetLinkField = value;
             }
         }
         
         /// <remarks/>
-        public string equipmentNo {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool autoSetLinkSpecified {
             get {
-                return this.equipmentNoField;
+                return this.autoSetLinkFieldSpecified;
             }
             set {
-                this.equipmentNoField = value;
+                this.autoSetLinkFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public JobsMWPDTO jobToLink {
+            get {
+                return this.jobToLinkField;
+            }
+            set {
+                this.jobToLinkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string leadOrLag {
+            get {
+                return this.leadOrLagField;
+            }
+            set {
+                this.leadOrLagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkJobType {
+            get {
+                return this.linkJobTypeField;
+            }
+            set {
+                this.linkJobTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkToParentDstrctCode {
+            get {
+                return this.linkToParentDstrctCodeField;
+            }
+            set {
+                this.linkToParentDstrctCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkToParentWorkOrder {
+            get {
+                return this.linkToParentWorkOrderField;
+            }
+            set {
+                this.linkToParentWorkOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkType {
+            get {
+                return this.linkTypeField;
+            }
+            set {
+                this.linkTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal offset {
+            get {
+                return this.offsetField;
+            }
+            set {
+                this.offsetField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool offsetSpecified {
+            get {
+                return this.offsetFieldSpecified;
+            }
+            set {
+                this.offsetFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string scale {
+            get {
+                return this.scaleField;
+            }
+            set {
+                this.scaleField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+    public partial class JobsMWPDTO : ServiceDTO {
+        
+        private string wOTaskNoField;
+        
+        private string accountCodeField;
+        
+        private string accountCodeDescriptionField;
+        
+        private decimal actDurHrsField;
+        
+        private bool actDurHrsFieldSpecified;
+        
+        private decimal actEquipCostField;
+        
+        private bool actEquipCostFieldSpecified;
+        
+        private decimal actLabCostField;
+        
+        private bool actLabCostFieldSpecified;
+        
+        private decimal actLabHrsField;
+        
+        private bool actLabHrsFieldSpecified;
+        
+        private decimal actMatCostField;
+        
+        private bool actMatCostFieldSpecified;
+        
+        private decimal actOtherCostField;
+        
+        private bool actOtherCostFieldSpecified;
+        
+        private decimal actualCostReallocationField;
+        
+        private bool actualCostReallocationFieldSpecified;
+        
+        private System.DateTime actualFinishDateField;
+        
+        private bool actualFinishDateFieldSpecified;
+        
+        private string actualFinishTimeField;
+        
+        private System.DateTime actualStartDateField;
+        
+        private bool actualStartDateFieldSpecified;
+        
+        private string actualStartTimeField;
+        
+        private decimal actualTotalCostField;
+        
+        private bool actualTotalCostFieldSpecified;
+        
+        private bool aptwExistsSwField;
+        
+        private bool aptwExistsSwFieldSpecified;
+        
+        private string assignPersonField;
+        
+        private bool assocEquipSwField;
+        
+        private bool assocEquipSwFieldSpecified;
+        
+        private string assocEquipmentItemField;
+        
+        private string assocEquipmentItemNoField;
+        
+        private string associatedEquipmentField;
+        
+        private bool assumeFirstMSTIField;
+        
+        private bool assumeFirstMSTIFieldSpecified;
+        
+        private string authsdByField;
+        
+        private bool billableIndField;
+        
+        private bool billableIndFieldSpecified;
+        
+        private string billingLvlIndField;
+        
+        private decimal calcEquipCostField;
+        
+        private bool calcEquipCostFieldSpecified;
+        
+        private decimal calcLabCostField;
+        
+        private bool calcLabCostFieldSpecified;
+        
+        private decimal calcLabHrsField;
+        
+        private bool calcLabHrsFieldSpecified;
+        
+        private decimal calcMatCostField;
+        
+        private bool calcMatCostFieldSpecified;
+        
+        private decimal calcOthCostField;
+        
+        private bool calcOthCostFieldSpecified;
+        
+        private bool calculatedEquipmentFlagField;
+        
+        private bool calculatedEquipmentFlagFieldSpecified;
+        
+        private bool calculatedLabFlagField;
+        
+        private bool calculatedLabFlagFieldSpecified;
+        
+        private bool calculatedMatFlagField;
+        
+        private bool calculatedMatFlagFieldSpecified;
+        
+        private bool calculatedOtherFlagField;
+        
+        private bool calculatedOtherFlagFieldSpecified;
+        
+        private bool calculatedTotalFlagField;
+        
+        private bool calculatedTotalFlagFieldSpecified;
+        
+        private JobsJobLinkDTO[] childLinksField;
+        
+        private System.DateTime closedDtField;
+        
+        private bool closedDtFieldSpecified;
+        
+        private string closedStatusField;
+        
+        private System.DateTime closedTimeField;
+        
+        private bool closedTimeFieldSpecified;
+        
+        private string compCodeField;
+        
+        private string compModCodeField;
+        
+        private string completedByField;
+        
+        private string completedCodeField;
+        
+        private string completionTextField;
+        
+        private bool completionTextExistsField;
+        
+        private bool completionTextExistsFieldSpecified;
+        
+        private decimal conAstSegFrField;
+        
+        private bool conAstSegFrFieldSpecified;
+        
+        private decimal conAstSegLengthField;
+        
+        private bool conAstSegLengthFieldSpecified;
+        
+        private decimal conAstSegToField;
+        
+        private bool conAstSegToFieldSpecified;
+        
+        private string countyShireField;
+        
+        private System.DateTime creationDateField;
+        
+        private bool creationDateFieldSpecified;
+        
+        private string creationTimeField;
+        
+        private string crewField;
+        
+        private bool crteInsituField;
+        
+        private bool crteInsituFieldSpecified;
+        
+        private System.DateTime currentStatDate1Field;
+        
+        private bool currentStatDate1FieldSpecified;
+        
+        private System.DateTime currentStatDate2Field;
+        
+        private bool currentStatDate2FieldSpecified;
+        
+        private string currentStatType1Field;
+        
+        private string currentStatType2Field;
+        
+        private decimal currentStatValue1Field;
+        
+        private bool currentStatValue1FieldSpecified;
+        
+        private decimal currentStatValue2Field;
+        
+        private bool currentStatValue2FieldSpecified;
+        
+        private string data1732Field;
+        
+        private string dateStatusField;
+        
+        private string dstrctAcctCodeField;
+        
+        private string dstrctCodeField;
+        
+        private string emailAddressField;
+        
+        private string equipClassField;
+        
+        private string equipClassifx1Field;
+        
+        private string equipClassifx10Field;
+        
+        private string equipClassifx11Field;
+        
+        private string equipClassifx12Field;
+        
+        private string equipClassifx13Field;
+        
+        private string equipClassifx14Field;
+        
+        private string equipClassifx15Field;
+        
+        private string equipClassifx16Field;
+        
+        private string equipClassifx17Field;
+        
+        private string equipClassifx18Field;
+        
+        private string equipClassifx19Field;
+        
+        private string equipClassifx2Field;
+        
+        private string equipClassifx20Field;
+        
+        private string equipClassifx3Field;
+        
+        private string equipClassifx4Field;
+        
+        private string equipClassifx5Field;
+        
+        private string equipClassifx6Field;
+        
+        private string equipClassifx7Field;
+        
+        private string equipClassifx8Field;
+        
+        private string equipClassifx9Field;
+        
+        private string equipGrpIdField;
+        
+        private string equipLocationField;
+        
+        private string equipNoField;
+        
+        private string equipStatusField;
+        
+        private bool equipUpdateFlagField;
+        
+        private bool equipUpdateFlagFieldSpecified;
+        
+        private string equipmentClassDescriptionField;
+        
+        private decimal estDurHrsField;
+        
+        private bool estDurHrsFieldSpecified;
+        
+        private decimal estEquipCostField;
+        
+        private bool estEquipCostFieldSpecified;
+        
+        private decimal estLabCostField;
+        
+        private bool estLabCostFieldSpecified;
+        
+        private decimal estLabHrsField;
+        
+        private bool estLabHrsFieldSpecified;
+        
+        private decimal estMatCostField;
+        
+        private bool estMatCostFieldSpecified;
+        
+        private decimal estOtherCostField;
+        
+        private bool estOtherCostFieldSpecified;
+        
+        private string estimateDescriptionField;
+        
+        private string estimateNoField;
+        
+        private decimal estimatedTotalCostField;
+        
+        private bool estimatedTotalCostFieldSpecified;
+        
+        private System.DateTime existingPlannedFinishDateField;
+        
+        private bool existingPlannedFinishDateFieldSpecified;
+        
+        private string existingPlannedFinishTimeField;
+        
+        private System.DateTime existingPlannedStartDateField;
+        
+        private bool existingPlannedStartDateFieldSpecified;
+        
+        private string existingPlannedStartTimeField;
+        
+        private string extendedTextField;
+        
+        private bool extendedTextExistsField;
+        
+        private bool extendedTextExistsFieldSpecified;
+        
+        private string failurePartField;
+        
+        private string faxNumberField;
+        
+        private bool finalCostIndicatorField;
+        
+        private bool finalCostIndicatorFieldSpecified;
+        
+        private bool fromLinkField;
+        
+        private bool fromLinkFieldSpecified;
+        
+        private string ganttLinkIdField;
+        
+        private string ganttParentLinkIdField;
+        
+        private decimal idField;
+        
+        private bool idFieldSpecified;
+        
+        private bool immediateInspectionsField;
+        
+        private bool immediateInspectionsFieldSpecified;
+        
+        private bool isControlField;
+        
+        private bool isControlFieldSpecified;
+        
+        private string isMSTParentField;
+        
+        private string isParentField;
+        
+        private string itemName1Field;
+        
+        private string itemName2Field;
+        
+        private string jobIdField;
+        
+        private string jobParentIdField;
+        
+        private string jobTypeField;
+        
+        private System.DateTime lastModifiedDateField;
+        
+        private bool lastModifiedDateFieldSpecified;
+        
+        private string lastModifiedTimeField;
+        
+        private System.DateTime lastPerformedDateField;
+        
+        private bool lastPerformedDateFieldSpecified;
+        
+        private string lastPerformedDstrctCodeField;
+        
+        private string lastPerformedWorkOrderField;
+        
+        private string lastTranRlocField;
+        
+        private string linkDistrictCodeField;
+        
+        private decimal linkEntityIdField;
+        
+        private bool linkEntityIdFieldSpecified;
+        
+        private decimal linkEntityTypeField;
+        
+        private bool linkEntityTypeFieldSpecified;
+        
+        private string linkErpRefField;
+        
+        private string linkErpTaskRefField;
+        
+        private decimal linkIdField;
+        
+        private bool linkIdFieldSpecified;
+        
+        private decimal linkJobLinkListIdField;
+        
+        private bool linkJobLinkListIdFieldSpecified;
+        
+        private string linkLagOrLeadField;
+        
+        private decimal linkOffsetField;
+        
+        private bool linkOffsetFieldSpecified;
+        
+        private string linkOffsetTypeField;
+        
+        private string linkScaleField;
+        
+        private decimal linkScaledOffsetField;
+        
+        private bool linkScaledOffsetFieldSpecified;
+        
+        private string linkScheduleTypeField;
+        
+        private decimal linkSequenceNumField;
+        
+        private bool linkSequenceNumFieldSpecified;
+        
+        private string linkStatTypeField;
+        
+        private decimal linkStatValueField;
+        
+        private bool linkStatValueFieldSpecified;
+        
+        private string linkStateField;
+        
+        private string linkTypeField;
+        
+        private JobsMWPDTO[] linkedChildrenField;
+        
+        private string linkedIndField;
+        
+        private string locationField;
+        
+        private string locationFrField;
+        
+        private string maintSchTaskField;
+        
+        private string maintTypeField;
+        
+        private string maintTypeDescriptionField;
+        
+        private bool matUpdateFlagField;
+        
+        private bool matUpdateFlagFieldSpecified;
+        
+        private string mnemonicField;
+        
+        private string mstReferenceField;
+        
+        private string multipleResourceRequirementsField;
+        
+        private string mustStartIndField;
+        
+        private string noGanttMoveField;
+        
+        private string noGanttResizeField;
+        
+        private string noOfTasksField;
+        
+        private string noTasksComplField;
+        
+        private decimal numberOfMSTisRemainingField;
+        
+        private bool numberOfMSTisRemainingFieldSpecified;
+        
+        private string origPriorityField;
+        
+        private System.DateTime origSchedDateField;
+        
+        private bool origSchedDateFieldSpecified;
+        
+        private System.DateTime originalPlannedFinishDateField;
+        
+        private bool originalPlannedFinishDateFieldSpecified;
+        
+        private string originalPlannedFinishTimeField;
+        
+        private System.DateTime originalPlannedStartDateField;
+        
+        private bool originalPlannedStartDateFieldSpecified;
+        
+        private string originalPlannedStartTimeField;
+        
+        private string originatorIdField;
+        
+        private bool otherUpdateFlagField;
+        
+        private bool otherUpdateFlagFieldSpecified;
+        
+        private System.DateTime outServDateField;
+        
+        private bool outServDateFieldSpecified;
+        
+        private string outServTimeField;
+        
+        private string outageDescriptionField;
+        
+        private string outageReferenceField;
+        
+        private string outageStatusField;
+        
+        private string paperHistField;
+        
+        private decimal parentEntityIdField;
+        
+        private bool parentEntityIdFieldSpecified;
+        
+        private string parentEquipField;
+        
+        private string parentJobTypeField;
+        
+        private decimal parentLinkIdField;
+        
+        private bool parentLinkIdFieldSpecified;
+        
+        private string parentPlantNoField;
+        
+        private string parentWoField;
+        
+        private string parentWoDescriptionField;
+        
+        private string partNoField;
+        
+        private string partialCacheKeyField;
+        
+        private string partsAvailabeField;
+        
+        private decimal pcCompleteField;
+        
+        private bool pcCompleteFieldSpecified;
+        
+        private bool permitReqdSwField;
+        
+        private bool permitReqdSwFieldSpecified;
+        
+        private System.DateTime planFinDateField;
+        
+        private bool planFinDateFieldSpecified;
+        
+        private string planFinTimeField;
+        
+        private bool planOffsetSwField;
+        
+        private bool planOffsetSwFieldSpecified;
+        
+        private string planPriorityField;
+        
+        private string planSliderMovableField;
+        
+        private string planSliderResizableField;
+        
+        private string planStatTypeField;
+        
+        private decimal planStatValField;
+        
+        private bool planStatValFieldSpecified;
+        
+        private System.DateTime planStrDateField;
+        
+        private bool planStrDateFieldSpecified;
+        
+        private string planStrTimeField;
+        
+        private string plantNoField;
+        
+        private System.DateTime prefDateField;
+        
+        private bool prefDateFieldSpecified;
+        
+        private string prefTimeField;
+        
+        private string printerNameField;
+        
+        private bool prodUnitItemField;
+        
+        private bool prodUnitItemFieldSpecified;
+        
+        private string projDescField;
+        
+        private string projectNoField;
+        
+        private decimal quoteValueField;
+        
+        private bool quoteValueFieldSpecified;
+        
+        private System.DateTime raisedDateField;
+        
+        private bool raisedDateFieldSpecified;
+        
+        private System.DateTime raisedTimeField;
+        
+        private bool raisedTimeFieldSpecified;
+        
+        private string reallocationCostAccountField;
+        
+        private string reallocationCrEeField;
+        
+        private string reallocationFreqIndField;
+        
+        private decimal reallocationLimitValField;
+        
+        private bool reallocationLimitValFieldSpecified;
+        
+        private decimal reallocationMarginPcField;
+        
+        private bool reallocationMarginPcFieldSpecified;
+        
+        private string reallocationMethodField;
+        
+        private string reallocationProjectField;
+        
+        private string reallocationVarAccountField;
+        
+        private string reallocationWoField;
+        
+        private decimal recallTimeHrsField;
+        
+        private bool recallTimeHrsFieldSpecified;
+        
+        private string referenceField;
+        
+        private string relatedWoField;
+        
+        private decimal remainingStatField;
+        
+        private bool remainingStatFieldSpecified;
+        
+        private System.DateTime reqByDateField;
+        
+        private bool reqByDateFieldSpecified;
+        
+        private string reqByTimeField;
+        
+        private System.DateTime reqStartDateField;
+        
+        private bool reqStartDateFieldSpecified;
+        
+        private string reqStartTimeField;
+        
+        private string requestIdField;
+        
+        private bool resUpdateFlagField;
+        
+        private bool resUpdateFlagFieldSpecified;
+        
+        private JobsResourceDTO[] resourceRequirementsField;
+        
+        private System.DateTime respondedDateField;
+        
+        private bool respondedDateFieldSpecified;
+        
+        private string respondedTimeField;
+        
+        private string restartChildWODstrctCodeField;
+        
+        private System.DateTime restartChildWOPlanStrDateField;
+        
+        private bool restartChildWOPlanStrDateFieldSpecified;
+        
+        private string restartChildWOWorkOrderField;
+        
+        private string restartMSTIFromLinkMstReferenceField;
+        
+        private System.DateTime restartMSTIFromLinkPlanStrDateField;
+        
+        private bool restartMSTIFromLinkPlanStrDateFieldSpecified;
+        
+        private string restartMSTIMstReferenceField;
+        
+        private System.DateTime restartMSTIPlanStrDateField;
+        
+        private bool restartMSTIPlanStrDateFieldSpecified;
+        
+        private string restartMSTiTaskNoField;
+        
+        private string restartParentWODstrctCodeField;
+        
+        private System.DateTime restartParentWOPlanStrDateField;
+        
+        private bool restartParentWOPlanStrDateFieldSpecified;
+        
+        private string restartParentWOWorkOrderField;
+        
+        private TaskKeyDTO[] restartPrevLinksField;
+        
+        private string revenueCodeField;
+        
+        private decimal schSegFrField;
+        
+        private bool schSegFrFieldSpecified;
+        
+        private decimal schSegLengthField;
+        
+        private bool schSegLengthFieldSpecified;
+        
+        private decimal schSegToField;
+        
+        private bool schSegToFieldSpecified;
+        
+        private string schedDesc1Field;
+        
+        private string schedDesc2Field;
+        
+        private string segmentUomField;
+        
+        private decimal sequenceNoField;
+        
+        private bool sequenceNoFieldSpecified;
+        
+        private string serialNumberField;
+        
+        private System.DateTime serviceOffDateField;
+        
+        private bool serviceOffDateFieldSpecified;
+        
+        private string serviceOffTimeField;
+        
+        private System.DateTime serviceOnDateField;
+        
+        private bool serviceOnDateFieldSpecified;
+        
+        private string serviceOnTimeField;
+        
+        private string shortDesc1Field;
+        
+        private string shortDesc2Field;
+        
+        private string shutdownEquipmentNoField;
+        
+        private string shutdownEquipmentRefField;
+        
+        private string shutdownNoField;
+        
+        private string shutdownTypeField;
+        
+        private string sourceField;
+        
+        private string stateField;
+        
+        private string statutoryFlgField;
+        
+        private string stdJobNoField;
+        
+        private string streetNameField;
+        
+        private string streetNoField;
+        
+        private string suburbField;
+        
+        private string suppressingMSTField;
+        
+        private System.DateTime targtFinDateField;
+        
+        private bool targtFinDateFieldSpecified;
+        
+        private System.DateTime targtStrDateField;
+        
+        private bool targtStrDateFieldSpecified;
+        
+        private string taskAptwSwField;
+        
+        private string townCityField;
+        
+        private string unitOfWorkField;
+        
+        private decimal unitsCompleteField;
+        
+        private bool unitsCompleteFieldSpecified;
+        
+        private decimal unitsRequiredField;
+        
+        private bool unitsRequiredFieldSpecified;
+        
+        private decimal upperCostLimitField;
+        
+        private bool upperCostLimitFieldSpecified;
+        
+        private string woDescField;
+        
+        private string woJobCodex1Field;
+        
+        private string woJobCodex10Field;
+        
+        private string woJobCodex2Field;
+        
+        private string woJobCodex3Field;
+        
+        private string woJobCodex4Field;
+        
+        private string woJobCodex5Field;
+        
+        private string woJobCodex6Field;
+        
+        private string woJobCodex7Field;
+        
+        private string woJobCodex8Field;
+        
+        private string woJobCodex9Field;
+        
+        private string woStatusMField;
+        
+        private string woStatusMDescriptionField;
+        
+        private string woStatusUField;
+        
+        private string woStatusUDescriptionField;
+        
+        private string woTypeField;
+        
+        private string woTypeDescriptionField;
+        
+        private string workGroupField;
+        
+        private string workOrderField;
+        
+        private string workRequestDescriptionField;
+        
+        private string workRequestNumberField;
+        
+        private string zipCodeField;
+        
+        /// <remarks/>
+        public string WOTaskNo {
+            get {
+                return this.wOTaskNoField;
+            }
+            set {
+                this.wOTaskNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string accountCode {
+            get {
+                return this.accountCodeField;
+            }
+            set {
+                this.accountCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string accountCodeDescription {
+            get {
+                return this.accountCodeDescriptionField;
+            }
+            set {
+                this.accountCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal actDurHrs {
+            get {
+                return this.actDurHrsField;
+            }
+            set {
+                this.actDurHrsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actDurHrsSpecified {
+            get {
+                return this.actDurHrsFieldSpecified;
+            }
+            set {
+                this.actDurHrsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal actEquipCost {
+            get {
+                return this.actEquipCostField;
+            }
+            set {
+                this.actEquipCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actEquipCostSpecified {
+            get {
+                return this.actEquipCostFieldSpecified;
+            }
+            set {
+                this.actEquipCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal actLabCost {
+            get {
+                return this.actLabCostField;
+            }
+            set {
+                this.actLabCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actLabCostSpecified {
+            get {
+                return this.actLabCostFieldSpecified;
+            }
+            set {
+                this.actLabCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal actLabHrs {
+            get {
+                return this.actLabHrsField;
+            }
+            set {
+                this.actLabHrsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actLabHrsSpecified {
+            get {
+                return this.actLabHrsFieldSpecified;
+            }
+            set {
+                this.actLabHrsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal actMatCost {
+            get {
+                return this.actMatCostField;
+            }
+            set {
+                this.actMatCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actMatCostSpecified {
+            get {
+                return this.actMatCostFieldSpecified;
+            }
+            set {
+                this.actMatCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal actOtherCost {
+            get {
+                return this.actOtherCostField;
+            }
+            set {
+                this.actOtherCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actOtherCostSpecified {
+            get {
+                return this.actOtherCostFieldSpecified;
+            }
+            set {
+                this.actOtherCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal actualCostReallocation {
+            get {
+                return this.actualCostReallocationField;
+            }
+            set {
+                this.actualCostReallocationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actualCostReallocationSpecified {
+            get {
+                return this.actualCostReallocationFieldSpecified;
+            }
+            set {
+                this.actualCostReallocationFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime actualFinishDate {
+            get {
+                return this.actualFinishDateField;
+            }
+            set {
+                this.actualFinishDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actualFinishDateSpecified {
+            get {
+                return this.actualFinishDateFieldSpecified;
+            }
+            set {
+                this.actualFinishDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string actualFinishTime {
+            get {
+                return this.actualFinishTimeField;
+            }
+            set {
+                this.actualFinishTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime actualStartDate {
+            get {
+                return this.actualStartDateField;
+            }
+            set {
+                this.actualStartDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actualStartDateSpecified {
+            get {
+                return this.actualStartDateFieldSpecified;
+            }
+            set {
+                this.actualStartDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string actualStartTime {
+            get {
+                return this.actualStartTimeField;
+            }
+            set {
+                this.actualStartTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal actualTotalCost {
+            get {
+                return this.actualTotalCostField;
+            }
+            set {
+                this.actualTotalCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool actualTotalCostSpecified {
+            get {
+                return this.actualTotalCostFieldSpecified;
+            }
+            set {
+                this.actualTotalCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool aptwExistsSw {
+            get {
+                return this.aptwExistsSwField;
+            }
+            set {
+                this.aptwExistsSwField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool aptwExistsSwSpecified {
+            get {
+                return this.aptwExistsSwFieldSpecified;
+            }
+            set {
+                this.aptwExistsSwFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string assignPerson {
+            get {
+                return this.assignPersonField;
+            }
+            set {
+                this.assignPersonField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool assocEquipSw {
+            get {
+                return this.assocEquipSwField;
+            }
+            set {
+                this.assocEquipSwField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool assocEquipSwSpecified {
+            get {
+                return this.assocEquipSwFieldSpecified;
+            }
+            set {
+                this.assocEquipSwFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string assocEquipmentItem {
+            get {
+                return this.assocEquipmentItemField;
+            }
+            set {
+                this.assocEquipmentItemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string assocEquipmentItemNo {
+            get {
+                return this.assocEquipmentItemNoField;
+            }
+            set {
+                this.assocEquipmentItemNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string associatedEquipment {
+            get {
+                return this.associatedEquipmentField;
+            }
+            set {
+                this.associatedEquipmentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool assumeFirstMSTI {
+            get {
+                return this.assumeFirstMSTIField;
+            }
+            set {
+                this.assumeFirstMSTIField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool assumeFirstMSTISpecified {
+            get {
+                return this.assumeFirstMSTIFieldSpecified;
+            }
+            set {
+                this.assumeFirstMSTIFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string authsdBy {
+            get {
+                return this.authsdByField;
+            }
+            set {
+                this.authsdByField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool billableInd {
+            get {
+                return this.billableIndField;
+            }
+            set {
+                this.billableIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool billableIndSpecified {
+            get {
+                return this.billableIndFieldSpecified;
+            }
+            set {
+                this.billableIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string billingLvlInd {
+            get {
+                return this.billingLvlIndField;
+            }
+            set {
+                this.billingLvlIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal calcEquipCost {
+            get {
+                return this.calcEquipCostField;
+            }
+            set {
+                this.calcEquipCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calcEquipCostSpecified {
+            get {
+                return this.calcEquipCostFieldSpecified;
+            }
+            set {
+                this.calcEquipCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal calcLabCost {
+            get {
+                return this.calcLabCostField;
+            }
+            set {
+                this.calcLabCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calcLabCostSpecified {
+            get {
+                return this.calcLabCostFieldSpecified;
+            }
+            set {
+                this.calcLabCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal calcLabHrs {
+            get {
+                return this.calcLabHrsField;
+            }
+            set {
+                this.calcLabHrsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calcLabHrsSpecified {
+            get {
+                return this.calcLabHrsFieldSpecified;
+            }
+            set {
+                this.calcLabHrsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal calcMatCost {
+            get {
+                return this.calcMatCostField;
+            }
+            set {
+                this.calcMatCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calcMatCostSpecified {
+            get {
+                return this.calcMatCostFieldSpecified;
+            }
+            set {
+                this.calcMatCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal calcOthCost {
+            get {
+                return this.calcOthCostField;
+            }
+            set {
+                this.calcOthCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calcOthCostSpecified {
+            get {
+                return this.calcOthCostFieldSpecified;
+            }
+            set {
+                this.calcOthCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool calculatedEquipmentFlag {
+            get {
+                return this.calculatedEquipmentFlagField;
+            }
+            set {
+                this.calculatedEquipmentFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calculatedEquipmentFlagSpecified {
+            get {
+                return this.calculatedEquipmentFlagFieldSpecified;
+            }
+            set {
+                this.calculatedEquipmentFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool calculatedLabFlag {
+            get {
+                return this.calculatedLabFlagField;
+            }
+            set {
+                this.calculatedLabFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calculatedLabFlagSpecified {
+            get {
+                return this.calculatedLabFlagFieldSpecified;
+            }
+            set {
+                this.calculatedLabFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool calculatedMatFlag {
+            get {
+                return this.calculatedMatFlagField;
+            }
+            set {
+                this.calculatedMatFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calculatedMatFlagSpecified {
+            get {
+                return this.calculatedMatFlagFieldSpecified;
+            }
+            set {
+                this.calculatedMatFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool calculatedOtherFlag {
+            get {
+                return this.calculatedOtherFlagField;
+            }
+            set {
+                this.calculatedOtherFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calculatedOtherFlagSpecified {
+            get {
+                return this.calculatedOtherFlagFieldSpecified;
+            }
+            set {
+                this.calculatedOtherFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool calculatedTotalFlag {
+            get {
+                return this.calculatedTotalFlagField;
+            }
+            set {
+                this.calculatedTotalFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool calculatedTotalFlagSpecified {
+            get {
+                return this.calculatedTotalFlagFieldSpecified;
+            }
+            set {
+                this.calculatedTotalFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public JobsJobLinkDTO[] childLinks {
+            get {
+                return this.childLinksField;
+            }
+            set {
+                this.childLinksField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime closedDt {
+            get {
+                return this.closedDtField;
+            }
+            set {
+                this.closedDtField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool closedDtSpecified {
+            get {
+                return this.closedDtFieldSpecified;
+            }
+            set {
+                this.closedDtFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string closedStatus {
+            get {
+                return this.closedStatusField;
+            }
+            set {
+                this.closedStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="time")]
+        public System.DateTime closedTime {
+            get {
+                return this.closedTimeField;
+            }
+            set {
+                this.closedTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool closedTimeSpecified {
+            get {
+                return this.closedTimeFieldSpecified;
+            }
+            set {
+                this.closedTimeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compCode {
+            get {
+                return this.compCodeField;
+            }
+            set {
+                this.compCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string compModCode {
+            get {
+                return this.compModCodeField;
+            }
+            set {
+                this.compModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string completedBy {
+            get {
+                return this.completedByField;
+            }
+            set {
+                this.completedByField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string completedCode {
+            get {
+                return this.completedCodeField;
+            }
+            set {
+                this.completedCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string completionText {
+            get {
+                return this.completionTextField;
+            }
+            set {
+                this.completionTextField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool completionTextExists {
+            get {
+                return this.completionTextExistsField;
+            }
+            set {
+                this.completionTextExistsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool completionTextExistsSpecified {
+            get {
+                return this.completionTextExistsFieldSpecified;
+            }
+            set {
+                this.completionTextExistsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal conAstSegFr {
+            get {
+                return this.conAstSegFrField;
+            }
+            set {
+                this.conAstSegFrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool conAstSegFrSpecified {
+            get {
+                return this.conAstSegFrFieldSpecified;
+            }
+            set {
+                this.conAstSegFrFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal conAstSegLength {
+            get {
+                return this.conAstSegLengthField;
+            }
+            set {
+                this.conAstSegLengthField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool conAstSegLengthSpecified {
+            get {
+                return this.conAstSegLengthFieldSpecified;
+            }
+            set {
+                this.conAstSegLengthFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal conAstSegTo {
+            get {
+                return this.conAstSegToField;
+            }
+            set {
+                this.conAstSegToField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool conAstSegToSpecified {
+            get {
+                return this.conAstSegToFieldSpecified;
+            }
+            set {
+                this.conAstSegToFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string countyShire {
+            get {
+                return this.countyShireField;
+            }
+            set {
+                this.countyShireField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime creationDate {
+            get {
+                return this.creationDateField;
+            }
+            set {
+                this.creationDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool creationDateSpecified {
+            get {
+                return this.creationDateFieldSpecified;
+            }
+            set {
+                this.creationDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string creationTime {
+            get {
+                return this.creationTimeField;
+            }
+            set {
+                this.creationTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string crew {
+            get {
+                return this.crewField;
+            }
+            set {
+                this.crewField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool crteInsitu {
+            get {
+                return this.crteInsituField;
+            }
+            set {
+                this.crteInsituField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool crteInsituSpecified {
+            get {
+                return this.crteInsituFieldSpecified;
+            }
+            set {
+                this.crteInsituFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime currentStatDate1 {
+            get {
+                return this.currentStatDate1Field;
+            }
+            set {
+                this.currentStatDate1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool currentStatDate1Specified {
+            get {
+                return this.currentStatDate1FieldSpecified;
+            }
+            set {
+                this.currentStatDate1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime currentStatDate2 {
+            get {
+                return this.currentStatDate2Field;
+            }
+            set {
+                this.currentStatDate2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool currentStatDate2Specified {
+            get {
+                return this.currentStatDate2FieldSpecified;
+            }
+            set {
+                this.currentStatDate2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string currentStatType1 {
+            get {
+                return this.currentStatType1Field;
+            }
+            set {
+                this.currentStatType1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string currentStatType2 {
+            get {
+                return this.currentStatType2Field;
+            }
+            set {
+                this.currentStatType2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal currentStatValue1 {
+            get {
+                return this.currentStatValue1Field;
+            }
+            set {
+                this.currentStatValue1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool currentStatValue1Specified {
+            get {
+                return this.currentStatValue1FieldSpecified;
+            }
+            set {
+                this.currentStatValue1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal currentStatValue2 {
+            get {
+                return this.currentStatValue2Field;
+            }
+            set {
+                this.currentStatValue2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool currentStatValue2Specified {
+            get {
+                return this.currentStatValue2FieldSpecified;
+            }
+            set {
+                this.currentStatValue2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string data1732 {
+            get {
+                return this.data1732Field;
+            }
+            set {
+                this.data1732Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string dateStatus {
+            get {
+                return this.dateStatusField;
+            }
+            set {
+                this.dateStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string dstrctAcctCode {
+            get {
+                return this.dstrctAcctCodeField;
+            }
+            set {
+                this.dstrctAcctCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string dstrctCode {
+            get {
+                return this.dstrctCodeField;
+            }
+            set {
+                this.dstrctCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string emailAddress {
+            get {
+                return this.emailAddressField;
+            }
+            set {
+                this.emailAddressField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClass {
+            get {
+                return this.equipClassField;
+            }
+            set {
+                this.equipClassField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx1 {
+            get {
+                return this.equipClassifx1Field;
+            }
+            set {
+                this.equipClassifx1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx10 {
+            get {
+                return this.equipClassifx10Field;
+            }
+            set {
+                this.equipClassifx10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx11 {
+            get {
+                return this.equipClassifx11Field;
+            }
+            set {
+                this.equipClassifx11Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx12 {
+            get {
+                return this.equipClassifx12Field;
+            }
+            set {
+                this.equipClassifx12Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx13 {
+            get {
+                return this.equipClassifx13Field;
+            }
+            set {
+                this.equipClassifx13Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx14 {
+            get {
+                return this.equipClassifx14Field;
+            }
+            set {
+                this.equipClassifx14Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx15 {
+            get {
+                return this.equipClassifx15Field;
+            }
+            set {
+                this.equipClassifx15Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx16 {
+            get {
+                return this.equipClassifx16Field;
+            }
+            set {
+                this.equipClassifx16Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx17 {
+            get {
+                return this.equipClassifx17Field;
+            }
+            set {
+                this.equipClassifx17Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx18 {
+            get {
+                return this.equipClassifx18Field;
+            }
+            set {
+                this.equipClassifx18Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx19 {
+            get {
+                return this.equipClassifx19Field;
+            }
+            set {
+                this.equipClassifx19Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx2 {
+            get {
+                return this.equipClassifx2Field;
+            }
+            set {
+                this.equipClassifx2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx20 {
+            get {
+                return this.equipClassifx20Field;
+            }
+            set {
+                this.equipClassifx20Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx3 {
+            get {
+                return this.equipClassifx3Field;
+            }
+            set {
+                this.equipClassifx3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx4 {
+            get {
+                return this.equipClassifx4Field;
+            }
+            set {
+                this.equipClassifx4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx5 {
+            get {
+                return this.equipClassifx5Field;
+            }
+            set {
+                this.equipClassifx5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx6 {
+            get {
+                return this.equipClassifx6Field;
+            }
+            set {
+                this.equipClassifx6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx7 {
+            get {
+                return this.equipClassifx7Field;
+            }
+            set {
+                this.equipClassifx7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx8 {
+            get {
+                return this.equipClassifx8Field;
+            }
+            set {
+                this.equipClassifx8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassifx9 {
+            get {
+                return this.equipClassifx9Field;
+            }
+            set {
+                this.equipClassifx9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipGrpId {
+            get {
+                return this.equipGrpIdField;
+            }
+            set {
+                this.equipGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipLocation {
+            get {
+                return this.equipLocationField;
+            }
+            set {
+                this.equipLocationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipNo {
+            get {
+                return this.equipNoField;
+            }
+            set {
+                this.equipNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipStatus {
+            get {
+                return this.equipStatusField;
+            }
+            set {
+                this.equipStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool equipUpdateFlag {
+            get {
+                return this.equipUpdateFlagField;
+            }
+            set {
+                this.equipUpdateFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool equipUpdateFlagSpecified {
+            get {
+                return this.equipUpdateFlagFieldSpecified;
+            }
+            set {
+                this.equipUpdateFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentClassDescription {
+            get {
+                return this.equipmentClassDescriptionField;
+            }
+            set {
+                this.equipmentClassDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal estDurHrs {
+            get {
+                return this.estDurHrsField;
+            }
+            set {
+                this.estDurHrsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool estDurHrsSpecified {
+            get {
+                return this.estDurHrsFieldSpecified;
+            }
+            set {
+                this.estDurHrsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal estEquipCost {
+            get {
+                return this.estEquipCostField;
+            }
+            set {
+                this.estEquipCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool estEquipCostSpecified {
+            get {
+                return this.estEquipCostFieldSpecified;
+            }
+            set {
+                this.estEquipCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal estLabCost {
+            get {
+                return this.estLabCostField;
+            }
+            set {
+                this.estLabCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool estLabCostSpecified {
+            get {
+                return this.estLabCostFieldSpecified;
+            }
+            set {
+                this.estLabCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal estLabHrs {
+            get {
+                return this.estLabHrsField;
+            }
+            set {
+                this.estLabHrsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool estLabHrsSpecified {
+            get {
+                return this.estLabHrsFieldSpecified;
+            }
+            set {
+                this.estLabHrsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal estMatCost {
+            get {
+                return this.estMatCostField;
+            }
+            set {
+                this.estMatCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool estMatCostSpecified {
+            get {
+                return this.estMatCostFieldSpecified;
+            }
+            set {
+                this.estMatCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal estOtherCost {
+            get {
+                return this.estOtherCostField;
+            }
+            set {
+                this.estOtherCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool estOtherCostSpecified {
+            get {
+                return this.estOtherCostFieldSpecified;
+            }
+            set {
+                this.estOtherCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string estimateDescription {
+            get {
+                return this.estimateDescriptionField;
+            }
+            set {
+                this.estimateDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string estimateNo {
+            get {
+                return this.estimateNoField;
+            }
+            set {
+                this.estimateNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal estimatedTotalCost {
+            get {
+                return this.estimatedTotalCostField;
+            }
+            set {
+                this.estimatedTotalCostField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool estimatedTotalCostSpecified {
+            get {
+                return this.estimatedTotalCostFieldSpecified;
+            }
+            set {
+                this.estimatedTotalCostFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime existingPlannedFinishDate {
+            get {
+                return this.existingPlannedFinishDateField;
+            }
+            set {
+                this.existingPlannedFinishDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool existingPlannedFinishDateSpecified {
+            get {
+                return this.existingPlannedFinishDateFieldSpecified;
+            }
+            set {
+                this.existingPlannedFinishDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string existingPlannedFinishTime {
+            get {
+                return this.existingPlannedFinishTimeField;
+            }
+            set {
+                this.existingPlannedFinishTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime existingPlannedStartDate {
+            get {
+                return this.existingPlannedStartDateField;
+            }
+            set {
+                this.existingPlannedStartDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool existingPlannedStartDateSpecified {
+            get {
+                return this.existingPlannedStartDateFieldSpecified;
+            }
+            set {
+                this.existingPlannedStartDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string existingPlannedStartTime {
+            get {
+                return this.existingPlannedStartTimeField;
+            }
+            set {
+                this.existingPlannedStartTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string extendedText {
+            get {
+                return this.extendedTextField;
+            }
+            set {
+                this.extendedTextField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool extendedTextExists {
+            get {
+                return this.extendedTextExistsField;
+            }
+            set {
+                this.extendedTextExistsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool extendedTextExistsSpecified {
+            get {
+                return this.extendedTextExistsFieldSpecified;
+            }
+            set {
+                this.extendedTextExistsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string failurePart {
+            get {
+                return this.failurePartField;
+            }
+            set {
+                this.failurePartField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string faxNumber {
+            get {
+                return this.faxNumberField;
+            }
+            set {
+                this.faxNumberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool finalCostIndicator {
+            get {
+                return this.finalCostIndicatorField;
+            }
+            set {
+                this.finalCostIndicatorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool finalCostIndicatorSpecified {
+            get {
+                return this.finalCostIndicatorFieldSpecified;
+            }
+            set {
+                this.finalCostIndicatorFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool fromLink {
+            get {
+                return this.fromLinkField;
+            }
+            set {
+                this.fromLinkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fromLinkSpecified {
+            get {
+                return this.fromLinkFieldSpecified;
+            }
+            set {
+                this.fromLinkFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string ganttLinkId {
+            get {
+                return this.ganttLinkIdField;
+            }
+            set {
+                this.ganttLinkIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string ganttParentLinkId {
+            get {
+                return this.ganttParentLinkIdField;
+            }
+            set {
+                this.ganttParentLinkIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool idSpecified {
+            get {
+                return this.idFieldSpecified;
+            }
+            set {
+                this.idFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool immediateInspections {
+            get {
+                return this.immediateInspectionsField;
+            }
+            set {
+                this.immediateInspectionsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool immediateInspectionsSpecified {
+            get {
+                return this.immediateInspectionsFieldSpecified;
+            }
+            set {
+                this.immediateInspectionsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isControl {
+            get {
+                return this.isControlField;
+            }
+            set {
+                this.isControlField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isControlSpecified {
+            get {
+                return this.isControlFieldSpecified;
+            }
+            set {
+                this.isControlFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string isMSTParent {
+            get {
+                return this.isMSTParentField;
+            }
+            set {
+                this.isMSTParentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string isParent {
+            get {
+                return this.isParentField;
+            }
+            set {
+                this.isParentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string itemName1 {
+            get {
+                return this.itemName1Field;
+            }
+            set {
+                this.itemName1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string itemName2 {
+            get {
+                return this.itemName2Field;
+            }
+            set {
+                this.itemName2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string jobId {
+            get {
+                return this.jobIdField;
+            }
+            set {
+                this.jobIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string jobParentId {
+            get {
+                return this.jobParentIdField;
+            }
+            set {
+                this.jobParentIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string jobType {
+            get {
+                return this.jobTypeField;
+            }
+            set {
+                this.jobTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime lastModifiedDate {
+            get {
+                return this.lastModifiedDateField;
+            }
+            set {
+                this.lastModifiedDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastModifiedDateSpecified {
+            get {
+                return this.lastModifiedDateFieldSpecified;
+            }
+            set {
+                this.lastModifiedDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string lastModifiedTime {
+            get {
+                return this.lastModifiedTimeField;
+            }
+            set {
+                this.lastModifiedTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime lastPerformedDate {
+            get {
+                return this.lastPerformedDateField;
+            }
+            set {
+                this.lastPerformedDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool lastPerformedDateSpecified {
+            get {
+                return this.lastPerformedDateFieldSpecified;
+            }
+            set {
+                this.lastPerformedDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string lastPerformedDstrctCode {
+            get {
+                return this.lastPerformedDstrctCodeField;
+            }
+            set {
+                this.lastPerformedDstrctCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string lastPerformedWorkOrder {
+            get {
+                return this.lastPerformedWorkOrderField;
+            }
+            set {
+                this.lastPerformedWorkOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string lastTranRloc {
+            get {
+                return this.lastTranRlocField;
+            }
+            set {
+                this.lastTranRlocField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkDistrictCode {
+            get {
+                return this.linkDistrictCodeField;
+            }
+            set {
+                this.linkDistrictCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkEntityId {
+            get {
+                return this.linkEntityIdField;
+            }
+            set {
+                this.linkEntityIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkEntityIdSpecified {
+            get {
+                return this.linkEntityIdFieldSpecified;
+            }
+            set {
+                this.linkEntityIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkEntityType {
+            get {
+                return this.linkEntityTypeField;
+            }
+            set {
+                this.linkEntityTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkEntityTypeSpecified {
+            get {
+                return this.linkEntityTypeFieldSpecified;
+            }
+            set {
+                this.linkEntityTypeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkErpRef {
+            get {
+                return this.linkErpRefField;
+            }
+            set {
+                this.linkErpRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkErpTaskRef {
+            get {
+                return this.linkErpTaskRefField;
+            }
+            set {
+                this.linkErpTaskRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkId {
+            get {
+                return this.linkIdField;
+            }
+            set {
+                this.linkIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkIdSpecified {
+            get {
+                return this.linkIdFieldSpecified;
+            }
+            set {
+                this.linkIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkJobLinkListId {
+            get {
+                return this.linkJobLinkListIdField;
+            }
+            set {
+                this.linkJobLinkListIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkJobLinkListIdSpecified {
+            get {
+                return this.linkJobLinkListIdFieldSpecified;
+            }
+            set {
+                this.linkJobLinkListIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkLagOrLead {
+            get {
+                return this.linkLagOrLeadField;
+            }
+            set {
+                this.linkLagOrLeadField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkOffset {
+            get {
+                return this.linkOffsetField;
+            }
+            set {
+                this.linkOffsetField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkOffsetSpecified {
+            get {
+                return this.linkOffsetFieldSpecified;
+            }
+            set {
+                this.linkOffsetFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkOffsetType {
+            get {
+                return this.linkOffsetTypeField;
+            }
+            set {
+                this.linkOffsetTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkScale {
+            get {
+                return this.linkScaleField;
+            }
+            set {
+                this.linkScaleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkScaledOffset {
+            get {
+                return this.linkScaledOffsetField;
+            }
+            set {
+                this.linkScaledOffsetField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkScaledOffsetSpecified {
+            get {
+                return this.linkScaledOffsetFieldSpecified;
+            }
+            set {
+                this.linkScaledOffsetFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkScheduleType {
+            get {
+                return this.linkScheduleTypeField;
+            }
+            set {
+                this.linkScheduleTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkSequenceNum {
+            get {
+                return this.linkSequenceNumField;
+            }
+            set {
+                this.linkSequenceNumField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkSequenceNumSpecified {
+            get {
+                return this.linkSequenceNumFieldSpecified;
+            }
+            set {
+                this.linkSequenceNumFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkStatType {
+            get {
+                return this.linkStatTypeField;
+            }
+            set {
+                this.linkStatTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkStatValue {
+            get {
+                return this.linkStatValueField;
+            }
+            set {
+                this.linkStatValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkStatValueSpecified {
+            get {
+                return this.linkStatValueFieldSpecified;
+            }
+            set {
+                this.linkStatValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkState {
+            get {
+                return this.linkStateField;
+            }
+            set {
+                this.linkStateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkType {
+            get {
+                return this.linkTypeField;
+            }
+            set {
+                this.linkTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public JobsMWPDTO[] linkedChildren {
+            get {
+                return this.linkedChildrenField;
+            }
+            set {
+                this.linkedChildrenField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkedInd {
+            get {
+                return this.linkedIndField;
+            }
+            set {
+                this.linkedIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string location {
+            get {
+                return this.locationField;
+            }
+            set {
+                this.locationField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string locationFr {
+            get {
+                return this.locationFrField;
+            }
+            set {
+                this.locationFrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string maintSchTask {
+            get {
+                return this.maintSchTaskField;
+            }
+            set {
+                this.maintSchTaskField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string maintType {
+            get {
+                return this.maintTypeField;
+            }
+            set {
+                this.maintTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string maintTypeDescription {
+            get {
+                return this.maintTypeDescriptionField;
+            }
+            set {
+                this.maintTypeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool matUpdateFlag {
+            get {
+                return this.matUpdateFlagField;
+            }
+            set {
+                this.matUpdateFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool matUpdateFlagSpecified {
+            get {
+                return this.matUpdateFlagFieldSpecified;
+            }
+            set {
+                this.matUpdateFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string mnemonic {
+            get {
+                return this.mnemonicField;
+            }
+            set {
+                this.mnemonicField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string mstReference {
+            get {
+                return this.mstReferenceField;
+            }
+            set {
+                this.mstReferenceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string multipleResourceRequirements {
+            get {
+                return this.multipleResourceRequirementsField;
+            }
+            set {
+                this.multipleResourceRequirementsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string mustStartInd {
+            get {
+                return this.mustStartIndField;
+            }
+            set {
+                this.mustStartIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string noGanttMove {
+            get {
+                return this.noGanttMoveField;
+            }
+            set {
+                this.noGanttMoveField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string noGanttResize {
+            get {
+                return this.noGanttResizeField;
+            }
+            set {
+                this.noGanttResizeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string noOfTasks {
+            get {
+                return this.noOfTasksField;
+            }
+            set {
+                this.noOfTasksField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string noTasksCompl {
+            get {
+                return this.noTasksComplField;
+            }
+            set {
+                this.noTasksComplField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal numberOfMSTisRemaining {
+            get {
+                return this.numberOfMSTisRemainingField;
+            }
+            set {
+                this.numberOfMSTisRemainingField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool numberOfMSTisRemainingSpecified {
+            get {
+                return this.numberOfMSTisRemainingFieldSpecified;
+            }
+            set {
+                this.numberOfMSTisRemainingFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string origPriority {
+            get {
+                return this.origPriorityField;
+            }
+            set {
+                this.origPriorityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime origSchedDate {
+            get {
+                return this.origSchedDateField;
+            }
+            set {
+                this.origSchedDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool origSchedDateSpecified {
+            get {
+                return this.origSchedDateFieldSpecified;
+            }
+            set {
+                this.origSchedDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime originalPlannedFinishDate {
+            get {
+                return this.originalPlannedFinishDateField;
+            }
+            set {
+                this.originalPlannedFinishDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool originalPlannedFinishDateSpecified {
+            get {
+                return this.originalPlannedFinishDateFieldSpecified;
+            }
+            set {
+                this.originalPlannedFinishDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string originalPlannedFinishTime {
+            get {
+                return this.originalPlannedFinishTimeField;
+            }
+            set {
+                this.originalPlannedFinishTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime originalPlannedStartDate {
+            get {
+                return this.originalPlannedStartDateField;
+            }
+            set {
+                this.originalPlannedStartDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool originalPlannedStartDateSpecified {
+            get {
+                return this.originalPlannedStartDateFieldSpecified;
+            }
+            set {
+                this.originalPlannedStartDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string originalPlannedStartTime {
+            get {
+                return this.originalPlannedStartTimeField;
+            }
+            set {
+                this.originalPlannedStartTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string originatorId {
+            get {
+                return this.originatorIdField;
+            }
+            set {
+                this.originatorIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool otherUpdateFlag {
+            get {
+                return this.otherUpdateFlagField;
+            }
+            set {
+                this.otherUpdateFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool otherUpdateFlagSpecified {
+            get {
+                return this.otherUpdateFlagFieldSpecified;
+            }
+            set {
+                this.otherUpdateFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime outServDate {
+            get {
+                return this.outServDateField;
+            }
+            set {
+                this.outServDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool outServDateSpecified {
+            get {
+                return this.outServDateFieldSpecified;
+            }
+            set {
+                this.outServDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string outServTime {
+            get {
+                return this.outServTimeField;
+            }
+            set {
+                this.outServTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string outageDescription {
+            get {
+                return this.outageDescriptionField;
+            }
+            set {
+                this.outageDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string outageReference {
+            get {
+                return this.outageReferenceField;
+            }
+            set {
+                this.outageReferenceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string outageStatus {
+            get {
+                return this.outageStatusField;
+            }
+            set {
+                this.outageStatusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string paperHist {
+            get {
+                return this.paperHistField;
+            }
+            set {
+                this.paperHistField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal parentEntityId {
+            get {
+                return this.parentEntityIdField;
+            }
+            set {
+                this.parentEntityIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool parentEntityIdSpecified {
+            get {
+                return this.parentEntityIdFieldSpecified;
+            }
+            set {
+                this.parentEntityIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string parentEquip {
+            get {
+                return this.parentEquipField;
+            }
+            set {
+                this.parentEquipField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string parentJobType {
+            get {
+                return this.parentJobTypeField;
+            }
+            set {
+                this.parentJobTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal parentLinkId {
+            get {
+                return this.parentLinkIdField;
+            }
+            set {
+                this.parentLinkIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool parentLinkIdSpecified {
+            get {
+                return this.parentLinkIdFieldSpecified;
+            }
+            set {
+                this.parentLinkIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string parentPlantNo {
+            get {
+                return this.parentPlantNoField;
+            }
+            set {
+                this.parentPlantNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string parentWo {
+            get {
+                return this.parentWoField;
+            }
+            set {
+                this.parentWoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string parentWoDescription {
+            get {
+                return this.parentWoDescriptionField;
+            }
+            set {
+                this.parentWoDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string partNo {
+            get {
+                return this.partNoField;
+            }
+            set {
+                this.partNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string partialCacheKey {
+            get {
+                return this.partialCacheKeyField;
+            }
+            set {
+                this.partialCacheKeyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string partsAvailabe {
+            get {
+                return this.partsAvailabeField;
+            }
+            set {
+                this.partsAvailabeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal pcComplete {
+            get {
+                return this.pcCompleteField;
+            }
+            set {
+                this.pcCompleteField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool pcCompleteSpecified {
+            get {
+                return this.pcCompleteFieldSpecified;
+            }
+            set {
+                this.pcCompleteFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool permitReqdSw {
+            get {
+                return this.permitReqdSwField;
+            }
+            set {
+                this.permitReqdSwField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool permitReqdSwSpecified {
+            get {
+                return this.permitReqdSwFieldSpecified;
+            }
+            set {
+                this.permitReqdSwFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime planFinDate {
+            get {
+                return this.planFinDateField;
+            }
+            set {
+                this.planFinDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool planFinDateSpecified {
+            get {
+                return this.planFinDateFieldSpecified;
+            }
+            set {
+                this.planFinDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string planFinTime {
+            get {
+                return this.planFinTimeField;
+            }
+            set {
+                this.planFinTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool planOffsetSw {
+            get {
+                return this.planOffsetSwField;
+            }
+            set {
+                this.planOffsetSwField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool planOffsetSwSpecified {
+            get {
+                return this.planOffsetSwFieldSpecified;
+            }
+            set {
+                this.planOffsetSwFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string planPriority {
+            get {
+                return this.planPriorityField;
+            }
+            set {
+                this.planPriorityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string planSliderMovable {
+            get {
+                return this.planSliderMovableField;
+            }
+            set {
+                this.planSliderMovableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string planSliderResizable {
+            get {
+                return this.planSliderResizableField;
+            }
+            set {
+                this.planSliderResizableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string planStatType {
+            get {
+                return this.planStatTypeField;
+            }
+            set {
+                this.planStatTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal planStatVal {
+            get {
+                return this.planStatValField;
+            }
+            set {
+                this.planStatValField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool planStatValSpecified {
+            get {
+                return this.planStatValFieldSpecified;
+            }
+            set {
+                this.planStatValFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime planStrDate {
+            get {
+                return this.planStrDateField;
+            }
+            set {
+                this.planStrDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool planStrDateSpecified {
+            get {
+                return this.planStrDateFieldSpecified;
+            }
+            set {
+                this.planStrDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string planStrTime {
+            get {
+                return this.planStrTimeField;
+            }
+            set {
+                this.planStrTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string plantNo {
+            get {
+                return this.plantNoField;
+            }
+            set {
+                this.plantNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime prefDate {
+            get {
+                return this.prefDateField;
+            }
+            set {
+                this.prefDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool prefDateSpecified {
+            get {
+                return this.prefDateFieldSpecified;
+            }
+            set {
+                this.prefDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string prefTime {
+            get {
+                return this.prefTimeField;
+            }
+            set {
+                this.prefTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string printerName {
+            get {
+                return this.printerNameField;
+            }
+            set {
+                this.printerNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool prodUnitItem {
+            get {
+                return this.prodUnitItemField;
+            }
+            set {
+                this.prodUnitItemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool prodUnitItemSpecified {
+            get {
+                return this.prodUnitItemFieldSpecified;
+            }
+            set {
+                this.prodUnitItemFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string projDesc {
+            get {
+                return this.projDescField;
+            }
+            set {
+                this.projDescField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string projectNo {
+            get {
+                return this.projectNoField;
+            }
+            set {
+                this.projectNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal quoteValue {
+            get {
+                return this.quoteValueField;
+            }
+            set {
+                this.quoteValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool quoteValueSpecified {
+            get {
+                return this.quoteValueFieldSpecified;
+            }
+            set {
+                this.quoteValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime raisedDate {
+            get {
+                return this.raisedDateField;
+            }
+            set {
+                this.raisedDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool raisedDateSpecified {
+            get {
+                return this.raisedDateFieldSpecified;
+            }
+            set {
+                this.raisedDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="time")]
+        public System.DateTime raisedTime {
+            get {
+                return this.raisedTimeField;
+            }
+            set {
+                this.raisedTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool raisedTimeSpecified {
+            get {
+                return this.raisedTimeFieldSpecified;
+            }
+            set {
+                this.raisedTimeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string reallocationCostAccount {
+            get {
+                return this.reallocationCostAccountField;
+            }
+            set {
+                this.reallocationCostAccountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string reallocationCrEe {
+            get {
+                return this.reallocationCrEeField;
+            }
+            set {
+                this.reallocationCrEeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string reallocationFreqInd {
+            get {
+                return this.reallocationFreqIndField;
+            }
+            set {
+                this.reallocationFreqIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal reallocationLimitVal {
+            get {
+                return this.reallocationLimitValField;
+            }
+            set {
+                this.reallocationLimitValField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool reallocationLimitValSpecified {
+            get {
+                return this.reallocationLimitValFieldSpecified;
+            }
+            set {
+                this.reallocationLimitValFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal reallocationMarginPc {
+            get {
+                return this.reallocationMarginPcField;
+            }
+            set {
+                this.reallocationMarginPcField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool reallocationMarginPcSpecified {
+            get {
+                return this.reallocationMarginPcFieldSpecified;
+            }
+            set {
+                this.reallocationMarginPcFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string reallocationMethod {
+            get {
+                return this.reallocationMethodField;
+            }
+            set {
+                this.reallocationMethodField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string reallocationProject {
+            get {
+                return this.reallocationProjectField;
+            }
+            set {
+                this.reallocationProjectField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string reallocationVarAccount {
+            get {
+                return this.reallocationVarAccountField;
+            }
+            set {
+                this.reallocationVarAccountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string reallocationWo {
+            get {
+                return this.reallocationWoField;
+            }
+            set {
+                this.reallocationWoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal recallTimeHrs {
+            get {
+                return this.recallTimeHrsField;
+            }
+            set {
+                this.recallTimeHrsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool recallTimeHrsSpecified {
+            get {
+                return this.recallTimeHrsFieldSpecified;
+            }
+            set {
+                this.recallTimeHrsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string reference {
+            get {
+                return this.referenceField;
+            }
+            set {
+                this.referenceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string relatedWo {
+            get {
+                return this.relatedWoField;
+            }
+            set {
+                this.relatedWoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal remainingStat {
+            get {
+                return this.remainingStatField;
+            }
+            set {
+                this.remainingStatField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool remainingStatSpecified {
+            get {
+                return this.remainingStatFieldSpecified;
+            }
+            set {
+                this.remainingStatFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime reqByDate {
+            get {
+                return this.reqByDateField;
+            }
+            set {
+                this.reqByDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool reqByDateSpecified {
+            get {
+                return this.reqByDateFieldSpecified;
+            }
+            set {
+                this.reqByDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string reqByTime {
+            get {
+                return this.reqByTimeField;
+            }
+            set {
+                this.reqByTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime reqStartDate {
+            get {
+                return this.reqStartDateField;
+            }
+            set {
+                this.reqStartDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool reqStartDateSpecified {
+            get {
+                return this.reqStartDateFieldSpecified;
+            }
+            set {
+                this.reqStartDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string reqStartTime {
+            get {
+                return this.reqStartTimeField;
+            }
+            set {
+                this.reqStartTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string requestId {
+            get {
+                return this.requestIdField;
+            }
+            set {
+                this.requestIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool resUpdateFlag {
+            get {
+                return this.resUpdateFlagField;
+            }
+            set {
+                this.resUpdateFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool resUpdateFlagSpecified {
+            get {
+                return this.resUpdateFlagFieldSpecified;
+            }
+            set {
+                this.resUpdateFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public JobsResourceDTO[] resourceRequirements {
+            get {
+                return this.resourceRequirementsField;
+            }
+            set {
+                this.resourceRequirementsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime respondedDate {
+            get {
+                return this.respondedDateField;
+            }
+            set {
+                this.respondedDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool respondedDateSpecified {
+            get {
+                return this.respondedDateFieldSpecified;
+            }
+            set {
+                this.respondedDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string respondedTime {
+            get {
+                return this.respondedTimeField;
+            }
+            set {
+                this.respondedTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string restartChildWODstrctCode {
+            get {
+                return this.restartChildWODstrctCodeField;
+            }
+            set {
+                this.restartChildWODstrctCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime restartChildWOPlanStrDate {
+            get {
+                return this.restartChildWOPlanStrDateField;
+            }
+            set {
+                this.restartChildWOPlanStrDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool restartChildWOPlanStrDateSpecified {
+            get {
+                return this.restartChildWOPlanStrDateFieldSpecified;
+            }
+            set {
+                this.restartChildWOPlanStrDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string restartChildWOWorkOrder {
+            get {
+                return this.restartChildWOWorkOrderField;
+            }
+            set {
+                this.restartChildWOWorkOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string restartMSTIFromLinkMstReference {
+            get {
+                return this.restartMSTIFromLinkMstReferenceField;
+            }
+            set {
+                this.restartMSTIFromLinkMstReferenceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime restartMSTIFromLinkPlanStrDate {
+            get {
+                return this.restartMSTIFromLinkPlanStrDateField;
+            }
+            set {
+                this.restartMSTIFromLinkPlanStrDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool restartMSTIFromLinkPlanStrDateSpecified {
+            get {
+                return this.restartMSTIFromLinkPlanStrDateFieldSpecified;
+            }
+            set {
+                this.restartMSTIFromLinkPlanStrDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string restartMSTIMstReference {
+            get {
+                return this.restartMSTIMstReferenceField;
+            }
+            set {
+                this.restartMSTIMstReferenceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime restartMSTIPlanStrDate {
+            get {
+                return this.restartMSTIPlanStrDateField;
+            }
+            set {
+                this.restartMSTIPlanStrDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool restartMSTIPlanStrDateSpecified {
+            get {
+                return this.restartMSTIPlanStrDateFieldSpecified;
+            }
+            set {
+                this.restartMSTIPlanStrDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string restartMSTiTaskNo {
+            get {
+                return this.restartMSTiTaskNoField;
+            }
+            set {
+                this.restartMSTiTaskNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string restartParentWODstrctCode {
+            get {
+                return this.restartParentWODstrctCodeField;
+            }
+            set {
+                this.restartParentWODstrctCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime restartParentWOPlanStrDate {
+            get {
+                return this.restartParentWOPlanStrDateField;
+            }
+            set {
+                this.restartParentWOPlanStrDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool restartParentWOPlanStrDateSpecified {
+            get {
+                return this.restartParentWOPlanStrDateFieldSpecified;
+            }
+            set {
+                this.restartParentWOPlanStrDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string restartParentWOWorkOrder {
+            get {
+                return this.restartParentWOWorkOrderField;
+            }
+            set {
+                this.restartParentWOWorkOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public TaskKeyDTO[] restartPrevLinks {
+            get {
+                return this.restartPrevLinksField;
+            }
+            set {
+                this.restartPrevLinksField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string revenueCode {
+            get {
+                return this.revenueCodeField;
+            }
+            set {
+                this.revenueCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal schSegFr {
+            get {
+                return this.schSegFrField;
+            }
+            set {
+                this.schSegFrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool schSegFrSpecified {
+            get {
+                return this.schSegFrFieldSpecified;
+            }
+            set {
+                this.schSegFrFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal schSegLength {
+            get {
+                return this.schSegLengthField;
+            }
+            set {
+                this.schSegLengthField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool schSegLengthSpecified {
+            get {
+                return this.schSegLengthFieldSpecified;
+            }
+            set {
+                this.schSegLengthFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal schSegTo {
+            get {
+                return this.schSegToField;
+            }
+            set {
+                this.schSegToField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool schSegToSpecified {
+            get {
+                return this.schSegToFieldSpecified;
+            }
+            set {
+                this.schSegToFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string schedDesc1 {
+            get {
+                return this.schedDesc1Field;
+            }
+            set {
+                this.schedDesc1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string schedDesc2 {
+            get {
+                return this.schedDesc2Field;
+            }
+            set {
+                this.schedDesc2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string segmentUom {
+            get {
+                return this.segmentUomField;
+            }
+            set {
+                this.segmentUomField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal sequenceNo {
+            get {
+                return this.sequenceNoField;
+            }
+            set {
+                this.sequenceNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool sequenceNoSpecified {
+            get {
+                return this.sequenceNoFieldSpecified;
+            }
+            set {
+                this.sequenceNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string serialNumber {
+            get {
+                return this.serialNumberField;
+            }
+            set {
+                this.serialNumberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime serviceOffDate {
+            get {
+                return this.serviceOffDateField;
+            }
+            set {
+                this.serviceOffDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool serviceOffDateSpecified {
+            get {
+                return this.serviceOffDateFieldSpecified;
+            }
+            set {
+                this.serviceOffDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string serviceOffTime {
+            get {
+                return this.serviceOffTimeField;
+            }
+            set {
+                this.serviceOffTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime serviceOnDate {
+            get {
+                return this.serviceOnDateField;
+            }
+            set {
+                this.serviceOnDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool serviceOnDateSpecified {
+            get {
+                return this.serviceOnDateFieldSpecified;
+            }
+            set {
+                this.serviceOnDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string serviceOnTime {
+            get {
+                return this.serviceOnTimeField;
+            }
+            set {
+                this.serviceOnTimeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string shortDesc1 {
+            get {
+                return this.shortDesc1Field;
+            }
+            set {
+                this.shortDesc1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string shortDesc2 {
+            get {
+                return this.shortDesc2Field;
+            }
+            set {
+                this.shortDesc2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string shutdownEquipmentNo {
+            get {
+                return this.shutdownEquipmentNoField;
+            }
+            set {
+                this.shutdownEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string shutdownEquipmentRef {
+            get {
+                return this.shutdownEquipmentRefField;
+            }
+            set {
+                this.shutdownEquipmentRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string shutdownNo {
+            get {
+                return this.shutdownNoField;
+            }
+            set {
+                this.shutdownNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string shutdownType {
+            get {
+                return this.shutdownTypeField;
+            }
+            set {
+                this.shutdownTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string source {
+            get {
+                return this.sourceField;
+            }
+            set {
+                this.sourceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string state {
+            get {
+                return this.stateField;
+            }
+            set {
+                this.stateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string statutoryFlg {
+            get {
+                return this.statutoryFlgField;
+            }
+            set {
+                this.statutoryFlgField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stdJobNo {
+            get {
+                return this.stdJobNoField;
+            }
+            set {
+                this.stdJobNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string streetName {
+            get {
+                return this.streetNameField;
+            }
+            set {
+                this.streetNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string streetNo {
+            get {
+                return this.streetNoField;
+            }
+            set {
+                this.streetNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string suburb {
+            get {
+                return this.suburbField;
+            }
+            set {
+                this.suburbField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string suppressingMST {
+            get {
+                return this.suppressingMSTField;
+            }
+            set {
+                this.suppressingMSTField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime targtFinDate {
+            get {
+                return this.targtFinDateField;
+            }
+            set {
+                this.targtFinDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool targtFinDateSpecified {
+            get {
+                return this.targtFinDateFieldSpecified;
+            }
+            set {
+                this.targtFinDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime targtStrDate {
+            get {
+                return this.targtStrDateField;
+            }
+            set {
+                this.targtStrDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool targtStrDateSpecified {
+            get {
+                return this.targtStrDateFieldSpecified;
+            }
+            set {
+                this.targtStrDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string taskAptwSw {
+            get {
+                return this.taskAptwSwField;
+            }
+            set {
+                this.taskAptwSwField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string townCity {
+            get {
+                return this.townCityField;
+            }
+            set {
+                this.townCityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string unitOfWork {
+            get {
+                return this.unitOfWorkField;
+            }
+            set {
+                this.unitOfWorkField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal unitsComplete {
+            get {
+                return this.unitsCompleteField;
+            }
+            set {
+                this.unitsCompleteField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool unitsCompleteSpecified {
+            get {
+                return this.unitsCompleteFieldSpecified;
+            }
+            set {
+                this.unitsCompleteFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal unitsRequired {
+            get {
+                return this.unitsRequiredField;
+            }
+            set {
+                this.unitsRequiredField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool unitsRequiredSpecified {
+            get {
+                return this.unitsRequiredFieldSpecified;
+            }
+            set {
+                this.unitsRequiredFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal upperCostLimit {
+            get {
+                return this.upperCostLimitField;
+            }
+            set {
+                this.upperCostLimitField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool upperCostLimitSpecified {
+            get {
+                return this.upperCostLimitFieldSpecified;
+            }
+            set {
+                this.upperCostLimitFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woDesc {
+            get {
+                return this.woDescField;
+            }
+            set {
+                this.woDescField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woJobCodex1 {
+            get {
+                return this.woJobCodex1Field;
+            }
+            set {
+                this.woJobCodex1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woJobCodex10 {
+            get {
+                return this.woJobCodex10Field;
+            }
+            set {
+                this.woJobCodex10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woJobCodex2 {
+            get {
+                return this.woJobCodex2Field;
+            }
+            set {
+                this.woJobCodex2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woJobCodex3 {
+            get {
+                return this.woJobCodex3Field;
+            }
+            set {
+                this.woJobCodex3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woJobCodex4 {
+            get {
+                return this.woJobCodex4Field;
+            }
+            set {
+                this.woJobCodex4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woJobCodex5 {
+            get {
+                return this.woJobCodex5Field;
+            }
+            set {
+                this.woJobCodex5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woJobCodex6 {
+            get {
+                return this.woJobCodex6Field;
+            }
+            set {
+                this.woJobCodex6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woJobCodex7 {
+            get {
+                return this.woJobCodex7Field;
+            }
+            set {
+                this.woJobCodex7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woJobCodex8 {
+            get {
+                return this.woJobCodex8Field;
+            }
+            set {
+                this.woJobCodex8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woJobCodex9 {
+            get {
+                return this.woJobCodex9Field;
+            }
+            set {
+                this.woJobCodex9Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woStatusM {
+            get {
+                return this.woStatusMField;
+            }
+            set {
+                this.woStatusMField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woStatusMDescription {
+            get {
+                return this.woStatusMDescriptionField;
+            }
+            set {
+                this.woStatusMDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woStatusU {
+            get {
+                return this.woStatusUField;
+            }
+            set {
+                this.woStatusUField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woStatusUDescription {
+            get {
+                return this.woStatusUDescriptionField;
+            }
+            set {
+                this.woStatusUDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woType {
+            get {
+                return this.woTypeField;
+            }
+            set {
+                this.woTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string woTypeDescription {
+            get {
+                return this.woTypeDescriptionField;
+            }
+            set {
+                this.woTypeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workGroup {
+            get {
+                return this.workGroupField;
+            }
+            set {
+                this.workGroupField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrder {
+            get {
+                return this.workOrderField;
+            }
+            set {
+                this.workOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workRequestDescription {
+            get {
+                return this.workRequestDescriptionField;
+            }
+            set {
+                this.workRequestDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workRequestNumber {
+            get {
+                return this.workRequestNumberField;
+            }
+            set {
+                this.workRequestNumberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string zipCode {
+            get {
+                return this.zipCodeField;
+            }
+            set {
+                this.zipCodeField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+    public partial class JobsJobLinkDTO : ServiceDTO {
+        
+        private string linkDistrictCodeField;
+        
+        private decimal linkEntityIdField;
+        
+        private bool linkEntityIdFieldSpecified;
+        
+        private decimal linkEntityTypeField;
+        
+        private bool linkEntityTypeFieldSpecified;
+        
+        private string linkErpRefField;
+        
+        private string linkErpTaskRefField;
+        
+        private decimal linkJobLinkListIdField;
+        
+        private bool linkJobLinkListIdFieldSpecified;
+        
+        private string linkLagOrLeadField;
+        
+        private decimal linkOffsetField;
+        
+        private bool linkOffsetFieldSpecified;
+        
+        private decimal linkParentEntityIdField;
+        
+        private bool linkParentEntityIdFieldSpecified;
+        
+        private string linkParentEntityTypeField;
+        
+        private string linkScaleField;
+        
+        private decimal linkScaledOffsetField;
+        
+        private bool linkScaledOffsetFieldSpecified;
+        
+        private decimal linkSequenceNumField;
+        
+        private bool linkSequenceNumFieldSpecified;
+        
+        private string linkStatTypeField;
+        
+        private decimal linkStatValueField;
+        
+        private bool linkStatValueFieldSpecified;
+        
+        private string linkTypeField;
+        
+        /// <remarks/>
+        public string linkDistrictCode {
+            get {
+                return this.linkDistrictCodeField;
+            }
+            set {
+                this.linkDistrictCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkEntityId {
+            get {
+                return this.linkEntityIdField;
+            }
+            set {
+                this.linkEntityIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkEntityIdSpecified {
+            get {
+                return this.linkEntityIdFieldSpecified;
+            }
+            set {
+                this.linkEntityIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkEntityType {
+            get {
+                return this.linkEntityTypeField;
+            }
+            set {
+                this.linkEntityTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkEntityTypeSpecified {
+            get {
+                return this.linkEntityTypeFieldSpecified;
+            }
+            set {
+                this.linkEntityTypeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkErpRef {
+            get {
+                return this.linkErpRefField;
+            }
+            set {
+                this.linkErpRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkErpTaskRef {
+            get {
+                return this.linkErpTaskRefField;
+            }
+            set {
+                this.linkErpTaskRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkJobLinkListId {
+            get {
+                return this.linkJobLinkListIdField;
+            }
+            set {
+                this.linkJobLinkListIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkJobLinkListIdSpecified {
+            get {
+                return this.linkJobLinkListIdFieldSpecified;
+            }
+            set {
+                this.linkJobLinkListIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkLagOrLead {
+            get {
+                return this.linkLagOrLeadField;
+            }
+            set {
+                this.linkLagOrLeadField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkOffset {
+            get {
+                return this.linkOffsetField;
+            }
+            set {
+                this.linkOffsetField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkOffsetSpecified {
+            get {
+                return this.linkOffsetFieldSpecified;
+            }
+            set {
+                this.linkOffsetFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkParentEntityId {
+            get {
+                return this.linkParentEntityIdField;
+            }
+            set {
+                this.linkParentEntityIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkParentEntityIdSpecified {
+            get {
+                return this.linkParentEntityIdFieldSpecified;
+            }
+            set {
+                this.linkParentEntityIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkParentEntityType {
+            get {
+                return this.linkParentEntityTypeField;
+            }
+            set {
+                this.linkParentEntityTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkScale {
+            get {
+                return this.linkScaleField;
+            }
+            set {
+                this.linkScaleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkScaledOffset {
+            get {
+                return this.linkScaledOffsetField;
+            }
+            set {
+                this.linkScaledOffsetField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkScaledOffsetSpecified {
+            get {
+                return this.linkScaledOffsetFieldSpecified;
+            }
+            set {
+                this.linkScaledOffsetFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkSequenceNum {
+            get {
+                return this.linkSequenceNumField;
+            }
+            set {
+                this.linkSequenceNumField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkSequenceNumSpecified {
+            get {
+                return this.linkSequenceNumFieldSpecified;
+            }
+            set {
+                this.linkSequenceNumFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkStatType {
+            get {
+                return this.linkStatTypeField;
+            }
+            set {
+                this.linkStatTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal linkStatValue {
+            get {
+                return this.linkStatValueField;
+            }
+            set {
+                this.linkStatValueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool linkStatValueSpecified {
+            get {
+                return this.linkStatValueFieldSpecified;
+            }
+            set {
+                this.linkStatValueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string linkType {
+            get {
+                return this.linkTypeField;
+            }
+            set {
+                this.linkTypeField = value;
             }
         }
     }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsRetrieveViaRefCodesSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsMWPSearchParam))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsBulkUpdateMWPDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ProjectRefDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(EquipListRefDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EquipmentDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsBulkUpdateMWPDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsCreateLinkMWPDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EquipmentDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WorkOrderKeyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TaskKeyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsResourceCategoryDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsResourceDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsJobLinkDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobLinkItemDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobLinkChildDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobLinkDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsMWPDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsJobLinkDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1233,16 +6775,32 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://attribute.ellipse.mincom.com")]
     public partial class Attribute {
         
+        private string dataTypeField;
+        
         private string nameField;
         
+        private string namespaceField;
+        
+        private anyType2anyTypeMapEntry[] propertiesField;
+        
         private string valueField;
+        
+        /// <remarks/>
+        public string dataType {
+            get {
+                return this.dataTypeField;
+            }
+            set {
+                this.dataTypeField = value;
+            }
+        }
         
         /// <remarks/>
         public string name {
@@ -1251,6 +6809,27 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string @namespace {
+            get {
+                return this.namespaceField;
+            }
+            set {
+                this.namespaceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("entry", Namespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com", IsNullable=false)]
+        public anyType2anyTypeMapEntry[] properties {
+            get {
+                return this.propertiesField;
+            }
+            set {
+                this.propertiesField = value;
             }
         }
         
@@ -1266,24 +6845,55 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com")]
+    public partial class anyType2anyTypeMapEntry {
+        
+        private object keyField;
+        
+        private object valueField;
+        
+        /// <remarks/>
+        public object key {
+            get {
+                return this.keyField;
+            }
+            set {
+                this.keyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public object value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsRetrieveViaRefCodesSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsMWPSearchParam))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsBulkUpdateMWPDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ProjectRefDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(EquipListRefDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EquipmentDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsBulkUpdateMWPDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsCreateLinkMWPDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EquipmentDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WorkOrderKeyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TaskKeyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsResourceCategoryDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsResourceDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsJobLinkDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobLinkItemDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobLinkChildDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobLinkDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsMWPDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsJobLinkDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1292,17 +6902,76 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsRetrieveViaRefCodesSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(JobsMWPSearchParam))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
     public abstract partial class AbstractSearchParam : ServiceDTO {
+        
+        private ServiceRequiredAttributes serviceRequiredAttributesField;
+        
+        /// <remarks/>
+        public ServiceRequiredAttributes serviceRequiredAttributes {
+            get {
+                return this.serviceRequiredAttributesField;
+            }
+            set {
+                this.serviceRequiredAttributesField = value;
+            }
+        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+    public partial class JobsRetrieveViaRefCodesSearchParam : AbstractSearchParam {
+        
+        private string refCodeField;
+        
+        private decimal refNoField;
+        
+        private bool refNoFieldSpecified;
+        
+        /// <remarks/>
+        public string refCode {
+            get {
+                return this.refCodeField;
+            }
+            set {
+                this.refCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal refNo {
+            get {
+                return this.refNoField;
+            }
+            set {
+                this.refNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool refNoSpecified {
+            get {
+                return this.refNoFieldSpecified;
+            }
+            set {
+                this.refNoFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1317,6 +6986,10 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         private string assignPersonField;
         
+        private bool associatedEquipmentItemField;
+        
+        private bool associatedEquipmentItemFieldSpecified;
+        
         private bool attachedToOutageField;
         
         private bool attachedToOutageFieldSpecified;
@@ -1324,6 +6997,14 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         private decimal backlogToleranceDaysField;
         
         private bool backlogToleranceDaysFieldSpecified;
+        
+        private System.DateTime closedDtFromField;
+        
+        private bool closedDtFromFieldSpecified;
+        
+        private System.DateTime closedDtToField;
+        
+        private bool closedDtToFieldSpecified;
         
         private string compCodeField;
         
@@ -1336,6 +7017,8 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         private decimal conAstSegToField;
         
         private bool conAstSegToFieldSpecified;
+        
+        private string countyShireField;
         
         private string[] crewsField;
         
@@ -1363,11 +7046,51 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         private string dstrctCodeField;
         
-        private bool enableSuppressedWithResourceBalancingField;
+        private bool embeddedSearchField;
         
-        private bool enableSuppressedWithResourceBalancingFieldSpecified;
+        private bool embeddedSearchFieldSpecified;
         
         private string equipClassField;
+        
+        private string equipClassif0Field;
+        
+        private string equipClassif1Field;
+        
+        private string equipClassif10Field;
+        
+        private string equipClassif11Field;
+        
+        private string equipClassif12Field;
+        
+        private string equipClassif13Field;
+        
+        private string equipClassif14Field;
+        
+        private string equipClassif15Field;
+        
+        private string equipClassif16Field;
+        
+        private string equipClassif17Field;
+        
+        private string equipClassif18Field;
+        
+        private string equipClassif19Field;
+        
+        private string equipClassif2Field;
+        
+        private string equipClassif3Field;
+        
+        private string equipClassif4Field;
+        
+        private string equipClassif5Field;
+        
+        private string equipClassif6Field;
+        
+        private string equipClassif7Field;
+        
+        private string equipClassif8Field;
+        
+        private string equipClassif9Field;
         
         private string equipGrpIdField;
         
@@ -1376,6 +7099,12 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         private string equipStatusField;
         
         private string[] equipmentHierarchyField;
+        
+        private string equipmentNumberField;
+        
+        private bool excludeLinkingField;
+        
+        private bool excludeLinkingFieldSpecified;
         
         private bool excludeMaintenanceTypeField;
         
@@ -1393,6 +7122,10 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         private bool exportViewFieldSpecified;
         
+        private bool finalCostIndicatorField;
+        
+        private bool finalCostIndicatorFieldSpecified;
+        
         private bool graphicalViewField;
         
         private bool graphicalViewFieldSpecified;
@@ -1406,6 +7139,10 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         private bool includeOnlyProjectWorkOrdersField;
         
         private bool includeOnlyProjectWorkOrdersFieldSpecified;
+        
+        private bool includeOnlyWorkOverCostLimitField;
+        
+        private bool includeOnlyWorkOverCostLimitFieldSpecified;
         
         private bool includePreferedEGIField;
         
@@ -1421,6 +7158,8 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         private WorkOrderKeyDTO[] includeWorkOrderKeysField;
         
+        private string[] jobEstimateField;
+        
         private string listIdField;
         
         private string listTypField;
@@ -1428,6 +7167,8 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         private string locationField;
         
         private string locationFrField;
+        
+        private string locationGisReferenceField;
         
         private string[] maintTypesField;
         
@@ -1448,6 +7189,8 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         private bool overlappingDateSearchFieldSpecified;
         
         private string parentWoField;
+        
+        private string partCausingFailureField;
         
         private System.DateTime planFinDateField;
         
@@ -1475,17 +7218,47 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         private string projectNoField;
         
+        private System.DateTime raisedDateFromField;
+        
+        private bool raisedDateFromFieldSpecified;
+        
+        private System.DateTime raisedDateToField;
+        
+        private bool raisedDateToFieldSpecified;
+        
         private decimal recallTimeHrsField;
         
         private bool recallTimeHrsFieldSpecified;
         
+        private string[] relatedWorkOrderField;
+        
         private string reportIdField;
+        
+        private System.DateTime reqByDateFromField;
+        
+        private bool reqByDateFromFieldSpecified;
+        
+        private System.DateTime reqByDateToField;
+        
+        private bool reqByDateToFieldSpecified;
+        
+        private System.DateTime reqStartDateFromField;
+        
+        private bool reqStartDateFromFieldSpecified;
+        
+        private System.DateTime reqStartDateToField;
+        
+        private bool reqStartDateToFieldSpecified;
         
         private string requestIdField;
         
-        private bool resourceCrewTotalsOnlyField;
+        private string requirementsDisplayField;
         
-        private bool resourceCrewTotalsOnlyFieldSpecified;
+        private string[] requirementsEquipTypeField;
+        
+        private string requirementsTypeField;
+        
+        private string resourceClassField;
         
         private string[] resourceCrewsField;
         
@@ -1493,15 +7266,7 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         private bool resourceDisableAvailabilityCacheFieldSpecified;
         
-        private bool resourceTotalsOnlyField;
-        
-        private bool resourceTotalsOnlyFieldSpecified;
-        
         private string[] resourceTypesField;
-        
-        private bool resourceWorkGroupTotalsOnlyField;
-        
-        private bool resourceWorkGroupTotalsOnlyFieldSpecified;
         
         private string[] resourceWorkGroupsField;
         
@@ -1519,6 +7284,8 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         private string searchEntityField;
         
+        private string searchImmediateInspectionsField;
+        
         private bool searchViewField;
         
         private bool searchViewFieldSpecified;
@@ -1533,9 +7300,21 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         private string[] shutdownTypesField;
         
+        private string stateField;
+        
         private string stdJobNoField;
         
+        private string streetNameField;
+        
+        private string streetNoField;
+        
+        private string streetTypeField;
+        
         private EquipListRefDTO[] subListsField;
+        
+        private string suburbField;
+        
+        private string townCityField;
         
         private bool useIncreasedForecastLimitField;
         
@@ -1571,9 +7350,13 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         
         private string workOrderField;
         
+        private string workOrderSearchMethodField;
+        
         private string[] workReqClassifField;
         
         private string[] workReqTypeField;
+        
+        private string zipCodeField;
         
         /// <remarks/>
         public string accountCode {
@@ -1617,6 +7400,27 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
+        public bool associatedEquipmentItem {
+            get {
+                return this.associatedEquipmentItemField;
+            }
+            set {
+                this.associatedEquipmentItemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool associatedEquipmentItemSpecified {
+            get {
+                return this.associatedEquipmentItemFieldSpecified;
+            }
+            set {
+                this.associatedEquipmentItemFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool attachedToOutage {
             get {
                 return this.attachedToOutageField;
@@ -1655,6 +7459,50 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.backlogToleranceDaysFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime closedDtFrom {
+            get {
+                return this.closedDtFromField;
+            }
+            set {
+                this.closedDtFromField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool closedDtFromSpecified {
+            get {
+                return this.closedDtFromFieldSpecified;
+            }
+            set {
+                this.closedDtFromFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime closedDtTo {
+            get {
+                return this.closedDtToField;
+            }
+            set {
+                this.closedDtToField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool closedDtToSpecified {
+            get {
+                return this.closedDtToFieldSpecified;
+            }
+            set {
+                this.closedDtToFieldSpecified = value;
             }
         }
         
@@ -1717,6 +7565,16 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.conAstSegToFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string countyShire {
+            get {
+                return this.countyShireField;
+            }
+            set {
+                this.countyShireField = value;
             }
         }
         
@@ -1854,23 +7712,23 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
-        public bool enableSuppressedWithResourceBalancing {
+        public bool embeddedSearch {
             get {
-                return this.enableSuppressedWithResourceBalancingField;
+                return this.embeddedSearchField;
             }
             set {
-                this.enableSuppressedWithResourceBalancingField = value;
+                this.embeddedSearchField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool enableSuppressedWithResourceBalancingSpecified {
+        public bool embeddedSearchSpecified {
             get {
-                return this.enableSuppressedWithResourceBalancingFieldSpecified;
+                return this.embeddedSearchFieldSpecified;
             }
             set {
-                this.enableSuppressedWithResourceBalancingFieldSpecified = value;
+                this.embeddedSearchFieldSpecified = value;
             }
         }
         
@@ -1881,6 +7739,206 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.equipClassField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif0 {
+            get {
+                return this.equipClassif0Field;
+            }
+            set {
+                this.equipClassif0Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif1 {
+            get {
+                return this.equipClassif1Field;
+            }
+            set {
+                this.equipClassif1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif10 {
+            get {
+                return this.equipClassif10Field;
+            }
+            set {
+                this.equipClassif10Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif11 {
+            get {
+                return this.equipClassif11Field;
+            }
+            set {
+                this.equipClassif11Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif12 {
+            get {
+                return this.equipClassif12Field;
+            }
+            set {
+                this.equipClassif12Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif13 {
+            get {
+                return this.equipClassif13Field;
+            }
+            set {
+                this.equipClassif13Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif14 {
+            get {
+                return this.equipClassif14Field;
+            }
+            set {
+                this.equipClassif14Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif15 {
+            get {
+                return this.equipClassif15Field;
+            }
+            set {
+                this.equipClassif15Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif16 {
+            get {
+                return this.equipClassif16Field;
+            }
+            set {
+                this.equipClassif16Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif17 {
+            get {
+                return this.equipClassif17Field;
+            }
+            set {
+                this.equipClassif17Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif18 {
+            get {
+                return this.equipClassif18Field;
+            }
+            set {
+                this.equipClassif18Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif19 {
+            get {
+                return this.equipClassif19Field;
+            }
+            set {
+                this.equipClassif19Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif2 {
+            get {
+                return this.equipClassif2Field;
+            }
+            set {
+                this.equipClassif2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif3 {
+            get {
+                return this.equipClassif3Field;
+            }
+            set {
+                this.equipClassif3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif4 {
+            get {
+                return this.equipClassif4Field;
+            }
+            set {
+                this.equipClassif4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif5 {
+            get {
+                return this.equipClassif5Field;
+            }
+            set {
+                this.equipClassif5Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif6 {
+            get {
+                return this.equipClassif6Field;
+            }
+            set {
+                this.equipClassif6Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif7 {
+            get {
+                return this.equipClassif7Field;
+            }
+            set {
+                this.equipClassif7Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif8 {
+            get {
+                return this.equipClassif8Field;
+            }
+            set {
+                this.equipClassif8Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipClassif9 {
+            get {
+                return this.equipClassif9Field;
+            }
+            set {
+                this.equipClassif9Field = value;
             }
         }
         
@@ -1922,6 +7980,37 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.equipmentHierarchyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentNumber {
+            get {
+                return this.equipmentNumberField;
+            }
+            set {
+                this.equipmentNumberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool excludeLinking {
+            get {
+                return this.excludeLinkingField;
+            }
+            set {
+                this.excludeLinkingField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool excludeLinkingSpecified {
+            get {
+                return this.excludeLinkingFieldSpecified;
+            }
+            set {
+                this.excludeLinkingFieldSpecified = value;
             }
         }
         
@@ -2009,6 +8098,27 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
+        public bool finalCostIndicator {
+            get {
+                return this.finalCostIndicatorField;
+            }
+            set {
+                this.finalCostIndicatorField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool finalCostIndicatorSpecified {
+            get {
+                return this.finalCostIndicatorFieldSpecified;
+            }
+            set {
+                this.finalCostIndicatorFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool graphicalView {
             get {
                 return this.graphicalViewField;
@@ -2078,6 +8188,27 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.includeOnlyProjectWorkOrdersFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool includeOnlyWorkOverCostLimit {
+            get {
+                return this.includeOnlyWorkOverCostLimitField;
+            }
+            set {
+                this.includeOnlyWorkOverCostLimitField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool includeOnlyWorkOverCostLimitSpecified {
+            get {
+                return this.includeOnlyWorkOverCostLimitFieldSpecified;
+            }
+            set {
+                this.includeOnlyWorkOverCostLimitFieldSpecified = value;
             }
         }
         
@@ -2155,6 +8286,17 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com")]
+        public string[] jobEstimate {
+            get {
+                return this.jobEstimateField;
+            }
+            set {
+                this.jobEstimateField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string listId {
             get {
                 return this.listIdField;
@@ -2191,6 +8333,16 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.locationFrField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string locationGisReference {
+            get {
+                return this.locationGisReferenceField;
+            }
+            set {
+                this.locationGisReferenceField = value;
             }
         }
         
@@ -2295,6 +8447,16 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.parentWoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string partCausingFailure {
+            get {
+                return this.partCausingFailureField;
+            }
+            set {
+                this.partCausingFailureField = value;
             }
         }
         
@@ -2435,6 +8597,50 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime raisedDateFrom {
+            get {
+                return this.raisedDateFromField;
+            }
+            set {
+                this.raisedDateFromField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool raisedDateFromSpecified {
+            get {
+                return this.raisedDateFromFieldSpecified;
+            }
+            set {
+                this.raisedDateFromFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime raisedDateTo {
+            get {
+                return this.raisedDateToField;
+            }
+            set {
+                this.raisedDateToField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool raisedDateToSpecified {
+            get {
+                return this.raisedDateToFieldSpecified;
+            }
+            set {
+                this.raisedDateToFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public decimal recallTimeHrs {
             get {
                 return this.recallTimeHrsField;
@@ -2456,12 +8662,111 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com")]
+        public string[] relatedWorkOrder {
+            get {
+                return this.relatedWorkOrderField;
+            }
+            set {
+                this.relatedWorkOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string reportId {
             get {
                 return this.reportIdField;
             }
             set {
                 this.reportIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime reqByDateFrom {
+            get {
+                return this.reqByDateFromField;
+            }
+            set {
+                this.reqByDateFromField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool reqByDateFromSpecified {
+            get {
+                return this.reqByDateFromFieldSpecified;
+            }
+            set {
+                this.reqByDateFromFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime reqByDateTo {
+            get {
+                return this.reqByDateToField;
+            }
+            set {
+                this.reqByDateToField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool reqByDateToSpecified {
+            get {
+                return this.reqByDateToFieldSpecified;
+            }
+            set {
+                this.reqByDateToFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime reqStartDateFrom {
+            get {
+                return this.reqStartDateFromField;
+            }
+            set {
+                this.reqStartDateFromField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool reqStartDateFromSpecified {
+            get {
+                return this.reqStartDateFromFieldSpecified;
+            }
+            set {
+                this.reqStartDateFromFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime reqStartDateTo {
+            get {
+                return this.reqStartDateToField;
+            }
+            set {
+                this.reqStartDateToField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool reqStartDateToSpecified {
+            get {
+                return this.reqStartDateToFieldSpecified;
+            }
+            set {
+                this.reqStartDateToFieldSpecified = value;
             }
         }
         
@@ -2476,23 +8781,43 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
-        public bool resourceCrewTotalsOnly {
+        public string requirementsDisplay {
             get {
-                return this.resourceCrewTotalsOnlyField;
+                return this.requirementsDisplayField;
             }
             set {
-                this.resourceCrewTotalsOnlyField = value;
+                this.requirementsDisplayField = value;
             }
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool resourceCrewTotalsOnlySpecified {
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com")]
+        public string[] requirementsEquipType {
             get {
-                return this.resourceCrewTotalsOnlyFieldSpecified;
+                return this.requirementsEquipTypeField;
             }
             set {
-                this.resourceCrewTotalsOnlyFieldSpecified = value;
+                this.requirementsEquipTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string requirementsType {
+            get {
+                return this.requirementsTypeField;
+            }
+            set {
+                this.requirementsTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string resourceClass {
+            get {
+                return this.resourceClassField;
+            }
+            set {
+                this.resourceClassField = value;
             }
         }
         
@@ -2529,27 +8854,6 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
-        public bool resourceTotalsOnly {
-            get {
-                return this.resourceTotalsOnlyField;
-            }
-            set {
-                this.resourceTotalsOnlyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool resourceTotalsOnlySpecified {
-            get {
-                return this.resourceTotalsOnlyFieldSpecified;
-            }
-            set {
-                this.resourceTotalsOnlyFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com")]
         public string[] resourceTypes {
             get {
@@ -2557,27 +8861,6 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             }
             set {
                 this.resourceTypesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool resourceWorkGroupTotalsOnly {
-            get {
-                return this.resourceWorkGroupTotalsOnlyField;
-            }
-            set {
-                this.resourceWorkGroupTotalsOnlyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool resourceWorkGroupTotalsOnlySpecified {
-            get {
-                return this.resourceWorkGroupTotalsOnlyFieldSpecified;
-            }
-            set {
-                this.resourceWorkGroupTotalsOnlyFieldSpecified = value;
             }
         }
         
@@ -2666,6 +8949,16 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
+        public string searchImmediateInspections {
+            get {
+                return this.searchImmediateInspectionsField;
+            }
+            set {
+                this.searchImmediateInspectionsField = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool searchView {
             get {
                 return this.searchViewField;
@@ -2739,6 +9032,16 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
+        public string state {
+            get {
+                return this.stateField;
+            }
+            set {
+                this.stateField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string stdJobNo {
             get {
                 return this.stdJobNoField;
@@ -2749,12 +9052,62 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
+        public string streetName {
+            get {
+                return this.streetNameField;
+            }
+            set {
+                this.streetNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string streetNo {
+            get {
+                return this.streetNoField;
+            }
+            set {
+                this.streetNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string streetType {
+            get {
+                return this.streetTypeField;
+            }
+            set {
+                this.streetTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
         public EquipListRefDTO[] subLists {
             get {
                 return this.subListsField;
             }
             set {
                 this.subListsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string suburb {
+            get {
+                return this.suburbField;
+            }
+            set {
+                this.suburbField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string townCity {
+            get {
+                return this.townCityField;
+            }
+            set {
+                this.townCityField = value;
             }
         }
         
@@ -2933,6 +9286,16 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
+        public string workOrderSearchMethod {
+            get {
+                return this.workOrderSearchMethodField;
+            }
+            set {
+                this.workOrderSearchMethodField = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://jobsmwp.m8mwp.service.ellipse.mincom.com")]
         public string[] workReqClassif {
             get {
@@ -2953,11 +9316,21 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
                 this.workReqTypeField = value;
             }
         }
+        
+        /// <remarks/>
+        public string zipCode {
+            get {
+                return this.zipCodeField;
+            }
+            set {
+                this.zipCodeField = value;
+            }
+        }
     }
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TaskKeyDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3040,7 +9413,7 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3099,7 +9472,7 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3132,7 +9505,7 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3165,7 +9538,7 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4730,1079 +11103,55 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class JobsMWPDTO : ServiceDTO {
+    public partial class EquipmentDTO : ServiceDTO {
         
-        private string accountCodeField;
+        private string equipRefField;
         
-        private decimal actDurHrsField;
+        private string equipmentNoField;
         
-        private bool actDurHrsFieldSpecified;
+        /// <remarks/>
+        public string equipRef {
+            get {
+                return this.equipRefField;
+            }
+            set {
+                this.equipRefField = value;
+            }
+        }
         
-        private decimal actEquipCostField;
-        
-        private bool actEquipCostFieldSpecified;
-        
-        private decimal actLabCostField;
-        
-        private bool actLabCostFieldSpecified;
-        
-        private decimal actMatCostField;
-        
-        private bool actMatCostFieldSpecified;
-        
-        private decimal actOtherCostField;
-        
-        private bool actOtherCostFieldSpecified;
-        
-        private System.DateTime actualFinishDateField;
-        
-        private bool actualFinishDateFieldSpecified;
-        
-        private string actualFinishTimeField;
-        
-        private System.DateTime actualStartDateField;
-        
-        private bool actualStartDateFieldSpecified;
-        
-        private string actualStartTimeField;
-        
-        private bool aptwExistsSwField;
-        
-        private bool aptwExistsSwFieldSpecified;
-        
-        private string assignPersonField;
-        
-        private bool assocEquipSwField;
-        
-        private bool assocEquipSwFieldSpecified;
-        
-        private bool assumeFirstMSTIField;
-        
-        private bool assumeFirstMSTIFieldSpecified;
-        
-        private JobLinkDTO autoGroupProjectionField;
-        
-        private decimal calcEquipCostField;
-        
-        private bool calcEquipCostFieldSpecified;
-        
-        private decimal calcLabCostField;
-        
-        private bool calcLabCostFieldSpecified;
-        
-        private decimal calcLabHrsField;
-        
-        private bool calcLabHrsFieldSpecified;
-        
-        private decimal calcMatCostField;
-        
-        private bool calcMatCostFieldSpecified;
-        
-        private decimal calcOthCostField;
-        
-        private bool calcOthCostFieldSpecified;
-        
-        private JobsJobLinkDTO[] childLinksField;
-        
-        private System.DateTime closedDtField;
-        
-        private bool closedDtFieldSpecified;
-        
-        private System.DateTime closedTimeField;
-        
-        private bool closedTimeFieldSpecified;
-        
-        private string compCodeField;
-        
-        private string compModCodeField;
-        
-        private string completedCodeField;
-        
-        private decimal conAstSegFrField;
-        
-        private bool conAstSegFrFieldSpecified;
-        
-        private decimal conAstSegToField;
-        
-        private bool conAstSegToFieldSpecified;
-        
-        private string countyShireField;
+        /// <remarks/>
+        public string equipmentNo {
+            get {
+                return this.equipmentNoField;
+            }
+            set {
+                this.equipmentNoField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
+    public partial class JobsResourceCategoryDTO : ServiceDTO {
         
         private string crewField;
         
-        private bool crteInsituField;
+        private string dataTypeField;
         
-        private bool crteInsituFieldSpecified;
+        private string requirementTypeField;
         
-        private string data1732Field;
-        
-        private string dateStatusField;
-        
-        private string dstrctAcctCodeField;
-        
-        private string dstrctCodeField;
-        
-        private string emailAddressField;
-        
-        private string equipClassField;
-        
-        private string equipClassifx1Field;
-        
-        private string equipClassifx10Field;
-        
-        private string equipClassifx11Field;
-        
-        private string equipClassifx12Field;
-        
-        private string equipClassifx13Field;
-        
-        private string equipClassifx14Field;
-        
-        private string equipClassifx15Field;
-        
-        private string equipClassifx16Field;
-        
-        private string equipClassifx17Field;
-        
-        private string equipClassifx18Field;
-        
-        private string equipClassifx19Field;
-        
-        private string equipClassifx2Field;
-        
-        private string equipClassifx20Field;
-        
-        private string equipClassifx3Field;
-        
-        private string equipClassifx4Field;
-        
-        private string equipClassifx5Field;
-        
-        private string equipClassifx6Field;
-        
-        private string equipClassifx7Field;
-        
-        private string equipClassifx8Field;
-        
-        private string equipClassifx9Field;
-        
-        private string equipGrpIdField;
-        
-        private string equipLocationField;
-        
-        private string equipNoField;
-        
-        private string equipStatusField;
-        
-        private bool equipUpdateFlagField;
-        
-        private bool equipUpdateFlagFieldSpecified;
-        
-        private decimal estDurHrsField;
-        
-        private bool estDurHrsFieldSpecified;
-        
-        private decimal estEquipCostField;
-        
-        private bool estEquipCostFieldSpecified;
-        
-        private decimal estLabCostField;
-        
-        private bool estLabCostFieldSpecified;
-        
-        private decimal estLabHrsField;
-        
-        private bool estLabHrsFieldSpecified;
-        
-        private decimal estMatCostField;
-        
-        private bool estMatCostFieldSpecified;
-        
-        private decimal estOtherCostField;
-        
-        private bool estOtherCostFieldSpecified;
-        
-        private string failurePartField;
-        
-        private string faxNumberField;
-        
-        private bool fromLinkField;
-        
-        private bool fromLinkFieldSpecified;
-        
-        private string ganttFinishDateTimeField;
-        
-        private string ganttLinkIdField;
-        
-        private string ganttParentLinkIdField;
-        
-        private string ganttStartDateTimeField;
-        
-        private string hasAssignTodoField;
-        
-        private decimal idField;
-        
-        private bool idFieldSpecified;
-        
-        private bool isControlField;
-        
-        private bool isControlFieldSpecified;
-        
-        private string isMSTParentField;
-        
-        private string isParentField;
-        
-        private string itemName1Field;
-        
-        private string itemName2Field;
-        
-        private string jobIdField;
-        
-        private string jobParentIdField;
-        
-        private string jobTypeField;
-        
-        private System.DateTime lastPerformedDateField;
-        
-        private bool lastPerformedDateFieldSpecified;
-        
-        private string lastPerformedDstrctCodeField;
-        
-        private string lastPerformedWorkOrderField;
-        
-        private string linkDistrictCodeField;
-        
-        private decimal linkEntityIdField;
-        
-        private bool linkEntityIdFieldSpecified;
-        
-        private decimal linkEntityTypeField;
-        
-        private bool linkEntityTypeFieldSpecified;
-        
-        private string linkErpRefField;
-        
-        private string linkErpTaskRefField;
-        
-        private decimal linkIdField;
-        
-        private bool linkIdFieldSpecified;
-        
-        private decimal linkJobLinkListIdField;
-        
-        private bool linkJobLinkListIdFieldSpecified;
-        
-        private string linkLagOrLeadField;
-        
-        private decimal linkOffsetField;
-        
-        private bool linkOffsetFieldSpecified;
-        
-        private string linkScaleField;
-        
-        private decimal linkScaledOffsetField;
-        
-        private bool linkScaledOffsetFieldSpecified;
-        
-        private decimal linkSequenceNumField;
-        
-        private bool linkSequenceNumFieldSpecified;
-        
-        private string linkStatTypeField;
-        
-        private decimal linkStatValueField;
-        
-        private bool linkStatValueFieldSpecified;
-        
-        private string linkStateField;
-        
-        private string linkTypeField;
-        
-        private JobsMWPDTO[] linkedChildrenField;
-        
-        private string linkedIndField;
-        
-        private string locationField;
-        
-        private string locationFrField;
-        
-        private string maintSchTaskField;
-        
-        private string maintTypeField;
-        
-        private bool matUpdateFlagField;
-        
-        private bool matUpdateFlagFieldSpecified;
-        
-        private string mnemonicField;
-        
-        private string mstReferenceField;
-        
-        private string multipleResourceRequirementsField;
-        
-        private string noGanttMoveField;
-        
-        private string noGanttResizeField;
-        
-        private string noOfTasksField;
-        
-        private decimal numberOfMSTisRemainingField;
-        
-        private bool numberOfMSTisRemainingFieldSpecified;
-        
-        private string origPriorityField;
-        
-        private System.DateTime originalPlannedFinishDateField;
-        
-        private bool originalPlannedFinishDateFieldSpecified;
-        
-        private string originalPlannedFinishTimeField;
-        
-        private System.DateTime originalPlannedStartDateField;
-        
-        private bool originalPlannedStartDateFieldSpecified;
-        
-        private string originalPlannedStartTimeField;
-        
-        private string originatorIdField;
-        
-        private bool otherUpdateFlagField;
-        
-        private bool otherUpdateFlagFieldSpecified;
-        
-        private decimal parentEntityIdField;
-        
-        private bool parentEntityIdFieldSpecified;
-        
-        private string parentEquipField;
-        
-        private string parentJobTypeField;
-        
-        private decimal parentLinkIdField;
-        
-        private bool parentLinkIdFieldSpecified;
-        
-        private string parentPlantNoField;
-        
-        private string parentWoField;
-        
-        private string partNoField;
-        
-        private string partialCacheKeyField;
-        
-        private decimal pcCompleteField;
-        
-        private bool pcCompleteFieldSpecified;
-        
-        private System.DateTime planFinDateField;
-        
-        private bool planFinDateFieldSpecified;
-        
-        private string planFinTimeField;
-        
-        private string planPriorityField;
-        
-        private string planStatTypeField;
-        
-        private decimal planStatValField;
-        
-        private bool planStatValFieldSpecified;
-        
-        private System.DateTime planStrDateField;
-        
-        private bool planStrDateFieldSpecified;
-        
-        private string planStrTimeField;
-        
-        private string plantNoField;
-        
-        private System.DateTime prefDateField;
-        
-        private bool prefDateFieldSpecified;
-        
-        private string prefTimeField;
-        
-        private string printerNameField;
-        
-        private bool prodUnitItemField;
-        
-        private bool prodUnitItemFieldSpecified;
-        
-        private string projDescField;
-        
-        private string projectNoField;
-        
-        private System.DateTime raisedDateField;
-        
-        private bool raisedDateFieldSpecified;
-        
-        private System.DateTime raisedTimeField;
-        
-        private bool raisedTimeFieldSpecified;
-        
-        private decimal recallTimeHrsField;
-        
-        private bool recallTimeHrsFieldSpecified;
-        
-        private string referenceField;
-        
-        private System.DateTime reqByDateField;
-        
-        private bool reqByDateFieldSpecified;
-        
-        private string reqByTimeField;
-        
-        private System.DateTime reqStartDateField;
-        
-        private bool reqStartDateFieldSpecified;
-        
-        private string reqStartTimeField;
-        
-        private string requestIdField;
-        
-        private bool resUpdateFlagField;
-        
-        private bool resUpdateFlagFieldSpecified;
-        
-        private JobsResourceDTO[] resourceRequirementsField;
-        
-        private string restartChildWODstrctCodeField;
-        
-        private System.DateTime restartChildWOPlanStrDateField;
-        
-        private bool restartChildWOPlanStrDateFieldSpecified;
-        
-        private string restartChildWOWorkOrderField;
-        
-        private string restartMSTIFromLinkMstReferenceField;
-        
-        private System.DateTime restartMSTIFromLinkPlanStrDateField;
-        
-        private bool restartMSTIFromLinkPlanStrDateFieldSpecified;
-        
-        private string restartMSTIMstReferenceField;
-        
-        private System.DateTime restartMSTIPlanStrDateField;
-        
-        private bool restartMSTIPlanStrDateFieldSpecified;
-        
-        private string restartParentWODstrctCodeField;
-        
-        private System.DateTime restartParentWOPlanStrDateField;
-        
-        private bool restartParentWOPlanStrDateFieldSpecified;
-        
-        private string restartParentWOWorkOrderField;
-        
-        private TaskKeyDTO[] restartPrevLinksField;
-        
-        private decimal schSegFrField;
-        
-        private bool schSegFrFieldSpecified;
-        
-        private decimal schSegToField;
-        
-        private bool schSegToFieldSpecified;
-        
-        private string schedDesc2Field;
-        
-        private decimal sequenceNoField;
-        
-        private bool sequenceNoFieldSpecified;
-        
-        private string serialNumberField;
-        
-        private string shortDesc1Field;
-        
-        private string shortDesc2Field;
-        
-        private string shutdownNoField;
-        
-        private string shutdownTypeField;
-        
-        private string sourceField;
-        
-        private string stateField;
-        
-        private string statutoryFlgField;
-        
-        private string stdJobNoField;
-        
-        private string streetNameField;
-        
-        private string streetNoField;
-        
-        private string suburbField;
-        
-        private string suppressingMSTField;
-        
-        private System.DateTime targtFinDateField;
-        
-        private bool targtFinDateFieldSpecified;
-        
-        private System.DateTime targtStrDateField;
-        
-        private bool targtStrDateFieldSpecified;
-        
-        private string taskAptwSwField;
-        
-        private string townCityField;
-        
-        private string unitOfWorkField;
-        
-        private decimal unitsCompleteField;
-        
-        private bool unitsCompleteFieldSpecified;
-        
-        private decimal unitsRequiredField;
-        
-        private bool unitsRequiredFieldSpecified;
-        
-        private string woDescField;
-        
-        private string woJobCodex1Field;
-        
-        private string woJobCodex10Field;
-        
-        private string woJobCodex2Field;
-        
-        private string woJobCodex3Field;
-        
-        private string woJobCodex4Field;
-        
-        private string woJobCodex5Field;
-        
-        private string woJobCodex6Field;
-        
-        private string woJobCodex7Field;
-        
-        private string woJobCodex8Field;
-        
-        private string woJobCodex9Field;
-        
-        private string woStatusMField;
-        
-        private string woStatusUField;
-        
-        private string woTaskNoField;
-        
-        private string woTypeField;
+        private string resourceCategoryField;
         
         private string workGroupField;
-        
-        private string workOrderField;
-        
-        private string workRequestDescriptionField;
-        
-        private string zipCodeField;
-        
-        /// <remarks/>
-        public string accountCode {
-            get {
-                return this.accountCodeField;
-            }
-            set {
-                this.accountCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal actDurHrs {
-            get {
-                return this.actDurHrsField;
-            }
-            set {
-                this.actDurHrsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool actDurHrsSpecified {
-            get {
-                return this.actDurHrsFieldSpecified;
-            }
-            set {
-                this.actDurHrsFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal actEquipCost {
-            get {
-                return this.actEquipCostField;
-            }
-            set {
-                this.actEquipCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool actEquipCostSpecified {
-            get {
-                return this.actEquipCostFieldSpecified;
-            }
-            set {
-                this.actEquipCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal actLabCost {
-            get {
-                return this.actLabCostField;
-            }
-            set {
-                this.actLabCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool actLabCostSpecified {
-            get {
-                return this.actLabCostFieldSpecified;
-            }
-            set {
-                this.actLabCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal actMatCost {
-            get {
-                return this.actMatCostField;
-            }
-            set {
-                this.actMatCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool actMatCostSpecified {
-            get {
-                return this.actMatCostFieldSpecified;
-            }
-            set {
-                this.actMatCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal actOtherCost {
-            get {
-                return this.actOtherCostField;
-            }
-            set {
-                this.actOtherCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool actOtherCostSpecified {
-            get {
-                return this.actOtherCostFieldSpecified;
-            }
-            set {
-                this.actOtherCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime actualFinishDate {
-            get {
-                return this.actualFinishDateField;
-            }
-            set {
-                this.actualFinishDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool actualFinishDateSpecified {
-            get {
-                return this.actualFinishDateFieldSpecified;
-            }
-            set {
-                this.actualFinishDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string actualFinishTime {
-            get {
-                return this.actualFinishTimeField;
-            }
-            set {
-                this.actualFinishTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime actualStartDate {
-            get {
-                return this.actualStartDateField;
-            }
-            set {
-                this.actualStartDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool actualStartDateSpecified {
-            get {
-                return this.actualStartDateFieldSpecified;
-            }
-            set {
-                this.actualStartDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string actualStartTime {
-            get {
-                return this.actualStartTimeField;
-            }
-            set {
-                this.actualStartTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool aptwExistsSw {
-            get {
-                return this.aptwExistsSwField;
-            }
-            set {
-                this.aptwExistsSwField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool aptwExistsSwSpecified {
-            get {
-                return this.aptwExistsSwFieldSpecified;
-            }
-            set {
-                this.aptwExistsSwFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string assignPerson {
-            get {
-                return this.assignPersonField;
-            }
-            set {
-                this.assignPersonField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool assocEquipSw {
-            get {
-                return this.assocEquipSwField;
-            }
-            set {
-                this.assocEquipSwField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool assocEquipSwSpecified {
-            get {
-                return this.assocEquipSwFieldSpecified;
-            }
-            set {
-                this.assocEquipSwFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool assumeFirstMSTI {
-            get {
-                return this.assumeFirstMSTIField;
-            }
-            set {
-                this.assumeFirstMSTIField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool assumeFirstMSTISpecified {
-            get {
-                return this.assumeFirstMSTIFieldSpecified;
-            }
-            set {
-                this.assumeFirstMSTIFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public JobLinkDTO autoGroupProjection {
-            get {
-                return this.autoGroupProjectionField;
-            }
-            set {
-                this.autoGroupProjectionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal calcEquipCost {
-            get {
-                return this.calcEquipCostField;
-            }
-            set {
-                this.calcEquipCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool calcEquipCostSpecified {
-            get {
-                return this.calcEquipCostFieldSpecified;
-            }
-            set {
-                this.calcEquipCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal calcLabCost {
-            get {
-                return this.calcLabCostField;
-            }
-            set {
-                this.calcLabCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool calcLabCostSpecified {
-            get {
-                return this.calcLabCostFieldSpecified;
-            }
-            set {
-                this.calcLabCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal calcLabHrs {
-            get {
-                return this.calcLabHrsField;
-            }
-            set {
-                this.calcLabHrsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool calcLabHrsSpecified {
-            get {
-                return this.calcLabHrsFieldSpecified;
-            }
-            set {
-                this.calcLabHrsFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal calcMatCost {
-            get {
-                return this.calcMatCostField;
-            }
-            set {
-                this.calcMatCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool calcMatCostSpecified {
-            get {
-                return this.calcMatCostFieldSpecified;
-            }
-            set {
-                this.calcMatCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal calcOthCost {
-            get {
-                return this.calcOthCostField;
-            }
-            set {
-                this.calcOthCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool calcOthCostSpecified {
-            get {
-                return this.calcOthCostFieldSpecified;
-            }
-            set {
-                this.calcOthCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public JobsJobLinkDTO[] childLinks {
-            get {
-                return this.childLinksField;
-            }
-            set {
-                this.childLinksField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime closedDt {
-            get {
-                return this.closedDtField;
-            }
-            set {
-                this.closedDtField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool closedDtSpecified {
-            get {
-                return this.closedDtFieldSpecified;
-            }
-            set {
-                this.closedDtFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="time")]
-        public System.DateTime closedTime {
-            get {
-                return this.closedTimeField;
-            }
-            set {
-                this.closedTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool closedTimeSpecified {
-            get {
-                return this.closedTimeFieldSpecified;
-            }
-            set {
-                this.closedTimeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compCode {
-            get {
-                return this.compCodeField;
-            }
-            set {
-                this.compCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string compModCode {
-            get {
-                return this.compModCodeField;
-            }
-            set {
-                this.compModCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string completedCode {
-            get {
-                return this.completedCodeField;
-            }
-            set {
-                this.completedCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal conAstSegFr {
-            get {
-                return this.conAstSegFrField;
-            }
-            set {
-                this.conAstSegFrField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool conAstSegFrSpecified {
-            get {
-                return this.conAstSegFrFieldSpecified;
-            }
-            set {
-                this.conAstSegFrFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal conAstSegTo {
-            get {
-                return this.conAstSegToField;
-            }
-            set {
-                this.conAstSegToField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool conAstSegToSpecified {
-            get {
-                return this.conAstSegToFieldSpecified;
-            }
-            set {
-                this.conAstSegToFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string countyShire {
-            get {
-                return this.countyShireField;
-            }
-            set {
-                this.countyShireField = value;
-            }
-        }
         
         /// <remarks/>
         public string crew {
@@ -5815,2358 +11164,32 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
         }
         
         /// <remarks/>
-        public bool crteInsitu {
+        public string dataType {
             get {
-                return this.crteInsituField;
+                return this.dataTypeField;
             }
             set {
-                this.crteInsituField = value;
+                this.dataTypeField = value;
             }
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool crteInsituSpecified {
+        public string requirementType {
             get {
-                return this.crteInsituFieldSpecified;
+                return this.requirementTypeField;
             }
             set {
-                this.crteInsituFieldSpecified = value;
+                this.requirementTypeField = value;
             }
         }
         
         /// <remarks/>
-        public string data1732 {
+        public string resourceCategory {
             get {
-                return this.data1732Field;
+                return this.resourceCategoryField;
             }
             set {
-                this.data1732Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string dateStatus {
-            get {
-                return this.dateStatusField;
-            }
-            set {
-                this.dateStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string dstrctAcctCode {
-            get {
-                return this.dstrctAcctCodeField;
-            }
-            set {
-                this.dstrctAcctCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string dstrctCode {
-            get {
-                return this.dstrctCodeField;
-            }
-            set {
-                this.dstrctCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string emailAddress {
-            get {
-                return this.emailAddressField;
-            }
-            set {
-                this.emailAddressField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClass {
-            get {
-                return this.equipClassField;
-            }
-            set {
-                this.equipClassField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx1 {
-            get {
-                return this.equipClassifx1Field;
-            }
-            set {
-                this.equipClassifx1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx10 {
-            get {
-                return this.equipClassifx10Field;
-            }
-            set {
-                this.equipClassifx10Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx11 {
-            get {
-                return this.equipClassifx11Field;
-            }
-            set {
-                this.equipClassifx11Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx12 {
-            get {
-                return this.equipClassifx12Field;
-            }
-            set {
-                this.equipClassifx12Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx13 {
-            get {
-                return this.equipClassifx13Field;
-            }
-            set {
-                this.equipClassifx13Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx14 {
-            get {
-                return this.equipClassifx14Field;
-            }
-            set {
-                this.equipClassifx14Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx15 {
-            get {
-                return this.equipClassifx15Field;
-            }
-            set {
-                this.equipClassifx15Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx16 {
-            get {
-                return this.equipClassifx16Field;
-            }
-            set {
-                this.equipClassifx16Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx17 {
-            get {
-                return this.equipClassifx17Field;
-            }
-            set {
-                this.equipClassifx17Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx18 {
-            get {
-                return this.equipClassifx18Field;
-            }
-            set {
-                this.equipClassifx18Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx19 {
-            get {
-                return this.equipClassifx19Field;
-            }
-            set {
-                this.equipClassifx19Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx2 {
-            get {
-                return this.equipClassifx2Field;
-            }
-            set {
-                this.equipClassifx2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx20 {
-            get {
-                return this.equipClassifx20Field;
-            }
-            set {
-                this.equipClassifx20Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx3 {
-            get {
-                return this.equipClassifx3Field;
-            }
-            set {
-                this.equipClassifx3Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx4 {
-            get {
-                return this.equipClassifx4Field;
-            }
-            set {
-                this.equipClassifx4Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx5 {
-            get {
-                return this.equipClassifx5Field;
-            }
-            set {
-                this.equipClassifx5Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx6 {
-            get {
-                return this.equipClassifx6Field;
-            }
-            set {
-                this.equipClassifx6Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx7 {
-            get {
-                return this.equipClassifx7Field;
-            }
-            set {
-                this.equipClassifx7Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx8 {
-            get {
-                return this.equipClassifx8Field;
-            }
-            set {
-                this.equipClassifx8Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipClassifx9 {
-            get {
-                return this.equipClassifx9Field;
-            }
-            set {
-                this.equipClassifx9Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipGrpId {
-            get {
-                return this.equipGrpIdField;
-            }
-            set {
-                this.equipGrpIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipLocation {
-            get {
-                return this.equipLocationField;
-            }
-            set {
-                this.equipLocationField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipNo {
-            get {
-                return this.equipNoField;
-            }
-            set {
-                this.equipNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string equipStatus {
-            get {
-                return this.equipStatusField;
-            }
-            set {
-                this.equipStatusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool equipUpdateFlag {
-            get {
-                return this.equipUpdateFlagField;
-            }
-            set {
-                this.equipUpdateFlagField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool equipUpdateFlagSpecified {
-            get {
-                return this.equipUpdateFlagFieldSpecified;
-            }
-            set {
-                this.equipUpdateFlagFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal estDurHrs {
-            get {
-                return this.estDurHrsField;
-            }
-            set {
-                this.estDurHrsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool estDurHrsSpecified {
-            get {
-                return this.estDurHrsFieldSpecified;
-            }
-            set {
-                this.estDurHrsFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal estEquipCost {
-            get {
-                return this.estEquipCostField;
-            }
-            set {
-                this.estEquipCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool estEquipCostSpecified {
-            get {
-                return this.estEquipCostFieldSpecified;
-            }
-            set {
-                this.estEquipCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal estLabCost {
-            get {
-                return this.estLabCostField;
-            }
-            set {
-                this.estLabCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool estLabCostSpecified {
-            get {
-                return this.estLabCostFieldSpecified;
-            }
-            set {
-                this.estLabCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal estLabHrs {
-            get {
-                return this.estLabHrsField;
-            }
-            set {
-                this.estLabHrsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool estLabHrsSpecified {
-            get {
-                return this.estLabHrsFieldSpecified;
-            }
-            set {
-                this.estLabHrsFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal estMatCost {
-            get {
-                return this.estMatCostField;
-            }
-            set {
-                this.estMatCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool estMatCostSpecified {
-            get {
-                return this.estMatCostFieldSpecified;
-            }
-            set {
-                this.estMatCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal estOtherCost {
-            get {
-                return this.estOtherCostField;
-            }
-            set {
-                this.estOtherCostField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool estOtherCostSpecified {
-            get {
-                return this.estOtherCostFieldSpecified;
-            }
-            set {
-                this.estOtherCostFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string failurePart {
-            get {
-                return this.failurePartField;
-            }
-            set {
-                this.failurePartField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string faxNumber {
-            get {
-                return this.faxNumberField;
-            }
-            set {
-                this.faxNumberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool fromLink {
-            get {
-                return this.fromLinkField;
-            }
-            set {
-                this.fromLinkField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fromLinkSpecified {
-            get {
-                return this.fromLinkFieldSpecified;
-            }
-            set {
-                this.fromLinkFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string ganttFinishDateTime {
-            get {
-                return this.ganttFinishDateTimeField;
-            }
-            set {
-                this.ganttFinishDateTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string ganttLinkId {
-            get {
-                return this.ganttLinkIdField;
-            }
-            set {
-                this.ganttLinkIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string ganttParentLinkId {
-            get {
-                return this.ganttParentLinkIdField;
-            }
-            set {
-                this.ganttParentLinkIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string ganttStartDateTime {
-            get {
-                return this.ganttStartDateTimeField;
-            }
-            set {
-                this.ganttStartDateTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string hasAssignTodo {
-            get {
-                return this.hasAssignTodoField;
-            }
-            set {
-                this.hasAssignTodoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool idSpecified {
-            get {
-                return this.idFieldSpecified;
-            }
-            set {
-                this.idFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool isControl {
-            get {
-                return this.isControlField;
-            }
-            set {
-                this.isControlField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool isControlSpecified {
-            get {
-                return this.isControlFieldSpecified;
-            }
-            set {
-                this.isControlFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string isMSTParent {
-            get {
-                return this.isMSTParentField;
-            }
-            set {
-                this.isMSTParentField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string isParent {
-            get {
-                return this.isParentField;
-            }
-            set {
-                this.isParentField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string itemName1 {
-            get {
-                return this.itemName1Field;
-            }
-            set {
-                this.itemName1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string itemName2 {
-            get {
-                return this.itemName2Field;
-            }
-            set {
-                this.itemName2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string jobId {
-            get {
-                return this.jobIdField;
-            }
-            set {
-                this.jobIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string jobParentId {
-            get {
-                return this.jobParentIdField;
-            }
-            set {
-                this.jobParentIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string jobType {
-            get {
-                return this.jobTypeField;
-            }
-            set {
-                this.jobTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime lastPerformedDate {
-            get {
-                return this.lastPerformedDateField;
-            }
-            set {
-                this.lastPerformedDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool lastPerformedDateSpecified {
-            get {
-                return this.lastPerformedDateFieldSpecified;
-            }
-            set {
-                this.lastPerformedDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string lastPerformedDstrctCode {
-            get {
-                return this.lastPerformedDstrctCodeField;
-            }
-            set {
-                this.lastPerformedDstrctCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string lastPerformedWorkOrder {
-            get {
-                return this.lastPerformedWorkOrderField;
-            }
-            set {
-                this.lastPerformedWorkOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkDistrictCode {
-            get {
-                return this.linkDistrictCodeField;
-            }
-            set {
-                this.linkDistrictCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkEntityId {
-            get {
-                return this.linkEntityIdField;
-            }
-            set {
-                this.linkEntityIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkEntityIdSpecified {
-            get {
-                return this.linkEntityIdFieldSpecified;
-            }
-            set {
-                this.linkEntityIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkEntityType {
-            get {
-                return this.linkEntityTypeField;
-            }
-            set {
-                this.linkEntityTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkEntityTypeSpecified {
-            get {
-                return this.linkEntityTypeFieldSpecified;
-            }
-            set {
-                this.linkEntityTypeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkErpRef {
-            get {
-                return this.linkErpRefField;
-            }
-            set {
-                this.linkErpRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkErpTaskRef {
-            get {
-                return this.linkErpTaskRefField;
-            }
-            set {
-                this.linkErpTaskRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkId {
-            get {
-                return this.linkIdField;
-            }
-            set {
-                this.linkIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkIdSpecified {
-            get {
-                return this.linkIdFieldSpecified;
-            }
-            set {
-                this.linkIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkJobLinkListId {
-            get {
-                return this.linkJobLinkListIdField;
-            }
-            set {
-                this.linkJobLinkListIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkJobLinkListIdSpecified {
-            get {
-                return this.linkJobLinkListIdFieldSpecified;
-            }
-            set {
-                this.linkJobLinkListIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkLagOrLead {
-            get {
-                return this.linkLagOrLeadField;
-            }
-            set {
-                this.linkLagOrLeadField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkOffset {
-            get {
-                return this.linkOffsetField;
-            }
-            set {
-                this.linkOffsetField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkOffsetSpecified {
-            get {
-                return this.linkOffsetFieldSpecified;
-            }
-            set {
-                this.linkOffsetFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkScale {
-            get {
-                return this.linkScaleField;
-            }
-            set {
-                this.linkScaleField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkScaledOffset {
-            get {
-                return this.linkScaledOffsetField;
-            }
-            set {
-                this.linkScaledOffsetField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkScaledOffsetSpecified {
-            get {
-                return this.linkScaledOffsetFieldSpecified;
-            }
-            set {
-                this.linkScaledOffsetFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkSequenceNum {
-            get {
-                return this.linkSequenceNumField;
-            }
-            set {
-                this.linkSequenceNumField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkSequenceNumSpecified {
-            get {
-                return this.linkSequenceNumFieldSpecified;
-            }
-            set {
-                this.linkSequenceNumFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkStatType {
-            get {
-                return this.linkStatTypeField;
-            }
-            set {
-                this.linkStatTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkStatValue {
-            get {
-                return this.linkStatValueField;
-            }
-            set {
-                this.linkStatValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkStatValueSpecified {
-            get {
-                return this.linkStatValueFieldSpecified;
-            }
-            set {
-                this.linkStatValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkState {
-            get {
-                return this.linkStateField;
-            }
-            set {
-                this.linkStateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkType {
-            get {
-                return this.linkTypeField;
-            }
-            set {
-                this.linkTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public JobsMWPDTO[] linkedChildren {
-            get {
-                return this.linkedChildrenField;
-            }
-            set {
-                this.linkedChildrenField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkedInd {
-            get {
-                return this.linkedIndField;
-            }
-            set {
-                this.linkedIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string location {
-            get {
-                return this.locationField;
-            }
-            set {
-                this.locationField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string locationFr {
-            get {
-                return this.locationFrField;
-            }
-            set {
-                this.locationFrField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string maintSchTask {
-            get {
-                return this.maintSchTaskField;
-            }
-            set {
-                this.maintSchTaskField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string maintType {
-            get {
-                return this.maintTypeField;
-            }
-            set {
-                this.maintTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool matUpdateFlag {
-            get {
-                return this.matUpdateFlagField;
-            }
-            set {
-                this.matUpdateFlagField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool matUpdateFlagSpecified {
-            get {
-                return this.matUpdateFlagFieldSpecified;
-            }
-            set {
-                this.matUpdateFlagFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string mnemonic {
-            get {
-                return this.mnemonicField;
-            }
-            set {
-                this.mnemonicField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string mstReference {
-            get {
-                return this.mstReferenceField;
-            }
-            set {
-                this.mstReferenceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string multipleResourceRequirements {
-            get {
-                return this.multipleResourceRequirementsField;
-            }
-            set {
-                this.multipleResourceRequirementsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string noGanttMove {
-            get {
-                return this.noGanttMoveField;
-            }
-            set {
-                this.noGanttMoveField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string noGanttResize {
-            get {
-                return this.noGanttResizeField;
-            }
-            set {
-                this.noGanttResizeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string noOfTasks {
-            get {
-                return this.noOfTasksField;
-            }
-            set {
-                this.noOfTasksField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal numberOfMSTisRemaining {
-            get {
-                return this.numberOfMSTisRemainingField;
-            }
-            set {
-                this.numberOfMSTisRemainingField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool numberOfMSTisRemainingSpecified {
-            get {
-                return this.numberOfMSTisRemainingFieldSpecified;
-            }
-            set {
-                this.numberOfMSTisRemainingFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string origPriority {
-            get {
-                return this.origPriorityField;
-            }
-            set {
-                this.origPriorityField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime originalPlannedFinishDate {
-            get {
-                return this.originalPlannedFinishDateField;
-            }
-            set {
-                this.originalPlannedFinishDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool originalPlannedFinishDateSpecified {
-            get {
-                return this.originalPlannedFinishDateFieldSpecified;
-            }
-            set {
-                this.originalPlannedFinishDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string originalPlannedFinishTime {
-            get {
-                return this.originalPlannedFinishTimeField;
-            }
-            set {
-                this.originalPlannedFinishTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime originalPlannedStartDate {
-            get {
-                return this.originalPlannedStartDateField;
-            }
-            set {
-                this.originalPlannedStartDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool originalPlannedStartDateSpecified {
-            get {
-                return this.originalPlannedStartDateFieldSpecified;
-            }
-            set {
-                this.originalPlannedStartDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string originalPlannedStartTime {
-            get {
-                return this.originalPlannedStartTimeField;
-            }
-            set {
-                this.originalPlannedStartTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string originatorId {
-            get {
-                return this.originatorIdField;
-            }
-            set {
-                this.originatorIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool otherUpdateFlag {
-            get {
-                return this.otherUpdateFlagField;
-            }
-            set {
-                this.otherUpdateFlagField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool otherUpdateFlagSpecified {
-            get {
-                return this.otherUpdateFlagFieldSpecified;
-            }
-            set {
-                this.otherUpdateFlagFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal parentEntityId {
-            get {
-                return this.parentEntityIdField;
-            }
-            set {
-                this.parentEntityIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool parentEntityIdSpecified {
-            get {
-                return this.parentEntityIdFieldSpecified;
-            }
-            set {
-                this.parentEntityIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string parentEquip {
-            get {
-                return this.parentEquipField;
-            }
-            set {
-                this.parentEquipField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string parentJobType {
-            get {
-                return this.parentJobTypeField;
-            }
-            set {
-                this.parentJobTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal parentLinkId {
-            get {
-                return this.parentLinkIdField;
-            }
-            set {
-                this.parentLinkIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool parentLinkIdSpecified {
-            get {
-                return this.parentLinkIdFieldSpecified;
-            }
-            set {
-                this.parentLinkIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string parentPlantNo {
-            get {
-                return this.parentPlantNoField;
-            }
-            set {
-                this.parentPlantNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string parentWo {
-            get {
-                return this.parentWoField;
-            }
-            set {
-                this.parentWoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string partNo {
-            get {
-                return this.partNoField;
-            }
-            set {
-                this.partNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string partialCacheKey {
-            get {
-                return this.partialCacheKeyField;
-            }
-            set {
-                this.partialCacheKeyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal pcComplete {
-            get {
-                return this.pcCompleteField;
-            }
-            set {
-                this.pcCompleteField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool pcCompleteSpecified {
-            get {
-                return this.pcCompleteFieldSpecified;
-            }
-            set {
-                this.pcCompleteFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime planFinDate {
-            get {
-                return this.planFinDateField;
-            }
-            set {
-                this.planFinDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool planFinDateSpecified {
-            get {
-                return this.planFinDateFieldSpecified;
-            }
-            set {
-                this.planFinDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string planFinTime {
-            get {
-                return this.planFinTimeField;
-            }
-            set {
-                this.planFinTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string planPriority {
-            get {
-                return this.planPriorityField;
-            }
-            set {
-                this.planPriorityField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string planStatType {
-            get {
-                return this.planStatTypeField;
-            }
-            set {
-                this.planStatTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal planStatVal {
-            get {
-                return this.planStatValField;
-            }
-            set {
-                this.planStatValField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool planStatValSpecified {
-            get {
-                return this.planStatValFieldSpecified;
-            }
-            set {
-                this.planStatValFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime planStrDate {
-            get {
-                return this.planStrDateField;
-            }
-            set {
-                this.planStrDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool planStrDateSpecified {
-            get {
-                return this.planStrDateFieldSpecified;
-            }
-            set {
-                this.planStrDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string planStrTime {
-            get {
-                return this.planStrTimeField;
-            }
-            set {
-                this.planStrTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string plantNo {
-            get {
-                return this.plantNoField;
-            }
-            set {
-                this.plantNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime prefDate {
-            get {
-                return this.prefDateField;
-            }
-            set {
-                this.prefDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool prefDateSpecified {
-            get {
-                return this.prefDateFieldSpecified;
-            }
-            set {
-                this.prefDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string prefTime {
-            get {
-                return this.prefTimeField;
-            }
-            set {
-                this.prefTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string printerName {
-            get {
-                return this.printerNameField;
-            }
-            set {
-                this.printerNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool prodUnitItem {
-            get {
-                return this.prodUnitItemField;
-            }
-            set {
-                this.prodUnitItemField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool prodUnitItemSpecified {
-            get {
-                return this.prodUnitItemFieldSpecified;
-            }
-            set {
-                this.prodUnitItemFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string projDesc {
-            get {
-                return this.projDescField;
-            }
-            set {
-                this.projDescField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string projectNo {
-            get {
-                return this.projectNoField;
-            }
-            set {
-                this.projectNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime raisedDate {
-            get {
-                return this.raisedDateField;
-            }
-            set {
-                this.raisedDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool raisedDateSpecified {
-            get {
-                return this.raisedDateFieldSpecified;
-            }
-            set {
-                this.raisedDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="time")]
-        public System.DateTime raisedTime {
-            get {
-                return this.raisedTimeField;
-            }
-            set {
-                this.raisedTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool raisedTimeSpecified {
-            get {
-                return this.raisedTimeFieldSpecified;
-            }
-            set {
-                this.raisedTimeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal recallTimeHrs {
-            get {
-                return this.recallTimeHrsField;
-            }
-            set {
-                this.recallTimeHrsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool recallTimeHrsSpecified {
-            get {
-                return this.recallTimeHrsFieldSpecified;
-            }
-            set {
-                this.recallTimeHrsFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string reference {
-            get {
-                return this.referenceField;
-            }
-            set {
-                this.referenceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime reqByDate {
-            get {
-                return this.reqByDateField;
-            }
-            set {
-                this.reqByDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool reqByDateSpecified {
-            get {
-                return this.reqByDateFieldSpecified;
-            }
-            set {
-                this.reqByDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string reqByTime {
-            get {
-                return this.reqByTimeField;
-            }
-            set {
-                this.reqByTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime reqStartDate {
-            get {
-                return this.reqStartDateField;
-            }
-            set {
-                this.reqStartDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool reqStartDateSpecified {
-            get {
-                return this.reqStartDateFieldSpecified;
-            }
-            set {
-                this.reqStartDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string reqStartTime {
-            get {
-                return this.reqStartTimeField;
-            }
-            set {
-                this.reqStartTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string requestId {
-            get {
-                return this.requestIdField;
-            }
-            set {
-                this.requestIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool resUpdateFlag {
-            get {
-                return this.resUpdateFlagField;
-            }
-            set {
-                this.resUpdateFlagField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool resUpdateFlagSpecified {
-            get {
-                return this.resUpdateFlagFieldSpecified;
-            }
-            set {
-                this.resUpdateFlagFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public JobsResourceDTO[] resourceRequirements {
-            get {
-                return this.resourceRequirementsField;
-            }
-            set {
-                this.resourceRequirementsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string restartChildWODstrctCode {
-            get {
-                return this.restartChildWODstrctCodeField;
-            }
-            set {
-                this.restartChildWODstrctCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime restartChildWOPlanStrDate {
-            get {
-                return this.restartChildWOPlanStrDateField;
-            }
-            set {
-                this.restartChildWOPlanStrDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool restartChildWOPlanStrDateSpecified {
-            get {
-                return this.restartChildWOPlanStrDateFieldSpecified;
-            }
-            set {
-                this.restartChildWOPlanStrDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string restartChildWOWorkOrder {
-            get {
-                return this.restartChildWOWorkOrderField;
-            }
-            set {
-                this.restartChildWOWorkOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string restartMSTIFromLinkMstReference {
-            get {
-                return this.restartMSTIFromLinkMstReferenceField;
-            }
-            set {
-                this.restartMSTIFromLinkMstReferenceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime restartMSTIFromLinkPlanStrDate {
-            get {
-                return this.restartMSTIFromLinkPlanStrDateField;
-            }
-            set {
-                this.restartMSTIFromLinkPlanStrDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool restartMSTIFromLinkPlanStrDateSpecified {
-            get {
-                return this.restartMSTIFromLinkPlanStrDateFieldSpecified;
-            }
-            set {
-                this.restartMSTIFromLinkPlanStrDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string restartMSTIMstReference {
-            get {
-                return this.restartMSTIMstReferenceField;
-            }
-            set {
-                this.restartMSTIMstReferenceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime restartMSTIPlanStrDate {
-            get {
-                return this.restartMSTIPlanStrDateField;
-            }
-            set {
-                this.restartMSTIPlanStrDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool restartMSTIPlanStrDateSpecified {
-            get {
-                return this.restartMSTIPlanStrDateFieldSpecified;
-            }
-            set {
-                this.restartMSTIPlanStrDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string restartParentWODstrctCode {
-            get {
-                return this.restartParentWODstrctCodeField;
-            }
-            set {
-                this.restartParentWODstrctCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime restartParentWOPlanStrDate {
-            get {
-                return this.restartParentWOPlanStrDateField;
-            }
-            set {
-                this.restartParentWOPlanStrDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool restartParentWOPlanStrDateSpecified {
-            get {
-                return this.restartParentWOPlanStrDateFieldSpecified;
-            }
-            set {
-                this.restartParentWOPlanStrDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string restartParentWOWorkOrder {
-            get {
-                return this.restartParentWOWorkOrderField;
-            }
-            set {
-                this.restartParentWOWorkOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public TaskKeyDTO[] restartPrevLinks {
-            get {
-                return this.restartPrevLinksField;
-            }
-            set {
-                this.restartPrevLinksField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal schSegFr {
-            get {
-                return this.schSegFrField;
-            }
-            set {
-                this.schSegFrField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool schSegFrSpecified {
-            get {
-                return this.schSegFrFieldSpecified;
-            }
-            set {
-                this.schSegFrFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal schSegTo {
-            get {
-                return this.schSegToField;
-            }
-            set {
-                this.schSegToField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool schSegToSpecified {
-            get {
-                return this.schSegToFieldSpecified;
-            }
-            set {
-                this.schSegToFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string schedDesc2 {
-            get {
-                return this.schedDesc2Field;
-            }
-            set {
-                this.schedDesc2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal sequenceNo {
-            get {
-                return this.sequenceNoField;
-            }
-            set {
-                this.sequenceNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool sequenceNoSpecified {
-            get {
-                return this.sequenceNoFieldSpecified;
-            }
-            set {
-                this.sequenceNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string serialNumber {
-            get {
-                return this.serialNumberField;
-            }
-            set {
-                this.serialNumberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string shortDesc1 {
-            get {
-                return this.shortDesc1Field;
-            }
-            set {
-                this.shortDesc1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string shortDesc2 {
-            get {
-                return this.shortDesc2Field;
-            }
-            set {
-                this.shortDesc2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string shutdownNo {
-            get {
-                return this.shutdownNoField;
-            }
-            set {
-                this.shutdownNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string shutdownType {
-            get {
-                return this.shutdownTypeField;
-            }
-            set {
-                this.shutdownTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string source {
-            get {
-                return this.sourceField;
-            }
-            set {
-                this.sourceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string state {
-            get {
-                return this.stateField;
-            }
-            set {
-                this.stateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string statutoryFlg {
-            get {
-                return this.statutoryFlgField;
-            }
-            set {
-                this.statutoryFlgField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stdJobNo {
-            get {
-                return this.stdJobNoField;
-            }
-            set {
-                this.stdJobNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string streetName {
-            get {
-                return this.streetNameField;
-            }
-            set {
-                this.streetNameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string streetNo {
-            get {
-                return this.streetNoField;
-            }
-            set {
-                this.streetNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string suburb {
-            get {
-                return this.suburbField;
-            }
-            set {
-                this.suburbField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string suppressingMST {
-            get {
-                return this.suppressingMSTField;
-            }
-            set {
-                this.suppressingMSTField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime targtFinDate {
-            get {
-                return this.targtFinDateField;
-            }
-            set {
-                this.targtFinDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool targtFinDateSpecified {
-            get {
-                return this.targtFinDateFieldSpecified;
-            }
-            set {
-                this.targtFinDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime targtStrDate {
-            get {
-                return this.targtStrDateField;
-            }
-            set {
-                this.targtStrDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool targtStrDateSpecified {
-            get {
-                return this.targtStrDateFieldSpecified;
-            }
-            set {
-                this.targtStrDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string taskAptwSw {
-            get {
-                return this.taskAptwSwField;
-            }
-            set {
-                this.taskAptwSwField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string townCity {
-            get {
-                return this.townCityField;
-            }
-            set {
-                this.townCityField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string unitOfWork {
-            get {
-                return this.unitOfWorkField;
-            }
-            set {
-                this.unitOfWorkField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal unitsComplete {
-            get {
-                return this.unitsCompleteField;
-            }
-            set {
-                this.unitsCompleteField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool unitsCompleteSpecified {
-            get {
-                return this.unitsCompleteFieldSpecified;
-            }
-            set {
-                this.unitsCompleteFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal unitsRequired {
-            get {
-                return this.unitsRequiredField;
-            }
-            set {
-                this.unitsRequiredField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool unitsRequiredSpecified {
-            get {
-                return this.unitsRequiredFieldSpecified;
-            }
-            set {
-                this.unitsRequiredFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woDesc {
-            get {
-                return this.woDescField;
-            }
-            set {
-                this.woDescField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woJobCodex1 {
-            get {
-                return this.woJobCodex1Field;
-            }
-            set {
-                this.woJobCodex1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woJobCodex10 {
-            get {
-                return this.woJobCodex10Field;
-            }
-            set {
-                this.woJobCodex10Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woJobCodex2 {
-            get {
-                return this.woJobCodex2Field;
-            }
-            set {
-                this.woJobCodex2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woJobCodex3 {
-            get {
-                return this.woJobCodex3Field;
-            }
-            set {
-                this.woJobCodex3Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woJobCodex4 {
-            get {
-                return this.woJobCodex4Field;
-            }
-            set {
-                this.woJobCodex4Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woJobCodex5 {
-            get {
-                return this.woJobCodex5Field;
-            }
-            set {
-                this.woJobCodex5Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woJobCodex6 {
-            get {
-                return this.woJobCodex6Field;
-            }
-            set {
-                this.woJobCodex6Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woJobCodex7 {
-            get {
-                return this.woJobCodex7Field;
-            }
-            set {
-                this.woJobCodex7Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woJobCodex8 {
-            get {
-                return this.woJobCodex8Field;
-            }
-            set {
-                this.woJobCodex8Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woJobCodex9 {
-            get {
-                return this.woJobCodex9Field;
-            }
-            set {
-                this.woJobCodex9Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woStatusM {
-            get {
-                return this.woStatusMField;
-            }
-            set {
-                this.woStatusMField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woStatusU {
-            get {
-                return this.woStatusUField;
-            }
-            set {
-                this.woStatusUField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string WoTaskNo {
-            get {
-                return this.woTaskNoField;
-            }
-            set {
-                this.woTaskNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string woType {
-            get {
-                return this.woTypeField;
-            }
-            set {
-                this.woTypeField = value;
+                this.resourceCategoryField = value;
             }
         }
         
@@ -8179,468 +11202,10 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
                 this.workGroupField = value;
             }
         }
-        
-        /// <remarks/>
-        public string workOrder {
-            get {
-                return this.workOrderField;
-            }
-            set {
-                this.workOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workRequestDescription {
-            get {
-                return this.workRequestDescriptionField;
-            }
-            set {
-                this.workRequestDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string zipCode {
-            get {
-                return this.zipCodeField;
-            }
-            set {
-                this.zipCodeField = value;
-            }
-        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class JobLinkDTO : ServiceDTO {
-        
-        private JobLinkChildDTO[] childrenField;
-        
-        private JobLinkItemDTO parentField;
-        
-        /// <remarks/>
-        public JobLinkChildDTO[] children {
-            get {
-                return this.childrenField;
-            }
-            set {
-                this.childrenField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public JobLinkItemDTO parent {
-            get {
-                return this.parentField;
-            }
-            set {
-                this.parentField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class JobLinkChildDTO : ServiceDTO {
-        
-        private string districtField;
-        
-        private string linkTypeField;
-        
-        private string offsetField;
-        
-        private string workOrderField;
-        
-        /// <remarks/>
-        public string district {
-            get {
-                return this.districtField;
-            }
-            set {
-                this.districtField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkType {
-            get {
-                return this.linkTypeField;
-            }
-            set {
-                this.linkTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string offset {
-            get {
-                return this.offsetField;
-            }
-            set {
-                this.offsetField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrder {
-            get {
-                return this.workOrderField;
-            }
-            set {
-                this.workOrderField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class JobLinkItemDTO : ServiceDTO {
-        
-        private string districtField;
-        
-        private string workOrderField;
-        
-        /// <remarks/>
-        public string district {
-            get {
-                return this.districtField;
-            }
-            set {
-                this.districtField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrder {
-            get {
-                return this.workOrderField;
-            }
-            set {
-                this.workOrderField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class JobsJobLinkDTO : ServiceDTO {
-        
-        private string linkDistrictCodeField;
-        
-        private decimal linkEntityIdField;
-        
-        private bool linkEntityIdFieldSpecified;
-        
-        private decimal linkEntityTypeField;
-        
-        private bool linkEntityTypeFieldSpecified;
-        
-        private string linkErpRefField;
-        
-        private string linkErpTaskRefField;
-        
-        private decimal linkJobLinkListIdField;
-        
-        private bool linkJobLinkListIdFieldSpecified;
-        
-        private string linkLagOrLeadField;
-        
-        private decimal linkOffsetField;
-        
-        private bool linkOffsetFieldSpecified;
-        
-        private decimal linkParentEntityIdField;
-        
-        private bool linkParentEntityIdFieldSpecified;
-        
-        private string linkParentEntityTypeField;
-        
-        private string linkScaleField;
-        
-        private decimal linkScaledOffsetField;
-        
-        private bool linkScaledOffsetFieldSpecified;
-        
-        private decimal linkSequenceNumField;
-        
-        private bool linkSequenceNumFieldSpecified;
-        
-        private string linkStatTypeField;
-        
-        private decimal linkStatValueField;
-        
-        private bool linkStatValueFieldSpecified;
-        
-        private string linkTypeField;
-        
-        /// <remarks/>
-        public string linkDistrictCode {
-            get {
-                return this.linkDistrictCodeField;
-            }
-            set {
-                this.linkDistrictCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkEntityId {
-            get {
-                return this.linkEntityIdField;
-            }
-            set {
-                this.linkEntityIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkEntityIdSpecified {
-            get {
-                return this.linkEntityIdFieldSpecified;
-            }
-            set {
-                this.linkEntityIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkEntityType {
-            get {
-                return this.linkEntityTypeField;
-            }
-            set {
-                this.linkEntityTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkEntityTypeSpecified {
-            get {
-                return this.linkEntityTypeFieldSpecified;
-            }
-            set {
-                this.linkEntityTypeFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkErpRef {
-            get {
-                return this.linkErpRefField;
-            }
-            set {
-                this.linkErpRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkErpTaskRef {
-            get {
-                return this.linkErpTaskRefField;
-            }
-            set {
-                this.linkErpTaskRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkJobLinkListId {
-            get {
-                return this.linkJobLinkListIdField;
-            }
-            set {
-                this.linkJobLinkListIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkJobLinkListIdSpecified {
-            get {
-                return this.linkJobLinkListIdFieldSpecified;
-            }
-            set {
-                this.linkJobLinkListIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkLagOrLead {
-            get {
-                return this.linkLagOrLeadField;
-            }
-            set {
-                this.linkLagOrLeadField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkOffset {
-            get {
-                return this.linkOffsetField;
-            }
-            set {
-                this.linkOffsetField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkOffsetSpecified {
-            get {
-                return this.linkOffsetFieldSpecified;
-            }
-            set {
-                this.linkOffsetFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkParentEntityId {
-            get {
-                return this.linkParentEntityIdField;
-            }
-            set {
-                this.linkParentEntityIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkParentEntityIdSpecified {
-            get {
-                return this.linkParentEntityIdFieldSpecified;
-            }
-            set {
-                this.linkParentEntityIdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkParentEntityType {
-            get {
-                return this.linkParentEntityTypeField;
-            }
-            set {
-                this.linkParentEntityTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkScale {
-            get {
-                return this.linkScaleField;
-            }
-            set {
-                this.linkScaleField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkScaledOffset {
-            get {
-                return this.linkScaledOffsetField;
-            }
-            set {
-                this.linkScaledOffsetField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkScaledOffsetSpecified {
-            get {
-                return this.linkScaledOffsetFieldSpecified;
-            }
-            set {
-                this.linkScaledOffsetFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkSequenceNum {
-            get {
-                return this.linkSequenceNumField;
-            }
-            set {
-                this.linkSequenceNumField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkSequenceNumSpecified {
-            get {
-                return this.linkSequenceNumFieldSpecified;
-            }
-            set {
-                this.linkSequenceNumFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkStatType {
-            get {
-                return this.linkStatTypeField;
-            }
-            set {
-                this.linkStatTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal linkStatValue {
-            get {
-                return this.linkStatValueField;
-            }
-            set {
-                this.linkStatValueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool linkStatValueSpecified {
-            get {
-                return this.linkStatValueFieldSpecified;
-            }
-            set {
-                this.linkStatValueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkType {
-            get {
-                return this.linkTypeField;
-            }
-            set {
-                this.linkTypeField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8698,203 +11263,28 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class JobsResourceCategoryDTO : ServiceDTO {
+    public partial class EquipmentServiceResult : ServiceResult {
         
-        private string crewField;
-        
-        private string resourceCategoryField;
-        
-        private string workGroupField;
+        private EquipmentDTO equipmentDTOField;
         
         /// <remarks/>
-        public string crew {
+        public EquipmentDTO equipmentDTO {
             get {
-                return this.crewField;
+                return this.equipmentDTOField;
             }
             set {
-                this.crewField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string resourceCategory {
-            get {
-                return this.resourceCategoryField;
-            }
-            set {
-                this.resourceCategoryField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workGroup {
-            get {
-                return this.workGroupField;
-            }
-            set {
-                this.workGroupField = value;
+                this.equipmentDTOField = value;
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class JobsCreateLinkMWPDTO : ServiceDTO {
-        
-        private bool autoSetLinkField;
-        
-        private bool autoSetLinkFieldSpecified;
-        
-        private JobsMWPDTO jobToLinkField;
-        
-        private string leadOrLagField;
-        
-        private string linkJobTypeField;
-        
-        private string linkToParentDstrctCodeField;
-        
-        private string linkToParentWorkOrderField;
-        
-        private string linkTypeField;
-        
-        private string offsetField;
-        
-        private string scaleField;
-        
-        /// <remarks/>
-        public bool autoSetLink {
-            get {
-                return this.autoSetLinkField;
-            }
-            set {
-                this.autoSetLinkField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool autoSetLinkSpecified {
-            get {
-                return this.autoSetLinkFieldSpecified;
-            }
-            set {
-                this.autoSetLinkFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public JobsMWPDTO jobToLink {
-            get {
-                return this.jobToLinkField;
-            }
-            set {
-                this.jobToLinkField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string leadOrLag {
-            get {
-                return this.leadOrLagField;
-            }
-            set {
-                this.leadOrLagField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkJobType {
-            get {
-                return this.linkJobTypeField;
-            }
-            set {
-                this.linkJobTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkToParentDstrctCode {
-            get {
-                return this.linkToParentDstrctCodeField;
-            }
-            set {
-                this.linkToParentDstrctCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkToParentWorkOrder {
-            get {
-                return this.linkToParentWorkOrderField;
-            }
-            set {
-                this.linkToParentWorkOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string linkType {
-            get {
-                return this.linkTypeField;
-            }
-            set {
-                this.linkTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string offset {
-            get {
-                return this.offsetField;
-            }
-            set {
-                this.offsetField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string scale {
-            get {
-                return this.scaleField;
-            }
-            set {
-                this.scaleField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m8mwp.types.ellipse.mincom.com")]
-    public partial class JobsCreateLinkMWPServiceResult : ServiceResult {
-        
-        private JobsCreateLinkMWPDTO jobsCreateLinkMWPDTOField;
-        
-        /// <remarks/>
-        public JobsCreateLinkMWPDTO jobsCreateLinkMWPDTO {
-            get {
-                return this.jobsCreateLinkMWPDTOField;
-            }
-            set {
-                this.jobsCreateLinkMWPDTOField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2612.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8915,18 +11305,18 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void updateCompletedEventHandler(object sender, updateCompletedEventArgs e);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class updateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal updateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal readCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -8941,11 +11331,11 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -8967,141 +11357,11 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleCreateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public JobsMWPServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((JobsMWPServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void multipleLinkJobsCompletedEventHandler(object sender, multipleLinkJobsCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleLinkJobsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleLinkJobsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public JobsCreateLinkMWPServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((JobsCreateLinkMWPServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void multipleUpdateCompletedEventHandler(object sender, multipleUpdateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleUpdateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public JobsMWPServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((JobsMWPServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void bulkUpdateCompletedEventHandler(object sender, bulkUpdateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class bulkUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal bulkUpdateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public JobsMWPServiceResult Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((JobsMWPServiceResult)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void linkJobsCompletedEventHandler(object sender, linkJobsCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class linkJobsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal linkJobsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public JobsCreateLinkMWPServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((JobsCreateLinkMWPServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void equipmentCompletedEventHandler(object sender, equipmentCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class equipmentCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9123,18 +11383,18 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void unlinkCompletedEventHandler(object sender, unlinkCompletedEventArgs e);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void updateCompletedEventHandler(object sender, updateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class unlinkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class updateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal unlinkCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal updateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -9149,63 +11409,11 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void multipleBulkUpdateCompletedEventHandler(object sender, multipleBulkUpdateCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleBulkUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleBulkUpdateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public JobsMWPServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((JobsMWPServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal createCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public JobsMWPServiceResult Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((JobsMWPServiceResult)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void jobsSearchCompletedEventHandler(object sender, jobsSearchCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class jobsSearchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9227,44 +11435,18 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void multipleEquipmentCompletedEventHandler(object sender, multipleEquipmentCompletedEventArgs e);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleBulkUpdateCompletedEventHandler(object sender, multipleBulkUpdateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleEquipmentCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class multipleBulkUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal multipleEquipmentCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public EquipmentServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((EquipmentServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void multipleUnlinkCompletedEventHandler(object sender, multipleUnlinkCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleUnlinkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleUnlinkCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal multipleBulkUpdateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -9279,63 +11461,11 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public JobsMWPServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((JobsMWPServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void searchCompletedEventHandler(object sender, searchCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class searchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal searchCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public JobsMWPServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((JobsMWPServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -9357,18 +11487,70 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
-    public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleEquipmentCompletedEventHandler(object sender, multipleEquipmentCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class multipleEquipmentCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal readCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal multipleEquipmentCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public EquipmentServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((EquipmentServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void searchCompletedEventHandler(object sender, searchCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class searchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal searchCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public JobsMWPServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((JobsMWPServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void unlinkCompletedEventHandler(object sender, unlinkCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class unlinkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal unlinkCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -9378,6 +11560,240 @@ namespace EllipseJobsClassLibrary.JobsMWPService {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((JobsMWPServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleUpdateCompletedEventHandler(object sender, multipleUpdateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleUpdateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public JobsMWPServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((JobsMWPServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleUnlinkCompletedEventHandler(object sender, multipleUnlinkCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleUnlinkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleUnlinkCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public JobsMWPServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((JobsMWPServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void bulkUpdateCompletedEventHandler(object sender, bulkUpdateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class bulkUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal bulkUpdateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public JobsMWPServiceResult Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((JobsMWPServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal createCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public JobsMWPServiceResult Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((JobsMWPServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void linkJobsCompletedEventHandler(object sender, linkJobsCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class linkJobsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal linkJobsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public JobsCreateLinkMWPServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((JobsCreateLinkMWPServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void retrieveViaRefCodesCompletedEventHandler(object sender, retrieveViaRefCodesCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class retrieveViaRefCodesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal retrieveViaRefCodesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public JobsMWPServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((JobsMWPServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public JobsMWPServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((JobsMWPServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleLinkJobsCompletedEventHandler(object sender, multipleLinkJobsCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleLinkJobsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleLinkJobsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public JobsCreateLinkMWPServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((JobsCreateLinkMWPServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleCreateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public JobsMWPServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((JobsMWPServiceResult[])(this.results[0]));
             }
         }
     }

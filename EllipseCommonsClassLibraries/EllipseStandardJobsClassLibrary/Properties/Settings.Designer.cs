@@ -12,7 +12,7 @@ namespace EllipseStandardJobsClassLibrary.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,37 +26,17 @@ namespace EllipseStandardJobsClassLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/StandardJobService")]
-        public string EllipseStandardJobsClassLibrary_StandardJobService_StandardJobService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentReqmntsService")]
+        public string EllipseStandardJobsClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService {
             get {
-                return ((string)(this["EllipseStandardJobsClassLibrary_StandardJobService_StandardJobService"]));
+                return ((string)(this["EllipseStandardJobsClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/StandardJobTaskService")]
-        public string EllipseStandardJobsClassLibrary_StandardJobTaskService_StandardJobTaskService {
-            get {
-                return ((string)(this["EllipseStandardJobsClassLibrary_StandardJobTaskService_StandardJobTaskService"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/ResourceReqmntsService")]
-        public string EllipseStandardJobsClassLibrary_ResourceReqmntsService_ResourceReqmntsService {
-            get {
-                return ((string)(this["EllipseStandardJobsClassLibrary_ResourceReqmntsService_ResourceReqmntsService"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/MaterialReqmntsService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MaterialReqmntsService")]
         public string EllipseStandardJobsClassLibrary_MaterialReqmntsService_MaterialReqmntsService {
             get {
                 return ((string)(this["EllipseStandardJobsClassLibrary_MaterialReqmntsService_MaterialReqmntsService"]));
@@ -66,10 +46,30 @@ namespace EllipseStandardJobsClassLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/EquipmentReqmntsService")]
-        public string EllipseStandardJobsClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ResourceReqmntsService")]
+        public string EllipseStandardJobsClassLibrary_ResourceReqmntsService_ResourceReqmntsService {
             get {
-                return ((string)(this["EllipseStandardJobsClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService"]));
+                return ((string)(this["EllipseStandardJobsClassLibrary_ResourceReqmntsService_ResourceReqmntsService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StandardJobService")]
+        public string EllipseStandardJobsClassLibrary_StandardJobService_StandardJobService {
+            get {
+                return ((string)(this["EllipseStandardJobsClassLibrary_StandardJobService_StandardJobService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StandardJobTaskService")]
+        public string EllipseStandardJobsClassLibrary_StandardJobTaskService_StandardJobTaskService {
+            get {
+                return ((string)(this["EllipseStandardJobsClassLibrary_StandardJobTaskService_StandardJobTaskService"]));
             }
         }
     }

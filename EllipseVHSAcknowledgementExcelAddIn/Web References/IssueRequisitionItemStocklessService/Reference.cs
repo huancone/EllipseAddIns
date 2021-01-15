@@ -23,43 +23,44 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="IssueRequisitionItemStocklessServiceHttpBinding", Namespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com")]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(BaseServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Base))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Attribute[]))]
     public partial class IssueRequisitionItemStocklessService : System.Web.Services.Protocols.SoapHttpClientProtocol {
-        
-        private System.Threading.SendOrPostCallback multipleImmediateReturnOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback acknowledgeOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleCloseOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback immediateReadOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleAcknowledgeOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback multipleImmediateReadOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback immediateIssueOperationCompleted;
         
         private System.Threading.SendOrPostCallback immediateReturnOperationCompleted;
         
-        private System.Threading.SendOrPostCallback immediateSearchOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback closeOperationCompleted;
+        private System.Threading.SendOrPostCallback multipleImmediateReadOperationCompleted;
         
         private System.Threading.SendOrPostCallback immediateSearchHoldingsOperationCompleted;
         
-        private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
+        private System.Threading.SendOrPostCallback readOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleCloseOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleImmediateReturnOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleImmediateIssueOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback immediateReadOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback immediateIssueOperationCompleted;
         
         private System.Threading.SendOrPostCallback searchOperationCompleted;
         
-        private System.Threading.SendOrPostCallback readOperationCompleted;
+        private System.Threading.SendOrPostCallback acknowledgeOperationCompleted;
         
-        private System.Threading.SendOrPostCallback multipleImmediateIssueOperationCompleted;
+        private System.Threading.SendOrPostCallback immediateSearchOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleAcknowledgeOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback multipleReadOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback closeOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -100,277 +101,49 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         }
         
         /// <remarks/>
-        public event multipleImmediateReturnCompletedEventHandler multipleImmediateReturnCompleted;
-        
-        /// <remarks/>
-        public event acknowledgeCompletedEventHandler acknowledgeCompleted;
-        
-        /// <remarks/>
-        public event multipleCloseCompletedEventHandler multipleCloseCompleted;
-        
-        /// <remarks/>
-        public event immediateReadCompletedEventHandler immediateReadCompleted;
-        
-        /// <remarks/>
-        public event multipleAcknowledgeCompletedEventHandler multipleAcknowledgeCompleted;
+        public event immediateReturnCompletedEventHandler immediateReturnCompleted;
         
         /// <remarks/>
         public event multipleImmediateReadCompletedEventHandler multipleImmediateReadCompleted;
         
         /// <remarks/>
-        public event immediateIssueCompletedEventHandler immediateIssueCompleted;
-        
-        /// <remarks/>
-        public event immediateReturnCompletedEventHandler immediateReturnCompleted;
-        
-        /// <remarks/>
-        public event immediateSearchCompletedEventHandler immediateSearchCompleted;
-        
-        /// <remarks/>
-        public event closeCompletedEventHandler closeCompleted;
-        
-        /// <remarks/>
         public event immediateSearchHoldingsCompletedEventHandler immediateSearchHoldingsCompleted;
-        
-        /// <remarks/>
-        public event multipleReadCompletedEventHandler multipleReadCompleted;
-        
-        /// <remarks/>
-        public event searchCompletedEventHandler searchCompleted;
         
         /// <remarks/>
         public event readCompletedEventHandler readCompleted;
         
         /// <remarks/>
+        public event multipleCloseCompletedEventHandler multipleCloseCompleted;
+        
+        /// <remarks/>
+        public event multipleImmediateReturnCompletedEventHandler multipleImmediateReturnCompleted;
+        
+        /// <remarks/>
         public event multipleImmediateIssueCompletedEventHandler multipleImmediateIssueCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-        public ImmediateReturnStocklessServiceResult[] multipleImmediateReturn([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] ImmediateReturnStocklessDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleImmediateReturn", new object[] {
-                        context,
-                        inputDtos});
-            return ((ImmediateReturnStocklessServiceResult[])(results[0]));
-        }
+        public event immediateReadCompletedEventHandler immediateReadCompleted;
         
         /// <remarks/>
-        public void multipleImmediateReturnAsync(OperationContext context, ImmediateReturnStocklessDTO[] inputDtos) {
-            this.multipleImmediateReturnAsync(context, inputDtos, null);
-        }
+        public event immediateIssueCompletedEventHandler immediateIssueCompleted;
         
         /// <remarks/>
-        public void multipleImmediateReturnAsync(OperationContext context, ImmediateReturnStocklessDTO[] inputDtos, object userState) {
-            if ((this.multipleImmediateReturnOperationCompleted == null)) {
-                this.multipleImmediateReturnOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleImmediateReturnOperationCompleted);
-            }
-            this.InvokeAsync("multipleImmediateReturn", new object[] {
-                        context,
-                        inputDtos}, this.multipleImmediateReturnOperationCompleted, userState);
-        }
-        
-        private void OnmultipleImmediateReturnOperationCompleted(object arg) {
-            if ((this.multipleImmediateReturnCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleImmediateReturnCompleted(this, new multipleImmediateReturnCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
+        public event searchCompletedEventHandler searchCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public IssueRequisitionItemStocklessAcknowledgeServiceResult acknowledge([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] IssueRequisitionItemStocklessAcknowledgeDTO serviceDTO) {
-            object[] results = this.Invoke("acknowledge", new object[] {
-                        context,
-                        serviceDTO});
-            return ((IssueRequisitionItemStocklessAcknowledgeServiceResult)(results[0]));
-        }
+        public event acknowledgeCompletedEventHandler acknowledgeCompleted;
         
         /// <remarks/>
-        public void acknowledgeAsync(OperationContext context, IssueRequisitionItemStocklessAcknowledgeDTO serviceDTO) {
-            this.acknowledgeAsync(context, serviceDTO, null);
-        }
+        public event immediateSearchCompletedEventHandler immediateSearchCompleted;
         
         /// <remarks/>
-        public void acknowledgeAsync(OperationContext context, IssueRequisitionItemStocklessAcknowledgeDTO serviceDTO, object userState) {
-            if ((this.acknowledgeOperationCompleted == null)) {
-                this.acknowledgeOperationCompleted = new System.Threading.SendOrPostCallback(this.OnacknowledgeOperationCompleted);
-            }
-            this.InvokeAsync("acknowledge", new object[] {
-                        context,
-                        serviceDTO}, this.acknowledgeOperationCompleted, userState);
-        }
-        
-        private void OnacknowledgeOperationCompleted(object arg) {
-            if ((this.acknowledgeCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.acknowledgeCompleted(this, new acknowledgeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
+        public event multipleAcknowledgeCompletedEventHandler multipleAcknowledgeCompleted;
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-        public IssueRequisitionItemStocklessServiceResult[] multipleClose([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] IssueRequisitionItemStocklessDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleClose", new object[] {
-                        context,
-                        inputDtos});
-            return ((IssueRequisitionItemStocklessServiceResult[])(results[0]));
-        }
+        public event multipleReadCompletedEventHandler multipleReadCompleted;
         
         /// <remarks/>
-        public void multipleCloseAsync(OperationContext context, IssueRequisitionItemStocklessDTO[] inputDtos) {
-            this.multipleCloseAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleCloseAsync(OperationContext context, IssueRequisitionItemStocklessDTO[] inputDtos, object userState) {
-            if ((this.multipleCloseOperationCompleted == null)) {
-                this.multipleCloseOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCloseOperationCompleted);
-            }
-            this.InvokeAsync("multipleClose", new object[] {
-                        context,
-                        inputDtos}, this.multipleCloseOperationCompleted, userState);
-        }
-        
-        private void OnmultipleCloseOperationCompleted(object arg) {
-            if ((this.multipleCloseCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleCloseCompleted(this, new multipleCloseCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public ImmediateReadServiceResult immediateRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] ImmediateReadDTO serviceDTO) {
-            object[] results = this.Invoke("immediateRead", new object[] {
-                        context,
-                        serviceDTO});
-            return ((ImmediateReadServiceResult)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void immediateReadAsync(OperationContext context, ImmediateReadDTO serviceDTO) {
-            this.immediateReadAsync(context, serviceDTO, null);
-        }
-        
-        /// <remarks/>
-        public void immediateReadAsync(OperationContext context, ImmediateReadDTO serviceDTO, object userState) {
-            if ((this.immediateReadOperationCompleted == null)) {
-                this.immediateReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnimmediateReadOperationCompleted);
-            }
-            this.InvokeAsync("immediateRead", new object[] {
-                        context,
-                        serviceDTO}, this.immediateReadOperationCompleted, userState);
-        }
-        
-        private void OnimmediateReadOperationCompleted(object arg) {
-            if ((this.immediateReadCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.immediateReadCompleted(this, new immediateReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-        public IssueRequisitionItemStocklessAcknowledgeServiceResult[] multipleAcknowledge([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] IssueRequisitionItemStocklessAcknowledgeDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleAcknowledge", new object[] {
-                        context,
-                        inputDtos});
-            return ((IssueRequisitionItemStocklessAcknowledgeServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleAcknowledgeAsync(OperationContext context, IssueRequisitionItemStocklessAcknowledgeDTO[] inputDtos) {
-            this.multipleAcknowledgeAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleAcknowledgeAsync(OperationContext context, IssueRequisitionItemStocklessAcknowledgeDTO[] inputDtos, object userState) {
-            if ((this.multipleAcknowledgeOperationCompleted == null)) {
-                this.multipleAcknowledgeOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleAcknowledgeOperationCompleted);
-            }
-            this.InvokeAsync("multipleAcknowledge", new object[] {
-                        context,
-                        inputDtos}, this.multipleAcknowledgeOperationCompleted, userState);
-        }
-        
-        private void OnmultipleAcknowledgeOperationCompleted(object arg) {
-            if ((this.multipleAcknowledgeCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleAcknowledgeCompleted(this, new multipleAcknowledgeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
-        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-        public ImmediateReadServiceResult[] multipleImmediateRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] ImmediateReadDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleImmediateRead", new object[] {
-                        context,
-                        inputDtos});
-            return ((ImmediateReadServiceResult[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void multipleImmediateReadAsync(OperationContext context, ImmediateReadDTO[] inputDtos) {
-            this.multipleImmediateReadAsync(context, inputDtos, null);
-        }
-        
-        /// <remarks/>
-        public void multipleImmediateReadAsync(OperationContext context, ImmediateReadDTO[] inputDtos, object userState) {
-            if ((this.multipleImmediateReadOperationCompleted == null)) {
-                this.multipleImmediateReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleImmediateReadOperationCompleted);
-            }
-            this.InvokeAsync("multipleImmediateRead", new object[] {
-                        context,
-                        inputDtos}, this.multipleImmediateReadOperationCompleted, userState);
-        }
-        
-        private void OnmultipleImmediateReadOperationCompleted(object arg) {
-            if ((this.multipleImmediateReadCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleImmediateReadCompleted(this, new multipleImmediateReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public ImmediateIssueStocklessServiceResult immediateIssue([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] ImmediateIssueStocklessDTO serviceDTO) {
-            object[] results = this.Invoke("immediateIssue", new object[] {
-                        context,
-                        serviceDTO});
-            return ((ImmediateIssueStocklessServiceResult)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void immediateIssueAsync(OperationContext context, ImmediateIssueStocklessDTO serviceDTO) {
-            this.immediateIssueAsync(context, serviceDTO, null);
-        }
-        
-        /// <remarks/>
-        public void immediateIssueAsync(OperationContext context, ImmediateIssueStocklessDTO serviceDTO, object userState) {
-            if ((this.immediateIssueOperationCompleted == null)) {
-                this.immediateIssueOperationCompleted = new System.Threading.SendOrPostCallback(this.OnimmediateIssueOperationCompleted);
-            }
-            this.InvokeAsync("immediateIssue", new object[] {
-                        context,
-                        serviceDTO}, this.immediateIssueOperationCompleted, userState);
-        }
-        
-        private void OnimmediateIssueOperationCompleted(object arg) {
-            if ((this.immediateIssueCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.immediateIssueCompleted(this, new immediateIssueCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
+        public event closeCompletedEventHandler closeCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -408,66 +181,32 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
         [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-        public ImmediateServiceResult[] immediateSearch([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] ImmediateSearchParam searchParams, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] ImmediateDTO restart) {
-            object[] results = this.Invoke("immediateSearch", new object[] {
+        public ImmediateReadServiceResult[] multipleImmediateRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] ImmediateReadDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleImmediateRead", new object[] {
                         context,
-                        searchParams,
-                        restart});
-            return ((ImmediateServiceResult[])(results[0]));
+                        inputDtos});
+            return ((ImmediateReadServiceResult[])(results[0]));
         }
         
         /// <remarks/>
-        public void immediateSearchAsync(OperationContext context, ImmediateSearchParam searchParams, ImmediateDTO restart) {
-            this.immediateSearchAsync(context, searchParams, restart, null);
+        public void multipleImmediateReadAsync(OperationContext context, ImmediateReadDTO[] inputDtos) {
+            this.multipleImmediateReadAsync(context, inputDtos, null);
         }
         
         /// <remarks/>
-        public void immediateSearchAsync(OperationContext context, ImmediateSearchParam searchParams, ImmediateDTO restart, object userState) {
-            if ((this.immediateSearchOperationCompleted == null)) {
-                this.immediateSearchOperationCompleted = new System.Threading.SendOrPostCallback(this.OnimmediateSearchOperationCompleted);
+        public void multipleImmediateReadAsync(OperationContext context, ImmediateReadDTO[] inputDtos, object userState) {
+            if ((this.multipleImmediateReadOperationCompleted == null)) {
+                this.multipleImmediateReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleImmediateReadOperationCompleted);
             }
-            this.InvokeAsync("immediateSearch", new object[] {
+            this.InvokeAsync("multipleImmediateRead", new object[] {
                         context,
-                        searchParams,
-                        restart}, this.immediateSearchOperationCompleted, userState);
+                        inputDtos}, this.multipleImmediateReadOperationCompleted, userState);
         }
         
-        private void OnimmediateSearchOperationCompleted(object arg) {
-            if ((this.immediateSearchCompleted != null)) {
+        private void OnmultipleImmediateReadOperationCompleted(object arg) {
+            if ((this.multipleImmediateReadCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.immediateSearchCompleted(this, new immediateSearchCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public IssueRequisitionItemStocklessServiceResult close([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] IssueRequisitionItemStocklessDTO serviceDTO) {
-            object[] results = this.Invoke("close", new object[] {
-                        context,
-                        serviceDTO});
-            return ((IssueRequisitionItemStocklessServiceResult)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void closeAsync(OperationContext context, IssueRequisitionItemStocklessDTO serviceDTO) {
-            this.closeAsync(context, serviceDTO, null);
-        }
-        
-        /// <remarks/>
-        public void closeAsync(OperationContext context, IssueRequisitionItemStocklessDTO serviceDTO, object userState) {
-            if ((this.closeOperationCompleted == null)) {
-                this.closeOperationCompleted = new System.Threading.SendOrPostCallback(this.OncloseOperationCompleted);
-            }
-            this.InvokeAsync("close", new object[] {
-                        context,
-                        serviceDTO}, this.closeOperationCompleted, userState);
-        }
-        
-        private void OncloseOperationCompleted(object arg) {
-            if ((this.closeCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.closeCompleted(this, new closeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.multipleImmediateReadCompleted(this, new multipleImmediateReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -508,34 +247,196 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public IssueRequisitionItemStocklessServiceResult read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] IssueRequisitionItemStocklessDTO serviceDTO) {
+            object[] results = this.Invoke("read", new object[] {
+                        context,
+                        serviceDTO});
+            return ((IssueRequisitionItemStocklessServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void readAsync(OperationContext context, IssueRequisitionItemStocklessDTO serviceDTO) {
+            this.readAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void readAsync(OperationContext context, IssueRequisitionItemStocklessDTO serviceDTO, object userState) {
+            if ((this.readOperationCompleted == null)) {
+                this.readOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreadOperationCompleted);
+            }
+            this.InvokeAsync("read", new object[] {
+                        context,
+                        serviceDTO}, this.readOperationCompleted, userState);
+        }
+        
+        private void OnreadOperationCompleted(object arg) {
+            if ((this.readCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
         [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-        public IssueRequisitionItemStocklessServiceResult[] multipleRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] IssueRequisitionItemStocklessDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleRead", new object[] {
+        public IssueRequisitionItemStocklessServiceResult[] multipleClose([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] IssueRequisitionItemStocklessDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleClose", new object[] {
                         context,
                         inputDtos});
             return ((IssueRequisitionItemStocklessServiceResult[])(results[0]));
         }
         
         /// <remarks/>
-        public void multipleReadAsync(OperationContext context, IssueRequisitionItemStocklessDTO[] inputDtos) {
-            this.multipleReadAsync(context, inputDtos, null);
+        public void multipleCloseAsync(OperationContext context, IssueRequisitionItemStocklessDTO[] inputDtos) {
+            this.multipleCloseAsync(context, inputDtos, null);
         }
         
         /// <remarks/>
-        public void multipleReadAsync(OperationContext context, IssueRequisitionItemStocklessDTO[] inputDtos, object userState) {
-            if ((this.multipleReadOperationCompleted == null)) {
-                this.multipleReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadOperationCompleted);
+        public void multipleCloseAsync(OperationContext context, IssueRequisitionItemStocklessDTO[] inputDtos, object userState) {
+            if ((this.multipleCloseOperationCompleted == null)) {
+                this.multipleCloseOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleCloseOperationCompleted);
             }
-            this.InvokeAsync("multipleRead", new object[] {
+            this.InvokeAsync("multipleClose", new object[] {
                         context,
-                        inputDtos}, this.multipleReadOperationCompleted, userState);
+                        inputDtos}, this.multipleCloseOperationCompleted, userState);
         }
         
-        private void OnmultipleReadOperationCompleted(object arg) {
-            if ((this.multipleReadCompleted != null)) {
+        private void OnmultipleCloseOperationCompleted(object arg) {
+            if ((this.multipleCloseCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleReadCompleted(this, new multipleReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.multipleCloseCompleted(this, new multipleCloseCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
+        public ImmediateReturnStocklessServiceResult[] multipleImmediateReturn([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] ImmediateReturnStocklessDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleImmediateReturn", new object[] {
+                        context,
+                        inputDtos});
+            return ((ImmediateReturnStocklessServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleImmediateReturnAsync(OperationContext context, ImmediateReturnStocklessDTO[] inputDtos) {
+            this.multipleImmediateReturnAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleImmediateReturnAsync(OperationContext context, ImmediateReturnStocklessDTO[] inputDtos, object userState) {
+            if ((this.multipleImmediateReturnOperationCompleted == null)) {
+                this.multipleImmediateReturnOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleImmediateReturnOperationCompleted);
+            }
+            this.InvokeAsync("multipleImmediateReturn", new object[] {
+                        context,
+                        inputDtos}, this.multipleImmediateReturnOperationCompleted, userState);
+        }
+        
+        private void OnmultipleImmediateReturnOperationCompleted(object arg) {
+            if ((this.multipleImmediateReturnCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleImmediateReturnCompleted(this, new multipleImmediateReturnCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
+        public ImmediateIssueStocklessServiceResult[] multipleImmediateIssue([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] ImmediateIssueStocklessDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleImmediateIssue", new object[] {
+                        context,
+                        inputDtos});
+            return ((ImmediateIssueStocklessServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleImmediateIssueAsync(OperationContext context, ImmediateIssueStocklessDTO[] inputDtos) {
+            this.multipleImmediateIssueAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleImmediateIssueAsync(OperationContext context, ImmediateIssueStocklessDTO[] inputDtos, object userState) {
+            if ((this.multipleImmediateIssueOperationCompleted == null)) {
+                this.multipleImmediateIssueOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleImmediateIssueOperationCompleted);
+            }
+            this.InvokeAsync("multipleImmediateIssue", new object[] {
+                        context,
+                        inputDtos}, this.multipleImmediateIssueOperationCompleted, userState);
+        }
+        
+        private void OnmultipleImmediateIssueOperationCompleted(object arg) {
+            if ((this.multipleImmediateIssueCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleImmediateIssueCompleted(this, new multipleImmediateIssueCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public ImmediateReadServiceResult immediateRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] ImmediateReadDTO serviceDTO) {
+            object[] results = this.Invoke("immediateRead", new object[] {
+                        context,
+                        serviceDTO});
+            return ((ImmediateReadServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void immediateReadAsync(OperationContext context, ImmediateReadDTO serviceDTO) {
+            this.immediateReadAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void immediateReadAsync(OperationContext context, ImmediateReadDTO serviceDTO, object userState) {
+            if ((this.immediateReadOperationCompleted == null)) {
+                this.immediateReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnimmediateReadOperationCompleted);
+            }
+            this.InvokeAsync("immediateRead", new object[] {
+                        context,
+                        serviceDTO}, this.immediateReadOperationCompleted, userState);
+        }
+        
+        private void OnimmediateReadOperationCompleted(object arg) {
+            if ((this.immediateReadCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.immediateReadCompleted(this, new immediateReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public ImmediateIssueStocklessServiceResult immediateIssue([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] ImmediateIssueStocklessDTO serviceDTO) {
+            object[] results = this.Invoke("immediateIssue", new object[] {
+                        context,
+                        serviceDTO});
+            return ((ImmediateIssueStocklessServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void immediateIssueAsync(OperationContext context, ImmediateIssueStocklessDTO serviceDTO) {
+            this.immediateIssueAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void immediateIssueAsync(OperationContext context, ImmediateIssueStocklessDTO serviceDTO, object userState) {
+            if ((this.immediateIssueOperationCompleted == null)) {
+                this.immediateIssueOperationCompleted = new System.Threading.SendOrPostCallback(this.OnimmediateIssueOperationCompleted);
+            }
+            this.InvokeAsync("immediateIssue", new object[] {
+                        context,
+                        serviceDTO}, this.immediateIssueOperationCompleted, userState);
+        }
+        
+        private void OnimmediateIssueOperationCompleted(object arg) {
+            if ((this.immediateIssueCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.immediateIssueCompleted(this, new immediateIssueCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -577,32 +478,32 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
-        public IssueRequisitionItemStocklessServiceResult read([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] IssueRequisitionItemStocklessDTO serviceDTO) {
-            object[] results = this.Invoke("read", new object[] {
+        public IssueRequisitionItemStocklessAcknowledgeServiceResult acknowledge([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] IssueRequisitionItemStocklessAcknowledgeDTO serviceDTO) {
+            object[] results = this.Invoke("acknowledge", new object[] {
                         context,
                         serviceDTO});
-            return ((IssueRequisitionItemStocklessServiceResult)(results[0]));
+            return ((IssueRequisitionItemStocklessAcknowledgeServiceResult)(results[0]));
         }
         
         /// <remarks/>
-        public void readAsync(OperationContext context, IssueRequisitionItemStocklessDTO serviceDTO) {
-            this.readAsync(context, serviceDTO, null);
+        public void acknowledgeAsync(OperationContext context, IssueRequisitionItemStocklessAcknowledgeDTO serviceDTO) {
+            this.acknowledgeAsync(context, serviceDTO, null);
         }
         
         /// <remarks/>
-        public void readAsync(OperationContext context, IssueRequisitionItemStocklessDTO serviceDTO, object userState) {
-            if ((this.readOperationCompleted == null)) {
-                this.readOperationCompleted = new System.Threading.SendOrPostCallback(this.OnreadOperationCompleted);
+        public void acknowledgeAsync(OperationContext context, IssueRequisitionItemStocklessAcknowledgeDTO serviceDTO, object userState) {
+            if ((this.acknowledgeOperationCompleted == null)) {
+                this.acknowledgeOperationCompleted = new System.Threading.SendOrPostCallback(this.OnacknowledgeOperationCompleted);
             }
-            this.InvokeAsync("read", new object[] {
+            this.InvokeAsync("acknowledge", new object[] {
                         context,
-                        serviceDTO}, this.readOperationCompleted, userState);
+                        serviceDTO}, this.acknowledgeOperationCompleted, userState);
         }
         
-        private void OnreadOperationCompleted(object arg) {
-            if ((this.readCompleted != null)) {
+        private void OnacknowledgeOperationCompleted(object arg) {
+            if ((this.acknowledgeCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.readCompleted(this, new readCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.acknowledgeCompleted(this, new acknowledgeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -610,32 +511,132 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
         [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-        public ImmediateIssueStocklessServiceResult[] multipleImmediateIssue([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] ImmediateIssueStocklessDTO[] inputDtos) {
-            object[] results = this.Invoke("multipleImmediateIssue", new object[] {
+        public ImmediateServiceResult[] immediateSearch([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] ImmediateSearchParam searchParams, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] ImmediateDTO restart) {
+            object[] results = this.Invoke("immediateSearch", new object[] {
+                        context,
+                        searchParams,
+                        restart});
+            return ((ImmediateServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void immediateSearchAsync(OperationContext context, ImmediateSearchParam searchParams, ImmediateDTO restart) {
+            this.immediateSearchAsync(context, searchParams, restart, null);
+        }
+        
+        /// <remarks/>
+        public void immediateSearchAsync(OperationContext context, ImmediateSearchParam searchParams, ImmediateDTO restart, object userState) {
+            if ((this.immediateSearchOperationCompleted == null)) {
+                this.immediateSearchOperationCompleted = new System.Threading.SendOrPostCallback(this.OnimmediateSearchOperationCompleted);
+            }
+            this.InvokeAsync("immediateSearch", new object[] {
+                        context,
+                        searchParams,
+                        restart}, this.immediateSearchOperationCompleted, userState);
+        }
+        
+        private void OnimmediateSearchOperationCompleted(object arg) {
+            if ((this.immediateSearchCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.immediateSearchCompleted(this, new immediateSearchCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
+        public IssueRequisitionItemStocklessAcknowledgeServiceResult[] multipleAcknowledge([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] IssueRequisitionItemStocklessAcknowledgeDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleAcknowledge", new object[] {
                         context,
                         inputDtos});
-            return ((ImmediateIssueStocklessServiceResult[])(results[0]));
+            return ((IssueRequisitionItemStocklessAcknowledgeServiceResult[])(results[0]));
         }
         
         /// <remarks/>
-        public void multipleImmediateIssueAsync(OperationContext context, ImmediateIssueStocklessDTO[] inputDtos) {
-            this.multipleImmediateIssueAsync(context, inputDtos, null);
+        public void multipleAcknowledgeAsync(OperationContext context, IssueRequisitionItemStocklessAcknowledgeDTO[] inputDtos) {
+            this.multipleAcknowledgeAsync(context, inputDtos, null);
         }
         
         /// <remarks/>
-        public void multipleImmediateIssueAsync(OperationContext context, ImmediateIssueStocklessDTO[] inputDtos, object userState) {
-            if ((this.multipleImmediateIssueOperationCompleted == null)) {
-                this.multipleImmediateIssueOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleImmediateIssueOperationCompleted);
+        public void multipleAcknowledgeAsync(OperationContext context, IssueRequisitionItemStocklessAcknowledgeDTO[] inputDtos, object userState) {
+            if ((this.multipleAcknowledgeOperationCompleted == null)) {
+                this.multipleAcknowledgeOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleAcknowledgeOperationCompleted);
             }
-            this.InvokeAsync("multipleImmediateIssue", new object[] {
+            this.InvokeAsync("multipleAcknowledge", new object[] {
                         context,
-                        inputDtos}, this.multipleImmediateIssueOperationCompleted, userState);
+                        inputDtos}, this.multipleAcknowledgeOperationCompleted, userState);
         }
         
-        private void OnmultipleImmediateIssueOperationCompleted(object arg) {
-            if ((this.multipleImmediateIssueCompleted != null)) {
+        private void OnmultipleAcknowledgeOperationCompleted(object arg) {
+            if ((this.multipleAcknowledgeCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.multipleImmediateIssueCompleted(this, new multipleImmediateIssueCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.multipleAcknowledgeCompleted(this, new multipleAcknowledgeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("out", IsNullable=true)]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
+        public IssueRequisitionItemStocklessServiceResult[] multipleRead([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")] IssueRequisitionItemStocklessDTO[] inputDtos) {
+            object[] results = this.Invoke("multipleRead", new object[] {
+                        context,
+                        inputDtos});
+            return ((IssueRequisitionItemStocklessServiceResult[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void multipleReadAsync(OperationContext context, IssueRequisitionItemStocklessDTO[] inputDtos) {
+            this.multipleReadAsync(context, inputDtos, null);
+        }
+        
+        /// <remarks/>
+        public void multipleReadAsync(OperationContext context, IssueRequisitionItemStocklessDTO[] inputDtos, object userState) {
+            if ((this.multipleReadOperationCompleted == null)) {
+                this.multipleReadOperationCompleted = new System.Threading.SendOrPostCallback(this.OnmultipleReadOperationCompleted);
+            }
+            this.InvokeAsync("multipleRead", new object[] {
+                        context,
+                        inputDtos}, this.multipleReadOperationCompleted, userState);
+        }
+        
+        private void OnmultipleReadOperationCompleted(object arg) {
+            if ((this.multipleReadCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.multipleReadCompleted(this, new multipleReadCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", RequestNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", ResponseNamespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("out", IsNullable=true)]
+        public IssueRequisitionItemStocklessServiceResult close([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] OperationContext context, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] IssueRequisitionItemStocklessDTO serviceDTO) {
+            object[] results = this.Invoke("close", new object[] {
+                        context,
+                        serviceDTO});
+            return ((IssueRequisitionItemStocklessServiceResult)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void closeAsync(OperationContext context, IssueRequisitionItemStocklessDTO serviceDTO) {
+            this.closeAsync(context, serviceDTO, null);
+        }
+        
+        /// <remarks/>
+        public void closeAsync(OperationContext context, IssueRequisitionItemStocklessDTO serviceDTO, object userState) {
+            if ((this.closeOperationCompleted == null)) {
+                this.closeOperationCompleted = new System.Threading.SendOrPostCallback(this.OncloseOperationCompleted);
+            }
+            this.InvokeAsync("close", new object[] {
+                        context,
+                        serviceDTO}, this.closeOperationCompleted, userState);
+        }
+        
+        private void OncloseOperationCompleted(object arg) {
+            if ((this.closeCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.closeCompleted(this, new closeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -659,14 +660,20 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://connectivity.service.ews.mincom.com")]
     public partial class OperationContext {
         
+        private string applicationClientIdField;
+        
         private string districtField;
+        
+        private bool eventDisableField;
+        
+        private bool eventDisableFieldSpecified;
         
         private int maxInstancesField;
         
@@ -680,11 +687,23 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         
         private RunAs runAsField;
         
+        private string tenantIdField;
+        
         private bool traceField;
         
         private bool traceFieldSpecified;
         
         private string transactionField;
+        
+        /// <remarks/>
+        public string applicationClientId {
+            get {
+                return this.applicationClientIdField;
+            }
+            set {
+                this.applicationClientIdField = value;
+            }
+        }
         
         /// <remarks/>
         public string district {
@@ -693,6 +712,27 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
             }
             set {
                 this.districtField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool eventDisable {
+            get {
+                return this.eventDisableField;
+            }
+            set {
+                this.eventDisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool eventDisableSpecified {
+            get {
+                return this.eventDisableFieldSpecified;
+            }
+            set {
+                this.eventDisableFieldSpecified = value;
             }
         }
         
@@ -759,6 +799,16 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         }
         
         /// <remarks/>
+        public string tenantId {
+            get {
+                return this.tenantIdField;
+            }
+            set {
+                this.tenantIdField = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool trace {
             get {
                 return this.traceField;
@@ -791,7 +841,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -836,9 +886,18 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Error))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
+    public partial class ServiceRequiredAttributes {
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Warning))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Error))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -850,6 +909,10 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         private int fieldIndexField;
         
         private bool fieldIndexFieldSpecified;
+        
+        private bool localisableField;
+        
+        private bool localisableFieldSpecified;
         
         private string messageIdField;
         
@@ -889,6 +952,27 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
             }
             set {
                 this.fieldIndexFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool localisable {
+            get {
+                return this.localisableField;
+            }
+            set {
+                this.localisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool localisableSpecified {
+            get {
+                return this.localisableFieldSpecified;
+            }
+            set {
+                this.localisableFieldSpecified = value;
             }
         }
         
@@ -944,16 +1028,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://errors.ellipse.mincom.com")]
-    public partial class Error : Message {
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -962,15 +1037,24 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://errors.ellipse.mincom.com")]
+    public partial class Error : Message {
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(HoldingDetailsServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateIssueStocklessServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReadServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessAcknowledgeServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateIssueStocklessServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(HoldingDetailsServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReadServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReturnStocklessServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1018,14 +1102,14 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(HoldingDetailsServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateIssueStocklessServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReadServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessAcknowledgeServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateIssueStocklessServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(HoldingDetailsServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReadServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReturnStocklessServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1034,17 +1118,186 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-    public partial class HoldingDetailsServiceResult : ServiceResult {
+    public partial class ImmediateServiceResult : ServiceResult {
         
-        private HoldingDetailsDTO holdingDetailsDTOField;
+        private ImmediateDTO immediateDTOField;
         
         /// <remarks/>
-        public HoldingDetailsDTO holdingDetailsDTO {
+        public ImmediateDTO immediateDTO {
+            get {
+                return this.immediateDTOField;
+            }
+            set {
+                this.immediateDTOField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateIssueStocklessDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReturnStocklessDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
+    public partial class ImmediateDTO : ServiceDTO {
+        
+        private string authorisedByField;
+        
+        private string authorisedByPositionIdField;
+        
+        private string costCodex1Field;
+        
+        private string costCodex2Field;
+        
+        private string costingDistrictCodex1Field;
+        
+        private string costingDistrictCodex2Field;
+        
+        private string districtCodeField;
+        
+        private string equipmentReferencex1Field;
+        
+        private string equipmentReferencex2Field;
+        
+        private HoldingDetailsDTO[] holdingDetailsDTOField;
+        
+        private bool isIssueField;
+        
+        private bool isIssueFieldSpecified;
+        
+        private decimal percentageAllocatedx1Field;
+        
+        private bool percentageAllocatedx1FieldSpecified;
+        
+        private decimal percentageAllocatedx2Field;
+        
+        private bool percentageAllocatedx2FieldSpecified;
+        
+        private string processedByField;
+        
+        private System.DateTime processedDateField;
+        
+        private bool processedDateFieldSpecified;
+        
+        private string projectNumberx1Field;
+        
+        private string projectNumberx2Field;
+        
+        private string requestedByEmployeeField;
+        
+        private string requestedByPositionIdField;
+        
+        private string requestedBySupplyCustomerAccountIdField;
+        
+        private string requisitionNumberField;
+        
+        private string transactionTypeField;
+        
+        private string warehouseIdField;
+        
+        private string workOrderx1Field;
+        
+        private string workOrderx2Field;
+        
+        /// <remarks/>
+        public string authorisedBy {
+            get {
+                return this.authorisedByField;
+            }
+            set {
+                this.authorisedByField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string authorisedByPositionId {
+            get {
+                return this.authorisedByPositionIdField;
+            }
+            set {
+                this.authorisedByPositionIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string costCodex1 {
+            get {
+                return this.costCodex1Field;
+            }
+            set {
+                this.costCodex1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string costCodex2 {
+            get {
+                return this.costCodex2Field;
+            }
+            set {
+                this.costCodex2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string costingDistrictCodex1 {
+            get {
+                return this.costingDistrictCodex1Field;
+            }
+            set {
+                this.costingDistrictCodex1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string costingDistrictCodex2 {
+            get {
+                return this.costingDistrictCodex2Field;
+            }
+            set {
+                this.costingDistrictCodex2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string districtCode {
+            get {
+                return this.districtCodeField;
+            }
+            set {
+                this.districtCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentReferencex1 {
+            get {
+                return this.equipmentReferencex1Field;
+            }
+            set {
+                this.equipmentReferencex1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string equipmentReferencex2 {
+            get {
+                return this.equipmentReferencex2Field;
+            }
+            set {
+                this.equipmentReferencex2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public HoldingDetailsDTO[] holdingDetailsDTO {
             get {
                 return this.holdingDetailsDTOField;
             }
@@ -1052,10 +1305,205 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
                 this.holdingDetailsDTOField = value;
             }
         }
+        
+        /// <remarks/>
+        public bool isIssue {
+            get {
+                return this.isIssueField;
+            }
+            set {
+                this.isIssueField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isIssueSpecified {
+            get {
+                return this.isIssueFieldSpecified;
+            }
+            set {
+                this.isIssueFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal percentageAllocatedx1 {
+            get {
+                return this.percentageAllocatedx1Field;
+            }
+            set {
+                this.percentageAllocatedx1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool percentageAllocatedx1Specified {
+            get {
+                return this.percentageAllocatedx1FieldSpecified;
+            }
+            set {
+                this.percentageAllocatedx1FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal percentageAllocatedx2 {
+            get {
+                return this.percentageAllocatedx2Field;
+            }
+            set {
+                this.percentageAllocatedx2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool percentageAllocatedx2Specified {
+            get {
+                return this.percentageAllocatedx2FieldSpecified;
+            }
+            set {
+                this.percentageAllocatedx2FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string processedBy {
+            get {
+                return this.processedByField;
+            }
+            set {
+                this.processedByField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime processedDate {
+            get {
+                return this.processedDateField;
+            }
+            set {
+                this.processedDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool processedDateSpecified {
+            get {
+                return this.processedDateFieldSpecified;
+            }
+            set {
+                this.processedDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string projectNumberx1 {
+            get {
+                return this.projectNumberx1Field;
+            }
+            set {
+                this.projectNumberx1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string projectNumberx2 {
+            get {
+                return this.projectNumberx2Field;
+            }
+            set {
+                this.projectNumberx2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string requestedByEmployee {
+            get {
+                return this.requestedByEmployeeField;
+            }
+            set {
+                this.requestedByEmployeeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string requestedByPositionId {
+            get {
+                return this.requestedByPositionIdField;
+            }
+            set {
+                this.requestedByPositionIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string requestedBySupplyCustomerAccountId {
+            get {
+                return this.requestedBySupplyCustomerAccountIdField;
+            }
+            set {
+                this.requestedBySupplyCustomerAccountIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string requisitionNumber {
+            get {
+                return this.requisitionNumberField;
+            }
+            set {
+                this.requisitionNumberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string transactionType {
+            get {
+                return this.transactionTypeField;
+            }
+            set {
+                this.transactionTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string warehouseId {
+            get {
+                return this.warehouseIdField;
+            }
+            set {
+                this.warehouseIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderx1 {
+            get {
+                return this.workOrderx1Field;
+            }
+            set {
+                this.workOrderx1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderx2 {
+            get {
+                return this.workOrderx2Field;
+            }
+            set {
+                this.workOrderx2Field = value;
+            }
+        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1214,16 +1662,16 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateSearchParam))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReadDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionInformationDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessAcknowledgeDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(HoldingDetailsDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateIssueStocklessDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReturnStocklessDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReadDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(HoldingDetailsDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1245,16 +1693,32 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://attribute.ellipse.mincom.com")]
     public partial class Attribute {
         
+        private string dataTypeField;
+        
         private string nameField;
         
+        private string namespaceField;
+        
+        private anyType2anyTypeMapEntry[] propertiesField;
+        
         private string valueField;
+        
+        /// <remarks/>
+        public string dataType {
+            get {
+                return this.dataTypeField;
+            }
+            set {
+                this.dataTypeField = value;
+            }
+        }
         
         /// <remarks/>
         public string name {
@@ -1263,6 +1727,27 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
             }
             set {
                 this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string @namespace {
+            get {
+                return this.namespaceField;
+            }
+            set {
+                this.namespaceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("entry", Namespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com", IsNullable=false)]
+        public anyType2anyTypeMapEntry[] properties {
+            get {
+                return this.propertiesField;
+            }
+            set {
+                this.propertiesField = value;
             }
         }
         
@@ -1278,20 +1763,53 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://issuerequisitionitemstockless.m3140.service.ellipse.mincom.com")]
+    public partial class anyType2anyTypeMapEntry {
+        
+        private object keyField;
+        
+        private object valueField;
+        
+        /// <remarks/>
+        public object key {
+            get {
+                return this.keyField;
+            }
+            set {
+                this.keyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public object value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateSearchParam))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReadDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionInformationDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessAcknowledgeDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(HoldingDetailsDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateIssueStocklessDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReturnStocklessDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReadDTO))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(HoldingDetailsDTO))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1302,16 +1820,28 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateSearchParam))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
     public abstract partial class AbstractSearchParam : ServiceDTO {
+        
+        private ServiceRequiredAttributes serviceRequiredAttributesField;
+        
+        /// <remarks/>
+        public ServiceRequiredAttributes serviceRequiredAttributes {
+            get {
+                return this.serviceRequiredAttributesField;
+            }
+            set {
+                this.serviceRequiredAttributesField = value;
+            }
+        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1405,7 +1935,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1487,162 +2017,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-    public partial class ImmediateReadDTO : ServiceDTO {
-        
-        private string costCodex1Field;
-        
-        private string costCodex2Field;
-        
-        private string costingDistrictCodex1Field;
-        
-        private string costingDistrictCodex2Field;
-        
-        private string districtCodeField;
-        
-        private bool hasInterdistrictAccessField;
-        
-        private bool hasInterdistrictAccessFieldSpecified;
-        
-        private bool isIssueField;
-        
-        private bool isIssueFieldSpecified;
-        
-        private string requestedByEmployeeField;
-        
-        private string requestedBySupplyCustomerAccountIdField;
-        
-        private string warehouseIdField;
-        
-        /// <remarks/>
-        public string costCodex1 {
-            get {
-                return this.costCodex1Field;
-            }
-            set {
-                this.costCodex1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string costCodex2 {
-            get {
-                return this.costCodex2Field;
-            }
-            set {
-                this.costCodex2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string costingDistrictCodex1 {
-            get {
-                return this.costingDistrictCodex1Field;
-            }
-            set {
-                this.costingDistrictCodex1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string costingDistrictCodex2 {
-            get {
-                return this.costingDistrictCodex2Field;
-            }
-            set {
-                this.costingDistrictCodex2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string districtCode {
-            get {
-                return this.districtCodeField;
-            }
-            set {
-                this.districtCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool hasInterdistrictAccess {
-            get {
-                return this.hasInterdistrictAccessField;
-            }
-            set {
-                this.hasInterdistrictAccessField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool hasInterdistrictAccessSpecified {
-            get {
-                return this.hasInterdistrictAccessFieldSpecified;
-            }
-            set {
-                this.hasInterdistrictAccessFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool isIssue {
-            get {
-                return this.isIssueField;
-            }
-            set {
-                this.isIssueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool isIssueSpecified {
-            get {
-                return this.isIssueFieldSpecified;
-            }
-            set {
-                this.isIssueFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string requestedByEmployee {
-            get {
-                return this.requestedByEmployeeField;
-            }
-            set {
-                this.requestedByEmployeeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string requestedBySupplyCustomerAccountId {
-            get {
-                return this.requestedBySupplyCustomerAccountIdField;
-            }
-            set {
-                this.requestedBySupplyCustomerAccountIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string warehouseId {
-            get {
-                return this.warehouseIdField;
-            }
-            set {
-                this.warehouseIdField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1725,7 +2100,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessAcknowledgeDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3117,7 +3492,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IssueRequisitionItemStocklessAcknowledgeDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3271,7 +3646,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3365,16 +3740,14 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateIssueStocklessDTO))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ImmediateReturnStocklessDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-    public partial class ImmediateDTO : ServiceDTO {
+    public partial class ImmediateReadDTO : ServiceDTO {
         
-        private string authorisedByField;
+        private string authorityTypeField;
         
         private string costCodex1Field;
         
@@ -3386,57 +3759,27 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         
         private string districtCodeField;
         
-        private string equipmentReferencex1Field;
+        private bool hasInterdistrictAccessField;
         
-        private string equipmentReferencex2Field;
-        
-        private HoldingDetailsDTO[] holdingDetailsDTOField;
+        private bool hasInterdistrictAccessFieldSpecified;
         
         private bool isIssueField;
         
         private bool isIssueFieldSpecified;
         
-        private decimal percentageAllocatedx1Field;
-        
-        private bool percentageAllocatedx1FieldSpecified;
-        
-        private decimal percentageAllocatedx2Field;
-        
-        private bool percentageAllocatedx2FieldSpecified;
-        
-        private string processedByField;
-        
-        private System.DateTime processedDateField;
-        
-        private bool processedDateFieldSpecified;
-        
-        private string projectNumberx1Field;
-        
-        private string projectNumberx2Field;
-        
         private string requestedByEmployeeField;
-        
-        private string requestedByPositionIdField;
         
         private string requestedBySupplyCustomerAccountIdField;
         
-        private string requisitionNumberField;
-        
-        private string transactionTypeField;
-        
         private string warehouseIdField;
         
-        private string workOrderx1Field;
-        
-        private string workOrderx2Field;
-        
         /// <remarks/>
-        public string authorisedBy {
+        public string authorityType {
             get {
-                return this.authorisedByField;
+                return this.authorityTypeField;
             }
             set {
-                this.authorisedByField = value;
+                this.authorityTypeField = value;
             }
         }
         
@@ -3491,32 +3834,23 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         }
         
         /// <remarks/>
-        public string equipmentReferencex1 {
+        public bool hasInterdistrictAccess {
             get {
-                return this.equipmentReferencex1Field;
+                return this.hasInterdistrictAccessField;
             }
             set {
-                this.equipmentReferencex1Field = value;
+                this.hasInterdistrictAccessField = value;
             }
         }
         
         /// <remarks/>
-        public string equipmentReferencex2 {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool hasInterdistrictAccessSpecified {
             get {
-                return this.equipmentReferencex2Field;
+                return this.hasInterdistrictAccessFieldSpecified;
             }
             set {
-                this.equipmentReferencex2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public HoldingDetailsDTO[] holdingDetailsDTO {
-            get {
-                return this.holdingDetailsDTOField;
-            }
-            set {
-                this.holdingDetailsDTOField = value;
+                this.hasInterdistrictAccessFieldSpecified = value;
             }
         }
         
@@ -3542,116 +3876,12 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         }
         
         /// <remarks/>
-        public decimal percentageAllocatedx1 {
-            get {
-                return this.percentageAllocatedx1Field;
-            }
-            set {
-                this.percentageAllocatedx1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool percentageAllocatedx1Specified {
-            get {
-                return this.percentageAllocatedx1FieldSpecified;
-            }
-            set {
-                this.percentageAllocatedx1FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal percentageAllocatedx2 {
-            get {
-                return this.percentageAllocatedx2Field;
-            }
-            set {
-                this.percentageAllocatedx2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool percentageAllocatedx2Specified {
-            get {
-                return this.percentageAllocatedx2FieldSpecified;
-            }
-            set {
-                this.percentageAllocatedx2FieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string processedBy {
-            get {
-                return this.processedByField;
-            }
-            set {
-                this.processedByField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
-        public System.DateTime processedDate {
-            get {
-                return this.processedDateField;
-            }
-            set {
-                this.processedDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool processedDateSpecified {
-            get {
-                return this.processedDateFieldSpecified;
-            }
-            set {
-                this.processedDateFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string projectNumberx1 {
-            get {
-                return this.projectNumberx1Field;
-            }
-            set {
-                this.projectNumberx1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string projectNumberx2 {
-            get {
-                return this.projectNumberx2Field;
-            }
-            set {
-                this.projectNumberx2Field = value;
-            }
-        }
-        
-        /// <remarks/>
         public string requestedByEmployee {
             get {
                 return this.requestedByEmployeeField;
             }
             set {
                 this.requestedByEmployeeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string requestedByPositionId {
-            get {
-                return this.requestedByPositionIdField;
-            }
-            set {
-                this.requestedByPositionIdField = value;
             }
         }
         
@@ -3666,26 +3896,6 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
         }
         
         /// <remarks/>
-        public string requisitionNumber {
-            get {
-                return this.requisitionNumberField;
-            }
-            set {
-                this.requisitionNumberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string transactionType {
-            get {
-                return this.transactionTypeField;
-            }
-            set {
-                this.transactionTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
         public string warehouseId {
             get {
                 return this.warehouseIdField;
@@ -3694,30 +3904,10 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
                 this.warehouseIdField = value;
             }
         }
-        
-        /// <remarks/>
-        public string workOrderx1 {
-            get {
-                return this.workOrderx1Field;
-            }
-            set {
-                this.workOrderx1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderx2 {
-            get {
-                return this.workOrderx2Field;
-            }
-            set {
-                this.workOrderx2Field = value;
-            }
-        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3823,7 +4013,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3832,91 +4022,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-    public partial class ImmediateServiceResult : ServiceResult {
-        
-        private ImmediateDTO immediateDTOField;
-        
-        /// <remarks/>
-        public ImmediateDTO immediateDTO {
-            get {
-                return this.immediateDTOField;
-            }
-            set {
-                this.immediateDTOField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-    public partial class ImmediateIssueStocklessServiceResult : ServiceResult {
-        
-        private ImmediateIssueStocklessDTO immediateIssueStocklessDTOField;
-        
-        /// <remarks/>
-        public ImmediateIssueStocklessDTO immediateIssueStocklessDTO {
-            get {
-                return this.immediateIssueStocklessDTOField;
-            }
-            set {
-                this.immediateIssueStocklessDTOField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-    public partial class ImmediateReadServiceResult : ServiceResult {
-        
-        private ImmediateReadDTO immediateReadDTOField;
-        
-        /// <remarks/>
-        public ImmediateReadDTO immediateReadDTO {
-            get {
-                return this.immediateReadDTOField;
-            }
-            set {
-                this.immediateReadDTOField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
-    public partial class IssueRequisitionItemStocklessServiceResult : ServiceResult {
-        
-        private IssueRequisitionItemStocklessDTO issueRequisitionItemStocklessDTOField;
-        
-        /// <remarks/>
-        public IssueRequisitionItemStocklessDTO issueRequisitionItemStocklessDTO {
-            get {
-                return this.issueRequisitionItemStocklessDTOField;
-            }
-            set {
-                this.issueRequisitionItemStocklessDTOField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3937,7 +4043,91 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
+    public partial class ImmediateIssueStocklessServiceResult : ServiceResult {
+        
+        private ImmediateIssueStocklessDTO immediateIssueStocklessDTOField;
+        
+        /// <remarks/>
+        public ImmediateIssueStocklessDTO immediateIssueStocklessDTO {
+            get {
+                return this.immediateIssueStocklessDTOField;
+            }
+            set {
+                this.immediateIssueStocklessDTOField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
+    public partial class IssueRequisitionItemStocklessServiceResult : ServiceResult {
+        
+        private IssueRequisitionItemStocklessDTO issueRequisitionItemStocklessDTOField;
+        
+        /// <remarks/>
+        public IssueRequisitionItemStocklessDTO issueRequisitionItemStocklessDTO {
+            get {
+                return this.issueRequisitionItemStocklessDTOField;
+            }
+            set {
+                this.issueRequisitionItemStocklessDTOField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
+    public partial class HoldingDetailsServiceResult : ServiceResult {
+        
+        private HoldingDetailsDTO holdingDetailsDTOField;
+        
+        /// <remarks/>
+        public HoldingDetailsDTO holdingDetailsDTO {
+            get {
+                return this.holdingDetailsDTOField;
+            }
+            set {
+                this.holdingDetailsDTOField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://instances.m3140.types.ellipse.mincom.com")]
+    public partial class ImmediateReadServiceResult : ServiceResult {
+        
+        private ImmediateReadDTO immediateReadDTOField;
+        
+        /// <remarks/>
+        public ImmediateReadDTO immediateReadDTO {
+            get {
+                return this.immediateReadDTOField;
+            }
+            set {
+                this.immediateReadDTOField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3958,193 +4148,11 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleImmediateReturnCompletedEventHandler(object sender, multipleImmediateReturnCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleImmediateReturnCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleImmediateReturnCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public ImmediateReturnStocklessServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((ImmediateReturnStocklessServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void acknowledgeCompletedEventHandler(object sender, acknowledgeCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class acknowledgeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal acknowledgeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public IssueRequisitionItemStocklessAcknowledgeServiceResult Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((IssueRequisitionItemStocklessAcknowledgeServiceResult)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleCloseCompletedEventHandler(object sender, multipleCloseCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleCloseCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleCloseCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public IssueRequisitionItemStocklessServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((IssueRequisitionItemStocklessServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void immediateReadCompletedEventHandler(object sender, immediateReadCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class immediateReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal immediateReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public ImmediateReadServiceResult Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((ImmediateReadServiceResult)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleAcknowledgeCompletedEventHandler(object sender, multipleAcknowledgeCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleAcknowledgeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleAcknowledgeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public IssueRequisitionItemStocklessAcknowledgeServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((IssueRequisitionItemStocklessAcknowledgeServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleImmediateReadCompletedEventHandler(object sender, multipleImmediateReadCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleImmediateReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleImmediateReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public ImmediateReadServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((ImmediateReadServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void immediateIssueCompletedEventHandler(object sender, immediateIssueCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class immediateIssueCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal immediateIssueCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public ImmediateIssueStocklessServiceResult Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((ImmediateIssueStocklessServiceResult)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void immediateReturnCompletedEventHandler(object sender, immediateReturnCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class immediateReturnCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4166,63 +4174,37 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void immediateSearchCompletedEventHandler(object sender, immediateSearchCompletedEventArgs e);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleImmediateReadCompletedEventHandler(object sender, multipleImmediateReadCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class immediateSearchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class multipleImmediateReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal immediateSearchCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal multipleImmediateReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public ImmediateServiceResult[] Result {
+        public ImmediateReadServiceResult[] Result {
             get {
                 this.RaiseExceptionIfNecessary();
-                return ((ImmediateServiceResult[])(this.results[0]));
+                return ((ImmediateReadServiceResult[])(this.results[0]));
             }
         }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void closeCompletedEventHandler(object sender, closeCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class closeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal closeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public IssueRequisitionItemStocklessServiceResult Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((IssueRequisitionItemStocklessServiceResult)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void immediateSearchHoldingsCompletedEventHandler(object sender, immediateSearchHoldingsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class immediateSearchHoldingsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4244,63 +4226,11 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public IssueRequisitionItemStocklessServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((IssueRequisitionItemStocklessServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    public delegate void searchCompletedEventHandler(object sender, searchCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class searchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal searchCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public IssueRequisitionItemStocklessServiceResult[] Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((IssueRequisitionItemStocklessServiceResult[])(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4322,11 +4252,63 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleCloseCompletedEventHandler(object sender, multipleCloseCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleCloseCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleCloseCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public IssueRequisitionItemStocklessServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((IssueRequisitionItemStocklessServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleImmediateReturnCompletedEventHandler(object sender, multipleImmediateReturnCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleImmediateReturnCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleImmediateReturnCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public ImmediateReturnStocklessServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((ImmediateReturnStocklessServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleImmediateIssueCompletedEventHandler(object sender, multipleImmediateIssueCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleImmediateIssueCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4343,6 +4325,214 @@ namespace EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessServi
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((ImmediateIssueStocklessServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void immediateReadCompletedEventHandler(object sender, immediateReadCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class immediateReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal immediateReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public ImmediateReadServiceResult Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((ImmediateReadServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void immediateIssueCompletedEventHandler(object sender, immediateIssueCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class immediateIssueCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal immediateIssueCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public ImmediateIssueStocklessServiceResult Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((ImmediateIssueStocklessServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void searchCompletedEventHandler(object sender, searchCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class searchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal searchCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public IssueRequisitionItemStocklessServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((IssueRequisitionItemStocklessServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void acknowledgeCompletedEventHandler(object sender, acknowledgeCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class acknowledgeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal acknowledgeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public IssueRequisitionItemStocklessAcknowledgeServiceResult Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((IssueRequisitionItemStocklessAcknowledgeServiceResult)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void immediateSearchCompletedEventHandler(object sender, immediateSearchCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class immediateSearchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal immediateSearchCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public ImmediateServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((ImmediateServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleAcknowledgeCompletedEventHandler(object sender, multipleAcknowledgeCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleAcknowledgeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleAcknowledgeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public IssueRequisitionItemStocklessAcknowledgeServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((IssueRequisitionItemStocklessAcknowledgeServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal multipleReadCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public IssueRequisitionItemStocklessServiceResult[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((IssueRequisitionItemStocklessServiceResult[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void closeCompletedEventHandler(object sender, closeCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class closeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal closeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public IssueRequisitionItemStocklessServiceResult Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((IssueRequisitionItemStocklessServiceResult)(this.results[0]));
             }
         }
     }

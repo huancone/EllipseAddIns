@@ -26,20 +26,20 @@ namespace SharedClassLibrary.Ellipse.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/ScreenService")]
-        public string SharedClassLibrary_Ellipse_ScreenService_ScreenService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/AuthenticatorService")]
+        public string SharedClassLibrary_Ellipse_AuthenticatorService_AuthenticatorService {
             get {
-                return ((string)(this["SharedClassLibrary_Ellipse_ScreenService_ScreenService"]));
+                return ((string)(this["SharedClassLibrary_Ellipse_AuthenticatorService_AuthenticatorService"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/AuthenticatorService")]
-        public string SharedClassLibrary_Ellipse_AuthenticatorService_AuthenticatorService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ScreenService")]
+        public string SharedClassLibrary_Ellipse_ScreenService_ScreenService {
             get {
-                return ((string)(this["SharedClassLibrary_Ellipse_AuthenticatorService_AuthenticatorService"]));
+                return ((string)(this["SharedClassLibrary_Ellipse_ScreenService_ScreenService"]));
             }
         }
     }

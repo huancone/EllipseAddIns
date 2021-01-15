@@ -4,14 +4,16 @@ using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Constants;
+using SharedClassLibrary.Ellipse.Constants;
 using EllipseRequisitionClassLibrary;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 
 namespace EllipseTransaccionesStockCodesExcelAddIn
 {
@@ -53,8 +55,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         private const string TableName0301 = "PurchaseOrdersExtTable";
         private const string TableName0302 = "ReviewPOExtTable";
         private const string TableName0303 = "ModifyPOExtTable";
-        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private ExcelStyleCells _cells;
         private Application _excelApp;
 
@@ -62,6 +64,14 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new SharedClassLibrary.Ellipse.Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -71,6 +81,40 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
+
+            //Example of Default Custom Options
+            //settings.SetDefaultCustomSettingValue("AutoSort", "Y");
+            //settings.SetDefaultCustomSettingValue("OverrideAccountCode", "Maintenance");
+            //settings.SetDefaultCustomSettingValue("IgnoreItemError", "N");
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            //Example of Getting Custom Options from Save File
+            //var overrideAccountCode = settings.GetCustomSettingValue("OverrideAccountCode");
+            //if (overrideAccountCode.Equals("Maintenance"))
+            //    cbAccountElementOverrideMntto.Checked = true;
+            //else if (overrideAccountCode.Equals("Disable"))
+            //    cbAccountElementOverrideDisable.Checked = true;
+            //else if (overrideAccountCode.Equals("Alwats"))
+            //    cbAccountElementOverrideAlways.Checked = true;
+            //else if (overrideAccountCode.Equals("Default"))
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //else
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //cbAutoSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AutoSort"));
+            //cbIgnoreItemError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreItemError"));
+
+            //
+            settings.SaveCustomSettings();
         }
 
         private void btnFormatRequisitions_Click(object sender, RibbonControlEventArgs e)
@@ -808,8 +852,8 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
                     if (!string.IsNullOrWhiteSpace(scStatus) && !scStatus.Equals("UNCOMPLETED"))
                         scStatus = Requisition.ItemStatus.GetStatusCode(scStatus);
 
-                    var sqlQuery = Queries.GetFetchRequisitionStockCodeQuery(_eFunctions.dbReference,
-                        _eFunctions.dbLink, districtCode, stockCode, scStatus, startDate, endDate, reqType, transType,
+                    var sqlQuery = Queries.GetFetchRequisitionStockCodeQuery(_eFunctions.DbReference,
+                        _eFunctions.DbLink, districtCode, stockCode, scStatus, startDate, endDate, reqType, transType,
                         priorityCode);
 
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
@@ -905,7 +949,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
                     stockCode = stockCode != null && stockCode.Length < 9 ? stockCode.PadLeft(9, '0') : stockCode;
 
-                    var sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.dbReference, _eFunctions.dbLink,
+                    var sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.DbReference, _eFunctions.DbLink,
                         districtCode, purchaseOrder, stockCode, startDate, endDate, poStatus);
 
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
@@ -1015,7 +1059,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
 
                     stockCode = stockCode != null && stockCode.Length < 9 ? stockCode.PadLeft(9, '0') : stockCode;
 
-                    var sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.dbReference, _eFunctions.dbLink,
+                    var sqlQuery = Queries.GetFetchPurchaseOrderQuery(_eFunctions.DbReference, _eFunctions.DbLink,
                         districtCode, purchaseOrder, stockCode, startDate, endDate, poStatus);
 
                     var odr = _eFunctions.GetQueryResult(sqlQuery);
@@ -1453,7 +1497,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         public bool DeletePurchaseOrder(Screen.OperationContext opContext, Screen.ScreenService proxySheet,
             PurchaseOrder purchaseOrder)
         {
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO220");
@@ -1508,7 +1552,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         {
             if (item == null || string.IsNullOrWhiteSpace(item.Index))
                 throw new NullReferenceException("Debe ingresar el índice del item del vale que desea eliminar");
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO220");
@@ -1757,7 +1801,7 @@ namespace EllipseTransaccionesStockCodesExcelAddIn
         public bool ModifyPurchaseOrder(Screen.OperationContext opContext, Screen.ScreenService proxySheet,
             PurchaseOrder purchaseOrder, PurchaseOrderItem item)
         {
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
             _eFunctions.RevertOperation(opContext, proxySheet);
             //ejecutamos el programa
             var reply = proxySheet.executeScreen(opContext, "MSO220");

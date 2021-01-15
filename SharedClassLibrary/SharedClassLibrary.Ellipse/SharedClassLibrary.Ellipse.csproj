@@ -119,10 +119,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/AuthenticatorService%3fWSDL">
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/AuthenticatorService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\AuthenticatorService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/AuthenticatorService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/AuthenticatorService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -130,10 +130,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>SharedClassLibrary_Ellipse_AuthenticatorService_AuthenticatorService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/ScreenService%3fWSDL">
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ScreenService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\ScreenService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/ScreenService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ScreenService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
