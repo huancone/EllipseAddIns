@@ -14,26 +14,29 @@ using System.Text;
 using System.Windows.Forms;
 using System.Globalization;
 using Microsoft.Office.Tools.Ribbon;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
 using Excel = Microsoft.Office.Interop.Excel;
 using EllipseWorkOrdersClassLibrary;
-using Authenticator = EllipseAddinGanttEQ.AuthenticatorService;
-
-using WorkOrderTaskService9 = EllipseAddinGanttEQ.WorkOrderTaskService;
-//using Authenticator = EllipseCommonsClassLibrary.AuthenticatorService;
 using WorkOrderTaskService = EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
 using ResourceReqmntsService = EllipseWorkOrdersClassLibrary.ResourceReqmntsService;
 using MaterialReqmntsService = EllipseWorkOrdersClassLibrary.MaterialReqmntsService;
 using EquipmentReqmntsService = EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
+
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Connections;
+using SharedClassLibrary.Vsto.Excel;
+using Debugger = SharedClassLibrary.Utilities.Debugger;
+using SharedClassLibrary.Classes;
+
 //using System.Data.Odbc;
 //using EllipseCommonsClassLibrary.Utilities;
 using VarEncript = SharedClassLibrary.Utilities.Encryption;
 using System.Web.Services.Ellipse;
 using System.Web.Services;
-using Screen = EllipseCommonsClassLibrary.ScreenService; //si es screen service
+//using Screen = EllipseCommonsClassLibrary.ScreenService; //si es screen service
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -42,8 +45,8 @@ namespace EllipseAddinGanttEQ
     public partial class RibbonEllipse
     {
         ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
+        EllipseFunctions _eFunctions;
+        FormAuthenticate _frmAuth;
         FormularioAutenticacionType _AuthG = new FormularioAutenticacionType();
         private Excel.Application _excelApp;
 
@@ -105,25 +108,51 @@ namespace EllipseAddinGanttEQ
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
             _excelApp.EnableEvents = true;
-            //var tableObject = Globals.Factory.GetVstoObject(_excelApp.ActiveWorkbook.Sheets[SheetName01].Name);
-            //tableObject.Change = GetTableChangedValue;
-            List<string> enviroments = new List<string>();
-            enviroments.Add("Productivo");
-            enviroments.Add("Productivox");
-            enviroments.Add("Test");
-            enviroments.Add("Desarrollo");
-            enviroments.Add("Contingencia");
-            enviroments.Add("EL9CONV");
-            /*var enviroments = Environments.GetEnviromentList();*/
-            foreach (var env in enviroments)
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
             {
                 var item = Factory.CreateRibbonDropDownItem();
                 item.Label = env;
-                drpEnviroment.Items.Add(item);
+                drpEnvironment.Items.Add(item);
             }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
         }
 
         public bool ConexionDataBase(string enviroments)
@@ -213,7 +242,7 @@ namespace EllipseAddinGanttEQ
         {
             if(SW == 0)
             {
-                ConexionDataBase(drpEnviroment.SelectedItem.Label);
+                ConexionDataBase(drpEnvironment.SelectedItem.Label);
             }
             else
             {
@@ -1147,8 +1176,6 @@ namespace EllipseAddinGanttEQ
                     var distrito = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct) ? _frmAuth.EllipseDsct : "ICOR";
                     var userName = _frmAuth.EllipseUser.ToUpper();
 
-                    if (drpEnviroment.SelectedItem.Label != "EL9CONV")
-                    {
                         
                         WorkOrderTaskService.WorkOrderTaskService proxySheet_t = new WorkOrderTaskService.WorkOrderTaskService();    
                         WorkOrderTaskService.WorkOrderTaskServiceModifyRequestDTO requestParamsSheet_t = new WorkOrderTaskService.WorkOrderTaskServiceModifyRequestDTO();
@@ -1159,7 +1186,7 @@ namespace EllipseAddinGanttEQ
                         workOrderA_t.no = WORK_ORDER.Substring(2, 6);
                         workOrderA_t.prefix = WORK_ORDER.Substring(0, 2);
 
-                        proxySheet_t.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/WorkOrderTaskService";
+                        proxySheet_t.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/WorkOrderTaskService";
 
                         var opSheet_t = new WorkOrderTaskService.OperationContext
                         {
@@ -1217,69 +1244,7 @@ namespace EllipseAddinGanttEQ
                         //_cells.GetCell("GD" + filas).Style = _cells.GetStyle(StyleConstants.ItalicSmall);
                         _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
                         //_cells.GetCell("GD").Borders.Weight = "2";
-                    }
-                    else
-                    {
-                        WorkOrderTaskService9.WorkOrderTaskService proxySheet_t = new WorkOrderTaskService9.WorkOrderTaskService();
-                        WorkOrderTaskService9.WorkOrderTaskServiceModifyRequestDTO requestParamsSheet_t = new WorkOrderTaskService9.WorkOrderTaskServiceModifyRequestDTO();
-                        WorkOrderTaskService9.WorkOrderTaskServiceModifyReplyDTO replySheet_t = new WorkOrderTaskService9.WorkOrderTaskServiceModifyReplyDTO();
-
-                        var workOrderA_t = new WorkOrderTaskService9.WorkOrderDTO();
-
-                        workOrderA_t.no = WORK_ORDER.Substring(2, 6);
-                        workOrderA_t.prefix = WORK_ORDER.Substring(0, 2);
-
-                        proxySheet_t.Url = "http://ews-eamprd.lmnerp01.cerrejon.com/ews/services" + "/WorkOrderTaskService";
-
-                        WorkOrderTaskService9.OperationContext opSheet_t = new WorkOrderTaskService9.OperationContext
-                        {
-                            district = _frmAuth.EllipseDsct,
-                            position = _frmAuth.EllipsePost,
-                            maxInstances = 100,
-                            maxInstancesSpecified = true,
-                            returnWarnings = Debugger.DebugWarnings,
-                            returnWarningsSpecified = true,
-                        };
-
-                        ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
-                        requestParamsSheet_t.districtCode = distrito;
-                        requestParamsSheet_t.planStrDate = PLAN_STR_DATE;
-                        requestParamsSheet_t.planStrTime = PLAN_STR_TIME;
-                        requestParamsSheet_t.planFinDate = PLAN_FIN_DATE;
-                        requestParamsSheet_t.planFinTime = PLAN_FIN_TIME;
-                        requestParamsSheet_t.workOrder = workOrderA_t;
-                        requestParamsSheet_t.WOTaskNo = WO_TASK_NO;
-                        requestParamsSheet_t.WOTaskDesc = WO_DESC;
-                        requestParamsSheet_t.priority = TASK_PRIORITY;
-
-  
-
-
-                        ReplyMessage replyMsg = null;
-
-
-
-                        string messageResult = replyMsg == null ? "OK" : replyMsg.Message;
-
-                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
-                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
-
-                        replySheet_t = proxySheet_t.modify(opSheet_t, requestParamsSheet_t);
-                        //var reply = WorkOrderTaskActions.ModifyWorkOrderTask(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet_t, woTask);
-                        //WorkOrderTaskActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
-
-                        /*if (_cells.GetCell(WoTask, filas).Value == "001" || _cells.GetCell(WoTask, filas).Value == "")
-                        {
-                            ActualizarRefCodes(filas, distrito, UBIC, COL, SEC, WORK_ORDER);
-                        }
-                        */
-                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
-                        //_cells.GetCell("GD" + filas).Style = _cells.GetStyle(StyleConstants.ItalicSmall);
-                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
-                        //_cells.GetCell("GD").Borders.Weight = "2";
-
-                    }
+                   
 
                 }
                 catch (Exception ex)
@@ -1398,7 +1363,7 @@ namespace EllipseAddinGanttEQ
                         workOrderB.prefix = RELATED_WO.Substring(0, 2);
                     }
 
-                    proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/WorkOrderService";
+                    proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/WorkOrderService";
 
                     var opSheet = new WorkOrderService.OperationContext
                     {
@@ -1474,17 +1439,15 @@ namespace EllipseAddinGanttEQ
                     MessageBox.Show(@"Debe existir ordenes en la pestaña del Gantt para poder realizar esta Acción.");
                     return;
                 }
-                //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-                //var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
-                _eFunctions.SetDBSettings("Contingencia");
-                var urlService = _eFunctions.GetServicesUrl("Contingencia");
 
                 _cells.GetCell(StartColTable + FinColTablaOneSheet, StartRowTable - 1).Select();
                 CalcularFechaHr();
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = "Contingencia";//drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 // if(true)
                 {
@@ -1524,7 +1487,7 @@ namespace EllipseAddinGanttEQ
                 }
                 _cells.GetCell(StartColTable + FinColTablaOneSheet, StartRowTable - 1).Select();
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 {
 
@@ -1548,50 +1511,52 @@ namespace EllipseAddinGanttEQ
 
         private void ActualizarRefCodes(int fila, string distrit, string UBIC, string COLOR, string SEC, string WORKORDER)
         {
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
-
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
-            var opSheet = new WorkOrderService.OperationContext
-            {
-                district = _frmAuth.EllipseDsct,
-                position = _frmAuth.EllipsePost,
-                maxInstances = 100,
-                maxInstancesSpecified = true,
-                returnWarnings = Debugger.DebugWarnings,
-                returnWarningsSpecified = true
-            };
-            ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var distrito = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
-            var district = distrito;
-            var workOrder = WORKORDER;
-            var localiza = UBIC;
-            var colores = COLOR;
-            var secuencia = SEC;
+                var opSheet = new WorkOrderService.OperationContext
+                {
+                    district = _frmAuth.EllipseDsct,
+                    position = _frmAuth.EllipsePost,
+                    maxInstances = 100,
+                    maxInstancesSpecified = true,
+                    returnWarnings = Debugger.DebugWarnings,
+                    returnWarningsSpecified = true
+                };
+                ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+                var distrito = _cells.GetNullIfTrimmedEmpty(_frmAuth.EllipseDsct) ?? "ICOR";
 
-
-            var woRefCodes = new WorkOrderReferenceCodes
-            {
-                Localizacion = localiza,
-                CodigoCertificacion = colores,
-                SecuenciaOt = SEC
-                //secuencia
-            };
-
-            var replyRefCode = WorkOrderActions.UpdateWorkOrderReferenceCodes(_eFunctions, urlService, opSheet, district, workOrder, woRefCodes);
+                var district = distrito;
+                var workOrder = WORKORDER;
+                var localiza = UBIC;
+                var colores = COLOR;
+                var secuencia = SEC;
 
 
-            if (replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
-            {
-                var errorList = "";
-                // ReSharper disable once LoopCanBeConvertedToQuery
-                foreach (var error in replyRefCode.Errors)
-                    errorList = errorList + "\nError: " + error;
-            }
+                var woRefCodes = new WorkOrderReferenceCodes
+                {
+                    Localizacion = localiza,
+                    CodigoCertificacion = colores,
+                    SecuenciaOt = SEC
+                    //secuencia
+                };
+
+                var replyRefCode = WorkOrderActions.UpdateWorkOrderReferenceCodes(_eFunctions, urlService, opSheet, district, workOrder, woRefCodes);
+
+
+                if (replyRefCode.Errors != null && replyRefCode.Errors.Length > 0)
+                {
+                    var errorList = "";
+                    // ReSharper disable once LoopCanBeConvertedToQuery
+                    foreach (var error in replyRefCode.Errors)
+                        errorList = errorList + "\nError: " + error;
+                }
+           
+            
         }
 
         private void btnActualizarDurLab_Click(object sender, RibbonControlEventArgs e)
@@ -1926,11 +1891,11 @@ namespace EllipseAddinGanttEQ
                 _excelApp.ScreenUpdating = true;
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 // if(true)
                 {
-                    _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                    _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
                     if (_cells == null)
                         _cells = new ExcelStyleCells(_excelApp);
                     _cells.SetCursorWait();
@@ -1968,7 +1933,7 @@ namespace EllipseAddinGanttEQ
 
 
                     ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                     while (!string.IsNullOrEmpty("" + _cells.GetCell(StartColTable + 2, i).Value) /*&& !string.IsNullOrEmpty("" + _cells.GetCell(4, i).Value)*/)
                     {
                         if (_cells.GetCell(StartColTable + 3, i).Value != "" && _cells.GetCell(StartColTable + 5, i).Value != "")
@@ -1990,64 +1955,63 @@ namespace EllipseAddinGanttEQ
                                 taskReq.ReqCode = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 8, i).Value);                       //_cells.GetCell(9, i).Value = "" + req.ReqCode;      
                                 taskReq.ReqDesc = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 9, i).Value);                      //_cells.GetCell(10, i).Value = "" + req.ReqDesc;
                                 taskReq.UoM = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 10, i).Value);                          //_cells.GetCell(11, i).Value = "" + req.UoM;
-                                taskReq.QtyReq = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 11, i).Value);                       //_cells.GetCell(12, i).Value = "" + req.QtyReq;       
-                                taskReq.QtyIss = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 12, i).Value);                       //_cells.GetCell(13, i).Value = "" + req.QtyIss;      
-                                taskReq.HrsReq = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 13, i).Value);                       //_cells.GetCell(14, i).Value = "" + req.HrsReq;      
-                                taskReq.HrsReal = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 14, i).Value);                      //_cells.GetCell(15, i).Value = "" + req.HrsReal;     
+                                taskReq.EstSize = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 11, i).Value);
+                                taskReq.UnitsQty = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 12, i).Value);
+                                taskReq.RealQty = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 13, i).Value);                    //_cells.GetCell(15, i).Value = "" + req.HrsReal;     
 
 
                                 if (string.IsNullOrWhiteSpace(action))
                                     continue;
                                 else if (action.Equals("C"))
                                 {
-                                    if (taskReq.ReqType.Equals("LAB"))
+                                    if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
                                         WorkOrderTaskActions.CreateTaskResource(urlService, opSheetResource, taskReq);
-                                    else if (taskReq.ReqType.Equals("MAT"))
+                                    else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
                                         WorkOrderTaskActions.CreateTaskMaterial(urlService, opSheetMaterial, taskReq);
-                                    else if (taskReq.ReqType.Equals("EQU"))
+                                    else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
                                         WorkOrderTaskActions.CreateTaskEquipment(urlService, opSheetEquipment, taskReq);
                                 }
                                 else if (action.Equals("M"))
                                 {
-                                    if (taskReq.ReqType.Equals("LAB"))
+                                    if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
                                         WorkOrderTaskActions.ModifyTaskResource(urlService, opSheetResource, taskReq);
-                                    else if (taskReq.ReqType.Equals("MAT"))
+                                    else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
                                         WorkOrderTaskActions.ModifyTaskMaterial(urlService, opSheetMaterial, taskReq);
-                                    else if (taskReq.ReqType.Equals("EQU"))
+                                    else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
                                         WorkOrderTaskActions.ModifyTaskEquipment(urlService, opSheetEquipment, taskReq);
                                 }
                                 else if (action.Equals("D"))
                                 {
-                                    if (taskReq.ReqType.Equals("LAB"))
+                                    if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
                                         WorkOrderTaskActions.DeleteTaskResource(urlService, opSheetResource, taskReq);
-                                    else if (taskReq.ReqType.Equals("MAT"))
+                                    else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
                                         WorkOrderTaskActions.DeleteTaskMaterial(urlService, opSheetMaterial, taskReq);
-                                    else if (taskReq.ReqType.Equals("EQU"))
+                                    else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
                                         WorkOrderTaskActions.DeleteTaskEquipment(urlService, opSheetEquipment, taskReq);
                                 }
-                                _cells.GetCell(StartColTable + 15, i).Value = "OK";
+                                _cells.GetCell(StartColTable + 14, i).Value = "OK";
                                 _cells.GetCell(StartColTable, i).Style = StyleConstants.Success;
-                                _cells.GetCell(StartColTable + 15, i).Style = StyleConstants.Success;
+                                _cells.GetCell(StartColTable + 14, i).Style = StyleConstants.Success;
                             }
                             catch (Exception ex)
                             {
                                 if (_cells.GetCell(StartColTable + 3, i).Value == "   ")
                                 {
                                     _cells.GetCell(StartColTable, i).Style = StyleConstants.Error;
-                                    _cells.GetCell(StartColTable + 15, i).Style = StyleConstants.Error;
-                                    _cells.GetCell(StartColTable + 15, i).Value = "Lab Save Sn Task_NO";
+                                    _cells.GetCell(StartColTable + 14, i).Style = StyleConstants.Error;
+                                    _cells.GetCell(StartColTable + 14, i).Value = "Lab Save Sn Task_NO";
                                 }
                                 else
                                 {
                                     _cells.GetCell(StartColTable, i).Style = StyleConstants.Error;
-                                    _cells.GetCell(StartColTable + 15, i).Style = StyleConstants.Error;
-                                    _cells.GetCell(StartColTable + 15, i).Value = "ERROR: " + ex.Message;
+                                    _cells.GetCell(StartColTable + 14, i).Style = StyleConstants.Error;
+                                    _cells.GetCell(StartColTable + 14, i).Value = "ERROR: " + ex.Message;
                                     Debugger.LogError("RibbonEllipse.cs:ExecuteTaskActions()", ex.Message);
                                 }
                             }
                             finally
                             {
-                                _cells.GetCell(StartColTable + 15, i).Select();
+                                _cells.GetCell(StartColTable + 14, i).Select();
                                 i++;
                             }
                         }
@@ -2145,7 +2109,7 @@ namespace EllipseAddinGanttEQ
                 MessageBox.Show(@"Debe existir ordenes en la pestaña del Gantt para poder consultar esta informacion.");
                 return;
             }*/
-            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,//_frmAuth.EllipseDsct,
@@ -2156,7 +2120,7 @@ namespace EllipseAddinGanttEQ
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
             var StrCol = StartColTable + 4;
             var StrRow = StartRowTable + 1;
             var StrRow2 = StartRowTable + 1;
@@ -2396,7 +2360,7 @@ namespace EllipseAddinGanttEQ
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
+                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(GetDurationWoList);
                     _thread.SetApartmentState(ApartmentState.STA);

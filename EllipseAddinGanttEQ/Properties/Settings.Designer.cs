@@ -52,5 +52,25 @@ namespace EllipseAddinGanttEQ.Properties {
                 return ((string)(this["EllipseAddinGanttEQ_WorkOrderTaskService_WorkOrderTaskService"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderService")]
+        public string EllipseAddinGanttEQ_WorkOrderService_WorkOrderService {
+            get {
+                return ((string)(this["EllipseAddinGanttEQ_WorkOrderService_WorkOrderService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/RefCodesService")]
+        public string EllipseAddinGanttEQ_RefCodes_RefCodesService {
+            get {
+                return ((string)(this["EllipseAddinGanttEQ_RefCodes_RefCodesService"]));
+            }
+        }
     }
 }
