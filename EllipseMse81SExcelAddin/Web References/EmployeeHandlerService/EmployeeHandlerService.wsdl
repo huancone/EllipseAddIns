@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:ns2="http://service.ellipse.mincom.com" xmlns:tns="http://employeehandler.m3001.service.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:ns3="http://instances.m3001.types.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://employeehandler.m3001.service.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:ns2="http://service.ellipse.mincom.com" xmlns:ns1="http://connectivity.service.ews.mincom.com" xmlns:tns="http://employeehandler.m3001.service.ellipse.mincom.com" xmlns:ns6="http://errors.ellipse.mincom.com" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:ns3="http://instances.m3001.types.ellipse.mincom.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns4="http://instances.base.types.ellipse.mincom.com" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns5="http://attribute.ellipse.mincom.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://employeehandler.m3001.service.ellipse.mincom.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://connectivity.service.ews.mincom.com">
       <xsd:complexType name="OperationContext">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="applicationClientId" type="xsd:string" />
           <xsd:element minOccurs="0" name="district" type="xsd:string" />
+          <xsd:element minOccurs="0" name="eventDisable" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="maxInstances" type="xsd:int" />
           <xsd:element minOccurs="0" name="position" type="xsd:string" />
           <xsd:element minOccurs="0" name="returnWarnings" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="runAs" type="ns1:RunAs" />
+          <xsd:element minOccurs="0" name="tenantId" type="xsd:string" />
           <xsd:element minOccurs="0" name="trace" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="transaction" type="xsd:string" />
         </xsd:sequence>
@@ -23,16 +26,40 @@
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.m3001.types.ellipse.mincom.com">
       <xsd:import namespace="http://service.ellipse.mincom.com" />
-      <xsd:simpleType name="employeeId">
+      <xsd:simpleType name="workGroupCrew">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="100" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="employeeType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="workGroup">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="7" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="positionId">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="10" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="employeeId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="teamIdentifier">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="10" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:complexType name="EmployeeHandlerSearchParam">
@@ -40,15 +67,19 @@
           <xsd:extension base="ns2:AbstractSearchParam">
             <xsd:sequence>
               <xsd:element minOccurs="0" name="employeeId" type="ns3:employeeId" />
+              <xsd:element minOccurs="0" name="employeeType" type="ns3:employeeType" />
               <xsd:element minOccurs="0" name="positionId" type="ns3:positionId" />
+              <xsd:element minOccurs="0" name="teamIdentifier" type="ns3:teamIdentifier" />
+              <xsd:element minOccurs="0" name="workGroup" type="ns3:workGroup" />
+              <xsd:element minOccurs="0" name="workGroupCrew" type="ns3:workGroupCrew" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
       <xsd:simpleType name="employeeName">
         <xsd:restriction base="xsd:string">
-          <xsd:maxLength value="40" />
           <xsd:minLength value="0" />
+          <xsd:maxLength value="40" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:complexType name="EmployeeHandlerDTO">
@@ -78,13 +109,18 @@
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.ellipse.mincom.com">
       <xsd:import namespace="http://errors.ellipse.mincom.com" />
-      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
       <xsd:import namespace="http://instances.base.types.ellipse.mincom.com" />
+      <xsd:import namespace="http://attribute.ellipse.mincom.com" />
       <xsd:complexType name="AbstractSearchParam" abstract="true">
         <xsd:complexContent mixed="false">
-          <xsd:extension base="ns2:ServiceDTO" />
+          <xsd:extension base="ns2:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="serviceRequiredAttributes" type="ns2:ServiceRequiredAttributes" />
+            </xsd:sequence>
+          </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
+      <xsd:complexType name="ServiceRequiredAttributes" />
       <xsd:complexType name="ServiceDTO" abstract="true">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns4:Base">
@@ -108,6 +144,7 @@
       </xsd:complexType>
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
+      <xsd:import namespace="http://employeehandler.m3001.service.ellipse.mincom.com" />
       <xsd:complexType name="ArrayOfAttribute">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="Attribute" nillable="true" type="ns5:Attribute" />
@@ -115,17 +152,29 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
+          <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
+          <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
           <xsd:element minOccurs="0" name="value" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>
-    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
-      <xsd:complexType name="Base" abstract="true" />
-    </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://employeehandler.m3001.service.ellipse.mincom.com">
       <xsd:import namespace="http://connectivity.service.ews.mincom.com" />
       <xsd:import namespace="http://instances.m3001.types.ellipse.mincom.com" />
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:element name="retrieveEmployees">
         <xsd:complexType>
           <xsd:sequence>
@@ -143,31 +192,25 @@
         </xsd:complexType>
       </xsd:element>
     </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
+      <xsd:complexType name="Base" abstract="true" />
+    </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
-      <xsd:complexType name="ArrayOfError">
+      <xsd:complexType name="ArrayOfMessage">
         <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
         </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="Error">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns6:Message" />
-        </xsd:complexContent>
       </xsd:complexType>
       <xsd:complexType name="Message">
         <xsd:sequence>
           <xsd:element minOccurs="0" name="fieldId" type="xsd:string" />
           <xsd:element minOccurs="0" name="fieldIndex" type="xsd:int" />
+          <xsd:element minOccurs="0" name="localisable" type="xsd:boolean" />
           <xsd:element minOccurs="0" name="messageId" type="xsd:string" />
           <xsd:element minOccurs="0" name="messageInstance" type="xsd:string" />
           <xsd:element minOccurs="0" name="messageText" type="xsd:string" />
           <xsd:element minOccurs="0" name="parentInstance" type="xsd:string" />
           <xsd:element minOccurs="0" name="user" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfMessage">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="ArrayOfWarning">
@@ -176,6 +219,16 @@
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="Warning">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfError">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Error">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns6:Message" />
         </xsd:complexContent>
@@ -208,7 +261,7 @@
   </wsdl:binding>
   <wsdl:service name="EmployeeHandlerService">
     <wsdl:port name="EmployeeHandlerServiceHttpPort" binding="tns:EmployeeHandlerServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EmployeeHandlerService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EmployeeHandlerService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

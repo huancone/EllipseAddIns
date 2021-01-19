@@ -4,15 +4,17 @@ using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Constants;
+using SharedClassLibrary;
+using SharedClassLibrary.Vsto.Excel;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Constants;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Ellipse.Connections;
 using EllipseWorkOrdersClassLibrary;
 using EllipseWorkOrdersClassLibrary.WorkOrderService;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService; //si es screen service
+using Debugger = SharedClassLibrary.Utilities.Debugger;
 
 namespace EllipseFinalizeWorkOrderExcelAddIn
 {
@@ -20,9 +22,9 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
     public partial class RibbonEllipse
     {
         ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
-        Application _excelApp;
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
+        private Application _excelApp;
 
         private const string SheetName01 = "WorkOrders";
         private const int TitleRow01 = 9;
@@ -33,6 +35,14 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -43,8 +53,33 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 drpEnvironment.Items.Add(item);
             }
 
-        }
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
 
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -162,10 +197,10 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 _cells.GetCell("D3").Value = SearchDateCriteriaType.NotFinalized.Value;
                 _cells.SetValidationList(_cells.GetCell("D3"), dateCriteriaList, ValidationSheetName, 5);
                 _cells.GetCell("C4").Value = "DESDE";
-                _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
+                _cells.GetCell("D4").Value = $"{DateTime.Now.Year:0000}" + "0101";
                 _cells.GetCell("D4").AddComment("YYYYMMDD");
                 _cells.GetCell("C5").Value = "HASTA";
-                _cells.GetCell("D5").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
+                _cells.GetCell("D5").Value = $"{DateTime.Now.Year:0000}" + $"{DateTime.Now.Month:00}" + $"{DateTime.Now.Day:00}";
                 _cells.GetCell("D5").AddComment("YYYYMMDD");
                 _cells.GetRange("C3", "C5").Style = _cells.GetStyle(StyleConstants.Option);
                 _cells.GetRange("D3", "D5").Style = _cells.GetStyle(StyleConstants.Select);
@@ -213,7 +248,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             }
             finally
             {
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
         }
         
@@ -291,7 +326,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
         
         public void ReReviewWoList()
@@ -354,7 +389,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
         public void FinalizeWoList()
         {
@@ -416,7 +451,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
                 }
             }
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
         
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
@@ -425,7 +460,7 @@ namespace EllipseFinalizeWorkOrderExcelAddIn
             {
                 if (_thread != null && _thread.IsAlive)
                     _thread.Abort();
-                if (_cells != null) _cells.SetCursorDefault();
+                _cells?.SetCursorDefault();
             }
             catch (ThreadAbortException ex)
             {

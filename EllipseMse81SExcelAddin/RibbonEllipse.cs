@@ -5,13 +5,14 @@ using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
-
+using SharedClassLibrary;
+using SharedClassLibrary.Utilities;
 using EllipseMse81SExcelAddin.EmployeeService;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
 
 namespace EllipseMse81SExcelAddin
@@ -21,9 +22,9 @@ namespace EllipseMse81SExcelAddin
     {
 
 
-        ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
+        private ExcelStyleCells _cells;
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         Application _excelApp;
         private const string SheetName01 = "EmployeeWorkbench";
         private const string ValidationSheetName = "ValidationSheet";
@@ -34,8 +35,16 @@ namespace EllipseMse81SExcelAddin
         private Thread _thread;
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
-            
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -43,8 +52,34 @@ namespace EllipseMse81SExcelAddin
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -132,9 +167,9 @@ namespace EllipseMse81SExcelAddin
                 _cells.GetRange(1, TitleRow01, ResultColumn01, TitleRow01).Style = StyleConstants.TitleRequired;
                 //Listas de validación
                 var posReasonList = _eFunctions.GetItemCodes("TFRR");
-                var valPosReasonList = posReasonList.Select(item => item.code + " - " + item.description).ToList();
+                var valPosReasonList = posReasonList.Select(item => item.Code + " - " + item.Description).ToList();
                 var persStatList = _eFunctions.GetItemCodes("EPST");
-                var valPersStatList = persStatList.Select(item => item.code + " - " + item.description).ToList();
+                var valPersStatList = persStatList.Select(item => item.Code + " - " + item.Description).ToList();
                 var valGenderList = new List<string>{"F - Female", "M - Male", "U - Unknown"};
                 var valEmpTypeList = new List<string> { "CORE", "PERS" };
 
@@ -278,7 +313,7 @@ namespace EllipseMse81SExcelAddin
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
             var proxyEmp = new EmployeeService.EmployeeService();
             
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             proxyEmp.Url = urlService + "/EmployeeService";
             
             var i = TitleRow01 + 1;
@@ -436,7 +471,7 @@ namespace EllipseMse81SExcelAddin
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var proxyEmp = new EmployeeService.EmployeeService();//ejecuta las acciones del servicio
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             proxyEmp.Url = urlService + "/EmployeeService";
 
             var i = TitleRow01 + 1;
@@ -569,7 +604,7 @@ namespace EllipseMse81SExcelAddin
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             var proxyEmp = new EmployeeService.EmployeeService();//ejecuta las acciones del servicio
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             proxyEmp.Url = urlService + "/EmployeeService";
             
             var i = TitleRow01 + 1;
