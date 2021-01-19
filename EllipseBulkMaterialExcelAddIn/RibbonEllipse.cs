@@ -548,21 +548,21 @@ namespace EllipseBulkMaterialExcelAddIn
                             currentHeaderRow = currentRow;
                         }
 
-                        var requestItem = new BulkMaterialUsageSheetItem
-                        {
-                            BulkMaterialUsageSheetId = "" + currentSheetHeader.BulkMaterialUsageSheetId,
-                            EquipmentReference = equipNo,
-                            ComponentCode = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(9, currentRow).Value),
-                            Modifier = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(10, currentRow).Value),
-                            BulkMaterialTypeId = materialTypeId,
-                            ConditionMonitoringAction = (_cells.GetEmptyIfNull(_cells.GetCell(12, currentRow).Value) == "Fuel/Diesel") || (_cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(12, currentRow).Value) == null) ? null : "" + _cells.GetCell(12, currentRow).Value.ToString().Substring(0, 1),
-                            Quantity = "" + _cells.GetCell(13, currentRow).Value,
-                            UsageDate = _cells.GetEmptyIfNull("" + _cells.GetCell(14, currentRow).Value),
-                            UsageTime = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(15, currentRow).Value),
-                            OperationStatisticType = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(16, currentRow).Value),
-                            MeterReading = "" + _cells.GetCell(17, currentRow).Value,
-                            AccountCode = itemAccountCode
-                        };
+                        var requestItem = new BulkMaterialUsageSheetItem();
+
+                        requestItem.BulkMaterialUsageSheetId = "" + currentSheetHeader.BulkMaterialUsageSheetId;
+                        requestItem.EquipmentReference = equipNo;
+                        requestItem.ComponentCode = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(9, currentRow).Value);
+                        requestItem.Modifier = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(10, currentRow).Value);
+                        requestItem.BulkMaterialTypeId = materialTypeId;
+                        requestItem.ConditionMonitoringAction = (_cells.GetEmptyIfNull(_cells.GetCell(12, currentRow).Value) == "Fuel/Diesel") || (_cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(12, currentRow).Value) == null) ? null : "" + _cells.GetCell(12, currentRow).Value.ToString().Substring(0, 1);
+                        requestItem.Quantity = "" + _cells.GetCell(13, currentRow).Value;
+                        requestItem.UsageDate = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(14, currentRow).Value);
+                        requestItem.UsageTime = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(15, currentRow).Value);
+                        requestItem.OperationStatisticType = _cells.GetNullIfTrimmedEmpty("" + _cells.GetCell(16, currentRow).Value);
+                        requestItem.MeterReading = "" + _cells.GetCell(17, currentRow).Value;
+                        requestItem.AccountCode = itemAccountCode;
+                        
 
                         itemList.Add(requestItem);
 
@@ -599,7 +599,8 @@ namespace EllipseBulkMaterialExcelAddIn
                         }
                         else
                         {
-                            BulkMaterialActions.DeleteHeader(sheetService, opContext, currentSheetHeader.ToDto());
+                            if(!string.IsNullOrWhiteSpace(currentSheetHeader.BulkMaterialUsageSheetId))
+                                BulkMaterialActions.DeleteHeader(sheetService, opContext, currentSheetHeader.ToDto());
                             exceptionMessage = " - Hoja " + currentSheetHeader.BulkMaterialUsageSheetId + " Borrada. " + ex.Message;
                             exceptionType = StyleConstants.Error;
                         }

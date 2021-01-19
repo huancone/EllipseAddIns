@@ -21,7 +21,13 @@ namespace BulkMaterialClassLibrary
         public string LastModifiedDate
         {
             get => MyUtilities.ToString(_lastModifiedDate);
-            set => _lastModifiedDate = MyUtilities.ToDate(value);
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    _lastModifiedDate = null;
+                else
+                    _lastModifiedDate = MyUtilities.ToDate(value);
+            }
         }
         private System.DateTime? _lastModifiedDate;
         public string LastModifiedTime;
@@ -36,19 +42,38 @@ namespace BulkMaterialClassLibrary
         public string UsageDate
         {
             get => MyUtilities.ToString(_usageDate);
-            set => _usageDate = MyUtilities.ToDate(value);
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    _usageDate = null;
+                else
+                    _usageDate = MyUtilities.ToDate(value);
+            }
+            
         }
         private System.DateTime? _usageDate;
         public string UsageTime
         {
             get => MyUtilities.ToString(_usageTime, MyUtilities.DateTime.TimeDefaultFormat);
-            set => _usageTime = MyUtilities.ToDateTime(value, MyUtilities.DateTime.TimeDefaultFormat);
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    _usageTime = null;
+                else
+                    _usageTime = MyUtilities.ToDateTime(value, MyUtilities.DateTime.TimeDefaultFormat);
+            }
         }
         private System.DateTime? _usageTime;
         public string UseByDate
         {
             get => MyUtilities.ToString(_usageByDate);
-            set => _usageByDate = MyUtilities.ToDate(value);
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    _usageByDate = null;
+                else
+                    _usageByDate = MyUtilities.ToDate(value);
+            }
         }
         private System.DateTime? _usageByDate;
 

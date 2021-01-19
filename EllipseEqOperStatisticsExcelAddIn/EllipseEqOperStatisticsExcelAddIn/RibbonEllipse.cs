@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Web.Services.Ellipse;
 using Microsoft.Office.Tools.Ribbon;
 using Screen = SharedClassLibrary.Ellipse.ScreenService;
@@ -12,6 +11,7 @@ using EllipseEqOperStatisticsExcelAddIn.EquipmentOperatingStatisticsService;
 using Microsoft.Office.Tools.Excel;
 using System.Threading;
 using EllipseEqOperStatisticsExcelAddIn.EllipseEqOperStatisticsClassLibrary;
+using SharedClassLibrary;
 using SharedClassLibrary.Ellipse;
 using SharedClassLibrary.Ellipse.Connections;
 using SharedClassLibrary.Ellipse.Forms;
@@ -19,7 +19,6 @@ using SharedClassLibrary.Vsto.Excel;
 
 namespace EllipseEqOperStatisticsExcelAddIn
 {
-    [SuppressMessage("ReSharper", "LoopCanBeConvertedToQuery")]
     public partial class RibbonEllipse
     {
         ExcelStyleCells _cells;
@@ -37,11 +36,15 @@ namespace EllipseEqOperStatisticsExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
-            //Office 2013 requiere no ejecutar esta sentencia al iniciar porque no se cuenta con un libro activo vacío. Se debe ejecutar obligatoriamente al formatear las hojas
-            //adcionalmente validar la cantidad de hojas a utilizar al momento de dar formato
-            //if (_cells == null)
-            //    _cells = new ExcelStyleCells(_excelApp);
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -49,8 +52,34 @@ namespace EllipseEqOperStatisticsExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheetHeaderData();
@@ -116,6 +145,8 @@ namespace EllipseEqOperStatisticsExcelAddIn
                     _excelApp.ActiveWorkbook.Worksheets.Add();
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                
                 _cells.CreateNewWorksheet(ValidationSheetName);
 
 
@@ -151,7 +182,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                 _cells.GetCell("D3").Value = string.Format("{0:0000}", DateTime.Now.Year) + "0101";
                 _cells.GetCell("D4").Value = string.Format("{0:0000}", DateTime.Now.Year) + string.Format("{0:00}", DateTime.Now.Month) + string.Format("{0:00}", DateTime.Now.Day);
 
-                var statsList = _eFunctions.GetItemCodes("SS").Select(item => item.Code + " - " + item.Description).ToList();
+                var statsList = _eFunctions.GetItemCodesString("SS");
                 _cells.SetValidationList(_cells.GetCell("B4"), statsList, ValidationSheetName, 1, false);//TIPO ESTAD
 
 
@@ -185,7 +216,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
                 _cells.GetCell(ResultColumn01, TitleRow01).Value = "RESULTADO";
                 _cells.GetCell(ResultColumn01, TitleRow01).Style = _cells.GetStyle(StyleConstants.TitleResult);
 
-                var shiftList = _eFunctions.GetItemCodes("SH").Select(item => item.Code + " - " + item.Description).ToList();
+                var shiftList = _eFunctions.GetItemCodesString("SH");
 
                 var entryList = new List<string>();
                 entryList.Add("D - Diario/Daily");
@@ -205,7 +236,7 @@ namespace EllipseEqOperStatisticsExcelAddIn
             catch (Exception ex)
             {
                 Debugger.LogError("RibbonEllipse:setSheetHeaderData()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+                MessageBox.Show($@"Se ha producido un error al intentar crear el encabezado de la hoja. " + ex.Message);
             }
         }
 

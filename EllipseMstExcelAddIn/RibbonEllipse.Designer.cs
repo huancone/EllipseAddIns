@@ -45,7 +45,6 @@
             this.btnReReviewMst = this.Factory.CreateRibbonButton();
             this.btnCreateMst = this.Factory.CreateRibbonButton();
             this.btnUpdateMst = this.Factory.CreateRibbonButton();
-            this.btnUpdateMstPost = this.Factory.CreateRibbonButton();
             this.btnModifyNextSchedule = this.Factory.CreateRibbonButton();
             this.btnDeleteTask = this.Factory.CreateRibbonButton();
             this.btnStopThread = this.Factory.CreateRibbonButton();
@@ -98,7 +97,6 @@
             this.menuActions.Items.Add(this.btnReReviewMst);
             this.menuActions.Items.Add(this.btnCreateMst);
             this.menuActions.Items.Add(this.btnUpdateMst);
-            this.menuActions.Items.Add(this.btnUpdateMstPost);
             this.menuActions.Items.Add(this.btnModifyNextSchedule);
             this.menuActions.Items.Add(this.btnDeleteTask);
             this.menuActions.Items.Add(this.btnStopThread);
@@ -132,13 +130,6 @@
             this.btnUpdateMst.Name = "btnUpdateMst";
             this.btnUpdateMst.ShowImage = true;
             this.btnUpdateMst.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateMst_Click);
-            // 
-            // btnUpdateMstPost
-            // 
-            this.btnUpdateMstPost.Label = "Actualizar Tareas - Post";
-            this.btnUpdateMstPost.Name = "btnUpdateMstPost";
-            this.btnUpdateMstPost.ShowImage = true;
-            this.btnUpdateMstPost.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateMstPost_Click);
             // 
             // btnModifyNextSchedule
             // 
@@ -193,7 +184,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnReReviewMst;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox boxFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateMstPost;
     }
 
     partial class ThisRibbonCollection

@@ -23,7 +23,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="MSTServiceHttpBinding", Namespace="http://mst.m8mwp.service.ellipse.mincom.com")]
@@ -735,7 +735,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -916,7 +916,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -961,7 +961,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -970,9 +970,71 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Error))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTiMWPServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsServiceResult))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
+    public abstract partial class BaseServiceResult {
+        
+        private Error[] errorsField;
+        
+        private Message[] informationalMessagesField;
+        
+        private Warning[] warningsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Error[] errors {
+            get {
+                return this.errorsField;
+            }
+            set {
+                this.errorsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Message[] informationalMessages {
+            get {
+                return this.informationalMessagesField;
+            }
+            set {
+                this.informationalMessagesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Warning[] warnings {
+            get {
+                return this.warningsField;
+            }
+            set {
+                this.warningsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://errors.ellipse.mincom.com")]
+    public partial class Error : Message {
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Warning))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Error))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1103,16 +1165,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://errors.ellipse.mincom.com")]
-    public partial class Error : Message {
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1121,64 +1174,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTiMWPServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
-    public abstract partial class BaseServiceResult {
-        
-        private Error[] errorsField;
-        
-        private Message[] informationalMessagesField;
-        
-        private Warning[] warningsField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Error[] errors {
-            get {
-                return this.errorsField;
-            }
-            set {
-                this.errorsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Message[] informationalMessages {
-            get {
-                return this.informationalMessagesField;
-            }
-            set {
-                this.informationalMessagesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Warning[] warnings {
-            get {
-                return this.warningsField;
-            }
-            set {
-                this.warningsField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTiMWPServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTServiceResult))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1187,7 +1187,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1208,7 +1208,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1229,7 +1229,9 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         
         private string commitStartTimeField;
         
-        private string fixedSchedulingField;
+        private bool fixedSchedulingField;
+        
+        private bool fixedSchedulingFieldSpecified;
         
         private bool forceConversionField;
         
@@ -1338,12 +1340,23 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         }
         
         /// <remarks/>
-        public string fixedScheduling {
+        public bool fixedScheduling {
             get {
                 return this.fixedSchedulingField;
             }
             set {
-                this.fixedSchedulingField = "" + value;
+                this.fixedSchedulingField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fixedSchedulingSpecified {
+            get {
+                return this.fixedSchedulingFieldSpecified;
+            }
+            set {
+                this.fixedSchedulingFieldSpecified = value;
             }
         }
         
@@ -1518,7 +1531,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTiMWPDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1658,10 +1671,6 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         private bool taskUnitsRequiredFieldSpecified;
         
         private string templateTypeField;
-        
-        private decimal uncompletedTodosField;
-        
-        private bool uncompletedTodosFieldSpecified;
         
         private decimal unitsPerDayField;
         
@@ -2378,27 +2387,6 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         }
         
         /// <remarks/>
-        public decimal uncompletedTodos {
-            get {
-                return this.uncompletedTodosField;
-            }
-            set {
-                this.uncompletedTodosField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool uncompletedTodosSpecified {
-            get {
-                return this.uncompletedTodosFieldSpecified;
-            }
-            set {
-                this.uncompletedTodosFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         public decimal unitsPerDay {
             get {
                 return this.unitsPerDayField;
@@ -2525,7 +2513,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TasksMWPDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTiMWPDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2591,6 +2579,8 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         private bool assocEquipSwField;
         
         private bool assocEquipSwFieldSpecified;
+        
+        private string assocEquipmentItemField;
         
         private string assocEquipmentItemNoField;
         
@@ -2848,15 +2838,9 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         
         private bool fromLinkFieldSpecified;
         
-        private string ganttFinishDateTimeField;
-        
         private string ganttLinkIdField;
         
         private string ganttParentLinkIdField;
-        
-        private string ganttStartDateTimeField;
-        
-        private string hasAssignTodoField;
         
         private decimal idField;
         
@@ -3072,6 +3056,10 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         
         private string planPriorityField;
         
+        private string planSliderMovableField;
+        
+        private string planSliderResizableField;
+        
         private string planStatTypeField;
         
         private decimal planStatValField;
@@ -3143,6 +3131,10 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         private string referenceField;
         
         private string relatedWoField;
+        
+        private decimal remainingStatField;
+        
+        private bool remainingStatFieldSpecified;
         
         private System.DateTime reqByDateField;
         
@@ -3649,6 +3641,16 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
             }
             set {
                 this.assocEquipSwFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string assocEquipmentItem {
+            get {
+                return this.assocEquipmentItemField;
+            }
+            set {
+                this.assocEquipmentItemField = value;
             }
         }
         
@@ -4977,16 +4979,6 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         }
         
         /// <remarks/>
-        public string ganttFinishDateTime {
-            get {
-                return this.ganttFinishDateTimeField;
-            }
-            set {
-                this.ganttFinishDateTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
         public string ganttLinkId {
             get {
                 return this.ganttLinkIdField;
@@ -5003,26 +4995,6 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
             }
             set {
                 this.ganttParentLinkIdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string ganttStartDateTime {
-            get {
-                return this.ganttStartDateTimeField;
-            }
-            set {
-                this.ganttStartDateTimeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string hasAssignTodo {
-            get {
-                return this.hasAssignTodoField;
-            }
-            set {
-                this.hasAssignTodoField = value;
             }
         }
         
@@ -6130,6 +6102,26 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         }
         
         /// <remarks/>
+        public string planSliderMovable {
+            get {
+                return this.planSliderMovableField;
+            }
+            set {
+                this.planSliderMovableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string planSliderResizable {
+            get {
+                return this.planSliderResizableField;
+            }
+            set {
+                this.planSliderResizableField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string planStatType {
             get {
                 return this.planStatTypeField;
@@ -6500,6 +6492,27 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
             }
             set {
                 this.relatedWoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal remainingStat {
+            get {
+                return this.remainingStatField;
+            }
+            set {
+                this.remainingStatField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool remainingStatSpecified {
+            get {
+                return this.remainingStatFieldSpecified;
+            }
+            set {
+                this.remainingStatFieldSpecified = value;
             }
         }
         
@@ -7505,7 +7518,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7825,7 +7838,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7847,12 +7860,14 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://attribute.ellipse.mincom.com")]
     public partial class Attribute {
+        
+        private string dataTypeField;
         
         private string nameField;
         
@@ -7861,6 +7876,16 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         private anyType2anyTypeMapEntry[] propertiesField;
         
         private string valueField;
+        
+        /// <remarks/>
+        public string dataType {
+            get {
+                return this.dataTypeField;
+            }
+            set {
+                this.dataTypeField = value;
+            }
+        }
         
         /// <remarks/>
         public string name {
@@ -7905,7 +7930,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7954,7 +7979,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ModifyNextScheduleDetailsDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7963,7 +7988,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8109,7 +8134,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MSTStatisticTypesSearchParam))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8130,7 +8155,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8158,6 +8183,8 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         private bool excludeInactiveTasksFieldSpecified;
         
         private string maintSchTaskField;
+        
+        private string maintenanceStrategyField;
         
         private string parentEquipRefField;
         
@@ -8278,6 +8305,16 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         }
         
         /// <remarks/>
+        public string maintenanceStrategy {
+            get {
+                return this.maintenanceStrategyField;
+            }
+            set {
+                this.maintenanceStrategyField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string parentEquipRef {
             get {
                 return this.parentEquipRefField;
@@ -8310,7 +8347,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8380,7 +8417,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TaskKeyDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8463,7 +8500,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8522,7 +8559,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8591,7 +8628,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8649,7 +8686,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8682,7 +8719,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8745,11 +8782,21 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         
         private string equipRefField;
         
-        private string fixedSchedulingField;
+        private System.DateTime expiryDateField;
         
-        private string isInSeriesField;
+        private bool expiryDateFieldSpecified;
         
-        private string isInSuppressionSeriesField;
+        private bool fixedSchedulingField;
+        
+        private bool fixedSchedulingFieldSpecified;
+        
+        private bool isInSeriesField;
+        
+        private bool isInSeriesFieldSpecified;
+        
+        private bool isInSuppressionSeriesField;
+        
+        private bool isInSuppressionSeriesFieldSpecified;
         
         private string jobDescCodeField;
         
@@ -8786,6 +8833,8 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         private string linkedIndField;
         
         private string maintSchTaskField;
+        
+        private string maintenanceStrategyField;
         
         private bool msHistFlgField;
         
@@ -9164,7 +9213,29 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         }
         
         /// <remarks/>
-        public string fixedScheduling {
+        [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
+        public System.DateTime expiryDate {
+            get {
+                return this.expiryDateField;
+            }
+            set {
+                this.expiryDateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool expiryDateSpecified {
+            get {
+                return this.expiryDateFieldSpecified;
+            }
+            set {
+                this.expiryDateFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool fixedScheduling {
             get {
                 return this.fixedSchedulingField;
             }
@@ -9174,7 +9245,18 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         }
         
         /// <remarks/>
-        public string isInSeries {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fixedSchedulingSpecified {
+            get {
+                return this.fixedSchedulingFieldSpecified;
+            }
+            set {
+                this.fixedSchedulingFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isInSeries {
             get {
                 return this.isInSeriesField;
             }
@@ -9184,12 +9266,34 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         }
         
         /// <remarks/>
-        public string isInSuppressionSeries {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isInSeriesSpecified {
+            get {
+                return this.isInSeriesFieldSpecified;
+            }
+            set {
+                this.isInSeriesFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isInSuppressionSeries {
             get {
                 return this.isInSuppressionSeriesField;
             }
             set {
                 this.isInSuppressionSeriesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isInSuppressionSeriesSpecified {
+            get {
+                return this.isInSuppressionSeriesFieldSpecified;
+            }
+            set {
+                this.isInSuppressionSeriesFieldSpecified = value;
             }
         }
         
@@ -9379,6 +9483,16 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
             }
             set {
                 this.maintSchTaskField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string maintenanceStrategy {
+            get {
+                return this.maintenanceStrategyField;
+            }
+            set {
+                this.maintenanceStrategyField = value;
             }
         }
         
@@ -9846,7 +9960,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9905,11 +10019,17 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         
         private string equipRefField;
         
-        private string fixedSchedulingField;
+        private bool fixedSchedulingField;
         
-        private string isInSeriesField;
+        private bool fixedSchedulingFieldSpecified;
         
-        private string isInSuppressionSeriesField;
+        private bool isInSeriesField;
+        
+        private bool isInSeriesFieldSpecified;
+        
+        private bool isInSuppressionSeriesField;
+        
+        private bool isInSuppressionSeriesFieldSpecified;
         
         private string jobDescCodeField;
         
@@ -10286,17 +10406,28 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         }
         
         /// <remarks/>
-        public string fixedScheduling {
+        public bool fixedScheduling {
             get {
                 return this.fixedSchedulingField;
             }
             set {
-                this.fixedSchedulingField = "" + value;
+                this.fixedSchedulingField = value;
             }
         }
         
         /// <remarks/>
-        public string isInSeries {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fixedSchedulingSpecified {
+            get {
+                return this.fixedSchedulingFieldSpecified;
+            }
+            set {
+                this.fixedSchedulingFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isInSeries {
             get {
                 return this.isInSeriesField;
             }
@@ -10306,12 +10437,34 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
         }
         
         /// <remarks/>
-        public string isInSuppressionSeries {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isInSeriesSpecified {
+            get {
+                return this.isInSeriesFieldSpecified;
+            }
+            set {
+                this.isInSeriesFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isInSuppressionSeries {
             get {
                 return this.isInSuppressionSeriesField;
             }
             set {
                 this.isInSuppressionSeriesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isInSuppressionSeriesSpecified {
+            get {
+                return this.isInSuppressionSeriesFieldSpecified;
+            }
+            set {
+                this.isInSuppressionSeriesFieldSpecified = value;
             }
         }
         
@@ -10875,7 +11028,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10896,7 +11049,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10917,7 +11070,7 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -10938,11 +11091,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void modifyNextScheduleDetailsCompletedEventHandler(object sender, modifyNextScheduleDetailsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class modifyNextScheduleDetailsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -10964,11 +11117,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void multiplePopulateSaveAsCompletedEventHandler(object sender, multiplePopulateSaveAsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multiplePopulateSaveAsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -10990,11 +11143,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11016,11 +11169,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void searchStatisticTypesCompletedEventHandler(object sender, searchStatisticTypesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class searchStatisticTypesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11042,11 +11195,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11068,11 +11221,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void updateCompletedEventHandler(object sender, updateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class updateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11094,11 +11247,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void forecastCompletedEventHandler(object sender, forecastCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class forecastCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11120,11 +11273,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11146,11 +11299,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void createLinkCompletedEventHandler(object sender, createLinkCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class createLinkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11172,11 +11325,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void multipleCreateLinkCompletedEventHandler(object sender, multipleCreateLinkCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleCreateLinkCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11198,11 +11351,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void searchCompletedEventHandler(object sender, searchCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class searchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11224,11 +11377,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void populateSaveAsCompletedEventHandler(object sender, populateSaveAsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class populateSaveAsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11250,11 +11403,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void multipleUpdateCompletedEventHandler(object sender, multipleUpdateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleUpdateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11276,11 +11429,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void multipleModifyNextScheduleDetailsCompletedEventHandler(object sender, multipleModifyNextScheduleDetailsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleModifyNextScheduleDetailsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11302,11 +11455,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11328,11 +11481,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -11354,11 +11507,11 @@ namespace EllipseMaintSchedTaskClassLibrary.MstService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3752.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {

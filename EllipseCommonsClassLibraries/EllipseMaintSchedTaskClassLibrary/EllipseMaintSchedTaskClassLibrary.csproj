@@ -38,15 +38,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedClassLibrary\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharedClassLibrary, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary.Connections, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharedClassLibrary.Connections, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedClassLibrary\SharedClassLibrary.Connections.dll</HintPath>
     </Reference>
-    <Reference Include="SharedClassLibrary.Ellipse, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SharedClassLibrary.Ellipse, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharedClassLibrary\SharedClassLibrary.Ellipse.dll</HintPath>
     </Reference>
@@ -54,9 +54,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute">
-      <HintPath>..\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,11 +71,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Mst.cs" />
-    <Compile Include="Web References\MaintSchedTskService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
+    <Compile Include="Queries.cs" />
     <Compile Include="Web References\MstService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -91,53 +84,6 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskService.wsdl" />
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceCreateReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceCreateReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceDeleteReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceDeleteReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceModifyReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceModifyReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceModNextSchedReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceModNextSchedReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceReadReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceReadReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceRetrieveReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceRetrieveTaskResourcesReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceShowReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\MaintSchedTskServiceShowReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\MaintSchedTskService\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Web References\MstService\ModifyNextScheduleDetailsServiceResult.datasource">
       <DependentUpon>Reference.map</DependentUpon>
@@ -167,27 +113,16 @@
     <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/MSTService%3fWSDL">
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MSTService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\MstService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/MSTService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MSTService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseMaintSchedTaskClassLibrary_MstService_MSTService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/MaintSchedTskService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\MaintSchedTskService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/MaintSchedTskService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseMaintSchedTaskClassLibrary_MaintSchedTskService_MaintSchedTskService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
