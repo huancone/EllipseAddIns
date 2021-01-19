@@ -1,34 +1,42 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
 
 namespace EllipseMSQ901ExcelAddIn
 {
     public partial class RibbonEllipse
     {
         private const int MaxRows = 1000;
-        private EllipseFunctions _eFunctions = new EllipseFunctions();
+        private EllipseFunctions _eFunctions;
         private ExcelStyleCells _cells;
         private Application _excelApp;
         private int _resultColumn = 35;
-        private const string _sheetNameSupplier = "MSQ901-ConsultaSupplier";
-        private const string _sheetNameJournal = "MSQ901-ConsultaJournal";
-        private const string _sheetNameCustomer = "MSQ901-ConsultaCustomer";
+        private const string SheetNameSupplier = "MSQ901-ConsultaSupplier";
+        private const string SheetNameJournal = "MSQ901-ConsultaJournal";
+        private const string SheetNameCustomer = "MSQ901-ConsultaCustomer";
         //private string _sheetName01;
         private int _tittleRow = 8;
         private Thread _thread;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new SharedClassLibrary.Ellipse.Settings();
+            _eFunctions = new EllipseFunctions();
+            //_frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
-           
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -36,8 +44,41 @@ namespace EllipseMSQ901ExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //Example of Default Custom Options
+            //settings.SetDefaultCustomSettingValue("AutoSort", "Y");
+            //settings.SetDefaultCustomSettingValue("OverrideAccountCode", "Maintenance");
+            //settings.SetDefaultCustomSettingValue("IgnoreItemError", "N");
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            //Example of Getting Custom Options from Save File
+            //var overrideAccountCode = settings.GetCustomSettingValue("OverrideAccountCode");
+            //if (overrideAccountCode.Equals("Maintenance"))
+            //    cbAccountElementOverrideMntto.Checked = true;
+            //else if (overrideAccountCode.Equals("Disable"))
+            //    cbAccountElementOverrideDisable.Checked = true;
+            //else if (overrideAccountCode.Equals("Alwats"))
+            //    cbAccountElementOverrideAlways.Checked = true;
+            //else if (overrideAccountCode.Equals("Default"))
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //else
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //cbAutoSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AutoSort"));
+            //cbIgnoreItemError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreItemError"));
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnConsultar_Click(object sender, RibbonControlEventArgs e)
         {
 
@@ -46,21 +87,21 @@ namespace EllipseMSQ901ExcelAddIn
                 if (_thread != null && _thread.IsAlive) return;
                 switch (_excelApp.ActiveWorkbook.ActiveSheet.Name)
                 {
-                    case _sheetNameSupplier:
+                    case SheetNameSupplier:
                     {
                         _thread = new Thread(InvoiceSupplierHeaderChange);
                         _thread.SetApartmentState(ApartmentState.STA);
                         _thread.Start();
                             break;
                     }
-                    case _sheetNameJournal:
+                    case SheetNameJournal:
                     {
                         _thread = new Thread(JournalHeaderRangeChange);
                         _thread.SetApartmentState(ApartmentState.STA);
                         _thread.Start();
                             break;
                     }
-                    case _sheetNameCustomer:
+                    case SheetNameCustomer:
                     {
                         _thread = new Thread(CustomerInvoiceHeaderRangeChange);
                         _thread.SetApartmentState(ApartmentState.STA);
@@ -370,11 +411,11 @@ namespace EllipseMSQ901ExcelAddIn
 
                 if (string.IsNullOrEmpty(districtNo) || string.IsNullOrEmpty(journal)) return;
 
-                var sqlQuery = Queries.GetJournalInfo(districtNo, journal, _eFunctions.dbReference, _eFunctions.dbLink);
+                var sqlQuery = Queries.GetJournalInfo(districtNo, journal, _eFunctions.DbReference, _eFunctions.DbLink);
 
                 var drinfo = _eFunctions.GetQueryResult(sqlQuery);
 
-                if (drinfo != null && !drinfo.IsClosed && drinfo.HasRows)
+                if (drinfo != null && !drinfo.IsClosed)
                 {
                     var currentRow = _tittleRow + 1;
                     while (drinfo.Read())
@@ -445,11 +486,11 @@ namespace EllipseMSQ901ExcelAddIn
 
                 if (string.IsNullOrEmpty(districtNo) || string.IsNullOrEmpty(supplier) || string.IsNullOrEmpty(invoice)) return;
 
-                var sqlQuery = Queries.GetSupplierInvoiceInfo(districtNo, supplier, invoice, _eFunctions.dbReference, _eFunctions.dbLink);
+                var sqlQuery = Queries.GetSupplierInvoiceInfo(districtNo, supplier, invoice, _eFunctions.DbReference, _eFunctions.DbLink);
 
                 var drinfo = _eFunctions.GetQueryResult(sqlQuery);
 
-                if (drinfo != null && !drinfo.IsClosed && drinfo.HasRows)
+                if (drinfo != null && !drinfo.IsClosed)
                 {
                     var currentRow = _tittleRow + 1;
                     while (drinfo.Read())
@@ -550,11 +591,11 @@ namespace EllipseMSQ901ExcelAddIn
 
                 if (string.IsNullOrEmpty(districtNo) || string.IsNullOrEmpty(customer) || string.IsNullOrEmpty(invoice)) return;
 
-                var sqlQuery = Queries.GetCustomerInvoiceInfo(districtNo, customer, invoice, _eFunctions.dbReference, _eFunctions.dbLink);
+                var sqlQuery = Queries.GetCustomerInvoiceInfo(districtNo, customer, invoice, _eFunctions.DbReference, _eFunctions.DbLink);
 
                 var drinfo = _eFunctions.GetQueryResult(sqlQuery);
 
-                if (drinfo != null && !drinfo.IsClosed && drinfo.HasRows)
+                if (drinfo != null && !drinfo.IsClosed)
                 {
                     var currentRow = _tittleRow + 1;
                     while (drinfo.Read())

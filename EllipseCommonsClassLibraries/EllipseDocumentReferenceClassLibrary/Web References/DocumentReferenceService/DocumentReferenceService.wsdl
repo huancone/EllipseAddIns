@@ -235,6 +235,12 @@
           <xsd:maxLength value="60" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="documentName2">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="60" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="documentType">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="0" />
@@ -275,6 +281,7 @@
               <xsd:element minOccurs="0" name="docReference" type="ns3:docReference" />
               <xsd:element minOccurs="0" name="docVerNo" type="ns3:docVerNo" />
               <xsd:element minOccurs="0" name="documentName1" type="ns3:documentName1" />
+              <xsd:element minOccurs="0" name="documentName2" type="ns3:documentName2" />
               <xsd:element minOccurs="0" name="documentNo" type="ns3:documentNo" />
               <xsd:element minOccurs="0" name="documentRef" type="ns3:documentRef" />
               <xsd:element minOccurs="0" name="documentType" type="ns3:documentType" />
@@ -355,6 +362,7 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
           <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
           <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
@@ -562,22 +570,22 @@
           <xsd:element minOccurs="0" name="user" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="ArrayOfWarning">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Warning" nillable="true" type="ns6:Warning" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="Warning">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns6:Message" />
-        </xsd:complexContent>
-      </xsd:complexType>
       <xsd:complexType name="ArrayOfError">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="Error">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfWarning">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Warning" nillable="true" type="ns6:Warning" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Warning">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns6:Message" />
         </xsd:complexContent>
@@ -800,7 +808,7 @@
   </wsdl:binding>
   <wsdl:service name="DocumentReferenceService">
     <wsdl:port name="DocumentReferenceServiceHttpPort" binding="tns:DocumentReferenceServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/DocumentReferenceService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/DocumentReferenceService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

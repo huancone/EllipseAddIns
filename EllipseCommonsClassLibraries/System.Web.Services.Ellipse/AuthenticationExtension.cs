@@ -6,8 +6,8 @@ namespace System.Web.Services.Ellipse
 {
     public class AuthenticationExtension : SoapExtension
     {
-        private Stream inwardStream;
-        private Stream outwardStream;
+        private Stream _inwardStream;
+        private Stream _outwardStream;
         private static bool _debugginMode = false;
         private static string _logPath = @"c:\ellipse\logs";
         public override void Initialize(object initializer)
@@ -28,9 +28,9 @@ namespace System.Web.Services.Ellipse
 
         public override Stream ChainStream(Stream stream)
         { 
-            this.outwardStream = stream;
-            this.inwardStream = (Stream) new MemoryStream();
-            return this.inwardStream;
+            this._outwardStream = stream;
+            this._inwardStream = (Stream) new MemoryStream();
+            return this._inwardStream;
         }
 
         public override void ProcessMessage(SoapMessage message)
@@ -59,6 +59,9 @@ namespace System.Web.Services.Ellipse
                     if (_debugginMode)
                         Log(message, "AfterDeserialize");
                     break;
+                default:
+                    //do nothing
+                    break;
             }
 
             
@@ -66,29 +69,29 @@ namespace System.Web.Services.Ellipse
 
         private void BeforeDeserialize()
         {
-            StreamReader streamReader = new StreamReader(this.outwardStream);
-            StreamWriter streamWriter = new StreamWriter(this.inwardStream);
-            string str = streamReader.ReadToEnd();
+            var streamReader = new StreamReader(this._outwardStream);
+            var streamWriter = new StreamWriter(this._inwardStream);
+            var str = streamReader.ReadToEnd();
             streamWriter.Write(str);
             streamWriter.Flush();
-            this.inwardStream.Position = 0L;
+            this._inwardStream.Position = 0L;
         }
 
         private void AfterSerialize()
         {
-            XmlDocument xDoc = new XmlDocument();
-            this.inwardStream.Position = 0L;
-            StreamReader streamReader = new StreamReader(this.inwardStream);
-            StreamWriter streamWriter = new StreamWriter(this.outwardStream);
+            var xDoc = new XmlDocument();
+            this._inwardStream.Position = 0L;
+            var streamReader = new StreamReader(this._inwardStream);
+            var streamWriter = new StreamWriter(this._outwardStream);
             xDoc.Load((TextReader) streamReader);
-            XmlDocumentEx xmlDocumentEx = new XmlDocumentEx(xDoc);
-            string str = "http://schemas.xmlsoap.org/soap/envelope/";
-            string uri = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
-            XmlNodeList elementsByTagName = xDoc.GetElementsByTagName("Envelope", str);
-            XmlNodeEx xmlNodeEx = xmlDocumentEx.AppendChild(elementsByTagName[0], new QName("Header", str)).AppendChild(new QName("Security", uri)).AppendChild(new QName("UsernameToken", uri));
-            xmlNodeEx.SetNode(new QName("Username", uri), ClientConversation.username);
-            xmlNodeEx.SetNode(new QName("Password", uri), ClientConversation.password);
-            string innerXml = xDoc.InnerXml;
+            var xmlDocumentEx = new XmlDocumentEx(xDoc);
+            const string str = "http://schemas.xmlsoap.org/soap/envelope/";
+            const string uri = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
+            var elementsByTagName = xDoc.GetElementsByTagName("Envelope", str);
+            var xmlNodeEx = xmlDocumentEx.AppendChild(elementsByTagName[0], new QName("Header", str)).AppendChild(new QName("Security", uri)).AppendChild(new QName("UsernameToken", uri));
+            xmlNodeEx.SetNode(new QName("Username", uri), ClientConversation.Username);
+            xmlNodeEx.SetNode(new QName("Password", uri), ClientConversation.Password);
+            var innerXml = xDoc.InnerXml;
             streamWriter.Write(innerXml);
             streamWriter.Flush();
         }
@@ -120,15 +123,15 @@ namespace System.Web.Services.Ellipse
         private void Log(SoapMessage message, string stage)
         {
 
-            inwardStream.Position = 0;
+            _inwardStream.Position = 0;
             string contents = (message is SoapServerMessage) ? "SoapRequest " : "SoapResponse ";
             contents += stage + ";";
 
-            StreamReader reader = new StreamReader(inwardStream);
+            var reader = new StreamReader(_inwardStream);
 
             contents += reader.ReadToEnd();
 
-            inwardStream.Position = 0;
+            _inwardStream.Position = 0;
 
             //log.Debug(contents);
             LogDebugging("url:" + message.Url);

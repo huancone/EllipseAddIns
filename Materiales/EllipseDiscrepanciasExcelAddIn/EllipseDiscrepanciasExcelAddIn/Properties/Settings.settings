@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EllipseDiscrepanciasExcelAddIn.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="EllipseDiscrepanciasExcelAddIn_AdjustDiscrepantHoldingService_AdjustDiscrepantHoldingService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/AdjustDiscrepantHoldingService</Value>
+    </Setting>
+    <Setting Name="EllipseDiscrepanciasExcelAddIn_CountTaskService_CountTaskService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/CountTaskService</Value>
+    </Setting>
+    <Setting Name="EllipseDiscrepanciasExcelAddIn_DiscrepancyLogService_DiscrepancyLogService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/DiscrepancyLogService</Value>
+    </Setting>
+    <Setting Name="EllipseDiscrepanciasExcelAddIn_DiscrepancyTaskService_DiscrepancyTaskService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/DiscrepancyTaskService</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

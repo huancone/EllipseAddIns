@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="EllipseVHSAcknowledgementExcelAddIn_IssueRequisitionItemStocklessService_IssueRequisitionItemStocklessService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/IssueRequisitionItemStocklessService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/IssueRequisitionItemStocklessService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

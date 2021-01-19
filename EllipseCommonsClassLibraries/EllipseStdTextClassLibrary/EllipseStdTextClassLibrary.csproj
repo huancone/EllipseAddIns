@@ -148,10 +148,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/StdTextCustomService%3fWSDL">
+    <Content Include="Resources\UpdateLog.txt" />
+    <Content Include="ventyx_logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StdTextCustomService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\StdTextCustomService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/StdTextCustomService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StdTextCustomService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -159,10 +163,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseStdTextClassLibrary_StdTextCustomService_StdTextCustomService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/StdTextService%3fWSDL">
+    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StdTextService%3fWSDL">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\StdTextService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/StdTextService%3fWSDL</UpdateFromURL>
+      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StdTextService%3fWSDL</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -170,9 +174,6 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EllipseStdTextClassLibrary_StdTextService_StdTextService</CachedSettingsPropName>
     </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

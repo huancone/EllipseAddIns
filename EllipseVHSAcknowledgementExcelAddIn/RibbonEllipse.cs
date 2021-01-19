@@ -1,38 +1,74 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Ellipse;
 using EllipseVHSAcknowledgementExcelAddIn.IssueRequisitionItemStocklessService;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Debugger = SharedClassLibrary.Utilities.Debugger;
 
 namespace EllipseVHSAcknowledgementExcelAddIn
 {
     public partial class RibbonEllipse
     {
         ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         Application _excelApp;
         private const string SheetName01 = "VHSAcknowledgement";
         private const int TitleRow01 = 7;
         private const int ResultColumn01 = 12;
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
 
             var environments = Environments.GetEnvironmentList();
-            foreach (var env in environments) { 
+            foreach (var env in environments)
+            {
                 var item = Factory.CreateRibbonDropDownItem();
-                item.Label = env; drpEnvironment.Items.Add(item); 
-            }   
-        }
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
+            }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnAction_Click(object sender, RibbonControlEventArgs e)
         {
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name.StartsWith(SheetName01))
@@ -123,7 +159,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn
                 string district = _cells.GetEmptyIfNull(_cells.GetCell("B3").Value);
                 string supplier = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B4").Value);
                 string requisition = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B5").Value);
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
 
                 //Variables de operación del servicio
                 var opSheet = new OperationContext
@@ -138,11 +174,11 @@ namespace EllipseVHSAcknowledgementExcelAddIn
 
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-                var proxySheet = new IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessService();
+                var service = new IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessService();
                 var requestSheet = new IssueRequisitionItemStocklessSearchParam();
 
                 var itemDto = new IssueRequisitionItemStocklessDTO();
-                proxySheet.Url = urlService;
+                service.Url = urlService;
 
                 //gestionamos y enviamos la solicitud
                 requestSheet.districtCode = district;
@@ -151,7 +187,7 @@ namespace EllipseVHSAcknowledgementExcelAddIn
                 requestSheet.defaultQuantityAcknowledged = false;
                 requestSheet.defaultQuantityAcknowledgedSpecified = true;
 
-                proxySheet.search(opSheet, requestSheet, itemDto);
+                service.search(opSheet, requestSheet, itemDto);
                 //IssueRequisitionItemStocklessService.IssueRequisitionItemStocklessAcknowledgeDTO ackDTO = new IssueRequisitionItemStocklessAcknowledgeDTO();
                 //ackDTO.activityCounter = "000";
                 //ackDTO.authorisedStatus = "A";

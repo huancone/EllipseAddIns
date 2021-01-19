@@ -215,7 +215,7 @@
   </wsdl:binding>
   <wsdl:service name="ScreenService">
     <wsdl:port name="ScreenServiceHttpPort" binding="tns:ScreenServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/ScreenService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ScreenService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

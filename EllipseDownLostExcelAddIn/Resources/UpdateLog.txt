@@ -1,0 +1,6 @@
+﻿EllipseDownLostExcelAddIn
+
+Versión 1.4.0.0, Liberada el 23 de Enero de 2021
+* Actualización de enlace a servicios de Ellipse 9 para el Screen Service de Down & Lost
+* Se corrige error con Ellipse 9 que se asociaban los registros a la work order 00000000
+* Se adiciona el archivo de UpdateLog.txt para registro de actualizaciones

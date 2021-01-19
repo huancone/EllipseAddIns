@@ -23,7 +23,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="MaterialReqmntsServiceHttpBinding", Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
@@ -694,7 +694,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -875,7 +875,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -928,7 +928,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceRetrieveOperationTypesReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceDeleteReplyCollectionDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceFetchRateReplyCollectionDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -949,7 +949,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -970,12 +970,24 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
     public partial class MaterialReqmntsServiceCreateReplyDTO : AbstractReplyDTO {
+        
+        private string aPLCompCodeField;
+        
+        private string aPLCompModCodeField;
+        
+        private string aPLEGIRefField;
+        
+        private string aPLEquipmentGrpIdField;
+        
+        private string aPLEquipmentNoField;
+        
+        private string aPLSeqNoField;
         
         private decimal cUItemNoField;
         
@@ -1021,6 +1033,8 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool fixedAmountFieldSpecified;
         
+        private string itemTypeField;
+        
         private string matDesc1Field;
         
         private string matDesc2Field;
@@ -1028,6 +1042,8 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private string matDesc3Field;
         
         private string matDesc4Field;
+        
+        private string matDescFullField;
         
         private string mnemonicField;
         
@@ -1098,6 +1114,66 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private string workOrderDescriptionField;
         
         private string workOrderTaskField;
+        
+        /// <remarks/>
+        public string APLCompCode {
+            get {
+                return this.aPLCompCodeField;
+            }
+            set {
+                this.aPLCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLCompModCode {
+            get {
+                return this.aPLCompModCodeField;
+            }
+            set {
+                this.aPLCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEGIRef {
+            get {
+                return this.aPLEGIRefField;
+            }
+            set {
+                this.aPLEGIRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEquipmentGrpId {
+            get {
+                return this.aPLEquipmentGrpIdField;
+            }
+            set {
+                this.aPLEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEquipmentNo {
+            get {
+                return this.aPLEquipmentNoField;
+            }
+            set {
+                this.aPLEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLSeqNo {
+            get {
+                return this.aPLSeqNoField;
+            }
+            set {
+                this.aPLSeqNoField = value;
+            }
+        }
         
         /// <remarks/>
         public decimal CUItemNo {
@@ -1325,6 +1401,16 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public string itemType {
+            get {
+                return this.itemTypeField;
+            }
+            set {
+                this.itemTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string matDesc1 {
             get {
                 return this.matDesc1Field;
@@ -1361,6 +1447,16 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.matDesc4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matDescFull {
+            get {
+                return this.matDescFullField;
+            }
+            set {
+                this.matDescFullField = value;
             }
         }
         
@@ -1723,7 +1819,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1764,7 +1860,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceDeleteReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceReadReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceFetchRateReplyDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1785,7 +1881,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1796,7 +1892,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ErrorMessageDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(WarningMessageDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1891,7 +1987,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1917,7 +2013,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceReadReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceFetchRateReplyDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceFetchRateRequestDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1939,12 +2035,14 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://attribute.ellipse.mincom.com")]
     public partial class Attribute {
+        
+        private string dataTypeField;
         
         private string nameField;
         
@@ -1953,6 +2051,16 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private anyType2anyTypeMapEntry[] propertiesField;
         
         private string valueField;
+        
+        /// <remarks/>
+        public string dataType {
+            get {
+                return this.dataTypeField;
+            }
+            set {
+                this.dataTypeField = value;
+            }
+        }
         
         /// <remarks/>
         public string name {
@@ -1997,7 +2105,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2030,7 +2138,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2407,7 +2515,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2453,12 +2561,24 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
     public partial class MaterialReqmntsServiceCreateRequestDTO : AbstractDTO {
+        
+        private string aPLCompCodeField;
+        
+        private string aPLCompModCodeField;
+        
+        private string aPLEGIRefField;
+        
+        private string aPLEquipmentGrpIdField;
+        
+        private string aPLEquipmentNoField;
+        
+        private string aPLSeqNoField;
         
         private decimal cUItemNoField;
         
@@ -2480,11 +2600,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool catalogueFlagFieldSpecified;
         
+        private string categIdField;
+        
+        private string categIdIndField;
+        
         private string classTypeField;
         
         private bool contestibleFlagField;
         
         private bool contestibleFlagFieldSpecified;
+        
+        private string contractRefField;
+        
+        private string contractRefIndField;
+        
+        private string contractRefItemField;
+        
+        private string contractRefItemIndField;
+        
+        private string currencyTypeField;
+        
+        private string currencyTypeExternalIndField;
         
         private string currentRateFlgField;
         
@@ -2500,6 +2636,8 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool fixedAmountFieldSpecified;
         
+        private string itemTypeField;
+        
         private string matDesc1Field;
         
         private string matDesc2Field;
@@ -2508,6 +2646,8 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private string matDesc4Field;
         
+        private string matDescFullField;
+        
         private string mnemonicField;
         
         private string operationTypeField;
@@ -2515,6 +2655,12 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private string operationTypeMATField;
         
         private string partNoField;
+        
+        private string partnerNameField;
+        
+        private decimal priceField;
+        
+        private bool priceFieldSpecified;
         
         private string projectNoField;
         
@@ -2536,6 +2682,8 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private string stockCodeField;
         
+        private string supplierNoField;
+        
         private bool totalOnlyFlgField;
         
         private bool totalOnlyFlgFieldSpecified;
@@ -2549,6 +2697,66 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private WorkOrderDTO workOrderField;
         
         private string workOrderTaskField;
+        
+        /// <remarks/>
+        public string APLCompCode {
+            get {
+                return this.aPLCompCodeField;
+            }
+            set {
+                this.aPLCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLCompModCode {
+            get {
+                return this.aPLCompModCodeField;
+            }
+            set {
+                this.aPLCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEGIRef {
+            get {
+                return this.aPLEGIRefField;
+            }
+            set {
+                this.aPLEGIRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEquipmentGrpId {
+            get {
+                return this.aPLEquipmentGrpIdField;
+            }
+            set {
+                this.aPLEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEquipmentNo {
+            get {
+                return this.aPLEquipmentNoField;
+            }
+            set {
+                this.aPLEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLSeqNo {
+            get {
+                return this.aPLSeqNoField;
+            }
+            set {
+                this.aPLSeqNoField = value;
+            }
+        }
         
         /// <remarks/>
         public decimal CUItemNo {
@@ -2654,6 +2862,26 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public string categId {
+            get {
+                return this.categIdField;
+            }
+            set {
+                this.categIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string categIdInd {
+            get {
+                return this.categIdIndField;
+            }
+            set {
+                this.categIdIndField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string classType {
             get {
                 return this.classTypeField;
@@ -2681,6 +2909,66 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.contestibleFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRef {
+            get {
+                return this.contractRefField;
+            }
+            set {
+                this.contractRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRefInd {
+            get {
+                return this.contractRefIndField;
+            }
+            set {
+                this.contractRefIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRefItem {
+            get {
+                return this.contractRefItemField;
+            }
+            set {
+                this.contractRefItemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRefItemInd {
+            get {
+                return this.contractRefItemIndField;
+            }
+            set {
+                this.contractRefItemIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string currencyType {
+            get {
+                return this.currencyTypeField;
+            }
+            set {
+                this.currencyTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string currencyTypeExternalInd {
+            get {
+                return this.currencyTypeExternalIndField;
+            }
+            set {
+                this.currencyTypeExternalIndField = value;
             }
         }
         
@@ -2756,6 +3044,16 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public string itemType {
+            get {
+                return this.itemTypeField;
+            }
+            set {
+                this.itemTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string matDesc1 {
             get {
                 return this.matDesc1Field;
@@ -2796,6 +3094,16 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public string matDescFull {
+            get {
+                return this.matDescFullField;
+            }
+            set {
+                this.matDescFullField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string mnemonic {
             get {
                 return this.mnemonicField;
@@ -2832,6 +3140,37 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.partNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string partnerName {
+            get {
+                return this.partnerNameField;
+            }
+            set {
+                this.partnerNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal price {
+            get {
+                return this.priceField;
+            }
+            set {
+                this.priceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool priceSpecified {
+            get {
+                return this.priceFieldSpecified;
+            }
+            set {
+                this.priceFieldSpecified = value;
             }
         }
         
@@ -2937,6 +3276,16 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public string supplierNo {
+            get {
+                return this.supplierNoField;
+            }
+            set {
+                this.supplierNoField = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool totalOnlyFlg {
             get {
                 return this.totalOnlyFlgField;
@@ -3010,12 +3359,36 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
     public partial class MaterialReqmntsServiceCreateRequiredAttributesDTO : AbstractRequiredAttributesDTO {
+        
+        private bool returnAPLCompCodeField;
+        
+        private bool returnAPLCompCodeFieldSpecified;
+        
+        private bool returnAPLCompModCodeField;
+        
+        private bool returnAPLCompModCodeFieldSpecified;
+        
+        private bool returnAPLEGIRefField;
+        
+        private bool returnAPLEGIRefFieldSpecified;
+        
+        private bool returnAPLEquipmentGrpIdField;
+        
+        private bool returnAPLEquipmentGrpIdFieldSpecified;
+        
+        private bool returnAPLEquipmentNoField;
+        
+        private bool returnAPLEquipmentNoFieldSpecified;
+        
+        private bool returnAPLSeqNoField;
+        
+        private bool returnAPLSeqNoFieldSpecified;
         
         private bool returnCUItemNoField;
         
@@ -3061,6 +3434,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool returnFixedAmountFieldSpecified;
         
+        private bool returnItemTypeField;
+        
+        private bool returnItemTypeFieldSpecified;
+        
         private bool returnJEItemNoField;
         
         private bool returnJEItemNoFieldSpecified;
@@ -3080,6 +3457,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnMatDesc4Field;
         
         private bool returnMatDesc4FieldSpecified;
+        
+        private bool returnMatDescFullField;
+        
+        private bool returnMatDescFullFieldSpecified;
         
         private bool returnMnemonicField;
         
@@ -3212,6 +3593,132 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnWorkOrderTaskField;
         
         private bool returnWorkOrderTaskFieldSpecified;
+        
+        /// <remarks/>
+        public bool returnAPLCompCode {
+            get {
+                return this.returnAPLCompCodeField;
+            }
+            set {
+                this.returnAPLCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLCompCodeSpecified {
+            get {
+                return this.returnAPLCompCodeFieldSpecified;
+            }
+            set {
+                this.returnAPLCompCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLCompModCode {
+            get {
+                return this.returnAPLCompModCodeField;
+            }
+            set {
+                this.returnAPLCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLCompModCodeSpecified {
+            get {
+                return this.returnAPLCompModCodeFieldSpecified;
+            }
+            set {
+                this.returnAPLCompModCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEGIRef {
+            get {
+                return this.returnAPLEGIRefField;
+            }
+            set {
+                this.returnAPLEGIRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEGIRefSpecified {
+            get {
+                return this.returnAPLEGIRefFieldSpecified;
+            }
+            set {
+                this.returnAPLEGIRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEquipmentGrpId {
+            get {
+                return this.returnAPLEquipmentGrpIdField;
+            }
+            set {
+                this.returnAPLEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEquipmentGrpIdSpecified {
+            get {
+                return this.returnAPLEquipmentGrpIdFieldSpecified;
+            }
+            set {
+                this.returnAPLEquipmentGrpIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEquipmentNo {
+            get {
+                return this.returnAPLEquipmentNoField;
+            }
+            set {
+                this.returnAPLEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEquipmentNoSpecified {
+            get {
+                return this.returnAPLEquipmentNoFieldSpecified;
+            }
+            set {
+                this.returnAPLEquipmentNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLSeqNo {
+            get {
+                return this.returnAPLSeqNoField;
+            }
+            set {
+                this.returnAPLSeqNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLSeqNoSpecified {
+            get {
+                return this.returnAPLSeqNoFieldSpecified;
+            }
+            set {
+                this.returnAPLSeqNoFieldSpecified = value;
+            }
+        }
         
         /// <remarks/>
         public bool returnCUItemNo {
@@ -3445,6 +3952,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public bool returnItemType {
+            get {
+                return this.returnItemTypeField;
+            }
+            set {
+                this.returnItemTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnItemTypeSpecified {
+            get {
+                return this.returnItemTypeFieldSpecified;
+            }
+            set {
+                this.returnItemTypeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnJEItemNo {
             get {
                 return this.returnJEItemNoField;
@@ -3546,6 +4074,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.returnMatDesc4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMatDescFull {
+            get {
+                return this.returnMatDescFullField;
+            }
+            set {
+                this.returnMatDescFullField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMatDescFullSpecified {
+            get {
+                return this.returnMatDescFullFieldSpecified;
+            }
+            set {
+                this.returnMatDescFullFieldSpecified = value;
             }
         }
         
@@ -4252,7 +4801,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceDeleteRequiredAttributesDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceReadRequiredAttributesDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(MaterialReqmntsServiceFetchRateRequiredAttributesDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4261,12 +4810,36 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
     public partial class MaterialReqmntsServiceRetrieveRequiredAttributesDTO : AbstractRequiredAttributesDTO {
+        
+        private bool returnAPLCompCodeField;
+        
+        private bool returnAPLCompCodeFieldSpecified;
+        
+        private bool returnAPLCompModCodeField;
+        
+        private bool returnAPLCompModCodeFieldSpecified;
+        
+        private bool returnAPLEGIRefField;
+        
+        private bool returnAPLEGIRefFieldSpecified;
+        
+        private bool returnAPLEquipmentGrpIdField;
+        
+        private bool returnAPLEquipmentGrpIdFieldSpecified;
+        
+        private bool returnAPLEquipmentNoField;
+        
+        private bool returnAPLEquipmentNoFieldSpecified;
+        
+        private bool returnAPLSeqNoField;
+        
+        private bool returnAPLSeqNoFieldSpecified;
         
         private bool returnCUItemNoField;
         
@@ -4284,6 +4857,14 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool returnCatalogueFlagFieldSpecified;
         
+        private bool returnCategIdField;
+        
+        private bool returnCategIdFieldSpecified;
+        
+        private bool returnCategIdIndField;
+        
+        private bool returnCategIdIndFieldSpecified;
+        
         private bool returnClassTypeField;
         
         private bool returnClassTypeFieldSpecified;
@@ -4291,6 +4872,30 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnContestibleFlagField;
         
         private bool returnContestibleFlagFieldSpecified;
+        
+        private bool returnContractRefField;
+        
+        private bool returnContractRefFieldSpecified;
+        
+        private bool returnContractRefIndField;
+        
+        private bool returnContractRefIndFieldSpecified;
+        
+        private bool returnContractRefItemField;
+        
+        private bool returnContractRefItemFieldSpecified;
+        
+        private bool returnContractRefItemIndField;
+        
+        private bool returnContractRefItemIndFieldSpecified;
+        
+        private bool returnCurrencyTypeField;
+        
+        private bool returnCurrencyTypeFieldSpecified;
+        
+        private bool returnCurrencyTypeExternalIndField;
+        
+        private bool returnCurrencyTypeExternalIndFieldSpecified;
         
         private bool returnDistrictCodeField;
         
@@ -4311,6 +4916,22 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnFixedAmountField;
         
         private bool returnFixedAmountFieldSpecified;
+        
+        private bool returnIsPartNumberMatchesMultipleStockCodeField;
+        
+        private bool returnIsPartNumberMatchesMultipleStockCodeFieldSpecified;
+        
+        private bool returnIsPartNumberMatchesSingleStockCodeField;
+        
+        private bool returnIsPartNumberMatchesSingleStockCodeFieldSpecified;
+        
+        private bool returnIsStockCodeOnMultipleWarehouseFlagField;
+        
+        private bool returnIsStockCodeOnMultipleWarehouseFlagFieldSpecified;
+        
+        private bool returnIsStockedInDifferentWarehouseFlagField;
+        
+        private bool returnIsStockedInDifferentWarehouseFlagFieldSpecified;
         
         private bool returnItemTypeField;
         
@@ -4336,6 +4957,18 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool returnMatDesc4FieldSpecified;
         
+        private bool returnMatDescFullField;
+        
+        private bool returnMatDescFullFieldSpecified;
+        
+        private bool returnMatchedMnemonicField;
+        
+        private bool returnMatchedMnemonicFieldSpecified;
+        
+        private bool returnMatchedStockCodeField;
+        
+        private bool returnMatchedStockCodeFieldSpecified;
+        
         private bool returnMnemonicField;
         
         private bool returnMnemonicFieldSpecified;
@@ -4355,6 +4988,14 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnPartNoField;
         
         private bool returnPartNoFieldSpecified;
+        
+        private bool returnPartnerNameField;
+        
+        private bool returnPartnerNameFieldSpecified;
+        
+        private bool returnPriceField;
+        
+        private bool returnPriceFieldSpecified;
         
         private bool returnProjDescriptionField;
         
@@ -4428,6 +5069,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool returnStockCodeDescriptionFieldSpecified;
         
+        private bool returnSupplierNoField;
+        
+        private bool returnSupplierNoFieldSpecified;
+        
         private bool returnTotReqdQuantityField;
         
         private bool returnTotReqdQuantityFieldSpecified;
@@ -4467,6 +5112,132 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnWorkOrderTaskField;
         
         private bool returnWorkOrderTaskFieldSpecified;
+        
+        /// <remarks/>
+        public bool returnAPLCompCode {
+            get {
+                return this.returnAPLCompCodeField;
+            }
+            set {
+                this.returnAPLCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLCompCodeSpecified {
+            get {
+                return this.returnAPLCompCodeFieldSpecified;
+            }
+            set {
+                this.returnAPLCompCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLCompModCode {
+            get {
+                return this.returnAPLCompModCodeField;
+            }
+            set {
+                this.returnAPLCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLCompModCodeSpecified {
+            get {
+                return this.returnAPLCompModCodeFieldSpecified;
+            }
+            set {
+                this.returnAPLCompModCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEGIRef {
+            get {
+                return this.returnAPLEGIRefField;
+            }
+            set {
+                this.returnAPLEGIRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEGIRefSpecified {
+            get {
+                return this.returnAPLEGIRefFieldSpecified;
+            }
+            set {
+                this.returnAPLEGIRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEquipmentGrpId {
+            get {
+                return this.returnAPLEquipmentGrpIdField;
+            }
+            set {
+                this.returnAPLEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEquipmentGrpIdSpecified {
+            get {
+                return this.returnAPLEquipmentGrpIdFieldSpecified;
+            }
+            set {
+                this.returnAPLEquipmentGrpIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEquipmentNo {
+            get {
+                return this.returnAPLEquipmentNoField;
+            }
+            set {
+                this.returnAPLEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEquipmentNoSpecified {
+            get {
+                return this.returnAPLEquipmentNoFieldSpecified;
+            }
+            set {
+                this.returnAPLEquipmentNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLSeqNo {
+            get {
+                return this.returnAPLSeqNoField;
+            }
+            set {
+                this.returnAPLSeqNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLSeqNoSpecified {
+            get {
+                return this.returnAPLSeqNoFieldSpecified;
+            }
+            set {
+                this.returnAPLSeqNoFieldSpecified = value;
+            }
+        }
         
         /// <remarks/>
         public bool returnCUItemNo {
@@ -4553,6 +5324,48 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public bool returnCategId {
+            get {
+                return this.returnCategIdField;
+            }
+            set {
+                this.returnCategIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCategIdSpecified {
+            get {
+                return this.returnCategIdFieldSpecified;
+            }
+            set {
+                this.returnCategIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCategIdInd {
+            get {
+                return this.returnCategIdIndField;
+            }
+            set {
+                this.returnCategIdIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCategIdIndSpecified {
+            get {
+                return this.returnCategIdIndFieldSpecified;
+            }
+            set {
+                this.returnCategIdIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnClassType {
             get {
                 return this.returnClassTypeField;
@@ -4591,6 +5404,132 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.returnContestibleFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnContractRef {
+            get {
+                return this.returnContractRefField;
+            }
+            set {
+                this.returnContractRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnContractRefSpecified {
+            get {
+                return this.returnContractRefFieldSpecified;
+            }
+            set {
+                this.returnContractRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnContractRefInd {
+            get {
+                return this.returnContractRefIndField;
+            }
+            set {
+                this.returnContractRefIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnContractRefIndSpecified {
+            get {
+                return this.returnContractRefIndFieldSpecified;
+            }
+            set {
+                this.returnContractRefIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnContractRefItem {
+            get {
+                return this.returnContractRefItemField;
+            }
+            set {
+                this.returnContractRefItemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnContractRefItemSpecified {
+            get {
+                return this.returnContractRefItemFieldSpecified;
+            }
+            set {
+                this.returnContractRefItemFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnContractRefItemInd {
+            get {
+                return this.returnContractRefItemIndField;
+            }
+            set {
+                this.returnContractRefItemIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnContractRefItemIndSpecified {
+            get {
+                return this.returnContractRefItemIndFieldSpecified;
+            }
+            set {
+                this.returnContractRefItemIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCurrencyType {
+            get {
+                return this.returnCurrencyTypeField;
+            }
+            set {
+                this.returnCurrencyTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCurrencyTypeSpecified {
+            get {
+                return this.returnCurrencyTypeFieldSpecified;
+            }
+            set {
+                this.returnCurrencyTypeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCurrencyTypeExternalInd {
+            get {
+                return this.returnCurrencyTypeExternalIndField;
+            }
+            set {
+                this.returnCurrencyTypeExternalIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCurrencyTypeExternalIndSpecified {
+            get {
+                return this.returnCurrencyTypeExternalIndFieldSpecified;
+            }
+            set {
+                this.returnCurrencyTypeExternalIndFieldSpecified = value;
             }
         }
         
@@ -4696,6 +5635,90 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.returnFixedAmountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnIsPartNumberMatchesMultipleStockCode {
+            get {
+                return this.returnIsPartNumberMatchesMultipleStockCodeField;
+            }
+            set {
+                this.returnIsPartNumberMatchesMultipleStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnIsPartNumberMatchesMultipleStockCodeSpecified {
+            get {
+                return this.returnIsPartNumberMatchesMultipleStockCodeFieldSpecified;
+            }
+            set {
+                this.returnIsPartNumberMatchesMultipleStockCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnIsPartNumberMatchesSingleStockCode {
+            get {
+                return this.returnIsPartNumberMatchesSingleStockCodeField;
+            }
+            set {
+                this.returnIsPartNumberMatchesSingleStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnIsPartNumberMatchesSingleStockCodeSpecified {
+            get {
+                return this.returnIsPartNumberMatchesSingleStockCodeFieldSpecified;
+            }
+            set {
+                this.returnIsPartNumberMatchesSingleStockCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnIsStockCodeOnMultipleWarehouseFlag {
+            get {
+                return this.returnIsStockCodeOnMultipleWarehouseFlagField;
+            }
+            set {
+                this.returnIsStockCodeOnMultipleWarehouseFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnIsStockCodeOnMultipleWarehouseFlagSpecified {
+            get {
+                return this.returnIsStockCodeOnMultipleWarehouseFlagFieldSpecified;
+            }
+            set {
+                this.returnIsStockCodeOnMultipleWarehouseFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnIsStockedInDifferentWarehouseFlag {
+            get {
+                return this.returnIsStockedInDifferentWarehouseFlagField;
+            }
+            set {
+                this.returnIsStockedInDifferentWarehouseFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnIsStockedInDifferentWarehouseFlagSpecified {
+            get {
+                return this.returnIsStockedInDifferentWarehouseFlagFieldSpecified;
+            }
+            set {
+                this.returnIsStockedInDifferentWarehouseFlagFieldSpecified = value;
             }
         }
         
@@ -4826,6 +5849,69 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public bool returnMatDescFull {
+            get {
+                return this.returnMatDescFullField;
+            }
+            set {
+                this.returnMatDescFullField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMatDescFullSpecified {
+            get {
+                return this.returnMatDescFullFieldSpecified;
+            }
+            set {
+                this.returnMatDescFullFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMatchedMnemonic {
+            get {
+                return this.returnMatchedMnemonicField;
+            }
+            set {
+                this.returnMatchedMnemonicField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMatchedMnemonicSpecified {
+            get {
+                return this.returnMatchedMnemonicFieldSpecified;
+            }
+            set {
+                this.returnMatchedMnemonicFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMatchedStockCode {
+            get {
+                return this.returnMatchedStockCodeField;
+            }
+            set {
+                this.returnMatchedStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMatchedStockCodeSpecified {
+            get {
+                return this.returnMatchedStockCodeFieldSpecified;
+            }
+            set {
+                this.returnMatchedStockCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnMnemonic {
             get {
                 return this.returnMnemonicField;
@@ -4927,6 +6013,48 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.returnPartNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnPartnerName {
+            get {
+                return this.returnPartnerNameField;
+            }
+            set {
+                this.returnPartnerNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnPartnerNameSpecified {
+            get {
+                return this.returnPartnerNameFieldSpecified;
+            }
+            set {
+                this.returnPartnerNameFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnPrice {
+            get {
+                return this.returnPriceField;
+            }
+            set {
+                this.returnPriceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnPriceSpecified {
+            get {
+                return this.returnPriceFieldSpecified;
+            }
+            set {
+                this.returnPriceFieldSpecified = value;
             }
         }
         
@@ -5309,6 +6437,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public bool returnSupplierNo {
+            get {
+                return this.returnSupplierNoField;
+            }
+            set {
+                this.returnSupplierNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSupplierNoSpecified {
+            get {
+                return this.returnSupplierNoFieldSpecified;
+            }
+            set {
+                this.returnSupplierNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnTotReqdQuantity {
             get {
                 return this.returnTotReqdQuantityField;
@@ -5520,12 +6669,32 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
     public partial class MaterialReqmntsServiceModifyRequiredAttributesDTO : AbstractRequiredAttributesDTO {
+        
+        private bool returnAPLCompCodeField;
+        
+        private bool returnAPLCompCodeFieldSpecified;
+        
+        private bool returnAPLCompModCodeField;
+        
+        private bool returnAPLCompModCodeFieldSpecified;
+        
+        private bool returnAPLEGIRefField;
+        
+        private bool returnAPLEGIRefFieldSpecified;
+        
+        private bool returnAPLEquipmentGrpIdField;
+        
+        private bool returnAPLEquipmentGrpIdFieldSpecified;
+        
+        private bool returnAPLSeqNoField;
+        
+        private bool returnAPLSeqNoFieldSpecified;
         
         private bool returnCUItemNoField;
         
@@ -5571,6 +6740,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool returnFixedAmountFieldSpecified;
         
+        private bool returnItemTypeField;
+        
+        private bool returnItemTypeFieldSpecified;
+        
         private bool returnJEItemNoField;
         
         private bool returnJEItemNoFieldSpecified;
@@ -5590,6 +6763,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnMatDesc4Field;
         
         private bool returnMatDesc4FieldSpecified;
+        
+        private bool returnMatDescFullField;
+        
+        private bool returnMatDescFullFieldSpecified;
         
         private bool returnMnemonicField;
         
@@ -5714,6 +6891,111 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnWorkOrderTaskField;
         
         private bool returnWorkOrderTaskFieldSpecified;
+        
+        /// <remarks/>
+        public bool returnAPLCompCode {
+            get {
+                return this.returnAPLCompCodeField;
+            }
+            set {
+                this.returnAPLCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLCompCodeSpecified {
+            get {
+                return this.returnAPLCompCodeFieldSpecified;
+            }
+            set {
+                this.returnAPLCompCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLCompModCode {
+            get {
+                return this.returnAPLCompModCodeField;
+            }
+            set {
+                this.returnAPLCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLCompModCodeSpecified {
+            get {
+                return this.returnAPLCompModCodeFieldSpecified;
+            }
+            set {
+                this.returnAPLCompModCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEGIRef {
+            get {
+                return this.returnAPLEGIRefField;
+            }
+            set {
+                this.returnAPLEGIRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEGIRefSpecified {
+            get {
+                return this.returnAPLEGIRefFieldSpecified;
+            }
+            set {
+                this.returnAPLEGIRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEquipmentGrpId {
+            get {
+                return this.returnAPLEquipmentGrpIdField;
+            }
+            set {
+                this.returnAPLEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEquipmentGrpIdSpecified {
+            get {
+                return this.returnAPLEquipmentGrpIdFieldSpecified;
+            }
+            set {
+                this.returnAPLEquipmentGrpIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLSeqNo {
+            get {
+                return this.returnAPLSeqNoField;
+            }
+            set {
+                this.returnAPLSeqNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLSeqNoSpecified {
+            get {
+                return this.returnAPLSeqNoFieldSpecified;
+            }
+            set {
+                this.returnAPLSeqNoFieldSpecified = value;
+            }
+        }
         
         /// <remarks/>
         public bool returnCUItemNo {
@@ -5947,6 +7229,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public bool returnItemType {
+            get {
+                return this.returnItemTypeField;
+            }
+            set {
+                this.returnItemTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnItemTypeSpecified {
+            get {
+                return this.returnItemTypeFieldSpecified;
+            }
+            set {
+                this.returnItemTypeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnJEItemNo {
             get {
                 return this.returnJEItemNoField;
@@ -6048,6 +7351,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.returnMatDesc4FieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMatDescFull {
+            get {
+                return this.returnMatDescFullField;
+            }
+            set {
+                this.returnMatDescFullField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMatDescFullSpecified {
+            get {
+                return this.returnMatDescFullFieldSpecified;
+            }
+            set {
+                this.returnMatDescFullFieldSpecified = value;
             }
         }
         
@@ -6704,7 +8028,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6730,6 +8054,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnMatDesc4Field;
         
         private bool returnMatDesc4FieldSpecified;
+        
+        private bool returnMatDescFullField;
+        
+        private bool returnMatDescFullFieldSpecified;
         
         private bool returnMnemonicField;
         
@@ -6861,6 +8189,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public bool returnMatDescFull {
+            get {
+                return this.returnMatDescFullField;
+            }
+            set {
+                this.returnMatDescFullField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMatDescFullSpecified {
+            get {
+                return this.returnMatDescFullFieldSpecified;
+            }
+            set {
+                this.returnMatDescFullFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnMnemonic {
             get {
                 return this.returnMnemonicField;
@@ -6988,7 +8337,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7047,7 +8396,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7056,12 +8405,36 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
     public partial class MaterialReqmntsServiceReadRequiredAttributesDTO : AbstractRequiredAttributesDTO {
+        
+        private bool returnAPLCompCodeField;
+        
+        private bool returnAPLCompCodeFieldSpecified;
+        
+        private bool returnAPLCompModCodeField;
+        
+        private bool returnAPLCompModCodeFieldSpecified;
+        
+        private bool returnAPLEGIRefField;
+        
+        private bool returnAPLEGIRefFieldSpecified;
+        
+        private bool returnAPLEquipmentGrpIdField;
+        
+        private bool returnAPLEquipmentGrpIdFieldSpecified;
+        
+        private bool returnAPLEquipmentNoField;
+        
+        private bool returnAPLEquipmentNoFieldSpecified;
+        
+        private bool returnAPLSeqNoField;
+        
+        private bool returnAPLSeqNoFieldSpecified;
         
         private bool returnCUItemNoField;
         
@@ -7079,6 +8452,14 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool returnCatalogueFlagFieldSpecified;
         
+        private bool returnCategIdField;
+        
+        private bool returnCategIdFieldSpecified;
+        
+        private bool returnCategIdIndField;
+        
+        private bool returnCategIdIndFieldSpecified;
+        
         private bool returnClassTypeField;
         
         private bool returnClassTypeFieldSpecified;
@@ -7094,6 +8475,30 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnContestibleFlagField;
         
         private bool returnContestibleFlagFieldSpecified;
+        
+        private bool returnContractRefField;
+        
+        private bool returnContractRefFieldSpecified;
+        
+        private bool returnContractRefIndField;
+        
+        private bool returnContractRefIndFieldSpecified;
+        
+        private bool returnContractRefItemField;
+        
+        private bool returnContractRefItemFieldSpecified;
+        
+        private bool returnContractRefItemIndField;
+        
+        private bool returnContractRefItemIndFieldSpecified;
+        
+        private bool returnCurrencyTypeField;
+        
+        private bool returnCurrencyTypeFieldSpecified;
+        
+        private bool returnCurrencyTypeExternalIndField;
+        
+        private bool returnCurrencyTypeExternalIndFieldSpecified;
         
         private bool returnDistrictCodeField;
         
@@ -7114,6 +8519,26 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnFixedAmountField;
         
         private bool returnFixedAmountFieldSpecified;
+        
+        private bool returnIsPartNumberMatchesMultipleStockCodeField;
+        
+        private bool returnIsPartNumberMatchesMultipleStockCodeFieldSpecified;
+        
+        private bool returnIsPartNumberMatchesSingleStockCodeField;
+        
+        private bool returnIsPartNumberMatchesSingleStockCodeFieldSpecified;
+        
+        private bool returnIsStockCodeOnMultipleWarehouseFlagField;
+        
+        private bool returnIsStockCodeOnMultipleWarehouseFlagFieldSpecified;
+        
+        private bool returnIsStockedInDifferentWarehouseFlagField;
+        
+        private bool returnIsStockedInDifferentWarehouseFlagFieldSpecified;
+        
+        private bool returnIssueWarehouseIdField;
+        
+        private bool returnIssueWarehouseIdFieldSpecified;
         
         private bool returnItemTypeField;
         
@@ -7139,6 +8564,18 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool returnMatDesc4FieldSpecified;
         
+        private bool returnMatDescFullField;
+        
+        private bool returnMatDescFullFieldSpecified;
+        
+        private bool returnMatchedMnemonicField;
+        
+        private bool returnMatchedMnemonicFieldSpecified;
+        
+        private bool returnMatchedStockCodeField;
+        
+        private bool returnMatchedStockCodeFieldSpecified;
+        
         private bool returnMnemonicField;
         
         private bool returnMnemonicFieldSpecified;
@@ -7154,6 +8591,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnPartNoField;
         
         private bool returnPartNoFieldSpecified;
+        
+        private bool returnPriceField;
+        
+        private bool returnPriceFieldSpecified;
         
         private bool returnProjDescriptionField;
         
@@ -7211,6 +8652,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool returnStdJobNoFieldSpecified;
         
+        private bool returnStockAvailableField;
+        
+        private bool returnStockAvailableFieldSpecified;
+        
         private bool returnStockCategoryField;
         
         private bool returnStockCategoryFieldSpecified;
@@ -7222,6 +8667,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnStockCodeDescriptionField;
         
         private bool returnStockCodeDescriptionFieldSpecified;
+        
+        private bool returnSupplierNoField;
+        
+        private bool returnSupplierNoFieldSpecified;
         
         private bool returnTotReqdQuantityField;
         
@@ -7262,6 +8711,132 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool returnWorkOrderTaskField;
         
         private bool returnWorkOrderTaskFieldSpecified;
+        
+        /// <remarks/>
+        public bool returnAPLCompCode {
+            get {
+                return this.returnAPLCompCodeField;
+            }
+            set {
+                this.returnAPLCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLCompCodeSpecified {
+            get {
+                return this.returnAPLCompCodeFieldSpecified;
+            }
+            set {
+                this.returnAPLCompCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLCompModCode {
+            get {
+                return this.returnAPLCompModCodeField;
+            }
+            set {
+                this.returnAPLCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLCompModCodeSpecified {
+            get {
+                return this.returnAPLCompModCodeFieldSpecified;
+            }
+            set {
+                this.returnAPLCompModCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEGIRef {
+            get {
+                return this.returnAPLEGIRefField;
+            }
+            set {
+                this.returnAPLEGIRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEGIRefSpecified {
+            get {
+                return this.returnAPLEGIRefFieldSpecified;
+            }
+            set {
+                this.returnAPLEGIRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEquipmentGrpId {
+            get {
+                return this.returnAPLEquipmentGrpIdField;
+            }
+            set {
+                this.returnAPLEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEquipmentGrpIdSpecified {
+            get {
+                return this.returnAPLEquipmentGrpIdFieldSpecified;
+            }
+            set {
+                this.returnAPLEquipmentGrpIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLEquipmentNo {
+            get {
+                return this.returnAPLEquipmentNoField;
+            }
+            set {
+                this.returnAPLEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLEquipmentNoSpecified {
+            get {
+                return this.returnAPLEquipmentNoFieldSpecified;
+            }
+            set {
+                this.returnAPLEquipmentNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnAPLSeqNo {
+            get {
+                return this.returnAPLSeqNoField;
+            }
+            set {
+                this.returnAPLSeqNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnAPLSeqNoSpecified {
+            get {
+                return this.returnAPLSeqNoFieldSpecified;
+            }
+            set {
+                this.returnAPLSeqNoFieldSpecified = value;
+            }
+        }
         
         /// <remarks/>
         public bool returnCUItemNo {
@@ -7344,6 +8919,48 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.returnCatalogueFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCategId {
+            get {
+                return this.returnCategIdField;
+            }
+            set {
+                this.returnCategIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCategIdSpecified {
+            get {
+                return this.returnCategIdFieldSpecified;
+            }
+            set {
+                this.returnCategIdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCategIdInd {
+            get {
+                return this.returnCategIdIndField;
+            }
+            set {
+                this.returnCategIdIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCategIdIndSpecified {
+            get {
+                return this.returnCategIdIndFieldSpecified;
+            }
+            set {
+                this.returnCategIdIndFieldSpecified = value;
             }
         }
         
@@ -7432,6 +9049,132 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public bool returnContractRef {
+            get {
+                return this.returnContractRefField;
+            }
+            set {
+                this.returnContractRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnContractRefSpecified {
+            get {
+                return this.returnContractRefFieldSpecified;
+            }
+            set {
+                this.returnContractRefFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnContractRefInd {
+            get {
+                return this.returnContractRefIndField;
+            }
+            set {
+                this.returnContractRefIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnContractRefIndSpecified {
+            get {
+                return this.returnContractRefIndFieldSpecified;
+            }
+            set {
+                this.returnContractRefIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnContractRefItem {
+            get {
+                return this.returnContractRefItemField;
+            }
+            set {
+                this.returnContractRefItemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnContractRefItemSpecified {
+            get {
+                return this.returnContractRefItemFieldSpecified;
+            }
+            set {
+                this.returnContractRefItemFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnContractRefItemInd {
+            get {
+                return this.returnContractRefItemIndField;
+            }
+            set {
+                this.returnContractRefItemIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnContractRefItemIndSpecified {
+            get {
+                return this.returnContractRefItemIndFieldSpecified;
+            }
+            set {
+                this.returnContractRefItemIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCurrencyType {
+            get {
+                return this.returnCurrencyTypeField;
+            }
+            set {
+                this.returnCurrencyTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCurrencyTypeSpecified {
+            get {
+                return this.returnCurrencyTypeFieldSpecified;
+            }
+            set {
+                this.returnCurrencyTypeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnCurrencyTypeExternalInd {
+            get {
+                return this.returnCurrencyTypeExternalIndField;
+            }
+            set {
+                this.returnCurrencyTypeExternalIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnCurrencyTypeExternalIndSpecified {
+            get {
+                return this.returnCurrencyTypeExternalIndFieldSpecified;
+            }
+            set {
+                this.returnCurrencyTypeExternalIndFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnDistrictCode {
             get {
                 return this.returnDistrictCodeField;
@@ -7533,6 +9276,111 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.returnFixedAmountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnIsPartNumberMatchesMultipleStockCode {
+            get {
+                return this.returnIsPartNumberMatchesMultipleStockCodeField;
+            }
+            set {
+                this.returnIsPartNumberMatchesMultipleStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnIsPartNumberMatchesMultipleStockCodeSpecified {
+            get {
+                return this.returnIsPartNumberMatchesMultipleStockCodeFieldSpecified;
+            }
+            set {
+                this.returnIsPartNumberMatchesMultipleStockCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnIsPartNumberMatchesSingleStockCode {
+            get {
+                return this.returnIsPartNumberMatchesSingleStockCodeField;
+            }
+            set {
+                this.returnIsPartNumberMatchesSingleStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnIsPartNumberMatchesSingleStockCodeSpecified {
+            get {
+                return this.returnIsPartNumberMatchesSingleStockCodeFieldSpecified;
+            }
+            set {
+                this.returnIsPartNumberMatchesSingleStockCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnIsStockCodeOnMultipleWarehouseFlag {
+            get {
+                return this.returnIsStockCodeOnMultipleWarehouseFlagField;
+            }
+            set {
+                this.returnIsStockCodeOnMultipleWarehouseFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnIsStockCodeOnMultipleWarehouseFlagSpecified {
+            get {
+                return this.returnIsStockCodeOnMultipleWarehouseFlagFieldSpecified;
+            }
+            set {
+                this.returnIsStockCodeOnMultipleWarehouseFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnIsStockedInDifferentWarehouseFlag {
+            get {
+                return this.returnIsStockedInDifferentWarehouseFlagField;
+            }
+            set {
+                this.returnIsStockedInDifferentWarehouseFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnIsStockedInDifferentWarehouseFlagSpecified {
+            get {
+                return this.returnIsStockedInDifferentWarehouseFlagFieldSpecified;
+            }
+            set {
+                this.returnIsStockedInDifferentWarehouseFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnIssueWarehouseId {
+            get {
+                return this.returnIssueWarehouseIdField;
+            }
+            set {
+                this.returnIssueWarehouseIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnIssueWarehouseIdSpecified {
+            get {
+                return this.returnIssueWarehouseIdFieldSpecified;
+            }
+            set {
+                this.returnIssueWarehouseIdFieldSpecified = value;
             }
         }
         
@@ -7663,6 +9511,69 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public bool returnMatDescFull {
+            get {
+                return this.returnMatDescFullField;
+            }
+            set {
+                this.returnMatDescFullField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMatDescFullSpecified {
+            get {
+                return this.returnMatDescFullFieldSpecified;
+            }
+            set {
+                this.returnMatDescFullFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMatchedMnemonic {
+            get {
+                return this.returnMatchedMnemonicField;
+            }
+            set {
+                this.returnMatchedMnemonicField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMatchedMnemonicSpecified {
+            get {
+                return this.returnMatchedMnemonicFieldSpecified;
+            }
+            set {
+                this.returnMatchedMnemonicFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnMatchedStockCode {
+            get {
+                return this.returnMatchedStockCodeField;
+            }
+            set {
+                this.returnMatchedStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnMatchedStockCodeSpecified {
+            get {
+                return this.returnMatchedStockCodeFieldSpecified;
+            }
+            set {
+                this.returnMatchedStockCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnMnemonic {
             get {
                 return this.returnMnemonicField;
@@ -7743,6 +9654,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.returnPartNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnPrice {
+            get {
+                return this.returnPriceField;
+            }
+            set {
+                this.returnPriceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnPriceSpecified {
+            get {
+                return this.returnPriceFieldSpecified;
+            }
+            set {
+                this.returnPriceFieldSpecified = value;
             }
         }
         
@@ -8041,6 +9973,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public bool returnStockAvailable {
+            get {
+                return this.returnStockAvailableField;
+            }
+            set {
+                this.returnStockAvailableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnStockAvailableSpecified {
+            get {
+                return this.returnStockAvailableFieldSpecified;
+            }
+            set {
+                this.returnStockAvailableFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool returnStockCategory {
             get {
                 return this.returnStockCategoryField;
@@ -8100,6 +10053,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.returnStockCodeDescriptionFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool returnSupplierNo {
+            get {
+                return this.returnSupplierNoField;
+            }
+            set {
+                this.returnSupplierNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool returnSupplierNoSpecified {
+            get {
+                return this.returnSupplierNoFieldSpecified;
+            }
+            set {
+                this.returnSupplierNoFieldSpecified = value;
             }
         }
         
@@ -8315,7 +10289,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8349,7 +10323,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8564,7 +10538,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8681,7 +10655,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -8722,6 +10696,8 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool fixedAmountFieldSpecified;
         
+        private string itemTypeField;
+        
         private string matDesc1Field;
         
         private string matDesc2Field;
@@ -8729,6 +10705,8 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private string matDesc3Field;
         
         private string matDesc4Field;
+        
+        private string matDescFullField;
         
         private string mnemonicField;
         
@@ -8950,6 +10928,16 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public string itemType {
+            get {
+                return this.itemTypeField;
+            }
+            set {
+                this.itemTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string matDesc1 {
             get {
                 return this.matDesc1Field;
@@ -8986,6 +10974,16 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.matDesc4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matDescFull {
+            get {
+                return this.matDescFullField;
+            }
+            set {
+                this.matDescFullField = value;
             }
         }
         
@@ -9214,7 +11212,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9453,7 +11451,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -9547,12 +11545,1140 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
     public partial class MaterialReqmntsServiceRetrieveReplyDTO : AbstractReplyDTO {
+        
+        private string aPLCompCodeField;
+        
+        private string aPLCompModCodeField;
+        
+        private string aPLEGIRefField;
+        
+        private string aPLEquipmentGrpIdField;
+        
+        private string aPLEquipmentNoField;
+        
+        private string aPLSeqNoField;
+        
+        private decimal cUItemNoField;
+        
+        private bool cUItemNoFieldSpecified;
+        
+        private string cUNumDescriptionField;
+        
+        private string cUNumberField;
+        
+        private decimal jEItemNoField;
+        
+        private bool jEItemNoFieldSpecified;
+        
+        private string sJTaskDescriptionField;
+        
+        private string sJTaskNoField;
+        
+        private string uOMField;
+        
+        private string uOMDescriptionField;
+        
+        private string wOTaskDescriptionField;
+        
+        private bool catalogueFlagField;
+        
+        private bool catalogueFlagFieldSpecified;
+        
+        private string categIdField;
+        
+        private string categIdIndField;
+        
+        private string classTypeField;
+        
+        private bool contestibleFlagField;
+        
+        private bool contestibleFlagFieldSpecified;
+        
+        private string contractRefField;
+        
+        private string contractRefIndField;
+        
+        private string contractRefItemField;
+        
+        private string contractRefItemIndField;
+        
+        private string currencyTypeField;
+        
+        private string currencyTypeExternalIndField;
+        
+        private string districtCodeField;
+        
+        private string enteredIndField;
+        
+        private string estimateNoField;
+        
+        private string estimatedNoDescriptionField;
+        
+        private decimal fixedAmountField;
+        
+        private bool fixedAmountFieldSpecified;
+        
+        private bool isPartNumberMatchesMultipleStockCodeField;
+        
+        private bool isPartNumberMatchesMultipleStockCodeFieldSpecified;
+        
+        private bool isPartNumberMatchesSingleStockCodeField;
+        
+        private bool isPartNumberMatchesSingleStockCodeFieldSpecified;
+        
+        private bool isStockCodeOnMultipleWarehouseFlagField;
+        
+        private bool isStockCodeOnMultipleWarehouseFlagFieldSpecified;
+        
+        private bool isStockedInDifferentWarehouseFlagField;
+        
+        private bool isStockedInDifferentWarehouseFlagFieldSpecified;
+        
+        private string itemTypeField;
+        
+        private string matDesc1Field;
+        
+        private string matDesc2Field;
+        
+        private string matDesc3Field;
+        
+        private string matDesc4Field;
+        
+        private string matDescFullField;
+        
+        private string matchedMnemonicField;
+        
+        private string matchedStockCodeField;
+        
+        private string mnemonicField;
+        
+        private string operTypeDescriptionField;
+        
+        private string operationTypeField;
+        
+        private string operationTypeMATField;
+        
+        private string partNoField;
+        
+        private string partnerNameField;
+        
+        private decimal priceField;
+        
+        private bool priceFieldSpecified;
+        
+        private string projDescriptionField;
+        
+        private string projectNoField;
+        
+        private string propUnitDescriptionField;
+        
+        private string propertyUnitField;
+        
+        private decimal quantityLeftToReqField;
+        
+        private bool quantityLeftToReqFieldSpecified;
+        
+        private string quantityRequiredField;
+        
+        private decimal quantityRequisitionedField;
+        
+        private bool quantityRequisitionedFieldSpecified;
+        
+        private decimal quantityofUnitsField;
+        
+        private bool quantityofUnitsFieldSpecified;
+        
+        private decimal rateAmountField;
+        
+        private bool rateAmountFieldSpecified;
+        
+        private string seqNoField;
+        
+        private string statusField;
+        
+        private string stdJobDescriptionField;
+        
+        private string stdJobNoField;
+        
+        private string stockCategoryField;
+        
+        private string stockCodeField;
+        
+        private string stockCodeDescriptionField;
+        
+        private string supplierNoField;
+        
+        private decimal totReqdQuantityField;
+        
+        private bool totReqdQuantityFieldSpecified;
+        
+        private bool totalOnlyFlgField;
+        
+        private bool totalOnlyFlgFieldSpecified;
+        
+        private decimal unitQuantityReqdField;
+        
+        private bool unitQuantityReqdFieldSpecified;
+        
+        private string versionNoField;
+        
+        private WorkOrderDTO workOrderField;
+        
+        private string workOrderDescriptionField;
+        
+        private string workOrderTaskField;
+        
+        /// <remarks/>
+        public string APLCompCode {
+            get {
+                return this.aPLCompCodeField;
+            }
+            set {
+                this.aPLCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLCompModCode {
+            get {
+                return this.aPLCompModCodeField;
+            }
+            set {
+                this.aPLCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEGIRef {
+            get {
+                return this.aPLEGIRefField;
+            }
+            set {
+                this.aPLEGIRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEquipmentGrpId {
+            get {
+                return this.aPLEquipmentGrpIdField;
+            }
+            set {
+                this.aPLEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEquipmentNo {
+            get {
+                return this.aPLEquipmentNoField;
+            }
+            set {
+                this.aPLEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLSeqNo {
+            get {
+                return this.aPLSeqNoField;
+            }
+            set {
+                this.aPLSeqNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal CUItemNo {
+            get {
+                return this.cUItemNoField;
+            }
+            set {
+                this.cUItemNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool CUItemNoSpecified {
+            get {
+                return this.cUItemNoFieldSpecified;
+            }
+            set {
+                this.cUItemNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string CUNumDescription {
+            get {
+                return this.cUNumDescriptionField;
+            }
+            set {
+                this.cUNumDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string CUNumber {
+            get {
+                return this.cUNumberField;
+            }
+            set {
+                this.cUNumberField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal JEItemNo {
+            get {
+                return this.jEItemNoField;
+            }
+            set {
+                this.jEItemNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool JEItemNoSpecified {
+            get {
+                return this.jEItemNoFieldSpecified;
+            }
+            set {
+                this.jEItemNoFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string SJTaskDescription {
+            get {
+                return this.sJTaskDescriptionField;
+            }
+            set {
+                this.sJTaskDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string SJTaskNo {
+            get {
+                return this.sJTaskNoField;
+            }
+            set {
+                this.sJTaskNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string UOM {
+            get {
+                return this.uOMField;
+            }
+            set {
+                this.uOMField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string UOMDescription {
+            get {
+                return this.uOMDescriptionField;
+            }
+            set {
+                this.uOMDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string WOTaskDescription {
+            get {
+                return this.wOTaskDescriptionField;
+            }
+            set {
+                this.wOTaskDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool catalogueFlag {
+            get {
+                return this.catalogueFlagField;
+            }
+            set {
+                this.catalogueFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool catalogueFlagSpecified {
+            get {
+                return this.catalogueFlagFieldSpecified;
+            }
+            set {
+                this.catalogueFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string categId {
+            get {
+                return this.categIdField;
+            }
+            set {
+                this.categIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string categIdInd {
+            get {
+                return this.categIdIndField;
+            }
+            set {
+                this.categIdIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string classType {
+            get {
+                return this.classTypeField;
+            }
+            set {
+                this.classTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool contestibleFlag {
+            get {
+                return this.contestibleFlagField;
+            }
+            set {
+                this.contestibleFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool contestibleFlagSpecified {
+            get {
+                return this.contestibleFlagFieldSpecified;
+            }
+            set {
+                this.contestibleFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRef {
+            get {
+                return this.contractRefField;
+            }
+            set {
+                this.contractRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRefInd {
+            get {
+                return this.contractRefIndField;
+            }
+            set {
+                this.contractRefIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRefItem {
+            get {
+                return this.contractRefItemField;
+            }
+            set {
+                this.contractRefItemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRefItemInd {
+            get {
+                return this.contractRefItemIndField;
+            }
+            set {
+                this.contractRefItemIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string currencyType {
+            get {
+                return this.currencyTypeField;
+            }
+            set {
+                this.currencyTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string currencyTypeExternalInd {
+            get {
+                return this.currencyTypeExternalIndField;
+            }
+            set {
+                this.currencyTypeExternalIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string districtCode {
+            get {
+                return this.districtCodeField;
+            }
+            set {
+                this.districtCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string enteredInd {
+            get {
+                return this.enteredIndField;
+            }
+            set {
+                this.enteredIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string estimateNo {
+            get {
+                return this.estimateNoField;
+            }
+            set {
+                this.estimateNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string estimatedNoDescription {
+            get {
+                return this.estimatedNoDescriptionField;
+            }
+            set {
+                this.estimatedNoDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal fixedAmount {
+            get {
+                return this.fixedAmountField;
+            }
+            set {
+                this.fixedAmountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool fixedAmountSpecified {
+            get {
+                return this.fixedAmountFieldSpecified;
+            }
+            set {
+                this.fixedAmountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isPartNumberMatchesMultipleStockCode {
+            get {
+                return this.isPartNumberMatchesMultipleStockCodeField;
+            }
+            set {
+                this.isPartNumberMatchesMultipleStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isPartNumberMatchesMultipleStockCodeSpecified {
+            get {
+                return this.isPartNumberMatchesMultipleStockCodeFieldSpecified;
+            }
+            set {
+                this.isPartNumberMatchesMultipleStockCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isPartNumberMatchesSingleStockCode {
+            get {
+                return this.isPartNumberMatchesSingleStockCodeField;
+            }
+            set {
+                this.isPartNumberMatchesSingleStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isPartNumberMatchesSingleStockCodeSpecified {
+            get {
+                return this.isPartNumberMatchesSingleStockCodeFieldSpecified;
+            }
+            set {
+                this.isPartNumberMatchesSingleStockCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isStockCodeOnMultipleWarehouseFlag {
+            get {
+                return this.isStockCodeOnMultipleWarehouseFlagField;
+            }
+            set {
+                this.isStockCodeOnMultipleWarehouseFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isStockCodeOnMultipleWarehouseFlagSpecified {
+            get {
+                return this.isStockCodeOnMultipleWarehouseFlagFieldSpecified;
+            }
+            set {
+                this.isStockCodeOnMultipleWarehouseFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isStockedInDifferentWarehouseFlag {
+            get {
+                return this.isStockedInDifferentWarehouseFlagField;
+            }
+            set {
+                this.isStockedInDifferentWarehouseFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isStockedInDifferentWarehouseFlagSpecified {
+            get {
+                return this.isStockedInDifferentWarehouseFlagFieldSpecified;
+            }
+            set {
+                this.isStockedInDifferentWarehouseFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string itemType {
+            get {
+                return this.itemTypeField;
+            }
+            set {
+                this.itemTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matDesc1 {
+            get {
+                return this.matDesc1Field;
+            }
+            set {
+                this.matDesc1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matDesc2 {
+            get {
+                return this.matDesc2Field;
+            }
+            set {
+                this.matDesc2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matDesc3 {
+            get {
+                return this.matDesc3Field;
+            }
+            set {
+                this.matDesc3Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matDesc4 {
+            get {
+                return this.matDesc4Field;
+            }
+            set {
+                this.matDesc4Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matDescFull {
+            get {
+                return this.matDescFullField;
+            }
+            set {
+                this.matDescFullField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matchedMnemonic {
+            get {
+                return this.matchedMnemonicField;
+            }
+            set {
+                this.matchedMnemonicField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matchedStockCode {
+            get {
+                return this.matchedStockCodeField;
+            }
+            set {
+                this.matchedStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string mnemonic {
+            get {
+                return this.mnemonicField;
+            }
+            set {
+                this.mnemonicField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string operTypeDescription {
+            get {
+                return this.operTypeDescriptionField;
+            }
+            set {
+                this.operTypeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string operationType {
+            get {
+                return this.operationTypeField;
+            }
+            set {
+                this.operationTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string operationTypeMAT {
+            get {
+                return this.operationTypeMATField;
+            }
+            set {
+                this.operationTypeMATField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string partNo {
+            get {
+                return this.partNoField;
+            }
+            set {
+                this.partNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string partnerName {
+            get {
+                return this.partnerNameField;
+            }
+            set {
+                this.partnerNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal price {
+            get {
+                return this.priceField;
+            }
+            set {
+                this.priceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool priceSpecified {
+            get {
+                return this.priceFieldSpecified;
+            }
+            set {
+                this.priceFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string projDescription {
+            get {
+                return this.projDescriptionField;
+            }
+            set {
+                this.projDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string projectNo {
+            get {
+                return this.projectNoField;
+            }
+            set {
+                this.projectNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string propUnitDescription {
+            get {
+                return this.propUnitDescriptionField;
+            }
+            set {
+                this.propUnitDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string propertyUnit {
+            get {
+                return this.propertyUnitField;
+            }
+            set {
+                this.propertyUnitField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal quantityLeftToReq {
+            get {
+                return this.quantityLeftToReqField;
+            }
+            set {
+                this.quantityLeftToReqField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool quantityLeftToReqSpecified {
+            get {
+                return this.quantityLeftToReqFieldSpecified;
+            }
+            set {
+                this.quantityLeftToReqFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string quantityRequired {
+            get {
+                return this.quantityRequiredField;
+            }
+            set {
+                this.quantityRequiredField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal quantityRequisitioned {
+            get {
+                return this.quantityRequisitionedField;
+            }
+            set {
+                this.quantityRequisitionedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool quantityRequisitionedSpecified {
+            get {
+                return this.quantityRequisitionedFieldSpecified;
+            }
+            set {
+                this.quantityRequisitionedFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal quantityofUnits {
+            get {
+                return this.quantityofUnitsField;
+            }
+            set {
+                this.quantityofUnitsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool quantityofUnitsSpecified {
+            get {
+                return this.quantityofUnitsFieldSpecified;
+            }
+            set {
+                this.quantityofUnitsFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal rateAmount {
+            get {
+                return this.rateAmountField;
+            }
+            set {
+                this.rateAmountField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool rateAmountSpecified {
+            get {
+                return this.rateAmountFieldSpecified;
+            }
+            set {
+                this.rateAmountFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string seqNo {
+            get {
+                return this.seqNoField;
+            }
+            set {
+                this.seqNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string status {
+            get {
+                return this.statusField;
+            }
+            set {
+                this.statusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stdJobDescription {
+            get {
+                return this.stdJobDescriptionField;
+            }
+            set {
+                this.stdJobDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stdJobNo {
+            get {
+                return this.stdJobNoField;
+            }
+            set {
+                this.stdJobNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stockCategory {
+            get {
+                return this.stockCategoryField;
+            }
+            set {
+                this.stockCategoryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stockCode {
+            get {
+                return this.stockCodeField;
+            }
+            set {
+                this.stockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string stockCodeDescription {
+            get {
+                return this.stockCodeDescriptionField;
+            }
+            set {
+                this.stockCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string supplierNo {
+            get {
+                return this.supplierNoField;
+            }
+            set {
+                this.supplierNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal totReqdQuantity {
+            get {
+                return this.totReqdQuantityField;
+            }
+            set {
+                this.totReqdQuantityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool totReqdQuantitySpecified {
+            get {
+                return this.totReqdQuantityFieldSpecified;
+            }
+            set {
+                this.totReqdQuantityFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool totalOnlyFlg {
+            get {
+                return this.totalOnlyFlgField;
+            }
+            set {
+                this.totalOnlyFlgField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool totalOnlyFlgSpecified {
+            get {
+                return this.totalOnlyFlgFieldSpecified;
+            }
+            set {
+                this.totalOnlyFlgFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal unitQuantityReqd {
+            get {
+                return this.unitQuantityReqdField;
+            }
+            set {
+                this.unitQuantityReqdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool unitQuantityReqdSpecified {
+            get {
+                return this.unitQuantityReqdFieldSpecified;
+            }
+            set {
+                this.unitQuantityReqdFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string versionNo {
+            get {
+                return this.versionNoField;
+            }
+            set {
+                this.versionNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public WorkOrderDTO workOrder {
+            get {
+                return this.workOrderField;
+            }
+            set {
+                this.workOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderDescription {
+            get {
+                return this.workOrderDescriptionField;
+            }
+            set {
+                this.workOrderDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workOrderTask {
+            get {
+                return this.workOrderTaskField;
+            }
+            set {
+                this.workOrderTaskField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
+    public partial class MaterialReqmntsServiceModifyReplyDTO : AbstractReplyDTO {
+        
+        private string aPLCompCodeField;
+        
+        private string aPLCompModCodeField;
+        
+        private string aPLEGIRefField;
+        
+        private string aPLEquipmentGrpIdField;
+        
+        private string aPLSeqNoField;
         
         private decimal cUItemNoField;
         
@@ -9608,9 +12734,9 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private string matDesc4Field;
         
-        private string mnemonicField;
+        private string matDescFullField;
         
-        private string operTypeDescriptionField;
+        private string mnemonicField;
         
         private string operationTypeField;
         
@@ -9646,8 +12772,6 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private string seqNoField;
         
-        private string statusField;
-        
         private string stdJobDescriptionField;
         
         private string stdJobNoField;
@@ -9677,6 +12801,56 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private string workOrderDescriptionField;
         
         private string workOrderTaskField;
+        
+        /// <remarks/>
+        public string APLCompCode {
+            get {
+                return this.aPLCompCodeField;
+            }
+            set {
+                this.aPLCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLCompModCode {
+            get {
+                return this.aPLCompModCodeField;
+            }
+            set {
+                this.aPLCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEGIRef {
+            get {
+                return this.aPLEGIRefField;
+            }
+            set {
+                this.aPLEGIRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEquipmentGrpId {
+            get {
+                return this.aPLEquipmentGrpIdField;
+            }
+            set {
+                this.aPLEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLSeqNo {
+            get {
+                return this.aPLSeqNoField;
+            }
+            set {
+                this.aPLSeqNoField = value;
+            }
+        }
         
         /// <remarks/>
         public decimal CUItemNo {
@@ -9954,751 +13128,12 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
-        public string mnemonic {
+        public string matDescFull {
             get {
-                return this.mnemonicField;
+                return this.matDescFullField;
             }
             set {
-                this.mnemonicField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string operTypeDescription {
-            get {
-                return this.operTypeDescriptionField;
-            }
-            set {
-                this.operTypeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string operationType {
-            get {
-                return this.operationTypeField;
-            }
-            set {
-                this.operationTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string operationTypeMAT {
-            get {
-                return this.operationTypeMATField;
-            }
-            set {
-                this.operationTypeMATField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string partNo {
-            get {
-                return this.partNoField;
-            }
-            set {
-                this.partNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string projDescription {
-            get {
-                return this.projDescriptionField;
-            }
-            set {
-                this.projDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string projectNo {
-            get {
-                return this.projectNoField;
-            }
-            set {
-                this.projectNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string propUnitDescription {
-            get {
-                return this.propUnitDescriptionField;
-            }
-            set {
-                this.propUnitDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string propertyUnit {
-            get {
-                return this.propertyUnitField;
-            }
-            set {
-                this.propertyUnitField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal quantityLeftToReq {
-            get {
-                return this.quantityLeftToReqField;
-            }
-            set {
-                this.quantityLeftToReqField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool quantityLeftToReqSpecified {
-            get {
-                return this.quantityLeftToReqFieldSpecified;
-            }
-            set {
-                this.quantityLeftToReqFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string quantityRequired {
-            get {
-                return this.quantityRequiredField;
-            }
-            set {
-                this.quantityRequiredField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal quantityRequisitioned {
-            get {
-                return this.quantityRequisitionedField;
-            }
-            set {
-                this.quantityRequisitionedField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool quantityRequisitionedSpecified {
-            get {
-                return this.quantityRequisitionedFieldSpecified;
-            }
-            set {
-                this.quantityRequisitionedFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal quantityofUnits {
-            get {
-                return this.quantityofUnitsField;
-            }
-            set {
-                this.quantityofUnitsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool quantityofUnitsSpecified {
-            get {
-                return this.quantityofUnitsFieldSpecified;
-            }
-            set {
-                this.quantityofUnitsFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal rateAmount {
-            get {
-                return this.rateAmountField;
-            }
-            set {
-                this.rateAmountField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool rateAmountSpecified {
-            get {
-                return this.rateAmountFieldSpecified;
-            }
-            set {
-                this.rateAmountFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string seqNo {
-            get {
-                return this.seqNoField;
-            }
-            set {
-                this.seqNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string status {
-            get {
-                return this.statusField;
-            }
-            set {
-                this.statusField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stdJobDescription {
-            get {
-                return this.stdJobDescriptionField;
-            }
-            set {
-                this.stdJobDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stdJobNo {
-            get {
-                return this.stdJobNoField;
-            }
-            set {
-                this.stdJobNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stockCategory {
-            get {
-                return this.stockCategoryField;
-            }
-            set {
-                this.stockCategoryField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stockCode {
-            get {
-                return this.stockCodeField;
-            }
-            set {
-                this.stockCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string stockCodeDescription {
-            get {
-                return this.stockCodeDescriptionField;
-            }
-            set {
-                this.stockCodeDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal totReqdQuantity {
-            get {
-                return this.totReqdQuantityField;
-            }
-            set {
-                this.totReqdQuantityField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool totReqdQuantitySpecified {
-            get {
-                return this.totReqdQuantityFieldSpecified;
-            }
-            set {
-                this.totReqdQuantityFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool totalOnlyFlg {
-            get {
-                return this.totalOnlyFlgField;
-            }
-            set {
-                this.totalOnlyFlgField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool totalOnlyFlgSpecified {
-            get {
-                return this.totalOnlyFlgFieldSpecified;
-            }
-            set {
-                this.totalOnlyFlgFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal unitQuantityReqd {
-            get {
-                return this.unitQuantityReqdField;
-            }
-            set {
-                this.unitQuantityReqdField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool unitQuantityReqdSpecified {
-            get {
-                return this.unitQuantityReqdFieldSpecified;
-            }
-            set {
-                this.unitQuantityReqdFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string versionNo {
-            get {
-                return this.versionNoField;
-            }
-            set {
-                this.versionNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public WorkOrderDTO workOrder {
-            get {
-                return this.workOrderField;
-            }
-            set {
-                this.workOrderField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderDescription {
-            get {
-                return this.workOrderDescriptionField;
-            }
-            set {
-                this.workOrderDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string workOrderTask {
-            get {
-                return this.workOrderTaskField;
-            }
-            set {
-                this.workOrderTaskField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
-    public partial class MaterialReqmntsServiceModifyReplyDTO : AbstractReplyDTO {
-        
-        private decimal cUItemNoField;
-        
-        private bool cUItemNoFieldSpecified;
-        
-        private string cUNumDescriptionField;
-        
-        private string cUNumberField;
-        
-        private decimal jEItemNoField;
-        
-        private bool jEItemNoFieldSpecified;
-        
-        private string sJTaskDescriptionField;
-        
-        private string sJTaskNoField;
-        
-        private string uOMField;
-        
-        private string uOMDescriptionField;
-        
-        private string wOTaskDescriptionField;
-        
-        private bool catalogueFlagField;
-        
-        private bool catalogueFlagFieldSpecified;
-        
-        private string classTypeField;
-        
-        private bool contestibleFlagField;
-        
-        private bool contestibleFlagFieldSpecified;
-        
-        private string districtCodeField;
-        
-        private string enteredIndField;
-        
-        private string estimateNoField;
-        
-        private string estimatedNoDescriptionField;
-        
-        private decimal fixedAmountField;
-        
-        private bool fixedAmountFieldSpecified;
-        
-        private string matDesc1Field;
-        
-        private string matDesc2Field;
-        
-        private string matDesc3Field;
-        
-        private string matDesc4Field;
-        
-        private string mnemonicField;
-        
-        private string operationTypeField;
-        
-        private string operationTypeMATField;
-        
-        private string partNoField;
-        
-        private string projDescriptionField;
-        
-        private string projectNoField;
-        
-        private string propUnitDescriptionField;
-        
-        private string propertyUnitField;
-        
-        private decimal quantityLeftToReqField;
-        
-        private bool quantityLeftToReqFieldSpecified;
-        
-        private string quantityRequiredField;
-        
-        private decimal quantityRequisitionedField;
-        
-        private bool quantityRequisitionedFieldSpecified;
-        
-        private decimal quantityofUnitsField;
-        
-        private bool quantityofUnitsFieldSpecified;
-        
-        private decimal rateAmountField;
-        
-        private bool rateAmountFieldSpecified;
-        
-        private string seqNoField;
-        
-        private string stdJobDescriptionField;
-        
-        private string stdJobNoField;
-        
-        private string stockCategoryField;
-        
-        private string stockCodeField;
-        
-        private string stockCodeDescriptionField;
-        
-        private decimal totReqdQuantityField;
-        
-        private bool totReqdQuantityFieldSpecified;
-        
-        private bool totalOnlyFlgField;
-        
-        private bool totalOnlyFlgFieldSpecified;
-        
-        private decimal unitQuantityReqdField;
-        
-        private bool unitQuantityReqdFieldSpecified;
-        
-        private string versionNoField;
-        
-        private WorkOrderDTO workOrderField;
-        
-        private string workOrderDescriptionField;
-        
-        private string workOrderTaskField;
-        
-        /// <remarks/>
-        public decimal CUItemNo {
-            get {
-                return this.cUItemNoField;
-            }
-            set {
-                this.cUItemNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool CUItemNoSpecified {
-            get {
-                return this.cUItemNoFieldSpecified;
-            }
-            set {
-                this.cUItemNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string CUNumDescription {
-            get {
-                return this.cUNumDescriptionField;
-            }
-            set {
-                this.cUNumDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string CUNumber {
-            get {
-                return this.cUNumberField;
-            }
-            set {
-                this.cUNumberField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal JEItemNo {
-            get {
-                return this.jEItemNoField;
-            }
-            set {
-                this.jEItemNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool JEItemNoSpecified {
-            get {
-                return this.jEItemNoFieldSpecified;
-            }
-            set {
-                this.jEItemNoFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string SJTaskDescription {
-            get {
-                return this.sJTaskDescriptionField;
-            }
-            set {
-                this.sJTaskDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string SJTaskNo {
-            get {
-                return this.sJTaskNoField;
-            }
-            set {
-                this.sJTaskNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string UOM {
-            get {
-                return this.uOMField;
-            }
-            set {
-                this.uOMField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string UOMDescription {
-            get {
-                return this.uOMDescriptionField;
-            }
-            set {
-                this.uOMDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string WOTaskDescription {
-            get {
-                return this.wOTaskDescriptionField;
-            }
-            set {
-                this.wOTaskDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool catalogueFlag {
-            get {
-                return this.catalogueFlagField;
-            }
-            set {
-                this.catalogueFlagField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool catalogueFlagSpecified {
-            get {
-                return this.catalogueFlagFieldSpecified;
-            }
-            set {
-                this.catalogueFlagFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string classType {
-            get {
-                return this.classTypeField;
-            }
-            set {
-                this.classTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public bool contestibleFlag {
-            get {
-                return this.contestibleFlagField;
-            }
-            set {
-                this.contestibleFlagField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool contestibleFlagSpecified {
-            get {
-                return this.contestibleFlagFieldSpecified;
-            }
-            set {
-                this.contestibleFlagFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string districtCode {
-            get {
-                return this.districtCodeField;
-            }
-            set {
-                this.districtCodeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string enteredInd {
-            get {
-                return this.enteredIndField;
-            }
-            set {
-                this.enteredIndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string estimateNo {
-            get {
-                return this.estimateNoField;
-            }
-            set {
-                this.estimateNoField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string estimatedNoDescription {
-            get {
-                return this.estimatedNoDescriptionField;
-            }
-            set {
-                this.estimatedNoDescriptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public decimal fixedAmount {
-            get {
-                return this.fixedAmountField;
-            }
-            set {
-                this.fixedAmountField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool fixedAmountSpecified {
-            get {
-                return this.fixedAmountFieldSpecified;
-            }
-            set {
-                this.fixedAmountFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string matDesc1 {
-            get {
-                return this.matDesc1Field;
-            }
-            set {
-                this.matDesc1Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string matDesc2 {
-            get {
-                return this.matDesc2Field;
-            }
-            set {
-                this.matDesc2Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string matDesc3 {
-            get {
-                return this.matDesc3Field;
-            }
-            set {
-                this.matDesc3Field = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string matDesc4 {
-            get {
-                return this.matDesc4Field;
-            }
-            set {
-                this.matDesc4Field = value;
+                this.matDescFullField = value;
             }
         }
         
@@ -11041,7 +13476,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11061,6 +13496,8 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private string matDesc3Field;
         
         private string matDesc4Field;
+        
+        private string matDescFullField;
         
         private string mnemonicField;
         
@@ -11141,6 +13578,16 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public string matDescFull {
+            get {
+                return this.matDescFullField;
+            }
+            set {
+                this.matDescFullField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string mnemonic {
             get {
                 return this.mnemonicField;
@@ -11182,7 +13629,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11215,7 +13662,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -11224,12 +13671,24 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://materialreqmnts.ellipse.enterpriseservice.mincom.com")]
     public partial class MaterialReqmntsServiceReadReplyDTO : AbstractReplyDTO {
+        
+        private string aPLCompCodeField;
+        
+        private string aPLCompModCodeField;
+        
+        private string aPLEGIRefField;
+        
+        private string aPLEquipmentGrpIdField;
+        
+        private string aPLEquipmentNoField;
+        
+        private string aPLSeqNoField;
         
         private decimal cUItemNoField;
         
@@ -11257,6 +13716,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool catalogueFlagFieldSpecified;
         
+        private string categIdField;
+        
+        private string categIdIndField;
+        
         private string classTypeField;
         
         private string condTypeField;
@@ -11266,6 +13729,18 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private bool contestibleFlagField;
         
         private bool contestibleFlagFieldSpecified;
+        
+        private string contractRefField;
+        
+        private string contractRefIndField;
+        
+        private string contractRefItemField;
+        
+        private string contractRefItemIndField;
+        
+        private string currencyTypeField;
+        
+        private string currencyTypeExternalIndField;
         
         private string districtCodeField;
         
@@ -11279,6 +13754,24 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private bool fixedAmountFieldSpecified;
         
+        private bool isPartNumberMatchesMultipleStockCodeField;
+        
+        private bool isPartNumberMatchesMultipleStockCodeFieldSpecified;
+        
+        private bool isPartNumberMatchesSingleStockCodeField;
+        
+        private bool isPartNumberMatchesSingleStockCodeFieldSpecified;
+        
+        private bool isStockCodeOnMultipleWarehouseFlagField;
+        
+        private bool isStockCodeOnMultipleWarehouseFlagFieldSpecified;
+        
+        private bool isStockedInDifferentWarehouseFlagField;
+        
+        private bool isStockedInDifferentWarehouseFlagFieldSpecified;
+        
+        private string issueWarehouseIdField;
+        
         private string itemTypeField;
         
         private string matDesc1Field;
@@ -11289,6 +13782,12 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private string matDesc4Field;
         
+        private string matDescFullField;
+        
+        private string matchedMnemonicField;
+        
+        private string matchedStockCodeField;
+        
         private string mnemonicField;
         
         private string operTypeDescriptionField;
@@ -11296,6 +13795,10 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private string operationTypeField;
         
         private string partNoField;
+        
+        private decimal priceField;
+        
+        private bool priceFieldSpecified;
         
         private string projDescriptionField;
         
@@ -11329,11 +13832,17 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         
         private string stdJobNoField;
         
+        private decimal stockAvailableField;
+        
+        private bool stockAvailableFieldSpecified;
+        
         private string stockCategoryField;
         
         private string stockCodeField;
         
         private string stockCodeDescriptionField;
+        
+        private string supplierNoField;
         
         private decimal totReqdQuantityField;
         
@@ -11354,6 +13863,66 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         private string workOrderDescriptionField;
         
         private string workOrderTaskField;
+        
+        /// <remarks/>
+        public string APLCompCode {
+            get {
+                return this.aPLCompCodeField;
+            }
+            set {
+                this.aPLCompCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLCompModCode {
+            get {
+                return this.aPLCompModCodeField;
+            }
+            set {
+                this.aPLCompModCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEGIRef {
+            get {
+                return this.aPLEGIRefField;
+            }
+            set {
+                this.aPLEGIRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEquipmentGrpId {
+            get {
+                return this.aPLEquipmentGrpIdField;
+            }
+            set {
+                this.aPLEquipmentGrpIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLEquipmentNo {
+            get {
+                return this.aPLEquipmentNoField;
+            }
+            set {
+                this.aPLEquipmentNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string APLSeqNo {
+            get {
+                return this.aPLSeqNoField;
+            }
+            set {
+                this.aPLSeqNoField = value;
+            }
+        }
         
         /// <remarks/>
         public decimal CUItemNo {
@@ -11485,6 +14054,26 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.catalogueFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string categId {
+            get {
+                return this.categIdField;
+            }
+            set {
+                this.categIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string categIdInd {
+            get {
+                return this.categIdIndField;
+            }
+            set {
+                this.categIdIndField = value;
             }
         }
         
@@ -11540,6 +14129,66 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public string contractRef {
+            get {
+                return this.contractRefField;
+            }
+            set {
+                this.contractRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRefInd {
+            get {
+                return this.contractRefIndField;
+            }
+            set {
+                this.contractRefIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRefItem {
+            get {
+                return this.contractRefItemField;
+            }
+            set {
+                this.contractRefItemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string contractRefItemInd {
+            get {
+                return this.contractRefItemIndField;
+            }
+            set {
+                this.contractRefItemIndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string currencyType {
+            get {
+                return this.currencyTypeField;
+            }
+            set {
+                this.currencyTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string currencyTypeExternalInd {
+            get {
+                return this.currencyTypeExternalIndField;
+            }
+            set {
+                this.currencyTypeExternalIndField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string districtCode {
             get {
                 return this.districtCodeField;
@@ -11601,6 +14250,100 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public bool isPartNumberMatchesMultipleStockCode {
+            get {
+                return this.isPartNumberMatchesMultipleStockCodeField;
+            }
+            set {
+                this.isPartNumberMatchesMultipleStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isPartNumberMatchesMultipleStockCodeSpecified {
+            get {
+                return this.isPartNumberMatchesMultipleStockCodeFieldSpecified;
+            }
+            set {
+                this.isPartNumberMatchesMultipleStockCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isPartNumberMatchesSingleStockCode {
+            get {
+                return this.isPartNumberMatchesSingleStockCodeField;
+            }
+            set {
+                this.isPartNumberMatchesSingleStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isPartNumberMatchesSingleStockCodeSpecified {
+            get {
+                return this.isPartNumberMatchesSingleStockCodeFieldSpecified;
+            }
+            set {
+                this.isPartNumberMatchesSingleStockCodeFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isStockCodeOnMultipleWarehouseFlag {
+            get {
+                return this.isStockCodeOnMultipleWarehouseFlagField;
+            }
+            set {
+                this.isStockCodeOnMultipleWarehouseFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isStockCodeOnMultipleWarehouseFlagSpecified {
+            get {
+                return this.isStockCodeOnMultipleWarehouseFlagFieldSpecified;
+            }
+            set {
+                this.isStockCodeOnMultipleWarehouseFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool isStockedInDifferentWarehouseFlag {
+            get {
+                return this.isStockedInDifferentWarehouseFlagField;
+            }
+            set {
+                this.isStockedInDifferentWarehouseFlagField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool isStockedInDifferentWarehouseFlagSpecified {
+            get {
+                return this.isStockedInDifferentWarehouseFlagFieldSpecified;
+            }
+            set {
+                this.isStockedInDifferentWarehouseFlagFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string issueWarehouseId {
+            get {
+                return this.issueWarehouseIdField;
+            }
+            set {
+                this.issueWarehouseIdField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string itemType {
             get {
                 return this.itemTypeField;
@@ -11651,6 +14394,36 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public string matDescFull {
+            get {
+                return this.matDescFullField;
+            }
+            set {
+                this.matDescFullField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matchedMnemonic {
+            get {
+                return this.matchedMnemonicField;
+            }
+            set {
+                this.matchedMnemonicField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string matchedStockCode {
+            get {
+                return this.matchedStockCodeField;
+            }
+            set {
+                this.matchedStockCodeField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string mnemonic {
             get {
                 return this.mnemonicField;
@@ -11687,6 +14460,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.partNoField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal price {
+            get {
+                return this.priceField;
+            }
+            set {
+                this.priceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool priceSpecified {
+            get {
+                return this.priceFieldSpecified;
+            }
+            set {
+                this.priceFieldSpecified = value;
             }
         }
         
@@ -11855,6 +14649,27 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
         }
         
         /// <remarks/>
+        public decimal stockAvailable {
+            get {
+                return this.stockAvailableField;
+            }
+            set {
+                this.stockAvailableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool stockAvailableSpecified {
+            get {
+                return this.stockAvailableFieldSpecified;
+            }
+            set {
+                this.stockAvailableFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         public string stockCategory {
             get {
                 return this.stockCategoryField;
@@ -11881,6 +14696,16 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
             }
             set {
                 this.stockCodeDescriptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string supplierNo {
+            get {
+                return this.supplierNoField;
+            }
+            set {
+                this.supplierNoField = value;
             }
         }
         
@@ -11989,7 +14814,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12023,7 +14848,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12044,7 +14869,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12065,7 +14890,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12086,7 +14911,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12107,7 +14932,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12128,7 +14953,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12149,7 +14974,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12170,7 +14995,7 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -12192,11 +15017,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleFetchRateCompletedEventHandler(object sender, multipleFetchRateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleFetchRateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12218,11 +15043,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void readCompletedEventHandler(object sender, readCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class readCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12244,11 +15069,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleFetchRateWithPartialResultsCompletedEventHandler(object sender, multipleFetchRateWithPartialResultsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleFetchRateWithPartialResultsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12270,11 +15095,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void fetchRateCompletedEventHandler(object sender, fetchRateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class fetchRateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12296,11 +15121,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleDeleteCompletedEventHandler(object sender, multipleDeleteCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleDeleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12322,11 +15147,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void retrieveOperationTypesCompletedEventHandler(object sender, retrieveOperationTypesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class retrieveOperationTypesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12348,11 +15173,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void showCompletedEventHandler(object sender, showCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class showCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12374,11 +15199,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void deleteCompletedEventHandler(object sender, deleteCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class deleteCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12400,11 +15225,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void modifyCompletedEventHandler(object sender, modifyCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class modifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12426,11 +15251,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleModifyCompletedEventHandler(object sender, multipleModifyCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleModifyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12452,11 +15277,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleShowCompletedEventHandler(object sender, multipleShowCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleShowCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12478,11 +15303,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void createCompletedEventHandler(object sender, createCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class createCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12504,11 +15329,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void retrieveCompletedEventHandler(object sender, retrieveCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class retrieveCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12530,11 +15355,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleReadCompletedEventHandler(object sender, multipleReadCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleReadCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12556,11 +15381,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleReadWithPartialResultsCompletedEventHandler(object sender, multipleReadWithPartialResultsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleReadWithPartialResultsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -12582,11 +15407,11 @@ namespace EllipseWorkOrdersClassLibrary.MaterialReqmntsService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void multipleCreateCompletedEventHandler(object sender, multipleCreateCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2556.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class multipleCreateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {

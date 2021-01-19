@@ -1,37 +1,44 @@
-﻿using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseMSO905ExcelAddIn.Properties;
-using Microsoft.Office.Interop.Excel;
+﻿using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using Excel = Microsoft.Office.Interop.Excel;
-using screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 
 namespace EllipseMSO905ExcelAddIn
 {
     public partial class RibbonEllipse
     {
-        private static readonly EllipseFunctions EFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private ExcelStyleCells _cells;
         private Application _excelApp;
-        private int _resultColumn = 9;
-        private readonly string _sheetName01 = "MSO905";
-        private static int _tittleRow = 11;
-        private int _currentRow = _tittleRow + 1;
-        private const string TableName01 = "JournalTable";
+        const int ResultColumn01 = 9;
+        const string SheetName01 = "MSO905";
+        const int TitleRow = 11;
+        const string TableName01 = "JournalTable";
 
 
         private Thread _thread;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new SharedClassLibrary.Ellipse.Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -39,8 +46,41 @@ namespace EllipseMSO905ExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //Example of Default Custom Options
+            //settings.SetDefaultCustomSettingValue("AutoSort", "Y");
+            //settings.SetDefaultCustomSettingValue("OverrideAccountCode", "Maintenance");
+            //settings.SetDefaultCustomSettingValue("IgnoreItemError", "N");
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            //Example of Getting Custom Options from Save File
+            //var overrideAccountCode = settings.GetCustomSettingValue("OverrideAccountCode");
+            //if (overrideAccountCode.Equals("Maintenance"))
+            //    cbAccountElementOverrideMntto.Checked = true;
+            //else if (overrideAccountCode.Equals("Disable"))
+            //    cbAccountElementOverrideDisable.Checked = true;
+            //else if (overrideAccountCode.Equals("Alwats"))
+            //    cbAccountElementOverrideAlways.Checked = true;
+            //else if (overrideAccountCode.Equals("Default"))
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //else
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //cbAutoSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AutoSort"));
+            //cbIgnoreItemError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreItemError"));
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -54,7 +94,9 @@ namespace EllipseMSO905ExcelAddIn
             var excelBook = _excelApp.Workbooks.Add();
             Worksheet excelSheet = excelBook.ActiveSheet;
 
-            excelSheet.Name = _sheetName01;
+            excelSheet.Name = SheetName01;
+            var titleRow = TitleRow;
+            var resultColumn = ResultColumn01;
 
             _cells.GetCell(1, 1).Value = "CERREJÓN";
             _cells.GetCell(1, 1).Style = _cells.GetStyle(StyleConstants.HeaderDefault);
@@ -72,26 +114,26 @@ namespace EllipseMSO905ExcelAddIn
             _cells.GetRange(1, 4, 1, 9).Style = _cells.GetStyle(StyleConstants.TitleRequired);
             _cells.GetRange(1, 4, 1, 9).NumberFormat = "@";
 
-            _cells.GetCell(1, _tittleRow).Value = "Account Code";
-            _cells.GetCell(2, _tittleRow).Value = "W/Order Or Project";
-            _cells.GetCell(3, _tittleRow).Value = "W/P";
-            _cells.GetCell(4, _tittleRow).Value = "Journal Description";
-            _cells.GetCell(5, _tittleRow).Value = "Amount (+/-) Pesos";
-            _cells.GetCell(6, _tittleRow).Value = "Document Ref";
-            _cells.GetCell(7, _tittleRow).Value = "Foreign";
-            _cells.GetCell(8, _tittleRow).Value = "Dolars";
-            _cells.GetRange(1, _tittleRow, _resultColumn - 1, _tittleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
-            _cells.GetCell(_resultColumn, _tittleRow).Value = "Result";
-            _cells.GetCell(_resultColumn, _tittleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
+            _cells.GetCell(1, titleRow).Value = "Account Code";
+            _cells.GetCell(2, titleRow).Value = "W/Order Or Project";
+            _cells.GetCell(3, titleRow).Value = "W/P";
+            _cells.GetCell(4, titleRow).Value = "Journal Description";
+            _cells.GetCell(5, titleRow).Value = "Amount (+/-) Pesos";
+            _cells.GetCell(6, titleRow).Value = "Document Ref";
+            _cells.GetCell(7, titleRow).Value = "Foreign";
+            _cells.GetCell(8, titleRow).Value = "Dolars";
+            _cells.GetRange(1, titleRow, resultColumn - 1, titleRow).Style = _cells.GetStyle(StyleConstants.TitleRequired);
+            _cells.GetCell(resultColumn, titleRow).Value = "Result";
+            _cells.GetCell(resultColumn, titleRow).Style = _cells.GetStyle(StyleConstants.TitleInformation);
 
-            _cells.FormatAsTable(_cells.GetRange(1, _tittleRow, _resultColumn, _tittleRow + 1), TableName01);
+            _cells.FormatAsTable(_cells.GetRange(1, titleRow, resultColumn, titleRow + 1), TableName01);
 
             ((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
         }
 
         private void btnValidate_Click(object sender, RibbonControlEventArgs e)
         {
-            if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == _sheetName01)
+            if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                 _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -112,58 +154,59 @@ namespace EllipseMSO905ExcelAddIn
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
 
-            EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            var titleRow = TitleRow;
+            var resultColumn = ResultColumn01;
+            var currentRow = titleRow + 1;
 
-            _currentRow = _tittleRow + 1;
-
-            _cells.GetRange(1, _currentRow, _resultColumn, _currentRow).Style = StyleConstants.Normal;
-            _cells.ClearTableRangeColumn(TableName01, _resultColumn);
+            _cells.GetRange(1, currentRow, resultColumn, currentRow).Style = StyleConstants.Normal;
+            _cells.ClearTableRangeColumn(TableName01, resultColumn);
             
-            while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, _currentRow).Value) != null)
+            while (_cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value) != null)
             {
                 try
                 {
-                    _cells.GetCell(1, _currentRow).Select();
+                    _cells.GetCell(1, currentRow).Select();
 
                     //Valida Centro de Costo
-                    var account = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, _currentRow).Value);
-                    var projectNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, _currentRow).Value) ?? "";
-                    var projectInd = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, _currentRow).Value) ?? "";
+                    var account = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(1, currentRow).Value);
+                    var projectNo = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(2, currentRow).Value) ?? "";
+                    var projectInd = _cells.GetNullIfTrimmedEmpty(_cells.GetCell(3, currentRow).Value) ?? "";
 
-                    var accountCode = new AccountCode("ICOR", account);
-                    _cells.GetCell(_resultColumn, _currentRow).Value += accountCode.Error;
+                    var accountCode = new AccountCode(_eFunctions, "ICOR", account);
+                    _cells.GetCell(resultColumn, currentRow).Value += accountCode.Error;
 
                     if (accountCode.Error == null && accountCode.ActiveStatus == "A") continue;
 
-                    _cells.GetRange(1, _currentRow, 3, _currentRow).Style = _cells.GetStyle(StyleConstants.Success);
+                    _cells.GetRange(1, currentRow, 3, currentRow).Style = _cells.GetStyle(StyleConstants.Success);
 
 
                     if (accountCode.Error != null)
                     {
-                        _cells.GetCell(1, _currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
                     }
 
                     if (accountCode.ProjectEntriInd == "M" && (projectNo == "" || projectInd == "W"))
                     {
-                        _cells.GetCell(_resultColumn, _currentRow).Value += " Numero de Proyecto Requerido";
-                        _cells.GetCell(2, _currentRow).Style = _cells.GetStyle(StyleConstants.Error);
-                        _cells.GetRange(1, _currentRow, 3, _currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                        _cells.GetCell(resultColumn, currentRow).Value += " Numero de Proyecto Requerido";
+                        _cells.GetCell(2, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                        _cells.GetRange(1, currentRow, 3, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                     }
 
                     if (accountCode.WorkOrderEntryInd == "M" && (projectNo == "" || projectInd == "P"))
                     {
-                        _cells.GetCell(_resultColumn, _currentRow).Value += " Numero de Orden Requerido";
-                        _cells.GetRange(1, _currentRow, 3, _currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                        _cells.GetCell(resultColumn, currentRow).Value += " Numero de Orden Requerido";
+                        _cells.GetRange(1, currentRow, 3, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                     }
 
                     //valido si se necesita Subledger
                     if (accountCode.SubLedgerInd == "M" && !projectNo.Contains(";"))
                     {
-                        _cells.GetCell(_resultColumn, _currentRow).Value += " Subledger Requerido";
-                        _cells.GetCell(6, _currentRow).Style = _cells.GetStyle(StyleConstants.Error);
+                        _cells.GetCell(resultColumn, currentRow).Value += " Subledger Requerido";
+                        _cells.GetCell(6, currentRow).Style = _cells.GetStyle(StyleConstants.Error);
                     }
 
-                    var nit = _cells.GetEmptyIfNull(_cells.GetCell(4, _currentRow).Value);
+                    var nit = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
 
                     if (nit.Contains("#") & nit.Contains("@"))
                     {
@@ -172,21 +215,21 @@ namespace EllipseMSO905ExcelAddIn
                         var endIndex = nit.IndexOf("@", startIndex + 1, StringComparison.Ordinal);
                         nit = nit.Substring(startIndex + 1, endIndex - startIndex - 1);
 
-                        var ellipseNit = new EllipseNit(nit);
+                        var ellipseNit = new EllipseNit(_eFunctions, nit);
 
-                        _cells.GetCell(4, _currentRow).Style = (ellipseNit.Nit == null) ? _cells.GetStyle(StyleConstants.Error) : _cells.GetStyle(StyleConstants.Success);
-                        _cells.GetCell(_resultColumn + 1, _currentRow).Value += ellipseNit.Error;
+                        _cells.GetCell(4, currentRow).Style = (ellipseNit.Nit == null) ? _cells.GetStyle(StyleConstants.Error) : _cells.GetStyle(StyleConstants.Success);
+                        _cells.GetCell(resultColumn + 1, currentRow).Value += ellipseNit.Error;
 
                     }
                 }
                 catch (Exception ex)
                 {
-                    _cells.GetCell(1, _currentRow).Style = StyleConstants.Error;
-                    _cells.GetCell(_resultColumn, _currentRow).Value = "ERROR:  " + ex.Message;
+                    _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
+                    _cells.GetCell(resultColumn, currentRow).Value = "ERROR:  " + ex.Message;
                 }
                 finally
                 {
-                    _currentRow++;
+                    currentRow++;
                 }
             }
 
@@ -195,17 +238,18 @@ namespace EllipseMSO905ExcelAddIn
 
         private void ValidarDatos2()
         {
+            var resultColumn = ResultColumn01;
+            var currentRow = TitleRow + 1;
             try
             {
-                _currentRow = _tittleRow + 1;
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-                var proxySheet = new screen.ScreenService();
-                var requestSheet = new screen.ScreenSubmitRequestDTO();
+                var proxySheet = new Screen.ScreenService();
+                var requestSheet = new Screen.ScreenSubmitRequestDTO();
 
-                proxySheet.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+                proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
-                var opSheet = new screen.OperationContext
+                var opSheet = new Screen.OperationContext
                 {
                     district = _frmAuth.EllipseDsct,
                     position = _frmAuth.EllipsePost,
@@ -213,7 +257,7 @@ namespace EllipseMSO905ExcelAddIn
                     maxInstancesSpecified = true,
                     returnWarnings = Debugger.DebugWarnings
                 };
-                _cells.GetCell(7, _currentRow).Select();
+                _cells.GetCell(7, currentRow).Select();
 
                 const string option = "3";
                 var fullPeriod = _cells.GetEmptyIfNull(_cells.GetCell(2, 4).Value);
@@ -223,13 +267,13 @@ namespace EllipseMSO905ExcelAddIn
                 var journalDesc = _cells.GetEmptyIfNull(_cells.GetCell(2, 7).Value);
                 var accrualJournal = _cells.GetEmptyIfNull(_cells.GetCell(2, 8).Value);
 
-                EFunctions.RevertOperation(opSheet, proxySheet);
+                _eFunctions.RevertOperation(opSheet, proxySheet);
                 var replySheet = proxySheet.executeScreen(opSheet, "MSO905");
 
-                if (EFunctions.CheckReplyError(replySheet))
+                if (_eFunctions.CheckReplyError(replySheet))
                 {
-                    _cells.GetCell(_resultColumn, _currentRow).Style = StyleConstants.Error;
-                    _cells.GetCell(_resultColumn, _currentRow).Value = replySheet.message;
+                    _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
+                    _cells.GetCell(resultColumn, currentRow).Value = replySheet.message;
                 }
                 else
                 {
@@ -244,13 +288,13 @@ namespace EllipseMSO905ExcelAddIn
                     requestSheet.screenKey = "1";
                     replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                    while (EFunctions.CheckReplyWarning(replySheet) || replySheet.functionKeys.Contains("XMIT-Confirm"))
+                    while (_eFunctions.CheckReplyWarning(replySheet) || replySheet.functionKeys.Contains("XMIT-Confirm"))
                         replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                    if (EFunctions.CheckReplyError(replySheet))
+                    if (_eFunctions.CheckReplyError(replySheet))
                     {
-                        _cells.GetCell(_resultColumn, _currentRow).Style = StyleConstants.Error;
-                        _cells.GetCell(_resultColumn, _currentRow).Value = replySheet.message;
+                        _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(resultColumn, currentRow).Value = replySheet.message;
                     }
                     else if (replySheet.mapName == "MSM907A")
                     {
@@ -263,17 +307,17 @@ namespace EllipseMSO905ExcelAddIn
                         arrayFields.Add("APPROVAL_STAT1I", "Y");
                         arrayFields.Add("ACCOUNTANT1I", _frmAuth.EllipseUser);
 
-                        while (_cells.GetEmptyIfNull(_cells.GetCell(1, _currentRow).Value) != "")
+                        while (_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) != "")
                         {
-                            _cells.GetCell(1, _currentRow).Select();
-                            var accountCode = _cells.GetEmptyIfNull(_cells.GetCell(1, _currentRow).Value);
-                            var workOrderProject = _cells.GetEmptyIfNull(_cells.GetCell(2, _currentRow).Value);
-                            var workOrderProjectInd = _cells.GetEmptyIfNull(_cells.GetCell(3, _currentRow).Value);
-                            var journalDescItem = _cells.GetEmptyIfNull(_cells.GetCell(4, _currentRow).Value);
-                            var memoAmount = _cells.GetEmptyIfNull(_cells.GetCell(5, _currentRow).Value);
-                            var documentReference = _cells.GetEmptyIfNull(_cells.GetCell(6, _currentRow).Value);
-                            var foreingCurrency = _cells.GetEmptyIfNull(_cells.GetCell(7, _currentRow).Value);
-                            var tranAmount = _cells.GetEmptyIfNull(_cells.GetCell(8, _currentRow).Value);
+                            _cells.GetCell(1, currentRow).Select();
+                            var accountCode = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
+                            var workOrderProject = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
+                            var workOrderProjectInd = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+                            var journalDescItem = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
+                            var memoAmount = _cells.GetEmptyIfNull(_cells.GetCell(5, currentRow).Value);
+                            var documentReference = _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value);
+                            var foreingCurrency = _cells.GetEmptyIfNull(_cells.GetCell(7, currentRow).Value);
+                            var tranAmount = _cells.GetEmptyIfNull(_cells.GetCell(8, currentRow).Value);
 
                             arrayFields.Add("ACCOUNT_CODE1I" + currentMso, accountCode);
                             arrayFields.Add("WORK_PROJ1I" + currentMso, workOrderProject);
@@ -290,24 +334,24 @@ namespace EllipseMSO905ExcelAddIn
                                 requestSheet.screenKey = "1";
                                 replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                                while (EFunctions.CheckReplyWarning(replySheet))
+                                while (_eFunctions.CheckReplyWarning(replySheet))
                                     replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                                if (EFunctions.CheckReplyError(replySheet))
+                                if (_eFunctions.CheckReplyError(replySheet))
                                 {
-                                    _cells.GetRange(1, _currentRow - currentMso + 1, _resultColumn, _currentRow).Style = StyleConstants.Error;
-                                    _cells.GetCell(_resultColumn, _currentRow).Value = replySheet.message;
+                                    _cells.GetRange(1, currentRow - currentMso + 1, resultColumn, currentRow).Style = StyleConstants.Error;
+                                    _cells.GetCell(resultColumn, currentRow).Value = replySheet.message;
                                 }
                                 else
                                 {
-                                    _cells.GetRange(1, _currentRow - currentMso + 1, _resultColumn, _currentRow).Style = StyleConstants.Success;
+                                    _cells.GetRange(1, currentRow - currentMso + 1, resultColumn, currentRow).Style = StyleConstants.Success;
                                 }
                                 currentMso = 1;
                             }
                             else
                                 currentMso++;
 
-                            _currentRow++;
+                            currentRow++;
                         }
 
                         if (replySheet.mapName != "MSM907A") return;
@@ -315,17 +359,17 @@ namespace EllipseMSO905ExcelAddIn
                         requestSheet.screenKey = "1";
                         replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                        while (EFunctions.CheckReplyWarning(replySheet))
+                        while (_eFunctions.CheckReplyWarning(replySheet))
                             replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                        if (EFunctions.CheckReplyError(replySheet))
+                        if (_eFunctions.CheckReplyError(replySheet))
                         {
-                            _cells.GetRange(1, _currentRow - currentMso, _resultColumn, _currentRow - 1).Style = StyleConstants.Error;
-                            _cells.GetCell(_resultColumn, _currentRow - 1).Value = replySheet.message;
+                            _cells.GetRange(1, currentRow - currentMso, resultColumn, currentRow - 1).Style = StyleConstants.Error;
+                            _cells.GetCell(resultColumn, currentRow - 1).Value = replySheet.message;
                         }
                         else
                         {
-                            _cells.GetRange(1, _currentRow - currentMso, _resultColumn, _currentRow - 1).Style = StyleConstants.Success;
+                            _cells.GetRange(1, currentRow - currentMso, resultColumn, currentRow - 1).Style = StyleConstants.Success;
                             _cells.GetCell(2, 5).Value = replySheet.message ?? _cells.GetCell(2, 5).Value;
                         }
                     }
@@ -333,15 +377,15 @@ namespace EllipseMSO905ExcelAddIn
             }
             catch (Exception ex)
             {
-                _cells.GetCell(1, _currentRow).Style = StyleConstants.Error;
-                _cells.GetCell(_resultColumn, _currentRow).Value = "ERROR:  " + ex.Message;
+                _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
+                _cells.GetCell(resultColumn, currentRow).Value = "ERROR:  " + ex.Message;
                 //                ErrorLogger.LogError("RibbonEllipse.cs:LoadSheet()", ex.Message, EFunctions.DebugErrors);
             }
         }
 
         private void btnLoad_Click(object sender, RibbonControlEventArgs e)
         {
-            if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == _sheetName01)
+            if (((Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Name == SheetName01)
             {
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
                 _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
@@ -359,25 +403,28 @@ namespace EllipseMSO905ExcelAddIn
 
         private void LoadSheet()
         {
+            var titleRow = TitleRow;
+            var resultColumn = ResultColumn01;
+            var currentRow = titleRow + 1;
             try
             {
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
 
-                _cells.GetRange(1, _currentRow, _resultColumn, _currentRow).Style = StyleConstants.Normal;
-                _cells.ClearTableRangeColumn(TableName01, _resultColumn);
+                _cells.GetRange(1, currentRow, resultColumn, currentRow).Style = StyleConstants.Normal;
+                _cells.ClearTableRangeColumn(TableName01, resultColumn);
 
-                EFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
 
-                _currentRow = _tittleRow + 1;
+                
                 ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-                var proxySheet = new screen.ScreenService();
-                var requestSheet = new screen.ScreenSubmitRequestDTO();
+                var proxySheet = new Screen.ScreenService();
+                var requestSheet = new Screen.ScreenSubmitRequestDTO();
 
-                proxySheet.Url = EFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+                proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
-                var opSheet = new screen.OperationContext
+                var opSheet = new Screen.OperationContext
                 {
                     district = _frmAuth.EllipseDsct,
                     position = _frmAuth.EllipsePost,
@@ -385,7 +432,7 @@ namespace EllipseMSO905ExcelAddIn
                     maxInstancesSpecified = true,
                     returnWarnings = Debugger.DebugWarnings
                 };
-                _cells.GetCell(7, _currentRow).Select();
+                _cells.GetCell(7, currentRow).Select();
 
                 const string option = "3";
                 var fullPeriod = _cells.GetEmptyIfNull(_cells.GetCell(2, 4).Value);
@@ -395,13 +442,13 @@ namespace EllipseMSO905ExcelAddIn
                 var journalDesc = _cells.GetEmptyIfNull(_cells.GetCell(2, 7).Value);
                 var accrualJournal = _cells.GetEmptyIfNull(_cells.GetCell(2, 8).Value);
 
-                EFunctions.RevertOperation(opSheet, proxySheet);
+                _eFunctions.RevertOperation(opSheet, proxySheet);
                 var replySheet = proxySheet.executeScreen(opSheet, "MSO905");
 
-                if (EFunctions.CheckReplyError(replySheet))
+                if (_eFunctions.CheckReplyError(replySheet))
                 {
-                    _cells.GetCell(_resultColumn, _currentRow).Style = StyleConstants.Error;
-                    _cells.GetCell(_resultColumn, _currentRow).Value = replySheet.message;
+                    _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
+                    _cells.GetCell(resultColumn, currentRow).Value = replySheet.message;
                 }
                 else
                 {
@@ -416,13 +463,13 @@ namespace EllipseMSO905ExcelAddIn
                     requestSheet.screenKey = "1";
                     replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                    while (EFunctions.CheckReplyWarning(replySheet) || replySheet.functionKeys.Contains("XMIT-Confirm"))
+                    while (_eFunctions.CheckReplyWarning(replySheet) || replySheet.functionKeys.Contains("XMIT-Confirm"))
                         replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                    if (EFunctions.CheckReplyError(replySheet))
+                    if (_eFunctions.CheckReplyError(replySheet))
                     {
-                        _cells.GetCell(_resultColumn, _currentRow).Style = StyleConstants.Error;
-                        _cells.GetCell(_resultColumn, _currentRow).Value = replySheet.message;
+                        _cells.GetCell(resultColumn, currentRow).Style = StyleConstants.Error;
+                        _cells.GetCell(resultColumn, currentRow).Value = replySheet.message;
                     }
                     else if (replySheet.mapName == "MSM907A")
                     {
@@ -435,17 +482,17 @@ namespace EllipseMSO905ExcelAddIn
                         arrayFields.Add("APPROVAL_STAT1I", "Y");
                         arrayFields.Add("ACCOUNTANT1I", _frmAuth.EllipseUser);
 
-                        while (_cells.GetEmptyIfNull(_cells.GetCell(1, _currentRow).Value) != "")
+                        while (_cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value) != "")
                         {
-                            _cells.GetCell(1, _currentRow).Select();
-                            var accountCode = _cells.GetEmptyIfNull(_cells.GetCell(1, _currentRow).Value);
-                            var workOrderProject = _cells.GetEmptyIfNull(_cells.GetCell(2, _currentRow).Value);
-                            var workOrderProjectInd = _cells.GetEmptyIfNull(_cells.GetCell(3, _currentRow).Value);
-                            var journalDescItem = _cells.GetEmptyIfNull(_cells.GetCell(4, _currentRow).Value);
-                            var memoAmount = _cells.GetEmptyIfNull(_cells.GetCell(5, _currentRow).Value);
-                            var documentReference = _cells.GetEmptyIfNull(_cells.GetCell(6, _currentRow).Value);
-                            var foreingCurrency = _cells.GetEmptyIfNull(_cells.GetCell(7, _currentRow).Value);
-                            var tranAmount = _cells.GetEmptyIfNull(_cells.GetCell(8, _currentRow).Value);
+                            _cells.GetCell(1, currentRow).Select();
+                            var accountCode = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
+                            var workOrderProject = _cells.GetEmptyIfNull(_cells.GetCell(2, currentRow).Value);
+                            var workOrderProjectInd = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
+                            var journalDescItem = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
+                            var memoAmount = _cells.GetEmptyIfNull(_cells.GetCell(5, currentRow).Value);
+                            var documentReference = _cells.GetEmptyIfNull(_cells.GetCell(6, currentRow).Value);
+                            var foreingCurrency = _cells.GetEmptyIfNull(_cells.GetCell(7, currentRow).Value);
+                            var tranAmount = _cells.GetEmptyIfNull(_cells.GetCell(8, currentRow).Value);
 
                             arrayFields.Add("ACCOUNT_CODE1I" + currentMso, accountCode);
                             arrayFields.Add("WORK_PROJ1I" + currentMso, workOrderProject);
@@ -462,7 +509,7 @@ namespace EllipseMSO905ExcelAddIn
                                 requestSheet.screenKey = "1";
                                 replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                                while (EFunctions.CheckReplyWarning(replySheet))
+                                while (_eFunctions.CheckReplyWarning(replySheet))
                                     replySheet = proxySheet.submit(opSheet, requestSheet);
 
                                 while (replySheet.functionKeys.Contains("XMIT-Confirm"))
@@ -473,28 +520,28 @@ namespace EllipseMSO905ExcelAddIn
                                     requestSheet.screenFields = arrayFields.ToArray();
                                 }
 
-                                if (EFunctions.CheckReplyError(replySheet))
+                                if (_eFunctions.CheckReplyError(replySheet))
                                 {
-                                    _cells.GetRange(1, _currentRow - currentMso + 1, _resultColumn, _currentRow).Style = StyleConstants.Error;
-                                    _cells.GetCell(_resultColumn, _currentRow).Value = replySheet.message;
+                                    _cells.GetRange(1, currentRow - currentMso + 1, resultColumn, currentRow).Style = StyleConstants.Error;
+                                    _cells.GetCell(resultColumn, currentRow).Value = replySheet.message;
                                 }
                                 else
                                 {
-                                    _cells.GetRange(1, _currentRow - currentMso + 1, _resultColumn, _currentRow).Style = StyleConstants.Success;
+                                    _cells.GetRange(1, currentRow - currentMso + 1, resultColumn, currentRow).Style = StyleConstants.Success;
                                 }
                                 currentMso = 1;
                             }
                             else
                                 currentMso++;
 
-                            _currentRow++;
+                            currentRow++;
                         }
 
                         if (replySheet.mapName != "MSM907A") return;
                         requestSheet.screenKey = "1";
                         replySheet = proxySheet.submit(opSheet, requestSheet);
 
-                        while (EFunctions.CheckReplyWarning(replySheet))
+                        while (_eFunctions.CheckReplyWarning(replySheet))
                             replySheet = proxySheet.submit(opSheet, requestSheet);
 
                         while (replySheet.functionKeys.Contains("XMIT-Confirm"))
@@ -505,14 +552,14 @@ namespace EllipseMSO905ExcelAddIn
                             requestSheet.screenFields = arrayFields.ToArray();
                         }
 
-                        if (EFunctions.CheckReplyError(replySheet))
+                        if (_eFunctions.CheckReplyError(replySheet))
                         {
-                            _cells.GetRange(1, _currentRow - currentMso, _resultColumn, _currentRow - 1).Style = StyleConstants.Error;
-                            _cells.GetCell(_resultColumn, _currentRow - 1).Value = replySheet.message;
+                            _cells.GetRange(1, currentRow - currentMso, resultColumn, currentRow - 1).Style = StyleConstants.Error;
+                            _cells.GetCell(resultColumn, currentRow - 1).Value = replySheet.message;
                         }
                         else
                         {
-                            _cells.GetRange(1, _currentRow - currentMso, _resultColumn, _currentRow - 1).Style = StyleConstants.Success;
+                            _cells.GetRange(1, currentRow - currentMso, resultColumn, currentRow - 1).Style = StyleConstants.Success;
                             _cells.GetCell(2, 5).Value = replySheet.message ?? _cells.GetCell(2, 5).Value;
                         }
                     }
@@ -520,325 +567,18 @@ namespace EllipseMSO905ExcelAddIn
             }
             catch (Exception ex)
             {
-                _cells.GetCell(1, _currentRow).Style = StyleConstants.Error;
-                _cells.GetCell(_resultColumn, _currentRow).Value = "ERROR:  " + ex.Message;
+                _cells.GetCell(1, currentRow).Style = StyleConstants.Error;
+                _cells.GetCell(resultColumn, currentRow).Value = "ERROR:  " + ex.Message;
                 //                ErrorLogger.LogError("RibbonEllipse.cs:LoadSheet()", ex.Message, EFunctions.DebugErrors);
             }
 
         }
 
-        public class EllipseNit
-        {
-            public string Nit { get; set; }
-            public string Error { get; set; }
+        
 
-            public EllipseNit(string nit)
-            {
-                try
-                {
-                    if (string.IsNullOrEmpty(nit))
-                    {
-                        Error = "Nit Invalido";
-                        return;
-                    }
+        
 
-                    var ellipseNitQuery = Queries.GetSupplierNit(nit, EFunctions.dbReference, EFunctions.dbLink);
-                    var drEllipseNit = EFunctions.GetQueryResult(ellipseNitQuery);
-                    if (drEllipseNit != null && !drEllipseNit.IsClosed && drEllipseNit.HasRows)
-                    {
-                        drEllipseNit.Read();
-                        Nit = drEllipseNit["NIT"].ToString();
-                        Error = null;
-                    }
-                    else
-                    {
-                        Nit = null;
-                        Error = "Nit no registrado";
-                    }
-                    if (drEllipseNit != null) drEllipseNit.Close();
-                }
-                catch (Exception error)
-                {
-                    Error = error.Message;
-                }
-            }
-        }
-
-        public class AccountCode
-        {
-            public AccountCode(string districtCode, string accountCode)
-            {
-                try
-                {
-                    if (string.IsNullOrEmpty(districtCode) || string.IsNullOrEmpty(accountCode))
-                    {
-                        Error = "Account Code Invalida";
-                        return;
-                    }
-
-                    if (accountCode.Contains(";"))
-                    {
-                        Mnemonic = accountCode.Contains(";")
-                        ? accountCode.Substring(accountCode.IndexOf(";", StringComparison.Ordinal) + 1, accountCode.Length - accountCode.IndexOf(";", StringComparison.Ordinal) - 1).Replace("=", "")
-                        : "";
-                        accountCode = accountCode.Contains(";")
-                            ? accountCode.Substring(0, accountCode.IndexOf(";", StringComparison.Ordinal))
-                            : accountCode;
-
-
-
-                        var mnemonicQuery = Queries.GetSupplierMnemonic(Mnemonic, EFunctions.dbReference, EFunctions.dbLink);
-                        var drMnemonic = EFunctions.GetQueryResult(mnemonicQuery);
-                        if (drMnemonic != null && !drMnemonic.IsClosed && drMnemonic.HasRows)
-                        {
-                            drMnemonic.Read();
-                            if (Convert.ToInt32(drMnemonic["CANTIDAD"].ToString()) == 1)
-                                Account = accountCode + ";" + drMnemonic["GL_COLLOQ_CD"];
-                            else
-                                Error = " No se puede determinar la cuenta";
-                        }
-                        else
-                            Error = " Mnenomico No Valido";
-                        if (drMnemonic != null) drMnemonic.Close();
-                    }
-
-                    var sqlQuery = Queries.GetAccountCodeInfo(districtCode, accountCode, EFunctions.dbReference,
-                        EFunctions.dbLink);
-
-                    var drAccountCode = EFunctions.GetQueryResult(sqlQuery);
-
-                    if (drAccountCode != null && !drAccountCode.IsClosed && drAccountCode.HasRows)
-                    {
-                        while (drAccountCode.Read())
-                        {
-                            ActiveStatus = drAccountCode["ACTIVE_STATUS"].ToString();
-                            ProjectEntriInd = drAccountCode["PROJ_ENTRY_IND"].ToString();
-                            WorkOrderEntryInd = drAccountCode["WO_ENTRY_IND"].ToString();
-                            SubLedgerInd = drAccountCode["SUBLEDGER_IND"].ToString();
-                            Error = (drAccountCode["ACTIVE_STATUS"].ToString() == "I") ? ", AccountCode Inactivo" : Error;
-                        }
-                    }
-                    else
-                    {
-                        Error = " Centro de Costos No Valido";
-                    }
-                    if (drAccountCode != null) drAccountCode.Close();
-                }
-                catch (Exception error)
-                {
-                    Error = error.Message;
-                }
-            }
-
-            public string Error { get; set; }
-            public string ActiveStatus { get; set; }
-            public string Account { get; set; }
-            public string ProjectEntriInd { get; set; }
-            public string WorkOrderEntryInd { get; set; }
-            public string SubLedgerInd { get; set; }
-            public string Mnemonic { get; set; }
-        }
-
-        public static class Queries
-        {
-            public static string GetEmployeeName(string employeeId, string dbReference, string dbLink)
-            {
-                var sqlQuery = " " +
-                               "SELECT DISTINCT " +
-                               "  EMP.FIRST_NAME || ' ' || EMP.SURNAME NOMBRE " +
-                               "FROM " +
-                               "  " + dbReference + ".MSF870" + dbLink + " POS " +
-                               "INNER JOIN " + dbReference + ".MSF878" + dbLink + " EMPOS " +
-                               "ON" +
-                               "  EMPOS.POSITION_ID = POS.POSITION_ID " +
-                               "AND " +
-                               "  (" +
-                               "    EMPOS.POS_STOP_DATE > TO_CHAR ( SYSDATE, 'YYYYMMDD' ) " +
-                               "  OR EMPOS.POS_STOP_DATE = '00000000' " +
-                               "  ) " +
-                               "INNER JOIN " + dbReference + ".MSF810" + dbLink + " EMP " +
-                               "ON " +
-                               "  EMPOS.EMPLOYEE_ID = EMP.EMPLOYEE_ID " +
-                               "WHERE " +
-                               "EMPOS.EMPLOYEE_ID = '" + employeeId + "' ";
-                return sqlQuery;
-            }
-
-            public static string GetTransactionInfo(string districtCode, string numTransaction, string dbReference, string dbLink)
-            {
-                var processDate = numTransaction.Substring(0, 8);
-                var transNo = numTransaction.Substring(8, 11);
-                var userNo = numTransaction.Substring(19, 4);
-                var recType = numTransaction.Substring(23, 1);
-                var sqlQuery = " " +
-                               "SELECT " +
-                               "  TR.FULL_PERIOD, " +
-                               "  TR.ACCOUNT_CODE, " +
-                               "  DECODE ( TRIM ( TR.PROJECT_NO ), NULL, DECODE ( TRIM ( TR.WORK_ORDER ), NULL, ' ', TR.WORK_ORDER ), TR.PROJECT_NO ) PROJECT_NO, " +
-                               "  DECODE ( TRIM ( TR.PROJECT_NO ), NULL, DECODE ( TRIM ( TR.WORK_ORDER ), NULL, ' ', 'W' ), 'P' ) IND," +
-                               "  TR.TRAN_AMOUNT, " +
-                               "  TR.TRAN_AMOUNT_S " +
-                               "FROM " +
-                               "  " + dbReference + ".MSF900" + dbLink + " TR " +
-                               "WHERE " +
-                               "  TR.DSTRCT_CODE = '" + districtCode + "' " +
-                               "AND TR.PROCESS_DATE = '" + processDate + "' " +
-                               "AND TR.TRANS_NO = '" + transNo + "' " +
-                               "AND TR.USERNO = '" + userNo + "' " +
-                               "AND TR.REC900_TYPE = '" + recType + "' ";
-
-                return sqlQuery;
-            }
-
-            public static string GetAccountCodeInfo(string districtCode, string accountCode, string dbReference, string dbLink)
-            {
-                var sqlQuery = " " +
-                               "SELECT " +
-                               "  CC.ACTIVE_STATUS, " +
-                               "  CC.ACCOUNT_CODE, " +
-                               "  CC.PROJ_ENTRY_IND, " +
-                               "  CC.WO_ENTRY_IND, " +
-                               "  CC.SUBLEDGER_IND " +
-                               "FROM " +
-                               "  " + dbReference + ".MSF966" + dbLink + " CC " +
-                               "WHERE " +
-                               "  CC.DSTRCT_CODE = '" + districtCode + "' " +
-                               "AND CC.ACCOUNT_CODE = '" + accountCode + "'";
-                return sqlQuery;
-            }
-
-            public static string GetSupplierName(string districtCode, string supplierId, string dbReference, string dbLink)
-            {
-                var sqlQuery = "" +
-                               "SELECT " +
-                               "  SUP.SUPPLIER_NO, " +
-                               "  SUP.SUPPLIER_NAME " +
-                               "FROM " +
-                               "  " + dbReference + ".MSF200 SUP" + dbLink + " " +
-                               "INNER JOIN " + dbReference + ".MSF203" + dbLink + " SD " +
-                               "ON " +
-                               "  SD.SUPPLIER_NO = SUP.SUPPLIER_NO " +
-                               "WHERE " +
-                               "  SUP.SUPPLIER_NO = '" + supplierId + "' " +
-                               "  AND SD.DSTRCT_CODE = '" + districtCode + "'";
-                return sqlQuery;
-            }
-
-            public static string GetContractNameDesc(string document, string dbReference, string dbLink)
-            {
-                var sqlQuery = "" +
-                               "SELECT " +
-                               "  CONTRACT_DESC " +
-                               "FROM " +
-                               "  " + dbReference + ".MSF384" + dbLink + " " +
-                               "WHERE " +
-                               "  CONTRACT_NO = '" + document + "'";
-                return sqlQuery;
-            }
-
-            public static string GetPurchaseOrder(string document, string supplierNo, string dbReference, string dbLink)
-            {
-                var sqlQuery = "" +
-                               "SELECT " +
-                               "  PO_NO " +
-                               "FROM " +
-                               "  " + dbReference + ".MSF220" + dbLink + " " +
-                               "WHERE " +
-                               "  PO_NO = '" + document + "' " +
-                               "AND SUPPLIER_NO = '" + supplierNo + "'";
-                return sqlQuery;
-            }
-
-            public static string GetSupplierMnemonic(string mnemonic, string dbReference, string dbLink)
-            {
-                var sqlQuery = "" +
-                               "SELECT " +
-                               "  GL_COLLOQ_CD, " +
-                               "  COUNT ( * ) OVER ( ) CANTIDAD " +
-                               "FROM " +
-                               "  " + dbReference + ".MSF922" + dbLink + " " +
-                               "WHERE " +
-                               "  GL_COLLOQ_TY = '7' " +
-                               "AND COLLOQ_NAME = '" + mnemonic + "'";
-                return sqlQuery;
-            }
-
-            public static string GetJournalInfo(string districtCode, string journal, string dbReference, string dbLink)
-            {
-                var sqlQuery = " " +
-                    "SELECT " +
-                    "  TR.DSTRCT_CODE, " +
-                    "  TR.TRAN_GROUP_KEY, " +
-                    "  ( TR.PROCESS_DATE || TR.TRANSACTION_NO || TR.USERNO || TR.REC900_TYPE ) NUMTXT, " +
-                    "  TR.FULL_PERIOD, " +
-                    "  TR.REC900_TYPE, " +
-                    "  TR.TRAN_TYPE, " +
-                    "  TR.POSTED_STATUS, " +
-                    "  TR.MANJNL_VCHR, " +
-                    "  TR.ACCOUNTANT, " +
-                    "  TR.ACCOUNT_CODE, " +
-                    "  TR.PROJECT_NO, " +
-                    "  TR.TRAN_AMOUNT, " +
-                    "  TR.TRAN_AMOUNT_S, " +
-                    "  TR.CURRENCY_TYPE, " +
-                    "  TR.CREATION_DATE, " +
-                    "  TR.CREATION_TIME, " +
-                    "  TR.CREATION_USER, " +
-                    "  TR.MIMS_SL_KEY, " +
-                    "  TR.JOURNAL_DESC, " +
-                    "  TR.DOCUMENT_REF, " +
-                    "  TR.AUTO_JNL_FLG, " +
-                    "  TR.JOURNAL_TYPE " +
-                    "FROM " +
-                    "  " + dbReference + ".MSF900" + dbLink + " TR " +
-                    "INNER JOIN " + dbReference + ".MSFX90 X90" + dbLink + " " +
-                    "ON " +
-                    "  TR.TRAN_GROUP_KEY = X90.DSTRCT_CODE || X90.PROCESS_DATE || X90.TRANSACTION_NO || X90.USERNO || X90.REC900_TYPE " +
-                    "WHERE " +
-                    "  X90.DSTRCT_CODE = '" + districtCode + "' " +
-                    "AND X90.JOURNAL_NO = '" + journal + "' " +
-                    "ORDER BY " +
-                    "  1, " +
-                    "  2, " +
-                    "  3 ";
-
-                return sqlQuery;
-            }
-
-            public static string GetSupplierNit(string nit, string dbReference, string dbLink)
-            {
-                var sqlQuery = " " +
-                               "SELECT " +
-                               " DISTINCT NIT " +
-                               "FROM " +
-                               "  ( " +
-                               "    SELECT " +
-                               "      trim(TAX_FILE_NO) NIT " +
-                               "    FROM " +
-                               "      " + dbReference + ".MSF203" + dbLink + " " +
-                               "    WHERE " +
-                               "      TRIM (TAX_FILE_NO) = '" + nit + "' " +
-                               "    UNION " +
-                               "    SELECT " +
-                               "      TRIM(GOVT_ID_NO) NIT " +
-                               "    FROM " +
-                               "      " + dbReference + ".MSF503" + dbLink + " " +
-                               "    WHERE " +
-                               "      TRIM (GOVT_ID_NO) = '" + nit + "' " +
-                               "    UNION " +
-                               "    SELECT " +
-                               "      TRIM(TABLE_CODE) NIT " +
-                               "    FROM " +
-                               "      " + dbReference + ".MSF010" + dbLink + " " +
-                               "    WHERE " +
-                               "      TABLE_TYPE          = '+NIT' " +
-                               "    AND TRIM (TABLE_CODE) = '" + nit + "' " +
-                               "  )  ";
-
-                return sqlQuery;
-            }
-        }
-
+        
         private void btnAbout_Click(object sender, RibbonControlEventArgs e)
         {
             new AboutBoxExcelAddIn().ShowDialog();

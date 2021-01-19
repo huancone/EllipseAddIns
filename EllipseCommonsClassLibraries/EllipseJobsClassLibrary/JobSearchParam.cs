@@ -27,7 +27,7 @@ namespace EllipseJobsClassLibrary
         public string DstrctAcctCodeSegment;
         public string DstrctCode;
 
-        public string EnableSuppressedWithResourceBalancing;
+        //public string EnableSuppressedWithResourceBalancing; //E9 deleted
         public string EquipClass;
         public string EquipGrpId;
         public string EquipLocation;
@@ -74,12 +74,12 @@ namespace EllipseJobsClassLibrary
         public string RecallTimeHrs;
         public string ReportId;
         public string RequestId;
-        public string ResourceCrewTotalsOnly;
+        //public string ResourceCrewTotalsOnly;//E9 deleted
         public string[] ResourceCrews;
         public string ResourceDisableAvailabilityCache;
-        public string ResourceTotalsOnly;
+        //public string ResourceTotalsOnly;//E9 deleted
         public string[] ResourceTypes;
-        public string ResourceWorkGroupTotalsOnly;
+        //public string ResourceWorkGroupTotalsOnly;//E9 deleted
         public string[] ResourceWorkGroups;
         public string RetrieveResourceRequirements;
 
@@ -152,9 +152,9 @@ namespace EllipseJobsClassLibrary
             searchParam.dstrctAcctCode = DstrctAcctCode;
             searchParam.dstrctAcctCodeSegment = DstrctAcctCodeSegment;
             searchParam.dstrctCode = DstrctCode;
-            
-            searchParam.enableSuppressedWithResourceBalancing = MyUtilities.IsTrue(EnableSuppressedWithResourceBalancing);
-            searchParam.enableSuppressedWithResourceBalancingSpecified = EnableSuppressedWithResourceBalancing != null;
+
+            //searchParam.enableSuppressedWithResourceBalancing = MyUtilities.IsTrue(EnableSuppressedWithResourceBalancing); //E9 deleted
+            //searchParam.enableSuppressedWithResourceBalancingSpecified = EnableSuppressedWithResourceBalancing != null; //E9 deleted
             searchParam.equipClass = EquipClass;
             searchParam.equipGrpId = EquipGrpId;
             searchParam.equipLocation = EquipLocation;
@@ -222,16 +222,17 @@ namespace EllipseJobsClassLibrary
             searchParam.recallTimeHrsSpecified = RecallTimeHrs != null;
             searchParam.reportId = ReportId;
             searchParam.requestId = RequestId;
-            searchParam.resourceCrewTotalsOnly = MyUtilities.IsTrue(ResourceCrewTotalsOnly);
-            searchParam.resourceCrewTotalsOnlySpecified = ResourceCrewTotalsOnly != null;
+            
+            //searchParam.resourceCrewTotalsOnly = MyUtilities.IsTrue(ResourceCrewTotalsOnly);//E9 deleted
+            //searchParam.resourceCrewTotalsOnlySpecified = ResourceCrewTotalsOnly != null;//E9 deleted
             searchParam.resourceCrews = ResourceCrews;
             searchParam.resourceDisableAvailabilityCache = MyUtilities.IsTrue(ResourceDisableAvailabilityCache);
             searchParam.resourceDisableAvailabilityCacheSpecified = ResourceDisableAvailabilityCache != null;
-            searchParam.resourceTotalsOnly = MyUtilities.IsTrue(ResourceTotalsOnly);
-            searchParam.resourceTotalsOnlySpecified = ResourceTotalsOnly != null;
+            //searchParam.resourceTotalsOnly = MyUtilities.IsTrue(ResourceTotalsOnly);//E9 deleted
+            //searchParam.resourceTotalsOnlySpecified = ResourceTotalsOnly != null;//E9 deleted
             searchParam.resourceTypes = ResourceTypes;
-            searchParam.resourceWorkGroupTotalsOnly = MyUtilities.IsTrue(ResourceWorkGroupTotalsOnly);
-            searchParam.resourceWorkGroupTotalsOnlySpecified = ResourceWorkGroupTotalsOnly != null;
+            //searchParam.resourceWorkGroupTotalsOnly = MyUtilities.IsTrue(ResourceWorkGroupTotalsOnly);//E9 deleted
+            //searchParam.resourceWorkGroupTotalsOnlySpecified = ResourceWorkGroupTotalsOnly != null;//E9 deleted
             searchParam.resourceWorkGroups = ResourceWorkGroups;
             searchParam.retrieveResourceRequirements = MyUtilities.IsTrue(RetrieveResourceRequirements);
             searchParam.retrieveResourceRequirementsSpecified = RetrieveResourceRequirements != null;

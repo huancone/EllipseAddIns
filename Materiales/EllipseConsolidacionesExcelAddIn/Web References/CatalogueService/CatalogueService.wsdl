@@ -919,7 +919,7 @@
               <xsd:element minOccurs="0" name="catalogueStatus" type="ns2:catalogueStatus" />
               <xsd:element minOccurs="0" name="catalogueTemplateId" type="ns2:catalogueTemplateId" />
               <xsd:element minOccurs="0" name="catalogueTemplateVersion" type="ns2:catalogueTemplateVersion" />
-              <xsd:element minOccurs="0" name="colloquialName" type="ns2:colloquialName" />
+              <xsd:element minOccurs="0" name="colloquialName" type="tns:ArrayOfString" />
               <xsd:element minOccurs="0" name="componentCode" type="ns2:componentCode" />
               <xsd:element minOccurs="0" name="description1" type="ns2:description1" />
               <xsd:element minOccurs="0" name="description2" type="ns2:description2" />
@@ -1079,59 +1079,6 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:simpleType name="code">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="0" />
-          <xsd:maxLength value="100" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:complexType name="ItemStatusDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="code" type="ns2:code" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ItemIDsGroupDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="manufacturerItemIdentification" type="ns2:ManufacturerItemIdentificationDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ManufacturerItemIdentificationDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="ID" type="ns2:ID" />
-              <xsd:element minOccurs="0" name="extension" type="ns2:ArrayOfExtensionDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfExtensionDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ExtensionDTO" nillable="true" type="ns2:ExtensionDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="ExtensionDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="ID" type="tns:ArrayOfString" />
-              <xsd:element minOccurs="0" name="amount" type="tns:ArrayOfDouble" />
-              <xsd:element minOccurs="0" name="code" type="tns:ArrayOfString" />
-              <xsd:element minOccurs="0" name="measure" type="tns:ArrayOfString" />
-              <xsd:element minOccurs="0" name="name" type="tns:ArrayOfString" />
-              <xsd:element minOccurs="0" name="number" type="tns:ArrayOfString" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
       <xsd:complexType name="ArrayOfPackagingDTO">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="PackagingDTO" nillable="true" type="ns2:PackagingDTO" />
@@ -1143,6 +1090,21 @@
             <xsd:sequence>
               <xsd:element minOccurs="0" name="ID" type="tns:ArrayOfString" />
               <xsd:element minOccurs="0" name="freeFormTextGroup" type="ns2:FreeFormTextGroupDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:simpleType name="code">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="ItemStatusDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="code" type="ns2:code" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -1205,44 +1167,6 @@
             <xsd:sequence>
               <xsd:element minOccurs="0" name="maximumWeightMeasure" type="ns2:maximumWeightMeasure" />
               <xsd:element minOccurs="0" name="minimumWeightMeasure" type="ns2:minimumWeightMeasure" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfSpecificationDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="SpecificationDTO" nillable="true" type="ns2:SpecificationDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="SpecificationDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="ID" type="tns:ArrayOfString" />
-              <xsd:element minOccurs="0" name="property" type="ns2:ArrayOfOAGISPropertyDTO" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="ArrayOfOAGISPropertyDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="OAGISPropertyDTO" nillable="true" type="ns2:OAGISPropertyDTO" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:simpleType name="nameValue">
-        <xsd:restriction base="xsd:string">
-          <xsd:minLength value="0" />
-          <xsd:maxLength value="100" />
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:complexType name="OAGISPropertyDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns3:ServiceDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="ID" type="tns:ArrayOfString" />
-              <xsd:element minOccurs="0" name="extension" type="ns2:ArrayOfExtensionDTO" />
-              <xsd:element minOccurs="0" name="freeFormTextGroup" type="ns2:FreeFormTextGroupDTO" />
-              <xsd:element minOccurs="0" name="nameValue" type="ns2:nameValue" />
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
@@ -1324,6 +1248,82 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
+      <xsd:complexType name="ArrayOfSpecificationDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="SpecificationDTO" nillable="true" type="ns2:SpecificationDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="SpecificationDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="ID" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="property" type="ns2:ArrayOfOAGISPropertyDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfOAGISPropertyDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="OAGISPropertyDTO" nillable="true" type="ns2:OAGISPropertyDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="nameValue">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="OAGISPropertyDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="ID" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="extension" type="ns2:ArrayOfExtensionDTO" />
+              <xsd:element minOccurs="0" name="freeFormTextGroup" type="ns2:FreeFormTextGroupDTO" />
+              <xsd:element minOccurs="0" name="nameValue" type="ns2:nameValue" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ArrayOfExtensionDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ExtensionDTO" nillable="true" type="ns2:ExtensionDTO" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ExtensionDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="ID" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="amount" type="tns:ArrayOfDouble" />
+              <xsd:element minOccurs="0" name="code" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="measure" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="name" type="tns:ArrayOfString" />
+              <xsd:element minOccurs="0" name="number" type="tns:ArrayOfString" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ItemIDsGroupDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="manufacturerItemIdentification" type="ns2:ManufacturerItemIdentificationDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="ManufacturerItemIdentificationDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns3:ServiceDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="ID" type="ns2:ID" />
+              <xsd:element minOccurs="0" name="extension" type="ns2:ArrayOfExtensionDTO" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
       <xsd:complexType name="SyncItemMasterServiceResult">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns3:ServiceResult" />
@@ -1388,41 +1388,6 @@
       </xsd:complexType>
       <xsd:complexType name="ServiceRequiredAttributes" />
     </xsd:schema>
-    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
-      <xsd:complexType name="Base" abstract="true" />
-      <xsd:complexType name="Image">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns4:Media">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="classId" type="xsd:string" />
-              <xsd:element minOccurs="0" name="fileType" type="xsd:string" />
-              <xsd:element minOccurs="0" name="height" type="xsd:double" />
-              <xsd:element minOccurs="0" name="image" type="xsd:base64Binary" />
-              <xsd:element minOccurs="0" name="sizeInBytes" type="xsd:double" />
-              <xsd:element minOccurs="0" name="uploadServletUrl" type="xsd:string" />
-              <xsd:element minOccurs="0" name="url" type="xsd:string" />
-              <xsd:element minOccurs="0" name="width" type="xsd:double" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="Media" abstract="true">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns4:Complex">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="description" type="xsd:string" />
-              <xsd:element minOccurs="0" name="id" type="xsd:string" />
-              <xsd:element minOccurs="0" name="name" type="xsd:string" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
-      <xsd:complexType name="Complex">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns4:Base" />
-        </xsd:complexContent>
-      </xsd:complexType>
-    </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://attribute.ellipse.mincom.com">
       <xsd:import namespace="http://catalogue.m3101.service.ellipse.mincom.com" />
       <xsd:complexType name="ArrayOfAttribute">
@@ -1432,6 +1397,7 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
           <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
           <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
@@ -1620,6 +1586,11 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+      <xsd:complexType name="ArrayOfString">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:element name="search">
         <xsd:complexType>
           <xsd:sequence>
@@ -1786,11 +1757,6 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:complexType name="ArrayOfString">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="ArrayOfDouble">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="double" nillable="true" type="xsd:double" />
@@ -1979,16 +1945,46 @@
         </xsd:complexType>
       </xsd:element>
     </xsd:schema>
-    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
-      <xsd:complexType name="ArrayOfError">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
-        </xsd:sequence>
-      </xsd:complexType>
-      <xsd:complexType name="Error">
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://instances.base.types.ellipse.mincom.com">
+      <xsd:complexType name="Base" abstract="true" />
+      <xsd:complexType name="Image">
         <xsd:complexContent mixed="false">
-          <xsd:extension base="ns6:Message" />
+          <xsd:extension base="ns4:Media">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="classId" type="xsd:string" />
+              <xsd:element minOccurs="0" name="fileType" type="xsd:string" />
+              <xsd:element minOccurs="0" name="height" type="xsd:double" />
+              <xsd:element minOccurs="0" name="image" type="xsd:base64Binary" />
+              <xsd:element minOccurs="0" name="sizeInBytes" type="xsd:double" />
+              <xsd:element minOccurs="0" name="uploadServletUrl" type="xsd:string" />
+              <xsd:element minOccurs="0" name="url" type="xsd:string" />
+              <xsd:element minOccurs="0" name="width" type="xsd:double" />
+            </xsd:sequence>
+          </xsd:extension>
         </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Media" abstract="true">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Complex">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="description" type="xsd:string" />
+              <xsd:element minOccurs="0" name="id" type="xsd:string" />
+              <xsd:element minOccurs="0" name="name" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="Complex">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns4:Base" />
+        </xsd:complexContent>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://errors.ellipse.mincom.com">
+      <xsd:complexType name="ArrayOfMessage">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+        </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="Message">
         <xsd:sequence>
@@ -2012,10 +2008,15 @@
           <xsd:extension base="ns6:Message" />
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="ArrayOfMessage">
+      <xsd:complexType name="ArrayOfError">
         <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Message" nillable="true" type="ns6:Message" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="ns6:Error" />
         </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Error">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns6:Message" />
+        </xsd:complexContent>
       </xsd:complexType>
     </xsd:schema>
   </wsdl:types>
@@ -2672,7 +2673,7 @@
   </wsdl:binding>
   <wsdl:service name="CatalogueService">
     <wsdl:port name="CatalogueServiceHttpPort" binding="tns:CatalogueServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/CatalogueService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/CatalogueService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

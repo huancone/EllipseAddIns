@@ -50,7 +50,7 @@ namespace EllipseMaintSchedTaskClassLibrary
 
              CommitStartTime = mstiMwpDto.commitStartDateSpecified ? mstiMwpDto.commitStartTime : null;
 
-             FixedScheduling = mstiMwpDto.fixedScheduling;
+             FixedScheduling = mstiMwpDto.fixedSchedulingSpecified ? MyUtilities.ToString(mstiMwpDto.fixedScheduling, "Y") : null;
 
              ForceConversion = mstiMwpDto.forceConversionSpecified ? MyUtilities.ToString(mstiMwpDto.forceConversion) : null;
 
@@ -178,7 +178,7 @@ namespace EllipseMaintSchedTaskClassLibrary
 
             TemplateType = mstiMwpDto.templateType;
 
-            UncompletedTodos = mstiMwpDto.uncompletedTodosSpecified ? MyUtilities.ToString(mstiMwpDto.uncompletedTodos) : null;
+            //UncompletedTodos = mstiMwpDto.uncompletedTodosSpecified ? MyUtilities.ToString(mstiMwpDto.uncompletedTodos) : null; //E9 Update. To Do Service Deleted
 
             UnitsPerDay = mstiMwpDto.unitsPerDaySpecified ? MyUtilities.ToString(mstiMwpDto.unitsPerDay) : null;
 
@@ -416,15 +416,15 @@ namespace EllipseMaintSchedTaskClassLibrary
 
             FromLink = mstiMwpDto.fromLinkSpecified ? MyUtilities.ToString(mstiMwpDto.fromLink) : null;
 
-            GanttFinishDateTime = mstiMwpDto.ganttFinishDateTime;
+            //GanttFinishDateTime = mstiMwpDto.ganttFinishDateTime;//E9 deleted
 
             GanttLinkId = mstiMwpDto.ganttLinkId;
 
             GanttParentLinkId = mstiMwpDto.ganttParentLinkId;
 
-            GanttStartDateTime = mstiMwpDto.ganttStartDateTime;
+            //GanttStartDateTime = mstiMwpDto.ganttStartDateTime;//E9 deleted
 
-            HasAssignTodo = mstiMwpDto.hasAssignTodo;
+            //HasAssignTodo = mstiMwpDto.hasAssignTodo; //E9 deleted
 
             Id = mstiMwpDto.idSpecified ? MyUtilities.ToString(mstiMwpDto.id) : null;
 

@@ -5,16 +5,15 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary.Ellipse;
 using LINQtoCSV;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
 using Application = Microsoft.Office.Interop.Excel.Application;
-using screen = EllipseCommonsClassLibrary.ScreenService;
-using EllipseCommonsClassLibrary.Utilities;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 using Invoice = EllipseMSO265ExcelAddIn.Invoice265.Invoice;
 using InvoiceItem = EllipseMSO265ExcelAddIn.Invoice265.InvoiceItem;
 // ReSharper disable UnusedAutoPropertyAccessor.Local
@@ -36,8 +35,8 @@ namespace EllipseMSO265ExcelAddIn
         private const int ResultColumn01N = 19;
         private const int ResultColumn01X = 21;
         private const int ResultColumn02 = 4;
-        private static EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private ExcelStyleCells _cells;
         private Application _excelApp;
         private const string SheetName01C = "MSO265 Cesantias";
@@ -54,6 +53,14 @@ namespace EllipseMSO265ExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -63,8 +70,41 @@ namespace EllipseMSO265ExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //Example of Default Custom Options
+            //settings.SetDefaultCustomSettingValue("AutoSort", "Y");
+            //settings.SetDefaultCustomSettingValue("OverrideAccountCode", "Maintenance");
+            //settings.SetDefaultCustomSettingValue("IgnoreItemError", "N");
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Load Settings", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+            //Example of Getting Custom Options from Save File
+            //var overrideAccountCode = settings.GetCustomSettingValue("OverrideAccountCode");
+            //if (overrideAccountCode.Equals("Maintenance"))
+            //    cbAccountElementOverrideMntto.Checked = true;
+            //else if (overrideAccountCode.Equals("Disable"))
+            //    cbAccountElementOverrideDisable.Checked = true;
+            //else if (overrideAccountCode.Equals("Alwats"))
+            //    cbAccountElementOverrideAlways.Checked = true;
+            //else if (overrideAccountCode.Equals("Default"))
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //else
+            //    cbAccountElementOverrideDefault.Checked = true;
+            //cbAutoSortItems.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("AutoSort"));
+            //cbIgnoreItemError.Checked = MyUtilities.IsTrue(settings.GetCustomSettingValue("IgnoreItemError"));
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnNomina_Click(object sender, RibbonControlEventArgs e)
         {
             FormatNomina();
@@ -163,10 +203,10 @@ namespace EllipseMSO265ExcelAddIn
             _cells.GetCell(1, TitleRow01 + 1).Value = "ICOR";
             _cells.GetCell(9, TitleRow01 + 1).Value = "PES";
 
-            var taxGroupCodeList = Invoice265.GetTaxGroupCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
+            var taxGroupCodeList = Invoice265.InvoiceActions.GetTaxGroupCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
             _cells.SetValidationList(_cells.GetCell(7, TitleRow01 + 1), taxGroupCodeList, ValidationSheetName, 1, false);
 
-            var taxCodeList = Invoice265.GetTaxCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
+            var taxCodeList = Invoice265.InvoiceActions.GetTaxCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
             _cells.SetValidationList(_cells.GetCell(8, TitleRow01 + 1), taxCodeList, ValidationSheetName, 2, false);
 
             var workProjectIndicatorList = new List<string> {"W - WorkOrder", "P - Project"};
@@ -267,10 +307,10 @@ namespace EllipseMSO265ExcelAddIn
             _cells.GetCell(18, TitleRow01).Value = "Adicional Impuesto";
             _cells.GetCell(18, TitleRow01).AddComment("Puede agregar diversos códigos separando con punto y coma. Ejemplo: US10; HOP1");
 
-            var taxGroupCodeList = Invoice265.GetTaxGroupCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
+            var taxGroupCodeList = Invoice265.InvoiceActions.GetTaxGroupCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
             _cells.SetValidationList(_cells.GetCell(17, TitleRow01 + 1), taxGroupCodeList, ValidationSheetName, 1, false);
 
-            var taxCodeList = Invoice265.GetTaxCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
+            var taxCodeList = Invoice265.InvoiceActions.GetTaxCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
             _cells.SetValidationList(_cells.GetCell(18, TitleRow01 + 1), taxCodeList, ValidationSheetName, 2, false);
 
             _cells.GetCell(ResultColumn01N, TitleRow01).Value = "Result";
@@ -464,10 +504,10 @@ namespace EllipseMSO265ExcelAddIn
             _cells.GetCell(ResultColumn01C, TitleRow01).Style = StyleConstants.TitleResult;
 
 
-            var taxGroupCodeList = Invoice265.GetTaxGroupCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
+            var taxGroupCodeList = Invoice265.InvoiceActions.GetTaxGroupCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
             _cells.SetValidationList(_cells.GetCell(24, TitleRow01 + 1), taxGroupCodeList, ValidationSheetName, 1, false);
 
-            var taxCodeList = Invoice265.GetTaxCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
+            var taxCodeList = Invoice265.InvoiceActions.GetTaxCodeList(_eFunctions).Select(item => item.TaxCode + " - " + item.TaxDescription).ToList();
             _cells.SetValidationList(_cells.GetCell(25, TitleRow01 + 1), taxCodeList, ValidationSheetName, 2, false);
 
             _cells.GetRange(1, TitleRow01 + 1, ResultColumn01C, TitleRow01 + 1).NumberFormat = NumberFormatConstants.Text;
@@ -535,7 +575,8 @@ namespace EllipseMSO265ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+
             var opContext = EllipseStdTextClassLibrary.StdText.GetCustomOpContext(districtCode, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
@@ -548,7 +589,7 @@ namespace EllipseMSO265ExcelAddIn
                     var sqlQuery = "SELECT INV_NO FROM ELLIPSE.MSF260 WHERE SUPPLIER_NO = '" + supplier + "' AND EXT_INV_NO = '" + extendedInvoice + "'";
                     var dataReader = _eFunctions.GetQueryResult(sqlQuery);
 
-                    if (dataReader == null || dataReader.IsClosed || !dataReader.HasRows)
+                    if (dataReader == null || dataReader.IsClosed)
                         throw new Exception("No se ha encontrado una combinación válida para el supplier y la referencia ingresada");
 
                     dataReader.Read();
@@ -599,7 +640,7 @@ namespace EllipseMSO265ExcelAddIn
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
             string districtCode = _cells.GetNullIfTrimmedEmpty(_cells.GetCell("B3").Value);
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var opContext = EllipseStdTextClassLibrary.StdText.GetCustomOpContext(districtCode, _frmAuth.EllipsePost, 100, Debugger.DebugWarnings);
             while (!string.IsNullOrEmpty("" + _cells.GetCell(2, i).Value))
             {
@@ -612,7 +653,7 @@ namespace EllipseMSO265ExcelAddIn
                     var sqlQuery = "SELECT INV_NO FROM ELLIPSE.MSF260 WHERE SUPPLIER_NO = '" + supplier + "' AND EXT_INV_NO = '" + extendedInvoice + "'";
                     var dataReader = _eFunctions.GetQueryResult(sqlQuery);
 
-                    if (dataReader == null || dataReader.IsClosed || !dataReader.HasRows)
+                    if (dataReader == null || dataReader.IsClosed)
                         throw new Exception("No se ha encontrado una combinación válida para el supplier y la referencia ingresada");
 
                     dataReader.Read();
@@ -968,6 +1009,7 @@ namespace EllipseMSO265ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var currentRow = TitleRow01 + 1;
             var startRow = TitleRow01 + 1;
 
@@ -1057,9 +1099,8 @@ namespace EllipseMSO265ExcelAddIn
                             currentRow++;
                     } while (invoice.Equals(nextInvoice));
 
-                    var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, "POST");
-                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
-                    Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, invoice, invoiceItemList);
+                    
+                    Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, invoice, invoiceItemList);
 
                     for (int i = startRow; i <= currentRow; i++)
                     {
@@ -1103,6 +1144,7 @@ namespace EllipseMSO265ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var currentRow = TitleRow01 + 1;
             var startRow = TitleRow01 + 1;
 
@@ -1200,9 +1242,7 @@ namespace EllipseMSO265ExcelAddIn
                             currentRow++;
                     } while (invoice.Equals(nextInvoice));
 
-                    var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, "POST");
-                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
-                    Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, invoice, invoiceItemList);
+                    Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, invoice, invoiceItemList);
 
                     for (int i = startRow; i <= currentRow; i++)
                     {
@@ -1246,6 +1286,7 @@ namespace EllipseMSO265ExcelAddIn
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
 
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             var currentRow = TitleRow01 + 1;
             var startRow = TitleRow01 + 1;
 
@@ -1329,9 +1370,8 @@ namespace EllipseMSO265ExcelAddIn
                             currentRow++;
                     } while (invoice.Equals(nextInvoice));
 
-                    var urlEnvironment = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label, "POST");
-                    _eFunctions.SetPostService(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipsePost, _frmAuth.EllipseDsct, urlEnvironment);
-                    Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, invoice, invoiceItemList);
+                    
+                    Invoice265.InvoiceActions.LoadNonInvoice(_eFunctions, urlService, invoice, invoiceItemList);
 
                     for (int i = startRow; i <= currentRow; i++)
                     {

@@ -12,7 +12,7 @@ namespace EllipseWorkOrdersClassLibrary.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,17 +26,7 @@ namespace EllipseWorkOrdersClassLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkOrderService")]
-        public string EllipseWorkOrdersClassLibrary_WorkOrderService_WorkOrderService {
-            get {
-                return ((string)(this["EllipseWorkOrdersClassLibrary_WorkOrderService_WorkOrderService"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkOrderTaskService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService")]
         public string EllipseWorkOrdersClassLibrary_WorkOrderTaskService_WorkOrderTaskService {
             get {
                 return ((string)(this["EllipseWorkOrdersClassLibrary_WorkOrderTaskService_WorkOrderTaskService"]));
@@ -46,7 +36,17 @@ namespace EllipseWorkOrdersClassLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/ResourceReqmntsService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderService")]
+        public string EllipseWorkOrdersClassLibrary_WorkOrderService_WorkOrderService {
+            get {
+                return ((string)(this["EllipseWorkOrdersClassLibrary_WorkOrderService_WorkOrderService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/ResourceReqmntsService")]
         public string EllipseWorkOrdersClassLibrary_ResourceReqmntsService_ResourceReqmntsService {
             get {
                 return ((string)(this["EllipseWorkOrdersClassLibrary_ResourceReqmntsService_ResourceReqmntsService"]));
@@ -56,17 +56,7 @@ namespace EllipseWorkOrdersClassLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/EquipmentReqmntsService")]
-        public string EllipseWorkOrdersClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService {
-            get {
-                return ((string)(this["EllipseWorkOrdersClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8test.lmnerp03.cerrejon.com/ews/services/MaterialReqmntsService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MaterialReqmntsService")]
         public string EllipseWorkOrdersClassLibrary_MaterialReqmntsService_MaterialReqmntsService {
             get {
                 return ((string)(this["EllipseWorkOrdersClassLibrary_MaterialReqmntsService_MaterialReqmntsService"]));
@@ -76,7 +66,18 @@ namespace EllipseWorkOrdersClassLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/TodoListWorkOrderService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentReqmntsService")]
+        public string EllipseWorkOrdersClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService {
+            get {
+                return ((string)(this["EllipseWorkOrdersClassLibrary_EquipmentReqmntsService_EquipmentReqmntsService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-el8prod.lmnerp02.cerrejon.com/ews/services/TodoListWorkOrderServic" +
+            "e")]
         public string EllipseWorkOrdersClassLibrary_TodoListWorkOrderService_TodoListWorkOrderService {
             get {
                 return ((string)(this["EllipseWorkOrdersClassLibrary_TodoListWorkOrderService_TodoListWorkOrderService"]));

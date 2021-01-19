@@ -186,7 +186,7 @@ namespace SharedClassLibrary.Ellipse.Connections
             else if (environment.Equals(EllipseContingencia) || environment.Equals(EllCont))
             {
                 dbItem.Name = environment;
-                dbItem.DbName = "EL8PROD";
+                dbItem.DbName = "ELLCONT";
                 dbItem.DbUser = "SIGCON";
                 dbItem.DbEncodedPassword = @"EkJUiDBAY+nauIRmT33pNrLNoPapgUAw44M9aT0ZGcXdgIE/X4OLxD+22C2QMz2RqK+3SlBomkowWQcclWh94a+90BKkq+eL9KPaFJPcD9rEEc3VhEKoP2mrfR3OPWBL";
                 dbItem.DbLink = "";

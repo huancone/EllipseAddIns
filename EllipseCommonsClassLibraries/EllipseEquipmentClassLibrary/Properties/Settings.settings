@@ -2,14 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EllipseEquipmentClassLibrary.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
+    <Setting Name="EllipseEquipmentClassLibrary_EquipTraceService_EquipTraceService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipTraceService</Value>
+    </Setting>
     <Setting Name="EllipseEquipmentClassLibrary_EquipmentService_EquipmentService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipmentService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentService</Value>
     </Setting>
     <Setting Name="EllipseEquipmentClassLibrary_EquipmentListService_EquipmentListService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipmentListService</Value>
-    </Setting>
-    <Setting Name="EllipseEquipmentClassLibrary_EquipTraceService_EquipTraceService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EquipTraceService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EquipmentListService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

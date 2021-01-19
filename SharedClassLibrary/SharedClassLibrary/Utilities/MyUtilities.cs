@@ -422,10 +422,21 @@ namespace SharedClassLibrary.Utilities
         {
             return "" + value;
         }
+        public static string ToString(System.DateTime? date)
+        {
+            var format = DateTime.DateDefaultFormat;
+            return ToString(date, format);
+        }
         public static string ToString(System.DateTime date)
         {
             var format = DateTime.DateDefaultFormat;
             return ToString(date, format);
+        }
+
+        public static string ToString(System.DateTime? date, string format)
+        {
+            var cultureInfo = CultureInfo.CurrentCulture;
+            return ToString(date, format, cultureInfo);
         }
         public static string ToString(System.DateTime date, string format)
         {
@@ -438,6 +449,12 @@ namespace SharedClassLibrary.Utilities
             return date.ToString(format, cultureInfo);
         }
 
+        public static string ToString(System.DateTime? date, string format, CultureInfo cultureInfo)
+        {
+            if (date == null)
+                return null;
+            return ((System.DateTime)(date)).ToString(format, cultureInfo);
+        }
         public static string ToString(System.TimeSpan time)
         {
             var format = DateTime.TimeDefaultFormat;

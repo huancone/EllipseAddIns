@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using Microsoft.Office.Tools.Ribbon;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary.Constants;
-using EllipseCommonsClassLibrary.Utilities;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 
 namespace EllipseConsolidacionesExcelAddIn
 {
     public partial class RibbonEllipse
     {
         ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private Excel.Application _excelApp;
 
         private const int TitleRow01 = 5;
@@ -35,12 +34,21 @@ namespace EllipseConsolidacionesExcelAddIn
         private const string ValidationSheetName = "ValidationSheet";
 
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        private FormAuthenticate _frmAuth = new FormAuthenticate();
+        
         private Thread _thread;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
+
             var environments = Environments.GetEnvironmentList();
             foreach (var env in environments)
             {
@@ -48,8 +56,34 @@ namespace EllipseConsolidacionesExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, Resources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormat_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -238,7 +272,7 @@ namespace EllipseConsolidacionesExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 //ScreenService Opción en reemplazo de los servicios
                 var opContext = new Screen.OperationContext
                 {
@@ -374,7 +408,7 @@ namespace EllipseConsolidacionesExcelAddIn
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.SetCursorWait();
 
-                var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
                 //Inicio de elementos del servicio
                 var catalogueService = new CatalogueService.CatalogueService()
                 {

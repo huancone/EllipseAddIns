@@ -42,6 +42,11 @@ namespace SharedClassLibrary.Ellipse.Forms
         }
         private void btnAuthenticate_Click(object sender, EventArgs e)
         {
+            EllipseUser = txtUsername.Text.ToUpper();
+            EllipsePswd = txtPassword.Text;
+            EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
+            EllipseDsct = txtDistrict.Text.ToUpper();
+
             var authSer = new Authenticator.AuthenticatorService();
             var opAuth = new Authenticator.OperationContext
             {
@@ -50,14 +55,8 @@ namespace SharedClassLibrary.Ellipse.Forms
                 returnWarnings = true,
                 returnWarningsSpecified = true
             };
-
             try
             {
-                EllipseUser = txtUsername.Text.ToUpper();
-                EllipsePswd = txtPassword.Text;
-                EllipsePost = (drpPosition.Text.Contains(" - ") ? drpPosition.Text.Substring(0, drpPosition.Text.IndexOf(" - ", StringComparison.Ordinal)).ToUpper() : EllipsePost = drpPosition.Text.ToUpper());
-                EllipseDsct = txtDistrict.Text.ToUpper();
-
                 //control de selección de entorno en programación
                 if (SelectedEnvironment == null)
                 {

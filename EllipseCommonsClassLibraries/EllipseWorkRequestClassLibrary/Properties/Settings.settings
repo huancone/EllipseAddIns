@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="EllipseWorkRequestClassLibrary_WorkRequestService_WorkRequestService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8test.lmnerp03.cerrejon.com/ews/services/WorkRequestService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkRequestService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -37,9 +37,8 @@
     <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ReleasedLibraries\Oracle.ManagedDataAccess\v4.122.19.1\Oracle.ManagedDataAccess.dll</HintPath>
+    <Reference Include="Oracle.ManagedDataAccess">
+      <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -65,10 +64,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\AssemblyItem.cs" />
-    <Compile Include="Resources.Designer.cs">
+    <Compile Include="SharedResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>SharedResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Debugger.cs" />
     <Compile Include="Configuration\RuntimeConfigSettings.cs" />
@@ -88,13 +87,13 @@
     <EmbeddedResource Include="Forms\AboutBoxExcelAddIn.es-es.resx">
       <DependentUpon>AboutBoxExcelAddIn.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources.es-es.resx">
+    <EmbeddedResource Include="SharedResources.es-es.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.es-es.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources.resx">
+    <EmbeddedResource Include="SharedResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>SharedResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\aboutPictureBox.png" />

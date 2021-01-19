@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="EllipseMSE345ExcelAddIn_CondMeasurementService_CondMeasurementService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/CondMeasurementService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/CondMeasurementService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

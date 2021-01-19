@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="EllipseDocumentReferenceClassLibrary_DocumentReferenceService_DocumentReferenceService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/DocumentReferenceService</Value>
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/DocumentReferenceService</Value>
     </Setting>
   </Settings>
 </SettingsFile>

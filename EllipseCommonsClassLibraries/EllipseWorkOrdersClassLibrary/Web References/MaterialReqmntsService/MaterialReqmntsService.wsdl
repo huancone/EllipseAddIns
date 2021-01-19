@@ -222,29 +222,52 @@
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
             <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEGIRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSeqNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUItemNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUNumDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUNumber" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCatalogueFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCategId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCategIdInd" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnClassType" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCondType" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCondTypeDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnContestibleFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContractRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContractRefInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContractRefItem" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContractRefItemInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCurrencyType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCurrencyTypeExternalInd" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnEnteredInd" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnEstimateNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnEstimatedNoDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnFixedAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnIsPartNumberMatchesMultipleStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnIsPartNumberMatchesSingleStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnIsStockCodeOnMultipleWarehouseFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnIsStockedInDifferentWarehouseFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnIssueWarehouseId" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnJEItemNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc1" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc2" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc3" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDescFull" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatchedMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatchedStockCode" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMnemonic" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnOperTypeDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnOperationType" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnPartNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPrice" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnProjDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnProjectNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnPropertyUnit" type="xsd:boolean" />
@@ -259,9 +282,11 @@
               <xsd:element minOccurs="0" name="returnStatus" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnStdJobDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnStdJobNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStockAvailable" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnStockCategory" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnStockCode" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnStockCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSupplierNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnTotReqdQuantity" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnTotalOnlyFlg" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnUOM" type="xsd:boolean" />
@@ -284,10 +309,51 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+      <xsd:simpleType name="currencyType">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="propertyUnit">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="0" />
           <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isStockCodeOnMultipleWarehouseFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="categIdInd">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="contractRefItem">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLEGIRef">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="stockAvailable">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="0" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isPartNumberMatchesMultipleStockCode">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="categId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="quantityRequired">
@@ -296,10 +362,21 @@
           <xsd:maxLength value="9" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="APLSeqNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="stockCodeDescription">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="0" />
           <xsd:maxLength value="40" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="price">
+        <xsd:restriction base="xsd:decimal">
+          <xsd:fractionDigits value="4" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="CUNumDescription">
@@ -320,6 +397,9 @@
           <xsd:maxLength value="40" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="isStockedInDifferentWarehouseFlag">
+        <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
       <xsd:simpleType name="mnemonic">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="0" />
@@ -331,8 +411,20 @@
           <xsd:fractionDigits value="2" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="APLEquipmentNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="12" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="catalogueFlag">
         <xsd:restriction base="xsd:boolean" />
+      </xsd:simpleType>
+      <xsd:simpleType name="matchedStockCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="9" />
+        </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="unitQuantityReqd">
         <xsd:restriction base="xsd:decimal">
@@ -392,6 +484,12 @@
           <xsd:maxLength value="40" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="contractRefInd">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="matDesc3">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="0" />
@@ -421,6 +519,12 @@
           <xsd:fractionDigits value="2" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="APLEquipmentGrpId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="30" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="itemType">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="0" />
@@ -432,7 +536,31 @@
           <xsd:fractionDigits value="2" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="contractRef">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="20" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="issueWarehouseId">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="stockCategory">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="4" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="currencyTypeExternalInd">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="APLCompCode">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="0" />
           <xsd:maxLength value="4" />
@@ -442,6 +570,15 @@
         <xsd:restriction base="xsd:decimal">
           <xsd:fractionDigits value="2" />
         </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="matchedMnemonic">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="8" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="isPartNumberMatchesSingleStockCode">
+        <xsd:restriction base="xsd:boolean" />
       </xsd:simpleType>
       <xsd:simpleType name="SJTaskDescription">
         <xsd:restriction base="xsd:string">
@@ -455,10 +592,34 @@
           <xsd:maxLength value="40" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="APLCompModCode">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="supplierNo">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="contractRefItemInd">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="enteredInd">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="0" />
           <xsd:maxLength value="1" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="matDescFull">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="160" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="UOM">
@@ -477,6 +638,12 @@
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractReplyDTO">
             <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLEGIRef" type="tns:APLEGIRef" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLEquipmentNo" type="tns:APLEquipmentNo" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
               <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
               <xsd:element minOccurs="0" name="CUNumDescription" type="tns:CUNumDescription" />
               <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
@@ -487,24 +654,41 @@
               <xsd:element minOccurs="0" name="UOMDescription" type="tns:UOMDescription" />
               <xsd:element minOccurs="0" name="WOTaskDescription" type="tns:WOTaskDescription" />
               <xsd:element minOccurs="0" name="catalogueFlag" type="tns:catalogueFlag" />
+              <xsd:element minOccurs="0" name="categId" type="tns:categId" />
+              <xsd:element minOccurs="0" name="categIdInd" type="tns:categIdInd" />
               <xsd:element minOccurs="0" name="classType" type="tns:classType" />
               <xsd:element minOccurs="0" name="condType" type="tns:condType" />
               <xsd:element minOccurs="0" name="condTypeDescription" type="tns:condTypeDescription" />
               <xsd:element minOccurs="0" name="contestibleFlag" type="tns:contestibleFlag" />
+              <xsd:element minOccurs="0" name="contractRef" type="tns:contractRef" />
+              <xsd:element minOccurs="0" name="contractRefInd" type="tns:contractRefInd" />
+              <xsd:element minOccurs="0" name="contractRefItem" type="tns:contractRefItem" />
+              <xsd:element minOccurs="0" name="contractRefItemInd" type="tns:contractRefItemInd" />
+              <xsd:element minOccurs="0" name="currencyType" type="tns:currencyType" />
+              <xsd:element minOccurs="0" name="currencyTypeExternalInd" type="tns:currencyTypeExternalInd" />
               <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
               <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
               <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
               <xsd:element minOccurs="0" name="estimatedNoDescription" type="tns:estimatedNoDescription" />
               <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="isPartNumberMatchesMultipleStockCode" type="tns:isPartNumberMatchesMultipleStockCode" />
+              <xsd:element minOccurs="0" name="isPartNumberMatchesSingleStockCode" type="tns:isPartNumberMatchesSingleStockCode" />
+              <xsd:element minOccurs="0" name="isStockCodeOnMultipleWarehouseFlag" type="tns:isStockCodeOnMultipleWarehouseFlag" />
+              <xsd:element minOccurs="0" name="isStockedInDifferentWarehouseFlag" type="tns:isStockedInDifferentWarehouseFlag" />
+              <xsd:element minOccurs="0" name="issueWarehouseId" type="tns:issueWarehouseId" />
               <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
               <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
               <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
               <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
               <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="matDescFull" type="tns:matDescFull" />
+              <xsd:element minOccurs="0" name="matchedMnemonic" type="tns:matchedMnemonic" />
+              <xsd:element minOccurs="0" name="matchedStockCode" type="tns:matchedStockCode" />
               <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
               <xsd:element minOccurs="0" name="operTypeDescription" type="tns:operTypeDescription" />
               <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
               <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="price" type="tns:price" />
               <xsd:element minOccurs="0" name="projDescription" type="tns:projDescription" />
               <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
               <xsd:element minOccurs="0" name="propertyUnit" type="tns:propertyUnit" />
@@ -517,9 +701,11 @@
               <xsd:element minOccurs="0" name="status" type="tns:status" />
               <xsd:element minOccurs="0" name="stdJobDescription" type="tns:stdJobDescription" />
               <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
+              <xsd:element minOccurs="0" name="stockAvailable" type="tns:stockAvailable" />
               <xsd:element minOccurs="0" name="stockCategory" type="tns:stockCategory" />
               <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
               <xsd:element minOccurs="0" name="stockCodeDescription" type="tns:stockCodeDescription" />
+              <xsd:element minOccurs="0" name="supplierNo" type="tns:supplierNo" />
               <xsd:element minOccurs="0" name="totReqdQuantity" type="tns:totReqdQuantity" />
               <xsd:element minOccurs="0" name="totalOnlyFlg" type="tns:totalOnlyFlg" />
               <xsd:element minOccurs="0" name="unitQuantityReqd" type="tns:unitQuantityReqd" />
@@ -748,6 +934,7 @@
               <xsd:element minOccurs="0" name="returnMatDesc2" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc3" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDescFull" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMnemonic" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnPartNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnStockCode" type="xsd:boolean" />
@@ -777,6 +964,7 @@
               <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
               <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
               <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="matDescFull" type="tns:matDescFull" />
               <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
               <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
               <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
@@ -823,10 +1011,12 @@
               <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
               <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
               <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
               <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
               <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
               <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
               <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="matDescFull" type="tns:matDescFull" />
               <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
               <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
               <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
@@ -854,6 +1044,11 @@
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
             <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEGIRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSeqNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUItemNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUNumDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUNumber" type="xsd:boolean" />
@@ -865,11 +1060,13 @@
               <xsd:element minOccurs="0" name="returnEstimateNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnEstimatedNoDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnFixedAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnJEItemNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc1" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc2" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc3" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDescFull" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMnemonic" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnOperationType" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnOperationTypeMAT" type="xsd:boolean" />
@@ -923,6 +1120,11 @@
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractReplyDTO">
             <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLEGIRef" type="tns:APLEGIRef" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
               <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
               <xsd:element minOccurs="0" name="CUNumDescription" type="tns:CUNumDescription" />
               <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
@@ -940,10 +1142,12 @@
               <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
               <xsd:element minOccurs="0" name="estimatedNoDescription" type="tns:estimatedNoDescription" />
               <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
               <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
               <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
               <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
               <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="matDescFull" type="tns:matDescFull" />
               <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
               <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
               <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
@@ -1055,6 +1259,12 @@
           <xsd:maxLength value="40" />
         </xsd:restriction>
       </xsd:simpleType>
+      <xsd:simpleType name="partnerName">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="100" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:simpleType name="currentRateFlg">
         <xsd:restriction base="xsd:string">
           <xsd:minLength value="0" />
@@ -1065,6 +1275,12 @@
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractDTO">
             <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLEGIRef" type="tns:APLEGIRef" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLEquipmentNo" type="tns:APLEquipmentNo" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
               <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
               <xsd:element minOccurs="0" name="CUNumDescription" type="tns:CUNumDescription" />
               <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
@@ -1072,22 +1288,34 @@
               <xsd:element minOccurs="0" name="SJTaskNo" type="tns:SJTaskNo" />
               <xsd:element minOccurs="0" name="UOM" type="tns:UOM" />
               <xsd:element minOccurs="0" name="catalogueFlag" type="tns:catalogueFlag" />
+              <xsd:element minOccurs="0" name="categId" type="tns:categId" />
+              <xsd:element minOccurs="0" name="categIdInd" type="tns:categIdInd" />
               <xsd:element minOccurs="0" name="classType" type="tns:classType" />
               <xsd:element minOccurs="0" name="contestibleFlag" type="tns:contestibleFlag" />
+              <xsd:element minOccurs="0" name="contractRef" type="tns:contractRef" />
+              <xsd:element minOccurs="0" name="contractRefInd" type="tns:contractRefInd" />
+              <xsd:element minOccurs="0" name="contractRefItem" type="tns:contractRefItem" />
+              <xsd:element minOccurs="0" name="contractRefItemInd" type="tns:contractRefItemInd" />
+              <xsd:element minOccurs="0" name="currencyType" type="tns:currencyType" />
+              <xsd:element minOccurs="0" name="currencyTypeExternalInd" type="tns:currencyTypeExternalInd" />
               <xsd:element minOccurs="0" name="currentRateFlg" type="tns:currentRateFlg" />
               <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
               <xsd:element minOccurs="0" name="districtCodeDescription" type="tns:districtCodeDescription" />
               <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
               <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
               <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
               <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
               <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
               <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
               <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="matDescFull" type="tns:matDescFull" />
               <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
               <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
               <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
               <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="partnerName" type="tns:partnerName" />
+              <xsd:element minOccurs="0" name="price" type="tns:price" />
               <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
               <xsd:element minOccurs="0" name="propertyUnit" type="tns:propertyUnit" />
               <xsd:element minOccurs="0" name="quantityRequired" type="tns:quantityRequired" />
@@ -1097,6 +1325,7 @@
               <xsd:element minOccurs="0" name="stdJobNo" type="tns:stdJobNo" />
               <xsd:element minOccurs="0" name="stockCategory" type="tns:stockCategory" />
               <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
+              <xsd:element minOccurs="0" name="supplierNo" type="tns:supplierNo" />
               <xsd:element minOccurs="0" name="totalOnlyFlg" type="tns:totalOnlyFlg" />
               <xsd:element minOccurs="0" name="unitQuantityReqd" type="tns:unitQuantityReqd" />
               <xsd:element minOccurs="0" name="versionNo" type="tns:versionNo" />
@@ -1110,6 +1339,12 @@
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
             <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEGIRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSeqNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUItemNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUNumDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUNumber" type="xsd:boolean" />
@@ -1121,11 +1356,13 @@
               <xsd:element minOccurs="0" name="returnEstimateNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnEstimatedNoDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnFixedAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnJEItemNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc1" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc2" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc3" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDescFull" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMnemonic" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnOperTypeDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnOperationType" type="xsd:boolean" />
@@ -1181,6 +1418,12 @@
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractReplyDTO">
             <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLEGIRef" type="tns:APLEGIRef" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLEquipmentNo" type="tns:APLEquipmentNo" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
               <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
               <xsd:element minOccurs="0" name="CUNumDescription" type="tns:CUNumDescription" />
               <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
@@ -1198,10 +1441,12 @@
               <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
               <xsd:element minOccurs="0" name="estimatedNoDescription" type="tns:estimatedNoDescription" />
               <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
               <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
               <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
               <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
               <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="matDescFull" type="tns:matDescFull" />
               <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
               <xsd:element minOccurs="0" name="operTypeDescription" type="tns:operTypeDescription" />
               <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
@@ -1290,28 +1535,51 @@
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
             <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnAPLCompCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLCompModCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEGIRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentGrpId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLEquipmentNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnAPLSeqNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUItemNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUNumDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCUNumber" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnCatalogueFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCategId" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCategIdInd" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnClassType" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnContestibleFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContractRef" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContractRefInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContractRefItem" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnContractRefItemInd" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCurrencyType" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnCurrencyTypeExternalInd" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnDistrictCode" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnEnteredInd" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnEstimateNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnEstimatedNoDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnFixedAmount" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnIsPartNumberMatchesMultipleStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnIsPartNumberMatchesSingleStockCode" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnIsStockCodeOnMultipleWarehouseFlag" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnIsStockedInDifferentWarehouseFlag" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnItemType" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnJEItemNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc1" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc2" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc3" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMatDesc4" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatDescFull" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatchedMnemonic" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnMatchedStockCode" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnMnemonic" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnOperTypeDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnOperationType" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnOperationTypeMAT" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnPartNo" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPartnerName" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnPrice" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnProjDescription" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnProjectNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnPropUnitDescription" type="xsd:boolean" />
@@ -1330,6 +1598,7 @@
               <xsd:element minOccurs="0" name="returnStockCategory" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnStockCode" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnStockCodeDescription" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnSupplierNo" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnTotReqdQuantity" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnTotalOnlyFlg" type="xsd:boolean" />
               <xsd:element minOccurs="0" name="returnUOM" type="xsd:boolean" />
@@ -1372,6 +1641,12 @@
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractReplyDTO">
             <xsd:sequence>
+              <xsd:element minOccurs="0" name="APLCompCode" type="tns:APLCompCode" />
+              <xsd:element minOccurs="0" name="APLCompModCode" type="tns:APLCompModCode" />
+              <xsd:element minOccurs="0" name="APLEGIRef" type="tns:APLEGIRef" />
+              <xsd:element minOccurs="0" name="APLEquipmentGrpId" type="tns:APLEquipmentGrpId" />
+              <xsd:element minOccurs="0" name="APLEquipmentNo" type="tns:APLEquipmentNo" />
+              <xsd:element minOccurs="0" name="APLSeqNo" type="tns:APLSeqNo" />
               <xsd:element minOccurs="0" name="CUItemNo" type="tns:CUItemNo" />
               <xsd:element minOccurs="0" name="CUNumDescription" type="tns:CUNumDescription" />
               <xsd:element minOccurs="0" name="CUNumber" type="tns:CUNumber" />
@@ -1382,23 +1657,40 @@
               <xsd:element minOccurs="0" name="UOMDescription" type="tns:UOMDescription" />
               <xsd:element minOccurs="0" name="WOTaskDescription" type="tns:WOTaskDescription" />
               <xsd:element minOccurs="0" name="catalogueFlag" type="tns:catalogueFlag" />
+              <xsd:element minOccurs="0" name="categId" type="tns:categId" />
+              <xsd:element minOccurs="0" name="categIdInd" type="tns:categIdInd" />
               <xsd:element minOccurs="0" name="classType" type="tns:classType" />
               <xsd:element minOccurs="0" name="contestibleFlag" type="tns:contestibleFlag" />
+              <xsd:element minOccurs="0" name="contractRef" type="tns:contractRef" />
+              <xsd:element minOccurs="0" name="contractRefInd" type="tns:contractRefInd" />
+              <xsd:element minOccurs="0" name="contractRefItem" type="tns:contractRefItem" />
+              <xsd:element minOccurs="0" name="contractRefItemInd" type="tns:contractRefItemInd" />
+              <xsd:element minOccurs="0" name="currencyType" type="tns:currencyType" />
+              <xsd:element minOccurs="0" name="currencyTypeExternalInd" type="tns:currencyTypeExternalInd" />
               <xsd:element minOccurs="0" name="districtCode" type="tns:districtCode" />
               <xsd:element minOccurs="0" name="enteredInd" type="tns:enteredInd" />
               <xsd:element minOccurs="0" name="estimateNo" type="tns:estimateNo" />
               <xsd:element minOccurs="0" name="estimatedNoDescription" type="tns:estimatedNoDescription" />
               <xsd:element minOccurs="0" name="fixedAmount" type="tns:fixedAmount" />
+              <xsd:element minOccurs="0" name="isPartNumberMatchesMultipleStockCode" type="tns:isPartNumberMatchesMultipleStockCode" />
+              <xsd:element minOccurs="0" name="isPartNumberMatchesSingleStockCode" type="tns:isPartNumberMatchesSingleStockCode" />
+              <xsd:element minOccurs="0" name="isStockCodeOnMultipleWarehouseFlag" type="tns:isStockCodeOnMultipleWarehouseFlag" />
+              <xsd:element minOccurs="0" name="isStockedInDifferentWarehouseFlag" type="tns:isStockedInDifferentWarehouseFlag" />
               <xsd:element minOccurs="0" name="itemType" type="tns:itemType" />
               <xsd:element minOccurs="0" name="matDesc1" type="tns:matDesc1" />
               <xsd:element minOccurs="0" name="matDesc2" type="tns:matDesc2" />
               <xsd:element minOccurs="0" name="matDesc3" type="tns:matDesc3" />
               <xsd:element minOccurs="0" name="matDesc4" type="tns:matDesc4" />
+              <xsd:element minOccurs="0" name="matDescFull" type="tns:matDescFull" />
+              <xsd:element minOccurs="0" name="matchedMnemonic" type="tns:matchedMnemonic" />
+              <xsd:element minOccurs="0" name="matchedStockCode" type="tns:matchedStockCode" />
               <xsd:element minOccurs="0" name="mnemonic" type="tns:mnemonic" />
               <xsd:element minOccurs="0" name="operTypeDescription" type="tns:operTypeDescription" />
               <xsd:element minOccurs="0" name="operationType" type="tns:operationType" />
               <xsd:element minOccurs="0" name="operationTypeMAT" type="tns:operationTypeMAT" />
               <xsd:element minOccurs="0" name="partNo" type="tns:partNo" />
+              <xsd:element minOccurs="0" name="partnerName" type="tns:partnerName" />
+              <xsd:element minOccurs="0" name="price" type="tns:price" />
               <xsd:element minOccurs="0" name="projDescription" type="tns:projDescription" />
               <xsd:element minOccurs="0" name="projectNo" type="tns:projectNo" />
               <xsd:element minOccurs="0" name="propUnitDescription" type="tns:propUnitDescription" />
@@ -1415,6 +1707,7 @@
               <xsd:element minOccurs="0" name="stockCategory" type="tns:stockCategory" />
               <xsd:element minOccurs="0" name="stockCode" type="tns:stockCode" />
               <xsd:element minOccurs="0" name="stockCodeDescription" type="tns:stockCodeDescription" />
+              <xsd:element minOccurs="0" name="supplierNo" type="tns:supplierNo" />
               <xsd:element minOccurs="0" name="totReqdQuantity" type="tns:totReqdQuantity" />
               <xsd:element minOccurs="0" name="totalOnlyFlg" type="tns:totalOnlyFlg" />
               <xsd:element minOccurs="0" name="unitQuantityReqd" type="tns:unitQuantityReqd" />
@@ -1525,11 +1818,6 @@
           <xsd:element minOccurs="0" name="customAttributes" type="ns3:ArrayOfAttribute" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="AbstractReplyCollectionDTO" abstract="true">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="AbstractReplyDTO" abstract="true">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractDTO">
@@ -1558,6 +1846,11 @@
           <xsd:element minOccurs="0" name="message" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="AbstractReplyCollectionDTO" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ArrayOfErrorMessageDTO">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="ErrorMessageDTO" nillable="true" type="ns2:ErrorMessageDTO" />
@@ -1578,6 +1871,7 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
           <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
           <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
@@ -1594,10 +1888,22 @@
       </xsd:complexType>
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
+      <xsd:simpleType name="WorkOrderDTO.no">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WorkOrderDTO.prefix">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
       <xsd:complexType name="WorkOrderDTO">
         <xsd:sequence>
-          <xsd:element minOccurs="0" name="prefix" type="xsd:string" />
-          <xsd:element minOccurs="0" name="no" type="xsd:string" />
+          <xsd:element minOccurs="0" name="prefix" type="ns5:WorkOrderDTO.prefix" />
+          <xsd:element minOccurs="0" name="no" type="ns5:WorkOrderDTO.no" />
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>
@@ -1980,7 +2286,7 @@
   </wsdl:binding>
   <wsdl:service name="MaterialReqmntsService">
     <wsdl:port name="MaterialReqmntsServiceHttpPort" binding="tns:MaterialReqmntsServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8test.lmnerp03.cerrejon.com/ews/services/MaterialReqmntsService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MaterialReqmntsService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

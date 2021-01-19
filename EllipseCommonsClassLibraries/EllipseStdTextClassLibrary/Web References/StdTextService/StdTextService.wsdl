@@ -80,16 +80,6 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="StdTextServiceSetTextRequiredAttributesDTO">
-        <xsd:complexContent mixed="false">
-          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
-            <xsd:sequence>
-              <xsd:element minOccurs="0" name="returnStdTextExists" type="xsd:boolean" />
-              <xsd:element minOccurs="0" name="returnStdTextId" type="xsd:boolean" />
-            </xsd:sequence>
-          </xsd:extension>
-        </xsd:complexContent>
-      </xsd:complexType>
       <xsd:complexType name="ArrayOfString">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xsd:string" />
@@ -106,6 +96,16 @@
             </xsd:complexType>
           </xsd:element>
         </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="StdTextServiceSetTextRequiredAttributesDTO">
+        <xsd:complexContent mixed="false">
+          <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
+            <xsd:sequence>
+              <xsd:element minOccurs="0" name="returnStdTextExists" type="xsd:boolean" />
+              <xsd:element minOccurs="0" name="returnStdTextId" type="xsd:boolean" />
+            </xsd:sequence>
+          </xsd:extension>
+        </xsd:complexContent>
       </xsd:complexType>
       <xsd:element name="multipleSetText">
         <xsd:complexType>
@@ -710,17 +710,12 @@
     </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ellipse.enterpriseservice.mincom.com">
       <xsd:import namespace="http://attribute.ellipse.mincom.com" />
-      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
       <xsd:complexType name="AbstractDTO" abstract="true">
         <xsd:sequence>
           <xsd:element minOccurs="0" name="customAttributes" type="ns3:ArrayOfAttribute" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="AbstractReplyCollectionDTO" abstract="true">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
+      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
       <xsd:complexType name="AbstractReplyDTO" abstract="true">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractDTO">
@@ -749,6 +744,11 @@
           <xsd:element minOccurs="0" name="message" type="xsd:string" />
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="AbstractReplyCollectionDTO" abstract="true">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="collectionRestartPoint" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
       <xsd:complexType name="ArrayOfErrorMessageDTO">
         <xsd:sequence>
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="ErrorMessageDTO" nillable="true" type="ns2:ErrorMessageDTO" />
@@ -769,6 +769,7 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
           <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
           <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
@@ -1140,7 +1141,7 @@
   </wsdl:binding>
   <wsdl:service name="StdTextService">
     <wsdl:port name="StdTextServiceHttpPort" binding="tns:StdTextServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/StdTextService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/StdTextService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

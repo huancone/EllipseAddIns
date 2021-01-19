@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharedClassLibrary.Utilities.Encryption, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Utilities.Encryption.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,10 +53,6 @@
     <Compile Include="SqlQueryParamCollection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharedClassLibrary.Utilities.Encryption\SharedClassLibrary.Utilities.Encryption.csproj">
-      <Project>{30d97fd5-e4d4-4c3b-8aaf-cbf8b8f1f58a}</Project>
-      <Name>SharedClassLibrary.Utilities.Encryption</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SharedClassLibrary\SharedClassLibrary.csproj">
       <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
       <Name>SharedClassLibrary</Name>

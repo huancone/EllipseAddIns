@@ -90,18 +90,6 @@
           </xsd:extension>
         </xsd:complexContent>
       </xsd:complexType>
-      <xsd:complexType name="anyType2anyTypeMap">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
-                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
-              </xsd:sequence>
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:sequence>
-      </xsd:complexType>
       <xsd:complexType name="CondMeasurementServiceReadRequiredAttributesDTO">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractRequiredAttributesDTO">
@@ -154,6 +142,18 @@
             </xsd:sequence>
           </xsd:extension>
         </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="anyType2anyTypeMap">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="entry">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="1" name="key" type="xsd:anyType" />
+                <xsd:element minOccurs="0" maxOccurs="1" name="value" type="xsd:anyType" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
       </xsd:complexType>
       <xsd:element name="read">
         <xsd:complexType>
@@ -1772,22 +1772,14 @@
         </xsd:complexType>
       </xsd:element>
     </xsd:schema>
-    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
-      <xsd:complexType name="WorkOrderDTO">
-        <xsd:sequence>
-          <xsd:element minOccurs="0" name="prefix" type="xsd:string" />
-          <xsd:element minOccurs="0" name="no" type="xsd:string" />
-        </xsd:sequence>
-      </xsd:complexType>
-    </xsd:schema>
     <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ellipse.enterpriseservice.mincom.com">
       <xsd:import namespace="http://attribute.ellipse.mincom.com" />
+      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
       <xsd:complexType name="AbstractDTO" abstract="true">
         <xsd:sequence>
           <xsd:element minOccurs="0" name="customAttributes" type="ns4:ArrayOfAttribute" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="AbstractRequiredAttributesDTO" abstract="true" />
       <xsd:complexType name="AbstractReplyDTO" abstract="true">
         <xsd:complexContent mixed="false">
           <xsd:extension base="ns2:AbstractDTO">
@@ -1841,10 +1833,31 @@
       </xsd:complexType>
       <xsd:complexType name="Attribute">
         <xsd:sequence>
+          <xsd:element minOccurs="0" name="dataType" type="xsd:string" />
           <xsd:element minOccurs="0" name="name" type="xsd:string" />
           <xsd:element minOccurs="0" name="namespace" type="xsd:string" />
           <xsd:element minOccurs="0" name="properties" type="tns:anyType2anyTypeMap" />
           <xsd:element minOccurs="0" name="value" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://dto.dependant.ellipse.enterpriseservice.mincom.com">
+      <xsd:simpleType name="WorkOrderDTO.no">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="6" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="WorkOrderDTO.prefix">
+        <xsd:restriction base="xsd:string">
+          <xsd:minLength value="0" />
+          <xsd:maxLength value="2" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="WorkOrderDTO">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="prefix" type="ns3:WorkOrderDTO.prefix" />
+          <xsd:element minOccurs="0" name="no" type="ns3:WorkOrderDTO.no" />
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>
@@ -2304,7 +2317,7 @@
   </wsdl:binding>
   <wsdl:service name="CondMeasurementService">
     <wsdl:port name="CondMeasurementServiceHttpPort" binding="tns:CondMeasurementServiceHttpBinding">
-      <wsdlsoap:address location="http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/CondMeasurementService" />
+      <wsdlsoap:address location="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/CondMeasurementService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -12,7 +12,7 @@ namespace EllipseMaintSchedTaskClassLibrary.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.6.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,17 +26,7 @@ namespace EllipseMaintSchedTaskClassLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp02.cerrejon.com/ews/services/MaintSchedTskService")]
-        public string EllipseMaintSchedTaskClassLibrary_MaintSchedTskService_MaintSchedTskService {
-            get {
-                return ((string)(this["EllipseMaintSchedTaskClassLibrary_MaintSchedTskService_MaintSchedTskService"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/MSTService")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/MSTService")]
         public string EllipseMaintSchedTaskClassLibrary_MstService_MSTService {
             get {
                 return ((string)(this["EllipseMaintSchedTaskClassLibrary_MstService_MSTService"]));

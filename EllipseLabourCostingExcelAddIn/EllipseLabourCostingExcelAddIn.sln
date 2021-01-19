@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseLabourCostingExcelAddIn", "EllipseLabourCostingExcelAddIn\EllipseLabourCostingExcelAddIn.csproj", "{33C9D8CA-9FC4-4640-8A9D-344C98C6FC70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseLabourCostingExcelAddIn", "EllipseLabourCostingExcelAddIn.csproj", "{AB5AC2FB-195B-4EC1-92E8-7AC4E197283F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseWorkOrdersClassLibrary", "..\EllipseCommonsClassLibraries\EllipseWorkOrdersClassLibrary\EllipseWorkOrdersClassLibrary.csproj", "{B08F098E-E4DE-4431-8CF1-0E3156B96A00}"
 EndProject
@@ -11,20 +11,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseStdTextClassLibrary"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseReferenceCodesClassLibrary", "..\EllipseCommonsClassLibraries\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj", "{093EC04E-6E92-4E59-848B-5B79277FFE9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseCommonsClassLibrary", "..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj", "{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web.Services.Ellipse", "..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj", "{1C5ABABA-126F-424B-932B-A110F3665344}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{33C9D8CA-9FC4-4640-8A9D-344C98C6FC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33C9D8CA-9FC4-4640-8A9D-344C98C6FC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33C9D8CA-9FC4-4640-8A9D-344C98C6FC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33C9D8CA-9FC4-4640-8A9D-344C98C6FC70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB5AC2FB-195B-4EC1-92E8-7AC4E197283F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB5AC2FB-195B-4EC1-92E8-7AC4E197283F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB5AC2FB-195B-4EC1-92E8-7AC4E197283F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB5AC2FB-195B-4EC1-92E8-7AC4E197283F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,16 +33,11 @@ Global
 		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CFCB8331-7BA1-443F-BAB6-450C2EF55FFC}
 	EndGlobalSection
 EndGlobal

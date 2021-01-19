@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using SharedClassLibrary.Utilities;
 
 namespace EllipseMaintSchedTaskClassLibrary
 {
@@ -43,6 +45,7 @@ namespace EllipseMaintSchedTaskClassLibrary
         public string NextSchedDate;
         public string NextSchedStat;
         public string NextSchedValue;
+        public string NextSchedMeterValue;
 
         public string ShutdownType;
         public string ShutdownEquip;
@@ -58,6 +61,80 @@ namespace EllipseMaintSchedTaskClassLibrary
         public string StartMonth;
         public string StartYear;
         public string AllowMultiple;
+
+        public string IsInSeries;
+        public string IsInSuppressionSeries;
+
+        public MstService.MSTDTO ToMstDto()
+        {
+            var dto = new MstService.MSTDTO()
+            {
+                rec700Type = string.IsNullOrWhiteSpace(RecType) ? "ES" : RecType,
+                equipGrpId = EquipmentGrpId,
+                equipNo = EquipmentNo,
+                compCode = CompCode,
+                compModCode = CompModCode,
+                maintSchTask = MaintenanceSchTask,
+                schedDesc1 = SchedDescription1,
+                schedDesc2 = SchedDescription2,
+                workGroup = WorkGroup,
+                assignPerson = AssignPerson,
+                jobDescCode = JobDescCode,
+                stdJobNo = StdJobNo,
+                dstrctCode = DistrictCode,
+                autoReqInd = MyUtilities.IsTrue(AutoRequisitionInd),
+                autoReqIndSpecified = AutoRequisitionInd != null,
+                msHistFlg = MyUtilities.IsTrue(MsHistFlag),
+                msHistFlgSpecified = MsHistFlag != null,
+                schedInd700 = SchedInd,
+                statType1 = StatType1,
+                lastSchStat1 = !string.IsNullOrWhiteSpace(LastSchedStat1)
+                    ? Convert.ToDecimal(LastSchedStat1)
+                    : 0,
+                lastSchStat1Specified = LastSchedStat1 != null,
+                schedFreq1 = !string.IsNullOrWhiteSpace(SchedFreq1)
+                    ? Convert.ToDecimal(SchedFreq1)
+                    : 0,
+                schedFreq1Specified = SchedFreq1 != null,
+                lastPerfStat1 = !string.IsNullOrWhiteSpace(LastPerfStat1)
+                    ? Convert.ToDecimal(LastPerfStat1)
+                    : 0,
+                lastPerfStat1Specified = LastPerfStat1 != null,
+                statType2 = StatType2,
+                lastSchStat2 = !string.IsNullOrWhiteSpace(LastSchedStat2)
+                    ? Convert.ToDecimal(LastSchedStat2)
+                    : 0,
+                lastSchStat2Specified = LastSchedStat2 != null,
+                schedFreq2 = !string.IsNullOrWhiteSpace(SchedFreq2)
+                    ? Convert.ToDecimal(SchedFreq2)
+                    : 0,
+                schedFreq2Specified = SchedFreq2 != null,
+                lastPerfStat2 = !string.IsNullOrWhiteSpace(LastPerfStat2)
+                    ? Convert.ToDecimal(LastPerfStat2)
+                    : 0,
+                lastPerfStat2Specified = LastPerfStat2 != null,
+                lastSchDate = string.IsNullOrWhiteSpace(LastSchedDate) ? default : MyUtilities.ToDate(LastSchedDate),
+                lastSchDateSpecified = !string.IsNullOrWhiteSpace(LastSchedDate),
+                lastPerfDate = string.IsNullOrWhiteSpace(LastPerfDate) ? default : MyUtilities.ToDate(LastPerfDate),
+                lastPerfDateSpecified = !string.IsNullOrWhiteSpace(LastPerfDate),
+                statutoryFlg = MyUtilities.ToString(MyUtilities.IsTrue(StatutoryFlg), "Y"),
+                occurenceType = OccurrenceType,
+                dayWeek = DayOfWeek,
+                dayMonth = DayOfMonth,
+                startMonth = StartMonth,
+                startYear = StartYear,
+                conAstSegFrNumeric = string.IsNullOrWhiteSpace(ConAstSegFr) ? default : MyUtilities.ToDecimal(ConAstSegFr),
+                conAstSegFrNumericSpecified = !string.IsNullOrWhiteSpace(ConAstSegFr),
+                conAstSegToNumeric = string.IsNullOrWhiteSpace(ConAstSegTo) ? default : MyUtilities.ToDecimal(ConAstSegTo),
+                conAstSegToNumericSpecified = !string.IsNullOrWhiteSpace(ConAstSegTo),
+                isInSeries = MyUtilities.IsTrue(IsInSeries),
+                isInSeriesSpecified = !string.IsNullOrWhiteSpace(IsInSeries),
+                isInSuppressionSeries = MyUtilities.IsTrue(IsInSuppressionSeries),
+                isInSuppressionSeriesSpecified = !string.IsNullOrWhiteSpace(IsInSuppressionSeries),
+            };
+            
+            return dto;
+        }
     }
     public static class MstType
     {
@@ -160,7 +237,7 @@ namespace EllipseMaintSchedTaskClassLibrary
             return list;
         }
 
-
+        
     }
     
 

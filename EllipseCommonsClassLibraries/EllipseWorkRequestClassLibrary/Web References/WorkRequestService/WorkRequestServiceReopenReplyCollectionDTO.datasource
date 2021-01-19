@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="WorkRequestServiceReopenReplyCollectionDTO" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>EllipseWorkRequestClassLibrary.WorkRequestService.WorkRequestServiceReopenReplyCollectionDTO, Web References.WorkRequestService.Reference.cs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>EllipseWorkRequestClassLibrary.WorkRequestService.WorkRequestServiceReopenReplyCollectionDTO, Web References.WorkRequestService.Reference.cs.dll, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

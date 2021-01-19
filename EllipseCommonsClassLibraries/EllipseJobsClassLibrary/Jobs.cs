@@ -85,12 +85,13 @@ namespace EllipseJobsClassLibrary
             FaxNumber = jobDto.faxNumber;
             FromLink = jobDto.fromLinkSpecified ? "" + jobDto.fromLink : null;
 
-            GanttFinishDateTime = jobDto.ganttFinishDateTime;
+            //GanttFinishDateTime = jobDto.ganttFinishDateTime;//E9 deleted
             GanttLinkId = jobDto.ganttLinkId;
             GanttParentLinkId = jobDto.ganttParentLinkId;
-            GanttStartDateTime = jobDto.ganttStartDateTime;
+            
+            //GanttStartDateTime = jobDto.ganttStartDateTime;//E9 deleted
 
-            HasAssignTodo = jobDto.hasAssignTodo;
+            //HasAssignTodo = jobDto.hasAssignTodo;//E9 deleted
             Id = jobDto.idSpecified ? "" + jobDto.id : null;
             IsControl = jobDto.isControlSpecified ? "" + jobDto.isControl : null;
             IsMSTParent = jobDto.isMSTParent;
@@ -234,7 +235,7 @@ namespace EllipseJobsClassLibrary
             WoJobCodex9 = jobDto.woJobCodex9;
             WoStatusM = jobDto.woStatusM;
             WoStatusU = jobDto.woStatusU;
-            WoTaskNo = jobDto.WoTaskNo;
+            WoTaskNo = jobDto.WOTaskNo;
             WoType = jobDto.woType;
             WorkGroup = jobDto.workGroup;
             WorkOrder = jobDto.workOrder;

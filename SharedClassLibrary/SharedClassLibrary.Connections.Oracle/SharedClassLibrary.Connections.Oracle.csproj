@@ -35,6 +35,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="SharedClassLibrary, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Connections, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -262,16 +270,6 @@
     <Compile Include="TnsNames\UnknownDatabaseAddress.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharedClassLibrary.Connections\SharedClassLibrary.Connections.csproj">
-      <Project>{49ee1fc1-808f-4e6b-8809-78486feb5bd3}</Project>
-      <Name>SharedClassLibrary.Connections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SharedClassLibrary\SharedClassLibrary.csproj">
-      <Project>{56e34747-c8e3-4576-b1e6-5255e86e1f58}</Project>
-      <Name>SharedClassLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
@@ -280,6 +278,5 @@
     <None Include="TnsNames\ANTLR\TnsNamesLexer.g4" />
     <None Include="TnsNames\ANTLR\TnsNamesParser.g4" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

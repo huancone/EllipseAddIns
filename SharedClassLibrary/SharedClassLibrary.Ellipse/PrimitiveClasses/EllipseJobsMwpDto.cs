@@ -87,12 +87,12 @@ namespace SharedClassLibrary.Ellipse.PrimitiveClasses
         [XmlElement("faxNumber")] public string FaxNumber;
         [XmlElement("fromLink")] public string FromLink;
 
-        [XmlElement("ganttFinishDateTime")] public string GanttFinishDateTime;
+        [XmlElement("ganttFinishDateTime")] public string GanttFinishDateTime;//E9 deleted
         [XmlElement("ganttLinkId")] public string GanttLinkId;
         [XmlElement("ganttParentLinkId")] public string GanttParentLinkId;
-        [XmlElement("ganttStartDateTime")] public string GanttStartDateTime;
+        [XmlElement("ganttStartDateTime")] public string GanttStartDateTime;//E9 deleted
 
-        [XmlElement("hasAssignTodo")] public string HasAssignTodo;
+        [XmlElement("hasAssignTodo")] public string HasAssignTodo;//E9 deleted
         [XmlElement("id")] public string Id;
         [XmlElement("isControl")] public string IsControl;
         [XmlElement("isMSTParent")] public string IsMSTParent;

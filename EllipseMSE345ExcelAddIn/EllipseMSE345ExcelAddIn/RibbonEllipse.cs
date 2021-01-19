@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
-using EllipseCommonsClassLibrary.Utilities;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Vsto.Excel;
+using SharedClassLibrary.Utilities;
 using EllipseMSE345ExcelAddIn.CondMeasurementService;
 using EllipseStdTextClassLibrary;
 using Microsoft.Office.Interop.Excel;
@@ -15,7 +17,6 @@ using Microsoft.Office.Tools.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using DateTimePicker = Microsoft.Office.Tools.Excel.Controls.DateTimePicker;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
 using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Local
@@ -36,16 +37,23 @@ namespace EllipseMSE345ExcelAddIn
         private const string TableNameMtto01 = "CondMonitoringTable01Mtto";
         private const string ValidationSheetName = "ValidationSheet";
         private ExcelStyleCells _cells;
-        private EllipseFunctions _eFunctions = new EllipseFunctions();
+        private EllipseFunctions _eFunctions;
         private Application _excelApp;
         private DateTimePicker _fechaCalendario;
-        private FormAuthenticate _frmAuth = new FormAuthenticate();
+        private FormAuthenticate _frmAuth;
         private Thread _thread;
 
         private Worksheet _worksheet;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -55,8 +63,34 @@ namespace EllipseMSE345ExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatGeneral_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -153,8 +187,7 @@ namespace EllipseMSE345ExcelAddIn
                 _cells.GetRange("B6", "B11").Style = _cells.GetStyle(StyleConstants.Select);
 
                 _cells.GetCell("A6").Value = "MONITOREO";
-                var monitoreosCodeList = _eFunctions.GetItemCodes("OI")
-                    .Select(item => item.code + " - " + item.description).ToList();
+                var monitoreosCodeList = _eFunctions.GetItemCodesString("OI");
                 _cells.SetValidationList(_cells.GetCell("B6"), monitoreosCodeList, ValidationSheetName, 1, false);
 
                 _cells.GetCell("A7").Value = "EQUIPO";
@@ -164,7 +197,7 @@ namespace EllipseMSE345ExcelAddIn
                 _cells.GetCell("B8").Value = DateTime.Now.ToString("yyyyMMdd");
 
                 var inspectoresCodeList = _eFunctions.GetItemCodes("VI", true , "AND SUBSTR(TABLE_DESC,1,6)<='999999'")
-                    .Select(item => item.code + " - " + item.description).ToList();
+                    .Select(item => item.Code + " - " + item.Description).ToList();
                 _cells.GetCell("A9").Value = "INSPECTOR 1";
                 _cells.SetValidationList(_cells.GetCell("B9"), inspectoresCodeList, ValidationSheetName, 2, false);
                 _cells.GetCell("A9").Style = _cells.GetStyle(StyleConstants.TitleRequired);
@@ -224,7 +257,7 @@ namespace EllipseMSE345ExcelAddIn
             {
                 Debugger.LogError("ExcelStyleCells:FormatSheet()",
                     "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja. " + ex.Message);
             }
             finally
             {
@@ -281,7 +314,7 @@ namespace EllipseMSE345ExcelAddIn
 
                 _cells.GetCell("A7").Value = "MONITOREO";
                 var monitoreosCodeList = _eFunctions.GetItemCodes("OI", true, "AND TRIM(TABLE_CODE) IN ('IE','UT')")
-                    .Select(item => item.code + " - " + item.description).ToList();
+                    .Select(item => item.Code + " - " + item.Description).ToList();
                 _cells.SetValidationList(_cells.GetCell("B7"), monitoreosCodeList, ValidationSheetName, 2, false);
 
                 _cells.GetCell("A8").Value = "EQUIPO";
@@ -294,7 +327,7 @@ namespace EllipseMSE345ExcelAddIn
                 _cells.GetCell("B9").Value = DateTime.Now.ToString("yyyyMMdd");
 
                 var inspectoresCodeList = _eFunctions.GetItemCodes("VI", true, "AND SUBSTR(TABLE_DESC,1,6)<='999999'")
-                    .Select(item => item.code + " - " + item.description).ToList();
+                    .Select(item => item.Code + " - " + item.Description).ToList();
                 _cells.GetCell("A10").Value = "INSPECTOR 1";
                 _cells.SetValidationList(_cells.GetCell("B10"), inspectoresCodeList, ValidationSheetName, 4, false);
                 _cells.GetCell("A10").Style = _cells.GetStyle(StyleConstants.TitleRequired);
@@ -335,7 +368,7 @@ namespace EllipseMSE345ExcelAddIn
 
                 _fechaCalendario = _worksheet.Controls.AddDateTimePicker(_cells.GetCell("B9"), "Calendario");
                 _fechaCalendario.Format = DateTimePickerFormat.Short;
-                _fechaCalendario.ValueChanged += CambioFecha;
+                _fechaCalendario.ValueChanged += UpdateDateFromDateTimePicker;
 
                 _cells.GetCell("B9").Value = _fechaCalendario.Value.ToString("yyyyMMdd");
 
@@ -349,17 +382,17 @@ namespace EllipseMSE345ExcelAddIn
                 fleetParamRange.Change += FleetParam_Changed;
 
                 var monTypeParamRange = _worksheet.Controls.AddNamedRange(_cells.GetCell("B7"), "monTypeParam");
-                monTypeParamRange.Change += CondMonParamMntto_Changed;
+                monTypeParamRange.Change += CondMonParamMnttoChanged;
 
                 var equipParamRange = _worksheet.Controls.AddNamedRange(_cells.GetCell("B8"), "equipParam");
-                equipParamRange.Change += CondMonParamMntto_Changed;
+                equipParamRange.Change += CondMonParamMnttoChanged;
                 //
             }
             catch (Exception ex)
             {
                 Debugger.LogError("ExcelStyleCells:FormatSheetMntto()",
                     "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
-                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja");
+                MessageBox.Show(@"Se ha producido un error al intentar crear el encabezado de la hoja. " + ex.Message);
             }
             finally
             {
@@ -377,7 +410,7 @@ namespace EllipseMSE345ExcelAddIn
             inspector3 = MyUtilities.GetCodeKey(inspector3);
 
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct,
                 _frmAuth.EllipsePost);
             var proxySheet =
@@ -486,7 +519,7 @@ namespace EllipseMSE345ExcelAddIn
                 return;
             }
 
-            var urlService = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd, _frmAuth.EllipseDsct,
                 _frmAuth.EllipsePost);
             var proxySheet =
@@ -577,27 +610,6 @@ namespace EllipseMSE345ExcelAddIn
             }
         }
 
-        private List<string> GetEquipos()
-        {
-                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-                var currentEnvironment = _eFunctions.GetCurrentEnvironment();
-            try
-            {
-                const string sqlQuery = "SELECT EQUIP_NO FROM ELLIPSE.MSF600 WHERE EQUIP_NO IN '0220701' AND '0220999' AND EQUIP_NO NOT IN ( '02209       ','02208       ') ORDER BY EQUIP_NO";
-
-                var odr = _eFunctions.GetQueryResult(sqlQuery);
-                var getEquipos = new List<string>();
-
-                while (odr.Read())
-                    getEquipos.Add("" + odr["EQUIP_NO"]);
-                return getEquipos;
-            }
-            finally
-            {
-                _eFunctions.SetDBSettings(currentEnvironment);
-            }
-        }
-
         private void CondMonParam_Changed(Range target)
         {
             if (_cells == null)
@@ -643,7 +655,7 @@ namespace EllipseMSE345ExcelAddIn
             }
         }
 
-        private void CondMonParamMntto_Changed(Range target)
+        private void CondMonParamMnttoChanged(Range target)
         {
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -725,7 +737,7 @@ namespace EllipseMSE345ExcelAddIn
             }
         }
 
-        public void CambioFecha(object sender, EventArgs e)
+        public void UpdateDateFromDateTimePicker(object sender, EventArgs e)
         {
             var picker = (DateTimePicker) sender;
             _cells.GetCell("B9").Value = picker.Value.ToString("yyyyMMdd");
@@ -801,24 +813,6 @@ namespace EllipseMSE345ExcelAddIn
             return monitoringList;
         }
 
-        private class MonitoringCondition
-        {
-            public string CautionLow;
-            public string CautionUpper;
-            public string ComponentCode;
-            public string ComponentDescription;
-            public string DangerLow;
-            public string DangerUpper;
-            public string Egi;
-            public string Equipment;
-            public string MeassureCode;
-            public string MeassureDescription;
-            public string ModifierCode;
-            public string ModifierDescription;
-            public string PositionCode;
-            public string PositionDescription;
-            public string Type;
-            public string TypeDescription { get; set; }
-        }
+        
     }
 }

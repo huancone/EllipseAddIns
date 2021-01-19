@@ -36,14 +36,15 @@
         {
             this.tabEllipse = this.Factory.CreateRibbonTab();
             this.grpVHSAcknowledgement = this.Factory.CreateRibbonGroup();
+            this.box1 = this.Factory.CreateRibbonBox();
             this.btnFormatSheet = this.Factory.CreateRibbonButton();
+            this.btnAbout = this.Factory.CreateRibbonButton();
             this.drpEnvironment = this.Factory.CreateRibbonDropDown();
             this.btnAction = this.Factory.CreateRibbonButton();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.btnAbout = this.Factory.CreateRibbonButton();
             this.tabEllipse.SuspendLayout();
             this.grpVHSAcknowledgement.SuspendLayout();
             this.box1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // tabEllipse
             // 
@@ -60,11 +61,23 @@
             this.grpVHSAcknowledgement.Label = "VHSAcknowledgement";
             this.grpVHSAcknowledgement.Name = "grpVHSAcknowledgement";
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.btnFormatSheet);
+            this.box1.Items.Add(this.btnAbout);
+            this.box1.Name = "box1";
+            // 
             // btnFormatSheet
             // 
             this.btnFormatSheet.Label = "&Formatear Hoja";
             this.btnFormatSheet.Name = "btnFormatSheet";
             this.btnFormatSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFormatSheet_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Label = "?";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // drpEnvironment
             // 
@@ -76,18 +89,6 @@
             this.btnAction.Label = "Action";
             this.btnAction.Name = "btnAction";
             this.btnAction.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAction_Click);
-            // 
-            // box1
-            // 
-            this.box1.Items.Add(this.btnFormatSheet);
-            this.box1.Items.Add(this.btnAbout);
-            this.box1.Name = "box1";
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Label = "?";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnAbout_Click);
             // 
             // RibbonEllipse
             // 
@@ -101,6 +102,7 @@
             this.grpVHSAcknowledgement.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
