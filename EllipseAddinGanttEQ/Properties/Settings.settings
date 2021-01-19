@@ -2,14 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EllipseAddinGanttEQ.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="EllipseAddinGanttEQ_AuthenticatorService_AuthenticatorService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/AuthenticatorService</Value>
-    </Setting>
     <Setting Name="EllipseAddinGanttEQ_RefCodesService_RefCodesService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/RefCodesService</Value>
-    </Setting>
-    <Setting Name="EllipseAddinGanttEQ_WorkOrderTaskService_WorkOrderTaskService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService</Value>
     </Setting>
     <Setting Name="EllipseAddinGanttEQ_WorkOrderService_WorkOrderService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://ews-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderService</Value>

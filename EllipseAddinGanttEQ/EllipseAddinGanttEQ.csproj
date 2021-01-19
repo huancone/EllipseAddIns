@@ -145,6 +145,16 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="EllipseReferenceCodesClassLibrary">
+      <HintPath>..\EllipseCommonsClassLibraries\EllipseClassLibraries\EllipseReferenceCodesClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="EllipseStdTextClassLibrary, Version=1.0.5.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\EllipseClassLibraries\EllipseStdTextClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="EllipseWorkOrdersClassLibrary">
+      <HintPath>..\EllipseCommonsClassLibraries\EllipseClassLibraries\EllipseWorkOrdersClassLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -158,8 +168,9 @@
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Oracle.ManagedDataAccess">
-      <HintPath>C:\Users\gvargas4\Desktop\Nuevos AddIn\Conexion Clases Hambin\Oracle.ManagedDataAccess.dll</HintPath>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="SharedClassLibrary">
       <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
@@ -230,16 +241,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web References\AuthenticatorService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
-    <Compile Include="Web References\WorkOrderTaskService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="FormularioAutenticacionType.resx">
       <DependentUpon>FormularioAutenticacionType.cs</DependentUpon>
     </EmbeddedResource>
@@ -256,9 +257,7 @@
     <EmbeddedResource Include="RibbonEllipse.resx">
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
     <None Include="EllipseAddinGanttEQ_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -285,166 +284,12 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
-    <None Include="Web References\AuthenticatorService\AuthenticatorService.wsdl" />
-    <None Include="Web References\AuthenticatorService\NameValuePair.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AuthenticatorService\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskService.wsdl" />
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceAutoAllocationReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceAutoAllocationReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCalcDurReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCalcDurReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCancelReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCancelReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCompleteReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCompleteReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateResourceEstimatesReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateResourceEstimatesReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeferReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeferReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteResourceEstimatesReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteResourceEstimatesReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceMatchReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceMatchReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyResourceEstimatesReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyResourceEstimatesReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServicePrintDailyShiftSchedReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServicePrintDailyShiftSchedReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReadReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReadReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRecordWorkProgressReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRecordWorkProgressReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReopenReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReopenReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveAssignedTasksReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveContrCostsReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveResourceEstimatesReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveWTUStatusHistoryReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceScheduleReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceScheduleReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\WorkOrderTaskService\</RelPath>
-      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseAddinGanttEQ_WorkOrderTaskService_WorkOrderTaskService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/AuthenticatorService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\AuthenticatorService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/AuthenticatorService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseAddinGanttEQ_AuthenticatorService_AuthenticatorService</CachedSettingsPropName>
-    </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\security.png" />

@@ -218,7 +218,15 @@ namespace EllipseAddinGanttEQ
             return true;
         }
 
-        public bool VerificarConexion(string dbname, string dbuser, string dbpass, string dblink, string dbreference = "", string dbcatalog = null)
+
+        /*public bool VerificarConexion(string dbname, string dbuser, string dbpass, string dblink, string dbreference = "", string dbcatalog = null)
+        {
+
+            var dbi = new DatabaseItem();
+            dbi.DbName = ""
+        }*/
+
+        /*public bool VerificarConexion(string dbname, string dbuser, string dbpass, string dblink, string dbreference = "", string dbcatalog = null)
         {
             //int ConnectionTimeOut = 15;
             //bool PoolingDataBase = true;
@@ -228,17 +236,17 @@ namespace EllipseAddinGanttEQ
             Conexion.Open();
             //OracleConnection Cmd = Conexion.CreateCommand();
             return true;
-        }
-        public IDataReader GetQueryResult(string sqlQuery, string customConnectionString = null)
+        }*/
+        /*public IDataReader GetQueryResult(string sqlQuery, string customConnectionString = null)
         {
             OracleCommand Cmd = Conexion.CreateCommand();
             Cmd.CommandText = sqlQuery;
             OracleDataReader Datos = Cmd.ExecuteReader();
             return Datos;       
-        }
+        }*/
 
 
-        public data.DataTable getdata(string SQL, Int32 SW = 0)
+        /*public data.DataTable getdata(string SQL, Int32 SW = 0)
         {
             if(SW == 0)
             {
@@ -255,6 +263,37 @@ namespace EllipseAddinGanttEQ
             data.DataTable DATA = new data.DataTable();
             DATA.Load(dat);
             Conexion.Close();
+            return DATA;
+        }*/
+
+        public data.DataTable getdata(string SQL, Int32 SW = 0)
+        {
+
+
+
+            if (SW == 0)
+            {
+                var dbi = Environments.GetDatabaseItem(drpEnvironment.SelectedItem.Label);
+                dbi.DbUser = "consulbo";
+                dbi.DbPassword = "ventyx15";
+                _eFunctions.SetDBSettings(dbi.DbName,dbi.DbUser,dbi.DbPassword);
+                _eFunctions.SetConnectionTimeOut(0);
+            }
+            else
+            {
+                _eFunctions.SetDBSettings(Environments.SigmanProductivo);
+                //ConexionDataBase("Productivox");
+            }
+
+            
+
+            //ConexionDataBase(drpEnviroment.SelectedItem.Label);
+            //VerificarConexion(DataBase, User, Pw, DbLink);
+            //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var dat = _eFunctions.GetQueryResult(SQL);
+            data.DataTable DATA = new data.DataTable();
+            DATA.Load(dat);
+            _eFunctions.CloseConnection();
             return DATA;
         }
 
@@ -440,7 +479,7 @@ namespace EllipseAddinGanttEQ
             _excelApp.DisplayAlerts = true;
             //búsquedas especiales de tabla
             //_cells.SetCursorWait();
-            _AuthG.StartPosition = FormStartPosition.CenterScreen;
+            /*_AuthG.StartPosition = FormStartPosition.CenterScreen;
              if (_AuthG.ShowDialog() == DialogResult.OK)
              {
                  if (_AuthG.Permiso == "2")
@@ -448,7 +487,7 @@ namespace EllipseAddinGanttEQ
                      menuAcciones.Items[3].Visible = false;
                      menuAcciones.Items[4].Visible = false;
                      menuAcciones.Items[5].Visible = false;
-                 }
+                 }*/
                 try
                 {
                     _excelApp.Cursor = Excel.XlMousePointer.xlWait;
@@ -472,12 +511,12 @@ namespace EllipseAddinGanttEQ
                     _excelApp.ScreenUpdating = true;
                     _excelApp.DisplayAlerts = true;
                 }
-            }
+            /*}
             else
             {
                 MessageBox.Show(@"Regrese cuando tenga autorizacion del administrador del sistema.");
                 _excelApp.Application.Quit();
-            }
+            }*/
         }
         private void SobreEncabezado(Int32 FinCol)
         {
@@ -1637,6 +1676,7 @@ namespace EllipseAddinGanttEQ
         static string[] GetStringArray(Object rangeValues)
         {
             string[] stringArray = null;
+
             Array array = rangeValues as Array;
             if (null != array)
             {
@@ -1646,12 +1686,12 @@ namespace EllipseAddinGanttEQ
                     int rowCount = array.GetLength(0);
                     int columnCount = array.GetUpperBound(1);
 
-                    stringArray = new string[rowCount];
+                    stringArray = new string[rowCount-1];
                     //stringArray[0] = "SS271";
                     //stringArray[index] = new string[columnCount - 1];
                     for (int Col = 0; Col < columnCount; Col++)
                     {
-                        for (int Row = 0; Row < rowCount; Row++)
+                        for (int Row = 0; Row < rowCount - 1; Row++)
                         {
                             Object obj = array.GetValue(Row + 1, Col + 1);
                             if (null != obj)
@@ -1664,6 +1704,7 @@ namespace EllipseAddinGanttEQ
                     }
                 }
             }
+            
             return stringArray;
         }
         //TRANFORMAR RANGO EN UNA MATRIZ----- FUNCIONA OK
@@ -1745,13 +1786,16 @@ namespace EllipseAddinGanttEQ
         {
             _excelApp.Visible = true;
             _cells.SetCursorWait();
-            _excelApp.ScreenUpdating = false;
+            _excelApp.ScreenUpdating = true;
             //var taskCells = new ExcelStyleCells(_excelApp, SheetName01);
             Excel.Worksheet SheetGantt = _excelApp.ActiveWorkbook.Sheets[SheetName01];
             Excel.Worksheet SheetLabor = _excelApp.ActiveWorkbook.Sheets[SheetName02];
             var WoCol = FindColumna("WORK_ORDER");
-            //Excel.Range DatosOts = SheetGantt.Range[SheetGantt.Cells[StartRowTable + 1, WoCol], SheetGantt.Cells[StartRowTable + FinRowTablaOneSheet, WoCol]];
-            string[] DatosWoG = GetStringArray(SheetGantt.Range[SheetGantt.Cells[StartRowTable + 1, WoCol], SheetGantt.Cells[StartRowTable + FinRowTablaOneSheet, WoCol]].Cells.Value2);
+
+            //Object DatosOts = new Object[0];
+            Object DatosOts = SheetGantt.Range[SheetGantt.Cells[StartRowTable + 1, WoCol], SheetGantt.Cells[StartRowTable + FinRowTablaOneSheet + 1, WoCol]].Cells.Value2;
+
+            string[] DatosWoG = GetStringArray(DatosOts);
             string[] DatosWo = DatosWoG.Distinct().ToArray();
             //string[,] DatosWo = GetStringArray(SheetGantt.Range[SheetGantt.Cells[StartRowTable + 1, WoCol], SheetGantt.Cells[StartRowTable + FinRowTablaOneSheet, WoCol]].Cells.Value);
             //string[][] DatosWo = GetStringArray(SheetGantt.Range[SheetGantt.Cells[StartRowTable + 1, WoCol], SheetGantt.Cells[StartRowTable + FinRowTablaOneSheet, WoCol+1]].Cells.Value2);
