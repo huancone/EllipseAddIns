@@ -40,7 +40,7 @@
     <PublishUrl>D:\Projects\Release\EllipseFinalizeWorkOrderExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.2.0.4</ApplicationVersion>
+    <ApplicationVersion>1.3.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -76,16 +76,6 @@
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
       <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
@@ -154,10 +144,10 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
@@ -167,6 +157,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Service References\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="SharedClassLibrary">
+      <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Ellipse">
+      <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Ellipse.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Vsto.Excel">
+      <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Vsto.Excel.dll</HintPath>
+    </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -175,6 +174,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.Services.Ellipse">
+      <HintPath>..\..\EllipseCommonsClassLibraries\SharedClassLibrary\System.Web.Services.Ellipse.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -227,7 +229,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="EllipseFinalizeWorkOrderExcelAddIn_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -256,17 +257,9 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
-      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
-      <Name>EllipseCommonsClassLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\EllipseCommonsClassLibraries\EllipseWorkOrdersClassLibrary\EllipseWorkOrdersClassLibrary.csproj">
       <Project>{b08f098e-e4de-4431-8cf1-0e3156b96a00}</Project>
       <Name>EllipseWorkOrdersClassLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj">
-      <Project>{1c5ababa-126f-424b-932b-a110f3665344}</Project>
-      <Name>System.Web.Services.Ellipse</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -287,7 +280,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>3341D344812B4BDA526FA3ACB32E55B923CEF2B6</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>9C7943B62AB2418AFDB97217A007CA01B53E2BDB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>

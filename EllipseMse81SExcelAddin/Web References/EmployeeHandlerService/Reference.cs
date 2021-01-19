@@ -23,12 +23,13 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="EmployeeHandlerServiceHttpBinding", Namespace="http://employeehandler.m3001.service.ellipse.mincom.com")]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(BaseServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Base))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Attribute[]))]
     public partial class EmployeeHandlerService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
         private System.Threading.SendOrPostCallback retrieveEmployeesOperationCompleted;
@@ -129,14 +130,20 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://connectivity.service.ews.mincom.com")]
     public partial class OperationContext {
         
+        private string applicationClientIdField;
+        
         private string districtField;
+        
+        private bool eventDisableField;
+        
+        private bool eventDisableFieldSpecified;
         
         private int maxInstancesField;
         
@@ -150,11 +157,23 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
         
         private RunAs runAsField;
         
+        private string tenantIdField;
+        
         private bool traceField;
         
         private bool traceFieldSpecified;
         
         private string transactionField;
+        
+        /// <remarks/>
+        public string applicationClientId {
+            get {
+                return this.applicationClientIdField;
+            }
+            set {
+                this.applicationClientIdField = value;
+            }
+        }
         
         /// <remarks/>
         public string district {
@@ -163,6 +182,27 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
             }
             set {
                 this.districtField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool eventDisable {
+            get {
+                return this.eventDisableField;
+            }
+            set {
+                this.eventDisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool eventDisableSpecified {
+            get {
+                return this.eventDisableFieldSpecified;
+            }
+            set {
+                this.eventDisableFieldSpecified = value;
             }
         }
         
@@ -229,6 +269,16 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
         }
         
         /// <remarks/>
+        public string tenantId {
+            get {
+                return this.tenantIdField;
+            }
+            set {
+                this.tenantIdField = value;
+            }
+        }
+        
+        /// <remarks/>
         public bool trace {
             get {
                 return this.traceField;
@@ -261,7 +311,7 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -306,9 +356,77 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Warning))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
+    public partial class ServiceRequiredAttributes {
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceResult))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EmployeeHandlerServiceResult))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
+    public abstract partial class BaseServiceResult {
+        
+        private Error[] errorsField;
+        
+        private Message[] informationalMessagesField;
+        
+        private Warning[] warningsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Error[] errors {
+            get {
+                return this.errorsField;
+            }
+            set {
+                this.errorsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Message[] informationalMessages {
+            get {
+                return this.informationalMessagesField;
+            }
+            set {
+                this.informationalMessagesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
+        public Warning[] warnings {
+            get {
+                return this.warningsField;
+            }
+            set {
+                this.warningsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://errors.ellipse.mincom.com")]
+    public partial class Error : Message {
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Error))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Warning))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -320,6 +438,10 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
         private int fieldIndexField;
         
         private bool fieldIndexFieldSpecified;
+        
+        private bool localisableField;
+        
+        private bool localisableFieldSpecified;
         
         private string messageIdField;
         
@@ -359,6 +481,27 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
             }
             set {
                 this.fieldIndexFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool localisable {
+            get {
+                return this.localisableField;
+            }
+            set {
+                this.localisableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool localisableSpecified {
+            get {
+                return this.localisableFieldSpecified;
+            }
+            set {
+                this.localisableFieldSpecified = value;
             }
         }
         
@@ -414,7 +557,7 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -423,67 +566,8 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://errors.ellipse.mincom.com")]
-    public partial class Error : Message {
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceResult))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(EmployeeHandlerServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
-    public abstract partial class BaseServiceResult {
-        
-        private Error[] errorsField;
-        
-        private Message[] informationalMessagesField;
-        
-        private Warning[] warningsField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Error[] errors {
-            get {
-                return this.errorsField;
-            }
-            set {
-                this.errorsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Message[] informationalMessages {
-            get {
-                return this.informationalMessagesField;
-            }
-            set {
-                this.informationalMessagesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://errors.ellipse.mincom.com")]
-        public Warning[] warnings {
-            get {
-                return this.warningsField;
-            }
-            set {
-                this.warningsField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EmployeeHandlerServiceResult))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -492,7 +576,7 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -513,7 +597,7 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -549,7 +633,7 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(EmployeeHandlerSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(EmployeeHandlerDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -571,16 +655,32 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://attribute.ellipse.mincom.com")]
     public partial class Attribute {
         
+        private string dataTypeField;
+        
         private string nameField;
         
+        private string namespaceField;
+        
+        private anyType2anyTypeMapEntry[] propertiesField;
+        
         private string valueField;
+        
+        /// <remarks/>
+        public string dataType {
+            get {
+                return this.dataTypeField;
+            }
+            set {
+                this.dataTypeField = value;
+            }
+        }
         
         /// <remarks/>
         public string name {
@@ -589,6 +689,27 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
             }
             set {
                 this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string @namespace {
+            get {
+                return this.namespaceField;
+            }
+            set {
+                this.namespaceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("entry", Namespace="http://employeehandler.m3001.service.ellipse.mincom.com", IsNullable=false)]
+        public anyType2anyTypeMapEntry[] properties {
+            get {
+                return this.propertiesField;
+            }
+            set {
+                this.propertiesField = value;
             }
         }
         
@@ -604,11 +725,44 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     }
     
     /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://employeehandler.m3001.service.ellipse.mincom.com")]
+    public partial class anyType2anyTypeMapEntry {
+        
+        private object keyField;
+        
+        private object valueField;
+        
+        /// <remarks/>
+        public object key {
+            get {
+                return this.keyField;
+            }
+            set {
+                this.keyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public object value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(ServiceDTO))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AbstractSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(EmployeeHandlerSearchParam))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(EmployeeHandlerDTO))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -618,16 +772,28 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(EmployeeHandlerSearchParam))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://service.ellipse.mincom.com")]
     public abstract partial class AbstractSearchParam : ServiceDTO {
+        
+        private ServiceRequiredAttributes serviceRequiredAttributesField;
+        
+        /// <remarks/>
+        public ServiceRequiredAttributes serviceRequiredAttributes {
+            get {
+                return this.serviceRequiredAttributesField;
+            }
+            set {
+                this.serviceRequiredAttributesField = value;
+            }
+        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -636,7 +802,15 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
         
         private string employeeIdField;
         
+        private string employeeTypeField;
+        
         private string positionIdField;
+        
+        private string teamIdentifierField;
+        
+        private string workGroupField;
+        
+        private string workGroupCrewField;
         
         /// <remarks/>
         public string employeeId {
@@ -649,6 +823,16 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
         }
         
         /// <remarks/>
+        public string employeeType {
+            get {
+                return this.employeeTypeField;
+            }
+            set {
+                this.employeeTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
         public string positionId {
             get {
                 return this.positionIdField;
@@ -657,14 +841,44 @@ namespace EllipseMse81SExcelAddin.EmployeeHandlerService {
                 this.positionIdField = value;
             }
         }
+        
+        /// <remarks/>
+        public string teamIdentifier {
+            get {
+                return this.teamIdentifierField;
+            }
+            set {
+                this.teamIdentifierField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workGroup {
+            get {
+                return this.workGroupField;
+            }
+            set {
+                this.workGroupField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string workGroupCrew {
+            get {
+                return this.workGroupCrewField;
+            }
+            set {
+                this.workGroupCrewField = value;
+            }
+        }
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     public delegate void retrieveEmployeesCompletedEventHandler(object sender, retrieveEmployeesCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class retrieveEmployeesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {

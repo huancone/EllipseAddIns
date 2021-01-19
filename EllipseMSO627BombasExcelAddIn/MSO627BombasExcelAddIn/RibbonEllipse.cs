@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LINQtoCSV;
 using Microsoft.Office.Tools.Ribbon;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using Screen = EllipseCommonsClassLibrary.ScreenService;
+using Screen = SharedClassLibrary.Ellipse.ScreenService;
 using EllipseEquipmentClassLibrary;
+using LINQtoCSV;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Connections;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 
 namespace MSO627BombasExcelAddIn
 {
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
-        Excel.Application _excelApp;
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
+        private Excel.Application _excelApp;
         private Thread _thread;
 
         private const string SheetName01 = "MSO627 Bombas";
@@ -28,12 +31,18 @@ namespace MSO627BombasExcelAddIn
         private const int ResultColumn01 = 6;
         private const string TableName01 = "BombasTable";
         private const string ValidationSheetName = "ValidationSheetBombas";
-        List<Ubicaciones> _listaUbicaciones = new List<Ubicaciones>();
-        List<string> _listaEquipos = new List<string>();
-        List<string> _listaNombres = new List<string>();
+        private List<Locations> _locationsList;
+        
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
             _excelApp = Globals.ThisAddIn.Application;
 
             var environments = Environments.GetEnvironmentList();
@@ -43,8 +52,34 @@ namespace MSO627BombasExcelAddIn
                 item.Label = env;
                 drpEnvironment.Items.Add(item);
             }
-        }
 
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormato_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
@@ -106,24 +141,24 @@ namespace MSO627BombasExcelAddIn
             _cells.GetCell(ResultColumn01, TittleRow01).Value = "Resultado";
             _cells.GetCell(ResultColumn01, TittleRow01).Style = _cells.GetStyle(StyleConstants.TitleInformation);
 
-            ImportFile();
+            LoadLocationsList();
 
-            foreach (var item in _listaUbicaciones)
-            {
-                _listaNombres.Add(item.Nombre);
-            }
+            var listaNombres = new List<string>();
+            if(_locationsList != null) 
+                listaNombres.AddRange(_locationsList.Select(item => item.Nombre));
 
-            _cells.SetValidationList(_cells.GetCell(2, TittleRow01 + 1), _listaNombres, ValidationSheetName, 1, false);
+
+            _cells.SetValidationList(_cells.GetCell(2, TittleRow01 + 1), listaNombres, ValidationSheetName, 1, false);
             _cells.SetValidationList(_cells.GetCell(5, TittleRow01 + 1), ValidationSheetName, 1, false);
 
             _cells.FormatAsTable(_cells.GetRange(1, TittleRow01, ResultColumn01, TittleRow01 + 1), TableName01);
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
 
-            _listaEquipos = new[] { "WPHV-VNM-10", "WPHH-DS-10", "WPHV-GNVN-8", "WPHS-SS-6", "WPHS-SS-10", "WPF-2201-4", "WPF-2250-6", "WPF-2250-10", "WPF-2400-6", "WPF-3201-6", "WPF-3230-8" }
+            var listaEquipos = new[] { "WPHV-VNM-10", "WPHH-DS-10", "WPHV-GNVN-8", "WPHS-SS-6", "WPHS-SS-10", "WPF-2201-4", "WPF-2250-6", "WPF-2250-10", "WPF-2400-6", "WPF-3201-6", "WPF-3230-8" }
                      .SelectMany(id => EquipmentActions.GetEgiEquipments(_eFunctions, id))
                      .ToList();
 
-            _cells.SetValidationList(_cells.GetCell(4, TittleRow01 + 1), _listaEquipos, ValidationSheetName, 2, false);
+            _cells.SetValidationList(_cells.GetCell(4, TittleRow01 + 1), listaEquipos, ValidationSheetName, 2, false);
 
         }
 
@@ -150,7 +185,7 @@ namespace MSO627BombasExcelAddIn
 
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
 
-            proxySheet.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
+            proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/ScreenService";
 
             var currentRow = TittleRow01 + 1;
 
@@ -163,15 +198,14 @@ namespace MSO627BombasExcelAddIn
                     var fecha = _cells.GetEmptyIfNull(_cells.GetCell(1, currentRow).Value);
 
                     var row = currentRow;
-                    foreach (var item in _listaUbicaciones.Where(item => item.Nombre == _cells.GetEmptyIfNull(_cells.GetCell(2, row).Value)))
-                    {
-                        origen = item.Nombre + "/" + item.X + "/" + item.Y + "/" + item.Z;
-                    }
+                    if(_locationsList != null)
+                        foreach (var item in _locationsList.Where(item => item.Nombre == _cells.GetEmptyIfNull(_cells.GetCell(2, row).Value)))
+                            origen = item.Nombre + "/" + item.X + "/" + item.Y + "/" + item.Z;
 
-                    foreach (var item in _listaUbicaciones.Where(item => item.Nombre == _cells.GetEmptyIfNull(_cells.GetCell(5, row).Value)))
-                    {
-                        destino = item.Nombre + "/" + item.X + "/" + item.Y + "/" + item.Z;
-                    }
+                    if (_locationsList != null)
+                        foreach (var item in _locationsList.Where(item => item.Nombre == _cells.GetEmptyIfNull(_cells.GetCell(5, row).Value)))
+                            destino = item.Nombre + "/" + item.X + "/" + item.Y + "/" + item.Z;
+                    
 
                     var usuario = _cells.GetEmptyIfNull(_cells.GetCell(3, currentRow).Value);
                     var equipo = _cells.GetEmptyIfNull(_cells.GetCell(4, currentRow).Value);
@@ -259,10 +293,8 @@ namespace MSO627BombasExcelAddIn
             if(_cells != null) _cells.SetCursorDefault();
         }
 
-        private List<Ubicaciones> ImportFile()
+        private void LoadLocationsList()
         {
-            _listaUbicaciones.Clear();
-
             var openFileDialog1 = new OpenFileDialog
             {
                 Filter = @"Archivos CSV|*.csv",
@@ -271,7 +303,11 @@ namespace MSO627BombasExcelAddIn
                 InitialDirectory = @"C:\Data\Loaders\Parametros"
             };
 
-            if (openFileDialog1.ShowDialog() != DialogResult.OK) return null;
+            if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
+
+            if (_locationsList == null)
+                _locationsList = new List<Locations>();
+            _locationsList.Clear();
 
             var filePath = openFileDialog1.FileName;
 
@@ -284,46 +320,22 @@ namespace MSO627BombasExcelAddIn
 
             var cc = new CsvContext();
 
-            var archivoUbicaciones = cc.Read<Ubicaciones>(filePath, inputFileDescription);
+            var archivoUbicaciones = cc.Read<Locations>(filePath, inputFileDescription);
 
             foreach (var p in archivoUbicaciones)
             {
                 try
                 {
-                    _listaUbicaciones.Add(p);
+                    _locationsList.Add(p);
                 }
                 catch (Exception ex)
                 {
                     Debugger.LogError("RibbonEllipse.cs:ImportFile()", ex.Message);
                 }
             }
-            return _listaUbicaciones;
         }
 
-        public class Ubicaciones
-        {
-            [CsvColumn(FieldIndex = 1)]
-            public double X { get; set; }
-
-            [CsvColumn(FieldIndex = 2)]
-            public double Y { get; set; }
-
-            [CsvColumn(FieldIndex = 3)]
-            public double Z { get; set; }
-
-            [CsvColumn(FieldIndex = 4)]
-            public string Sitio { get; set; }
-
-            [CsvColumn(FieldIndex = 5)]
-            public string TipoSitio { get; set; }
-
-            [CsvColumn(FieldIndex = 6)]
-            public string Tajo { get; set; }
-
-            [CsvColumn(FieldIndex = 7)]
-            public string Nombre { get; set; }
-
-        }
+        
 
         private void btnStopThread_Click(object sender, RibbonControlEventArgs e)
         {
