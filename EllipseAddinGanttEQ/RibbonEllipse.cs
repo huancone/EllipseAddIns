@@ -5,6 +5,7 @@ using System.Data;
 using data = System.Data;
 //using System.Data.SqlClient;
 //using Oracle.ManagedDataAccess.Client;
+using System.Data.OracleClient;
 using System.Drawing;
 using System.Threading;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ using EllipseCommonsClassLibrary.Connections;
 using Excel = Microsoft.Office.Interop.Excel;
 using EllipseWorkOrdersClassLibrary;
 using Authenticator = EllipseAddinGanttEQ.AuthenticatorService;
+
+using WorkOrderTaskService9 = EllipseAddinGanttEQ.WorkOrderTaskService;
 //using Authenticator = EllipseCommonsClassLibrary.AuthenticatorService;
 using WorkOrderTaskService = EllipseWorkOrdersClassLibrary.WorkOrderTaskService;
 using WorkOrderService = EllipseWorkOrdersClassLibrary.WorkOrderService;
@@ -27,6 +30,7 @@ using MaterialReqmntsService = EllipseWorkOrdersClassLibrary.MaterialReqmntsServ
 using EquipmentReqmntsService = EllipseWorkOrdersClassLibrary.EquipmentReqmntsService;
 //using System.Data.Odbc;
 //using EllipseCommonsClassLibrary.Utilities;
+using VarEncript = SharedClassLibrary.Utilities.Encryption;
 using System.Web.Services.Ellipse;
 using System.Web.Services;
 using Screen = EllipseCommonsClassLibrary.ScreenService; //si es screen service
@@ -38,9 +42,9 @@ namespace EllipseAddinGanttEQ
     public partial class RibbonEllipse
     {
         ExcelStyleCells _cells;
-        private EllipseFunctions _eFunctions;
-        private FormAuthenticate _frmAuth;
-        private FormularioAutenticacionType _AuthG;
+        EllipseFunctions _eFunctions = new EllipseFunctions();
+        FormAuthenticate _frmAuth = new FormAuthenticate();
+        FormularioAutenticacionType _AuthG = new FormularioAutenticacionType();
         private Excel.Application _excelApp;
 
         private const string SheetName01 = "Gantt Parada Equipo";
@@ -55,7 +59,7 @@ namespace EllipseAddinGanttEQ
         private const int titleRow = 8;
         private Thread _thread;
         private bool _progressUpdate = true;
-        public string Sql = "";
+        public String Sql = "";
         static object useDefault = Type.Missing;
         private const Int32 StartColHrs = 19;
         private const Int32 DatosAgregados = 3;
@@ -86,57 +90,142 @@ namespace EllipseAddinGanttEQ
         public Int32 FinRowTablaOneSheet = 0;
         public string[] NombreColumnas;
 
+        //Variables de Conexion 
+        private string SQL;
+        private string DataBase;
+        private string User; //Ej. SIGCON, CONSULBO
+        private string Pw;
+        // ReSharper disable once InconsistentNaming
+        public string DbLink; //Ej. @DBLMIMS
+
+        OracleConnection Conexion;
+
+
 
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
-            LoadSettings();
             _excelApp = Globals.ThisAddIn.Application;
             _excelApp.EnableEvents = true;
             //var tableObject = Globals.Factory.GetVstoObject(_excelApp.ActiveWorkbook.Sheets[SheetName01].Name);
             //tableObject.Change = GetTableChangedValue;
-            var environmentList = Environments.GetEnvironmentList();
-            foreach (var item in environmentList)
+            List<string> enviroments = new List<string>();
+            enviroments.Add("Productivo");
+            enviroments.Add("Productivox");
+            enviroments.Add("Test");
+            enviroments.Add("Desarrollo");
+            enviroments.Add("Contingencia");
+            enviroments.Add("EL9CONV");
+            /*var enviroments = Environments.GetEnviromentList();*/
+            foreach (var env in enviroments)
             {
-                var drpItem = Factory.CreateRibbonDropDownItem();
-                drpItem.Label = item;
-                drpEnvironment.Items.Add(drpItem);
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnviroment.Items.Add(item);
             }
+
         }
 
-        public void LoadSettings()
+        public bool ConexionDataBase(string enviroments)
         {
-            var settings = new Settings();
-            _eFunctions = new EllipseFunctions();
-            _frmAuth = new FormAuthenticate();
-            _AuthG = new FormularioAutenticacionType();
-
-            var defaultConfig = new Settings.Options();
-            //defaultConfig.SetOption("OptionName1", "OptionValue1");
-            //defaultConfig.SetOption("OptionName2", "OptionValue2");
-            //defaultConfig.SetOption("OptionName3", "OptionValue3");
-
-            var options = settings.GetOptionsSettings(defaultConfig);
-
-            //Setting of Configuration Options from Config File (or default)
-            //var optionItem1Value = MyUtilities.IsTrue(options.GetOptionValue("OptionName1"));
-            //var optionItem1Value = options.GetOptionValue("OptionName2");
-            //var optionItem1Value = options.GetOptionValue("OptionName3");
-
-            //optionItem1.Checked = optionItem1Value;
-            //optionItem2.Text = optionItem2Value;
-            //optionItem3 = optionItem3Value;
-
-            //
-            settings.UpdateOptionsSettings(options);
+            if (enviroments == "Productivox")
+            {
+                //Sigman
+                DataBase = VarEncript.Encryption.Decrypt("CrOkubls0sZ8lj8iUOR+QY18P9jBSp7MV17Q1hMCt0zpW2WGmMHYV5XXc8j/FdQQNSMJhAHs3GXzbxU0zB+CNt5K1PIiJBvP7RlVJqPn+vHh1mLdhaACGMniPn234d2s");
+                User = VarEncript.Encryption.Decrypt("x4yNNf5qsgLpNdA1xUaBM1GaKhwrINqfzNsmDA7rZmZWVx8308y12p1zvsIuEzx+yszVVnhqhQ1cFWL+lBB8yYb53Yx1kBkvdWcXspKfG8buz4RuwCjtXcXkvGOQwdzw");
+                Pw = VarEncript.Encryption.Decrypt("M8/fjRkEAGaWFKtzyECz8mlJluF8xZevecMTrJ8tf0uboneZPAzICqYYB1WWx23w6sF5AXHDY3MtMZNJVGJ1ALO2D76lFq0M9fLmnU8Q8aOYcANWnlQCQzpX/EqnO8Ow");
+                DbLink = "";
+            }
+            else if (enviroments == "Test")
+            {
+                //ELLIPSE TEST
+                DataBase = VarEncript.Encryption.Decrypt("ZmuwRdpIqQDXlgbVCTMap4/2rae2TEeElYs0dwdKpLs79OD+0DB5C7PU+YfACBxYW8/EhT71lw+UWXMm0dHrecEAbgruixwRCesj/kZdhcqMKnJmfHjYVx/kzfnBZ+ff");
+                User = VarEncript.Encryption.Decrypt("KDWGvC9euLoOV0/ut9uidRLNVNu29uqivJHh717JZUlB37WRHYrqg71B99RW6YbpI/8cikLxMoaFp+phLJxiMQdwWx7LxjgztWhi9FlYUbgqLyYzYn1pnSpSXBfCfWRG");
+                Pw = VarEncript.Encryption.Decrypt("M8/fjRkEAGaWFKtzyECz8mlJluF8xZevecMTrJ8tf0uboneZPAzICqYYB1WWx23w6sF5AXHDY3MtMZNJVGJ1ALO2D76lFq0M9fLmnU8Q8aOYcANWnlQCQzpX/EqnO8Ow");
+                DbLink = "";
+            }
+            else if (enviroments == "Desarrollo")
+            {
+                //Ellipse Desarrollo
+                DataBase = VarEncript.Encryption.Decrypt("1IKfU5uJXMSEmagte2It5Yo4RKspvU8kDY8JRRFZZ2EaEci7t5HhQ7KMsVFKx8WbfiCEHKAy6h6woQTNKC7cly4Nsjae4WCgI/BdHj8+47L3Ux2xZqVCSELXVqzEdZRN");
+                User = VarEncript.Encryption.Decrypt("KDWGvC9euLoOV0/ut9uidRLNVNu29uqivJHh717JZUlB37WRHYrqg71B99RW6YbpI/8cikLxMoaFp+phLJxiMQdwWx7LxjgztWhi9FlYUbgqLyYzYn1pnSpSXBfCfWRG");
+                Pw = VarEncript.Encryption.Decrypt("CnybQg6aRmqDpzwekCgGJkT58UpCIdmMt7br1TUhchrC0D+mG1z+pchSBUsXfklz1wBONoZoxtdLnKJ9T30PTvZzmCrbhE+MkmiN96CU3zORPXddVL6aPxysDNthpP3Z");
+                DbLink = "";
+            }
+            else if (enviroments == "Contingencia")
+            {
+                //Ellipse Contingencia
+                DataBase = VarEncript.Encryption.Decrypt("brw6hTk7tyzbWMnkgOAGm7T5ISbOxIDZzSuf/5nvKn94VsLindO9npazUR8CDo7/5YX0KUYHtN+VxayBURC3BPWpjIhFlX+hVWYxVGV3FBoO5gv6XYTiHcXupsZ5bm5S");
+                User = VarEncript.Encryption.Decrypt("KDWGvC9euLoOV0/ut9uidRLNVNu29uqivJHh717JZUlB37WRHYrqg71B99RW6YbpI/8cikLxMoaFp+phLJxiMQdwWx7LxjgztWhi9FlYUbgqLyYzYn1pnSpSXBfCfWRG");
+                Pw = VarEncript.Encryption.Decrypt("CnybQg6aRmqDpzwekCgGJkT58UpCIdmMt7br1TUhchrC0D+mG1z+pchSBUsXfklz1wBONoZoxtdLnKJ9T30PTvZzmCrbhE+MkmiN96CU3zORPXddVL6aPxysDNthpP3Z");
+                DbLink = "";
+            }
+            else if (enviroments == "Productivo")
+            {
+                //Ellipse Productivo
+                DataBase = VarEncript.Encryption.Decrypt("brw6hTk7tyzbWMnkgOAGm7T5ISbOxIDZzSuf/5nvKn94VsLindO9npazUR8CDo7/5YX0KUYHtN+VxayBURC3BPWpjIhFlX+hVWYxVGV3FBoO5gv6XYTiHcXupsZ5bm5S");
+                User = VarEncript.Encryption.Decrypt("x4yNNf5qsgLpNdA1xUaBM1GaKhwrINqfzNsmDA7rZmZWVx8308y12p1zvsIuEzx+yszVVnhqhQ1cFWL+lBB8yYb53Yx1kBkvdWcXspKfG8buz4RuwCjtXcXkvGOQwdzw");
+                Pw = VarEncript.Encryption.Decrypt("Td/V9ZKxqcRFLUfFZD15bv4qZwZIHI0IhNQjdK3EoZQL+8ZJb0vhv5x/XhxtfrN6TxiMJud/+TWSgU6GOTq5YiKRDVJMlSV+f8dswzHxZJ7xjfL8fjyYpd0rFQRMCK41");
+                DbLink = "";
+            }
+            else if (enviroments == "EL9CONV")
+            {
+                DataBase = VarEncript.Encryption.Decrypt("wCxxnrgxkVOTvIjT7zGOrrnDMwfV5bUHRia1bbl4uaBst2/ndU2Rx/U9QZxazU40TmchLcacJPNXsdUcp/ba8qmO5klx9Fi40kr6gmxJ2/ScoVHzn5W/clZexU62cCYh");
+                User = VarEncript.Encryption.Decrypt("p9M5h3knGEbvXqCtwljSTTMeymUMVDXGs1K215lYDLM6zmOe9KCeZw6dIkK2Pv+QYh2cG1iyE7ydQanSYAegh7iqU7RJTGxwv55Eic4VGdcqEIGtdqTuA6bhpNMWQ2b4");
+                Pw = VarEncript.Encryption.Decrypt("QfGhOi0/Ub+iepNKjtMpykKmHOyIDM+UTrJa9yhsXihPynUYJO44/6X7+hrgT4cKbeEFUUxIBGJI0Rs0NggyKe9mte1EXfItITbaJVS0dVUwFo2C1ppDCGK2kc5EXskd");
+                DbLink = "";
+            }
+            else if (enviroments == "SIGMAN")
+            {
+                DataBase = VarEncript.Encryption.Decrypt("YaS6sILu9wwCxRMZK92xpsTUAZbnqJ/xiBrWqSTJIYFjrssEx3Gkj6b+NAK2Prt0HaUEyM6Zn09flO1ZourRTDdMWEBDjybYBh7li16Zsz5DQitq6IpSchv9sLETaHRg");
+                User = VarEncript.Encryption.Decrypt("Hxz6bYgtmxCYA+K7R3r8enU3TPoj2/zp0/mM1g8GX2Pq7VK5cSdsWpplCyX8pyVPFdSgjkRl9n0w8tiaIJWeRzzWw7W/Li7fayALDleCBFBbJvR8ae7ZgS0HX3fR03PF");
+                Pw = VarEncript.Encryption.Decrypt("C6OLJREhoROT/aF3OvsMfB1IflGSaypP9bSdh6Gubi+aQ9ex+4EsYnKrVzSLKMAmCdO/GLJLxBgZTedVG+OdFFLdcD5/xLI7hmzO/mbRbAL6BQs7tmJBA73saotLWL83");
+                DbLink = "";
+            }
+            else
+            {
+                throw new NullReferenceException("NO SE PUEDE ENCONTRAR LA BASE DE DATOS SELECCIONADA");
+            }
+            return true;
         }
-        public data.DataTable getdata(string SQL, string DataBase = "SIGCOPRD", string User = "consulbo", string Pw = "consulbo", string DbLink = "@DBLELLIPSE8")
-        {
 
-            _eFunctions.SetDBSettings(DataBase, User, Pw, DbLink);
-            var dat = _eFunctions.GetQueryResult(SQL);
+        public bool VerificarConexion(string dbname, string dbuser, string dbpass, string dblink, string dbreference = "", string dbcatalog = null)
+        {
+            //int ConnectionTimeOut = 15;
+            //bool PoolingDataBase = true;
+            Conexion = new OracleConnection();
+            var connectionString = "Data Source=" + dbname + ";User ID=" + dbuser + ";Password=" + dbpass;
+            Conexion.ConnectionString = connectionString;
+            Conexion.Open();
+            //OracleConnection Cmd = Conexion.CreateCommand();
+            return true;
+        }
+        public IDataReader GetQueryResult(string sqlQuery, string customConnectionString = null)
+        {
+            OracleCommand Cmd = Conexion.CreateCommand();
+            Cmd.CommandText = sqlQuery;
+            OracleDataReader Datos = Cmd.ExecuteReader();
+            return Datos;       
+        }
+
+
+        public data.DataTable getdata(string SQL, Int32 SW = 0)
+        {
+            if(SW == 0)
+            {
+                ConexionDataBase(drpEnviroment.SelectedItem.Label);
+            }
+            else
+            {
+                ConexionDataBase("Productivox");
+            }
+            //ConexionDataBase(drpEnviroment.SelectedItem.Label);
+            VerificarConexion(DataBase, User, Pw, DbLink);
+            //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var dat = GetQueryResult(SQL);
             data.DataTable DATA = new data.DataTable();
             DATA.Load(dat);
+            Conexion.Close();
             return DATA;
         }
 
@@ -149,7 +238,7 @@ namespace EllipseAddinGanttEQ
 
         public void Formatear(string Titulo, string NombreHoja, bool SubEncab = false)
         {
-            //string Titulo = "";
+            //String Titulo = "";
             CntIndicador = CntIndicador + 1;
             //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
 
@@ -210,7 +299,7 @@ namespace EllipseAddinGanttEQ
             //_excelApp.ActiveWorkbook.Sheets[1].Select(Type.Missing);
         }
 
-        private void TituloAndLogo(string Ruta, Excel.Range RngImg, string Titulo, Excel.Range RngTitulo)
+        private void TituloAndLogo(String Ruta, Excel.Range RngImg, String Titulo, Excel.Range RngTitulo)
         {
             //FORMAT IMAGEN
             RngImg.Select();
@@ -412,7 +501,7 @@ namespace EllipseAddinGanttEQ
             Rango.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
         }
 
-        private void Encabezado(data.DataTable table, string Hoja)
+        private void Encabezado(data.DataTable table, String Hoja)
         {
             //Formateando columnas de encabezado
             //_excelApp.ActiveSheet.ListObjects.Add(Excel.XlListObjectSourceType.xlSrcRange, _cells.GetRange(StartColTable, StartRowTable, (table.Columns.Count + StartColTable) - 1, StartRowTable), Type.Missing, Excel.XlYesNoGuess.xlNo, Type.Missing).Name = "TiTul01";
@@ -490,7 +579,7 @@ namespace EllipseAddinGanttEQ
 
         }
 
-        public void borrarTabla(string Name_Hoja)
+        public void borrarTabla(String Name_Hoja)
         {
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
             {
@@ -716,9 +805,9 @@ namespace EllipseAddinGanttEQ
                 //borrarTabla(NameHoja);
                 data.DataTable table;
 
-                string FechaFinal = "";
+                String FechaFinal = "";
                 Int32 HR_ADD = 0;
-                string ESTADO = "";
+                String ESTADO = "";
                 var sqlQuery = "";
 
                 if (_cells.GetCell(StartColInputMenu + 1, StartRowInputMenu).Value != null)
@@ -835,7 +924,7 @@ namespace EllipseAddinGanttEQ
         {
             //_excelApp.ActiveWorkbook.ActiveSheet.Select();
             //Rango.Select();
-            string NameTable = "01";
+            String NameTable = "01";
             NameTable = NameTable + Convert.ToString(_excelApp.ActiveWorkbook.ActiveSheet.Name);
             //Rango.Select();
             if (StyleText == 1)
@@ -1003,29 +1092,29 @@ namespace EllipseAddinGanttEQ
         private void ActualizarGanttTaskOt(int tipo)
         {
             int filas = StartRowTable + 1;
-            string PLAN_STR_DATE = "";
+            String PLAN_STR_DATE = "";
             Int32 PlanStrDate = FindColumna("PLAN_STR_DATE");
-            string PLAN_STR_TIME = "";
+            String PLAN_STR_TIME = "";
             Int32 PlanStrTime = FindColumna("PLAN_STR_TIME");
-            string PLAN_FIN_DATE = "";
+            String PLAN_FIN_DATE = "";
             Int32 PlanFinDate = FindColumna("PLAN_FIN_DATE");
-            string PLAN_FIN_TIME = "";
+            String PLAN_FIN_TIME = "";
             Int32 PlanFinTime = FindColumna("PLAN_FIN_TIME");
-            string WORK_ORDER = "";
+            String WORK_ORDER = "";
             Int32 Wo = FindColumna("WORK_ORDER");
-            string WO_TASK_NO = "";
+            String WO_TASK_NO = "";
             Int32 WoTask = FindColumna("TASK");
-            string WO_DESC = "";
+            String WO_DESC = "";
             Int32 WoDesc = FindColumna("DESCRIPCION");
-            string TSK_DUR_HOURS = "";
+            String TSK_DUR_HOURS = "";
             Int32 TskDurHr = FindColumna("DUR_EST");
-            string TASK_PRIORITY = "";
+            String TASK_PRIORITY = "";
             Int32 TskPriori = FindColumna("PRI");
-            string UBIC = "";
+            String UBIC = "";
             Int32 Ubic = FindColumna("UBIC");
-            string COL = "";
+            String COL = "";
             Int32 Cod = FindColumna("COD");
-            string SEC = "";
+            String SEC = "";
             Int32 Sec = FindColumna("SEC");
             while (_cells.GetCell(StartColTable, filas).Value != null)
             {
@@ -1033,7 +1122,7 @@ namespace EllipseAddinGanttEQ
                 {
                     if (tipo == 1)
                     {
-                        PLAN_STR_DATE = "" + _cells.GetCell(FinColTablaOneSheet + 1 , filas).Value;
+                        PLAN_STR_DATE = "" + _cells.GetCell(FinColTablaOneSheet + 1, filas).Value;
                         PLAN_STR_TIME = "" + _cells.GetCell(FinColTablaOneSheet + 2, filas).Value;
                         PLAN_FIN_DATE = "";
                         PLAN_FIN_TIME = "";
@@ -1054,80 +1143,143 @@ namespace EllipseAddinGanttEQ
                     UBIC = "" + _cells.GetCell(Ubic, filas).Value;
                     COL = "" + _cells.GetCell(Cod, filas).Value;
                     SEC = "" + _cells.GetCell(Sec, filas).Value;
-                    
+
                     var distrito = string.IsNullOrWhiteSpace(_frmAuth.EllipseDsct) ? _frmAuth.EllipseDsct : "ICOR";
                     var userName = _frmAuth.EllipseUser.ToUpper();
 
-
-                    WorkOrderTaskService.WorkOrderTaskService proxySheet_t = new WorkOrderTaskService.WorkOrderTaskService();
-
-
-                    WorkOrderTaskService.WorkOrderTaskServiceModifyRequestDTO requestParamsSheet_t = new WorkOrderTaskService.WorkOrderTaskServiceModifyRequestDTO();
-                    WorkOrderTaskService.WorkOrderTaskServiceModifyReplyDTO replySheet_t = new WorkOrderTaskService.WorkOrderTaskServiceModifyReplyDTO();
-
-                    var workOrderA_t = new WorkOrderTaskService.WorkOrderDTO();
-
-                    workOrderA_t.no = WORK_ORDER.Substring(2, 6);
-                    workOrderA_t.prefix = WORK_ORDER.Substring(0, 2);
-
-                    proxySheet_t.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/WorkOrderTaskService";
-
-                    var opSheet_t = new WorkOrderTaskService.OperationContext
+                    if (drpEnviroment.SelectedItem.Label != "EL9CONV")
                     {
-                        district = _frmAuth.EllipseDsct,
-                        position = _frmAuth.EllipsePost,
-                        maxInstances = 100,
-                        maxInstancesSpecified = true,
-                        returnWarnings = Debugger.DebugWarnings,
-                        returnWarningsSpecified = true,
-                    };
+                        
+                        WorkOrderTaskService.WorkOrderTaskService proxySheet_t = new WorkOrderTaskService.WorkOrderTaskService();    
+                        WorkOrderTaskService.WorkOrderTaskServiceModifyRequestDTO requestParamsSheet_t = new WorkOrderTaskService.WorkOrderTaskServiceModifyRequestDTO();
+                        WorkOrderTaskService.WorkOrderTaskServiceModifyReplyDTO replySheet_t = new WorkOrderTaskService.WorkOrderTaskServiceModifyReplyDTO();
 
-                    ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+                        var workOrderA_t = new WorkOrderTaskService.WorkOrderDTO();
 
-                    requestParamsSheet_t.districtCode = distrito;
-                    requestParamsSheet_t.planStrDate = PLAN_STR_DATE;
-                    requestParamsSheet_t.planStrTime = PLAN_STR_TIME;
-                    requestParamsSheet_t.planFinDate = PLAN_FIN_DATE;
-                    requestParamsSheet_t.planFinTime = PLAN_FIN_TIME;
-                    requestParamsSheet_t.workOrder = workOrderA_t;
-                    requestParamsSheet_t.WOTaskNo = WO_TASK_NO;
-                    requestParamsSheet_t.WOTaskDesc = WO_DESC;
-                    requestParamsSheet_t.priority = TASK_PRIORITY;
+                        workOrderA_t.no = WORK_ORDER.Substring(2, 6);
+                        workOrderA_t.prefix = WORK_ORDER.Substring(0, 2);
 
-                    var woTask = new WorkOrderTask
-                    {
-                        DistrictCode = distrito,
-                        WorkOrder = WORK_ORDER,
-                        WoTaskNo = WO_TASK_NO,
-                        EstimatedDurationsHrs = TSK_DUR_HOURS
-                    };
+                        proxySheet_t.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/WorkOrderTaskService";
 
-                    woTask.SetWorkOrderDto(woTask.WorkOrder);
+                        var opSheet_t = new WorkOrderTaskService.OperationContext
+                        {
+                            district = _frmAuth.EllipseDsct,
+                            position = _frmAuth.EllipsePost,
+                            maxInstances = 100,
+                            maxInstancesSpecified = true,
+                            returnWarnings = Debugger.DebugWarnings,
+                            returnWarningsSpecified = true,
+                        };
+
+                        ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                        requestParamsSheet_t.districtCode = distrito;
+                        requestParamsSheet_t.planStrDate = PLAN_STR_DATE;
+                        requestParamsSheet_t.planStrTime = PLAN_STR_TIME;
+                        requestParamsSheet_t.planFinDate = PLAN_FIN_DATE;
+                        requestParamsSheet_t.planFinTime = PLAN_FIN_TIME;
+                        requestParamsSheet_t.workOrder = workOrderA_t;
+                        requestParamsSheet_t.WOTaskNo = WO_TASK_NO;
+                        requestParamsSheet_t.WOTaskDesc = WO_DESC;
+                        requestParamsSheet_t.priority = TASK_PRIORITY;
+
+                        var woTask = new WorkOrderTask
+                        {
+                            DistrictCode = distrito,
+                            WorkOrder = WORK_ORDER,
+                            WoTaskNo = WO_TASK_NO,
+                            EstimatedDurationsHrs = TSK_DUR_HOURS
+                        };
+
+                        woTask.SetWorkOrderDto(woTask.WorkOrder);
 
 
 
-                    ReplyMessage replyMsg = null;
+                        ReplyMessage replyMsg = null;
 
 
 
-                    string messageResult = replyMsg == null ? "OK" : replyMsg.Message;
+                        string messageResult = replyMsg == null ? "OK" : replyMsg.Message;
 
-                    _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
-                    _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
 
-                    replySheet_t = proxySheet_t.modify(opSheet_t, requestParamsSheet_t);
-                    var reply = WorkOrderTaskActions.ModifyWorkOrderTask(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), opSheet_t, woTask);
-                    WorkOrderTaskActions.SetWorkOrderTaskText(Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+                        replySheet_t = proxySheet_t.modify(opSheet_t, requestParamsSheet_t);
+                        //var reply = WorkOrderTaskActions.ModifyWorkOrderTask(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet_t, woTask);
+                        //WorkOrderTaskActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
 
-                    if (_cells.GetCell(WoTask, filas).Value == "001" || _cells.GetCell(WoTask, filas).Value == "")
-                    {
-                        ActualizarRefCodes(filas, distrito, UBIC, COL, SEC, WORK_ORDER);
+                        if (_cells.GetCell(WoTask, filas).Value == "001" || _cells.GetCell(WoTask, filas).Value == "")
+                        {
+                            ActualizarRefCodes(filas, distrito, UBIC, COL, SEC, WORK_ORDER);
+                        }
+
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
+                        //_cells.GetCell("GD" + filas).Style = _cells.GetStyle(StyleConstants.ItalicSmall);
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
+                        //_cells.GetCell("GD").Borders.Weight = "2";
                     }
+                    else
+                    {
+                        WorkOrderTaskService9.WorkOrderTaskService proxySheet_t = new WorkOrderTaskService9.WorkOrderTaskService();
+                        WorkOrderTaskService9.WorkOrderTaskServiceModifyRequestDTO requestParamsSheet_t = new WorkOrderTaskService9.WorkOrderTaskServiceModifyRequestDTO();
+                        WorkOrderTaskService9.WorkOrderTaskServiceModifyReplyDTO replySheet_t = new WorkOrderTaskService9.WorkOrderTaskServiceModifyReplyDTO();
 
-                    _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
-                    //_cells.GetCell("GD" + filas).Style = _cells.GetStyle(StyleConstants.ItalicSmall);
-                    _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
-                    //_cells.GetCell("GD").Borders.Weight = "2";
+                        var workOrderA_t = new WorkOrderTaskService9.WorkOrderDTO();
+
+                        workOrderA_t.no = WORK_ORDER.Substring(2, 6);
+                        workOrderA_t.prefix = WORK_ORDER.Substring(0, 2);
+
+                        proxySheet_t.Url = "http://ews-eamprd.lmnerp01.cerrejon.com/ews/services" + "/WorkOrderTaskService";
+
+                        WorkOrderTaskService9.OperationContext opSheet_t = new WorkOrderTaskService9.OperationContext
+                        {
+                            district = _frmAuth.EllipseDsct,
+                            position = _frmAuth.EllipsePost,
+                            maxInstances = 100,
+                            maxInstancesSpecified = true,
+                            returnWarnings = Debugger.DebugWarnings,
+                            returnWarningsSpecified = true,
+                        };
+
+                        ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
+
+                        requestParamsSheet_t.districtCode = distrito;
+                        requestParamsSheet_t.planStrDate = PLAN_STR_DATE;
+                        requestParamsSheet_t.planStrTime = PLAN_STR_TIME;
+                        requestParamsSheet_t.planFinDate = PLAN_FIN_DATE;
+                        requestParamsSheet_t.planFinTime = PLAN_FIN_TIME;
+                        requestParamsSheet_t.workOrder = workOrderA_t;
+                        requestParamsSheet_t.WOTaskNo = WO_TASK_NO;
+                        requestParamsSheet_t.WOTaskDesc = WO_DESC;
+                        requestParamsSheet_t.priority = TASK_PRIORITY;
+
+  
+
+
+                        ReplyMessage replyMsg = null;
+
+
+
+                        string messageResult = replyMsg == null ? "OK" : replyMsg.Message;
+
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
+
+                        replySheet_t = proxySheet_t.modify(opSheet_t, requestParamsSheet_t);
+                        //var reply = WorkOrderTaskActions.ModifyWorkOrderTask(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), opSheet_t, woTask);
+                        //WorkOrderTaskActions.SetWorkOrderTaskText(_eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label), _frmAuth.EllipseDsct, _frmAuth.EllipsePost, true, woTask);
+
+                        /*if (_cells.GetCell(WoTask, filas).Value == "001" || _cells.GetCell(WoTask, filas).Value == "")
+                        {
+                            ActualizarRefCodes(filas, distrito, UBIC, COL, SEC, WORK_ORDER);
+                        }
+                        */
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Value = messageResult;
+                        //_cells.GetCell("GD" + filas).Style = _cells.GetStyle(StyleConstants.ItalicSmall);
+                        _cells.GetCell(FinColTablaOneSheet + 3, filas).Style = StyleConstants.Success;
+                        //_cells.GetCell("GD").Borders.Weight = "2";
+
+                    }
 
                 }
                 catch (Exception ex)
@@ -1160,31 +1312,31 @@ namespace EllipseAddinGanttEQ
         {
 
             int filas = StartRowTable + 1;
-            string PLAN_STR_DATE = "";
+            String PLAN_STR_DATE = "";
             Int32 PlanStrDate = FindColumna("PLAN_STR_DATE");
-            string PLAN_STR_TIME = "";
+            String PLAN_STR_TIME = "";
             Int32 PlanStrTime = FindColumna("PLAN_STR_TIME");
-            string PLAN_FIN_DATE = "";
+            String PLAN_FIN_DATE = "";
             Int32 PlanFinDate = FindColumna("PLAN_FIN_DATE");
-            string PLAN_FIN_TIME = "";
+            String PLAN_FIN_TIME = "";
             Int32 PlanFinTime = FindColumna("PLAN_FIN_TIME");
-            string WORK_ORDER = "";
+            String WORK_ORDER = "";
             Int32 Wo = FindColumna("WORK_ORDER");
-            string RELATED_WO = "";
+            String RELATED_WO = "";
             Int32 RltWo = FindColumna("RELATED_WO");
-            //string WO_TASK_NO = "";
+            //String WO_TASK_NO = "";
             //Int32 WoTask = FindColumna("TASK");
-            string WO_DESC = "";
+            String WO_DESC = "";
             Int32 WoDesc = FindColumna("DESCRIPCION");
-            string DUR_HOURS = "";
+            String DUR_HOURS = "";
             Int32 EstDurHr = FindColumna("DUR_EST");
-            string PRIORITY = "";
+            String PRIORITY = "";
             Int32 Priori = FindColumna("PRI");
-            string UBIC = "";
+            String UBIC = "";
             Int32 Ubic = FindColumna("UBIC");
-            string COL = "";
+            String COL = "";
             Int32 Cod = FindColumna("COD");
-            string SEC = "";
+            String SEC = "";
             Int32 Sec = FindColumna("SEC");
 
 
@@ -1246,7 +1398,7 @@ namespace EllipseAddinGanttEQ
                         workOrderB.prefix = RELATED_WO.Substring(0, 2);
                     }
 
-                    proxySheet.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/WorkOrderService";
+                    proxySheet.Url = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label) + "/WorkOrderService";
 
                     var opSheet = new WorkOrderService.OperationContext
                     {
@@ -1322,14 +1474,17 @@ namespace EllipseAddinGanttEQ
                     MessageBox.Show(@"Debe existir ordenes en la pestaña del Gantt para poder realizar esta Acción.");
                     return;
                 }
-                _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-                var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+                //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+                //var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
+
+                _eFunctions.SetDBSettings("Contingencia");
+                var urlService = _eFunctions.GetServicesUrl("Contingencia");
 
                 _cells.GetCell(StartColTable + FinColTablaOneSheet, StartRowTable - 1).Select();
                 CalcularFechaHr();
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                _frmAuth.SelectedEnviroment = "Contingencia";//drpEnviroment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 // if(true)
                 {
@@ -1356,7 +1511,7 @@ namespace EllipseAddinGanttEQ
         private void btnActualizarDatos_Click(object sender, RibbonControlEventArgs e)
         {
             //_eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
-            //var urlService = Environments.GetServiceUrl(drpEnviroment.SelectedItem.Label);
+            //var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
 
             //CalcularFechaHr();
             if (_excelApp.ActiveWorkbook.ActiveSheet.Name == SheetName01)
@@ -1369,7 +1524,7 @@ namespace EllipseAddinGanttEQ
                 }
                 _cells.GetCell(StartColTable + FinColTablaOneSheet, StartRowTable - 1).Select();
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 {
 
@@ -1393,8 +1548,8 @@ namespace EllipseAddinGanttEQ
 
         private void ActualizarRefCodes(int fila, string distrit, string UBIC, string COLOR, string SEC, string WORKORDER)
         {
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
 
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
@@ -1650,12 +1805,12 @@ namespace EllipseAddinGanttEQ
             IList<string> Encabezados = new List<string>();
             List<string> Acciones = new List<string>();
             List<string> ReqType = new List<string>();
-            Acciones.Add(WorkOrderTaskActions.Create);
-            Acciones.Add(WorkOrderTaskActions.Modify);
-            Acciones.Add(WorkOrderTaskActions.Delete);
-            ReqType.Add(RequirementType.Labour.Key);
-            ReqType.Add(RequirementType.Material.Key);
-            ReqType.Add(RequirementType.Equipment.Key);
+            Acciones.Add("C");
+            Acciones.Add("M");
+            Acciones.Add("D");
+            ReqType.Add("LAB");
+            ReqType.Add("MAT");
+            ReqType.Add("EQU");
             Int32 FinCol = 0;
             Int32 FinRowForFormat = 0;
             var StrCol = StartColTable;
@@ -1669,7 +1824,7 @@ namespace EllipseAddinGanttEQ
             for (Int32 w = 0; w < DatosWo.Length; w++)
             {
                 string sqlQuery = Consulta(1, 2, DatosWo[w]);
-                data.DataTable table = getdata(sqlQuery, "EL8PROD", "consulbo", "ventyx15", "");
+                data.DataTable table = getdata(sqlQuery);
                 if (w == 0)
                 {
                     foreach (data.DataColumn Col in table.Columns)
@@ -1696,7 +1851,7 @@ namespace EllipseAddinGanttEQ
                     //WoSinLabor.Add(DatosWo[w].ToString());
                     _cells.GetCell(StrCol, StrRow).Value = "'ICOR";
                     _cells.GetCell(StrCol + 2, StrRow).Value = DatosWo[w];
-                    _cells.GetCell(StrCol + 6, StrRow).Value = RequirementType.Labour.Key;
+                    _cells.GetCell(StrCol + 6, StrRow).Value = "LAB";
                     StrRow = StrRow + 1;
                     FinRow = FinRow + 1;
                 }
@@ -1771,11 +1926,11 @@ namespace EllipseAddinGanttEQ
                 _excelApp.ScreenUpdating = true;
 
                 _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
                 if (_frmAuth.ShowDialog() == DialogResult.OK)
                 // if(true)
                 {
-                    _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+                    _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
                     if (_cells == null)
                         _cells = new ExcelStyleCells(_excelApp);
                     _cells.SetCursorWait();
@@ -1813,7 +1968,7 @@ namespace EllipseAddinGanttEQ
 
 
                     ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-                    var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+                    var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
                     while (!string.IsNullOrEmpty("" + _cells.GetCell(StartColTable + 2, i).Value) /*&& !string.IsNullOrEmpty("" + _cells.GetCell(4, i).Value)*/)
                     {
                         if (_cells.GetCell(StartColTable + 3, i).Value != "" && _cells.GetCell(StartColTable + 5, i).Value != "")
@@ -1835,44 +1990,39 @@ namespace EllipseAddinGanttEQ
                                 taskReq.ReqCode = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 8, i).Value);                       //_cells.GetCell(9, i).Value = "" + req.ReqCode;      
                                 taskReq.ReqDesc = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 9, i).Value);                      //_cells.GetCell(10, i).Value = "" + req.ReqDesc;
                                 taskReq.UoM = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 10, i).Value);                          //_cells.GetCell(11, i).Value = "" + req.UoM;
-                                if (taskReq.ReqType == RequirementType.Material.Key || taskReq.ReqType == RequirementType.Equipment.Key)
-                                {
-                                    taskReq.UnitsQty = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 11, i).Value); //_cells.GetCell(12, i).Value = "" + req.QtyReq;       
-                                    taskReq.RealQty = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 12, i).Value); //_cells.GetCell(13, i).Value = "" + req.QtyIss;      
-                                }
-                                else
-                                {
-                                    taskReq.UnitsQty = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 13, i).Value); //_cells.GetCell(14, i).Value = "" + req.HrsReq;      
-                                    taskReq.RealQty = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 14, i).Value); //_cells.GetCell(15, i).Value = "" + req.HrsReal;     
-                                }
+                                taskReq.QtyReq = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 11, i).Value);                       //_cells.GetCell(12, i).Value = "" + req.QtyReq;       
+                                taskReq.QtyIss = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 12, i).Value);                       //_cells.GetCell(13, i).Value = "" + req.QtyIss;      
+                                taskReq.HrsReq = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 13, i).Value);                       //_cells.GetCell(14, i).Value = "" + req.HrsReq;      
+                                taskReq.HrsReal = _cells.GetEmptyIfNull(_cells.GetCell(StartColTable + 14, i).Value);                      //_cells.GetCell(15, i).Value = "" + req.HrsReal;     
+
 
                                 if (string.IsNullOrWhiteSpace(action))
                                     continue;
-                                else if (action.Equals(WorkOrderTaskActions.Create))
+                                else if (action.Equals("C"))
                                 {
-                                    if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
+                                    if (taskReq.ReqType.Equals("LAB"))
                                         WorkOrderTaskActions.CreateTaskResource(urlService, opSheetResource, taskReq);
-                                    else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
+                                    else if (taskReq.ReqType.Equals("MAT"))
                                         WorkOrderTaskActions.CreateTaskMaterial(urlService, opSheetMaterial, taskReq);
-                                    else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
+                                    else if (taskReq.ReqType.Equals("EQU"))
                                         WorkOrderTaskActions.CreateTaskEquipment(urlService, opSheetEquipment, taskReq);
                                 }
-                                else if (action.Equals(WorkOrderTaskActions.Modify))
+                                else if (action.Equals("M"))
                                 {
-                                    if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
+                                    if (taskReq.ReqType.Equals("LAB"))
                                         WorkOrderTaskActions.ModifyTaskResource(urlService, opSheetResource, taskReq);
-                                    else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
+                                    else if (taskReq.ReqType.Equals("MAT"))
                                         WorkOrderTaskActions.ModifyTaskMaterial(urlService, opSheetMaterial, taskReq);
-                                    else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
+                                    else if (taskReq.ReqType.Equals("EQU"))
                                         WorkOrderTaskActions.ModifyTaskEquipment(urlService, opSheetEquipment, taskReq);
                                 }
-                                else if (action.Equals(WorkOrderTaskActions.Delete))
+                                else if (action.Equals("D"))
                                 {
-                                    if (taskReq.ReqType.Equals(RequirementType.Labour.Key))
+                                    if (taskReq.ReqType.Equals("LAB"))
                                         WorkOrderTaskActions.DeleteTaskResource(urlService, opSheetResource, taskReq);
-                                    else if (taskReq.ReqType.Equals(RequirementType.Material.Key))
+                                    else if (taskReq.ReqType.Equals("MAT"))
                                         WorkOrderTaskActions.DeleteTaskMaterial(urlService, opSheetMaterial, taskReq);
-                                    else if (taskReq.ReqType.Equals(RequirementType.Equipment.Key))
+                                    else if (taskReq.ReqType.Equals("EQU"))
                                         WorkOrderTaskActions.DeleteTaskEquipment(urlService, opSheetEquipment, taskReq);
                                 }
                                 _cells.GetCell(StartColTable + 15, i).Value = "OK";
@@ -1881,7 +2031,7 @@ namespace EllipseAddinGanttEQ
                             }
                             catch (Exception ex)
                             {
-                                if(_cells.GetCell(StartColTable + 3, i).Value == "   ")
+                                if (_cells.GetCell(StartColTable + 3, i).Value == "   ")
                                 {
                                     _cells.GetCell(StartColTable, i).Style = StyleConstants.Error;
                                     _cells.GetCell(StartColTable + 15, i).Style = StyleConstants.Error;
@@ -1925,7 +2075,7 @@ namespace EllipseAddinGanttEQ
                 if (_cells == null)
                     _cells = new ExcelStyleCells(_excelApp);
                 _cells.GetRange(StartColTable, StartRowTable - 3, StartColTable + 2, StartRowTable - 2).Clear();
-                string FechaFinal = "";
+                String FechaFinal = "";
                 Int32 HR_ADD = 0;
 
                 if (_cells.GetCell(StartColInputMenu + 1, StartRowInputMenu).Value != null)
@@ -1995,7 +2145,7 @@ namespace EllipseAddinGanttEQ
                 MessageBox.Show(@"Debe existir ordenes en la pestaña del Gantt para poder consultar esta informacion.");
                 return;
             }*/
-            _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
+            _eFunctions.SetDBSettings(drpEnviroment.SelectedItem.Label);
             var opSheet = new WorkOrderService.OperationContext
             {
                 district = _frmAuth.EllipseDsct,//_frmAuth.EllipseDsct,
@@ -2006,14 +2156,14 @@ namespace EllipseAddinGanttEQ
                 returnWarningsSpecified = true
             };
             ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-            var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
+            var urlService = _eFunctions.GetServicesUrl(drpEnviroment.SelectedItem.Label);
             var StrCol = StartColTable + 4;
             var StrRow = StartRowTable + 1;
             var StrRow2 = StartRowTable + 1;
             var FinRow = 0;
             //string[][] ContArray = null;
             string[] Encabezados = new string[] { "DSTRCT_CODE", "WORK_ORDER", "FECHA_DUR", "CODIGO_DUR", "INICIO_DUR", "DIN_DUR", "HORAS_DUR" };
-            foreach(string Col in Encabezados)
+            foreach (string Col in Encabezados)
             {
                 _cells.GetCell(StrCol, StartRowTable).Value = Col.ToString();
                 StrCol++;
@@ -2075,16 +2225,15 @@ namespace EllipseAddinGanttEQ
                         FinRow = FinRow + StrRow;
                     }//ELSE
                 }//TRY
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //ignore
                 }
             }//FOR PRINCIPAL
             Excel.Range FormatTableLocal = _cells.GetRange(StrCol, StartRowTable, StrCol + 6, FinRow - 1);
             FormatTable(FormatTableLocal, _excelApp.ActiveWorkbook.ActiveSheet.Name, 1, 1);
             CentrarRango(FormatTableLocal);
             _excelApp.ActiveWorkbook.ActiveSheet.Cells.Columns.AutoFit();
-             if (_cells != null)
+            if (_cells != null)
             {
                 StrCol = StartColTable + 4;
                 StrRow = StartRowTable + 1;
@@ -2093,7 +2242,7 @@ namespace EllipseAddinGanttEQ
             }
 
             _cells.SetCursorDefault();
-             _excelApp.ScreenUpdating = true;
+            _excelApp.ScreenUpdating = true;
         }
 
         private void GetValesOT()
@@ -2136,7 +2285,7 @@ namespace EllipseAddinGanttEQ
             for (Int32 w = 0; w < DatosWo.Length; w++)
             {
                 string sqlQuery = Consulta(1, 3, DatosWo[w]);
-                data.DataTable table = getdata(sqlQuery, "EL8PROD", "consulbo", "ventyx15", "");
+                data.DataTable table = getdata(sqlQuery);
                 if (w == 0)
                 {
                     foreach (data.DataColumn Col in table.Columns)
@@ -2163,7 +2312,7 @@ namespace EllipseAddinGanttEQ
                     //WoSinLabor.Add(DatosWo[w].ToString());
                     //_cells.GetCell(StrCol, StrRow).Value = "";
                     _cells.GetCell(StrCol + 1, StrRow).Value = DatosWo[w];
-                    //_cells.GetCell(StrCol + 6, StrRow).Value = RequirementType.Labour.Key;
+                    //_cells.GetCell(StrCol + 6, StrRow).Value = "LAB";
                     StrRow = StrRow + 1;
                     FinRow = FinRow + 1;
                 }
@@ -2247,7 +2396,7 @@ namespace EllipseAddinGanttEQ
                     //si ya hay un thread corriendo que no se ha detenido
                     if (_thread != null && _thread.IsAlive) return;
                     _frmAuth.StartPosition = FormStartPosition.CenterScreen;
-                    _frmAuth.SelectedEnvironment = drpEnvironment.SelectedItem.Label;
+                    _frmAuth.SelectedEnviroment = drpEnviroment.SelectedItem.Label;
                     if (_frmAuth.ShowDialog() != DialogResult.OK) return;
                     _thread = new Thread(GetDurationWoList);
                     _thread.SetApartmentState(ApartmentState.STA);
@@ -2283,7 +2432,7 @@ namespace EllipseAddinGanttEQ
             return Hoja;
         }
 
-        private void BorrarSheets(string Hoja = "")
+        private void BorrarSheets(String Hoja = "")
         {
             //_excelApp.DisplayAlerts = false;
             if (Hoja != "")
@@ -2357,7 +2506,7 @@ namespace EllipseAddinGanttEQ
 
 
 
-        private void FormatCamposMenu(Excel.Range Celda, bool Col, string Texto = "", string Comentario = "", /*bool Bords, */Int32 TamLetra = 9, Int32 Rf = 91, Int32 Gf = 155, Int32 Bf = 213, Int32 Rl = 255, Int32 Gl = 255, Int32 Bl = 255)
+        private void FormatCamposMenu(Excel.Range Celda, bool Col, String Texto = "", String Comentario = "", /*bool Bords, */Int32 TamLetra = 9, Int32 Rf = 91, Int32 Gf = 155, Int32 Bf = 213, Int32 Rl = 255, Int32 Gl = 255, Int32 Bl = 255)
         {
 
             Celda.NumberFormat = "@";
@@ -2386,7 +2535,7 @@ namespace EllipseAddinGanttEQ
         }
 
 
-        List<string> ListaDatos(Int32 Tipo, string ORDEN = "DESC")
+        List<string> ListaDatos(Int32 Tipo, String ORDEN = "DESC")
         {
             List<string> listRange = new List<string>();
             data.DataTable table = null;
@@ -2400,7 +2549,7 @@ namespace EllipseAddinGanttEQ
                           FLOTA_ELLIPSE IS NOT NULL
                         ORDER BY
                           1 " + ORDEN);
-                table = getdata(Sql);
+                table = getdata(Sql,1);
             }
             else if(Tipo == 2)
             {
@@ -2412,7 +2561,7 @@ namespace EllipseAddinGanttEQ
                           FECHA112 >= TO_CHAR(ADD_MONTHS(SYSDATE,-1),'YYYYMMDD')
                         ORDER BY
                           1 " + ORDEN);
-                table = getdata(Sql);
+                table = getdata(Sql,1);
             }
             else if (Tipo == 3)
             {
@@ -2425,7 +2574,7 @@ namespace EllipseAddinGanttEQ
                           TT.TABLE_TYPE = 'TT'
                         ORDER BY
                           1 " + ORDEN);
-                table = getdata(Sql, "EL8PROD", "SIGCON", "ventyx", "");
+                table = getdata(Sql);
             }
             int i = 0;
             string[,] data = new string[table.Rows.Count, table.Columns.Count];
@@ -2447,20 +2596,18 @@ namespace EllipseAddinGanttEQ
 
         private string Separador()
         {
-            if (_cells == null)
-                _cells = new ExcelStyleCells(_excelApp);
             string separator;
             //si uso los separadores del sistema
             if (_excelApp.UseSystemSeparators)
             {
-                separator = _cells.ListSeparator();
+                separator = LanguageSettingConstants.ListSeparator;
                 //si el separador de lista y el separador decimal son iguales
-                if (separator.Equals(_cells.DecimalSeparator()))
-                    separator = _cells.DecimalSeparator().Equals(",") ? ";" : ",";
+                if (LanguageSettingConstants.ListSeparator.Equals(LanguageSettingConstants.DecimalSeparator))
+                    separator = LanguageSettingConstants.DecimalSeparator.Equals(",") ? ";" : ",";
             }
             else
             {
-                separator = _cells.DecimalSeparator().Equals(",") ? ";" : ",";
+                separator = _excelApp.DecimalSeparator.Equals(",") ? ";" : ",";
 
             }
             return separator;
@@ -2506,13 +2653,13 @@ namespace EllipseAddinGanttEQ
 										END AS LAB_EST,*/
                                         CASE
 
-                                          WHEN TR.WO_TASK_NO = '001' THEN SIGMAN.FNU_INDICADORES_PROGRAM(TR.WORK_ORDER, 4)
+                                          WHEN TR.WO_TASK_NO = '001' THEN SIGMAN.FNU_INDICADORES_PROGRAM@DBLSIG(TR.WORK_ORDER, 4)
 
                                         END AS DUR_REAL,
                                         TR.EST_LAB_COST AS LABOR_EST,
                                         CASE
 
-                                          WHEN TR.WO_TASK_NO = '001' THEN SIGMAN.FNU_INDICADORES_PROGRAM(TR.WORK_ORDER, 5)
+                                          WHEN TR.WO_TASK_NO = '001' THEN SIGMAN.FNU_INDICADORES_PROGRAM@DBLSIG(TR.WORK_ORDER, 5)
 
                                         END AS LAB_REAL,
                                         TR.TASK_PRIORITY AS ORIG_PRIORITY,
@@ -2552,11 +2699,11 @@ namespace EllipseAddinGanttEQ
 
                                         FROM
 
-                                        ELLIPSE.MSF620@DBLELLIPSE8 OT
+                                        ELLIPSE.MSF620 OT
 
-                                        INNER JOIN ELLIPSE.MSF600@DBLELLIPSE8 EQ ON EQ.EQUIP_NO = OT.EQUIP_NO
+                                        INNER JOIN ELLIPSE.MSF600 EQ ON EQ.EQUIP_NO = OT.EQUIP_NO
 
-                                        INNER JOIN ELLIPSE.MSF623@DBLELLIPSE8 TR ON OT.WORK_ORDER = TR.WORK_ORDER
+                                        INNER JOIN ELLIPSE.MSF623 TR ON OT.WORK_ORDER = TR.WORK_ORDER
                                         --INNER JOIN ELLIPSE.MSF621@DBLELLIPSE8 COT ON COT.WORK_ORDER = OT.WORK_ORDER
 
                                         LEFT JOIN
@@ -2568,8 +2715,8 @@ namespace EllipseAddinGanttEQ
 
                                           FROM
 
-                                          ELLIPSE.MSF071@DBLELLIPSE8 RC,
-                                          ELLIPSE.MSF070@DBLELLIPSE8 RCE
+                                          ELLIPSE.MSF071 RC,
+                                          ELLIPSE.MSF070 RCE
 
                                           WHERE
 
@@ -2593,8 +2740,8 @@ namespace EllipseAddinGanttEQ
 
                                             FROM
 
-                                            ELLIPSE.MSF071@DBLELLIPSE8 RC,
-                                            ELLIPSE.MSF070@DBLELLIPSE8 RCE
+                                            ELLIPSE.MSF071 RC,
+                                            ELLIPSE.MSF070 RCE
 
                                             WHERE
 
@@ -2619,8 +2766,8 @@ namespace EllipseAddinGanttEQ
 
                                             FROM
 
-                                            ELLIPSE.MSF071@DBLELLIPSE8 RC,
-                                            ELLIPSE.MSF070@DBLELLIPSE8 RCE
+                                            ELLIPSE.MSF071 RC,
+                                            ELLIPSE.MSF070 RCE
 
                                             WHERE
 
@@ -2647,6 +2794,10 @@ namespace EllipseAddinGanttEQ
 
                                         AND TRIM(OT.EQUIP_NO) = '" + _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu + 1).Value + @"'
 
+										--AND TR.PLAN_STR_DATE BETWEEN '20201223' AND '20201229'
+
+                                        --AND TRIM(OT.EQUIP_NO) = '0060134'
+										
                                         /*AND
                                         (
                                             LOCATION_TO.REF_CODE IS NULL
@@ -2688,552 +2839,552 @@ namespace EllipseAddinGanttEQ
                                         ---------------------------------------------------------------SEMANA 1---------------------------------------------------------------------------------- -
                                         ---------------------------------------------------------------DIA 1--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 0) AS S1_MIE_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 0) AS S1_MIE_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 0) AS S1_MIE_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 0) AS S1_MIE_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 0) AS S1_MIE_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 0) AS S1_MIE_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 0) AS S1_MIE_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 0) AS S1_MIE_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 0) AS S1_MIE_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 0) AS S1_MIE_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 0) AS S1_MIE_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 0) AS S1_MIE_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 0) AS S1_MIE_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 0) AS S1_MIE_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 0) AS S1_MIE_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 0) AS S1_MIE_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 0) AS S1_MIE_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 0) AS S1_MIE_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 0) AS S1_MIE_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 0) AS S1_MIE_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 0) AS S1_MIE_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 0) AS S1_MIE_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 0) AS S1_MIE_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 0) AS S1_MIE_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 0) AS S1_MIE_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 0) AS S1_MIE_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 0) AS S1_MIE_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 0) AS S1_MIE_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 0) AS S1_MIE_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 0) AS S1_MIE_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 0) AS S1_MIE_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 0) AS S1_MIE_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 0) AS S1_MIE_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 0) AS S1_MIE_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 0) AS S1_MIE_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 0) AS S1_MIE_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 0) AS S1_MIE_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 0) AS S1_MIE_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 0) AS S1_MIE_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 0) AS S1_MIE_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 0) AS S1_MIE_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 0) AS S1_MIE_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 0) AS S1_MIE_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 0) AS S1_MIE_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 0) AS S1_MIE_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 0) AS S1_MIE_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 0) AS S1_MIE_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 0) AS S1_MIE_HR_23,
                                         ---------------------------------------------------------------DIA 2--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 1, 1) AS S1_JUE_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 1, 1) AS S1_JUE_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 1, 1) AS S1_JUE_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 1, 1) AS S1_JUE_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 1, 1) AS S1_JUE_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 1, 1) AS S1_JUE_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 1, 1) AS S1_JUE_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 1, 1) AS S1_JUE_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 1, 1) AS S1_JUE_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 1, 1) AS S1_JUE_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 1, 1) AS S1_JUE_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 1, 1) AS S1_JUE_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 1, 1) AS S1_JUE_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 1, 1) AS S1_JUE_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 1, 1) AS S1_JUE_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 1, 1) AS S1_JUE_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 1, 1) AS S1_JUE_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 1, 1) AS S1_JUE_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 1, 1) AS S1_JUE_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 1, 1) AS S1_JUE_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 1, 1) AS S1_JUE_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 1, 1) AS S1_JUE_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 1, 1) AS S1_JUE_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 1, 1) AS S1_JUE_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 1, 1) AS S1_JUE_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 1, 1) AS S1_JUE_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 1, 1) AS S1_JUE_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 1, 1) AS S1_JUE_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 1, 1) AS S1_JUE_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 1, 1) AS S1_JUE_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 1, 1) AS S1_JUE_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 1, 1) AS S1_JUE_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 1, 1) AS S1_JUE_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 1, 1) AS S1_JUE_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 1, 1) AS S1_JUE_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 1, 1) AS S1_JUE_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 1, 1) AS S1_JUE_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 1, 1) AS S1_JUE_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 1, 1) AS S1_JUE_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 1, 1) AS S1_JUE_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 1, 1) AS S1_JUE_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 1, 1) AS S1_JUE_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 1, 1) AS S1_JUE_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 1, 1) AS S1_JUE_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 1, 1) AS S1_JUE_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 1, 1) AS S1_JUE_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 1, 1) AS S1_JUE_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 1, 1) AS S1_JUE_HR_23,
                                         ---------------------------------------------------------------DIA 3--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 2, 2) AS S1_VIE_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 2, 2) AS S1_VIE_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 2, 2) AS S1_VIE_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 2, 2) AS S1_VIE_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 2, 2) AS S1_VIE_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 2, 2) AS S1_VIE_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 2, 2) AS S1_VIE_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 2, 2) AS S1_VIE_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 2, 2) AS S1_VIE_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 2, 2) AS S1_VIE_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 2, 2) AS S1_VIE_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 2, 2) AS S1_VIE_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 2, 2) AS S1_VIE_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 2, 2) AS S1_VIE_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 2, 2) AS S1_VIE_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 2, 2) AS S1_VIE_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 2, 2) AS S1_VIE_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 2, 2) AS S1_VIE_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 2, 2) AS S1_VIE_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 2, 2) AS S1_VIE_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 2, 2) AS S1_VIE_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 2, 2) AS S1_VIE_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 2, 2) AS S1_VIE_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 2, 2) AS S1_VIE_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 2, 2) AS S1_VIE_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 2, 2) AS S1_VIE_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 2, 2) AS S1_VIE_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 2, 2) AS S1_VIE_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 2, 2) AS S1_VIE_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 2, 2) AS S1_VIE_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 2, 2) AS S1_VIE_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 2, 2) AS S1_VIE_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 2, 2) AS S1_VIE_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 2, 2) AS S1_VIE_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 2, 2) AS S1_VIE_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 2, 2) AS S1_VIE_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 2, 2) AS S1_VIE_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 2, 2) AS S1_VIE_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 2, 2) AS S1_VIE_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 2, 2) AS S1_VIE_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 2, 2) AS S1_VIE_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 2, 2) AS S1_VIE_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 2, 2) AS S1_VIE_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 2, 2) AS S1_VIE_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 2, 2) AS S1_VIE_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 2, 2) AS S1_VIE_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 2, 2) AS S1_VIE_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 2, 2) AS S1_VIE_HR_23,
                                         ---------------------------------------------------------------DIA 4--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 3, 3) AS S1_SAB_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 3, 3) AS S1_SAB_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 3, 3) AS S1_SAB_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 3, 3) AS S1_SAB_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 3, 3) AS S1_SAB_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 3, 3) AS S1_SAB_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 3, 3) AS S1_SAB_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 3, 3) AS S1_SAB_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 3, 3) AS S1_SAB_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 3, 3) AS S1_SAB_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 3, 3) AS S1_SAB_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 3, 3) AS S1_SAB_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 3, 3) AS S1_SAB_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 3, 3) AS S1_SAB_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 3, 3) AS S1_SAB_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 3, 3) AS S1_SAB_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 3, 3) AS S1_SAB_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 3, 3) AS S1_SAB_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 3, 3) AS S1_SAB_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 3, 3) AS S1_SAB_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 3, 3) AS S1_SAB_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 3, 3) AS S1_SAB_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 3, 3) AS S1_SAB_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 3, 3) AS S1_SAB_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 3, 3) AS S1_SAB_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 3, 3) AS S1_SAB_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 3, 3) AS S1_SAB_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 3, 3) AS S1_SAB_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 3, 3) AS S1_SAB_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 3, 3) AS S1_SAB_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 3, 3) AS S1_SAB_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 3, 3) AS S1_SAB_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 3, 3) AS S1_SAB_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 3, 3) AS S1_SAB_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 3, 3) AS S1_SAB_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 3, 3) AS S1_SAB_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 3, 3) AS S1_SAB_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 3, 3) AS S1_SAB_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 3, 3) AS S1_SAB_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 3, 3) AS S1_SAB_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 3, 3) AS S1_SAB_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 3, 3) AS S1_SAB_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 3, 3) AS S1_SAB_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 3, 3) AS S1_SAB_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 3, 3) AS S1_SAB_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 3, 3) AS S1_SAB_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 3, 3) AS S1_SAB_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 3, 3) AS S1_SAB_HR_23,
                                         ---------------------------------------------------------------DIA 5--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 4, 4) AS S1_DOM_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 4, 4) AS S1_DOM_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 4, 4) AS S1_DOM_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 4, 4) AS S1_DOM_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 4, 4) AS S1_DOM_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 4, 4) AS S1_DOM_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 4, 4) AS S1_DOM_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 4, 4) AS S1_DOM_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 4, 4) AS S1_DOM_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 4, 4) AS S1_DOM_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 4, 4) AS S1_DOM_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 4, 4) AS S1_DOM_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 4, 4) AS S1_DOM_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 4, 4) AS S1_DOM_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 4, 4) AS S1_DOM_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 4, 4) AS S1_DOM_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 4, 4) AS S1_DOM_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 4, 4) AS S1_DOM_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 4, 4) AS S1_DOM_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 4, 4) AS S1_DOM_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 4, 4) AS S1_DOM_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 4, 4) AS S1_DOM_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 4, 4) AS S1_DOM_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 4, 4) AS S1_DOM_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 4, 4) AS S1_DOM_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 4, 4) AS S1_DOM_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 4, 4) AS S1_DOM_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 4, 4) AS S1_DOM_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 4, 4) AS S1_DOM_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 4, 4) AS S1_DOM_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 4, 4) AS S1_DOM_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 4, 4) AS S1_DOM_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 4, 4) AS S1_DOM_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 4, 4) AS S1_DOM_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 4, 4) AS S1_DOM_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 4, 4) AS S1_DOM_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 4, 4) AS S1_DOM_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 4, 4) AS S1_DOM_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 4, 4) AS S1_DOM_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 4, 4) AS S1_DOM_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 4, 4) AS S1_DOM_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 4, 4) AS S1_DOM_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 4, 4) AS S1_DOM_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 4, 4) AS S1_DOM_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 4, 4) AS S1_DOM_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 4, 4) AS S1_DOM_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 4, 4) AS S1_DOM_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 4, 4) AS S1_DOM_HR_23,
                                         ---------------------------------------------------------------DIA 6--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 5, 5) AS S1_LUN_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 5, 5) AS S1_LUN_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 5, 5) AS S1_LUN_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 5, 5) AS S1_LUN_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 5, 5) AS S1_LUN_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 5, 5) AS S1_LUN_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 5, 5) AS S1_LUN_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 5, 5) AS S1_LUN_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 5, 5) AS S1_LUN_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 5, 5) AS S1_LUN_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 5, 5) AS S1_LUN_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 5, 5) AS S1_LUN_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 5, 5) AS S1_LUN_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 5, 5) AS S1_LUN_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 5, 5) AS S1_LUN_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 5, 5) AS S1_LUN_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 5, 5) AS S1_LUN_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 5, 5) AS S1_LUN_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 5, 5) AS S1_LUN_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 5, 5) AS S1_LUN_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 5, 5) AS S1_LUN_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 5, 5) AS S1_LUN_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 5, 5) AS S1_LUN_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 5, 5) AS S1_LUN_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 5, 5) AS S1_LUN_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 5, 5) AS S1_LUN_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 5, 5) AS S1_LUN_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 5, 5) AS S1_LUN_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 5, 5) AS S1_LUN_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 5, 5) AS S1_LUN_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 5, 5) AS S1_LUN_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 5, 5) AS S1_LUN_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 5, 5) AS S1_LUN_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 5, 5) AS S1_LUN_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 5, 5) AS S1_LUN_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 5, 5) AS S1_LUN_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 5, 5) AS S1_LUN_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 5, 5) AS S1_LUN_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 5, 5) AS S1_LUN_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 5, 5) AS S1_LUN_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 5, 5) AS S1_LUN_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 5, 5) AS S1_LUN_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 5, 5) AS S1_LUN_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 5, 5) AS S1_LUN_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 5, 5) AS S1_LUN_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 5, 5) AS S1_LUN_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 5, 5) AS S1_LUN_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 5, 5) AS S1_LUN_HR_23,
                                         ---------------------------------------------------------------DIA 7--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 6, 6) AS S1_MAR_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 6, 6) AS S1_MAR_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 6, 6) AS S1_MAR_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 6, 6) AS S1_MAR_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 6, 6) AS S1_MAR_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 6, 6) AS S1_MAR_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 6, 6) AS S1_MAR_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 6, 6) AS S1_MAR_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 6, 6) AS S1_MAR_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 6, 6) AS S1_MAR_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 6, 6) AS S1_MAR_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 6, 6) AS S1_MAR_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 6, 6) AS S1_MAR_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 6, 6) AS S1_MAR_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 6, 6) AS S1_MAR_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 6, 6) AS S1_MAR_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 6, 6) AS S1_MAR_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 6, 6) AS S1_MAR_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 6, 6) AS S1_MAR_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 6, 6) AS S1_MAR_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 6, 6) AS S1_MAR_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 6, 6) AS S1_MAR_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 6, 6) AS S1_MAR_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 6, 6) AS S1_MAR_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 6, 6) AS S1_MAR_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 6, 6) AS S1_MAR_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 6, 6) AS S1_MAR_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 6, 6) AS S1_MAR_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 6, 6) AS S1_MAR_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 6, 6) AS S1_MAR_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 6, 6) AS S1_MAR_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 6, 6) AS S1_MAR_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 6, 6) AS S1_MAR_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 6, 6) AS S1_MAR_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 6, 6) AS S1_MAR_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 6, 6) AS S1_MAR_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 6, 6) AS S1_MAR_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 6, 6) AS S1_MAR_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 6, 6) AS S1_MAR_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 6, 6) AS S1_MAR_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 6, 6) AS S1_MAR_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 6, 6) AS S1_MAR_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 6, 6) AS S1_MAR_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 6, 6) AS S1_MAR_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 6, 6) AS S1_MAR_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 6, 6) AS S1_MAR_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 6, 6) AS S1_MAR_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 6, 6) AS S1_MAR_HR_23,
                                         ---------------------------------------------------------------SEMANA 2---------------------------------------------------------------------------------- -
                                         ---------------------------------------------------------------DIA 8--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 7, 7) AS S2_MIE_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 7, 7) AS S2_MIE_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 7, 7) AS S2_MIE_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 7, 7) AS S2_MIE_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 7, 7) AS S2_MIE_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 7, 7) AS S2_MIE_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 7, 7) AS S2_MIE_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 7, 7) AS S2_MIE_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 7, 7) AS S2_MIE_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 7, 7) AS S2_MIE_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 7, 7) AS S2_MIE_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 7, 7) AS S2_MIE_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 7, 7) AS S2_MIE_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 7, 7) AS S2_MIE_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 7, 7) AS S2_MIE_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 7, 7) AS S2_MIE_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 7, 7) AS S2_MIE_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 7, 7) AS S2_MIE_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 7, 7) AS S2_MIE_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 7, 7) AS S2_MIE_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 7, 7) AS S2_MIE_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 7, 7) AS S2_MIE_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 7, 7) AS S2_MIE_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 7, 7) AS S2_MIE_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 7, 7) AS S2_MIE_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 7, 7) AS S2_MIE_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 7, 7) AS S2_MIE_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 7, 7) AS S2_MIE_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 7, 7) AS S2_MIE_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 7, 7) AS S2_MIE_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 7, 7) AS S2_MIE_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 7, 7) AS S2_MIE_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 7, 7) AS S2_MIE_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 7, 7) AS S2_MIE_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 7, 7) AS S2_MIE_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 7, 7) AS S2_MIE_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 7, 7) AS S2_MIE_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 7, 7) AS S2_MIE_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 7, 7) AS S2_MIE_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 7, 7) AS S2_MIE_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 7, 7) AS S2_MIE_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 7, 7) AS S2_MIE_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 7, 7) AS S2_MIE_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 7, 7) AS S2_MIE_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 7, 7) AS S2_MIE_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 7, 7) AS S2_MIE_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 7, 7) AS S2_MIE_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 7, 7) AS S2_MIE_HR_23,
                                         ---------------------------------------------------------------DIA 9--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 8, 8) AS S2_JUE_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 8, 8) AS S2_JUE_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 8, 8) AS S2_JUE_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 8, 8) AS S2_JUE_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 8, 8) AS S2_JUE_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 8, 8) AS S2_JUE_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 8, 8) AS S2_JUE_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 8, 8) AS S2_JUE_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 8, 8) AS S2_JUE_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 8, 8) AS S2_JUE_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 8, 8) AS S2_JUE_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 8, 8) AS S2_JUE_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 8, 8) AS S2_JUE_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 8, 8) AS S2_JUE_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 8, 8) AS S2_JUE_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 8, 8) AS S2_JUE_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 8, 8) AS S2_JUE_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 8, 8) AS S2_JUE_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 8, 8) AS S2_JUE_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 8, 8) AS S2_JUE_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 8, 8) AS S2_JUE_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 8, 8) AS S2_JUE_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 8, 8) AS S2_JUE_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 8, 8) AS S2_JUE_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 8, 8) AS S2_JUE_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 8, 8) AS S2_JUE_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 8, 8) AS S2_JUE_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 8, 8) AS S2_JUE_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 8, 8) AS S2_JUE_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 8, 8) AS S2_JUE_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 8, 8) AS S2_JUE_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 8, 8) AS S2_JUE_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 8, 8) AS S2_JUE_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 8, 8) AS S2_JUE_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 8, 8) AS S2_JUE_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 8, 8) AS S2_JUE_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 8, 8) AS S2_JUE_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 8, 8) AS S2_JUE_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 8, 8) AS S2_JUE_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 8, 8) AS S2_JUE_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 8, 8) AS S2_JUE_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 8, 8) AS S2_JUE_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 8, 8) AS S2_JUE_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 8, 8) AS S2_JUE_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 8, 8) AS S2_JUE_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 8, 8) AS S2_JUE_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 8, 8) AS S2_JUE_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 8, 8) AS S2_JUE_HR_23,
                                         ---------------------------------------------------------------DIA 10--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 9, 9) AS S2_VIE_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 9, 9) AS S2_VIE_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 9, 9) AS S2_VIE_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 9, 9) AS S2_VIE_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 9, 9) AS S2_VIE_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 9, 9) AS S2_VIE_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 9, 9) AS S2_VIE_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 9, 9) AS S2_VIE_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 9, 9) AS S2_VIE_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 9, 9) AS S2_VIE_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 9, 9) AS S2_VIE_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 9, 9) AS S2_VIE_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 9, 9) AS S2_VIE_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 9, 9) AS S2_VIE_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 9, 9) AS S2_VIE_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 9, 9) AS S2_VIE_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 9, 9) AS S2_VIE_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 9, 9) AS S2_VIE_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 9, 9) AS S2_VIE_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 9, 9) AS S2_VIE_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 9, 9) AS S2_VIE_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 9, 9) AS S2_VIE_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 9, 9) AS S2_VIE_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 9, 9) AS S2_VIE_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 9, 9) AS S2_VIE_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 9, 9) AS S2_VIE_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 9, 9) AS S2_VIE_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 9, 9) AS S2_VIE_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 9, 9) AS S2_VIE_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 9, 9) AS S2_VIE_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 9, 9) AS S2_VIE_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 9, 9) AS S2_VIE_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 9, 9) AS S2_VIE_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 9, 9) AS S2_VIE_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 9, 9) AS S2_VIE_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 9, 9) AS S2_VIE_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 9, 9) AS S2_VIE_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 9, 9) AS S2_VIE_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 9, 9) AS S2_VIE_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 9, 9) AS S2_VIE_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 9, 9) AS S2_VIE_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 9, 9) AS S2_VIE_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 9, 9) AS S2_VIE_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 9, 9) AS S2_VIE_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 9, 9) AS S2_VIE_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 9, 9) AS S2_VIE_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 9, 9) AS S2_VIE_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 9, 9) AS S2_VIE_HR_23,
                                         ---------------------------------------------------------------DIA 11--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 10, 10) AS S2_SAB_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 10, 10) AS S2_SAB_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 10, 10) AS S2_SAB_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 10, 10) AS S2_SAB_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 10, 10) AS S2_SAB_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 10, 10) AS S2_SAB_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 10, 10) AS S2_SAB_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 10, 10) AS S2_SAB_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 10, 10) AS S2_SAB_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 10, 10) AS S2_SAB_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 10, 10) AS S2_SAB_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 10, 10) AS S2_SAB_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 10, 10) AS S2_SAB_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 10, 10) AS S2_SAB_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 10, 10) AS S2_SAB_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 10, 10) AS S2_SAB_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 10, 10) AS S2_SAB_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 10, 10) AS S2_SAB_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 10, 10) AS S2_SAB_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 10, 10) AS S2_SAB_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 10, 10) AS S2_SAB_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 10, 10) AS S2_SAB_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 10, 10) AS S2_SAB_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 10, 10) AS S2_SAB_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 10, 10) AS S2_SAB_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 10, 10) AS S2_SAB_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 10, 10) AS S2_SAB_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 10, 10) AS S2_SAB_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 10, 10) AS S2_SAB_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 10, 10) AS S2_SAB_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 10, 10) AS S2_SAB_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 10, 10) AS S2_SAB_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 10, 10) AS S2_SAB_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 10, 10) AS S2_SAB_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 10, 10) AS S2_SAB_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 10, 10) AS S2_SAB_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 10, 10) AS S2_SAB_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 10, 10) AS S2_SAB_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 10, 10) AS S2_SAB_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 10, 10) AS S2_SAB_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 10, 10) AS S2_SAB_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 10, 10) AS S2_SAB_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 10, 10) AS S2_SAB_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 10, 10) AS S2_SAB_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 10, 10) AS S2_SAB_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 10, 10) AS S2_SAB_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 10, 10) AS S2_SAB_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 10, 10) AS S2_SAB_HR_23,
                                         ---------------------------------------------------------------DIA 12--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 11, 11) AS S2_DOM_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 11, 11) AS S2_DOM_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 11, 11) AS S2_DOM_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 11, 11) AS S2_DOM_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 11, 11) AS S2_DOM_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 11, 11) AS S2_DOM_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 11, 11) AS S2_DOM_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 11, 11) AS S2_DOM_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 11, 11) AS S2_DOM_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 11, 11) AS S2_DOM_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 11, 11) AS S2_DOM_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 11, 11) AS S2_DOM_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 11, 11) AS S2_DOM_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 11, 11) AS S2_DOM_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 11, 11) AS S2_DOM_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 11, 11) AS S2_DOM_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 11, 11) AS S2_DOM_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 11, 11) AS S2_DOM_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 11, 11) AS S2_DOM_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 11, 11) AS S2_DOM_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 11, 11) AS S2_DOM_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 11, 11) AS S2_DOM_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 11, 11) AS S2_DOM_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 11, 11) AS S2_DOM_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 11, 11) AS S2_DOM_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 11, 11) AS S2_DOM_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 11, 11) AS S2_DOM_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 11, 11) AS S2_DOM_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 11, 11) AS S2_DOM_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 11, 11) AS S2_DOM_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 11, 11) AS S2_DOM_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 11, 11) AS S2_DOM_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 11, 11) AS S2_DOM_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 11, 11) AS S2_DOM_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 11, 11) AS S2_DOM_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 11, 11) AS S2_DOM_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 11, 11) AS S2_DOM_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 11, 11) AS S2_DOM_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 11, 11) AS S2_DOM_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 11, 11) AS S2_DOM_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 11, 11) AS S2_DOM_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 11, 11) AS S2_DOM_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 11, 11) AS S2_DOM_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 11, 11) AS S2_DOM_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 11, 11) AS S2_DOM_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 11, 11) AS S2_DOM_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 11, 11) AS S2_DOM_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 11, 11) AS S2_DOM_HR_23,
                                         ---------------------------------------------------------------DIA 13--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 12, 12) AS S2_LUN_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 12, 12) AS S2_LUN_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 12, 12) AS S2_LUN_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 12, 12) AS S2_LUN_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 12, 12) AS S2_LUN_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 12, 12) AS S2_LUN_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 12, 12) AS S2_LUN_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 12, 12) AS S2_LUN_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 12, 12) AS S2_LUN_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 12, 12) AS S2_LUN_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 12, 12) AS S2_LUN_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 12, 12) AS S2_LUN_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 12, 12) AS S2_LUN_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 12, 12) AS S2_LUN_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 12, 12) AS S2_LUN_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 12, 12) AS S2_LUN_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 12, 12) AS S2_LUN_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 12, 12) AS S2_LUN_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 12, 12) AS S2_LUN_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 12, 12) AS S2_LUN_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 12, 12) AS S2_LUN_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 12, 12) AS S2_LUN_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 12, 12) AS S2_LUN_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 12, 12) AS S2_LUN_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 12, 12) AS S2_LUN_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 12, 12) AS S2_LUN_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 12, 12) AS S2_LUN_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 12, 12) AS S2_LUN_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 12, 12) AS S2_LUN_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 12, 12) AS S2_LUN_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 12, 12) AS S2_LUN_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 12, 12) AS S2_LUN_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 12, 12) AS S2_LUN_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 12, 12) AS S2_LUN_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 12, 12) AS S2_LUN_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 12, 12) AS S2_LUN_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 12, 12) AS S2_LUN_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 12, 12) AS S2_LUN_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 12, 12) AS S2_LUN_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 12, 12) AS S2_LUN_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 12, 12) AS S2_LUN_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 12, 12) AS S2_LUN_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 12, 12) AS S2_LUN_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 12, 12) AS S2_LUN_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 12, 12) AS S2_LUN_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 12, 12) AS S2_LUN_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 12, 12) AS S2_LUN_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 12, 12) AS S2_LUN_HR_23,
                                         ---------------------------------------------------------------DIA 14--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 13, 13) AS S2_MAR_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 13, 13) AS S2_MAR_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 13, 13) AS S2_MAR_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 13, 13) AS S2_MAR_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 13, 13) AS S2_MAR_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 13, 13) AS S2_MAR_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 13, 13) AS S2_MAR_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 13, 13) AS S2_MAR_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 13, 13) AS S2_MAR_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 13, 13) AS S2_MAR_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 13, 13) AS S2_MAR_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 13, 13) AS S2_MAR_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 13, 13) AS S2_MAR_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 13, 13) AS S2_MAR_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 13, 13) AS S2_MAR_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 13, 13) AS S2_MAR_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 13, 13) AS S2_MAR_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 13, 13) AS S2_MAR_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 13, 13) AS S2_MAR_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 13, 13) AS S2_MAR_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 13, 13) AS S2_MAR_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 13, 13) AS S2_MAR_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 13, 13) AS S2_MAR_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 13, 13) AS S2_MAR_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 13, 13) AS S2_MAR_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 13, 13) AS S2_MAR_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 13, 13) AS S2_MAR_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 13, 13) AS S2_MAR_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 13, 13) AS S2_MAR_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 13, 13) AS S2_MAR_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 13, 13) AS S2_MAR_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 13, 13) AS S2_MAR_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 13, 13) AS S2_MAR_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 13, 13) AS S2_MAR_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 13, 13) AS S2_MAR_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 13, 13) AS S2_MAR_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 13, 13) AS S2_MAR_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 13, 13) AS S2_MAR_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 13, 13) AS S2_MAR_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 13, 13) AS S2_MAR_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 13, 13) AS S2_MAR_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 13, 13) AS S2_MAR_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 13, 13) AS S2_MAR_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 13, 13) AS S2_MAR_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 13, 13) AS S2_MAR_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 13, 13) AS S2_MAR_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 13, 13) AS S2_MAR_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 13, 13) AS S2_MAR_HR_23,
                                         ---------------------------------------------------------------SEMANA 3---------------------------------------------------------------------------------- -
                                         ---------------------------------------------------------------DIA 15--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 14, 14) AS S3_MIE_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 14, 14) AS S3_MIE_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 14, 14) AS S3_MIE_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 14, 14) AS S3_MIE_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 14, 14) AS S3_MIE_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 14, 14) AS S3_MIE_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 14, 14) AS S3_MIE_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 14, 14) AS S3_MIE_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 14, 14) AS S3_MIE_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 14, 14) AS S3_MIE_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 14, 14) AS S3_MIE_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 14, 14) AS S3_MIE_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 14, 14) AS S3_MIE_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 14, 14) AS S3_MIE_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 14, 14) AS S3_MIE_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 14, 14) AS S3_MIE_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 14, 14) AS S3_MIE_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 14, 14) AS S3_MIE_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 14, 14) AS S3_MIE_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 14, 14) AS S3_MIE_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 14, 14) AS S3_MIE_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 14, 14) AS S3_MIE_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 14, 14) AS S3_MIE_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 14, 14) AS S3_MIE_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 14, 14) AS S3_MIE_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 14, 14) AS S3_MIE_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 14, 14) AS S3_MIE_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 14, 14) AS S3_MIE_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 14, 14) AS S3_MIE_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 14, 14) AS S3_MIE_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 14, 14) AS S3_MIE_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 14, 14) AS S3_MIE_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 14, 14) AS S3_MIE_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 14, 14) AS S3_MIE_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 14, 14) AS S3_MIE_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 14, 14) AS S3_MIE_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 14, 14) AS S3_MIE_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 14, 14) AS S3_MIE_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 14, 14) AS S3_MIE_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 14, 14) AS S3_MIE_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 14, 14) AS S3_MIE_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 14, 14) AS S3_MIE_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 14, 14) AS S3_MIE_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 14, 14) AS S3_MIE_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 14, 14) AS S3_MIE_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 14, 14) AS S3_MIE_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 14, 14) AS S3_MIE_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 14, 14) AS S3_MIE_HR_23,
                                         ---------------------------------------------------------------DIA 16--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 15, 15) AS S3_JUE_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 15, 15) AS S3_JUE_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 15, 15) AS S3_JUE_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 15, 15) AS S3_JUE_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 15, 15) AS S3_JUE_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 15, 15) AS S3_JUE_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 15, 15) AS S3_JUE_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 15, 15) AS S3_JUE_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 15, 15) AS S3_JUE_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 15, 15) AS S3_JUE_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 15, 15) AS S3_JUE_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 15, 15) AS S3_JUE_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 15, 15) AS S3_JUE_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 15, 15) AS S3_JUE_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 15, 15) AS S3_JUE_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 15, 15) AS S3_JUE_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 15, 15) AS S3_JUE_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 15, 15) AS S3_JUE_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 15, 15) AS S3_JUE_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 15, 15) AS S3_JUE_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 15, 15) AS S3_JUE_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 15, 15) AS S3_JUE_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 15, 15) AS S3_JUE_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 15, 15) AS S3_JUE_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 15, 15) AS S3_JUE_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 15, 15) AS S3_JUE_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 15, 15) AS S3_JUE_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 15, 15) AS S3_JUE_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 15, 15) AS S3_JUE_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 15, 15) AS S3_JUE_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 15, 15) AS S3_JUE_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 15, 15) AS S3_JUE_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 15, 15) AS S3_JUE_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 15, 15) AS S3_JUE_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 15, 15) AS S3_JUE_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 15, 15) AS S3_JUE_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 15, 15) AS S3_JUE_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 15, 15) AS S3_JUE_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 15, 15) AS S3_JUE_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 15, 15) AS S3_JUE_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 15, 15) AS S3_JUE_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 15, 15) AS S3_JUE_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 15, 15) AS S3_JUE_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 15, 15) AS S3_JUE_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 15, 15) AS S3_JUE_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 15, 15) AS S3_JUE_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 15, 15) AS S3_JUE_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 15, 15) AS S3_JUE_HR_23,
                                         ---------------------------------------------------------------DIA 17--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 16, 16) AS S3_VIE_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 16, 16) AS S3_VIE_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 16, 16) AS S3_VIE_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 16, 16) AS S3_VIE_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 16, 16) AS S3_VIE_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 16, 16) AS S3_VIE_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 16, 16) AS S3_VIE_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 16, 16) AS S3_VIE_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 16, 16) AS S3_VIE_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 16, 16) AS S3_VIE_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 16, 16) AS S3_VIE_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 16, 16) AS S3_VIE_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 16, 16) AS S3_VIE_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 16, 16) AS S3_VIE_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 16, 16) AS S3_VIE_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 16, 16) AS S3_VIE_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 16, 16) AS S3_VIE_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 16, 16) AS S3_VIE_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 16, 16) AS S3_VIE_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 16, 16) AS S3_VIE_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 16, 16) AS S3_VIE_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 16, 16) AS S3_VIE_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 16, 16) AS S3_VIE_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 16, 16) AS S3_VIE_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 16, 16) AS S3_VIE_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 16, 16) AS S3_VIE_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 16, 16) AS S3_VIE_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 16, 16) AS S3_VIE_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 16, 16) AS S3_VIE_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 16, 16) AS S3_VIE_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 16, 16) AS S3_VIE_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 16, 16) AS S3_VIE_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 16, 16) AS S3_VIE_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 16, 16) AS S3_VIE_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 16, 16) AS S3_VIE_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 16, 16) AS S3_VIE_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 16, 16) AS S3_VIE_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 16, 16) AS S3_VIE_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 16, 16) AS S3_VIE_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 16, 16) AS S3_VIE_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 16, 16) AS S3_VIE_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 16, 16) AS S3_VIE_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 16, 16) AS S3_VIE_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 16, 16) AS S3_VIE_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 16, 16) AS S3_VIE_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 16, 16) AS S3_VIE_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 16, 16) AS S3_VIE_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 16, 16) AS S3_VIE_HR_23,
                                         ---------------------------------------------------------------DIA 18--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 17, 17) AS S3_SAB_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 17, 17) AS S3_SAB_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 17, 17) AS S3_SAB_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 17, 17) AS S3_SAB_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 17, 17) AS S3_SAB_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 17, 17) AS S3_SAB_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 17, 17) AS S3_SAB_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 17, 17) AS S3_SAB_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 17, 17) AS S3_SAB_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 17, 17) AS S3_SAB_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 17, 17) AS S3_SAB_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 17, 17) AS S3_SAB_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 17, 17) AS S3_SAB_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 17, 17) AS S3_SAB_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 17, 17) AS S3_SAB_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 17, 17) AS S3_SAB_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 17, 17) AS S3_SAB_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 17, 17) AS S3_SAB_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 17, 17) AS S3_SAB_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 17, 17) AS S3_SAB_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 17, 17) AS S3_SAB_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 17, 17) AS S3_SAB_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 17, 17) AS S3_SAB_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 17, 17) AS S3_SAB_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 17, 17) AS S3_SAB_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 17, 17) AS S3_SAB_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 17, 17) AS S3_SAB_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 17, 17) AS S3_SAB_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 17, 17) AS S3_SAB_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 17, 17) AS S3_SAB_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 17, 17) AS S3_SAB_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 17, 17) AS S3_SAB_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 17, 17) AS S3_SAB_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 17, 17) AS S3_SAB_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 17, 17) AS S3_SAB_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 17, 17) AS S3_SAB_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 17, 17) AS S3_SAB_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 17, 17) AS S3_SAB_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 17, 17) AS S3_SAB_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 17, 17) AS S3_SAB_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 17, 17) AS S3_SAB_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 17, 17) AS S3_SAB_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 17, 17) AS S3_SAB_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 17, 17) AS S3_SAB_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 17, 17) AS S3_SAB_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 17, 17) AS S3_SAB_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 17, 17) AS S3_SAB_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 17, 17) AS S3_SAB_HR_23,
                                         ---------------------------------------------------------------DIA 19--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 18, 18) AS S3_DOM_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 18, 18) AS S3_DOM_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 18, 18) AS S3_DOM_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 18, 18) AS S3_DOM_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 18, 18) AS S3_DOM_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 18, 18) AS S3_DOM_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 18, 18) AS S3_DOM_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 18, 18) AS S3_DOM_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 18, 18) AS S3_DOM_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 18, 18) AS S3_DOM_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 18, 18) AS S3_DOM_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 18, 18) AS S3_DOM_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 18, 18) AS S3_DOM_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 18, 18) AS S3_DOM_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 18, 18) AS S3_DOM_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 18, 18) AS S3_DOM_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 18, 18) AS S3_DOM_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 18, 18) AS S3_DOM_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 18, 18) AS S3_DOM_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 18, 18) AS S3_DOM_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 18, 18) AS S3_DOM_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 18, 18) AS S3_DOM_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 18, 18) AS S3_DOM_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 18, 18) AS S3_DOM_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 18, 18) AS S3_DOM_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 18, 18) AS S3_DOM_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 18, 18) AS S3_DOM_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 18, 18) AS S3_DOM_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 18, 18) AS S3_DOM_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 18, 18) AS S3_DOM_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 18, 18) AS S3_DOM_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 18, 18) AS S3_DOM_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 18, 18) AS S3_DOM_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 18, 18) AS S3_DOM_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 18, 18) AS S3_DOM_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 18, 18) AS S3_DOM_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 18, 18) AS S3_DOM_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 18, 18) AS S3_DOM_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 18, 18) AS S3_DOM_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 18, 18) AS S3_DOM_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 18, 18) AS S3_DOM_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 18, 18) AS S3_DOM_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 18, 18) AS S3_DOM_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 18, 18) AS S3_DOM_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 18, 18) AS S3_DOM_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 18, 18) AS S3_DOM_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 18, 18) AS S3_DOM_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 18, 18) AS S3_DOM_HR_23,
                                         ---------------------------------------------------------------DIA 20--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 19, 19) AS S3_LUN_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 19, 19) AS S3_LUN_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 19, 19) AS S3_LUN_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 19, 19) AS S3_LUN_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 19, 19) AS S3_LUN_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 19, 19) AS S3_LUN_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 19, 19) AS S3_LUN_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 19, 19) AS S3_LUN_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 19, 19) AS S3_LUN_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 19, 19) AS S3_LUN_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 19, 19) AS S3_LUN_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 19, 19) AS S3_LUN_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 19, 19) AS S3_LUN_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 19, 19) AS S3_LUN_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 19, 19) AS S3_LUN_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 19, 19) AS S3_LUN_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 19, 19) AS S3_LUN_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 19, 19) AS S3_LUN_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 19, 19) AS S3_LUN_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 19, 19) AS S3_LUN_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 19, 19) AS S3_LUN_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 19, 19) AS S3_LUN_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 19, 19) AS S3_LUN_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 19, 19) AS S3_LUN_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 19, 19) AS S3_LUN_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 19, 19) AS S3_LUN_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 19, 19) AS S3_LUN_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 19, 19) AS S3_LUN_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 19, 19) AS S3_LUN_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 19, 19) AS S3_LUN_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 19, 19) AS S3_LUN_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 19, 19) AS S3_LUN_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 19, 19) AS S3_LUN_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 19, 19) AS S3_LUN_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 19, 19) AS S3_LUN_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 19, 19) AS S3_LUN_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 19, 19) AS S3_LUN_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 19, 19) AS S3_LUN_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 19, 19) AS S3_LUN_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 19, 19) AS S3_LUN_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 19, 19) AS S3_LUN_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 19, 19) AS S3_LUN_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 19, 19) AS S3_LUN_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 19, 19) AS S3_LUN_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 19, 19) AS S3_LUN_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 19, 19) AS S3_LUN_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 19, 19) AS S3_LUN_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 19, 19) AS S3_LUN_HR_23,
                                         ---------------------------------------------------------------DIA 21--------------------------------------------------------------------------------------
 
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 20, 20) AS S3_MAR_HR_0,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 20, 20) AS S3_MAR_HR_1,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 20, 20) AS S3_MAR_HR_2,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 20, 20) AS S3_MAR_HR_3,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 20, 20) AS S3_MAR_HR_4,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 20, 20) AS S3_MAR_HR_5,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 20, 20) AS S3_MAR_HR_6,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 20, 20) AS S3_MAR_HR_7,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 20, 20) AS S3_MAR_HR_8,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 20, 20) AS S3_MAR_HR_9,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 20, 20) AS S3_MAR_HR_10,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 20, 20) AS S3_MAR_HR_11,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 20, 20) AS S3_MAR_HR_12,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 20, 20) AS S3_MAR_HR_13,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 20, 20) AS S3_MAR_HR_14,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 20, 20) AS S3_MAR_HR_15,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 20, 20) AS S3_MAR_HR_16,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 20, 20) AS S3_MAR_HR_17,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 20, 20) AS S3_MAR_HR_18,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 20, 20) AS S3_MAR_HR_19,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 20, 20) AS S3_MAR_HR_20,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 20, 20) AS S3_MAR_HR_21,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 20, 20) AS S3_MAR_HR_22,
-                                        SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 20, 20) AS S3_MAR_HR_23,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '000000', 20, 20) AS S3_MAR_HR_0,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '010000', 20, 20) AS S3_MAR_HR_1,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '020000', 20, 20) AS S3_MAR_HR_2,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '030000', 20, 20) AS S3_MAR_HR_3,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '040000', 20, 20) AS S3_MAR_HR_4,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '050000', 20, 20) AS S3_MAR_HR_5,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '060000', 20, 20) AS S3_MAR_HR_6,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '070000', 20, 20) AS S3_MAR_HR_7,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '080000', 20, 20) AS S3_MAR_HR_8,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '090000', 20, 20) AS S3_MAR_HR_9,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '100000', 20, 20) AS S3_MAR_HR_10,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '110000', 20, 20) AS S3_MAR_HR_11,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '120000', 20, 20) AS S3_MAR_HR_12,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '130000', 20, 20) AS S3_MAR_HR_13,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '140000', 20, 20) AS S3_MAR_HR_14,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '150000', 20, 20) AS S3_MAR_HR_15,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '160000', 20, 20) AS S3_MAR_HR_16,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '170000', 20, 20) AS S3_MAR_HR_17,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '180000', 20, 20) AS S3_MAR_HR_18,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '190000', 20, 20) AS S3_MAR_HR_19,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '200000', 20, 20) AS S3_MAR_HR_20,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '210000', 20, 20) AS S3_MAR_HR_21,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '220000', 20, 20) AS S3_MAR_HR_22,
+                                        SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE, PRIMERA.PLAN_STR_TIME, PRIMERA.EST_DUR_HRS, PRIMERA.F_HR_PSTART_MIN, '230000', 20, 20) AS S3_MAR_HR_23,
                                         PRIMERA.F_Min
 
                                         FROM
@@ -3271,10 +3422,10 @@ namespace EllipseAddinGanttEQ
 										  OT.WO_TYPE,
 										  OT.WORK_GROUP,
 										  COT.EST_DUR_HRS,
-										  SIGMAN.FNU_INDICADORES_PROGRAM(OT.WORK_ORDER,4) AS DUR_REAL,
-										  NVL(SIGMAN.FNU_INDICADORES_PROGRAM(OT.WORK_ORDER,1,1),0) AS LABOR_EST,
+										  SIGMAN.FNU_INDICADORES_PROGRAM@DBLSIG(OT.WORK_ORDER,4) AS DUR_REAL,
+										  NVL(SIGMAN.FNU_INDICADORES_PROGRAM@DBLSIG(OT.WORK_ORDER,1,1),0) AS LABOR_EST,
 										  --COT.EST_LAB_HRS AS LABOR_EST,
-										  SIGMAN.FNU_INDICADORES_PROGRAM(OT.WORK_ORDER,5) AS LAB_REAL,
+										  SIGMAN.FNU_INDICADORES_PROGRAM@DBLSIG(OT.WORK_ORDER,5) AS LAB_REAL,
 										  OT.ORIG_PRIORITY,
 										  --COT.CALC_LAB_HRS,
 										  LOCATION_TO.REF_CODE,
@@ -3310,17 +3461,17 @@ namespace EllipseAddinGanttEQ
 										  TO_DATE(FIRST_VALUE(OT.PLAN_STR_DATE) OVER(PARTITION BY OT.EQUIP_NO,COLOR.REF_CODE_C ORDER BY OT.PLAN_STR_DATE ASC ) || FIRST_VALUE(OT.PLAN_STR_TIME) OVER(PARTITION BY OT.EQUIP_NO,COLOR.REF_CODE_C ORDER BY OT.PLAN_STR_TIME ASC ),'YYYY/MM/DD hh24:mi:ss') AS F_R
 										*/
 										FROM
-										  ELLIPSE.MSF620@DBLELLIPSE8 OT
-										  INNER JOIN ELLIPSE.MSF600@DBLELLIPSE8 EQ ON EQ.EQUIP_NO=OT.EQUIP_NO
-										  INNER JOIN ELLIPSE.MSF621@DBLELLIPSE8 COT ON COT.WORK_ORDER=OT.WORK_ORDER
+										  ELLIPSE.MSF620 OT
+										  INNER JOIN ELLIPSE.MSF600 EQ ON EQ.EQUIP_NO=OT.EQUIP_NO
+										  INNER JOIN ELLIPSE.MSF621 COT ON COT.WORK_ORDER=OT.WORK_ORDER
 										  LEFT JOIN 
 										  (
 											  SELECT  
 												RC.REF_CODE AS REF_CODE,
 												SUBSTR(RC.ENTITY_VALUE,6,8) AS NO_OT
 											  FROM  
-												ELLIPSE.MSF071@DBLELLIPSE8 RC, 
-												ELLIPSE.MSF070@DBLELLIPSE8 RCE 
+												ELLIPSE.MSF071 RC, 
+												ELLIPSE.MSF070 RCE 
 											  WHERE  
 												RC.ENTITY_TYPE = RCE.ENTITY_TYPE  
 												AND RC.REF_NO = RCE.REF_NO 
@@ -3334,8 +3485,8 @@ namespace EllipseAddinGanttEQ
 													RC.REF_CODE AS REF_CODE_C,
 													SUBSTR(RC.ENTITY_VALUE,6,8) AS NO_OT_C
 												  FROM  
-													ELLIPSE.MSF071@DBLELLIPSE8 RC, 
-													ELLIPSE.MSF070@DBLELLIPSE8 RCE 
+													ELLIPSE.MSF071 RC, 
+													ELLIPSE.MSF070 RCE 
 												  WHERE  
 													RC.ENTITY_TYPE = RCE.ENTITY_TYPE 
 													AND RC.REF_CODE IS NOT NULL 
@@ -3350,8 +3501,8 @@ namespace EllipseAddinGanttEQ
 													TRIM(RC.REF_CODE) AS REF_CODE_SEC,
 													SUBSTR(RC.ENTITY_VALUE,6,8) AS SEC_OT
 												  FROM  
-													ELLIPSE.MSF071@DBLELLIPSE8 RC, 
-													ELLIPSE.MSF070@DBLELLIPSE8 RCE 
+													ELLIPSE.MSF071 RC, 
+													ELLIPSE.MSF070 RCE 
 												  WHERE  
 													RC.ENTITY_TYPE = RCE.ENTITY_TYPE  
 													AND RC.REF_NO = RCE.REF_NO 
@@ -3399,532 +3550,532 @@ namespace EllipseAddinGanttEQ
 										TRUNC( ( ( ( TO_DATE(PRIMERA.F_HR_PFIN_MAX,'YYYYMMDD HH24MISS') )-( TO_DATE(PRIMERA.F_HR_PSTART_MIN,'YYYYMMDD HH24MISS') ) )*24) ,1) AS PARADA_EQUIPO,
 										---------------------------------------------------------------SEMANA 1-----------------------------------------------------------------------------------
 										---------------------------------------------------------------DIA 1--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',0) AS S1_MIE_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',0) AS S1_MIE_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',0) AS S1_MIE_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',0) AS S1_MIE_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',0) AS S1_MIE_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',0) AS S1_MIE_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',0) AS S1_MIE_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',0) AS S1_MIE_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',0) AS S1_MIE_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',0) AS S1_MIE_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',0) AS S1_MIE_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',0) AS S1_MIE_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',0) AS S1_MIE_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',0) AS S1_MIE_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',0) AS S1_MIE_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',0) AS S1_MIE_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',0) AS S1_MIE_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',0) AS S1_MIE_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',0) AS S1_MIE_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',0) AS S1_MIE_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',0) AS S1_MIE_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',0) AS S1_MIE_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',0) AS S1_MIE_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',0) AS S1_MIE_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',0) AS S1_MIE_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',0) AS S1_MIE_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',0) AS S1_MIE_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',0) AS S1_MIE_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',0) AS S1_MIE_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',0) AS S1_MIE_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',0) AS S1_MIE_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',0) AS S1_MIE_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',0) AS S1_MIE_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',0) AS S1_MIE_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',0) AS S1_MIE_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',0) AS S1_MIE_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',0) AS S1_MIE_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',0) AS S1_MIE_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',0) AS S1_MIE_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',0) AS S1_MIE_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',0) AS S1_MIE_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',0) AS S1_MIE_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',0) AS S1_MIE_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',0) AS S1_MIE_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',0) AS S1_MIE_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',0) AS S1_MIE_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',0) AS S1_MIE_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',0) AS S1_MIE_HR_23,
 										---------------------------------------------------------------DIA 2--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',1,1) AS S1_JUE_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',1,1) AS S1_JUE_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',1,1) AS S1_JUE_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',1,1) AS S1_JUE_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',1,1) AS S1_JUE_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',1,1) AS S1_JUE_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',1,1) AS S1_JUE_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',1,1) AS S1_JUE_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',1,1) AS S1_JUE_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',1,1) AS S1_JUE_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',1,1) AS S1_JUE_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',1,1) AS S1_JUE_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',1,1) AS S1_JUE_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',1,1) AS S1_JUE_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',1,1) AS S1_JUE_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',1,1) AS S1_JUE_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',1,1) AS S1_JUE_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',1,1) AS S1_JUE_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',1,1) AS S1_JUE_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',1,1) AS S1_JUE_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',1,1) AS S1_JUE_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',1,1) AS S1_JUE_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',1,1) AS S1_JUE_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',1,1) AS S1_JUE_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',1,1) AS S1_JUE_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',1,1) AS S1_JUE_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',1,1) AS S1_JUE_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',1,1) AS S1_JUE_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',1,1) AS S1_JUE_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',1,1) AS S1_JUE_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',1,1) AS S1_JUE_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',1,1) AS S1_JUE_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',1,1) AS S1_JUE_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',1,1) AS S1_JUE_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',1,1) AS S1_JUE_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',1,1) AS S1_JUE_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',1,1) AS S1_JUE_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',1,1) AS S1_JUE_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',1,1) AS S1_JUE_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',1,1) AS S1_JUE_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',1,1) AS S1_JUE_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',1,1) AS S1_JUE_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',1,1) AS S1_JUE_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',1,1) AS S1_JUE_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',1,1) AS S1_JUE_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',1,1) AS S1_JUE_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',1,1) AS S1_JUE_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',1,1) AS S1_JUE_HR_23,
 										---------------------------------------------------------------DIA 3--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',2,2) AS S1_VIE_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',2,2) AS S1_VIE_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',2,2) AS S1_VIE_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',2,2) AS S1_VIE_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',2,2) AS S1_VIE_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',2,2) AS S1_VIE_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',2,2) AS S1_VIE_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',2,2) AS S1_VIE_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',2,2) AS S1_VIE_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',2,2) AS S1_VIE_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',2,2) AS S1_VIE_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',2,2) AS S1_VIE_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',2,2) AS S1_VIE_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',2,2) AS S1_VIE_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',2,2) AS S1_VIE_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',2,2) AS S1_VIE_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',2,2) AS S1_VIE_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',2,2) AS S1_VIE_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',2,2) AS S1_VIE_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',2,2) AS S1_VIE_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',2,2) AS S1_VIE_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',2,2) AS S1_VIE_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',2,2) AS S1_VIE_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',2,2) AS S1_VIE_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',2,2) AS S1_VIE_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',2,2) AS S1_VIE_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',2,2) AS S1_VIE_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',2,2) AS S1_VIE_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',2,2) AS S1_VIE_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',2,2) AS S1_VIE_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',2,2) AS S1_VIE_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',2,2) AS S1_VIE_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',2,2) AS S1_VIE_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',2,2) AS S1_VIE_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',2,2) AS S1_VIE_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',2,2) AS S1_VIE_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',2,2) AS S1_VIE_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',2,2) AS S1_VIE_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',2,2) AS S1_VIE_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',2,2) AS S1_VIE_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',2,2) AS S1_VIE_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',2,2) AS S1_VIE_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',2,2) AS S1_VIE_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',2,2) AS S1_VIE_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',2,2) AS S1_VIE_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',2,2) AS S1_VIE_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',2,2) AS S1_VIE_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',2,2) AS S1_VIE_HR_23,
 										---------------------------------------------------------------DIA 4--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',3,3) AS S1_SAB_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',3,3) AS S1_SAB_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',3,3) AS S1_SAB_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',3,3) AS S1_SAB_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',3,3) AS S1_SAB_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',3,3) AS S1_SAB_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',3,3) AS S1_SAB_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',3,3) AS S1_SAB_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',3,3) AS S1_SAB_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',3,3) AS S1_SAB_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',3,3) AS S1_SAB_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',3,3) AS S1_SAB_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',3,3) AS S1_SAB_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',3,3) AS S1_SAB_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',3,3) AS S1_SAB_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',3,3) AS S1_SAB_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',3,3) AS S1_SAB_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',3,3) AS S1_SAB_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',3,3) AS S1_SAB_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',3,3) AS S1_SAB_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',3,3) AS S1_SAB_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',3,3) AS S1_SAB_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',3,3) AS S1_SAB_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',3,3) AS S1_SAB_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',3,3) AS S1_SAB_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',3,3) AS S1_SAB_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',3,3) AS S1_SAB_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',3,3) AS S1_SAB_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',3,3) AS S1_SAB_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',3,3) AS S1_SAB_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',3,3) AS S1_SAB_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',3,3) AS S1_SAB_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',3,3) AS S1_SAB_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',3,3) AS S1_SAB_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',3,3) AS S1_SAB_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',3,3) AS S1_SAB_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',3,3) AS S1_SAB_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',3,3) AS S1_SAB_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',3,3) AS S1_SAB_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',3,3) AS S1_SAB_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',3,3) AS S1_SAB_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',3,3) AS S1_SAB_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',3,3) AS S1_SAB_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',3,3) AS S1_SAB_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',3,3) AS S1_SAB_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',3,3) AS S1_SAB_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',3,3) AS S1_SAB_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',3,3) AS S1_SAB_HR_23,
 										---------------------------------------------------------------DIA 5--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',4,4) AS S1_DOM_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',4,4) AS S1_DOM_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',4,4) AS S1_DOM_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',4,4) AS S1_DOM_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',4,4) AS S1_DOM_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',4,4) AS S1_DOM_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',4,4) AS S1_DOM_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',4,4) AS S1_DOM_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',4,4) AS S1_DOM_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',4,4) AS S1_DOM_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',4,4) AS S1_DOM_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',4,4) AS S1_DOM_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',4,4) AS S1_DOM_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',4,4) AS S1_DOM_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',4,4) AS S1_DOM_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',4,4) AS S1_DOM_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',4,4) AS S1_DOM_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',4,4) AS S1_DOM_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',4,4) AS S1_DOM_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',4,4) AS S1_DOM_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',4,4) AS S1_DOM_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',4,4) AS S1_DOM_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',4,4) AS S1_DOM_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',4,4) AS S1_DOM_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',4,4) AS S1_DOM_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',4,4) AS S1_DOM_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',4,4) AS S1_DOM_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',4,4) AS S1_DOM_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',4,4) AS S1_DOM_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',4,4) AS S1_DOM_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',4,4) AS S1_DOM_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',4,4) AS S1_DOM_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',4,4) AS S1_DOM_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',4,4) AS S1_DOM_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',4,4) AS S1_DOM_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',4,4) AS S1_DOM_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',4,4) AS S1_DOM_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',4,4) AS S1_DOM_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',4,4) AS S1_DOM_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',4,4) AS S1_DOM_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',4,4) AS S1_DOM_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',4,4) AS S1_DOM_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',4,4) AS S1_DOM_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',4,4) AS S1_DOM_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',4,4) AS S1_DOM_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',4,4) AS S1_DOM_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',4,4) AS S1_DOM_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',4,4) AS S1_DOM_HR_23,
 										---------------------------------------------------------------DIA 6--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',5,5) AS S1_LUN_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',5,5) AS S1_LUN_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',5,5) AS S1_LUN_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',5,5) AS S1_LUN_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',5,5) AS S1_LUN_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',5,5) AS S1_LUN_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',5,5) AS S1_LUN_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',5,5) AS S1_LUN_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',5,5) AS S1_LUN_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',5,5) AS S1_LUN_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',5,5) AS S1_LUN_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',5,5) AS S1_LUN_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',5,5) AS S1_LUN_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',5,5) AS S1_LUN_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',5,5) AS S1_LUN_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',5,5) AS S1_LUN_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',5,5) AS S1_LUN_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',5,5) AS S1_LUN_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',5,5) AS S1_LUN_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',5,5) AS S1_LUN_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',5,5) AS S1_LUN_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',5,5) AS S1_LUN_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',5,5) AS S1_LUN_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',5,5) AS S1_LUN_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',5,5) AS S1_LUN_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',5,5) AS S1_LUN_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',5,5) AS S1_LUN_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',5,5) AS S1_LUN_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',5,5) AS S1_LUN_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',5,5) AS S1_LUN_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',5,5) AS S1_LUN_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',5,5) AS S1_LUN_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',5,5) AS S1_LUN_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',5,5) AS S1_LUN_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',5,5) AS S1_LUN_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',5,5) AS S1_LUN_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',5,5) AS S1_LUN_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',5,5) AS S1_LUN_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',5,5) AS S1_LUN_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',5,5) AS S1_LUN_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',5,5) AS S1_LUN_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',5,5) AS S1_LUN_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',5,5) AS S1_LUN_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',5,5) AS S1_LUN_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',5,5) AS S1_LUN_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',5,5) AS S1_LUN_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',5,5) AS S1_LUN_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',5,5) AS S1_LUN_HR_23,
 										---------------------------------------------------------------DIA 7--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',6,6) AS S1_MAR_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',6,6) AS S1_MAR_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',6,6) AS S1_MAR_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',6,6) AS S1_MAR_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',6,6) AS S1_MAR_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',6,6) AS S1_MAR_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',6,6) AS S1_MAR_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',6,6) AS S1_MAR_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',6,6) AS S1_MAR_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',6,6) AS S1_MAR_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',6,6) AS S1_MAR_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',6,6) AS S1_MAR_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',6,6) AS S1_MAR_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',6,6) AS S1_MAR_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',6,6) AS S1_MAR_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',6,6) AS S1_MAR_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',6,6) AS S1_MAR_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',6,6) AS S1_MAR_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',6,6) AS S1_MAR_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',6,6) AS S1_MAR_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',6,6) AS S1_MAR_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',6,6) AS S1_MAR_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',6,6) AS S1_MAR_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',6,6) AS S1_MAR_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',6,6) AS S1_MAR_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',6,6) AS S1_MAR_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',6,6) AS S1_MAR_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',6,6) AS S1_MAR_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',6,6) AS S1_MAR_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',6,6) AS S1_MAR_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',6,6) AS S1_MAR_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',6,6) AS S1_MAR_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',6,6) AS S1_MAR_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',6,6) AS S1_MAR_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',6,6) AS S1_MAR_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',6,6) AS S1_MAR_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',6,6) AS S1_MAR_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',6,6) AS S1_MAR_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',6,6) AS S1_MAR_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',6,6) AS S1_MAR_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',6,6) AS S1_MAR_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',6,6) AS S1_MAR_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',6,6) AS S1_MAR_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',6,6) AS S1_MAR_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',6,6) AS S1_MAR_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',6,6) AS S1_MAR_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',6,6) AS S1_MAR_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',6,6) AS S1_MAR_HR_23,
 										---------------------------------------------------------------SEMANA 2-----------------------------------------------------------------------------------
 										---------------------------------------------------------------DIA 8--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',7,7) AS S2_MIE_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',7,7) AS S2_MIE_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',7,7) AS S2_MIE_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',7,7) AS S2_MIE_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',7,7) AS S2_MIE_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',7,7) AS S2_MIE_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',7,7) AS S2_MIE_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',7,7) AS S2_MIE_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',7,7) AS S2_MIE_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',7,7) AS S2_MIE_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',7,7) AS S2_MIE_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',7,7) AS S2_MIE_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',7,7) AS S2_MIE_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',7,7) AS S2_MIE_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',7,7) AS S2_MIE_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',7,7) AS S2_MIE_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',7,7) AS S2_MIE_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',7,7) AS S2_MIE_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',7,7) AS S2_MIE_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',7,7) AS S2_MIE_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',7,7) AS S2_MIE_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',7,7) AS S2_MIE_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',7,7) AS S2_MIE_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',7,7) AS S2_MIE_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',7,7) AS S2_MIE_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',7,7) AS S2_MIE_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',7,7) AS S2_MIE_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',7,7) AS S2_MIE_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',7,7) AS S2_MIE_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',7,7) AS S2_MIE_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',7,7) AS S2_MIE_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',7,7) AS S2_MIE_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',7,7) AS S2_MIE_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',7,7) AS S2_MIE_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',7,7) AS S2_MIE_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',7,7) AS S2_MIE_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',7,7) AS S2_MIE_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',7,7) AS S2_MIE_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',7,7) AS S2_MIE_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',7,7) AS S2_MIE_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',7,7) AS S2_MIE_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',7,7) AS S2_MIE_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',7,7) AS S2_MIE_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',7,7) AS S2_MIE_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',7,7) AS S2_MIE_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',7,7) AS S2_MIE_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',7,7) AS S2_MIE_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',7,7) AS S2_MIE_HR_23,
 										---------------------------------------------------------------DIA 9--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',8,8) AS S2_JUE_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',8,8) AS S2_JUE_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',8,8) AS S2_JUE_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',8,8) AS S2_JUE_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',8,8) AS S2_JUE_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',8,8) AS S2_JUE_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',8,8) AS S2_JUE_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',8,8) AS S2_JUE_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',8,8) AS S2_JUE_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',8,8) AS S2_JUE_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',8,8) AS S2_JUE_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',8,8) AS S2_JUE_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',8,8) AS S2_JUE_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',8,8) AS S2_JUE_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',8,8) AS S2_JUE_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',8,8) AS S2_JUE_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',8,8) AS S2_JUE_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',8,8) AS S2_JUE_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',8,8) AS S2_JUE_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',8,8) AS S2_JUE_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',8,8) AS S2_JUE_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',8,8) AS S2_JUE_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',8,8) AS S2_JUE_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',8,8) AS S2_JUE_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',8,8) AS S2_JUE_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',8,8) AS S2_JUE_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',8,8) AS S2_JUE_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',8,8) AS S2_JUE_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',8,8) AS S2_JUE_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',8,8) AS S2_JUE_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',8,8) AS S2_JUE_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',8,8) AS S2_JUE_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',8,8) AS S2_JUE_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',8,8) AS S2_JUE_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',8,8) AS S2_JUE_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',8,8) AS S2_JUE_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',8,8) AS S2_JUE_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',8,8) AS S2_JUE_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',8,8) AS S2_JUE_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',8,8) AS S2_JUE_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',8,8) AS S2_JUE_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',8,8) AS S2_JUE_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',8,8) AS S2_JUE_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',8,8) AS S2_JUE_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',8,8) AS S2_JUE_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',8,8) AS S2_JUE_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',8,8) AS S2_JUE_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',8,8) AS S2_JUE_HR_23,
 										---------------------------------------------------------------DIA 10--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',9,9) AS S2_VIE_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',9,9) AS S2_VIE_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',9,9) AS S2_VIE_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',9,9) AS S2_VIE_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',9,9) AS S2_VIE_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',9,9) AS S2_VIE_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',9,9) AS S2_VIE_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',9,9) AS S2_VIE_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',9,9) AS S2_VIE_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',9,9) AS S2_VIE_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',9,9) AS S2_VIE_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',9,9) AS S2_VIE_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',9,9) AS S2_VIE_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',9,9) AS S2_VIE_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',9,9) AS S2_VIE_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',9,9) AS S2_VIE_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',9,9) AS S2_VIE_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',9,9) AS S2_VIE_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',9,9) AS S2_VIE_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',9,9) AS S2_VIE_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',9,9) AS S2_VIE_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',9,9) AS S2_VIE_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',9,9) AS S2_VIE_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',9,9) AS S2_VIE_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',9,9) AS S2_VIE_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',9,9) AS S2_VIE_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',9,9) AS S2_VIE_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',9,9) AS S2_VIE_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',9,9) AS S2_VIE_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',9,9) AS S2_VIE_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',9,9) AS S2_VIE_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',9,9) AS S2_VIE_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',9,9) AS S2_VIE_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',9,9) AS S2_VIE_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',9,9) AS S2_VIE_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',9,9) AS S2_VIE_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',9,9) AS S2_VIE_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',9,9) AS S2_VIE_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',9,9) AS S2_VIE_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',9,9) AS S2_VIE_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',9,9) AS S2_VIE_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',9,9) AS S2_VIE_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',9,9) AS S2_VIE_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',9,9) AS S2_VIE_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',9,9) AS S2_VIE_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',9,9) AS S2_VIE_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',9,9) AS S2_VIE_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',9,9) AS S2_VIE_HR_23,
 										---------------------------------------------------------------DIA 11--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',10,10) AS S2_SAB_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',10,10) AS S2_SAB_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',10,10) AS S2_SAB_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',10,10) AS S2_SAB_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',10,10) AS S2_SAB_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',10,10) AS S2_SAB_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',10,10) AS S2_SAB_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',10,10) AS S2_SAB_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',10,10) AS S2_SAB_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',10,10) AS S2_SAB_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',10,10) AS S2_SAB_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',10,10) AS S2_SAB_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',10,10) AS S2_SAB_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',10,10) AS S2_SAB_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',10,10) AS S2_SAB_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',10,10) AS S2_SAB_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',10,10) AS S2_SAB_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',10,10) AS S2_SAB_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',10,10) AS S2_SAB_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',10,10) AS S2_SAB_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',10,10) AS S2_SAB_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',10,10) AS S2_SAB_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',10,10) AS S2_SAB_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',10,10) AS S2_SAB_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',10,10) AS S2_SAB_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',10,10) AS S2_SAB_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',10,10) AS S2_SAB_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',10,10) AS S2_SAB_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',10,10) AS S2_SAB_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',10,10) AS S2_SAB_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',10,10) AS S2_SAB_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',10,10) AS S2_SAB_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',10,10) AS S2_SAB_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',10,10) AS S2_SAB_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',10,10) AS S2_SAB_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',10,10) AS S2_SAB_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',10,10) AS S2_SAB_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',10,10) AS S2_SAB_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',10,10) AS S2_SAB_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',10,10) AS S2_SAB_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',10,10) AS S2_SAB_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',10,10) AS S2_SAB_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',10,10) AS S2_SAB_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',10,10) AS S2_SAB_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',10,10) AS S2_SAB_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',10,10) AS S2_SAB_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',10,10) AS S2_SAB_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',10,10) AS S2_SAB_HR_23,
 										---------------------------------------------------------------DIA 12--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',11,11) AS S2_DOM_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',11,11) AS S2_DOM_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',11,11) AS S2_DOM_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',11,11) AS S2_DOM_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',11,11) AS S2_DOM_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',11,11) AS S2_DOM_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',11,11) AS S2_DOM_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',11,11) AS S2_DOM_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',11,11) AS S2_DOM_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',11,11) AS S2_DOM_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',11,11) AS S2_DOM_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',11,11) AS S2_DOM_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',11,11) AS S2_DOM_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',11,11) AS S2_DOM_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',11,11) AS S2_DOM_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',11,11) AS S2_DOM_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',11,11) AS S2_DOM_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',11,11) AS S2_DOM_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',11,11) AS S2_DOM_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',11,11) AS S2_DOM_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',11,11) AS S2_DOM_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',11,11) AS S2_DOM_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',11,11) AS S2_DOM_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',11,11) AS S2_DOM_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',11,11) AS S2_DOM_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',11,11) AS S2_DOM_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',11,11) AS S2_DOM_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',11,11) AS S2_DOM_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',11,11) AS S2_DOM_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',11,11) AS S2_DOM_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',11,11) AS S2_DOM_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',11,11) AS S2_DOM_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',11,11) AS S2_DOM_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',11,11) AS S2_DOM_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',11,11) AS S2_DOM_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',11,11) AS S2_DOM_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',11,11) AS S2_DOM_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',11,11) AS S2_DOM_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',11,11) AS S2_DOM_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',11,11) AS S2_DOM_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',11,11) AS S2_DOM_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',11,11) AS S2_DOM_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',11,11) AS S2_DOM_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',11,11) AS S2_DOM_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',11,11) AS S2_DOM_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',11,11) AS S2_DOM_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',11,11) AS S2_DOM_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',11,11) AS S2_DOM_HR_23,
 										---------------------------------------------------------------DIA 13--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',12,12) AS S2_LUN_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',12,12) AS S2_LUN_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',12,12) AS S2_LUN_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',12,12) AS S2_LUN_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',12,12) AS S2_LUN_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',12,12) AS S2_LUN_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',12,12) AS S2_LUN_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',12,12) AS S2_LUN_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',12,12) AS S2_LUN_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',12,12) AS S2_LUN_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',12,12) AS S2_LUN_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',12,12) AS S2_LUN_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',12,12) AS S2_LUN_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',12,12) AS S2_LUN_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',12,12) AS S2_LUN_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',12,12) AS S2_LUN_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',12,12) AS S2_LUN_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',12,12) AS S2_LUN_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',12,12) AS S2_LUN_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',12,12) AS S2_LUN_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',12,12) AS S2_LUN_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',12,12) AS S2_LUN_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',12,12) AS S2_LUN_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',12,12) AS S2_LUN_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',12,12) AS S2_LUN_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',12,12) AS S2_LUN_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',12,12) AS S2_LUN_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',12,12) AS S2_LUN_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',12,12) AS S2_LUN_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',12,12) AS S2_LUN_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',12,12) AS S2_LUN_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',12,12) AS S2_LUN_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',12,12) AS S2_LUN_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',12,12) AS S2_LUN_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',12,12) AS S2_LUN_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',12,12) AS S2_LUN_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',12,12) AS S2_LUN_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',12,12) AS S2_LUN_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',12,12) AS S2_LUN_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',12,12) AS S2_LUN_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',12,12) AS S2_LUN_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',12,12) AS S2_LUN_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',12,12) AS S2_LUN_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',12,12) AS S2_LUN_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',12,12) AS S2_LUN_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',12,12) AS S2_LUN_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',12,12) AS S2_LUN_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',12,12) AS S2_LUN_HR_23,
 										---------------------------------------------------------------DIA 14--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',13,13) AS S2_MAR_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',13,13) AS S2_MAR_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',13,13) AS S2_MAR_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',13,13) AS S2_MAR_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',13,13) AS S2_MAR_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',13,13) AS S2_MAR_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',13,13) AS S2_MAR_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',13,13) AS S2_MAR_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',13,13) AS S2_MAR_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',13,13) AS S2_MAR_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',13,13) AS S2_MAR_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',13,13) AS S2_MAR_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',13,13) AS S2_MAR_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',13,13) AS S2_MAR_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',13,13) AS S2_MAR_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',13,13) AS S2_MAR_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',13,13) AS S2_MAR_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',13,13) AS S2_MAR_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',13,13) AS S2_MAR_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',13,13) AS S2_MAR_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',13,13) AS S2_MAR_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',13,13) AS S2_MAR_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',13,13) AS S2_MAR_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',13,13) AS S2_MAR_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',13,13) AS S2_MAR_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',13,13) AS S2_MAR_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',13,13) AS S2_MAR_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',13,13) AS S2_MAR_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',13,13) AS S2_MAR_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',13,13) AS S2_MAR_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',13,13) AS S2_MAR_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',13,13) AS S2_MAR_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',13,13) AS S2_MAR_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',13,13) AS S2_MAR_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',13,13) AS S2_MAR_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',13,13) AS S2_MAR_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',13,13) AS S2_MAR_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',13,13) AS S2_MAR_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',13,13) AS S2_MAR_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',13,13) AS S2_MAR_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',13,13) AS S2_MAR_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',13,13) AS S2_MAR_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',13,13) AS S2_MAR_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',13,13) AS S2_MAR_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',13,13) AS S2_MAR_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',13,13) AS S2_MAR_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',13,13) AS S2_MAR_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',13,13) AS S2_MAR_HR_23,
 										---------------------------------------------------------------SEMANA 3-----------------------------------------------------------------------------------
 										---------------------------------------------------------------DIA 15--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',14,14) AS S3_MIE_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',14,14) AS S3_MIE_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',14,14) AS S3_MIE_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',14,14) AS S3_MIE_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',14,14) AS S3_MIE_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',14,14) AS S3_MIE_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',14,14) AS S3_MIE_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',14,14) AS S3_MIE_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',14,14) AS S3_MIE_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',14,14) AS S3_MIE_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',14,14) AS S3_MIE_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',14,14) AS S3_MIE_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',14,14) AS S3_MIE_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',14,14) AS S3_MIE_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',14,14) AS S3_MIE_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',14,14) AS S3_MIE_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',14,14) AS S3_MIE_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',14,14) AS S3_MIE_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',14,14) AS S3_MIE_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',14,14) AS S3_MIE_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',14,14) AS S3_MIE_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',14,14) AS S3_MIE_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',14,14) AS S3_MIE_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',14,14) AS S3_MIE_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',14,14) AS S3_MIE_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',14,14) AS S3_MIE_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',14,14) AS S3_MIE_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',14,14) AS S3_MIE_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',14,14) AS S3_MIE_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',14,14) AS S3_MIE_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',14,14) AS S3_MIE_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',14,14) AS S3_MIE_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',14,14) AS S3_MIE_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',14,14) AS S3_MIE_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',14,14) AS S3_MIE_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',14,14) AS S3_MIE_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',14,14) AS S3_MIE_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',14,14) AS S3_MIE_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',14,14) AS S3_MIE_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',14,14) AS S3_MIE_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',14,14) AS S3_MIE_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',14,14) AS S3_MIE_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',14,14) AS S3_MIE_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',14,14) AS S3_MIE_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',14,14) AS S3_MIE_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',14,14) AS S3_MIE_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',14,14) AS S3_MIE_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',14,14) AS S3_MIE_HR_23,
 										---------------------------------------------------------------DIA 16--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',15,15) AS S3_JUE_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',15,15) AS S3_JUE_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',15,15) AS S3_JUE_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',15,15) AS S3_JUE_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',15,15) AS S3_JUE_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',15,15) AS S3_JUE_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',15,15) AS S3_JUE_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',15,15) AS S3_JUE_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',15,15) AS S3_JUE_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',15,15) AS S3_JUE_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',15,15) AS S3_JUE_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',15,15) AS S3_JUE_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',15,15) AS S3_JUE_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',15,15) AS S3_JUE_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',15,15) AS S3_JUE_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',15,15) AS S3_JUE_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',15,15) AS S3_JUE_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',15,15) AS S3_JUE_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',15,15) AS S3_JUE_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',15,15) AS S3_JUE_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',15,15) AS S3_JUE_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',15,15) AS S3_JUE_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',15,15) AS S3_JUE_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',15,15) AS S3_JUE_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',15,15) AS S3_JUE_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',15,15) AS S3_JUE_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',15,15) AS S3_JUE_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',15,15) AS S3_JUE_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',15,15) AS S3_JUE_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',15,15) AS S3_JUE_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',15,15) AS S3_JUE_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',15,15) AS S3_JUE_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',15,15) AS S3_JUE_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',15,15) AS S3_JUE_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',15,15) AS S3_JUE_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',15,15) AS S3_JUE_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',15,15) AS S3_JUE_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',15,15) AS S3_JUE_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',15,15) AS S3_JUE_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',15,15) AS S3_JUE_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',15,15) AS S3_JUE_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',15,15) AS S3_JUE_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',15,15) AS S3_JUE_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',15,15) AS S3_JUE_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',15,15) AS S3_JUE_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',15,15) AS S3_JUE_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',15,15) AS S3_JUE_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',15,15) AS S3_JUE_HR_23,
 										---------------------------------------------------------------DIA 17--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',16,16) AS S3_VIE_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',16,16) AS S3_VIE_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',16,16) AS S3_VIE_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',16,16) AS S3_VIE_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',16,16) AS S3_VIE_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',16,16) AS S3_VIE_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',16,16) AS S3_VIE_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',16,16) AS S3_VIE_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',16,16) AS S3_VIE_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',16,16) AS S3_VIE_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',16,16) AS S3_VIE_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',16,16) AS S3_VIE_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',16,16) AS S3_VIE_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',16,16) AS S3_VIE_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',16,16) AS S3_VIE_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',16,16) AS S3_VIE_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',16,16) AS S3_VIE_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',16,16) AS S3_VIE_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',16,16) AS S3_VIE_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',16,16) AS S3_VIE_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',16,16) AS S3_VIE_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',16,16) AS S3_VIE_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',16,16) AS S3_VIE_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',16,16) AS S3_VIE_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',16,16) AS S3_VIE_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',16,16) AS S3_VIE_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',16,16) AS S3_VIE_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',16,16) AS S3_VIE_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',16,16) AS S3_VIE_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',16,16) AS S3_VIE_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',16,16) AS S3_VIE_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',16,16) AS S3_VIE_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',16,16) AS S3_VIE_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',16,16) AS S3_VIE_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',16,16) AS S3_VIE_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',16,16) AS S3_VIE_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',16,16) AS S3_VIE_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',16,16) AS S3_VIE_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',16,16) AS S3_VIE_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',16,16) AS S3_VIE_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',16,16) AS S3_VIE_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',16,16) AS S3_VIE_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',16,16) AS S3_VIE_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',16,16) AS S3_VIE_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',16,16) AS S3_VIE_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',16,16) AS S3_VIE_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',16,16) AS S3_VIE_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',16,16) AS S3_VIE_HR_23,
 										---------------------------------------------------------------DIA 18--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',17,17) AS S3_SAB_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',17,17) AS S3_SAB_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',17,17) AS S3_SAB_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',17,17) AS S3_SAB_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',17,17) AS S3_SAB_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',17,17) AS S3_SAB_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',17,17) AS S3_SAB_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',17,17) AS S3_SAB_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',17,17) AS S3_SAB_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',17,17) AS S3_SAB_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',17,17) AS S3_SAB_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',17,17) AS S3_SAB_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',17,17) AS S3_SAB_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',17,17) AS S3_SAB_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',17,17) AS S3_SAB_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',17,17) AS S3_SAB_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',17,17) AS S3_SAB_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',17,17) AS S3_SAB_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',17,17) AS S3_SAB_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',17,17) AS S3_SAB_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',17,17) AS S3_SAB_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',17,17) AS S3_SAB_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',17,17) AS S3_SAB_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',17,17) AS S3_SAB_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',17,17) AS S3_SAB_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',17,17) AS S3_SAB_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',17,17) AS S3_SAB_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',17,17) AS S3_SAB_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',17,17) AS S3_SAB_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',17,17) AS S3_SAB_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',17,17) AS S3_SAB_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',17,17) AS S3_SAB_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',17,17) AS S3_SAB_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',17,17) AS S3_SAB_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',17,17) AS S3_SAB_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',17,17) AS S3_SAB_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',17,17) AS S3_SAB_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',17,17) AS S3_SAB_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',17,17) AS S3_SAB_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',17,17) AS S3_SAB_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',17,17) AS S3_SAB_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',17,17) AS S3_SAB_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',17,17) AS S3_SAB_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',17,17) AS S3_SAB_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',17,17) AS S3_SAB_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',17,17) AS S3_SAB_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',17,17) AS S3_SAB_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',17,17) AS S3_SAB_HR_23,
 										---------------------------------------------------------------DIA 19--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',18,18) AS S3_DOM_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',18,18) AS S3_DOM_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',18,18) AS S3_DOM_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',18,18) AS S3_DOM_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',18,18) AS S3_DOM_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',18,18) AS S3_DOM_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',18,18) AS S3_DOM_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',18,18) AS S3_DOM_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',18,18) AS S3_DOM_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',18,18) AS S3_DOM_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',18,18) AS S3_DOM_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',18,18) AS S3_DOM_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',18,18) AS S3_DOM_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',18,18) AS S3_DOM_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',18,18) AS S3_DOM_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',18,18) AS S3_DOM_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',18,18) AS S3_DOM_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',18,18) AS S3_DOM_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',18,18) AS S3_DOM_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',18,18) AS S3_DOM_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',18,18) AS S3_DOM_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',18,18) AS S3_DOM_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',18,18) AS S3_DOM_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',18,18) AS S3_DOM_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',18,18) AS S3_DOM_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',18,18) AS S3_DOM_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',18,18) AS S3_DOM_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',18,18) AS S3_DOM_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',18,18) AS S3_DOM_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',18,18) AS S3_DOM_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',18,18) AS S3_DOM_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',18,18) AS S3_DOM_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',18,18) AS S3_DOM_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',18,18) AS S3_DOM_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',18,18) AS S3_DOM_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',18,18) AS S3_DOM_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',18,18) AS S3_DOM_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',18,18) AS S3_DOM_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',18,18) AS S3_DOM_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',18,18) AS S3_DOM_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',18,18) AS S3_DOM_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',18,18) AS S3_DOM_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',18,18) AS S3_DOM_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',18,18) AS S3_DOM_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',18,18) AS S3_DOM_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',18,18) AS S3_DOM_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',18,18) AS S3_DOM_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',18,18) AS S3_DOM_HR_23,
 										---------------------------------------------------------------DIA 20--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',19,19) AS S3_LUN_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',19,19) AS S3_LUN_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',19,19) AS S3_LUN_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',19,19) AS S3_LUN_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',19,19) AS S3_LUN_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',19,19) AS S3_LUN_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',19,19) AS S3_LUN_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',19,19) AS S3_LUN_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',19,19) AS S3_LUN_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',19,19) AS S3_LUN_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',19,19) AS S3_LUN_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',19,19) AS S3_LUN_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',19,19) AS S3_LUN_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',19,19) AS S3_LUN_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',19,19) AS S3_LUN_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',19,19) AS S3_LUN_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',19,19) AS S3_LUN_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',19,19) AS S3_LUN_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',19,19) AS S3_LUN_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',19,19) AS S3_LUN_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',19,19) AS S3_LUN_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',19,19) AS S3_LUN_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',19,19) AS S3_LUN_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',19,19) AS S3_LUN_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',19,19) AS S3_LUN_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',19,19) AS S3_LUN_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',19,19) AS S3_LUN_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',19,19) AS S3_LUN_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',19,19) AS S3_LUN_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',19,19) AS S3_LUN_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',19,19) AS S3_LUN_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',19,19) AS S3_LUN_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',19,19) AS S3_LUN_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',19,19) AS S3_LUN_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',19,19) AS S3_LUN_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',19,19) AS S3_LUN_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',19,19) AS S3_LUN_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',19,19) AS S3_LUN_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',19,19) AS S3_LUN_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',19,19) AS S3_LUN_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',19,19) AS S3_LUN_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',19,19) AS S3_LUN_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',19,19) AS S3_LUN_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',19,19) AS S3_LUN_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',19,19) AS S3_LUN_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',19,19) AS S3_LUN_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',19,19) AS S3_LUN_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',19,19) AS S3_LUN_HR_23,
 										---------------------------------------------------------------DIA 21--------------------------------------------------------------------------------------
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',20,20) AS S3_MAR_HR_0,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',20,20) AS S3_MAR_HR_1,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',20,20) AS S3_MAR_HR_2,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',20,20) AS S3_MAR_HR_3,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',20,20) AS S3_MAR_HR_4,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',20,20) AS S3_MAR_HR_5,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',20,20) AS S3_MAR_HR_6,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',20,20) AS S3_MAR_HR_7,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',20,20) AS S3_MAR_HR_8,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',20,20) AS S3_MAR_HR_9,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',20,20) AS S3_MAR_HR_10,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',20,20) AS S3_MAR_HR_11,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',20,20) AS S3_MAR_HR_12,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',20,20) AS S3_MAR_HR_13,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',20,20) AS S3_MAR_HR_14,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',20,20) AS S3_MAR_HR_15,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',20,20) AS S3_MAR_HR_16,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',20,20) AS S3_MAR_HR_17,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',20,20) AS S3_MAR_HR_18,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',20,20) AS S3_MAR_HR_19,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',20,20) AS S3_MAR_HR_20,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',20,20) AS S3_MAR_HR_21,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',20,20) AS S3_MAR_HR_22,
-										SIGMAN.FNU_GANTT_PARADA(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',20,20) AS S3_MAR_HR_23,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'000000',20,20) AS S3_MAR_HR_0,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'010000',20,20) AS S3_MAR_HR_1,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'020000',20,20) AS S3_MAR_HR_2,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'030000',20,20) AS S3_MAR_HR_3,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'040000',20,20) AS S3_MAR_HR_4,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'050000',20,20) AS S3_MAR_HR_5,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'060000',20,20) AS S3_MAR_HR_6,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'070000',20,20) AS S3_MAR_HR_7,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'080000',20,20) AS S3_MAR_HR_8,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'090000',20,20) AS S3_MAR_HR_9,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'100000',20,20) AS S3_MAR_HR_10,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'110000',20,20) AS S3_MAR_HR_11,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'120000',20,20) AS S3_MAR_HR_12,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'130000',20,20) AS S3_MAR_HR_13,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'140000',20,20) AS S3_MAR_HR_14,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'150000',20,20) AS S3_MAR_HR_15,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'160000',20,20) AS S3_MAR_HR_16,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'170000',20,20) AS S3_MAR_HR_17,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'180000',20,20) AS S3_MAR_HR_18,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'190000',20,20) AS S3_MAR_HR_19,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'200000',20,20) AS S3_MAR_HR_20,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'210000',20,20) AS S3_MAR_HR_21,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'220000',20,20) AS S3_MAR_HR_22,
+										SIGMAN.FNU_GANTT_PARADA@DBLSIG(PRIMERA.PLAN_STR_DATE,PRIMERA.PLAN_STR_TIME,PRIMERA.EST_DUR_HRS,PRIMERA.F_HR_PSTART_MIN,'230000',20,20) AS S3_MAR_HR_23,
 										PRIMERA.F_Min
 										FROM
 										  PRIMERA
@@ -3938,23 +4089,23 @@ namespace EllipseAddinGanttEQ
                                 (
                                     SELECT
                                         --OT.WORK_ORDER,
-                                        SIGMAN.FNU_INDICADORES_PROGRAM(OT.WORK_ORDER,2) AS NUMER_CUMP_PROGF,
-                                        SIGMAN.FNU_INDICADORES_PROGRAM(OT.WORK_ORDER,1,1) AS EST_LAB,
-                                        SIGMAN.FNU_INDICADORES_PROGRAM(OT.WORK_ORDER,1,2) AS REAL_LAB
+                                        SIGMAN.FNU_INDICADORES_PROGRAM@DBLSIG(OT.WORK_ORDER,2) AS NUMER_CUMP_PROGF,
+                                        SIGMAN.FNU_INDICADORES_PROGRAM@DBLSIG(OT.WORK_ORDER,1,1) AS EST_LAB,
+                                        SIGMAN.FNU_INDICADORES_PROGRAM@DBLSIG(OT.WORK_ORDER,1,2) AS REAL_LAB
                                         --OT.WO_TYPE,
                                         --OT.MAINT_TYPE,
                                         --TRIM(LOCATION_TO.REF_CODE) AS REF_CODE,
                                         --OT.RELATED_WO
                                     FROM
-                                        ELLIPSE.MSF620@DBLELLIPSE8 OT
+                                        ELLIPSE.MSF620 OT
                                         INNER JOIN
                                         (
                                                 SELECT  
                                                     RC.REF_CODE AS REF_CODE_C,
                                                     SUBSTR(RC.ENTITY_VALUE,6,8) AS NO_OT_C
                                                 FROM  
-                                                    ELLIPSE.MSF071@DBLELLIPSE8 RC, 
-                                                    ELLIPSE.MSF070@DBLELLIPSE8 RCE 
+                                                    ELLIPSE.MSF071 RC, 
+                                                    ELLIPSE.MSF070 RCE 
                                                 WHERE  
                                                     RC.ENTITY_TYPE = RCE.ENTITY_TYPE  
                                                     AND RC.REF_NO = RCE.REF_NO 
@@ -3993,7 +4144,7 @@ namespace EllipseAddinGanttEQ
                                 )
                                 SELECT
                                     SEGUND.*,
-                                    SIGMAN.FNU_INDICADORES_PROGRAM(SIGMAN.SHARE_OT_REL('" + _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu + 1).Value + @"','" + _cells.GetCell(StartColInputMenu + 1, StartRowInputMenu + 1).Value + "','" + HR_ADD + @"','" + FechaFinal + @"'),6) AS CUMP_DURF
+                                    SIGMAN.FNU_INDICADORES_PROGRAM@DBLSIG(SIGMAN.SHARE_OT_REL@DBLSIG('" + _cells.GetCell(StartColInputMenu + 4, StartRowInputMenu + 1).Value + @"','" + _cells.GetCell(StartColInputMenu + 1, StartRowInputMenu + 1).Value + "','" + HR_ADD + @"','" + FechaFinal + @"'),6) AS CUMP_DURF
                                 FROM
                                     SEGUND");
                 }

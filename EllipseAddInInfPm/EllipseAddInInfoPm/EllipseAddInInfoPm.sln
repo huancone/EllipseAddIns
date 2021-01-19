@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseAddinGanttEQ", "EllipseAddinGanttEQ.csproj", "{1D06F64D-4935-4514-937B-2E26C162A6A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseAddInInfoPm", "EllipseAddInInfoPm.csproj", "{D9EFB8D0-D390-4D8E-B97F-4B66B998632D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1D06F64D-4935-4514-937B-2E26C162A6A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1D06F64D-4935-4514-937B-2E26C162A6A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1D06F64D-4935-4514-937B-2E26C162A6A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D06F64D-4935-4514-937B-2E26C162A6A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9EFB8D0-D390-4D8E-B97F-4B66B998632D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9EFB8D0-D390-4D8E-B97F-4B66B998632D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9EFB8D0-D390-4D8E-B97F-4B66B998632D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9EFB8D0-D390-4D8E-B97F-4B66B998632D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

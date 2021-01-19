@@ -8,5 +8,8 @@
     <Setting Name="EllipseAddinGanttEQ_RefCodesService_RefCodesService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/RefCodesService</Value>
     </Setting>
+    <Setting Name="EllipseAddinGanttEQ_WorkOrderTaskService_WorkOrderTaskService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

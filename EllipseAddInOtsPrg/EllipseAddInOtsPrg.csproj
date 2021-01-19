@@ -22,12 +22,12 @@
     <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1D06F64D-4935-4514-937B-2E26C162A6A7}</ProjectGuid>
+    <ProjectGuid>{1068E5F6-AEB9-4C41-850E-0C7C6EEB6ED7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <RootNamespace>EllipseAddinGanttEQ</RootNamespace>
-    <AssemblyName>EllipseAddinGanttEQ</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>EllipseAddInOtsPrg</RootNamespace>
+    <AssemblyName>EllipseAddInOtsPrg</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -37,25 +37,25 @@
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Users\gvargas4\Desktop\Ejecutable AddIn\</PublishUrl>
+    <PublishUrl>C:\Users\gvargas4\Desktop\Ejecutable AddIn\Ejecutable Ordenes Pro\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>0.0.0.4</ApplicationVersion>
+    <ApplicationVersion>1.0.0.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
-    <ProductName>EllipseAddinGanttEQ</ProductName>
+    <ProductName>EllipseAddInOtsPrg</ProductName>
     <PublisherName />
     <SupportUrl />
-    <FriendlyName>EllipseAddinGanttEQ</FriendlyName>
+    <FriendlyName>EllipseAddInOtsPrg</FriendlyName>
     <OfficeApplicationDescription />
     <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -145,14 +145,22 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="EllipseCommonsClassLibrary">
-      <HintPath>C:\Users\gvargas4\Desktop\Nuevos AddIn\Conexion Clases Hambin\EllipseCommonsClassLibrary.dll</HintPath>
+    <Reference Include="EllipseCommonsClassLibrary, Version=1.3.2.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Conexion Clases Hambin\EllipseCommonsClassLibrary.dll</HintPath>
     </Reference>
     <Reference Include="EllipseReferenceCodesClassLibrary">
-      <HintPath>C:\Users\gvargas4\Desktop\Nuevos AddIn\Conexion Clases Hambin\EllipseReferenceCodesClassLibrary.dll</HintPath>
+      <HintPath>..\Conexion Clases Hambin\EllipseReferenceCodesClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="EllipseStdTextClassLibrary">
+      <HintPath>..\Conexion Clases Hambin\EllipseStdTextClassLibrary.dll</HintPath>
     </Reference>
     <Reference Include="EllipseWorkOrdersClassLibrary">
-      <HintPath>C:\Users\gvargas4\Desktop\Nuevos AddIn\Conexion Clases Hambin\EllipseWorkOrdersClassLibrary.dll</HintPath>
+      <HintPath>..\Conexion Clases Hambin\EllipseWorkOrdersClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="FormAutetication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\gvargas4\Desktop\Nuevos AddIn\Clases Dll\FormAutetication.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -168,7 +176,10 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess">
-      <HintPath>C:\Users\gvargas4\Desktop\Nuevos AddIn\Conexion Clases Hambin\Oracle.ManagedDataAccess.dll</HintPath>
+      <HintPath>..\Conexion Clases Hambin\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary">
+      <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
     </Reference>
     <Reference Include="SharedClassLibrary.Utilities.Encryption">
       <HintPath>..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Utilities.Encryption.dll</HintPath>
@@ -178,14 +189,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.Services.Ellipse">
-      <HintPath>C:\Users\gvargas4\Desktop\Nuevos AddIn\Conexion Clases Hambin\System.Web.Services.Ellipse.dll</HintPath>
+      <HintPath>..\Conexion Clases Hambin\Anteriores Clases\System.Web.Services.Ellipse.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -214,28 +224,9 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="FormularioAutenticacionType.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormularioAutenticacionType.Designer.cs">
-      <DependentUpon>FormularioAutenticacionType.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Web References\AuthenticatorService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
-    <Compile Include="Web References\WorkOrderTaskService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="FormularioAutenticacionType.resx">
-      <DependentUpon>FormularioAutenticacionType.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -249,10 +240,8 @@
     <EmbeddedResource Include="RibbonEllipse.resx">
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="EllipseAddinGanttEQ_TemporaryKey.pfx" />
+    <None Include="App.config" />
+    <None Include="EllipseAddInOtsPrg_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -278,169 +267,6 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
-    <None Include="Web References\AuthenticatorService\AuthenticatorService.wsdl" />
-    <None Include="Web References\AuthenticatorService\NameValuePair.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AuthenticatorService\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskService.wsdl" />
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceAutoAllocationReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceAutoAllocationReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCalcDurReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCalcDurReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCancelReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCancelReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCompleteReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCompleteReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateResourceEstimatesReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceCreateResourceEstimatesReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeferReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeferReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteResourceEstimatesReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceDeleteResourceEstimatesReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceMatchReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceMatchReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyResourceEstimatesReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceModifyResourceEstimatesReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServicePrintDailyShiftSchedReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServicePrintDailyShiftSchedReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReadReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReadReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRecordWorkProgressReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRecordWorkProgressReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReopenReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceReopenReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveAssignedTasksReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveContrCostsReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveResourceEstimatesReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceRetrieveWTUStatusHistoryReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceScheduleReplyCollectionDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WorkOrderTaskService\WorkOrderTaskServiceScheduleReplyDTO.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\WorkOrderTaskService\</RelPath>
-      <UpdateFromURL>http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/WorkOrderTaskService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseAddinGanttEQ_WorkOrderTaskService_WorkOrderTaskService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/AuthenticatorService%3fWSDL">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\AuthenticatorService\</RelPath>
-      <UpdateFromURL>http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/AuthenticatorService%3fWSDL</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EllipseAddinGanttEQ_AuthenticatorService_AuthenticatorService</CachedSettingsPropName>
-    </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\security.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -456,9 +282,6 @@
   <PropertyGroup>
     <ManifestCertificateThumbprint>C28AE97543FA8D3B8A2837C2AF3F36CFC63060DF</ManifestCertificateThumbprint>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Include additional build rules for an Office application add-in. -->
@@ -468,8 +291,8 @@
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
         <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="VSTOTemplates" DebugInfoExeName="#Software\Microsoft\Office\15.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x " AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
-        <Host Name="Excel" GeneratedCodeNamespace="EllipseAddinGanttEQ" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
-          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="914085E8446C1B2FA56395F007D27AEA6777FD58" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
+        <Host Name="Excel" GeneratedCodeNamespace="EllipseAddInOtsPrg" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="E2D1970215ECC86BAE45D8B28F7A10F9234FDE12" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>
