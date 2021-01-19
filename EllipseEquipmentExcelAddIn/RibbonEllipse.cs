@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
 using Microsoft.Office.Tools.Ribbon;
 using Excel = Microsoft.Office.Interop.Excel;
+using SharedClassLibrary;
 using SharedClassLibrary.Vsto.Excel;
 using SharedClassLibrary.Ellipse;
 using SharedClassLibrary.Utilities;
@@ -21,14 +21,12 @@ using System.Threading;
 
 namespace EllipseEquipmentExcelAddIn
 {
-    [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
-    [SuppressMessage("ReSharper", "UseNullPropagation")]
     public partial class RibbonEllipse
     {
         private ExcelStyleCells _cells;
-        EllipseFunctions _eFunctions = new EllipseFunctions();
-        FormAuthenticate _frmAuth = new FormAuthenticate();
-        Excel.Application _excelApp;
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
+        private Excel.Application _excelApp;
         private const string SheetName01 = "EquipmentFull";
         private const string SheetName02 = "TracingActions";
         private const string SheetName03 = "ListEquipments";
@@ -48,22 +46,50 @@ namespace EllipseEquipmentExcelAddIn
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
+            LoadSettings();
+        }
+
+        public void LoadSettings()
+        {
+            var settings = new Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
+            _excelApp = Globals.ThisAddIn.Application;
+
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
+            {
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
+            }
+
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
             try
             {
-                _excelApp = Globals.ThisAddIn.Application;
-                var environments = Environments.GetEnvironmentList();
-                foreach (var env in environments)
-                {
-                    var item = Factory.CreateRibbonDropDownItem();
-                    item.Label = env;
-                    drpEnvironment.Items.Add(item);
-                }
-
+                settings.LoadCustomSettings();
             }
             catch (Exception ex)
             {
-                Debugger.LogError("RibbonEllipse:Load()", "\n\rMessage:" + ex.Message + "\n\rSource:" + ex.Source + "\n\rStackTrace:" + ex.StackTrace);
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
         }
         private void btnFormatFull_Click(object sender, RibbonControlEventArgs e)
         {
@@ -1391,61 +1417,6 @@ namespace EllipseEquipmentExcelAddIn
 
         public void DeleteEquipment()
         {
-            //throw new NotImplementedException();
-            //if (_cells == null)
-            //    _cells = new ExcelStyleCells(_excelApp);
-            //_cells.SetCursorWait();
-            //_eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            //_cells.ClearTableRangeColumn(TableName01, ResultColumn01);
-            //var i = TitleRow01 + 1;
-
-            //var opSheet = new EquipmentService.OperationContext
-            //{
-            //    district = _frmAuth.EllipseDsct,
-            //    position = _frmAuth.EllipsePost,
-            //    maxInstances = 100,
-            //    returnWarnings = _eFunctions.DebugWarnings
-            //};
-            //ClientConversation.authenticate(_frmAuth.EllipseUser, _frmAuth.EllipsePswd);
-
-            //while (!string.IsNullOrEmpty("" + _cells.GetCell(1, i).Value))
-            //{
-            //    try
-            //    {
-            //var urlService = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label);
-
-            //var equipmentRef = _cells.GetEmptyIfNull(_cells.GetCell(1, i).Value);
-
-            //var equipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, equipmentRef);
-            //var equipment = new Equipment
-            //{
-            //    EquipmentNo = equipmentList.Any() ? equipmentList.First() : equipmentRef,
-            //    EquipmentStatus = MyUtilities.GetCodeKey(_cells.GetEmptyIfNull(_cells.GetCell(2, i).Value))
-            //};
-
-            //_cells.GetCell(ResultColumn01, i).Value = "ELIMINADO";
-            //_cells.GetCell(1, i).Style = StyleConstants.Success;
-            //_cells.GetCell(ResultColumn01, i).Style = StyleConstants.Success;
-            //_cells.GetCell(ResultColumn01, i).Select();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        _cells.GetCell(1, i).Style = StyleConstants.Error;
-            //        _cells.GetCell(ResultColumn01, i).Style = StyleConstants.Error;
-            //        _cells.GetCell(ResultColumn01, i).Value = "ERROR: " + ex.Message;
-            //        _cells.GetCell(ResultColumn01, i).Select();
-            //        Debugger.LogError("RibbonEllipse.cs:UpdateEquipment()", ex.Message);
-            //    }
-            //    finally
-            //    {
-            //        _cells.GetCell(ResultColumn01, i).Select();
-            //        i++;
-            //        _eFunctions.CloseConnection();
-            //    }
-            //}
-            //((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            //if (_cells != null) _cells.SetCursorDefault();
-
             if (_cells == null)
                 _cells = new ExcelStyleCells(_excelApp);
             _cells.SetCursorWait();
@@ -1475,7 +1446,10 @@ namespace EllipseEquipmentExcelAddIn
                         DistrictCode = opSheet.district
                     };
 
-                    EquipmentActions.DeleteEquipment(opSheet, urlService, equipment);
+                    var reply = EquipmentActions.DeleteEquipment(opSheet, urlService, equipment);
+
+                    if (reply == null)
+                        throw new Exception("No se ha recibido respuesta del servidor");
 
                     _cells.GetCell(ResultColumn01, i).Value = "ELIMINACION COMPLETA";
                     _cells.GetCell(1, i).Style = StyleConstants.Success;
@@ -1502,7 +1476,6 @@ namespace EllipseEquipmentExcelAddIn
 
         }
 
-        [SuppressMessage("ReSharper", "SuggestVarOrType_Elsewhere")]
         public void ExecuteTraceAction()
         {
             if (_cells == null)
@@ -1540,20 +1513,29 @@ namespace EllipseEquipmentExcelAddIn
                     traceItem.ReferenceNumber = _cells.GetEmptyIfNull(_cells.GetCell(9, i).Value2);
 
                     //Obtengo el número a partir de la referencia
-                    List<string> instEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, traceItem.InstEquipmentNo);
-                    List<string> fitEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, traceItem.FitEquipmentNo);
+                    var instEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, traceItem.InstEquipmentNo);
+                    var fitEquipmentList = EquipmentActions.GetEquipmentList(_eFunctions, opSheet.district, traceItem.FitEquipmentNo);
 
                     traceItem.InstEquipmentNo = instEquipmentList.Any() ? instEquipmentList.First() : traceItem.InstEquipmentNo;
                     traceItem.FitEquipmentNo = fitEquipmentList.Any() ? fitEquipmentList.First() : traceItem.FitEquipmentNo;
                     //
 
                     TracingItem result;
-                    if (traceItem.TracingAction.ToUpper().Equals("B") || traceItem.TracingAction.ToUpper().Equals("FIT") || traceItem.TracingAction.ToUpper().Equals("FITMENT"))
-                        result = TracingActions.Fitment(opSheet, urlService, traceItem);
-                    else if (traceItem.TracingAction.ToUpper().Equals("C") || traceItem.TracingAction.ToUpper().Equals("DEFIT") || traceItem.TracingAction.ToUpper().Equals("DEFITMENT"))
-                        result = TracingActions.Defitment(opSheet, urlService, traceItem);
-                    else
-                        throw new Exception("No se ha seleccionado una acción a realizar");
+                    switch (traceItem.TracingAction.ToUpper())
+                    {
+                        case "B":
+                        case "FIT":
+                        case "FITMENT":
+                            result = TracingActions.Fitment(opSheet, urlService, traceItem);
+                            break;
+                        case "C":
+                        case "DEFIT":
+                        case "DEFITMENT":
+                            result = TracingActions.Defitment(opSheet, urlService, traceItem);
+                            break;
+                        default:
+                            throw new Exception("No se ha seleccionado una acción a realizar");
+                    }
 
                     if (result != null)
                         throw new Exception("No se recibió respuesta de la acción");
@@ -1578,7 +1560,7 @@ namespace EllipseEquipmentExcelAddIn
                 }
             }
             ((Excel.Worksheet)_excelApp.ActiveWorkbook.ActiveSheet).Cells.Columns.AutoFit();
-            if (_cells != null) _cells.SetCursorDefault();
+            _cells?.SetCursorDefault();
         }
 
         public void DeleteTraceAction()

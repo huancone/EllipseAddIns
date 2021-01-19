@@ -12,7 +12,7 @@ namespace EllipseMse81SExcelAddin.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -26,20 +26,20 @@ namespace EllipseMse81SExcelAddin.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EmployeeService")]
-        public string EllipseMse81SExcelAddin_EmployeeService_EmployeeService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EmployeeHandlerService")]
+        public string EllipseMse81SExcelAddin_EmployeeHandlerService_EmployeeHandlerService {
             get {
-                return ((string)(this["EllipseMse81SExcelAddin_EmployeeService_EmployeeService"]));
+                return ((string)(this["EllipseMse81SExcelAddin_EmployeeHandlerService_EmployeeHandlerService"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://ews-el8prod.lmnerp01.cerrejon.com/ews/services/EmployeeHandlerService")]
-        public string EllipseMse81SExcelAddin_EmployeeHandlerService_EmployeeHandlerService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ellipse-eamprd.lmnerp01.cerrejon.com/ews/services/EmployeeService")]
+        public string EllipseMse81SExcelAddin_EmployeeService_EmployeeService {
             get {
-                return ((string)(this["EllipseMse81SExcelAddin_EmployeeHandlerService_EmployeeHandlerService"]));
+                return ((string)(this["EllipseMse81SExcelAddin_EmployeeService_EmployeeService"]));
             }
         }
     }
