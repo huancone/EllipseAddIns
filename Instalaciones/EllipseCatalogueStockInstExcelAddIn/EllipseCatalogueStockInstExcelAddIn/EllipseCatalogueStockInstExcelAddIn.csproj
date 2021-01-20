@@ -40,8 +40,8 @@
     <PublishUrl>D:\Projects\Release\Instalaciones\EllipseCatalogueStockInstExcelAddIn\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.0.2</ApplicationVersion>
-    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <ApplicationVersion>1.2.0.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
@@ -154,18 +154,26 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SharedClassLibrary">
+      <HintPath>..\..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Connections">
+      <HintPath>..\..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Connections.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Ellipse">
+      <HintPath>..\..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Ellipse.dll</HintPath>
+    </Reference>
+    <Reference Include="SharedClassLibrary.Vsto.Excel">
+      <HintPath>..\..\..\EllipseCommonsClassLibraries\SharedClassLibrary\SharedClassLibrary.Vsto.Excel.dll</HintPath>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -175,11 +183,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.Services.Ellipse">
-      <HintPath>..\..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\bin\Debug\System.Web.Services.Ellipse.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Services.Ellipse.Post.PostExecute, Version=1.0.5.1, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\Web References\System.Web.Services.Ellipse.Post.PostExecute.dll</HintPath>
+      <HintPath>..\..\..\EllipseCommonsClassLibraries\SharedClassLibrary\System.Web.Services.Ellipse.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -224,19 +228,9 @@
     <EmbeddedResource Include="RibbonEllipse.resx">
       <DependentUpon>RibbonEllipse.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+    <Compile Include="Queries.cs" />
     <Compile Include="RibbonEllipse.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -255,10 +249,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj">
-      <Project>{8487253f-f7e1-4c7e-af6d-b5abab28f3a3}</Project>
-      <Name>EllipseCommonsClassLibrary</Name>
-    </ProjectReference>
+    <Content Include="ventyx_logo.ico" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -272,7 +263,10 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CE78B1E566B0671933897B3500C94E2E578486AB</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>9C7943B62AB2418AFDB97217A007CA01B53E2BDB</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ventyx_logo.ico</ApplicationIcon>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

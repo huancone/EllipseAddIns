@@ -1,19 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseInstFinalizarInterventoriaExcelAddIn", "EllipseInstFinalizarInterventoriaExcelAddIn.csproj", "{75A1AE2A-E438-468F-8720-0D9CFC5D9A52}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseCommonsClassLibrary", "..\..\EllipseCommonsClassLibraries\EllipseCommonsClassLibrary\EllipseCommonsClassLibrary.csproj", "{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseWorkOrdersClassLibrary", "..\..\EllipseCommonsClassLibraries\EllipseWorkOrdersClassLibrary\EllipseWorkOrdersClassLibrary.csproj", "{B08F098E-E4DE-4431-8CF1-0E3156B96A00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseStdTextClassLibrary", "..\..\EllipseCommonsClassLibraries\EllipseStdTextClassLibrary\EllipseStdTextClassLibrary.csproj", "{55F2204E-933A-4B98-87A4-5BA928275192}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EllipseReferenceCodesClassLibrary", "..\..\EllipseCommonsClassLibraries\EllipseReferenceCodesClassLibrary\EllipseReferenceCodesClassLibrary.csproj", "{093EC04E-6E92-4E59-848B-5B79277FFE9B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web.Services.Ellipse", "..\..\EllipseCommonsClassLibraries\System.Web.Services.Ellipse\System.Web.Services.Ellipse.csproj", "{1C5ABABA-126F-424B-932B-A110F3665344}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +21,6 @@ Global
 		{75A1AE2A-E438-468F-8720-0D9CFC5D9A52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75A1AE2A-E438-468F-8720-0D9CFC5D9A52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75A1AE2A-E438-468F-8720-0D9CFC5D9A52}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8487253F-F7E1-4C7E-AF6D-B5ABAB28F3A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B08F098E-E4DE-4431-8CF1-0E3156B96A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,12 +33,11 @@ Global
 		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{093EC04E-6E92-4E59-848B-5B79277FFE9B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C5ABABA-126F-424B-932B-A110F3665344}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {494F614A-F949-49AB-92C0-4B83854BD54E}
 	EndGlobalSection
 EndGlobal

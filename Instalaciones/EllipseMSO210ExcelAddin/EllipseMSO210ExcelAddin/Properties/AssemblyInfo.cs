@@ -11,7 +11,7 @@ using System.Security;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hambings SAS/Cerrejón Ltda")]
 [assembly: AssemblyProduct("EllipseMSO210ExcelAddin")]
-[assembly: AssemblyCopyright("Copyright ©  2015-2017")]
+[assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("Hambings SAS")]
 [assembly: AssemblyCulture("")]
 
@@ -33,6 +33,6 @@ using System.Security;
 // Puede especificar todos los valores o usar los valores predeterminados de número de compilación y de revisión 
 // mediante el carácter '*', como se muestra a continuación:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
 

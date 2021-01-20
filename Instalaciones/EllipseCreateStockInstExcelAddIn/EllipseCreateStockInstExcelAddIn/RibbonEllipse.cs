@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Web.Services.Ellipse;
 using System.Windows.Forms;
-using EllipseCommonsClassLibrary;
-using EllipseCommonsClassLibrary.Classes;
-using EllipseCommonsClassLibrary.Connections;
+using SharedClassLibrary;
+using SharedClassLibrary.Ellipse.Connections;
 using EllipseCreateStockInstExcelAddIn.Properties;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
-using Oracle.ManagedDataAccess.Client;
+using SharedClassLibrary.Ellipse;
+using SharedClassLibrary.Ellipse.Forms;
+using SharedClassLibrary.Utilities;
+using SharedClassLibrary.Vsto.Excel;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using CatProdService = EllipseCreateStockInstExcelAddIn.CatalogueProductService;
 using CatService = EllipseCreateStockInstExcelAddIn.CatalogueService;
@@ -25,33 +27,69 @@ namespace EllipseCreateStockInstExcelAddIn
         private const int ResultColumn = 5;
         private const string SheetName01 = "Create Stock INST";
         private const int TittleRow = 5;
-        private readonly EllipseFunctions _eFunctions = new EllipseFunctions();
-        private readonly FormAuthenticate _frmAuth = new FormAuthenticate();
+        private EllipseFunctions _eFunctions;
+        private FormAuthenticate _frmAuth;
         private ExcelStyleCells _cells;
-        private OracleDataReader _drContractItems;
         private Application _excelApp;
         private WorksheetTools _worksheet;
 
         private void RibbonEllipse_Load(object sender, RibbonUIEventArgs e)
         {
-            _excelApp = Globals.ThisAddIn.Application;
-
-            var environmentList = Environments.GetEnvironmentList();
-            foreach (var item in environmentList)
-            {
-                var drpItem = Factory.CreateRibbonDropDownItem();
-                drpItem.Label = item;
-                drpEnvironment.Items.Add(drpItem);
-            }
+            LoadSettings();
         }
 
+        /// <summary>
+        ///     Establece la configuración inicial del AddIn
+        /// </summary>
+        public void LoadSettings()
+        {
+            var settings = new SharedClassLibrary.Ellipse.Settings();
+            _eFunctions = new EllipseFunctions();
+            _frmAuth = new FormAuthenticate();
+            _excelApp = Globals.ThisAddIn.Application;
+
+            var environments = Environments.GetEnvironmentList();
+            foreach (var env in environments)
+            {
+                var item = Factory.CreateRibbonDropDownItem();
+                item.Label = env;
+                drpEnvironment.Items.Add(item);
+            }
+
+            //settings.SetDefaultCustomSettingValue("OptionName1", "false");
+            //settings.SetDefaultCustomSettingValue("OptionName2", "OptionValue2");
+            //settings.SetDefaultCustomSettingValue("OptionName3", "OptionValue3");
+
+
+
+            //Setting of Configuration Options from Config File (or default)
+            try
+            {
+                settings.LoadCustomSettings();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, SharedResources.Settings_Title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            //var optionItem1Value = MyUtilities.IsTrue(settings.GetCustomSettingValue("OptionName1"));
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName2");
+            //var optionItem1Value = settings.GetCustomSettingValue("OptionName3");
+
+            //cbCustomSettingOption.Checked = optionItem1Value;
+            //optionItem2.Text = optionItem2Value;
+            //optionItem3 = optionItem3Value;
+
+            //
+            settings.SaveCustomSettings();
+        }
         private void btnFormatSheet_Click(object sender, RibbonControlEventArgs e)
         {
             FormatSheet();
         }
 
         /// <summary>
-        ///     Dat formato a la hoja para cargar los items contractuales y los StockCodes asociados a estas.
+        ///     Da formato a la hoja para cargar los items contractuales y los StockCodes asociados a estas.
         /// </summary>
         private void FormatSheet()
         {
@@ -132,20 +170,20 @@ namespace EllipseCreateStockInstExcelAddIn
             }
 
             if (!(!string.IsNullOrEmpty(contractNo) & !string.IsNullOrEmpty(contractPrefix))) return;
-            var sqlQuery = Queries.GetContractData(contractNo, contractPrefix, _eFunctions.dbReference,
-                _eFunctions.dbLink);
+            var sqlQuery = Queries.GetContractData(contractNo, contractPrefix, _eFunctions.DbReference,
+                _eFunctions.DbLink);
             _eFunctions.SetDBSettings(drpEnvironment.SelectedItem.Label);
-            _drContractItems = _eFunctions.GetQueryResult(sqlQuery);
+            var drContractItems = _eFunctions.GetQueryResult(sqlQuery);
 
-            if (_drContractItems != null && !_drContractItems.IsClosed && _drContractItems.HasRows)
+            if (drContractItems != null && !drContractItems.IsClosed)
             {
                 var currentRow = TittleRow + 1;
-                while (_drContractItems.Read())
+                while (drContractItems.Read())
                 {
-                    _cells.GetCell("A" + currentRow).Value = _drContractItems["STOCK_CODE"].ToString();
-                    _cells.GetCell("B" + currentRow).Value = _drContractItems["DESCRIPCION"].ToString();
-                    _cells.GetCell("C" + currentRow).Value = _drContractItems["UNIT_OF_ISSUE"].ToString();
-                    _cells.GetCell("D" + currentRow).Value = _drContractItems["PART_NO"].ToString();
+                    _cells.GetCell("A" + currentRow).Value = drContractItems["STOCK_CODE"].ToString();
+                    _cells.GetCell("B" + currentRow).Value = drContractItems["DESCRIPCION"].ToString();
+                    _cells.GetCell("C" + currentRow).Value = drContractItems["UNIT_OF_ISSUE"].ToString();
+                    _cells.GetCell("D" + currentRow).Value = drContractItems["PART_NO"].ToString();
                     currentRow++;
                 }
             }
@@ -177,12 +215,12 @@ namespace EllipseCreateStockInstExcelAddIn
         {
             var catalogueServiceProxy = new CatService.CatalogueService();
             var catalogueOp = new CatService.OperationContext();
-            catalogueServiceProxy.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/CatalogueService";
+            catalogueServiceProxy.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CatalogueService";
 
             var productServiceProxy = new CatProdService.CatalogueProductService();
             var product = new CatProdService.CatalogueProductDTO();
             var productServiceOp = new CatProdService.OperationContext();
-            productServiceProxy.Url = _eFunctions.GetServicesUrl(drpEnvironment.SelectedItem.Label) + "/CatalogueProductService";
+            productServiceProxy.Url = Environments.GetServiceUrl(drpEnvironment.SelectedItem.Label) + "/CatalogueProductService";
 
             _cells.GetRange("E6", "E10000").Clear();
             _cells.GetRange("A6", "E10000").NumberFormat = "@";
